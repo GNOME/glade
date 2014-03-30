@@ -428,16 +428,16 @@ on_http_request_done (GladeHTTP         *http,
                                              "%s", _("Name and Email fields are required"));
           else if (g_strcmp0 (status, "error_email_in_use") == 0)
             glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
-                                             "%s", _("Ops! Email address is already in use!\nTo update information you need to provide the token that was sent to your inbox."));
+                                             "%s", _("Oops! Email address is already in use!\nTo update information you need to provide the token that was sent to your inbox."));
           else if (g_strcmp0 (status, "error_db_user_info") == 0)
             glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
-                                             _("Ops! Error saving user information: %s"), message);
+                                             _("Oops! Error saving user information: %s"), message);
           else if (g_strcmp0 (status, "error_db_survey_data") == 0)
             glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
-                                             _("Ops! Error saving survey data: %s"), message);
+                                             _("Oops! Error saving survey data: %s"), message);
           else if (g_strcmp0 (status, "error_db") == 0)
             glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
-                                             _("Ops! Error accessing DB: %s"), message);
+                                             _("Oops! Error accessing DB: %s"), message);
           else
             glade_registration_show_message (registration, GTK_MESSAGE_WARNING, "%s", message);
         }
