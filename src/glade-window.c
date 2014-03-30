@@ -3475,9 +3475,11 @@ glade_window_registration_notify_user (GladeWindow *window)
                                        GTK_MESSAGE_QUESTION,
                                        GTK_BUTTONS_YES_NO,
                                        "%s",
+                                       /* translators: Primary message of a dialog used to notify the user about the survey */
                                        _("We are conducting a user survey\n would you like to take it now?"));
 
       gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s",
+                                                /* translators: Secondary text of a dialog used to notify the user about the survey */
                                                 _("If not, you can always find it in the Help menu."));
 
       check = gtk_check_button_new_with_mnemonic (_("_Do not show this dialog again"));
@@ -3500,5 +3502,6 @@ glade_window_registration_notify_user (GladeWindow *window)
     }
   else if (!completed)
     glade_util_flash_message (priv->statusbar, priv->statusbar_context_id, "%s",
+                              /* translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again */
                               _("Go to Help -> Registration & User Survey and complete our survey!"));
 }
