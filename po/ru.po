@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-04-01 05:55+0000\n"
-"PO-Revision-Date: 2014-04-01 22:05+0400\n"
+"PO-Revision-Date: 2014-04-01 22:38+0400\n"
 "Last-Translator: Yuri Myasoedov <ymyasoedov@yandex.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -276,20 +276,22 @@ msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
 msgstr ""
+"Мы проводим опрос среди пользователей,\n"
+" не хотели бы вы принять в нём участие?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
 #: ../src/glade-window.c:3483
 msgid "If not, you can always find it in the Help menu."
-msgstr ""
+msgstr "Если нет, вы всегда сможете найти анкету в меню справки."
 
 #: ../src/glade-window.c:3485
 msgid "_Do not show this dialog again"
-msgstr ""
+msgstr "_Больше не показывать этот диалог"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
 #: ../src/glade-window.c:3506
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
-msgstr ""
+msgstr "Завершите анкетирование: Справка -> Регистрация и анкета пользователя"
 
 #: ../src/main.c:51
 msgid "Output version information and exit"
@@ -663,11 +665,11 @@ msgstr "_Недавние проекты"
 
 #: ../src/glade.glade.h:88
 msgid "Registration & User Survey"
-msgstr ""
+msgstr "Регистрация и анкета пользователя"
 
 #: ../src/glade.glade.h:89
 msgid "Help us improve Glade by registering and completing the user survey!"
-msgstr ""
+msgstr "Помогите нам улучшить Glade — зарегистрируйтесь и заполните анекету!"
 
 #: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:113
 msgid "_File"
@@ -816,6 +818,8 @@ msgstr "Получение данных с %s"
 #: ../src/glade-registration.c:331
 msgid "Sorry, automatic subscription to Glade Users mailing list failed"
 msgstr ""
+"Извините, не удалось автоматически подписаться на список рассылки "
+"пользователей Glade"
 
 #: ../src/glade-registration.c:334
 msgid "Open Glade Users Website"
@@ -828,11 +832,11 @@ msgstr "Внутренняя ошибка сервера"
 
 #: ../src/glade-registration.c:410
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
-msgstr ""
+msgstr "Мы вам благодарны, что вы нашли время на заполнение анкеты!"
 
 #: ../src/glade-registration.c:418
 msgid "Name and Email fields are required"
-msgstr ""
+msgstr "Поля с именем и адресом электронной почты являются обязательными"
 
 #: ../src/glade-registration.c:421
 msgid ""
@@ -840,33 +844,36 @@ msgid ""
 "To update information you need to provide the token that was sent to your "
 "inbox."
 msgstr ""
+"Ой! Адрес эл. почты уже используется!\n"
+"Чтобы обновить информацию нужен токен, который был отправлен на вашу эл. "
+"почту. "
 
 #: ../src/glade-registration.c:424
 #, c-format
 msgid "Ops! Error saving user information: %s"
-msgstr ""
+msgstr "Ой! Произошла ошибка сохранения информации о пользователе: %s"
 
 #: ../src/glade-registration.c:427
 #, c-format
 msgid "Ops! Error saving survey data: %s"
-msgstr ""
+msgstr "Ой! Произошла ошибка сохранения данных анкеты: %s"
 
 #: ../src/glade-registration.c:430
 #, c-format
 msgid "Ops! Error accessing DB: %s"
-msgstr ""
+msgstr "Ой! Произошла ошибка доступа к базе данных: %s"
 
 #: ../src/glade-registration.glade.h:1
 msgid "Glade Registration & User Survey"
-msgstr ""
+msgstr "Регистрация Glade и анекта пользователя"
 
 #: ../src/glade-registration.glade.h:2
 msgid "User Information"
-msgstr ""
+msgstr "Сведения о пользователе"
 
 #: ../src/glade-registration.glade.h:3
 msgid "<Your name or nickname is required>"
-msgstr ""
+msgstr "<Ваше имя или псевдоним>"
 
 #: ../src/glade-registration.glade.h:5
 msgid "Email:"
@@ -877,10 +884,12 @@ msgid ""
 "Tokens are processed manually in batches.\n"
 "Please be patient."
 msgstr ""
+"Токены обрабатывается вручную по очереди.\n"
+"Будьте терпеливы."
 
 #: ../src/glade-registration.glade.h:8
 msgid "<Required to send back registration token>"
-msgstr ""
+msgstr "<Требуется для отправки регистрационного токена>"
 
 #: ../src/glade-registration.glade.h:9
 #| msgid "Text Entry"
@@ -912,13 +921,15 @@ msgstr "Веб-сайт"
 
 #: ../src/glade-registration.glade.h:15
 msgid "Subscribe me to the mailing list"
-msgstr ""
+msgstr "Подписаться на список рассылки"
 
 #: ../src/glade-registration.glade.h:16
 msgid ""
 "Subscribe to Glade Users mailing list.\n"
 "You will be sent email requesting confirmation!"
 msgstr ""
+"Подписаться на список рассылки пользователей Glade.\n"
+"Вам будет отправлено письмо для подтверждения подписки!"
 
 #: ../src/glade-registration.glade.h:18
 #| msgid "Close document"
@@ -927,25 +938,27 @@ msgstr "Выберите вашу страну"
 
 #: ../src/glade-registration.glade.h:19
 msgid "We care about privacy!"
-msgstr ""
+msgstr "Мы заботимся о приватности!"
 
 #: ../src/glade-registration.glade.h:20
 msgid ""
 "All the data will be stored in a private location and will not be shared "
 "with the public or any third party."
 msgstr ""
+"Все данные будут храниться в приватном хранилище и никогда не будут "
+"опубликованы или переданы третьим лицам."
 
 #: ../src/glade-registration.glade.h:21
 msgid "See Privacy Note"
-msgstr ""
+msgstr "См. заметки о приватности"
 
 #: ../src/glade-registration.glade.h:22
 msgid "Update Info"
-msgstr ""
+msgstr "Обновить информацию"
 
 #: ../src/glade-registration.glade.h:23
 msgid "<Insert update token, if you want to update previously sent data>"
-msgstr ""
+msgstr "<Укажите токен, если вы хотите обновить отправленные ранее данные>"
 
 #: ../src/glade-registration.glade.h:24
 #| msgid "Glade Preview"
@@ -1017,7 +1030,7 @@ msgstr "Другое"
 
 #: ../src/glade-registration.glade.h:40
 msgid "When did you start using Glade?"
-msgstr ""
+msgstr "Когда вы начали пользоваться Glade?"
 
 #: ../src/glade-registration.glade.h:41
 #, fuzzy
@@ -1031,11 +1044,11 @@ msgstr "Какую версию вы обычно используете?"
 
 #: ../src/glade-registration.glade.h:43
 msgid "What is available in my OS"
-msgstr ""
+msgstr "Которая доступна в моей системе"
 
 #: ../src/glade-registration.glade.h:44
 msgid "Latest stable from sources"
-msgstr ""
+msgstr "Последнюю стабильную из исходников"
 
 #: ../src/glade-registration.glade.h:45
 msgid "3.8 for GTK+ 2"
@@ -1184,19 +1197,19 @@ msgstr "Snow Leopard"
 
 #: ../src/glade-registration.glade.h:79
 msgid "Lion"
-msgstr ""
+msgstr "Lion"
 
 #: ../src/glade-registration.glade.h:80
 msgid "Mountain Lion"
-msgstr ""
+msgstr "Mountain Lion"
 
 #: ../src/glade-registration.glade.h:81
 msgid "Mavericks"
-msgstr ""
+msgstr "Mavericks"
 
 #: ../src/glade-registration.glade.h:82
 msgid "GNU/Linux"
-msgstr ""
+msgstr "GNU/Linux"
 
 #. GtkLicense enumeration value
 #: ../src/glade-registration.glade.h:83 ../plugins/gtk+/gtk+.xml.in.h:712
@@ -1210,11 +1223,11 @@ msgstr "Windows"
 
 #: ../src/glade-registration.glade.h:85
 msgid "Mac OS X"
-msgstr ""
+msgstr "Mac OS X"
 
 #: ../src/glade-registration.glade.h:86
 msgid "Solaris"
-msgstr ""
+msgstr "Solaris"
 
 #: ../src/glade-registration.glade.h:87
 msgid "How often do you use it?"
@@ -1260,13 +1273,15 @@ msgstr "Средний уровень"
 
 #: ../src/glade-registration.glade.h:97
 msgid "Advanced"
-msgstr ""
+msgstr "Продвинутый"
 
 #: ../src/glade-registration.glade.h:98
 msgid ""
 "Under what kind of license(s) do you release the software you used Glade to "
 "create?"
 msgstr ""
+"Под какими лицензиями вы выпускаете программное обеспечение, созданное с "
+"помощью Glade?"
 
 #: ../src/glade-registration.glade.h:99
 #| msgid "Create Folder"
@@ -1284,7 +1299,7 @@ msgstr "Коммерческое/закрытое программное обе�
 
 #: ../src/glade-registration.glade.h:102
 msgid "None - distributed internally"
-msgstr ""
+msgstr "Без лицензии — для внутренних нужд"
 
 #: ../src/glade-registration.glade.h:103
 msgid ""
@@ -1388,7 +1403,7 @@ msgstr "Комментарии:"
 
 #: ../src/glade-registration.glade.h:126
 msgid "Privacy Note:"
-msgstr ""
+msgstr "Заметки о приватности:"
 
 #: ../src/glade-registration.glade.h:127
 msgid ""
@@ -1408,7 +1423,7 @@ msgstr "Отмена"
 
 #: ../src/glade-registration.glade.h:132
 msgid "Submit"
-msgstr ""
+msgstr "Отправить"
 
 #: ../src/glade-registration.glade.h:133
 msgid "Information will be sent to https://people.gnome.org/~jpu"
