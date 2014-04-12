@@ -2413,7 +2413,13 @@ glade_project_get_graph_deps (GladeProject *project)
       for (ll = _glade_widget_peek_prop_refs (predecessor); ll; ll = g_list_next (ll))
         {
           GladeWidget *successor = glade_property_get_widget (ll->data);
-          GladeWidget *successor_top = glade_widget_get_toplevel (successor);
+          GladeWidget *successor_top;
+
+          /* Ignore widgets that are not part of this project. (ie removed ones) */
+          if (glade_widget_get_project (successor) != project)
+            continue;
+
+          successor_top = glade_widget_get_toplevel (successor);
 
           /* Ignore objects within the same toplevel */
           if (predecessor_top != successor_top)
