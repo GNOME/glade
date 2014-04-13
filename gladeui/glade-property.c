@@ -417,66 +417,67 @@ glade_property_get_value_impl (GladeProperty * property, GValue * value)
 }
 
 static void
-glade_property_sync_impl (GladeProperty * property)
+glade_property_sync_impl (GladeProperty *property)
 {
+  GladePropertyPrivate *priv = property->priv;
+  GladePropertyClass *klass = priv->klass;
+  const GValue *value;
+  const gchar *id;
+
   /* Heh, here are the many reasons not to
    * sync a property ;-)
    */
   if (/* the class can be NULL during object,
        * construction this is just a temporary state */
-       property->priv->klass == NULL ||
-       /* optional properties that are disabled */
-       property->priv->enabled == FALSE ||
+       klass == NULL ||
        /* explicit "never sync" flag */
-       glade_property_class_get_ignore (property->priv->klass) ||
+       glade_property_class_get_ignore (klass) ||
        /* recursion guards */
-       property->priv->syncing >= property->priv->sync_tolerance ||
+       priv->syncing >= priv->sync_tolerance ||
        /* No widget owns this property yet */
-       property->priv->widget == NULL)
+       priv->widget == NULL)
     return;
+
+  id = glade_property_class_id (klass);
 
   /* Only the properties from widget->properties should affect the runtime widget.
    * (other properties may be used for convenience in the plugin).
    */
-  if ((glade_property_class_get_is_packing (property->priv->klass) &&
-       !glade_widget_get_pack_property (property->priv->widget, 
-					glade_property_class_id (property->priv->klass)))
-      || !glade_widget_get_property (property->priv->widget, 
-				     glade_property_class_id (property->priv->klass)))
+  if ((glade_property_class_get_is_packing (klass) &&
+       !glade_widget_get_pack_property (priv->widget, id))
+      || !glade_widget_get_property (priv->widget, id))
     return;
 
-  property->priv->syncing++;
+  priv->syncing++;
+
+  /* optional properties that are disabled get the default runtime value */
+  value = (priv->enabled) ? priv->value : glade_property_class_get_default (klass);
 
   /* In the case of construct_only, the widget instance must be rebuilt
    * to apply the property
    */
-  if (glade_property_class_get_construct_only (property->priv->klass) && 
-      property->priv->syncing == 1)
+  if (glade_property_class_get_construct_only (klass) && priv->syncing == 1)
     {
       /* Virtual properties can be construct only, in which
        * case they are allowed to trigger a rebuild, and in
        * the process are allowed to get "synced" after the
        * instance is rebuilt.
        */
-      if (glade_property_class_get_virtual (property->priv->klass))
-        property->priv->sync_tolerance++;
+      if (glade_property_class_get_virtual (klass))
+        priv->sync_tolerance++;
 
-      glade_widget_rebuild (property->priv->widget);
+      glade_widget_rebuild (priv->widget);
 
-      if (glade_property_class_get_virtual (property->priv->klass))
-        property->priv->sync_tolerance--;
+      if (glade_property_class_get_virtual (klass))
+        priv->sync_tolerance--;
     }
-  else if (glade_property_class_get_is_packing (property->priv->klass))
-    glade_widget_child_set_property (glade_widget_get_parent (property->priv->widget),
-                                     property->priv->widget,
-                                     glade_property_class_id (property->priv->klass), 
-				     property->priv->value);
+  else if (glade_property_class_get_is_packing (klass))
+    glade_widget_child_set_property (glade_widget_get_parent (priv->widget),
+                                     priv->widget, id, value);
   else
-    glade_widget_object_set_property (property->priv->widget,
-                                      glade_property_class_id (property->priv->klass), 
-				      property->priv->value);
+    glade_widget_object_set_property (priv->widget, id, value);
 
-  property->priv->syncing--;
+  priv->syncing--;
 }
 
 static void
@@ -1543,8 +1544,7 @@ glade_property_set_enabled (GladeProperty * property, gboolean enabled)
   warn_before = glade_property_warn_usage (property);
 
   property->priv->enabled = enabled;
-  if (enabled)
-    glade_property_sync (property);
+  glade_property_sync (property);
 
   glade_property_fix_state (property);
 
