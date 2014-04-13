@@ -540,6 +540,7 @@ Authors:
                         <property name="can_focus">False</property>
                         <property name="active">0</property>
                         <items>
+                          <item id="other" translatable="yes">Other</item>
                           <item id="gplv2" translatable="yes">GNU GPL version 2</item>
                           <item id="gplv3" translatable="yes">GNU GPL version 3</item>
                           <item id="lgplv2" translatable="yes">GNU LGPL version 2.1</item>
@@ -549,7 +550,6 @@ Authors:
                           <item id="apache2" translatable="yes">Apache 2</item>
                           <item id="mit" translatable="yes">MIT</item>
                           <item id="all_permissive" translatable="yes">GNU All permissive</item>
-                          <item id="other" translatable="yes">Other</item>
                         </items>
                         <signal name="changed" handler="on_license_comboboxtext_changed" swapped="no"/>
                       </object>
