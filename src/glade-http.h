@@ -82,7 +82,7 @@ gint         glade_http_get_port         (GladeHTTP    *http);
 void         glade_http_request_send_async (GladeHTTP    *http,
                                             GCancellable *cancellable,
                                             const gchar  *format,
-                                            ...);
+                                            ...) G_GNUC_PRINTF (3, 4);
 G_END_DECLS
 
 #endif /* _GLADE_HTTP_H_ */

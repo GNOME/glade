@@ -377,7 +377,7 @@ glade_http_get_host (GladeHTTP *http)
 gint
 glade_http_get_port (GladeHTTP *http)
 {
-  g_return_val_if_fail (GLADE_IS_HTTP (http), NULL);
+  g_return_val_if_fail (GLADE_IS_HTTP (http), 0);
   return http->priv->port;
 }
 
