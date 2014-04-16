@@ -207,6 +207,7 @@ static gboolean
 append_empty_row (GtkListStore *store, PangoAttrType type)
 {
   const gchar *name = NULL;
+  guint spin_digits = 0;
   GtkListStore *model = get_enum_model_for_combo (type);
   GtkTreeIter iter;
   AttrEditType edit_type = EDIT_INVALID;
@@ -293,6 +294,7 @@ append_empty_row (GtkListStore *store, PangoAttrType type)
       case PANGO_ATTR_SCALE:
         edit_type = EDIT_SPIN;
         name = C_ ("textattr", "Scale");
+        spin_digits = 3;
         break;
 
       case PANGO_ATTR_FONT_DESC:
@@ -327,6 +329,7 @@ append_empty_row (GtkListStore *store, PangoAttrType type)
                           COLUMN_TEXT_STYLE, PANGO_STYLE_ITALIC,
                           COLUMN_TEXT_FG, "Grey",
                           COLUMN_COMBO_MODEL, model,
+                          COLUMN_SPIN_DIGITS, spin_digits,
                           ACTIVATE_COLUMN_FROM_TYPE (edit_type), TRUE, -1);
       return TRUE;
     }
