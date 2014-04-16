@@ -399,7 +399,7 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor * adaptor,
     glade_widget_property_set (widget, "label-wrap-mode",
                                GLADE_LABEL_WRAP_FREE);
 
-  if (glade_widget_property_original_default (widget, "use-markup"))
+  if (glade_widget_property_original_default (widget, "use-underline"))
     glade_widget_property_set_sensitive (widget, "mnemonic-widget",
                                          FALSE, MNEMONIC_INSENSITIVE_MSG);
 
