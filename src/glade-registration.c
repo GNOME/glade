@@ -153,6 +153,12 @@ static void
 glade_registration_show_message (GladeRegistration *registration,
                                  GtkMessageType     type,
                                  const gchar       *format,
+                                 ...) G_GNUC_PRINTF (3, 4);
+
+static void
+glade_registration_show_message (GladeRegistration *registration,
+                                 GtkMessageType     type,
+                                 const gchar       *format,
                                  ...)
 {
   GladeRegistrationPrivate *priv = registration->priv;
@@ -258,7 +264,7 @@ glade_registration_http_post (GladeRegistration *registration,
                                  "Accept: text/plain\r\n"
                                  "Accept-Language: %s\r\n"
                                  "Content-Type: application/x-www-form-urlencoded\r\n"
-                                 "Content-Length: %d\r\n"
+                                 "Content-Length: %"G_GSIZE_FORMAT"\r\n"
                                  "\r\n%s",
                                  url,                                                       /* POST url */
                                  glade_http_get_host (http),                                /* Host */
