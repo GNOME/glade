@@ -353,22 +353,30 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
   return FALSE;
 }
 
+static void
+glade_placeholder_update_cursor (GladePlaceholder *placeholder, GdkWindow *win)
+{
+  GladeProject *project = glade_placeholder_get_project (placeholder);
+  GladePointerMode pointer_mode = glade_project_get_pointer_mode (project);
+
+  if (pointer_mode == GLADE_POINTER_SELECT)
+    glade_cursor_set (project, win, GLADE_CURSOR_SELECTOR);
+  else if (pointer_mode == GLADE_POINTER_ADD_WIDGET)
+    glade_cursor_set (project, win, GLADE_CURSOR_ADD_WIDGET);
+}
+
+static gboolean
+glade_placeholder_enter_notify_event (GtkWidget        *widget, 
+                                      GdkEventCrossing *event)
+{
+  glade_placeholder_update_cursor (GLADE_PLACEHOLDER (widget), event->window);
+  return FALSE;
+}
+
 static gboolean
 glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
-  GladePointerMode pointer_mode;
-  GladeProject *project;
-
-  g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
-
-  project      = glade_placeholder_get_project (GLADE_PLACEHOLDER (widget));
-  pointer_mode = glade_project_get_pointer_mode (project);
-
-  if (pointer_mode == GLADE_POINTER_SELECT)
-    glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
-  else if (pointer_mode == GLADE_POINTER_ADD_WIDGET)
-    glade_cursor_set (project, event->window, GLADE_CURSOR_ADD_WIDGET);
-
+  glade_placeholder_update_cursor (GLADE_PLACEHOLDER (widget), event->window);
   return FALSE;
 }
 
@@ -537,6 +545,7 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
   widget_class->unmap = glade_placeholder_unmap;
   widget_class->size_allocate = glade_placeholder_size_allocate;
   widget_class->draw = glade_placeholder_draw;
+  widget_class->enter_notify_event = glade_placeholder_enter_notify_event;
   widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
   widget_class->button_press_event = glade_placeholder_button_press;
   widget_class->popup_menu = glade_placeholder_popup_menu;
