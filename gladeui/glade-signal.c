@@ -61,7 +61,7 @@ enum {
 #define GladeSignalClass GladeSignalKlass
 #define glade_signal_class_init glade_signal_klass_init
 
-G_DEFINE_TYPE (GladeSignal, glade_signal, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeSignal, glade_signal, G_TYPE_OBJECT)
 
 #undef GladeSignalClass
 #undef glade_signal_class_init
@@ -156,9 +156,7 @@ glade_signal_set_property (GObject *object,
 static void
 glade_signal_init (GladeSignal *signal)
 {
-  signal->priv = G_TYPE_INSTANCE_GET_PRIVATE (signal,
-					      GLADE_TYPE_SIGNAL,
-					      GladeSignalPrivate);
+  signal->priv = glade_signal_get_instance_private (signal);
 }
 
 static void
@@ -218,8 +216,6 @@ glade_signal_klass_init (GladeSignalKlass *klass)
   
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
-
-  g_type_class_add_private (klass, sizeof (GladeSignalPrivate));
 }
 
 /**
@@ -236,10 +232,10 @@ glade_signal_klass_init (GladeSignalKlass *klass)
  */
 GladeSignal *
 glade_signal_new (const GladeSignalClass *sig_class,
-                  const gchar *handler,
-                  const gchar *userdata, 
-		  gboolean after, 
-		  gboolean swapped)
+                  const gchar            *handler,
+                  const gchar            *userdata, 
+		  gboolean                after, 
+		  gboolean                swapped)
 {
   g_return_val_if_fail (sig_class != NULL, NULL);
 
@@ -316,9 +312,9 @@ glade_signal_clone (const GladeSignal *signal)
  * Writes @signal to @node
  */
 void
-glade_signal_write (GladeSignal *signal,
+glade_signal_write (GladeSignal     *signal,
                     GladeXmlContext *context,
-                    GladeXmlNode *node)
+                    GladeXmlNode    *node)
 {
   GladeXmlNode *signal_node;
   gchar *name;

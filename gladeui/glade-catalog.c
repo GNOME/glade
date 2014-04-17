@@ -87,8 +87,8 @@ static GList *catalog_paths = NULL;
 
 static gboolean
 catalog_get_function (GladeCatalog *catalog,
-                      const gchar *symbol_name,
-                      gpointer *symbol_ptr)
+                      const gchar  *symbol_name,
+                      gpointer     *symbol_ptr)
 {
   if (catalog->module == NULL)
     catalog->module = glade_util_load_library (catalog->library);

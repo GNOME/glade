@@ -147,7 +147,7 @@ glade_popup_delete_cb (GtkMenuItem *item, GladeWidget *widget)
                   PLACEHOLDER POPUP
  *******************************************************/
 static void
-glade_popup_placeholder_paste_cb (GtkMenuItem *item,
+glade_popup_placeholder_paste_cb (GtkMenuItem      *item, 
                                   GladePlaceholder *placeholder)
 {
   GladeProject *project;
@@ -163,13 +163,13 @@ glade_popup_placeholder_paste_cb (GtkMenuItem *item,
                     POPUP BUILDING
  *******************************************************/
 static GtkWidget *
-glade_popup_append_item (GtkWidget *popup_menu,
+glade_popup_append_item (GtkWidget   *popup_menu,
                          const gchar *stock_id,
                          const gchar *label,
-                         GtkWidget *image,
-                         gboolean sensitive,
-                         gpointer callback,
-                         gpointer data)
+                         GtkWidget   *image,
+                         gboolean     sensitive,
+                         gpointer     callback,
+                         gpointer     data)
 {
   GtkWidget *menu_item;
 
@@ -244,11 +244,11 @@ glade_popup_menuitem_ph_packing_activated (GtkMenuItem *item,
 }
 
 static gint
-glade_popup_action_populate_menu_real (GtkWidget *menu,
+glade_popup_action_populate_menu_real (GtkWidget   *menu,
                                        GladeWidget *gwidget,
-                                       GList *actions,
-                                       GCallback callback,
-                                       gpointer data)
+                                       GList       *actions,
+                                       GCallback    callback,
+                                       gpointer     data)
 {
   GtkWidget *item;
   GList *list;
@@ -309,10 +309,10 @@ glade_popup_action_populate_menu_real (GtkWidget *menu,
  * Returns the number of action appended to the menu.
  */
 gint
-glade_popup_action_populate_menu (GtkWidget *menu,
-                                  GladeWidget *widget,
+glade_popup_action_populate_menu (GtkWidget         *menu,
+                                  GladeWidget       *widget,
                                   GladeWidgetAction *action,
-                                  gboolean packing)
+                                  gboolean           packing)
 {
   gint n;
 
@@ -483,9 +483,9 @@ glade_popup_create_menu (GladeWidget      *widget,
 }
 
 void
-glade_popup_widget_pop (GladeWidget *widget,
+glade_popup_widget_pop (GladeWidget    *widget,
                         GdkEventButton *event,
-                        gboolean packing)
+                        gboolean        packing)
 {
   GtkWidget *popup_menu;
   gint button;
@@ -511,7 +511,7 @@ glade_popup_widget_pop (GladeWidget *widget,
 
 void
 glade_popup_placeholder_pop (GladePlaceholder *placeholder,
-                             GdkEventButton *event)
+                             GdkEventButton   *event)
 {
   GladeWidget *widget;
   GtkWidget *popup_menu;

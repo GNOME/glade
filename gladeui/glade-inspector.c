@@ -58,14 +58,14 @@
 			 		    GladeInspectorPrivate))
 
 
-static void     search_entry_text_inserted_cb (GtkEntry *entry,
-					       const gchar *text,
-					       gint length,
-					       gint *position,
+static void     search_entry_text_inserted_cb (GtkEntry       *entry,
+					       const gchar    *text,
+					       gint            length,
+					       gint           *position,
 					       GladeInspector *inspector);
-static void     search_entry_text_deleted_cb  (GtkEditable *editable,
-					       gint         start_pos,
-					       gint         end_pos,
+static void     search_entry_text_deleted_cb  (GtkEditable    *editable,
+					       gint            start_pos,
+					       gint            end_pos,
 					       GladeInspector *inspector);
 
 enum
@@ -102,22 +102,23 @@ static guint glade_inspector_signals[LAST_SIGNAL] = { 0 };
 static void glade_inspector_dispose (GObject *object);
 static void glade_inspector_finalize (GObject *object);
 static void add_columns (GtkTreeView *inspector);
-static void item_activated_cb (GtkTreeView *view,
-                               GtkTreePath *path,
+static void item_activated_cb (GtkTreeView       *view,
+                               GtkTreePath       *path,
                                GtkTreeViewColumn *column,
-                               GladeInspector *inspector);
+                               GladeInspector    *inspector);
 static void selection_changed_cb (GtkTreeSelection *selection,
-                                  GladeInspector *inspector);
-static gint button_press_cb (GtkWidget *widget,
+                                  GladeInspector   *inspector);
+static gint button_press_cb (GtkWidget      *widget,
                              GdkEventButton *event,
                              GladeInspector *inspector);
 
-G_DEFINE_TYPE (GladeInspector, glade_inspector, GTK_TYPE_BOX)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeInspector, glade_inspector, GTK_TYPE_BOX)
 
 static void
-glade_inspector_set_property (GObject *object,
-			      guint property_id,
-			      const GValue *value, GParamSpec *pspec)
+glade_inspector_set_property (GObject      *object,
+			      guint         property_id,
+			      const GValue *value,
+                              GParamSpec   *pspec)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
 
@@ -133,9 +134,9 @@ glade_inspector_set_property (GObject *object,
 }
 
 static void
-glade_inspector_get_property (GObject *object,
-                              guint property_id,
-                              GValue *value,
+glade_inspector_get_property (GObject    *object,
+                              guint       property_id,
+                              GValue     *value,
                               GParamSpec *pspec)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
@@ -198,8 +199,6 @@ glade_inspector_class_init (GladeInspectorClass *klass)
   
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
-
-  g_type_class_add_private (klass, sizeof (GladeInspectorPrivate));
 }
 
 static gboolean
@@ -219,8 +218,8 @@ find_in_string_insensitive (const gchar *_haystack, const gchar *_needle)
 
 static gboolean
 glade_inspector_visible_func (GtkTreeModel *model,
-                              GtkTreeIter *parent,
-                              gpointer data)
+                              GtkTreeIter  *parent,
+                              gpointer      data)
 {
   GladeInspector *inspector = data;
   GladeInspectorPrivate *priv = inspector->priv;
@@ -302,10 +301,10 @@ reduce_string (gchar *str1,
 }
 
 static gboolean
-search_common_matches (GtkTreeModel        *model,
-		       GtkTreePath         *path,
-		       GtkTreeIter         *iter,
-		       CommonMatchData     *data)
+search_common_matches (GtkTreeModel    *model,
+		       GtkTreePath     *path,
+		       GtkTreeIter     *iter,
+		       CommonMatchData *data)
 {
   gchar *row_text = NULL;
   gboolean match;
@@ -400,10 +399,10 @@ search_complete_idle (GladeInspector *inspector)
 }
 
 static void
-search_entry_text_inserted_cb (GtkEntry *entry,
-                               const gchar *text,
-                               gint length,
-                               gint *position,
+search_entry_text_inserted_cb (GtkEntry       *entry,
+                               const gchar    *text,
+                               gint            length,
+                               gint           *position,
                                GladeInspector *inspector)
 {
   GladeInspectorPrivate *priv = inspector->priv;
@@ -416,9 +415,9 @@ search_entry_text_inserted_cb (GtkEntry *entry,
 }
 
 static void
-search_entry_text_deleted_cb (GtkEditable *editable,
-			      gint         start_pos,
-			      gint         end_pos,
+search_entry_text_deleted_cb (GtkEditable    *editable,
+			      gint            start_pos,
+			      gint            end_pos,
 			      GladeInspector *inspector)
 {
   GladeInspectorPrivate *priv = inspector->priv;
@@ -437,8 +436,8 @@ search_entry_text_deleted_cb (GtkEditable *editable,
 }
 
 static gboolean
-search_entry_key_press_event_cb (GtkEntry *entry,
-                                 GdkEventKey *event,
+search_entry_key_press_event_cb (GtkEntry       *entry,
+                                 GdkEventKey    *event,
                                  GladeInspector *inspector)
 {
   GladeInspectorPrivate *priv = inspector->priv;
@@ -534,8 +533,8 @@ search_entry_key_press_event_cb (GtkEntry *entry,
 }
 
 static gboolean
-search_entry_focus_in_cb (GtkWidget *entry,
-                          GdkEventFocus *event,
+search_entry_focus_in_cb (GtkWidget      *entry,
+                          GdkEventFocus  *event,
                           GladeInspector *inspector)
 {
   GladeInspectorPrivate *priv = inspector->priv;
@@ -547,8 +546,8 @@ search_entry_focus_in_cb (GtkWidget *entry,
 }
 
 static gboolean
-search_entry_focus_out_cb (GtkWidget *entry,
-                           GdkEventFocus *event,
+search_entry_focus_out_cb (GtkWidget      *entry,
+                           GdkEventFocus  *event,
                            GladeInspector *inspector)
 {
   GladeInspectorPrivate *priv = inspector->priv;
@@ -572,7 +571,7 @@ glade_inspector_init (GladeInspector *inspector)
   GtkWidget *sw;
   GtkTreeSelection *selection;
 
-  inspector->priv = priv = GLADE_INSPECTOR_GET_PRIVATE (inspector);
+  inspector->priv = priv = glade_inspector_get_instance_private (inspector);
 
   gtk_orientable_set_orientation (GTK_ORIENTABLE (inspector),
 				  GTK_ORIENTATION_VERTICAL);
@@ -665,7 +664,7 @@ glade_inspector_finalize (GObject *object)
 }
 
 static void
-project_selection_changed_cb (GladeProject *project,
+project_selection_changed_cb (GladeProject   *project,
                               GladeInspector *inspector)
 {
   GladeWidget *widget;
@@ -732,9 +731,9 @@ project_selection_changed_cb (GladeProject *project,
 
 static void
 selection_foreach_func (GtkTreeModel *model,
-                        GtkTreePath *path,
-                        GtkTreeIter *iter,
-                        GList **selection)
+                        GtkTreePath  *path,
+                        GtkTreeIter  *iter,
+                        GList       **selection)
 {
   GObject *object;
 
@@ -787,16 +786,16 @@ selection_changed_cb (GtkTreeSelection *selection, GladeInspector *inspector)
 }
 
 static void
-item_activated_cb (GtkTreeView *view,
-                   GtkTreePath *path,
+item_activated_cb (GtkTreeView       *view,
+                   GtkTreePath       *path,
                    GtkTreeViewColumn *column,
-                   GladeInspector *inspector)
+                   GladeInspector    *inspector)
 {
   g_signal_emit (inspector, glade_inspector_signals[ITEM_ACTIVATED], 0);
 }
 
 static gint
-button_press_cb (GtkWidget *widget,
+button_press_cb (GtkWidget      *widget,
                  GdkEventButton *event,
                  GladeInspector *inspector)
 {
@@ -846,10 +845,10 @@ button_press_cb (GtkWidget *widget,
 
 static void
 glade_inspector_warning_cell_data_func (GtkTreeViewColumn *column,
-					GtkCellRenderer *renderer,
-					GtkTreeModel *model,
-					GtkTreeIter *iter,
-					gpointer data)
+					GtkCellRenderer   *renderer,
+					GtkTreeModel      *model,
+					GtkTreeIter       *iter,
+					gpointer           data)
 {
   gchar *warning = NULL;
 
@@ -864,10 +863,10 @@ glade_inspector_warning_cell_data_func (GtkTreeViewColumn *column,
 
 static void
 glade_inspector_detail_cell_data_func (GtkTreeViewColumn *column,
-				       GtkCellRenderer *renderer,
-				       GtkTreeModel *model,
-				       GtkTreeIter *iter,
-				       gpointer data)
+				       GtkCellRenderer   *renderer,
+				       GtkTreeModel      *model,
+				       GtkTreeIter       *iter,
+				       gpointer           data)
 {
   gchar *type_name = NULL, *detail = NULL;
 

@@ -100,11 +100,12 @@ enum {
 };
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorTable, glade_editor_table, GTK_TYPE_GRID,
+                         G_ADD_PRIVATE (GladeEditorTable)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_editor_table_editable_init));
 
 static void
-glade_editor_table_class_init (GladeEditorTableClass * klass)
+glade_editor_table_class_init (GladeEditorTableClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -121,17 +122,12 @@ glade_editor_table_class_init (GladeEditorTableClass * klass)
 			  _("The editor page type to create this GladeEditorTable for"),
 			  GLADE_TYPE_EDITOR_PAGE_TYPE, GLADE_PAGE_GENERAL,
 			  G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-
-  g_type_class_add_private (klass, sizeof (GladeEditorTablePrivate));
 }
 
 static void
-glade_editor_table_init (GladeEditorTable * self)
+glade_editor_table_init (GladeEditorTable *self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE ((self),
-				 GLADE_TYPE_EDITOR_TABLE,
-				 GladeEditorTablePrivate);
+  self->priv = glade_editor_table_get_instance_private (self);
 
   gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
                                   GTK_ORIENTATION_VERTICAL);
@@ -143,7 +139,7 @@ glade_editor_table_init (GladeEditorTable * self)
 }
 
 static void
-glade_editor_table_dispose (GObject * object)
+glade_editor_table_dispose (GObject *object)
 {
   GladeEditorTable *table = GLADE_EDITOR_TABLE (object);
 
@@ -179,7 +175,7 @@ glade_editor_table_set_property (GObject         *object,
 }
 
 static void
-glade_editor_table_realize (GtkWidget * widget)
+glade_editor_table_realize (GtkWidget *widget)
 {
   GladeEditorTable *table = GLADE_EDITOR_TABLE (widget);
   GList *list;
@@ -196,7 +192,7 @@ glade_editor_table_realize (GtkWidget * widget)
 }
 
 static void
-glade_editor_table_grab_focus (GtkWidget * widget)
+glade_editor_table_grab_focus (GtkWidget *widget)
 {
   GladeEditorTable *editor_table = GLADE_EDITOR_TABLE (widget);
 
@@ -210,7 +206,7 @@ glade_editor_table_grab_focus (GtkWidget * widget)
 }
 
 static void
-widget_name_edited (GtkWidget * editable, GladeEditorTable * table)
+widget_name_edited (GtkWidget *editable, GladeEditorTable *table)
 {
   GladeWidget *widget;
   gchar *new_name;
@@ -300,7 +296,7 @@ widget_composite_changed (GladeWidget      *widget,
 }
 
 static void
-widget_finalized (GladeEditorTable * table, GladeWidget * where_widget_was)
+widget_finalized (GladeEditorTable *table, GladeWidget *where_widget_was)
 {
   table->priv->loaded_widget = NULL;
 
@@ -309,7 +305,7 @@ widget_finalized (GladeEditorTable * table, GladeWidget * where_widget_was)
 
 
 static void
-glade_editor_table_load (GladeEditable * editable, GladeWidget * widget)
+glade_editor_table_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeEditorTable *table = GLADE_EDITOR_TABLE (editable);
   GladeEditorProperty *property;
@@ -392,7 +388,7 @@ glade_editor_table_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_editor_table_set_show_name (GladeEditable * editable, gboolean show_name)
+glade_editor_table_set_show_name (GladeEditable *editable, gboolean show_name)
 {
   GladeEditorTable *table = GLADE_EDITOR_TABLE (editable);
 
@@ -409,7 +405,7 @@ glade_editor_table_set_show_name (GladeEditable * editable, gboolean show_name)
 }
 
 static void
-glade_editor_table_editable_init (GladeEditableIface * iface)
+glade_editor_table_editable_init (GladeEditableIface *iface)
 {
   iface->load = glade_editor_table_load;
   iface->set_show_name = glade_editor_table_set_show_name;
@@ -466,7 +462,7 @@ property_class_comp (gconstpointer a, gconstpointer b)
 }
 
 static GList *
-get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
+get_sorted_properties (GladeWidgetAdaptor *adaptor, GladeEditorPageType type)
 {
   const GList *l, *properties;
   GList *list = NULL;
@@ -497,8 +493,9 @@ get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
 }
 
 static GladeEditorProperty *
-append_item (GladeEditorTable * table,
-             GladePropertyClass * klass, gboolean from_query_dialog)
+append_item (GladeEditorTable   *table,
+             GladePropertyClass *klass,
+             gboolean            from_query_dialog)
 {
   GladeEditorProperty *property;
   GtkWidget *label;
@@ -527,8 +524,9 @@ append_item (GladeEditorTable * table,
 }
 
 static void
-append_items (GladeEditorTable * table,
-              GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
+append_items (GladeEditorTable   *table,
+              GladeWidgetAdaptor *adaptor,
+              GladeEditorPageType type)
 {
   GladeEditorProperty *property;
   GladePropertyClass *property_class;
@@ -548,7 +546,7 @@ append_items (GladeEditorTable * table,
 }
 
 static void
-append_name_field (GladeEditorTable * table)
+append_name_field (GladeEditorTable *table)
 {
   gchar *text = _("The object's unique identifier");
 
@@ -604,7 +602,7 @@ append_name_field (GladeEditorTable * table)
  *
  */
 GtkWidget *
-glade_editor_table_new (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
+glade_editor_table_new (GladeWidgetAdaptor *adaptor, GladeEditorPageType type)
 {
   GladeEditorTable *table;
 

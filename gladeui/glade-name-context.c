@@ -38,8 +38,6 @@ struct _GladeNameContext
   GHashTable *names;
 };
 
-
-
 GladeNameContext *
 glade_name_context_new (void)
 {
@@ -58,7 +56,7 @@ glade_name_context_new (void)
 }
 
 void
-glade_name_context_destroy (GladeNameContext * context)
+glade_name_context_destroy (GladeNameContext *context)
 {
   g_return_if_fail (context != NULL);
 
@@ -68,8 +66,8 @@ glade_name_context_destroy (GladeNameContext * context)
 }
 
 gchar *
-glade_name_context_new_name (GladeNameContext * context,
-                             const gchar * base_name)
+glade_name_context_new_name (GladeNameContext *context,
+                             const gchar      *base_name)
 {
   GladeIDAllocator *id_allocator;
   const gchar *number;
@@ -111,9 +109,9 @@ glade_name_context_new_name (GladeNameContext * context,
 }
 
 gchar *
-glade_name_context_dual_new_name (GladeNameContext * context,
-                                  GladeNameContext * another_context,
-                                  const gchar * base_name)
+glade_name_context_dual_new_name (GladeNameContext *context,
+                                  GladeNameContext *another_context,
+                                  const gchar      *base_name)
 {
   GladeIDAllocator *id_allocator;
   GList            *free_ids = NULL, *l;
@@ -172,7 +170,7 @@ glade_name_context_dual_new_name (GladeNameContext * context,
 }
 
 guint
-glade_name_context_n_names (GladeNameContext * context)
+glade_name_context_n_names (GladeNameContext *context)
 {
   g_return_val_if_fail (context != NULL, FALSE);
 
@@ -180,7 +178,7 @@ glade_name_context_n_names (GladeNameContext * context)
 }
 
 gboolean
-glade_name_context_has_name (GladeNameContext * context, const gchar * name)
+glade_name_context_has_name (GladeNameContext *context, const gchar *name)
 {
   g_return_val_if_fail (context != NULL, FALSE);
   g_return_val_if_fail (name && name[0], FALSE);
@@ -189,7 +187,7 @@ glade_name_context_has_name (GladeNameContext * context, const gchar * name)
 }
 
 gboolean
-glade_name_context_add_name (GladeNameContext * context, const gchar * name)
+glade_name_context_add_name (GladeNameContext *context, const gchar *name)
 {
   gboolean ret = FALSE;
 
@@ -207,7 +205,7 @@ glade_name_context_add_name (GladeNameContext * context, const gchar * name)
 }
 
 void
-glade_name_context_release_name (GladeNameContext * context, const gchar * name)
+glade_name_context_release_name (GladeNameContext *context, const gchar *name)
 {
 
   const gchar *first_number = name;

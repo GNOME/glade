@@ -33,15 +33,15 @@
 #include "glade-marshallers.h"
 
 /* GObjectClass */
-static void      glade_property_shell_finalize          (GObject         *object);
-static void      glade_property_shell_set_real_property (GObject         *object,
-							 guint            prop_id,
-							 const GValue    *value,
-							 GParamSpec      *pspec);
-static void      glade_property_shell_get_real_property (GObject         *object,
-							 guint            prop_id,
-							 GValue          *value,
-							 GParamSpec      *pspec);
+static void      glade_property_shell_finalize          (GObject       *object);
+static void      glade_property_shell_set_real_property (GObject       *object,
+							 guint          prop_id,
+							 const GValue  *value,
+							 GParamSpec    *pspec);
+static void      glade_property_shell_get_real_property (GObject       *object,
+							 guint          prop_id,
+							 GValue        *value,
+							 GParamSpec    *pspec);
 
 /* GladeEditableIface */
 static void      glade_property_shell_editable_init     (GladeEditableIface *iface);
@@ -83,25 +83,23 @@ static guint glade_property_shell_signals[LAST_SIGNAL] = { 0, };
 static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladePropertyShell, glade_property_shell, GTK_TYPE_BOX,
+                         G_ADD_PRIVATE (GladePropertyShell)
 			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_property_shell_editable_init));
 
 static void
 glade_property_shell_init (GladePropertyShell *shell)
 {
-  shell->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (shell,
-				 GLADE_TYPE_PROPERTY_SHELL,
-				 GladePropertyShellPrivate);
+  shell->priv = glade_property_shell_get_instance_private (shell);
 
   shell->priv->packing = FALSE;
   shell->priv->use_command = TRUE;
 }
 
 static void
-glade_property_shell_class_init (GladePropertyShellClass *class)
+glade_property_shell_class_init (GladePropertyShellClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   
   gobject_class->finalize = glade_property_shell_finalize;
   gobject_class->set_property = glade_property_shell_set_real_property;
@@ -168,8 +166,6 @@ glade_property_shell_class_init (GladePropertyShellClass *class)
                     0, NULL, NULL,
                     _glade_marshal_VOID__POINTER,
                     G_TYPE_NONE, 1, G_TYPE_POINTER);
-
-  g_type_class_add_private (gobject_class, sizeof (GladePropertyShellPrivate));
 }
 
 
@@ -188,10 +184,10 @@ glade_property_shell_finalize (GObject *object)
 }
 
 static void
-glade_property_shell_set_real_property (GObject         *object,
-					guint            prop_id,
-					const GValue    *value,
-					GParamSpec      *pspec)
+glade_property_shell_set_real_property (GObject      *object,
+					guint         prop_id,
+					const GValue *value,
+					GParamSpec   *pspec)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (object);
   GladePropertyShellPrivate *priv = shell->priv;
@@ -231,10 +227,10 @@ glade_property_shell_set_real_property (GObject         *object,
 }
 
 static void
-glade_property_shell_get_real_property (GObject         *object,
-					guint            prop_id,
-					GValue          *value,
-					GParamSpec      *pspec)
+glade_property_shell_get_real_property (GObject    *object,
+					guint       prop_id,
+					GValue     *value,
+					GParamSpec *pspec)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (object);
 
@@ -312,8 +308,8 @@ glade_property_shell_set_eprop (GladePropertyShell  *shell,
 }
 
 static void
-glade_property_shell_load (GladeEditable   *editable,
-			   GladeWidget     *widget)
+glade_property_shell_load (GladeEditable *editable,
+			   GladeWidget   *widget)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (editable);
   GladePropertyShellPrivate *priv;
@@ -395,12 +391,12 @@ glade_property_shell_load (GladeEditable   *editable,
 }
 
 static void
-glade_property_shell_set_show_name (GladeEditable * editable, gboolean show_name)
+glade_property_shell_set_show_name (GladeEditable *editable, gboolean show_name)
 {
 }
 
 static void
-glade_property_shell_editable_init (GladeEditableIface * iface)
+glade_property_shell_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 

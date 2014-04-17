@@ -58,6 +58,7 @@ static void on_glade_signal_model_changed (GladeWidget *widget, const GladeSigna
 static void on_glade_widget_support_changed (GladeWidget *widget, GladeSignalModel *model);
 
 G_DEFINE_TYPE_WITH_CODE (GladeSignalModel, glade_signal_model, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GladeSignalModel)
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
                                                 gtk_tree_model_iface_init);
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_DRAG_SOURCE,
@@ -78,7 +79,7 @@ g_ptr_array_find (GPtrArray *array, gpointer data)
 static void
 glade_signal_model_init (GladeSignalModel *object)
 {
-  object->priv = G_TYPE_INSTANCE_GET_PRIVATE (object, GLADE_TYPE_SIGNAL_MODEL, GladeSignalModelPrivate);
+  object->priv = glade_signal_model_get_instance_private (object);
 
   object->priv->dummy_signals = 
     g_hash_table_new_full (g_str_hash, g_str_equal, NULL, (GDestroyNotify) g_object_unref);
@@ -181,8 +182,6 @@ static void
 glade_signal_model_class_init (GladeSignalModelClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GladeSignalModelPrivate));
 
   object_class->finalize = glade_signal_model_finalize;
   object_class->set_property = glade_signal_model_set_property;

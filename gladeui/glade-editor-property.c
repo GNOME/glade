@@ -115,6 +115,7 @@ static void glade_editor_property_editable_init (GladeEditableIface *iface);
 static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorProperty, glade_editor_property, GTK_TYPE_BOX,
+                         G_ADD_PRIVATE (GladeEditorProperty)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_editor_property_editable_init));
 
@@ -597,10 +598,7 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 static void
 glade_editor_property_init (GladeEditorProperty *eprop)
 {
-  eprop->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE ((eprop),
-				 GLADE_TYPE_EDITOR_PROPERTY,
-				 GladeEditorPropertyPrivate);
+  eprop->priv = glade_editor_property_get_instance_private (eprop);
 
   gtk_orientable_set_orientation (GTK_ORIENTABLE (eprop),
 				  GTK_ORIENTATION_HORIZONTAL);
@@ -692,8 +690,6 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
        ("custom-text", _("Custom Text"),
         _("Custom Text to display in the property label"),
         NULL, G_PARAM_READWRITE));
-
-  g_type_class_add_private (eprop_class, sizeof (GladeEditorPropertyPrivate));
 }
 
 /*******************************************************************************

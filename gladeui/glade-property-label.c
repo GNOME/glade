@@ -290,12 +290,12 @@ glade_property_label_load (GladeEditable   *editable,
 }
 
 static void
-glade_property_label_set_show_name (GladeEditable * editable, gboolean show_name)
+glade_property_label_set_show_name (GladeEditable *editable, gboolean show_name)
 {
 }
 
 static void
-glade_property_label_editable_init (GladeEditableIface * iface)
+glade_property_label_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 
@@ -609,8 +609,8 @@ glade_property_label_get_custom_tooltip (GladePropertyLabel *label)
 }
 
 void
-glade_property_label_set_property (GladePropertyLabel    *label,
-				   GladeProperty         *property)
+glade_property_label_set_property (GladePropertyLabel *label,
+				   GladeProperty      *property)
 {
   GladePropertyLabelPrivate *priv;
 

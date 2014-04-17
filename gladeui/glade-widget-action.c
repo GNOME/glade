@@ -53,14 +53,12 @@ struct _GladeWidgetActionPrivate
 
 static GParamSpec *properties[N_PROPERTIES];
 
-G_DEFINE_TYPE (GladeWidgetAction, glade_widget_action, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeWidgetAction, glade_widget_action, G_TYPE_OBJECT);
 
 static void
-glade_widget_action_init (GladeWidgetAction * object)
+glade_widget_action_init (GladeWidgetAction *object)
 {
-  object->priv = G_TYPE_INSTANCE_GET_PRIVATE (object,
-					      GLADE_TYPE_WIDGET_ACTION,
-					      GladeWidgetActionPrivate);
+  object->priv = glade_widget_action_get_instance_private (object);
 
   object->priv->sensitive = TRUE;
   object->priv->visible   = TRUE;
@@ -68,7 +66,7 @@ glade_widget_action_init (GladeWidgetAction * object)
 }
 
 static void
-glade_widget_action_finalize (GObject * object)
+glade_widget_action_finalize (GObject *object)
 {
   GladeWidgetAction *action = GLADE_WIDGET_ACTION (object);
 
@@ -82,9 +80,9 @@ glade_widget_action_finalize (GObject * object)
 }
 
 static GObject *
-glade_widget_action_constructor (GType type,
-                                 guint n_construct_properties,
-                                 GObjectConstructParam * construct_properties)
+glade_widget_action_constructor (GType                  type,
+                                 guint                  n_construct_properties,
+                                 GObjectConstructParam *construct_properties)
 {
   GladeWidgetAction *action;
   GObject *object;
@@ -118,8 +116,10 @@ glade_widget_action_constructor (GType type,
 }
 
 static void
-glade_widget_action_set_property (GObject * object, guint prop_id,
-                                  const GValue * value, GParamSpec * pspec)
+glade_widget_action_set_property (GObject      *object,
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GladeWidgetAction *action = GLADE_WIDGET_ACTION (object);
 
@@ -143,8 +143,10 @@ glade_widget_action_set_property (GObject * object, guint prop_id,
 }
 
 static void
-glade_widget_action_get_property (GObject * object, guint prop_id,
-                                  GValue * value, GParamSpec * pspec)
+glade_widget_action_get_property (GObject    *object,
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GladeWidgetAction *action = GLADE_WIDGET_ACTION (object);
 
@@ -168,11 +170,9 @@ glade_widget_action_get_property (GObject * object, guint prop_id,
 }
 
 static void
-glade_widget_action_class_init (GladeWidgetActionClass * klass)
+glade_widget_action_class_init (GladeWidgetActionClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  glade_widget_action_parent_class =
-      G_OBJECT_CLASS (g_type_class_peek_parent (klass));
 
   object_class->constructor = glade_widget_action_constructor;
   object_class->finalize = glade_widget_action_finalize;
@@ -201,8 +201,6 @@ glade_widget_action_class_init (GladeWidgetActionClass * klass)
 
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
-
-  g_type_class_add_private (klass, sizeof (GladeWidgetActionPrivate));
 }
 
 /**
@@ -214,8 +212,8 @@ glade_widget_action_class_init (GladeWidgetActionClass * klass)
  *
  */
 void
-glade_widget_action_set_sensitive (GladeWidgetAction * action,
-                                   gboolean sensitive)
+glade_widget_action_set_sensitive (GladeWidgetAction *action,
+                                   gboolean           sensitive)
 {
   g_return_if_fail (GLADE_IS_WIDGET_ACTION (action));
 
@@ -269,7 +267,7 @@ glade_widget_action_get_class (GladeWidgetAction *action)
  *                         GWActionClass                       *
  ***************************************************************/
 static const gchar *
-gwa_action_path_get_id (const gchar * action_path)
+gwa_action_path_get_id (const gchar *action_path)
 {
   const gchar *id;
 
@@ -304,7 +302,7 @@ glade_widget_action_class_new (const gchar *path)
  * Returns: a newlly allocated copy of @action.
  */
 GWActionClass *
-glade_widget_action_class_clone (GWActionClass * action)
+glade_widget_action_class_clone (GWActionClass *action)
 {
   GWActionClass *copy;
   GList *l;
