@@ -52,10 +52,6 @@
 #include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
 
-#define GLADE_PALETTE_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
-					  GLADE_TYPE_PALETTE,                   \
-					  GladePalettePrivate))
-
 struct _GladePalettePrivate
 {
   const GList *catalogs;        /* List of widget catalogs */
@@ -100,7 +96,7 @@ static void glade_palette_update_appearance (GladePalette        *palette);
 static void palette_item_toggled_cb         (GtkToggleToolButton *button, 
 					     GladePalette        *palette);
 
-G_DEFINE_TYPE (GladePalette, glade_palette, GTK_TYPE_BOX)
+G_DEFINE_TYPE_WITH_PRIVATE (GladePalette, glade_palette, GTK_TYPE_BOX)
 
 
 /*******************************************************
@@ -146,7 +142,7 @@ palette_item_refresh_cb (GladePalette *palette,
 }
 
 static void
-glade_palette_refresh (GladePalette * palette)
+glade_palette_refresh (GladePalette *palette)
 {
   g_return_if_fail (GLADE_IS_PALETTE (palette));
 
@@ -313,7 +309,7 @@ palette_item_button_press_cb (GtkWidget      *button,
  *          Building Widgets/Populating catalog        *
  *******************************************************/
 static GtkWidget *
-glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
+glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 {
   GtkWidget *item, *button, *label, *box;
 
@@ -362,7 +358,7 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
 }
 
 static GtkWidget *
-glade_palette_new_item_group (GladePalette * palette, GladeWidgetGroup * group)
+glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 {
   GtkWidget *item_group, *item, *label;
   GList *l;
@@ -404,8 +400,7 @@ glade_palette_new_item_group (GladePalette * palette, GladeWidgetGroup * group)
 }
 
 static void
-glade_palette_append_item_group (GladePalette * palette,
-                                 GladeWidgetGroup * group)
+glade_palette_append_item_group (GladePalette *palette, GladeWidgetGroup *group)
 {
   GladePalettePrivate *priv = palette->priv;
   GtkWidget *item_group;
@@ -415,7 +410,7 @@ glade_palette_append_item_group (GladePalette * palette,
 }
 
 static void
-glade_palette_populate (GladePalette * palette)
+glade_palette_populate (GladePalette *palette)
 {
   GList *l;
 
@@ -436,7 +431,7 @@ glade_palette_populate (GladePalette * palette)
 }
 
 static GtkWidget *
-glade_palette_create_selector_button (GladePalette * palette)
+glade_palette_create_selector_button (GladePalette *palette)
 {
   GtkWidget *selector;
   GtkWidget *image;
@@ -471,15 +466,16 @@ glade_palette_create_selector_button (GladePalette * palette)
  * hidden unless we decide otherwise, like the hidden selector button.
  */
 static void
-glade_palette_show_all (GtkWidget * widget)
+glade_palette_show_all (GtkWidget *widget)
 {
   gtk_widget_show (widget);
 }
 
 static void
-glade_palette_set_property (GObject * object,
-                            guint prop_id,
-                            const GValue * value, GParamSpec * pspec)
+glade_palette_set_property (GObject      *object,
+                            guint         prop_id,
+                            const GValue *value,
+                            GParamSpec   *pspec)
 {
   GladePalette *palette = GLADE_PALETTE (object);
 
@@ -506,8 +502,10 @@ glade_palette_set_property (GObject * object,
 }
 
 static void
-glade_palette_get_property (GObject * object,
-                            guint prop_id, GValue * value, GParamSpec * pspec)
+glade_palette_get_property (GObject    *object,
+                            guint       prop_id,
+                            GValue     *value, 
+                            GParamSpec *pspec)
 {
   GladePalette *palette = GLADE_PALETTE (object);
   GladePalettePrivate *priv = palette->priv;
@@ -534,7 +532,7 @@ glade_palette_get_property (GObject * object,
 }
 
 static void
-glade_palette_dispose (GObject * object)
+glade_palette_dispose (GObject *object)
 {
   GladePalettePrivate *priv;
 
@@ -548,7 +546,7 @@ glade_palette_dispose (GObject * object)
 }
 
 static void
-glade_palette_finalize (GObject * object)
+glade_palette_finalize (GObject *object)
 {
   GladePalettePrivate *priv;
 
@@ -560,7 +558,7 @@ glade_palette_finalize (GObject * object)
 }
 
 static void
-glade_palette_update_appearance (GladePalette * palette)
+glade_palette_update_appearance (GladePalette *palette)
 {
   GladePalettePrivate *priv;
   GtkToolbarStyle style;
@@ -591,7 +589,7 @@ glade_palette_update_appearance (GladePalette * palette)
 }
 
 static void
-glade_palette_class_init (GladePaletteClass * klass)
+glade_palette_class_init (GladePaletteClass *klass)
 {
   GObjectClass *object_class;
   GtkWidgetClass *widget_class;
@@ -644,12 +642,10 @@ glade_palette_class_init (GladePaletteClass * klass)
 
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
-
-  g_type_class_add_private (object_class, sizeof (GladePalettePrivate));
 }
 
 static void
-glade_palette_init (GladePalette * palette)
+glade_palette_init (GladePalette *palette)
 {
   GladePalettePrivate *priv;
   GtkWidget           *sw;
@@ -657,7 +653,7 @@ glade_palette_init (GladePalette * palette)
   gtk_orientable_set_orientation (GTK_ORIENTABLE (palette),
 				  GTK_ORIENTATION_VERTICAL);
 
-  priv = palette->priv = GLADE_PALETTE_GET_PRIVATE (palette);
+  priv = palette->priv = glade_palette_get_instance_private (palette);
 
   priv->button_table = g_hash_table_new (g_str_hash, g_str_equal);
 
@@ -732,8 +728,7 @@ glade_palette_get_project (GladePalette *palette)
 }
 
 void
-glade_palette_set_project (GladePalette *palette,
-			   GladeProject *project)
+glade_palette_set_project (GladePalette *palette, GladeProject *project)
 {
   g_return_if_fail (GLADE_IS_PALETTE (palette));
 
@@ -783,7 +778,7 @@ glade_palette_set_project (GladePalette *palette,
  * Sets the appearance of the palette items.
  */
 void
-glade_palette_set_item_appearance (GladePalette * palette,
+glade_palette_set_item_appearance (GladePalette       *palette,
                                    GladeItemAppearance item_appearance)
 {
   GladePalettePrivate *priv;
@@ -810,8 +805,8 @@ glade_palette_set_item_appearance (GladePalette * palette,
  * Sets whether to use small item icons.
  */
 void
-glade_palette_set_use_small_item_icons (GladePalette * palette,
-                                        gboolean use_small_item_icons)
+glade_palette_set_use_small_item_icons (GladePalette *palette,
+                                        gboolean      use_small_item_icons)
 {
   GladePalettePrivate *priv;
   g_return_if_fail (GLADE_IS_PALETTE (palette));
@@ -837,8 +832,8 @@ glade_palette_set_use_small_item_icons (GladePalette * palette,
  * Sets whether to show the internal widget selector button
  */
 void
-glade_palette_set_show_selector_button (GladePalette * palette,
-                                        gboolean show_selector_button)
+glade_palette_set_show_selector_button (GladePalette *palette,
+                                        gboolean      show_selector_button)
 {
   GladePalettePrivate *priv;
   g_return_if_fail (GLADE_IS_PALETTE (palette));
@@ -864,7 +859,7 @@ glade_palette_set_show_selector_button (GladePalette * palette,
  * Returns: The appearance of the palette items
  */
 GladeItemAppearance
-glade_palette_get_item_appearance (GladePalette * palette)
+glade_palette_get_item_appearance (GladePalette *palette)
 {;
   g_return_val_if_fail (GLADE_IS_PALETTE (palette), GLADE_ITEM_ICON_ONLY);
 
@@ -878,7 +873,7 @@ glade_palette_get_item_appearance (GladePalette * palette)
  * Returns: Whether small item icons are used
  */
 gboolean
-glade_palette_get_use_small_item_icons (GladePalette * palette)
+glade_palette_get_use_small_item_icons (GladePalette *palette)
 {
   g_return_val_if_fail (GLADE_IS_PALETTE (palette), FALSE);
 
@@ -892,7 +887,7 @@ glade_palette_get_use_small_item_icons (GladePalette * palette)
  * Returns: Whether the selector button is visible
  */
 gboolean
-glade_palette_get_show_selector_button (GladePalette * palette)
+glade_palette_get_show_selector_button (GladePalette *palette)
 {
   g_return_val_if_fail (GLADE_IS_PALETTE (palette), FALSE);
 

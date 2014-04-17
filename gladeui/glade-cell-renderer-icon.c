@@ -23,22 +23,20 @@
 #include "glade-cell-renderer-icon.h"
 #include "glade-marshallers.h"
 
-static void glade_cell_renderer_icon_get_property (GObject * object,
-                                                   guint param_id,
-                                                   GValue * value,
-                                                   GParamSpec * pspec);
-static void glade_cell_renderer_icon_set_property (GObject * object,
-                                                   guint param_id,
-                                                   const GValue * value,
-                                                   GParamSpec * pspec);
-static gboolean glade_cell_renderer_icon_activate (GtkCellRenderer * cell,
-                                                   GdkEvent * event,
-                                                   GtkWidget * widget,
-                                                   const gchar * path,
-                                                   const GdkRectangle *
-                                                   background_area,
-                                                   const GdkRectangle *
-                                                   cell_area,
+static void glade_cell_renderer_icon_get_property (GObject      *object,
+                                                   guint         param_id,
+                                                   GValue       *value,
+                                                   GParamSpec   *pspec);
+static void glade_cell_renderer_icon_set_property (GObject      *object,
+                                                   guint         param_id,
+                                                   const GValue *value,
+                                                   GParamSpec   *pspec);
+static gboolean glade_cell_renderer_icon_activate (GtkCellRenderer     *cell,
+                                                   GdkEvent            *event,
+                                                   GtkWidget           *widget,
+                                                   const gchar         *path,
+                                                   const GdkRectangle  *background_area,
+                                                   const GdkRectangle  *cell_area,
                                                    GtkCellRendererState flags);
 
 struct _GladeCellRendererIconPrivate 
@@ -65,15 +63,13 @@ static GParamSpec *properties[N_PROPERTIES];
 static guint icon_cell_signals[LAST_SIGNAL] = { 0 };
 
 
-G_DEFINE_TYPE (GladeCellRendererIcon, glade_cell_renderer_icon,
-               GTK_TYPE_CELL_RENDERER_PIXBUF)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeCellRendererIcon,
+                            glade_cell_renderer_icon,
+                            GTK_TYPE_CELL_RENDERER_PIXBUF)
 
 static void glade_cell_renderer_icon_init (GladeCellRendererIcon *cellicon)
 {
-  cellicon->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE ((cellicon), 
-				 GLADE_TYPE_CELL_RENDERER_ICON, 
-				 GladeCellRendererIconPrivate);
+  cellicon->priv = glade_cell_renderer_icon_get_instance_private (cellicon);
 
   cellicon->priv->activatable = TRUE;
   cellicon->priv->active = FALSE;
@@ -83,7 +79,7 @@ static void glade_cell_renderer_icon_init (GladeCellRendererIcon *cellicon)
 }
 
 static void
-glade_cell_renderer_icon_class_init (GladeCellRendererIconClass * class)
+glade_cell_renderer_icon_class_init (GladeCellRendererIconClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
   GtkCellRendererClass *cell_class = GTK_CELL_RENDERER_CLASS (class);
@@ -116,14 +112,13 @@ glade_cell_renderer_icon_class_init (GladeCellRendererIconClass * class)
                     G_STRUCT_OFFSET (GladeCellRendererIconClass, activate),
                     NULL, NULL,
                     _glade_marshal_VOID__STRING, G_TYPE_NONE, 1, G_TYPE_STRING);
-
-  g_type_class_add_private (class, sizeof (GladeCellRendererIconPrivate));
 }
 
 static void
-glade_cell_renderer_icon_get_property (GObject * object,
-                                       guint param_id,
-                                       GValue * value, GParamSpec * pspec)
+glade_cell_renderer_icon_get_property (GObject    *object,
+                                       guint       param_id,
+                                       GValue     *value,
+                                       GParamSpec *pspec)
 {
   GladeCellRendererIcon *cellicon = GLADE_CELL_RENDERER_ICON (object);
 
@@ -143,9 +138,10 @@ glade_cell_renderer_icon_get_property (GObject * object,
 
 
 static void
-glade_cell_renderer_icon_set_property (GObject * object,
-                                       guint param_id,
-                                       const GValue * value, GParamSpec * pspec)
+glade_cell_renderer_icon_set_property (GObject      *object,
+                                       guint         param_id,
+                                       const GValue *value,
+                                       GParamSpec   *pspec)
 {
   GladeCellRendererIcon *cellicon = GLADE_CELL_RENDERER_ICON (object);
 
@@ -170,12 +166,12 @@ glade_cell_renderer_icon_new (void)
 }
 
 static gint
-glade_cell_renderer_icon_activate (GtkCellRenderer * cell,
-                                   GdkEvent * event,
-                                   GtkWidget * widget,
-                                   const gchar * path,
-                                   const GdkRectangle * background_area,
-                                   const GdkRectangle * cell_area,
+glade_cell_renderer_icon_activate (GtkCellRenderer     *cell,
+                                   GdkEvent            *event,
+                                   GtkWidget           *widget,
+                                   const gchar         *path,
+                                   const GdkRectangle  *background_area,
+                                   const GdkRectangle  *cell_area,
                                    GtkCellRendererState flags)
 {
   GladeCellRendererIcon *cellicon;
@@ -191,7 +187,7 @@ glade_cell_renderer_icon_activate (GtkCellRenderer * cell,
 }
 
 gboolean
-glade_cell_renderer_icon_get_active (GladeCellRendererIcon * icon)
+glade_cell_renderer_icon_get_active (GladeCellRendererIcon *icon)
 {
   g_return_val_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon), FALSE);
 
@@ -199,8 +195,8 @@ glade_cell_renderer_icon_get_active (GladeCellRendererIcon * icon)
 }
 
 void
-glade_cell_renderer_icon_set_active (GladeCellRendererIcon * icon,
-                                     gboolean setting)
+glade_cell_renderer_icon_set_active (GladeCellRendererIcon *icon,
+                                     gboolean               setting)
 {
   g_return_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon));
 
@@ -212,7 +208,7 @@ glade_cell_renderer_icon_set_active (GladeCellRendererIcon * icon,
 }
 
 gboolean
-glade_cell_renderer_icon_get_activatable (GladeCellRendererIcon * icon)
+glade_cell_renderer_icon_get_activatable (GladeCellRendererIcon *icon)
 {
   g_return_val_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon), FALSE);
 
@@ -220,8 +216,8 @@ glade_cell_renderer_icon_get_activatable (GladeCellRendererIcon * icon)
 }
 
 void
-glade_cell_renderer_icon_set_activatable (GladeCellRendererIcon * icon,
-                                          gboolean setting)
+glade_cell_renderer_icon_set_activatable (GladeCellRendererIcon *icon,
+                                          gboolean               setting)
 {
   g_return_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon));
 

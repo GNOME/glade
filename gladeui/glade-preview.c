@@ -62,9 +62,7 @@ struct _GladePreviewPrivate
   GPid pid;                     /* Pid of the corresponding glade-previewer process */
 };
 
-G_DEFINE_TYPE (GladePreview, glade_preview, G_TYPE_OBJECT);
-
-#define GLADE_PREVIEW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GLADE_TYPE_PREVIEW, GladePreviewPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (GladePreview, glade_preview, G_TYPE_OBJECT);
 
 enum
 {
@@ -162,8 +160,6 @@ glade_preview_class_init (GladePreviewClass *klass)
                     G_SIGNAL_RUN_FIRST,
                     0, NULL, NULL,
                     g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
-
-  g_type_class_add_private (klass, sizeof (GladePreviewPrivate));
 }
 
 static void
@@ -171,7 +167,7 @@ glade_preview_init (GladePreview *self)
 {
   GladePreviewPrivate *priv;
 
-  self->priv = priv = GLADE_PREVIEW_GET_PRIVATE (self);
+  self->priv = priv = glade_preview_get_instance_private (self);
   priv->channel = NULL;
 }
 

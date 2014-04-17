@@ -46,11 +46,6 @@
 #include "glade-project.h"
 #include "glade-cell-renderer-icon.h"
 
-G_DEFINE_TYPE (GladeSignalEditor, glade_signal_editor, GTK_TYPE_BOX)
-
-#define GLADE_SIGNAL_EDITOR_GET_PRIVATE(o)  \
-        (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_SIGNAL_EDITOR, GladeSignalEditorPrivate))
-
 struct _GladeSignalEditorPrivate
 {
   GtkTreeModel *model;
@@ -91,6 +86,8 @@ enum
 
 static guint glade_signal_editor_signals[LAST_SIGNAL] = { 0 };
 static gboolean tree_path_focus_idle (gpointer data);
+
+G_DEFINE_TYPE_WITH_PRIVATE (GladeSignalEditor, glade_signal_editor, GTK_TYPE_BOX)
 
 /* Utils */
 static inline gboolean
@@ -823,7 +820,7 @@ glade_signal_editor_enable_dnd (GladeSignalEditor *editor, gboolean enabled)
 static void
 glade_signal_editor_dispose (GObject *object)
 {
-  GladeSignalEditorPrivate *priv = GLADE_SIGNAL_EDITOR_GET_PRIVATE (object);
+  GladeSignalEditorPrivate *priv = GLADE_SIGNAL_EDITOR (object)->priv;
 
   g_clear_object (&priv->detail_store);
   g_clear_object (&priv->handler_store);
@@ -1242,7 +1239,7 @@ glade_signal_editor_init (GladeSignalEditor *self)
   GtkCellArea *cell_area;
   GladeSignalEditorPrivate *priv;
 	
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GLADE_TYPE_SIGNAL_EDITOR, GladeSignalEditorPrivate);
+  self->priv = glade_signal_editor_get_instance_private (self);
   priv = self->priv;
 	
   /* Create signal tree */
@@ -1462,8 +1459,6 @@ glade_signal_editor_class_init (GladeSignalEditorClass *klass)
 
   klass->callback_suggestions = glade_signal_editor_callback_suggestions;
   klass->detail_suggestions = glade_signal_editor_detail_suggestions;
-  
-  g_type_class_add_private (klass, sizeof (GladeSignalEditorPrivate));
 
   /**
    * GladeSignalEditor::signal-activated:

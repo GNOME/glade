@@ -61,7 +61,7 @@ glade_id_allocator_new (void)
  * Frees @allocator and its associated memory
  */
 void
-glade_id_allocator_destroy (GladeIDAllocator * allocator)
+glade_id_allocator_destroy (GladeIDAllocator *allocator)
 {
   g_return_if_fail (allocator != NULL);
 
@@ -110,7 +110,7 @@ first_set_bit (guint32 word)
  * Returns:
  */
 guint
-glade_id_allocator_allocate (GladeIDAllocator * allocator)
+glade_id_allocator_allocate (GladeIDAllocator *allocator)
 {
   guint i;
 
@@ -148,7 +148,7 @@ glade_id_allocator_allocate (GladeIDAllocator * allocator)
  * TODO: write me
  */
 void
-glade_id_allocator_release (GladeIDAllocator * allocator, guint id)
+glade_id_allocator_release (GladeIDAllocator *allocator, guint id)
 {
   guint word_idx;
 

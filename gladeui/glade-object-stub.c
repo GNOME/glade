@@ -35,8 +35,6 @@ struct _GladeObjectStubPrivate
   GladeXmlNode *node;
 };
 
-#define GLADE_OBJECT_STUB_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_OBJECT_STUB, GladeObjectStubPrivate))
-
 enum
 {
   PROP_0,
@@ -46,7 +44,7 @@ enum
 };
 
 
-G_DEFINE_TYPE (GladeObjectStub, glade_object_stub, GTK_TYPE_INFO_BAR);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeObjectStub, glade_object_stub, GTK_TYPE_INFO_BAR);
 
 #define RESPONSE_DELETE 1
 #define RESPONSE_DELETE_ALL 2
@@ -85,7 +83,7 @@ on_infobar_response (GladeObjectStub *stub, gint response_id)
 static void
 glade_object_stub_init (GladeObjectStub *object)
 {
-  GladeObjectStubPrivate *priv = GLADE_OBJECT_STUB_PRIVATE (object);
+  GladeObjectStubPrivate *priv = glade_object_stub_get_instance_private (object);
   GtkWidget *label = gtk_label_new (NULL);
 
   object->priv = priv;
@@ -139,7 +137,10 @@ glade_object_stub_refresh_text (GladeObjectStub *stub)
 }
 
 static void
-glade_object_stub_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+glade_object_stub_set_property (GObject      *object,
+                                guint         prop_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
 {
   GladeObjectStubPrivate *priv;
   GladeObjectStub *stub;
@@ -167,7 +168,10 @@ glade_object_stub_set_property (GObject *object, guint prop_id, const GValue *va
 }
 
 static void
-glade_object_stub_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+glade_object_stub_get_property (GObject    *object,
+                                guint       prop_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
 {
   GladeObjectStubPrivate *priv;
   
@@ -206,8 +210,6 @@ static void
 glade_object_stub_class_init (GladeObjectStubClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GladeObjectStubPrivate));
 
   object_class->finalize = glade_object_stub_finalize;
   object_class->set_property = glade_object_stub_set_property;

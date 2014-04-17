@@ -41,14 +41,12 @@ struct _GladePreviewWindowPrivate
   gchar *extension;
 };
 
-#define GLADE_PREVIEW_WINDOW_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_PREVIEW_WINDOW, GladePreviewWindowPrivate))
-
-G_DEFINE_TYPE (GladePreviewWindow, glade_preview_window, GTK_TYPE_WINDOW);
+G_DEFINE_TYPE_WITH_PRIVATE (GladePreviewWindow, glade_preview_window, GTK_TYPE_WINDOW);
 
 static void
 glade_preview_window_init (GladePreviewWindow *window)
 {
-  GladePreviewWindowPrivate *priv = GLADE_PREVIEW_WINDOW_GET_PRIVATE (window);
+  GladePreviewWindowPrivate *priv = glade_preview_window_get_instance_private (window);
   GtkWidget *content_area;
 
   window->priv = priv;
@@ -78,7 +76,7 @@ glade_preview_window_init (GladePreviewWindow *window)
 static void
 glade_preview_window_finalize (GObject *object)
 {
-  GladePreviewWindowPrivate *priv = GLADE_PREVIEW_WINDOW_GET_PRIVATE (object);
+  GladePreviewWindowPrivate *priv = GLADE_PREVIEW_WINDOW (object)->priv;
 
   g_free (priv->css_file);
   g_clear_object (&priv->css_provider);
@@ -156,8 +154,6 @@ glade_preview_window_class_init (GladePreviewWindowClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GladePreviewWindowPrivate));
 
   object_class->finalize = glade_preview_window_finalize;
 

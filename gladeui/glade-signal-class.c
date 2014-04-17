@@ -83,9 +83,9 @@ glade_signal_class_free (GladeSignalClass *signal_class)
 }
 
 void
-glade_signal_class_update_from_node (GladeSignalClass   *signal_class,
-				     GladeXmlNode       *node,
-				     const gchar        *domain)
+glade_signal_class_update_from_node (GladeSignalClass *signal_class,
+				     GladeXmlNode     *node,
+				     const gchar      *domain)
 {
   g_return_if_fail (signal_class != NULL);
   g_return_if_fail (node != NULL);
@@ -109,7 +109,7 @@ glade_signal_class_get_adaptor (const GladeSignalClass *signal_class)
 }
 
 G_CONST_RETURN gchar *
-glade_signal_class_get_name (const GladeSignalClass  *signal_class)
+glade_signal_class_get_name (const GladeSignalClass *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, NULL);
 
@@ -117,7 +117,7 @@ glade_signal_class_get_name (const GladeSignalClass  *signal_class)
 }
 
 G_CONST_RETURN gchar *
-glade_signal_class_get_type (const GladeSignalClass  *signal_class)
+glade_signal_class_get_type (const GladeSignalClass *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, NULL);
 
@@ -133,9 +133,9 @@ glade_signal_class_get_flags (const GladeSignalClass *signal_class)
 }
 
 void
-glade_signal_class_set_since (GladeSignalClass   *signal_class,
-			      guint16             since_major,
-			      guint16             since_minor)
+glade_signal_class_set_since (GladeSignalClass *signal_class,
+			      guint16           since_major,
+			      guint16           since_minor)
 {
   g_return_if_fail (signal_class != NULL);
 
@@ -144,7 +144,7 @@ glade_signal_class_set_since (GladeSignalClass   *signal_class,
 }
 
 guint16
-glade_signal_class_since_major (GladeSignalClass   *signal_class)
+glade_signal_class_since_major (GladeSignalClass *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, 0);
 
@@ -152,7 +152,7 @@ glade_signal_class_since_major (GladeSignalClass   *signal_class)
 }
 
 guint16
-glade_signal_class_since_minor (GladeSignalClass   *signal_class)
+glade_signal_class_since_minor (GladeSignalClass *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, 0);
 
@@ -160,8 +160,8 @@ glade_signal_class_since_minor (GladeSignalClass   *signal_class)
 }
 
 void
-glade_signal_class_set_deprecated (GladeSignalClass   *signal_class,
-				   gboolean            deprecated)
+glade_signal_class_set_deprecated (GladeSignalClass *signal_class,
+				   gboolean          deprecated)
 {
   g_return_if_fail (signal_class != NULL);
 
@@ -169,7 +169,7 @@ glade_signal_class_set_deprecated (GladeSignalClass   *signal_class,
 }
 
 gboolean
-glade_signal_class_deprecated (GladeSignalClass   *signal_class)
+glade_signal_class_deprecated (GladeSignalClass *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, FALSE);
 

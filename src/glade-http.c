@@ -62,7 +62,7 @@ enum
 static GParamSpec *properties[N_PROPERTIES];
 static guint http_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GladeHTTP, glade_http, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeHTTP, glade_http, G_TYPE_OBJECT);
 
 static void
 glade_http_emit_request_done (GladeHTTP *http, gchar *response)
@@ -224,7 +224,7 @@ glade_http_init (GladeHTTP *http)
 {
   GladeHTTPPrivate *priv;
   
-  priv = http->priv = G_TYPE_INSTANCE_GET_PRIVATE (http, GLADE_TYPE_HTTP, GladeHTTPPrivate);
+  priv = http->priv = glade_http_get_instance_private (http);
 
   priv->data = g_string_new ("");
   priv->response = g_string_new ("");
@@ -315,8 +315,6 @@ static void
 glade_http_class_init (GladeHTTPClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GladeHTTPPrivate));
 
   object_class->finalize = glade_http_finalize;
   object_class->set_property = glade_http_set_property;

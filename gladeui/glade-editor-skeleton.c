@@ -49,6 +49,7 @@ static GladeEditableIface *parent_editable_iface;
 static GtkBuildableIface  *parent_buildable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorSkeleton, glade_editor_skeleton, GTK_TYPE_BOX,
+                         G_ADD_PRIVATE (GladeEditorSkeleton)
 			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_editor_skeleton_editable_init)
 			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
@@ -57,20 +58,15 @@ G_DEFINE_TYPE_WITH_CODE (GladeEditorSkeleton, glade_editor_skeleton, GTK_TYPE_BO
 static void
 glade_editor_skeleton_init (GladeEditorSkeleton *skeleton)
 {
-  skeleton->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (skeleton,
-				 GLADE_TYPE_EDITOR_SKELETON,
-				 GladeEditorSkeletonPrivate);
+  skeleton->priv = glade_editor_skeleton_get_instance_private (skeleton);
 }
 
 static void
-glade_editor_skeleton_class_init (GladeEditorSkeletonClass *class)
+glade_editor_skeleton_class_init (GladeEditorSkeletonClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   
   gobject_class->dispose = glade_editor_skeleton_dispose;
-
-  g_type_class_add_private (gobject_class, sizeof (GladeEditorSkeletonPrivate));
 }
 
 /***********************************************************
@@ -114,7 +110,7 @@ glade_editor_skeleton_load (GladeEditable   *editable,
 }
 
 static void
-glade_editor_skeleton_set_show_name (GladeEditable * editable, gboolean show_name)
+glade_editor_skeleton_set_show_name (GladeEditable *editable, gboolean show_name)
 {
   GladeEditorSkeleton *skeleton = GLADE_EDITOR_SKELETON (editable);
   GladeEditorSkeletonPrivate *priv = skeleton->priv;
@@ -129,7 +125,7 @@ glade_editor_skeleton_set_show_name (GladeEditable * editable, gboolean show_nam
 }
 
 static void
-glade_editor_skeleton_editable_init (GladeEditableIface * iface)
+glade_editor_skeleton_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 

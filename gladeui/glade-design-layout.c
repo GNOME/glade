@@ -35,9 +35,6 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 
-#define GLADE_DESIGN_LAYOUT_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
-						 GLADE_TYPE_DESIGN_LAYOUT,               \
-						 GladeDesignLayoutPrivate))
 #define GLADE_DESIGN_LAYOUT_PRIVATE(object) (((GladeDesignLayout*)object)->priv)
 
 #define OUTLINE_WIDTH     4
@@ -124,7 +121,7 @@ enum
   PROP_DESIGN_VIEW
 };
 
-G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
 
 #define RECTANGLE_POINT_IN(rect,x,y) (x >= rect.x && x <= (rect.x + rect.width) && y >= rect.y && y <= (rect.y + rect.height))
 
@@ -174,7 +171,7 @@ gdl_get_margins_from_pointer (GladeDesignLayout *layout, GtkWidget *widget, gint
 static Activity
 gdl_get_activity_from_pointer (GladeDesignLayout *layout, gint x, gint y)
 {
-  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_PRIVATE (layout);
   
   if (priv->selection)
     {
@@ -1787,7 +1784,7 @@ glade_design_layout_unrealize (GtkWidget * widget)
 static void
 glade_design_layout_style_updated (GtkWidget *widget)
 {
-  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_PRIVATE (widget);
   
   _glade_design_layout_get_colors (gtk_widget_get_style_context (widget),
                                    &priv->frame_color[0],
@@ -1805,7 +1802,7 @@ glade_design_layout_init (GladeDesignLayout *layout)
   GladeDesignLayoutPrivate *priv;
   gint i;
   
-  layout->priv = priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
+  layout->priv = priv = glade_design_layout_get_instance_private (layout);
 
   priv->activity = ACTIVITY_NONE;
 
@@ -2059,8 +2056,6 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
                                    GLADE_TYPE_DESIGN_LAYOUT,
                                    g_cclosure_new (G_CALLBACK (glade_design_layout_damage),
                                                    NULL, NULL));
-
-  g_type_class_add_private (object_class, sizeof (GladeDesignLayoutPrivate));
 }
 
 /* Internal API */

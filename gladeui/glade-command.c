@@ -94,7 +94,7 @@ static gint gc_group_id = 1;
 static gint gc_group_depth = 0;
 
 
-G_DEFINE_TYPE (GladeCommand, glade_command, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeCommand, glade_command, G_TYPE_OBJECT)
 
 static void
 glade_command_finalize (GObject *obj)
@@ -124,9 +124,7 @@ glade_command_collapse_impl (GladeCommand *this_cmd, GladeCommand *other_cmd)
 static void
 glade_command_init (GladeCommand *command)
 {
-  command->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE ((command), GLADE_TYPE_COMMAND,
-				 GladeCommandPrivate);
+  command->priv = glade_command_get_instance_private (command);
 }
 
 static void
@@ -142,8 +140,6 @@ glade_command_class_init (GladeCommandClass *klass)
   klass->execute = NULL;
   klass->unifies = glade_command_unifies_impl;
   klass->collapse = glade_command_collapse_impl;
-
-  g_type_class_add_private (klass, sizeof (GladeCommandPrivate));
 }
 
 /* Macros for defining the derived command types */

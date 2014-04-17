@@ -92,8 +92,9 @@ typedef struct
 #define GRAB_BORDER_WIDTH  7
 #define GRAB_CORNER_WIDTH  7
 
-static GObjectClass *parent_class;
 static guint glade_fixed_signals[FIXED_SIGNALS];
+
+G_DEFINE_TYPE (GladeFixed, glade_fixed, GLADE_TYPE_WIDGET);
 
 /* From gtkmain.c */
 static gboolean
@@ -857,7 +858,7 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 			     &fixed->mouse_x, &fixed->mouse_y);
 
   /* Chain up for the basic parenting */
-  GLADE_WIDGET_CLASS (parent_class)->add_child
+  GLADE_WIDGET_CLASS (glade_fixed_parent_class)->add_child
       (GLADE_WIDGET (fixed), child, at_mouse);
 
   /* We only operate on widgets here */
@@ -912,7 +913,7 @@ glade_fixed_remove_child_impl (GladeWidget *fixed, GladeWidget *child)
   glade_fixed_disconnect_child (GLADE_FIXED (fixed), child);
 
   /* Chain up for the basic unparenting */
-  GLADE_WIDGET_CLASS (parent_class)->remove_child (GLADE_WIDGET (fixed), child);
+  GLADE_WIDGET_CLASS (glade_fixed_parent_class)->remove_child (GLADE_WIDGET (fixed), child);
 }
 
 static void
@@ -927,7 +928,7 @@ glade_fixed_replace_child_impl (GladeWidget *fixed,
     glade_fixed_disconnect_child (GLADE_FIXED (fixed), gold_widget);
 
   /* Chain up for the basic reparenting */
-  GLADE_WIDGET_CLASS (parent_class)->replace_child
+  GLADE_WIDGET_CLASS (glade_fixed_parent_class)->replace_child
       (GLADE_WIDGET (fixed), old_object, new_object);
 
   if (gnew_widget)
@@ -952,7 +953,7 @@ glade_fixed_event (GladeWidget *gwidget_fixed, GdkEvent *event)
 
   /* If the GladeWidget used this event... let it slide.
    */
-  if (GLADE_WIDGET_CLASS (parent_class)->event (gwidget_fixed, event))
+  if (GLADE_WIDGET_CLASS (glade_fixed_parent_class)->event (gwidget_fixed, event))
     return TRUE;
 
   if ((device = gdk_event_get_device (event)))
@@ -1025,7 +1026,7 @@ glade_fixed_finalize (GObject *object)
   g_free (fixed->width_prop);
   g_free (fixed->height_prop);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (glade_fixed_parent_class)->finalize (object);
 }
 
 static void
@@ -1110,8 +1111,6 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (fixed_class);
   GladeWidgetClass *gwidget_class = GLADE_WIDGET_CLASS (fixed_class);
-
-  parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (gobject_class));
 
   gobject_class->finalize = glade_fixed_finalize;
   gobject_class->set_property = glade_fixed_set_property;
@@ -1229,31 +1228,6 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 /*******************************************************************************
                                       API
 *******************************************************************************/
-
-GType
-glade_fixed_get_type (void)
-{
-  static GType fixed_type = 0;
-
-  if (!fixed_type)
-    {
-      static const GTypeInfo fixed_info = {
-        sizeof (GladeFixedClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) glade_fixed_class_init,
-        (GClassFinalizeFunc) NULL,
-        NULL,                   /* class_data */
-        sizeof (GladeFixed),
-        0,                      /* n_preallocs */
-        (GInstanceInitFunc) glade_fixed_init,
-      };
-      fixed_type =
-          g_type_register_static (GLADE_TYPE_WIDGET,
-                                  "GladeFixed", &fixed_info, 0);
-    }
-  return fixed_type;
-}
 
 /* This is called from the catalog for a few widgets */
 GladeWidget *

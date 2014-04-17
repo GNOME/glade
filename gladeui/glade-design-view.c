@@ -45,8 +45,6 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#define GLADE_DESIGN_VIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), GLADE_TYPE_DESIGN_VIEW, GladeDesignViewPrivate))
-
 #define GLADE_DESIGN_VIEW_KEY "GLADE_DESIGN_VIEW_KEY"
 
 enum
@@ -71,6 +69,7 @@ static GtkVBoxClass *parent_class = NULL;
 static void glade_design_view_drag_init (_GladeDragInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GladeDesignView, glade_design_view, GTK_TYPE_BOX,
+                         G_ADD_PRIVATE (GladeDesignView)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_DRAG,
                                                 glade_design_view_drag_init))
 
@@ -328,7 +327,7 @@ logo_draw (GtkWidget *widget, cairo_t *cr)
 static gboolean
 glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
 {
-  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW_GET_PRIVATE (widget);
+  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (widget)->priv;
   GdkWindow *window = gtk_widget_get_window (widget);
   gboolean should_draw = gtk_cairo_should_draw_window (cr, window);
   gboolean sw_visible = gtk_widget_get_visible (priv->scrolled_window);
@@ -370,7 +369,7 @@ glade_design_view_init (GladeDesignView *view)
 {
   GtkWidget *viewport;
 
-  view->priv = GLADE_DESIGN_VIEW_GET_PRIVATE (view);
+  view->priv = glade_design_view_get_instance_private (view);
 
   gtk_widget_set_no_show_all (GTK_WIDGET (view), TRUE);
   gtk_orientable_set_orientation (GTK_ORIENTABLE (view),
@@ -715,8 +714,6 @@ glade_design_view_class_init (GladeDesignViewClass *klass)
                                                         GLADE_TYPE_PROJECT,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
-
-  g_type_class_add_private (object_class, sizeof (GladeDesignViewPrivate));
 }
 
 /* Private API */

@@ -55,11 +55,13 @@ enum
 
 static GParamSpec *properties[N_PROPERTIES];
 
-G_DEFINE_TYPE (GladeClipboard, glade_clipboard, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeClipboard, glade_clipboard, G_TYPE_OBJECT);
 
 static void
-glade_project_get_property (GObject * object,
-                            guint prop_id, GValue * value, GParamSpec * pspec)
+glade_project_get_property (GObject    *object,
+                            guint       prop_id,
+                            GValue     *value,
+                            GParamSpec *pspec)
 {
   GladeClipboard *clipboard = GLADE_CLIPBOARD (object);
 
@@ -92,25 +94,20 @@ glade_clipboard_class_init (GladeClipboardClass * klass)
   
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
-
-  g_type_class_add_private  (klass, sizeof (GladeClipboardPrivate));
 }
 
 static void
-glade_clipboard_init (GladeClipboard * clipboard)
+glade_clipboard_init (GladeClipboard *clipboard)
 {
-  clipboard->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (clipboard,
-				 GLADE_TYPE_CLIPBOARD,
-				 GladeClipboardPrivate);
+  clipboard->priv = glade_clipboard_get_instance_private (clipboard);
 
   clipboard->priv->widgets = NULL;
   clipboard->priv->has_selection = FALSE;
 }
 
 static void
-glade_clipboard_set_has_selection (GladeClipboard * clipboard,
-                                   gboolean has_selection)
+glade_clipboard_set_has_selection (GladeClipboard *clipboard,
+                                   gboolean        has_selection)
 {
   if (clipboard->priv->has_selection != has_selection)
     {
@@ -127,7 +124,7 @@ glade_clipboard_set_has_selection (GladeClipboard * clipboard,
  * Returns: TRUE if this clipboard has selected items to paste.
  */
 gboolean
-glade_clipboard_get_has_selection (GladeClipboard * clipboard)
+glade_clipboard_get_has_selection (GladeClipboard *clipboard)
 {
   g_return_val_if_fail (GLADE_IS_CLIPBOARD (clipboard), FALSE);
 
@@ -163,7 +160,7 @@ glade_clipboard_new (void)
  * This increases the reference count of each #GladeWidget in @widgets.
  */
 void
-glade_clipboard_add (GladeClipboard * clipboard, GList * widgets)
+glade_clipboard_add (GladeClipboard *clipboard, GList *widgets)
 {
   GladeWidget *widget;
   GList *list;
@@ -192,7 +189,7 @@ glade_clipboard_add (GladeClipboard * clipboard, GList * widgets)
  * Removes all widgets from the @clipboard.
  */
 void
-glade_clipboard_clear (GladeClipboard * clipboard)
+glade_clipboard_clear (GladeClipboard *clipboard)
 {
   GladeWidget *widget;
   GList *list;

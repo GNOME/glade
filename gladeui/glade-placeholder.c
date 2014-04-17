@@ -73,22 +73,20 @@ enum
   PROP_VSCROLL_POLICY
 };
 
-#define GLADE_PLACEHOLDER_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object), \
-                                               GLADE_TYPE_PLACEHOLDER,                \
-                                               GladePlaceholderPrivate))
 #define GLADE_PLACEHOLDER_PRIVATE(object) (((GladePlaceholder*)object)->priv)
 
 static void glade_placeholder_drag_init (_GladeDragInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET,
+                         G_ADD_PRIVATE (GladePlaceholder)
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_SCROLLABLE, NULL)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_DRAG, 
                                                 glade_placeholder_drag_init))
 
 static void
-glade_placeholder_notify_parent (GObject *gobject,
+glade_placeholder_notify_parent (GObject    *gobject,
                                  GParamSpec *arg1,
-                                 gpointer user_data)
+                                 gpointer    user_data)
 {
   GladePlaceholder *placeholder = GLADE_PLACEHOLDER (gobject);
   GladeWidgetAdaptor *parent_adaptor = NULL;
@@ -113,7 +111,7 @@ glade_placeholder_notify_parent (GObject *gobject,
 static void
 glade_placeholder_init (GladePlaceholder *placeholder)
 {
-  placeholder->priv =  GLADE_PLACEHOLDER_GET_PRIVATE (placeholder);
+  placeholder->priv =  glade_placeholder_get_instance_private (placeholder);
 
   placeholder->priv->packing_actions = NULL;
 
@@ -151,10 +149,10 @@ glade_placeholder_finalize (GObject *object)
 }
 
 static void
-glade_placeholder_set_property (GObject *object,
-                                guint prop_id,
+glade_placeholder_set_property (GObject      *object,
+                                guint         prop_id,
                                 const GValue *value,
-                                GParamSpec *pspec)
+                                GParamSpec   *pspec)
 {
 
   switch (prop_id)
@@ -171,9 +169,9 @@ glade_placeholder_set_property (GObject *object,
 }
 
 static void
-glade_placeholder_get_property (GObject *object,
-                                guint prop_id,
-                                GValue *value,
+glade_placeholder_get_property (GObject    *object,
+                                guint       prop_id,
+                                GValue     *value,
                                 GParamSpec *pspec)
 {
   switch (prop_id)
@@ -565,8 +563,6 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
       cairo_pattern_set_extend (placeholder_pattern, CAIRO_EXTEND_REPEAT);
     }
   g_free (path);
-
-  g_type_class_add_private (klass, sizeof (GladePlaceholderPrivate));
 }
 
 /**
