@@ -91,8 +91,6 @@ static guint glade_palette_signals[LAST_SIGNAL] = { 0 };
 
 static void glade_palette_append_item_group (GladePalette        *palette,
                                              GladeWidgetGroup    *group);
-static void glade_palette_update_appearance (GladePalette        *palette);
-
 static void palette_item_toggled_cb         (GtkToggleToolButton *button, 
 					     GladePalette        *palette);
 
@@ -558,37 +556,6 @@ glade_palette_finalize (GObject *object)
 }
 
 static void
-glade_palette_update_appearance (GladePalette *palette)
-{
-  GladePalettePrivate *priv;
-  GtkToolbarStyle style;
-  GtkIconSize size;
-
-  priv = palette->priv;
-
-  size = priv->use_small_item_icons ? GTK_ICON_SIZE_MENU : GTK_ICON_SIZE_BUTTON;
-
-  switch (priv->item_appearance)
-    {
-      case GLADE_ITEM_ICON_AND_LABEL:
-        style = GTK_TOOLBAR_BOTH_HORIZ;
-        break;
-      case GLADE_ITEM_ICON_ONLY:
-        style = GTK_TOOLBAR_ICONS;
-        break;
-      case GLADE_ITEM_LABEL_ONLY:
-        style = GTK_TOOLBAR_TEXT;
-        break;
-      default:
-        g_assert_not_reached ();
-        break;
-    }
-
-  gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (priv->toolpalette), size);
-  gtk_tool_palette_set_style (GTK_TOOL_PALETTE (priv->toolpalette), style);
-}
-
-static void
 glade_palette_class_init (GladePaletteClass *klass)
 {
   GObjectClass *object_class;
@@ -673,7 +640,11 @@ glade_palette_init (GladePalette *palette)
 
   /* The GtkToolPalette */
   priv->toolpalette = gtk_tool_palette_new ();
-
+  gtk_tool_palette_set_style (GTK_TOOL_PALETTE (priv->toolpalette),
+                              GTK_TOOLBAR_ICONS);
+  gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (priv->toolpalette),
+                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
+  
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -685,9 +656,6 @@ glade_palette_init (GladePalette *palette)
 
   gtk_widget_show (sw);
   gtk_widget_show (priv->toolpalette);
-
-  glade_palette_update_appearance (palette);
-
   gtk_widget_set_no_show_all (GTK_WIDGET (palette), TRUE);
 
   glade_palette_populate (palette);
@@ -789,9 +757,26 @@ glade_palette_set_item_appearance (GladePalette       *palette,
 
   if (priv->item_appearance != item_appearance)
     {
+      GtkToolbarStyle style;
       priv->item_appearance = item_appearance;
 
-      glade_palette_update_appearance (palette);
+      switch (item_appearance)
+        {
+          case GLADE_ITEM_ICON_AND_LABEL:
+            style = GTK_TOOLBAR_BOTH_HORIZ;
+            break;
+          case GLADE_ITEM_ICON_ONLY:
+            style = GTK_TOOLBAR_ICONS;
+            break;
+          case GLADE_ITEM_LABEL_ONLY:
+            style = GTK_TOOLBAR_TEXT;
+            break;
+          default:
+            g_assert_not_reached ();
+            break;
+        }
+
+      gtk_tool_palette_set_style (GTK_TOOL_PALETTE (priv->toolpalette), style);
 
       g_object_notify_by_pspec (G_OBJECT (palette), properties[PROP_ITEM_APPEARANCE]);
     }
@@ -816,12 +801,13 @@ glade_palette_set_use_small_item_icons (GladePalette *palette,
     {
       priv->use_small_item_icons = use_small_item_icons;
 
-      glade_palette_update_appearance (palette);
+      gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (priv->toolpalette),
+                                      (use_small_item_icons) ?
+                                        GTK_ICON_SIZE_SMALL_TOOLBAR :
+                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
 
       g_object_notify_by_pspec (G_OBJECT (palette), properties[PROP_USE_SMALL_ITEM_ICONS]);
-
     }
-
 }
 
 /**
