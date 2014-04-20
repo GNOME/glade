@@ -3,7 +3,7 @@
 #
 # Valek Filippov <frob@df.ru>, 2001.
 # Yuri Kozlov <kozlov.y@gmail.com>, 2008, 2012.
-# Yuri Myasoedov <omerta13@yandex.ru>, 2012.
+# Yuri Myasoedov <ymyasoedov@yandex.ru>, 2012, 2014.
 #
 msgid ""
 msgstr ""
@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-04-01 05:55+0000\n"
-"PO-Revision-Date: 2014-04-01 22:38+0400\n"
+"PO-Revision-Date: 2014-04-20 15:45+0400\n"
 "Last-Translator: Yuri Myasoedov <ymyasoedov@yandex.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.6.4\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
@@ -1678,7 +1678,7 @@ msgstr "несколько"
 
 #: ../gladeui/glade-command.c:1389
 msgid "You cannot remove a widget internal to a composite widget."
-msgstr "Не удалось удалить внутренний виджет составного виджета."
+msgstr "Невозможно удалить внутренний виджет составного виджета."
 
 #: ../gladeui/glade-command.c:1396
 #, c-format
@@ -1777,16 +1777,16 @@ msgstr "Установка области перевода в «%s»"
 #: ../gladeui/glade-command.c:2972
 #, c-format
 msgid "Unsetting widget '%s' as template"
-msgstr ""
+msgstr "Отмена виджета «%s» в качестве шаблона"
 
 #: ../gladeui/glade-command.c:2975
 #, c-format
 msgid "Setting widget '%s' as template"
-msgstr ""
+msgstr "Установка виджета «%s» в качестве шаблона"
 
 #: ../gladeui/glade-command.c:2978
 msgid "Unsetting template"
-msgstr ""
+msgstr "Отмена шаблона"
 
 #: ../gladeui/glade-cursor.c:184
 #, c-format
@@ -2223,7 +2223,7 @@ msgstr "Имя файла для сохранения снимка экрана"
 
 #: ../gladeui/glade-previewer.c:381
 msgid "CSS file to use"
-msgstr ""
+msgstr "Используемый файл CSS"
 
 #: ../gladeui/glade-previewer.c:382
 msgid "Listen standard input"
@@ -2231,7 +2231,7 @@ msgstr "Следить за стандартным вводом"
 
 #: ../gladeui/glade-previewer.c:383
 msgid "make a slideshow of every toplevel widget by adding them in a GtkStack"
-msgstr ""
+msgstr "создать слайд-шоу из виджетов верхнего уровня, добавив их в GtkStack"
 
 #: ../gladeui/glade-previewer.c:384
 msgid "Display previewer version"
@@ -2841,7 +2841,7 @@ msgstr "Является ли этой действие видимым"
 #: ../gladeui/glade-widget-adaptor.c:257
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr "Выведенный приёмщик (%s) элемента %s уже существует!"
+msgstr "Производный адаптер (%s) элемента %s уже существует!"
 
 #: ../gladeui/glade-widget-adaptor.c:934
 #, c-format
@@ -2937,7 +2937,7 @@ msgstr "Самостоятельный"
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
-"Является ли этот встроенный дочерний виджет наследственным элементом или "
+"Является ли этот составной дочерний виджет наследственным или "
 "самостоятельным элементом"
 
 #: ../gladeui/glade-widget.c:1366
@@ -2950,11 +2950,11 @@ msgstr "Этот объект связан"
 
 #: ../gladeui/glade-widget.c:1372
 msgid "Adaptor"
-msgstr "Подстройщик"
+msgstr "Адаптер"
 
 #: ../gladeui/glade-widget.c:1373
 msgid "The class adaptor for the associated widget"
-msgstr "Класс подстройщика для связанного виджета"
+msgstr "Класс адаптера для связанного виджета"
 
 #: ../gladeui/glade-widget.c:1379
 msgid "The glade project that this widget belongs to"
@@ -2975,7 +2975,7 @@ msgstr "Указатель на родительский GladeWidget"
 
 #: ../gladeui/glade-widget.c:1396
 msgid "Internal Name"
-msgstr "Внутреннее название"
+msgstr "Внутреннее имя"
 
 #: ../gladeui/glade-widget.c:1397
 msgid "A generic name prefix for internal widgets"
@@ -3026,10 +3026,9 @@ msgid "Wether the widget is visible or not"
 msgstr "Является ли этот виджет видимым"
 
 #: ../gladeui/glade-widget.c:1444
-#, fuzzy
 #| msgid "You cannot remove a widget internal to a composite widget."
 msgid "Whether this widget is the template for a composite widget"
-msgstr "Не удалось удалить внутренний виджет составного виджета."
+msgstr "Является ли этот виджет шаблоном для композитного виджета"
 
 #: ../gladeui/glade-widget.c:4737
 #, c-format
@@ -6362,7 +6361,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:726
 msgid "Color Selection Dialog"
-msgstr "Окно выбора цвета"
+msgstr "Диалог выбора цвета"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:727
 msgid "File Chooser Dialog"
@@ -6495,7 +6494,7 @@ msgstr "Выравнивание по размеру"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:771
 msgid "Widgets"
-msgstr "Элементы"
+msgstr "Виджеты"
 
 #. GtkSizeGroupMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:773
@@ -6504,7 +6503,7 @@ msgstr "Оба"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:774
 msgid "List of widgets in this group"
-msgstr "Список виджетов для этой группы"
+msgstr "Список виджетов в этой группе"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:775
 msgid "Window Group"
@@ -7179,7 +7178,7 @@ msgstr "Управление и отображение"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:977
 msgid "Composite Widgets"
-msgstr "Сложные виджеты"
+msgstr "Составные виджеты"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:978
 msgid "Miscellaneous"
@@ -7187,7 +7186,7 @@ msgstr "Различные виджеты"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:979
 msgid "Deprecated"
-msgstr "Устарело"
+msgstr "Устаревшие"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:1
 #| msgid "Properties and Attributes"
