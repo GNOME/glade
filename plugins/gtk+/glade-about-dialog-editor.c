@@ -25,7 +25,7 @@
 
 #include "glade-about-dialog-editor.h"
 
-static void glade_about_dialog_editor_editable_init (GladeEditableIface * iface);
+static void glade_about_dialog_editor_editable_init (GladeEditableIface *iface);
 
 /* Callbacks */
 static void license_type_pre_commit     (GladePropertyShell     *shell,
@@ -45,6 +45,8 @@ struct _GladeAboutDialogEditorPrivate
   GtkWidget *license_label;
   GtkWidget *license_editor;
   GtkWidget *wrap_license_editor;
+  GtkWidget *logo_file_editor;
+  GtkWidget *logo_icon_editor;
 
   GtkWidget *logo_file_radio;
   GtkWidget *logo_icon_radio;
@@ -67,6 +69,8 @@ glade_about_dialog_editor_class_init (GladeAboutDialogEditorClass * klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, license_label);
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, license_editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, wrap_license_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_file_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_icon_editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_file_radio);
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_icon_radio);
 
@@ -77,7 +81,7 @@ glade_about_dialog_editor_class_init (GladeAboutDialogEditorClass * klass)
 }
 
 static void
-glade_about_dialog_editor_init (GladeAboutDialogEditor * self)
+glade_about_dialog_editor_init (GladeAboutDialogEditor *self)
 {
   self->priv = glade_about_dialog_editor_get_instance_private (self);
 
@@ -85,7 +89,14 @@ glade_about_dialog_editor_init (GladeAboutDialogEditor * self)
 }
 
 static void
-glade_about_dialog_editor_load (GladeEditable * editable, GladeWidget * widget)
+glade_eprop_disable_check (GtkWidget *child, gpointer data)
+{
+  if (GLADE_IS_EDITOR_PROPERTY (child))
+    g_object_set (child, "disable-check", TRUE, NULL);
+}
+
+static void
+glade_about_dialog_editor_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeAboutDialogEditor *dialog_editor = GLADE_ABOUT_DIALOG_EDITOR (editable);
   GladeAboutDialogEditorPrivate *priv = dialog_editor->priv;
@@ -110,15 +121,21 @@ glade_about_dialog_editor_load (GladeEditable * editable, GladeWidget * widget)
       /* Set the radio button state to our virtual property */
       glade_widget_property_get (widget, "glade-logo-as-file", &as_file);
 
+      gtk_container_forall (GTK_CONTAINER (priv->logo_file_editor), glade_eprop_disable_check, NULL);
+      gtk_container_forall (GTK_CONTAINER (priv->logo_icon_editor), glade_eprop_disable_check, NULL);
+      
+      glade_widget_property_set_enabled (widget, "logo-icon-name", !as_file);
+      glade_widget_property_set_enabled (widget, "logo", as_file);
+      
       if (as_file)
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->logo_file_radio), TRUE);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->logo_file_radio), TRUE);
       else
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->logo_icon_radio), TRUE);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->logo_icon_radio), TRUE);
     }
 }
 
 static void
-glade_about_dialog_editor_editable_init (GladeEditableIface * iface)
+glade_about_dialog_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 
@@ -159,30 +176,23 @@ license_type_post_commit (GladePropertyShell     *shell,
 }
 
 static void
-logo_icon_toggled (GtkWidget              *widget,
-		   GladeAboutDialogEditor *editor)
+glade_about_dialog_editor_set_logo_as_file (GladeAboutDialogEditor *editor,
+                                            gboolean               logo_as_file)
 {
-  GladeAboutDialogEditorPrivate *priv = editor->priv;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (editor));
   GladeProperty *property;
 
   if (glade_editable_loading (GLADE_EDITABLE (editor)) || !gwidget)
     return;
 
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->logo_icon_radio)))
-    return;
-
   glade_editable_block (GLADE_EDITABLE (editor));
 
-  glade_command_push_group (_("Setting %s to use a logo icon"),
+  glade_command_push_group (logo_as_file ? _("Setting %s to use logo file") :
+                              _("Setting %s to use a logo icon"),
                             glade_widget_get_name (gwidget));
 
-  property = glade_widget_get_property (gwidget, "logo-icon-name");
-  glade_command_set_property (property, NULL);
-  property = glade_widget_get_property (gwidget, "logo");
-  glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "glade-logo-as-file");
-  glade_command_set_property (property, FALSE);
+  glade_command_set_property (property, logo_as_file);
 
   glade_command_pop_group ();
 
@@ -193,37 +203,21 @@ logo_icon_toggled (GtkWidget              *widget,
 }
 
 static void
-logo_file_toggled (GtkWidget              *widget,
-		   GladeAboutDialogEditor *editor)
+logo_icon_toggled (GtkWidget *widget, GladeAboutDialogEditor *editor)
 {
-  GladeAboutDialogEditorPrivate *priv = editor->priv;
-  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (editor));
-  GladeProperty *property;
-
-  if (glade_editable_loading (GLADE_EDITABLE (editor)) || !gwidget)
+  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     return;
 
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->logo_file_radio)))
+  glade_about_dialog_editor_set_logo_as_file (editor, FALSE);
+}
+
+static void
+logo_file_toggled (GtkWidget *widget, GladeAboutDialogEditor *editor)
+{
+  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     return;
 
-  glade_editable_block (GLADE_EDITABLE (editor));
-
-  glade_command_push_group (_("Setting %s to use logo file"),
-                            glade_widget_get_name (gwidget));
-
-  property = glade_widget_get_property (gwidget, "logo-icon-name");
-  glade_command_set_property (property, NULL);
-  property = glade_widget_get_property (gwidget, "logo");
-  glade_command_set_property (property, NULL);
-  property = glade_widget_get_property (gwidget, "glade-logo-as-file");
-  glade_command_set_property (property, TRUE);
-
-  glade_command_pop_group ();
-
-  glade_editable_unblock (GLADE_EDITABLE (editor));
-
-  /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (editor), gwidget);
+  glade_about_dialog_editor_set_logo_as_file (editor, TRUE);
 }
 
 GtkWidget *

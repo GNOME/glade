@@ -69,8 +69,9 @@ glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor * adaptor,
-				    GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor *adaptor,
+				    GladeWidget        *widget,
+                                    GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
 	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
@@ -87,21 +88,23 @@ glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_about_dialog_set_property (GladeWidgetAdaptor * adaptor,
-				     GObject * object,
-				     const gchar * id, const GValue * value)
+glade_gtk_about_dialog_set_property (GladeWidgetAdaptor *adaptor,
+				     GObject            *object,
+				     const gchar        *id,
+                                     const GValue       *value)
 {
   if (!strcmp (id, "glade-logo-as-file"))
     {
       GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+      GladeProperty *logo = glade_widget_get_property (gwidget, "logo");
+      GladeProperty *icon = glade_widget_get_property (gwidget, "logo-icon-name");
+      gboolean as_file = g_value_get_boolean (value);
 
-      glade_widget_property_set_sensitive (gwidget, "logo", FALSE, NOT_SELECTED_MSG);
-      glade_widget_property_set_sensitive (gwidget, "logo-icon-name", FALSE, NOT_SELECTED_MSG);
+      glade_property_set_sensitive (icon, !as_file, as_file ? NOT_SELECTED_MSG : NULL);
+      glade_property_set_enabled (icon, !as_file);
 
-      if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (gwidget, "logo", TRUE, NULL);
-      else
-	glade_widget_property_set_sensitive (gwidget, "logo-icon-name", TRUE, NULL);
+      glade_property_set_sensitive (logo, as_file, as_file ? NULL : NOT_SELECTED_MSG);
+      glade_property_set_enabled (logo, as_file);
     }
   else
     GWA_GET_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object, id, value);
