@@ -60,6 +60,7 @@ struct _GladePropertyShellPrivate
   gchar               *custom_text;
   guint                packing : 1;
   guint                use_command : 1;
+  guint                disable_check : 1;
 };
 
 enum {
@@ -68,7 +69,8 @@ enum {
   PROP_PACKING,
   PROP_USE_COMMAND,
   PROP_EDITOR_TYPE,
-  PROP_CUSTOM_TEXT
+  PROP_CUSTOM_TEXT,
+  PROP_DISABLE_CHECK
 };
 
 enum
@@ -94,6 +96,7 @@ glade_property_shell_init (GladePropertyShell *shell)
 
   shell->priv->packing = FALSE;
   shell->priv->use_command = TRUE;
+  shell->priv->disable_check = FALSE;
 }
 
 static void
@@ -134,7 +137,13 @@ glade_property_shell_class_init (GladePropertyShellClass *klass)
        g_param_spec_string ("custom-text", _("Custom Text"),
 			    _("Custom Text to display in the property label"),
 			    NULL, G_PARAM_READWRITE));
-
+  
+  g_object_class_install_property
+      (gobject_class, PROP_DISABLE_CHECK,
+       g_param_spec_boolean ("disable-check", _("Disable Check"),
+			     _("Whether to explicitly disable the check button"),
+			     FALSE, G_PARAM_READWRITE));
+  
   /**
    * GladePropertyShell::pre-commit:
    * @gladeeditorproperty: the #GladeEditorProperty which changed value
@@ -220,6 +229,9 @@ glade_property_shell_set_real_property (GObject      *object,
     case PROP_CUSTOM_TEXT:
       glade_property_shell_set_custom_text (shell, g_value_get_string (value));
       break;
+    case PROP_DISABLE_CHECK:
+      glade_property_shell_set_disable_check (shell, g_value_get_boolean (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -247,6 +259,9 @@ glade_property_shell_get_real_property (GObject    *object,
       break;
     case PROP_CUSTOM_TEXT:
       g_value_set_string (value, glade_property_shell_get_custom_text (shell));
+      break;
+    case PROP_DISABLE_CHECK:
+      g_value_set_boolean (value, glade_property_shell_get_disable_check (shell));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -296,7 +311,8 @@ glade_property_shell_set_eprop (GladePropertyShell  *shell,
       if (priv->property_editor)
 	{
 	  glade_editor_property_set_custom_text (priv->property_editor, priv->custom_text);
-
+          glade_editor_property_set_disable_check (priv->property_editor, priv->disable_check);
+            
 	  priv->pre_commit_id = g_signal_connect (priv->property_editor, "commit",
 						  G_CALLBACK (propagate_pre_commit), shell);
 	  priv->post_commit_id = g_signal_connect_after (priv->property_editor, "commit",
@@ -520,4 +536,33 @@ glade_property_shell_get_use_command (GladePropertyShell *shell)
   g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), FALSE);
 
   return shell->priv->use_command;
+}
+
+void
+glade_property_shell_set_disable_check (GladePropertyShell *shell,
+                                        gboolean            disable_check)
+{
+  GladePropertyShellPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROPERTY_SHELL (shell));
+
+  priv = shell->priv;
+
+  if (priv->disable_check != disable_check)
+    {
+      priv->disable_check = disable_check;
+
+      if (priv->property_editor)
+	g_object_set (priv->property_editor, "disable-check", disable_check, NULL);
+
+      g_object_notify (G_OBJECT (shell), "disable-check");
+    }
+}
+
+gboolean
+glade_property_shell_get_disable_check (GladePropertyShell *shell)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), FALSE);
+
+  return shell->priv->disable_check;
 }

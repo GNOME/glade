@@ -68,6 +68,9 @@ gboolean       glade_property_shell_get_packing       (GladePropertyShell *shell
 void           glade_property_shell_set_use_command   (GladePropertyShell *shell,
 						       gboolean            use_command);
 gboolean       glade_property_shell_get_use_command   (GladePropertyShell *shell);
+void           glade_property_shell_set_disable_check (GladePropertyShell *shell,
+                                                       gboolean            disable_check);
+gboolean       glade_property_shell_get_disable_check (GladePropertyShell *shell);
 
 G_END_DECLS
 

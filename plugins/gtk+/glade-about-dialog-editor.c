@@ -45,8 +45,6 @@ struct _GladeAboutDialogEditorPrivate
   GtkWidget *license_label;
   GtkWidget *license_editor;
   GtkWidget *wrap_license_editor;
-  GtkWidget *logo_file_editor;
-  GtkWidget *logo_icon_editor;
 
   GtkWidget *logo_file_radio;
   GtkWidget *logo_icon_radio;
@@ -69,8 +67,6 @@ glade_about_dialog_editor_class_init (GladeAboutDialogEditorClass * klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, license_label);
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, license_editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, wrap_license_editor);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_file_editor);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_icon_editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_file_radio);
   gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_icon_radio);
 
@@ -86,13 +82,6 @@ glade_about_dialog_editor_init (GladeAboutDialogEditor *self)
   self->priv = glade_about_dialog_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
-}
-
-static void
-glade_eprop_disable_check (GtkWidget *child, gpointer data)
-{
-  if (GLADE_IS_EDITOR_PROPERTY (child))
-    g_object_set (child, "disable-check", TRUE, NULL);
 }
 
 static void
@@ -120,9 +109,6 @@ glade_about_dialog_editor_load (GladeEditable *editable, GladeWidget *widget)
 
       /* Set the radio button state to our virtual property */
       glade_widget_property_get (widget, "glade-logo-as-file", &as_file);
-
-      gtk_container_forall (GTK_CONTAINER (priv->logo_file_editor), glade_eprop_disable_check, NULL);
-      gtk_container_forall (GTK_CONTAINER (priv->logo_icon_editor), glade_eprop_disable_check, NULL);
       
       glade_widget_property_set_enabled (widget, "logo-icon-name", !as_file);
       glade_widget_property_set_enabled (widget, "logo", as_file);

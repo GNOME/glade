@@ -227,6 +227,32 @@ glade_editor_property_get_custom_text (GladeEditorProperty *eprop)
   return eprop->priv->custom_text;
 }
 
+void
+glade_editor_property_set_disable_check (GladeEditorProperty *eprop,
+                                         gboolean             disable_check)
+{
+  GladeEditorPropertyPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
+
+  priv = eprop->priv;
+
+  if (priv->disable_check != disable_check)
+    {
+      priv->disable_check = disable_check;
+      gtk_widget_set_visible (priv->check, !disable_check);
+      g_object_notify (G_OBJECT (eprop), "disable-check");
+    }
+}
+
+gboolean
+glade_editor_property_get_disable_check (GladeEditorProperty *eprop)
+{
+  g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop), FALSE);
+
+  return eprop->priv->disable_check;
+}
+
 GtkWidget *
 glade_editor_property_get_item_label  (GladeEditorProperty *eprop)
 {
@@ -444,15 +470,7 @@ glade_editor_property_set_property (GObject      *object,
         eprop->priv->use_command = g_value_get_boolean (value);
         break;
       case PROP_DISABLE_CHECK:
-        eprop->priv->disable_check = g_value_get_boolean (value);
-
-	if (eprop->priv->check)
-	  {
-	    if (eprop->priv->disable_check)
-	      gtk_widget_hide (eprop->priv->check);
-	    else
-	      gtk_widget_show (eprop->priv->check);
-	  }
+        glade_editor_property_set_disable_check (eprop, g_value_get_boolean (value));
         break;
       case PROP_CUSTOM_TEXT:
 	glade_editor_property_set_custom_text (eprop, g_value_get_string (value));

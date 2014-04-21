@@ -97,42 +97,45 @@ struct _GladeEditorPropertyClass {
 
 
 
-GType                glade_editor_property_get_type       (void) G_GNUC_CONST;
+GType                glade_editor_property_get_type           (void) G_GNUC_CONST;
 
-void                 glade_editor_property_load           (GladeEditorProperty *eprop,
-							   GladeProperty       *property);
+void                 glade_editor_property_load               (GladeEditorProperty *eprop,
+							       GladeProperty       *property);
 
-void                 glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
-							   GladeWidget         *widget);
+void                 glade_editor_property_load_by_widget     (GladeEditorProperty *eprop,
+							       GladeWidget         *widget);
 
-void                 glade_editor_property_commit         (GladeEditorProperty *eprop,
-							   GValue              *value);
+void                 glade_editor_property_commit             (GladeEditorProperty *eprop,
+							       GValue              *value);
 void                 glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
 							       GValue              *value);
-void                 glade_editor_property_set_custom_text(GladeEditorProperty *eprop,
-							   const gchar         *custom_text);
-const gchar         *glade_editor_property_get_custom_text(GladeEditorProperty *eprop);
+void                 glade_editor_property_set_custom_text    (GladeEditorProperty *eprop,
+                                                               const gchar         *custom_text);
+const gchar         *glade_editor_property_get_custom_text    (GladeEditorProperty *eprop);
+void                 glade_editor_property_set_disable_check  (GladeEditorProperty *eprop,
+                                                               gboolean             disable_check);
+gboolean             glade_editor_property_get_disable_check  (GladeEditorProperty *eprop);
 
-GtkWidget           *glade_editor_property_get_item_label  (GladeEditorProperty *eprop);
-GladePropertyClass  *glade_editor_property_get_pclass      (GladeEditorProperty *eprop);
-GladeProperty       *glade_editor_property_get_property    (GladeEditorProperty *eprop);
-gboolean             glade_editor_property_loading         (GladeEditorProperty *eprop);
+GtkWidget           *glade_editor_property_get_item_label     (GladeEditorProperty *eprop);
+GladePropertyClass  *glade_editor_property_get_pclass         (GladeEditorProperty *eprop);
+GladeProperty       *glade_editor_property_get_property       (GladeEditorProperty *eprop);
+gboolean             glade_editor_property_loading            (GladeEditorProperty *eprop);
 
-gboolean             glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
-							     gchar               **text,
-							     gchar               **context,
-							     gchar               **comment,
-							     gboolean             *translatable);
-gboolean             glade_editor_property_show_resource_dialog (GladeProject     *project, 
-								 GtkWidget        *parent, 
-								 gchar           **filename);
+gboolean             glade_editor_property_show_i18n_dialog     (GtkWidget         *parent,
+                                                                 gchar            **text,
+                                                                 gchar            **context,
+                                                                 gchar            **comment,
+                                                                 gboolean          *translatable);
+gboolean             glade_editor_property_show_resource_dialog (GladeProject      *project, 
+								 GtkWidget         *parent, 
+								 gchar            **filename);
 
-gboolean             glade_editor_property_show_object_dialog (GladeProject       *project,
-							       const gchar        *title,
-							       GtkWidget          *parent, 
-							       GType               object_type,
-							       GladeWidget        *exception,
-							       GladeWidget       **object);
+gboolean             glade_editor_property_show_object_dialog   (GladeProject      *project,
+                                                                 const gchar       *title,
+                                                                 GtkWidget         *parent, 
+                                                                 GType              object_type,
+                                                                 GladeWidget       *exception,
+                                                                 GladeWidget      **object);
 
 /* Generic eprops */
 #define GLADE_TYPE_EPROP_NUMERIC         (glade_eprop_numeric_get_type())
