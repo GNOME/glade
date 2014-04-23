@@ -231,18 +231,6 @@ glade_gtk_init (const gchar *name)
 }
 
 /* ----------------------------- GtkWidget ------------------------------ */
-gboolean
-glade_gtk_widget_depends (GladeWidgetAdaptor *adaptor,
-			  GladeWidget        *widget,
-			  GladeWidget        *another)
-{
-	if (GTK_IS_ICON_FACTORY (another->object) ||
-	    GTK_IS_ACTION       (another->object) ||
-	    GTK_IS_ACTION_GROUP (another->object))
-		return TRUE; 
-
-	return GWA_GET_CLASS (G_TYPE_OBJECT)->depends (adaptor, widget, another);
-}
 
 #define GLADE_TAG_A11Y_A11Y         "accessibility"
 #define GLADE_TAG_A11Y_ACTION_NAME  "action_name" /* We should make -/_ synonymous */
