@@ -3270,6 +3270,17 @@ glade_project_verify (GladeProject    *project,
   gboolean ret = TRUE;
 
   GLADE_NOTE (VERIFY, g_print ("VERIFY: glade_project_verify() start\n"));
+
+  if (project->priv->template)
+    {
+      gint major, minor;
+      glade_project_get_target_version (project, "gtk+", &major, &minor);
+
+      if (major == 3 && minor < 10)
+        g_string_append_printf (string, _("Object %s is a class template but this is not supported in gtk+ %d.%d"),
+                                glade_widget_get_name (project->priv->template),
+                                major, minor); 
+    }
   
   for (list = project->priv->objects; list; list = list->next)
     {
@@ -4052,6 +4063,8 @@ glade_project_set_template (GladeProject *project, GladeWidget *widget)
 
       if (project->priv->template)
 	glade_widget_set_is_composite (project->priv->template, TRUE);
+
+      glade_project_verify_project_for_ui (project);
 
       g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_TEMPLATE]);
     }

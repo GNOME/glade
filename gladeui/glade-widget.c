@@ -4739,27 +4739,37 @@ glade_widget_generate_path_name (GladeWidget *widget)
 void
 glade_widget_verify (GladeWidget *widget)
 {
+  GladeWidgetPrivate *priv;
   gchar *warning = NULL;
-  GList *warn_properties = NULL;
-  GList *warn_signals = NULL;
 
   g_return_if_fail (GLADE_IS_WIDGET (widget));
+  priv = widget->priv;
 
-  if (widget->priv->project == NULL)
+  if (priv->project == NULL)
     return;
+    
+  if (priv->composite)
+    {
+      gint major, minor;
+      glade_project_get_target_version (priv->project, "gtk+", &major, &minor);
 
-  if (GLADE_IS_OBJECT_STUB (widget->priv->object))
+      if (major == 3 && minor < 10)
+        warning = g_strdup_printf (_("Template classes are not supported in gtk+ %d.%d"),
+                                   major, minor); 
+    }
+
+  if (!warning && GLADE_IS_OBJECT_STUB (priv->object))
     {
       gchar *type;
-      g_object_get (widget->priv->object, "object-type", &type, NULL);
+      g_object_get (priv->object, "object-type", &type, NULL);
           
       warning = g_strdup_printf (_("Object has unrecognized type %s"), type);
       g_free (type);
     }
 
   if (!warning)
-    warning = glade_project_verify_widget_adaptor (widget->priv->project,
-						   widget->priv->adaptor,
+    warning = glade_project_verify_widget_adaptor (priv->project, 
+                                                   priv->adaptor,
 						   NULL);
 
   /* If there is already support issues with the adaptor, skip signals
@@ -4767,13 +4777,15 @@ glade_widget_verify (GladeWidget *widget)
    */
   if (!warning)
     {
+      GList *warn_properties = NULL;
+      GList *warn_signals = NULL;
+      GString *string = NULL;
       GHashTableIter iter;
       gpointer key, value;
       GList *l;
-      GString *string = NULL;
 
       /* Collect signals with warnings on them */
-      g_hash_table_iter_init (&iter, widget->priv->signals);
+      g_hash_table_iter_init (&iter, priv->signals);
       while (g_hash_table_iter_next (&iter, &key, &value))
 	{
 	  GPtrArray *signals = (GPtrArray *)value;
@@ -4789,7 +4801,7 @@ glade_widget_verify (GladeWidget *widget)
 	}
 
       /* Collect properties with warnings on them */
-      for (l = widget->priv->properties; l; l = l->next)
+      for (l = priv->properties; l; l = g_list_next (l))
 	{
 	  GladeProperty *property = l->data;
 
@@ -4797,7 +4809,7 @@ glade_widget_verify (GladeWidget *widget)
 	    warn_properties = g_list_prepend (warn_properties, property);
 	}
  
-      for (l = widget->priv->packing_properties; l; l = l->next)
+      for (l = priv->packing_properties; l; l = g_list_next (l))
 	{
 	  GladeProperty *property = l->data;
 
@@ -4809,7 +4821,7 @@ glade_widget_verify (GladeWidget *widget)
 	string = g_string_new (NULL);
 
       /* Print out property warnings */
-      for (l = warn_properties; l; l = l->next)
+      for (l = warn_properties; l; l = g_list_next (l))
 	{
 	  GladeProperty *property = l->data;
 	  GladePropertyClass *pclass = glade_property_get_class (property);
@@ -4832,7 +4844,7 @@ glade_widget_verify (GladeWidget *widget)
 	g_string_append (string, "\n");
 
       /* Print out signal warnings */
-      for (l = warn_signals; l; l = l->next)
+      for (l = warn_signals; l; l = g_list_next (l))
 	{
 	  GladeSignal *signal = l->data;
 
