@@ -36,6 +36,49 @@
 #define GLADE_TAG_ACCEL_GROUPS "accel-groups"
 #define GLADE_TAG_ACCEL_GROUP  "group"
 
+#if !GTK_CHECK_VERSION (3,15,0)
+static void check_titlebar (GtkWidget *widget, gpointer data)
+{
+  GtkWidget **titlebar = data;
+  if (gtk_style_context_has_class (gtk_widget_get_style_context (widget), "titlebar"))
+    *titlebar = widget;
+}
+
+static GtkWidget *
+gtk_window_get_titlebar (GtkWindow *window)
+{
+  GtkWidget *titlebar = NULL;
+  gtk_container_forall (GTK_CONTAINER (window), check_titlebar, &titlebar);
+  return titlebar;
+}
+#endif
+
+static void
+glade_gtk_window_parse_finished (GladeProject * project, GObject * object)
+{
+  glade_widget_property_set (glade_widget_get_from_gobject (object),
+                             "use-csd", gtk_window_get_titlebar(GTK_WINDOW (object)) != NULL);
+}
+
+void
+glade_gtk_window_post_create (GladeWidgetAdaptor * adaptor,
+                              GObject * object, GladeCreateReason reason)
+{
+  GladeWidget *parent = glade_widget_get_from_gobject (object);
+  GladeProject *project = glade_widget_get_project (parent);
+
+  if (reason == GLADE_CREATE_LOAD)
+    {
+      g_signal_connect (project, "parse-finished",
+                        G_CALLBACK (glade_gtk_window_parse_finished),
+                        object);
+    }
+  else if (reason == GLADE_CREATE_USER)
+    {
+      gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
+    }
+}
+
 static void
 glade_gtk_window_read_accel_groups (GladeWidget * widget, GladeXmlNode * node)
 {
@@ -205,6 +248,98 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
       else
 	glade_widget_property_set_sensitive (gwidget, "icon", TRUE, NULL);
     }
+  else if (!strcmp (id, "use-csd"))
+    {
+      if (g_value_get_boolean (value))
+        {
+          GtkWidget *titlebar;
+
+          titlebar = gtk_window_get_titlebar (GTK_WINDOW (object));
+          if (!titlebar)
+            titlebar = glade_placeholder_new ();
+          g_object_set_data (G_OBJECT (titlebar), "special-child-type", "titlebar");
+          gtk_window_set_titlebar (GTK_WINDOW (object), titlebar);
+        }
+      else
+        gtk_window_set_titlebar (GTK_WINDOW (object), NULL);
+    }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+}
+
+void
+glade_gtk_window_replace_child (GladeWidgetAdaptor * adaptor,
+                               GtkWidget * container,
+                               GtkWidget * current, GtkWidget * new_widget)
+{
+  gchar *special_child_type;
+
+  special_child_type = g_object_get_data (G_OBJECT (current), "special-child-type");
+
+  if (special_child_type && !strcmp (special_child_type, "titlebar"))
+    {
+      g_object_set_data (G_OBJECT (new_widget), "special-child-type", "titlebar");
+      gtk_window_set_titlebar (GTK_WINDOW (container), new_widget);
+      return;
+    }
+
+  /* Chain Up */
+  GWA_GET_CLASS
+      (GTK_TYPE_CONTAINER)->replace_child (adaptor,
+                                           G_OBJECT (container),
+                                           G_OBJECT (current),
+                                           G_OBJECT (new_widget));
+}
+
+void
+glade_gtk_window_add_child (GladeWidgetAdaptor * adaptor,
+                           GObject * object, GObject * child)
+{
+  GtkWidget *bin_child;
+  gchar *special_child_type;
+
+  special_child_type = g_object_get_data (child, "special-child-type");
+
+  if (special_child_type && !strcmp (special_child_type, "titlebar"))
+    {
+      gtk_window_set_titlebar (GTK_WINDOW (object), GTK_WIDGET (child));
+    }
+  else
+    {
+      /* Get a placeholder out of the way before adding the child */
+      bin_child = gtk_bin_get_child (GTK_BIN (object));
+      if (bin_child)
+        {
+          if (GLADE_IS_PLACEHOLDER (bin_child))
+            gtk_container_remove (GTK_CONTAINER (object), bin_child);
+          else
+            {
+              g_critical ("Cant add more than one widget to a GtkWindow");
+              return;
+            }
+        }
+      gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+    }
+
+}
+
+void
+glade_gtk_window_remove_child (GladeWidgetAdaptor * adaptor,
+                              GObject * object, GObject * child)
+{
+  gchar *special_child_type;
+  GtkWidget *placeholder;
+
+  placeholder = glade_placeholder_new ();
+  special_child_type = g_object_get_data (child, "special-child-type");
+  if (special_child_type && !strcmp (special_child_type, "titlebar"))
+    {
+      g_object_set_data (G_OBJECT (placeholder), "special-child-type", "titlebar");
+      gtk_window_set_titlebar (GTK_WINDOW (object), placeholder);
+    }
+  else
+    {
+      gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
+      gtk_container_add (GTK_CONTAINER (object), placeholder);
+    }
 }

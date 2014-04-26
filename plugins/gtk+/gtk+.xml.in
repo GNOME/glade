@@ -686,10 +686,15 @@
       </glade-widget-class>
       
       <glade-widget-class name="GtkWindow" generic-name="window" _title="Window" toplevel="True" default-width="440" default-height="250">
+        <post-create-function>glade_gtk_window_post_create</post-create-function>
         <read-widget-function>glade_gtk_window_read_widget</read-widget-function>
         <write-widget-function>glade_gtk_window_write_widget</write-widget-function>
         <create-editable-function>glade_gtk_window_create_editable</create-editable-function>
         <set-property-function>glade_gtk_window_set_property</set-property-function>
+        <add-child-function>glade_gtk_window_add_child</add-child-function>
+        <remove-child-function>glade_gtk_window_remove_child</remove-child-function>
+        <replace-child-function>glade_gtk_window_replace_child</replace-child-function>
+        <special-child-type>type</special-child-type>
         
         <properties> 
           <!-- Virtual accel-groups property to record accel groups -->
@@ -699,6 +704,12 @@
               <value-type>GtkAccelGroup</value-type>
             </parameter-spec>
             <_tooltip>A list of accel groups to be added to this window</_tooltip>
+          </property>
+          <!-- Virtual csd mode property -->
+          <property id="use-csd" name="CSD" visible="True" save="False">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
           </property>
           <property id="attached-to" since="3.4" ignore="True" custom-layout="True"/>
           <property id="startup-id" since="2.12" custom-layout="True"/>
