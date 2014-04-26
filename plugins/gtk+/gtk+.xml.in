@@ -2682,7 +2682,41 @@
           <property id="align-widget" ignore="True"/>
         </properties>
       </glade-widget-class>
-      
+
+      <glade-widget-class name="GtkLockButton" generic-name="lockbutton" _title="Lock Button" since="3.2">
+        <properties>
+          <property id="permission" disabled="True"/>
+          <property id="text-lock" translatable="True"/>
+          <property id="text-unlock" translatable="True"/>
+          <property id="tooltip-lock" multiline="True" translatable="True"/>
+          <property id="tooltip-unlock" multiline="True" translatable="True"/>
+          <property id="tooltip-not-authorized" multiline="True" translatable="True"/>
+
+          <!-- Disable Button Properties -->
+          <property id="always-show-image" disabled="True"/>
+          <property id="receives-default" disabled="True"/>
+          <property id="image" disabled="True"/>
+          <property id="use-stock" disabled="True"/>
+          <property id="label" disabled="True"/>
+          <property id="use-underline" disabled="True"/>
+          <property id="xalign" disabled="True"/>
+          <property id="yalign" disabled="True"/>
+          <property id="relief" disabled="True"/>
+          <property id="focus-on-click" disabled="True"/>
+          <property id="stock" disabled="True"/>
+          <property id="custom-child" disabled="True"/>
+          <property id="image-position" disabled="True"/>
+          <property id="response-id" disabled="True"/>
+          
+          <!-- GtkActivatable -->
+          <property id="related-action" disabled="True"/>
+          <property id="use-action-appearance" disabled="True"/>
+          
+          <!-- GtkActionable -->
+          <property id="action-name" disabled="True"/>
+        </properties>
+      </glade-widget-class>
+
       <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" use-placeholders="False">
         <create-editable-function>glade_gtk_layout_create_editable</create-editable-function>
         <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
@@ -5082,6 +5116,7 @@
       <glade-widget-class-ref name="GtkCheckButton"/>
       <glade-widget-class-ref name="GtkRadioButton"/>
       <glade-widget-class-ref name="GtkMenuButton"/>
+      <glade-widget-class-ref name="GtkLockButton"/>
       <glade-widget-class-ref name="GtkSwitch"/>
       
       <glade-widget-class-ref name="GtkEntry"/>

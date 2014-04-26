@@ -127,7 +127,7 @@ glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
 	return (GladeEditable *) glade_font_button_editor_new ();
       else if (g_type_is_a (type, GTK_TYPE_SCALE_BUTTON))
 	return (GladeEditable *) glade_scale_button_editor_new ();
-      else
+      else if (!g_type_is_a (type, GTK_TYPE_LOCK_BUTTON))
 	return (GladeEditable *) glade_button_editor_new ();
     }
 
@@ -166,6 +166,12 @@ glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
     g_signal_connect
         (button, "color-set",
          G_CALLBACK (glade_gtk_color_button_refresh_color), gbutton);
+  else if (GTK_IS_LOCK_BUTTON (button))
+    {
+      /* Gtk <= 3.12 crash if you click on a LockButton without a permission set */
+      gtk_lock_button_set_permission (GTK_LOCK_BUTTON (button),
+                                      g_simple_permission_new (TRUE));
+    }
 
   /* Disabled response-id until its in an action area */
   glade_widget_property_set_sensitive (gbutton, "response-id", FALSE,
@@ -175,6 +181,15 @@ glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
     glade_gtk_button_update_stock (gbutton);
 }
 
+
+static inline gboolean
+glade_gtk_lock_button_is_own_property (GladeProperty *property)
+{
+  GladePropertyClass *klass = glade_property_get_class (property);
+  GParamSpec *spec = glade_property_class_get_pspec (klass);
+  return (spec->owner_type == GTK_TYPE_LOCK_BUTTON);
+}
+
 void
 glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
                                GObject * object,
@@ -182,7 +197,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);
-
+    
   if (strcmp (id, "custom-child") == 0)
     {
       GtkWidget *child = gtk_bin_get_child (GTK_BIN (object));
@@ -221,6 +236,12 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
     }
   else if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+
+  /* GtkLockButton hides itself after setting a property so we need to make sure
+   * we keep it visible.
+   */
+  if (GTK_IS_LOCK_BUTTON (object) && glade_gtk_lock_button_is_own_property (property));
+    gtk_widget_set_visible (GTK_WIDGET (object), TRUE);
 }
 
 void
@@ -262,15 +283,19 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
   GladeProperty *prop;
   gboolean use_stock;
   gchar *stock = NULL;
+  GObject *object;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
 	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
-  /* Do not save GtkColorButton GtkFontButton and GtkScaleButton label property */
-  if (!(GTK_IS_COLOR_BUTTON (glade_widget_get_object (widget)) ||
-	GTK_IS_FONT_BUTTON (glade_widget_get_object (widget)) ||
-	GTK_IS_SCALE_BUTTON (glade_widget_get_object (widget))))
+  object = glade_widget_get_object (widget);
+
+  /* Do not save GtkColorButton GtkFontButton GtkLockButton and GtkScaleButton 
+   * label property
+   */
+  if (!(GTK_IS_COLOR_BUTTON (object) || GTK_IS_FONT_BUTTON (object) ||
+        GTK_IS_LOCK_BUTTON (object)  || GTK_IS_SCALE_BUTTON (object)))
     {
       /* Make a copy of the GladeProperty, 
        * override its value and ensure non-translatable if use-stock is TRUE
