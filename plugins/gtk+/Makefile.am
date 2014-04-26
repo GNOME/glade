@@ -118,6 +118,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-viewport.c		\
 	glade-gtk-widget.c		\
 	glade-gtk-window.c		\
+	glade-gtk-header-bar.c 		\
 	glade-icon-factory-editor.c	\
 	glade-icon-sources.c		\
 	glade-icon-view-editor.c	\

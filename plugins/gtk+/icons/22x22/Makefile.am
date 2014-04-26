@@ -54,6 +54,7 @@ icons_DATA = \
 	widget-gtk-handlebox.png \
 	widget-gtk-hbox.png \
 	widget-gtk-hbuttonbox.png \
+	widget-gtk-headerbar.png \
 	widget-gtk-hpaned.png \
 	widget-gtk-hscale.png \
 	widget-gtk-hscrollbar.png \

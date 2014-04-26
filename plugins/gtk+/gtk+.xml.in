@@ -2399,7 +2399,46 @@
           <property id="tab-label" disabled="True"/>
         </packing-properties>
       </glade-widget-class>
-      
+     
+    <glade-widget-class name="GtkHeaderBar" generic-name="headerbar" _title="HeaderBar" since="3.10">
+      <post-create-function>glade_gtk_header_bar_post_create</post-create-function>
+      <add-child-function>glade_gtk_header_bar_add_child</add-child-function>
+      <child-action-activate-function>glade_gtk_header_bar_child_action_activate</child-action-activate-function>
+      <set-property-function>glade_gtk_header_bar_set_property</set-property-function>
+      <get-property-function>glade_gtk_header_bar_get_property</get-property-function>
+      <add-child-function>glade_gtk_header_bar_add_child</add-child-function>
+      <remove-child-function>glade_gtk_header_bar_remove_child</remove-child-function>
+      <replace-child-function>glade_gtk_header_bar_replace_child</replace-child-function>
+      <special-child-type>type</special-child-type>
+      <properties>
+        <property id="custom-title" disabled="True"/>
+        <property id="use-custom-title" _name="Custom Title" default="FALSE" visible="True" save="False">
+          <parameter-spec>
+            <type>GParamBoolean</type>
+          </parameter-spec>
+        </property>
+        <property visible="True" save="False" id="start-size" default="1" _name="Number of items at the start">
+          <parameter-spec>
+            <type>GParamInt</type>
+            <min>0</min>
+          </parameter-spec>
+          <_tooltip>The number of items at the start</_tooltip>
+        </property>
+        <property visible="True" save="False" id="end-size" default="1" _name="Number of items at the end">
+          <parameter-spec>
+            <type>GParamInt</type>
+            <min>0</min>
+          </parameter-spec>
+          <_tooltip>The number of items at the end</_tooltip>
+        </property>
+      </properties>
+      <packing-actions>
+        <action id="add_start" _name="Add Slot at start" stock="gtk-add"/>
+        <action id="add_end" _name="Add Slot at end" stock="gtk-add"/>
+        <action id="remove_slot" _name="Remove Slot" stock="gtk-remove"/>
+      </packing-actions>
+    </glade-widget-class>
+
       <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer" since="3.10">
         <post-create-function>glade_gtk_revealer_post_create</post-create-function>
         <properties>
@@ -5176,6 +5215,7 @@
       <glade-widget-class-ref name="GtkAlignment"/>
       <glade-widget-class-ref name="GtkRevealer" />
       <glade-widget-class-ref name="GtkSearchBar" />
+      <glade-widget-class-ref name="GtkHeaderBar" />
     </glade-widget-group>
     
     <glade-widget-group name="gtk-control-display" _title="Control and Display">
