@@ -702,6 +702,7 @@ G_CONST_RETURN gchar *glade_widget_adaptor_get_generic_name (GladeWidgetAdaptor 
 G_CONST_RETURN gchar *glade_widget_adaptor_get_title        (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_icon_name    (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor   *adaptor);
+G_CONST_RETURN gchar *glade_widget_adaptor_get_catalog      (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_book         (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN GList *glade_widget_adaptor_get_properties   (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN GList *glade_widget_adaptor_get_packing_props(GladeWidgetAdaptor   *adaptor);
