@@ -257,6 +257,29 @@ glade_abort_if_derived_adaptors_exist (GType type)
     }
 }
 
+static GladeInternalChild *
+gwa_internal_child_find (GList *list, const gchar *name)
+{
+  GList *l;
+
+  for (l = list; l; l = g_list_next (l))
+    {
+      GladeInternalChild *data = l->data;
+
+      if (strcmp (data->name, name) == 0)
+        return data;
+      
+      if (data->children)
+        {
+          GladeInternalChild *child;
+          if ((child = gwa_internal_child_find (data->children, name)))
+            return child;
+        }
+    }
+  
+  return NULL;
+}
+
 /*******************************************************************************
                      Base Object Implementation detail
  *******************************************************************************/
@@ -1301,13 +1324,14 @@ glade_widget_adaptor_object_create_editable (GladeWidgetAdaptor *adaptor,
   return (GladeEditable *) glade_editor_table_new (adaptor, type);
 }
 
-static GList *
-glade_widget_adaptor_object_get_children (GladeWidgetAdaptor *adaptor,
-                                          GObject *object)
+static void
+glade_internal_child_append (GladeWidgetAdaptor *adaptor,
+                             GObject            *object,
+                             GList              *list,
+                             GList             **children)
 {
-  GList *list = adaptor->priv->internal_children;
-  GList *l, *children = NULL;
-  
+  GList *l;
+
   for (l = list; l; l = g_list_next (l))
     {
       GladeInternalChild *internal = l->data;
@@ -1317,8 +1341,45 @@ glade_widget_adaptor_object_get_children (GladeWidgetAdaptor *adaptor,
                                                        object,
                                                        internal->name);
       if (child)
-        children = g_list_prepend (children, child);
+        *children = g_list_prepend (*children, child);
     }
+}
+
+static GList *
+glade_widget_adaptor_object_get_children (GladeWidgetAdaptor *adaptor,
+                                          GObject *object)
+{
+  GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+  GList *children = NULL;
+  const gchar *name;
+
+  if (gwidget && (name = glade_widget_get_internal (gwidget)))
+    {
+      GladeWidget *parent = gwidget;
+
+      /* Get non internal parent */
+      while ((parent = glade_widget_get_parent (parent)) &&
+             glade_widget_get_internal (parent));
+
+      if (parent)
+        {
+          GladeWidgetAdaptor *padaptor = glade_widget_get_adaptor (parent);
+          GladeInternalChild *internal;
+
+          internal = gwa_internal_child_find (padaptor->priv->internal_children,
+                                              name);
+
+          if (internal && internal->children)
+            glade_internal_child_append (padaptor, glade_widget_get_object (parent),
+                                         internal->children, &children);
+        }
+
+      return children;
+    }
+
+  glade_internal_child_append (adaptor, object,
+                               adaptor->priv->internal_children,
+                               &children);
 
   return children;
 }
@@ -2304,29 +2365,6 @@ gwa_set_signals_from_node (GladeWidgetAdaptor *adaptor,
         }
       g_free (id);
     }
-}
-
-static GladeInternalChild *
-gwa_internal_child_find (GList *list, gchar *name)
-{
-  GList *l;
-
-  for (l = list; l; l = g_list_next (l))
-    {
-      GladeInternalChild *data = l->data;
-
-      if (strcmp (data->name, name) == 0)
-        return data;
-      
-      if (data->children)
-        {
-          GladeInternalChild *child;
-          if ((child = gwa_internal_child_find (data->children, name)))
-            return child;
-        }
-    }
-  
-  return NULL;
 }
 
 static GList *
