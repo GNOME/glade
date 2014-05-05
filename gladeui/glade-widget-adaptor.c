@@ -42,7 +42,7 @@
 #include "glade-displayable-values.h"
 #include "glade-editor-table.h"
 #include "glade-cursor.h"
-#include "glade-widget-private.h"
+#include "glade-private.h"
 
 /* For g_file_exists */
 #include <sys/types.h>

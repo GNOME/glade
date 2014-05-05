@@ -44,7 +44,7 @@
 #include "glade-accumulators.h"
 #include "glade-project.h"
 #include "glade-widget-adaptor.h"
-#include "glade-widget-private.h"
+#include "glade-private.h"
 #include "glade-marshallers.h"
 #include "glade-property.h"
 #include "glade-property-class.h"

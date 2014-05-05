@@ -200,8 +200,7 @@ noinst_HEADERS = \
 	glade-tsort.h \
 	gladeui-resources.h \
 	glade-drag.h \
-	glade-dnd.h \
-	glade-widget-private.h
+	glade-dnd.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined

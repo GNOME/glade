@@ -55,8 +55,6 @@
 #include "glade-project-properties.h"
 #include "glade-dnd.h"
 #include "glade-private.h"
-
-#include "glade-widget-private.h"
 #include "glade-tsort.h"
 
 static void     glade_project_target_version_for_adaptor

@@ -28,9 +28,14 @@
 #ifndef __GLADE_PRIVATE_H__
 #define __GLADE_PRIVATE_H__
 
+#include "glade-widget.h"
 #include "glade-project-properties.h"
 
 G_BEGIN_DECLS
+
+/* glade-widget.c */
+
+GList *_glade_widget_peek_prop_refs (GladeWidget *widget);
 
 /* glade-catalog.c */
 
