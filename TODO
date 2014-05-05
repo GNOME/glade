@@ -10,11 +10,17 @@ A first step could be updating GladeProject to only use GladeWidget internally
 and then we can update gladeui api to use GladeWidget instead but this means a
 API/ABI break 
 
+GtkBuilder unsuported features:
+==============================
+
+  * No ID objects: GtkBuilder now support objects without an id.
+  * Property bindings
 
 Unsupported object classes:
 ==========================
 
 Glib
+
   * GMenu/GMenuModel (<menu> GtkBuilder element)
     Because GMenu is in Glib library it can not implement GtkBuildable iface which
     is in GTK+ this lead to implementing GMenu object construction in GtkBuilder
@@ -24,6 +30,8 @@ Glib
     A way to avoid this would be to create a new object type in GTK that derives
     from GMenu say GtkMenuObject (GtkMenu is already taken ;) and make it implement
     GtkBuildable iface.
+
+  * GAction, GSimpleAction, GActionGroup
 
 GTK+ 3.4
 
