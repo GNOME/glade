@@ -98,8 +98,10 @@ glade_action_editor_load (GladeEditable *editable,
   if (gwidget)
     {
       GObject *object = glade_widget_get_object (gwidget);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gboolean is_toggle = GTK_IS_TOGGLE_ACTION (object);
       gboolean is_radio = GTK_IS_RADIO_ACTION (object);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       /* Update subclass specific editor visibility */
       gtk_widget_set_visible (priv->toggle_title, is_toggle);

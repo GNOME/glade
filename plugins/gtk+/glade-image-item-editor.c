@@ -61,7 +61,9 @@ static GladeWidget *
 get_image_widget (GladeWidget * widget)
 {
   GtkWidget *image;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (glade_widget_get_object (widget)));
+G_GNUC_END_IGNORE_DEPRECATIONS
   return image ? glade_widget_get_from_gobject (image) : NULL;
 }
 

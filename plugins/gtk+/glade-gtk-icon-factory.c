@@ -41,14 +41,18 @@ void
 glade_gtk_icon_factory_post_create (GladeWidgetAdaptor * adaptor,
                                     GObject * object, GladeCreateReason reason)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_icon_factory_add_default (GTK_ICON_FACTORY (object));
+G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 void
 glade_gtk_icon_factory_destroy_object (GladeWidgetAdaptor * adaptor,
 				       GObject *object)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_icon_factory_remove_default (GTK_ICON_FACTORY (object));
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   GWA_GET_CLASS (G_TYPE_OBJECT)->destroy_object (adaptor, object);
 }
@@ -96,7 +100,9 @@ glade_gtk_icon_factory_read_sources (GladeWidget * widget, GladeXmlNode * node)
       if (!current_icon_name || strcmp (current_icon_name, icon_name) != 0)
         current_icon_name = (g_free (current_icon_name), g_strdup (icon_name));
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       source = gtk_icon_source_new ();
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       /* Deal with the filename... */
       value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, str, glade_widget_get_project (widget));
@@ -104,7 +110,9 @@ glade_gtk_icon_factory_read_sources (GladeWidget * widget, GladeXmlNode * node)
       g_value_unset (value);
       g_free (value);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gtk_icon_source_set_pixbuf (source, pixbuf);
+G_GNUC_END_IGNORE_DEPRECATIONS
       g_object_unref (G_OBJECT (pixbuf));
       g_free (str);
 
@@ -115,8 +123,10 @@ glade_gtk_icon_factory_read_sources (GladeWidget * widget, GladeXmlNode * node)
         {
           GtkTextDirection direction =
               glade_utils_enum_value_from_string (GTK_TYPE_TEXT_DIRECTION, str);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
           gtk_icon_source_set_direction_wildcarded (source, FALSE);
           gtk_icon_source_set_direction (source, direction);
+G_GNUC_END_IGNORE_DEPRECATIONS
           g_free (str);
         }
 
@@ -125,8 +135,10 @@ glade_gtk_icon_factory_read_sources (GladeWidget * widget, GladeXmlNode * node)
         {
           GtkIconSize size =
               glade_utils_enum_value_from_string (GTK_TYPE_ICON_SIZE, str);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
           gtk_icon_source_set_size_wildcarded (source, FALSE);
           gtk_icon_source_set_size (source, size);
+G_GNUC_END_IGNORE_DEPRECATIONS
           g_free (str);
         }
 
@@ -136,8 +148,10 @@ glade_gtk_icon_factory_read_sources (GladeWidget * widget, GladeXmlNode * node)
         {
           GtkStateType state =
               glade_utils_enum_value_from_string (GTK_TYPE_STATE_TYPE, str);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
           gtk_icon_source_set_state_wildcarded (source, FALSE);
           gtk_icon_source_set_state (source, state);
+G_GNUC_END_IGNORE_DEPRECATIONS
           g_free (str);
         }
 
@@ -217,9 +231,11 @@ write_icon_sources (gchar * icon_name, GList * sources, SourceWriteTab * tab)
       glade_xml_node_set_property_string (source_node, GLADE_TAG_STOCK_ID,
                                           icon_name);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_direction_wildcarded (source))
         {
           GtkTextDirection direction = gtk_icon_source_get_direction (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           string =
               glade_utils_enum_string_from_value (GTK_TYPE_TEXT_DIRECTION,
                                                   direction);
@@ -228,9 +244,11 @@ write_icon_sources (gchar * icon_name, GList * sources, SourceWriteTab * tab)
           g_free (string);
         }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_size_wildcarded (source))
         {
           GtkIconSize size = gtk_icon_source_get_size (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           string =
               glade_utils_enum_string_from_value (GTK_TYPE_ICON_SIZE, size);
           glade_xml_node_set_property_string (source_node, GLADE_TAG_SIZE,
@@ -238,9 +256,11 @@ write_icon_sources (gchar * icon_name, GList * sources, SourceWriteTab * tab)
           g_free (string);
         }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_state_wildcarded (source))
         {
           GtkStateType state = gtk_icon_source_get_state (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           string =
               glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
           glade_xml_node_set_property_string (source_node, GLADE_TAG_STATE,
@@ -248,7 +268,9 @@ write_icon_sources (gchar * icon_name, GList * sources, SourceWriteTab * tab)
           g_free (string);
         }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       pixbuf = gtk_icon_source_get_pixbuf (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
       string = g_object_get_data (G_OBJECT (pixbuf), "GladeFileName");
 
       glade_xml_node_set_property_string (source_node,
@@ -308,6 +330,7 @@ apply_icon_sources (gchar * icon_name,
   GtkIconSet *set;
   GList *l;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   set = gtk_icon_set_new ();
 
   for (l = sources; l; l = l->next)
@@ -317,6 +340,7 @@ apply_icon_sources (gchar * icon_name,
     }
 
   gtk_icon_factory_add (factory, icon_name, set);
+G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
@@ -356,14 +380,18 @@ serialize_icon_sources (gchar * icon_name, GList * sources, GString * string)
       GdkPixbuf *pixbuf;
       gchar *str;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       pixbuf = gtk_icon_source_get_pixbuf (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
       str = g_object_get_data (G_OBJECT (pixbuf), "GladeFileName");
 
       g_string_append_printf (string, "%s[%s] ", icon_name, str);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_direction_wildcarded (source))
         {
           GtkTextDirection direction = gtk_icon_source_get_direction (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           str =
               glade_utils_enum_string_from_value (GTK_TYPE_TEXT_DIRECTION,
                                                   direction);
@@ -371,17 +399,21 @@ serialize_icon_sources (gchar * icon_name, GList * sources, GString * string)
           g_free (str);
         }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_size_wildcarded (source))
         {
           GtkIconSize size = gtk_icon_source_get_size (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           str = glade_utils_enum_string_from_value (GTK_TYPE_ICON_SIZE, size);
           g_string_append_printf (string, "size-%s ", str);
           g_free (str);
         }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_state_wildcarded (source))
         {
           GtkStateType state = gtk_icon_source_get_state (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           str = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
           g_string_append_printf (string, "state-%s ", str);
           g_free (str);

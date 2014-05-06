@@ -415,8 +415,10 @@ glade_util_compare_stock_labels (gconstpointer a, gconstpointer b)
   gboolean founda, foundb;
   gint retval;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   founda = gtk_stock_lookup (stock_ida, &itema);
   foundb = gtk_stock_lookup (stock_idb, &itemb);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (founda)
     {
@@ -1686,7 +1688,9 @@ glade_utils_cairo_draw_line (cairo_t *cr,
 {
   cairo_save (cr);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gdk_cairo_set_source_color (cr, color);
+G_GNUC_END_IGNORE_DEPRECATIONS
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
 
   cairo_move_to (cr, x1 + 0.5, y1 + 0.5);
@@ -1704,7 +1708,9 @@ glade_utils_cairo_draw_rectangle (cairo_t *cr,
                                   gint x, gint y,
                                   gint width, gint height)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gdk_cairo_set_source_color (cr, color);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (filled)
     {

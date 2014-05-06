@@ -115,7 +115,9 @@ glade_gtk_tool_button_set_stock_id (GObject * object, const GValue * value)
   if (stock_id && strlen (stock_id) == 0)
     stock_id = NULL;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_tool_button_set_stock_id (GTK_TOOL_BUTTON (object), stock_id);
+G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void

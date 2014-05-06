@@ -212,6 +212,9 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
   GList *l, *found, *accelerators;
   gchar *name, *accel_text;
   const GList *list;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  GType type_action = GTK_TYPE_ACTION;
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   accelerators = g_value_get_boxed (glade_property_inline_value (property));
 
@@ -222,8 +225,8 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
       sclass = list->data;
 
       /* Special case for GtkAction accelerators  */
-      if (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
-          g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION))
+      if (glade_widget_adaptor_get_object_type (adaptor) == type_action ||
+          g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), type_action))
         {
           if (g_strcmp0 (glade_signal_class_get_type (sclass), "GtkAction") != 0 ||
               g_strcmp0 (glade_signal_class_get_name (sclass), "activate") != 0)
@@ -259,8 +262,8 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
       sclass = list->data;
 
       /* Special case for GtkAction accelerators  */
-      if (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
-          g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION))
+      if (glade_widget_adaptor_get_object_type (adaptor) == type_action ||
+          g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), type_action))
         {
           if (g_strcmp0 (glade_signal_class_get_type (sclass), "GtkAction") != 0 ||
               g_strcmp0 (glade_signal_class_get_name (sclass), "activate") != 0)
@@ -306,8 +309,8 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
             }
 
           /* Special case for GtkAction accelerators  */
-          if ((glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
-               g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION)) &&
+          if ((glade_widget_adaptor_get_object_type (adaptor) == type_action ||
+               g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), type_action)) &&
               g_list_length (accelerators) > 0)
             continue;
 
@@ -343,6 +346,9 @@ accel_edited (GtkCellRendererAccel * accel,
   GladePropertyClass *pclass;
   GladeWidgetAdaptor *adaptor;
   gboolean is_action;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  GType type_action = GTK_TYPE_ACTION;
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   pclass = glade_editor_property_get_pclass (GLADE_EDITOR_PROPERTY (eprop_accel));
   adaptor = glade_property_class_get_adaptor (pclass);
@@ -351,8 +357,8 @@ accel_edited (GtkCellRendererAccel * accel,
                                             &iter, path_string))
     return;
 
-  is_action = (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
-               g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION));
+  is_action = (glade_widget_adaptor_get_object_type (adaptor) == type_action ||
+               g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), type_action));
 
   gtk_tree_model_get (eprop_accel->model, &iter,
                       ACCEL_COLUMN_KEY_ENTERED, &key_was_set, -1);

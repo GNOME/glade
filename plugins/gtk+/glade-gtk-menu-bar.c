@@ -56,8 +56,10 @@ glade_gtk_menu_bar_append_new_item (GladeWidget * parent,
   if (item_adaptor == NULL)
     {
       item_adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_MENU_ITEM);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       image_item_adaptor =
           glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE_MENU_ITEM);
+G_GNUC_END_IGNORE_DEPRECATIONS
       separator_adaptor =
           glade_widget_adaptor_get_by_type (GTK_TYPE_SEPARATOR_MENU_ITEM);
     }

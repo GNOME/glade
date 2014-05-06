@@ -38,8 +38,12 @@ glade_gtk_action_post_create (GladeWidgetAdaptor * adaptor,
   if (reason == GLADE_CREATE_REBUILD)
     return;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (!gtk_action_get_name (GTK_ACTION (object)))
-    glade_widget_property_set (gwidget, "name", "untitled");
+G_GNUC_END_IGNORE_DEPRECATIONS
+    {
+      glade_widget_property_set (gwidget, "name", "untitled");
+    }
 
   glade_widget_set_action_sensitive (gwidget, "launch_editor", FALSE);
   glade_widget_property_set_sensitive (gwidget, "accelerator", FALSE, 
@@ -51,12 +55,15 @@ glade_gtk_action_create_editable (GladeWidgetAdaptor * adaptor,
 				  GladeEditorPageType type)
 {
   GladeEditable *editable;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  GType type_recent_action = GTK_TYPE_RECENT_ACTION;
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (type == GLADE_PAGE_GENERAL)
     {
       GType action_type = glade_widget_adaptor_get_object_type (adaptor);
 
-      if (g_type_is_a (action_type, GTK_TYPE_RECENT_ACTION))
+      if (g_type_is_a (action_type, type_recent_action))
 	editable = (GladeEditable *) glade_recent_action_editor_new ();
       else
 	editable = (GladeEditable *) glade_action_editor_new ();

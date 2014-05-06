@@ -432,11 +432,15 @@ glade_gtk_menu_shell_change_type (GladeBaseEditor * editor,
     return TRUE;
 
   /* Delete the internal image of an image menu item before going ahead and changing types. */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (GTK_IS_IMAGE_MENU_ITEM (child))
+G_GNUC_END_IGNORE_DEPRECATIONS
     {
       GList list = { 0, };
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       GtkWidget *image =
           gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (child));
+G_GNUC_END_IGNORE_DEPRECATIONS
       GladeWidget *widget;
 
       if (image && (widget = glade_widget_get_from_gobject (image)))
@@ -455,11 +459,14 @@ glade_gtk_menu_shell_launch_editor (GObject * object, gchar * title)
 {
   GladeBaseEditor *editor;
   GtkWidget *window;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  GType type_image_menu_item = GTK_TYPE_IMAGE_MENU_ITEM;
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   /* Editor */
   editor = glade_base_editor_new (object, NULL,
                                   _("Normal item"), GTK_TYPE_MENU_ITEM,
-                                  _("Image item"), GTK_TYPE_IMAGE_MENU_ITEM,
+                                  _("Image item"), type_image_menu_item,
                                   _("Check item"), GTK_TYPE_CHECK_MENU_ITEM,
                                   _("Radio item"), GTK_TYPE_RADIO_MENU_ITEM,
                                   _("Separator item"),
@@ -467,7 +474,7 @@ glade_gtk_menu_shell_launch_editor (GObject * object, gchar * title)
 
   glade_base_editor_append_types (editor, GTK_TYPE_MENU_ITEM,
                                   _("Normal item"), GTK_TYPE_MENU_ITEM,
-                                  _("Image item"), GTK_TYPE_IMAGE_MENU_ITEM,
+                                  _("Image item"), type_image_menu_item,
                                   _("Check item"), GTK_TYPE_CHECK_MENU_ITEM,
                                   _("Radio item"), GTK_TYPE_RADIO_MENU_ITEM,
                                   _("Separator item"), GTK_TYPE_SEPARATOR_MENU_ITEM, 
@@ -565,6 +572,9 @@ glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor * editor,
 {
   GObject *child = glade_widget_get_object (gchild);
   GType type = G_OBJECT_TYPE (child);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  GType image_menu_item = GTK_TYPE_IMAGE_MENU_ITEM;
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (GTK_IS_TOOL_ITEM (child))
     {
@@ -594,7 +604,7 @@ glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor * editor,
 
   glade_base_editor_add_label (editor, _("Properties"));
 
-  if (type != GTK_TYPE_IMAGE_MENU_ITEM)
+  if (type != image_menu_item)
     glade_base_editor_add_properties (editor, gchild, FALSE, 
 				      "label", 
 				      "tooltip-text",
@@ -606,7 +616,7 @@ glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor * editor,
 				      "accelerator", 
 				      NULL);
 
-  if (type == GTK_TYPE_IMAGE_MENU_ITEM)
+  if (type == image_menu_item)
     glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
   else if (type == GTK_TYPE_CHECK_MENU_ITEM)
     glade_base_editor_add_properties (editor, gchild, FALSE,

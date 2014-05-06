@@ -2501,6 +2501,7 @@ glade_project_add_hardcoded_dependencies (GList *edges, GladeProject *project)
       GObject *predecessor = l->data;
 
       /* Looking for a GtkIconFactory */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (GTK_IS_ICON_FACTORY (predecessor))
         {
           GladeWidget *predecessor_top = glade_widget_get_from_gobject (predecessor);
@@ -2517,6 +2518,7 @@ glade_project_add_hardcoded_dependencies (GList *edges, GladeProject *project)
                                             glade_widget_get_from_gobject (successor));
             }
         }
+G_GNUC_END_IGNORE_DEPRECATIONS
     }
 
   return edges;

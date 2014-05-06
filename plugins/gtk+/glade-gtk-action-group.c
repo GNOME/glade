@@ -34,13 +34,16 @@ glade_gtk_action_group_add_verify (GladeWidgetAdaptor *adaptor,
 				   GtkWidget          *child,
 				   gboolean            user_feedback)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (!GTK_IS_ACTION (child))
+G_GNUC_END_IGNORE_DEPRECATIONS
     {
       if (user_feedback)
 	{
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	  GladeWidgetAdaptor *action_adaptor = 
 	    glade_widget_adaptor_get_by_type (GTK_TYPE_ACTION);
-
+G_GNUC_END_IGNORE_DEPRECATIONS
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
 				 ONLY_THIS_GOES_IN_THAT_MSG,
@@ -58,7 +61,9 @@ void
 glade_gtk_action_group_add_child (GladeWidgetAdaptor * adaptor,
                                   GObject * container, GObject * child)
 {
-  if (GTK_IS_ACTION (child))
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+    if (GTK_IS_ACTION (child))
+G_GNUC_END_IGNORE_DEPRECATIONS
     {
       /* Dont really add/remove actions (because name conflicts inside groups)
        */
@@ -81,7 +86,9 @@ void
 glade_gtk_action_group_remove_child (GladeWidgetAdaptor * adaptor,
                                      GObject * container, GObject * child)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (GTK_IS_ACTION (child))
+G_GNUC_END_IGNORE_DEPRECATIONS
     {
       /* Dont really add/remove actions (because name conflicts inside groups)
        */
@@ -195,6 +202,12 @@ glade_gtk_action_launch_editor (GObject  *action)
   GladeBaseEditor    *editor;
   GladeEditable      *action_editor;
   GtkWidget          *window;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  GType type_action = GTK_TYPE_ACTION;
+  GType type_toggle_action = GTK_TYPE_TOGGLE_ACTION;
+  GType type_radio_action  = GTK_TYPE_RADIO_ACTION;
+  GType type_recent_action = GTK_TYPE_RECENT_ACTION;
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   /* Make sure we get the group here */
   widget = glade_widget_get_toplevel (widget);
@@ -203,10 +216,10 @@ glade_gtk_action_launch_editor (GObject  *action)
 
   /* Editor */
   editor = glade_base_editor_new (glade_widget_get_object (widget), action_editor,
-				  _("Action"), GTK_TYPE_ACTION,
-				  _("Toggle"), GTK_TYPE_TOGGLE_ACTION,
-				  _("Radio"), GTK_TYPE_RADIO_ACTION,
-				  _("Recent"), GTK_TYPE_RECENT_ACTION,
+				  _("Action"), type_action,
+				  _("Toggle"), type_toggle_action,
+				  _("Radio"),  type_radio_action,
+				  _("Recent"), type_recent_action,
 				  NULL);
 
   g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_action_child_selected), NULL);

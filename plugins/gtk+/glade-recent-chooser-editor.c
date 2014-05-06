@@ -71,7 +71,9 @@ glade_recent_chooser_editor_load (GladeEditable *editable,
   if (gwidget)
     {
       GObject *object = glade_widget_get_object (gwidget);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gboolean has_show_numbers = (GTK_IS_RECENT_ACTION (object) || GTK_IS_RECENT_CHOOSER_MENU (object));
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       /* Update subclass specific editor visibility */
       gtk_widget_set_visible (priv->select_multiple_editor, !has_show_numbers);

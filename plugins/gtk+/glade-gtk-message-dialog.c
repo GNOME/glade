@@ -35,12 +35,16 @@ glade_gtk_message_dialog_reset_image (GtkMessageDialog * dialog)
   if (message_type != GTK_MESSAGE_OTHER)
     return FALSE;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   image = gtk_message_dialog_get_image (dialog);
+G_GNUC_END_IGNORE_DEPRECATIONS
   if (glade_widget_get_from_gobject (image))
     {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gtk_message_dialog_set_image (dialog,
                                     gtk_image_new_from_stock (NULL,
                                                               GTK_ICON_SIZE_DIALOG));
+G_GNUC_END_IGNORE_DEPRECATIONS
       gtk_widget_show (image);
 
       return TRUE;
@@ -62,7 +66,9 @@ glade_gtk_message_dialog_image_determine_action (GtkMessageDialog * dialog,
                                                  GtkWidget ** image,
                                                  GladeWidget ** gimage)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GtkWidget *dialog_image = gtk_message_dialog_get_image (dialog);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   *image = g_value_get_object (value);
 
@@ -127,7 +133,9 @@ glade_gtk_message_dialog_set_property (GladeWidgetAdaptor * adaptor,
       if (gtk_widget_get_parent (image))
         g_critical ("Image should have no parent now");
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gtk_message_dialog_set_image (dialog, image);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       {
         /* syncing "message-type" property */
@@ -195,7 +203,9 @@ glade_gtk_message_dialog_get_property (GladeWidgetAdaptor * adaptor,
   if (!strcmp (property_name, "image"))
     {
       GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       GtkWidget *image = gtk_message_dialog_get_image (dialog);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       if (!glade_widget_get_from_gobject (image))
         g_value_set_object (value, NULL);

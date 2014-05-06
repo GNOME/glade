@@ -36,7 +36,9 @@ icon_set_copy (GList * set)
 
   for (l = set; l; l = l->next)
     {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       source = gtk_icon_source_copy ((GtkIconSource *) l->data);
+G_GNUC_END_IGNORE_DEPRECATIONS
       dup_set = g_list_prepend (dup_set, source);
     }
   return g_list_reverse (dup_set);
@@ -46,7 +48,9 @@ icon_set_copy (GList * set)
 static void
 icon_set_free (GList * list)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_list_foreach (list, (GFunc) gtk_icon_source_free, NULL);
+G_GNUC_END_IGNORE_DEPRECATIONS
   g_list_free (list);
 }
 
@@ -174,7 +178,9 @@ populate_store_foreach (const gchar * icon_name,
       gchar *str;
 
       source = l->data;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       pixbuf = gtk_icon_source_get_pixbuf (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
       str = g_object_get_data (G_OBJECT (pixbuf), "GladeFileName");
 
       gtk_tree_store_append (eprop_sources->store, &iter, &parent_iter);
@@ -185,9 +191,11 @@ populate_store_foreach (const gchar * icon_name,
                           COLUMN_TEXT_EDITABLE, TRUE,
                           COLUMN_TEXT_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_direction_wildcarded (source))
         {
           GtkTextDirection direction = gtk_icon_source_get_direction (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           str =
               glade_utils_enum_string_from_value_displayable
               (GTK_TYPE_TEXT_DIRECTION, direction);
@@ -197,9 +205,11 @@ populate_store_foreach (const gchar * icon_name,
           g_free (str);
         }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_size_wildcarded (source))
         {
           GtkIconSize size = gtk_icon_source_get_size (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           str =
               glade_utils_enum_string_from_value_displayable
               (GTK_TYPE_ICON_SIZE, size);
@@ -208,9 +218,11 @@ populate_store_foreach (const gchar * icon_name,
           g_free (str);
         }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!gtk_icon_source_get_state_wildcarded (source))
         {
           GtkStateType state = gtk_icon_source_get_state (source);
+G_GNUC_END_IGNORE_DEPRECATIONS
           str =
               glade_utils_enum_string_from_value_displayable
               (GTK_TYPE_STATE_TYPE, state);
@@ -458,7 +470,9 @@ delete_clicked (GtkWidget * button, GladeEditorProperty * eprop)
           list = g_list_nth (new_list_head, index);
           new_list_head = g_list_remove_link (new_list_head, list);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
           gtk_icon_source_free ((GtkIconSource *) list->data);
+G_GNUC_END_IGNORE_DEPRECATIONS
           g_list_free (list);
 
           /* We copied all that above cause this will free the old list */
@@ -514,12 +528,17 @@ value_filename_edited (GtkCellRendererText * cell,
 
       if (index >= 0 &&
           (source = get_icon_source (icon_sources, icon_name, index)) != NULL)
-        gtk_icon_source_set_pixbuf (source, pixbuf);
+        {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+          gtk_icon_source_set_pixbuf (source, pixbuf);
+G_GNUC_END_IGNORE_DEPRECATIONS
+        }
       else
         {
-
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
           source = gtk_icon_source_new ();
           gtk_icon_source_set_pixbuf (source, pixbuf);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
           if ((source_list = g_hash_table_lookup (icon_sources->sources,
                                                   icon_name)) != NULL)
@@ -537,8 +556,10 @@ value_filename_edited (GtkCellRendererText * cell,
   else
     {
       icon_sources = glade_icon_sources_new ();
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       source = gtk_icon_source_new ();
       gtk_icon_source_set_pixbuf (source, pixbuf);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       source_list = g_list_prepend (NULL, source);
       g_hash_table_insert (icon_sources->sources, g_strdup (icon_name),
@@ -584,6 +605,7 @@ value_attribute_toggled (GtkCellRendererToggle * cell_renderer,
       (source = get_icon_source (icon_sources, icon_name, index)) != NULL)
     {
       /* Note the reverse meaning of active toggles vs. wildcarded sources... */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       switch (edit_column)
         {
           case COLUMN_DIRECTION_ACTIVE:
@@ -599,6 +621,7 @@ value_attribute_toggled (GtkCellRendererToggle * cell_renderer,
           default:
             break;
         }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       update_icon_sources (eprop, icon_sources);
       g_free (icon_name);
@@ -649,6 +672,7 @@ value_attribute_edited (GtkCellRendererText * cell,
       GtkIconSize size;
       GtkStateType state;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       switch (edit_column)
         {
           case COLUMN_DIRECTION:
@@ -672,6 +696,7 @@ value_attribute_edited (GtkCellRendererText * cell,
           default:
             break;
         }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       update_icon_sources (eprop, icon_sources);
       g_free (icon_name);

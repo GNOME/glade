@@ -51,7 +51,9 @@ glade_gtk_image_menu_item_set_use_stock (GObject * object, const GValue * value)
                                            NOT_SELECTED_MSG);
     }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_image_menu_item_set_use_stock (GTK_IMAGE_MENU_ITEM (object), use_stock);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   glade_gtk_sync_use_appearance (widget);
 }
@@ -76,17 +78,20 @@ glade_gtk_image_menu_item_set_label (GObject * object, const GValue * value)
     {
       GtkWidget *image;
       GtkStockItem item;
+      gboolean valid_item;
 
-      image =
-          gtk_image_new_from_stock (g_value_get_string (value),
-                                    GTK_ICON_SIZE_MENU);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+      image = gtk_image_new_from_stock (g_value_get_string (value),
+                                        GTK_ICON_SIZE_MENU);
       gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
+      valid_item = (text) ? gtk_stock_lookup (text, &item) : FALSE;
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       if (use_underline)
         gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
 
       /* Get the label string... */
-      if (text && gtk_stock_lookup (text, &item))
+      if (valid_item)
         gtk_label_set_label (GTK_LABEL (label), item.label);
       else
         gtk_label_set_label (GTK_LABEL (label), text ? text : "");

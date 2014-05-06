@@ -224,6 +224,9 @@ static void
 glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor * adaptor,
                                  GObject * toolbar)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  GType image_menu_item = GTK_TYPE_IMAGE_MENU_ITEM;
+G_GNUC_END_IGNORE_DEPRECATIONS
   GladeBaseEditor *editor;
   GtkWidget *window;
 
@@ -240,7 +243,7 @@ glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor * adaptor,
 
   glade_base_editor_append_types (editor, GTK_TYPE_MENU_TOOL_BUTTON,
                                   _("Normal"), GTK_TYPE_MENU_ITEM,
-                                  _("Image"), GTK_TYPE_IMAGE_MENU_ITEM,
+                                  _("Image"), image_menu_item,
                                   _("Check"), GTK_TYPE_CHECK_MENU_ITEM,
                                   _("Radio"), GTK_TYPE_RADIO_MENU_ITEM,
                                   _("Separator"), GTK_TYPE_SEPARATOR_MENU_ITEM,
@@ -248,7 +251,7 @@ glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor * adaptor,
 
   glade_base_editor_append_types (editor, GTK_TYPE_MENU_ITEM,
                                   _("Normal"), GTK_TYPE_MENU_ITEM,
-                                  _("Image"), GTK_TYPE_IMAGE_MENU_ITEM,
+                                  _("Image"), image_menu_item,
                                   _("Check"), GTK_TYPE_CHECK_MENU_ITEM,
                                   _("Radio"), GTK_TYPE_RADIO_MENU_ITEM,
                                   _("Separator"), GTK_TYPE_SEPARATOR_MENU_ITEM,

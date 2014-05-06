@@ -85,7 +85,9 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
     }
 
   vbox_widget = glade_widget_get_from_gobject (gtk_dialog_get_content_area (dialog));
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   actionarea_widget = glade_widget_get_from_gobject (gtk_dialog_get_action_area (dialog));
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   /* We need to stop default emissions of "hierarchy-changed" and 
    * "screen-changed" of GtkFileChooserDefault to avoid an abort()
