@@ -164,31 +164,12 @@ glade_popup_placeholder_paste_cb (GtkMenuItem      *item,
  *******************************************************/
 static GtkWidget *
 glade_popup_append_item (GtkWidget   *popup_menu,
-                         const gchar *stock_id,
                          const gchar *label,
-                         GtkWidget   *image,
                          gboolean     sensitive,
                          gpointer     callback,
                          gpointer     data)
 {
-  GtkWidget *menu_item;
-
-  if (stock_id && label)
-    {
-      menu_item = gtk_image_menu_item_new_with_mnemonic (label);
-      gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item),
-                                     gtk_image_new_from_stock (stock_id,
-                                                               GTK_ICON_SIZE_MENU));
-    }
-  else if (image && label)
-    {
-      menu_item = gtk_image_menu_item_new_with_mnemonic (label);
-      gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item), image);
-    }
-  else if (stock_id)
-    menu_item = gtk_image_menu_item_new_from_stock (stock_id, NULL);
-  else
-    menu_item = gtk_menu_item_new_with_mnemonic (label);
+  GtkWidget *menu_item = gtk_menu_item_new_with_mnemonic (label);
 
   if (callback)
     g_signal_connect (G_OBJECT (menu_item), "activate",
@@ -278,9 +259,7 @@ glade_popup_action_populate_menu_real (GtkWidget   *menu,
                                                        aclass->path);
 
 
-      item = glade_popup_append_item (menu,
-                                      aclass->stock,
-                                      aclass->label, NULL, TRUE,
+      item = glade_popup_append_item (menu, aclass->label, TRUE,
                                       (children) ? NULL : callback,
                                       (children) ? NULL : aclass->path);
 
@@ -399,13 +378,13 @@ glade_popup_create_menu (GladeWidget      *widget,
       g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
 			      data, (GDestroyNotify)g_free);
 
-      glade_popup_append_item (popup_menu, NULL, _("_Add widget here"),
-			       NULL, data->parent != NULL,
+      glade_popup_append_item (popup_menu, _("_Add widget here"),
+                               data->parent != NULL,
 			       glade_popup_widget_add_cb,
 			       data);
 
-      glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"),
-                               NULL, TRUE, glade_popup_root_add_cb, data);
+      glade_popup_append_item (popup_menu, _("Add widget as _toplevel"), TRUE,
+                               glade_popup_root_add_cb, data);
 
       separator = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -414,29 +393,29 @@ glade_popup_create_menu (GladeWidget      *widget,
 
   sensitive = (widget != NULL);
 
-  glade_popup_append_item (popup_menu, NULL, _("_Select"), NULL, sensitive,
+  glade_popup_append_item (popup_menu, _("_Select"), sensitive,
                            glade_popup_select_cb, widget);
-  glade_popup_append_item (popup_menu, GTK_STOCK_CUT, NULL, NULL, sensitive,
+  glade_popup_append_item (popup_menu, _("Cu_t"), sensitive,
                            glade_popup_cut_cb, widget);
-  glade_popup_append_item (popup_menu, GTK_STOCK_COPY, NULL, NULL, sensitive,
+  glade_popup_append_item (popup_menu, _("_Copy"), sensitive,
                            glade_popup_copy_cb, widget);
 
   /* paste is placholder specific when the popup is on a placeholder */
   sensitive = glade_clipboard_get_has_selection (glade_app_get_clipboard ());
 
   if (placeholder)
-    glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
+    glade_popup_append_item (popup_menu, _("_Paste"), sensitive,
                              glade_popup_placeholder_paste_cb, placeholder);
   else if (widget)
-    glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
+    glade_popup_append_item (popup_menu, _("_Paste"), sensitive,
                              glade_popup_paste_cb, widget);
   else
-    glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
+    glade_popup_append_item (popup_menu, _("_Paste"), sensitive,
                              glade_popup_paste_cb, NULL);
 
 
-  glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, NULL,
-                           (widget != NULL), glade_popup_delete_cb, widget);
+  glade_popup_append_item (popup_menu, _("_Delete"), (widget != NULL),
+                           glade_popup_delete_cb, widget);
 
 
   /* packing actions are a little different on placholders */
@@ -563,15 +542,12 @@ glade_popup_palette_pop (GladePalette       *palette,
   g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
 			  data, (GDestroyNotify)g_free);
 
-  glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL,
-                           TRUE, glade_popup_root_add_cb, data);
+  glade_popup_append_item (popup_menu, _("Add widget as _toplevel"), TRUE,
+                           glade_popup_root_add_cb, data);
 
   if (glade_widget_adaptor_get_book (adaptor) && glade_util_have_devhelp ())
-    {
-      GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
-      glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon,
-                               TRUE, glade_popup_docs_cb, adaptor);
-    }
+    glade_popup_append_item (popup_menu, _("Read _documentation"), TRUE,
+                             glade_popup_docs_cb, adaptor);
 
   if (event)
     {
@@ -638,16 +614,15 @@ glade_popup_property_pop (GladeProperty *property, GdkEventButton *event)
 
   popup_menu = gtk_menu_new ();
 
-  glade_popup_append_item (popup_menu, GTK_STOCK_CLEAR, _("Set default value"),
-                           NULL, TRUE, glade_popup_clear_property_cb, property);
+  glade_popup_append_item (popup_menu, _("Set default value"), TRUE,
+                           glade_popup_clear_property_cb, property);
 
   if (!glade_property_class_get_virtual (pclass) &&
       glade_widget_adaptor_get_book (adaptor) &&
       glade_util_have_devhelp ())
     {
-      GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
-      glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon,
-                               TRUE, glade_popup_property_docs_cb, property);
+      glade_popup_append_item (popup_menu, _("Read _documentation"), TRUE,
+                               glade_popup_property_docs_cb, property);
     }
 
   if (event)
