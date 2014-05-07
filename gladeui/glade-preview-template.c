@@ -203,8 +203,12 @@ text (GMarkupParseContext *context,
       gpointer             user_data,
       GError             **error)
 {
+  gchar *escaped_text = g_markup_escape_text (text, text_len);
   ParseData *state = user_data;
-  g_string_append_len (state->xml, text, text_len);
+
+  g_string_append_len (state->xml, escaped_text, -1);
+
+  g_free (escaped_text);
 }
 
 static void
