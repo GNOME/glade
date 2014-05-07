@@ -1241,8 +1241,8 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
 
 	  button = gtk_button_new_with_mnemonic (_("_Save Anyway"));
 	  gtk_button_set_image (GTK_BUTTON (button),
-				gtk_image_new_from_stock (GTK_STOCK_SAVE,
-							  GTK_ICON_SIZE_BUTTON));
+				gtk_image_new_from_icon_name ("document-save",
+                                                              GTK_ICON_SIZE_BUTTON));
 	  gtk_widget_show (button);
 
 	  gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
@@ -2643,8 +2643,8 @@ check_reload_project (GladeWindow *window, GladeProject *project)
 
   button = gtk_button_new_with_mnemonic (_("_Reload"));
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_REFRESH,
-                                                  GTK_ICON_SIZE_BUTTON));
+                        gtk_image_new_from_icon_name ("view-refresh",
+                                                      GTK_ICON_SIZE_BUTTON));
   gtk_widget_show (button);
 
   gtk_dialog_add_button (GTK_DIALOG (dialog), GTK_STOCK_CANCEL,

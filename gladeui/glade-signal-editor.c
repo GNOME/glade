@@ -1256,7 +1256,7 @@ glade_signal_editor_init (GladeSignalEditor *self)
   /* version warning */
   renderer = gtk_cell_renderer_pixbuf_new ();
   g_object_set (G_OBJECT (renderer), 
-		"icon-name", GTK_STOCK_DIALOG_WARNING,
+		"icon-name", "dialog-warning",
 		"xalign", 0.0,
                 NULL);
   gtk_tree_view_column_set_cell_data_func (priv->column_name, renderer,
@@ -1332,7 +1332,7 @@ glade_signal_editor_init (GladeSignalEditor *self)
 				  NULL);
 	
   renderer = glade_cell_renderer_icon_new ();
-  g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_EDIT, NULL);
+  g_object_set (G_OBJECT (renderer), "icon-name", "gtk-edit", NULL);
 
   g_signal_connect (G_OBJECT (renderer), "activate",
 		    G_CALLBACK (glade_signal_editor_user_data_activate),
@@ -1397,7 +1397,7 @@ glade_signal_editor_init (GladeSignalEditor *self)
 	g_object_set (G_OBJECT (renderer), "icon-name", GLADE_DEVHELP_ICON_NAME,
 		      NULL);
       else
-	g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_INFO, NULL);
+	g_object_set (G_OBJECT (renderer), "icon-name", "dialog-information", NULL);
 
       g_signal_connect (G_OBJECT (renderer), "activate",
 			G_CALLBACK (glade_signal_editor_devhelp), self);

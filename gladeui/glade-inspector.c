@@ -618,7 +618,7 @@ glade_inspector_init (GladeInspector *inspector)
                     G_CALLBACK (selection_changed_cb), inspector);
 
   /* Expand All */
-  gtk_entry_set_icon_from_stock (GTK_ENTRY (priv->entry), GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_GO_DOWN);
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (priv->entry), GTK_ENTRY_ICON_SECONDARY, "go-down");
   gtk_entry_set_icon_tooltip_text (GTK_ENTRY (priv->entry), GTK_ENTRY_ICON_SECONDARY, _("Expand all"));
   g_signal_connect_swapped (priv->entry, "icon-press", G_CALLBACK (gtk_tree_view_expand_all), priv->view);
 

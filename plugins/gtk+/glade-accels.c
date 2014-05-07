@@ -599,9 +599,9 @@ glade_eprop_accel_create_input (GladeEditorProperty * eprop)
   eprop_accel->entry = gtk_entry_new ();
   gtk_widget_set_valign (eprop_accel->entry, GTK_ALIGN_CENTER);
   gtk_editable_set_editable (GTK_EDITABLE (eprop_accel->entry), FALSE);
-  gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_accel->entry), 
-                                 GTK_ENTRY_ICON_SECONDARY,
-                                 GTK_STOCK_EDIT);
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_accel->entry),
+                                     GTK_ENTRY_ICON_SECONDARY,
+                                     "gtk-edit");
   g_signal_connect_swapped (eprop_accel->entry, "icon-release",
                             G_CALLBACK (glade_eprop_accel_show_dialog), eprop);
 

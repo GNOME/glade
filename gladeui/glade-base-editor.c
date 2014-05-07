@@ -1801,14 +1801,14 @@ glade_base_editor_init (GladeBaseEditor *editor)
   gtk_grid_set_column_spacing (GTK_GRID (button_table), 8);
   gtk_box_pack_start (GTK_BOX (tree_vbox), button_table, FALSE, TRUE, 0);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+  button = gtk_button_new_from_icon_name ("list-add", GTK_ICON_SIZE_BUTTON);
   gtk_widget_set_hexpand (button, TRUE);
   gtk_widget_show (button);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (glade_base_editor_add_activate), editor);
   gtk_grid_attach (GTK_GRID (button_table), button, 0, 0, 1, 1);
 
-  e->remove_button = button = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
+  e->remove_button = button = gtk_button_new_from_icon_name ("list-remove", GTK_ICON_SIZE_BUTTON);
   gtk_widget_show (button);
   gtk_widget_set_hexpand (button, TRUE);
   g_signal_connect (button, "clicked",
@@ -2243,7 +2243,7 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
   gtk_box_set_spacing (GTK_BOX (buttonbox), 8);
   gtk_box_pack_start (GTK_BOX (editor), buttonbox, FALSE, TRUE, 0);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_HELP);
+  button = gtk_button_new_from_icon_name ("help-browser", GTK_ICON_SIZE_BUTTON);
   gtk_widget_show (button);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (glade_base_editor_help),

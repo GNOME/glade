@@ -240,7 +240,7 @@ glade_tool_item_group_editor_new (GladeWidgetAdaptor *adaptor,
 
   table = gtk_grid_new ();
   gtk_widget_set_margin_top (table, 6);
-  gtk_widget_set_margin_left (table, 12);
+  gtk_widget_set_margin_start (table, 12);
   gtk_orientable_set_orientation (GTK_ORIENTABLE (table),
                                   GTK_ORIENTATION_VERTICAL);
   gtk_grid_set_row_spacing (GTK_GRID (table), 4);

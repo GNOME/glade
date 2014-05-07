@@ -845,7 +845,9 @@ eprop_model_generate_column (GladeEditorProperty * eprop,
           GtkCellRenderer *icon_renderer = glade_cell_renderer_icon_new ();
 
           g_object_set (G_OBJECT (icon_renderer),
-                        "activatable", TRUE, "icon-name", GTK_STOCK_EDIT, NULL);
+                        "activatable", TRUE,
+                        "icon-name", "gtk-edit",
+                        NULL);
 
           gtk_tree_view_column_pack_start (column, icon_renderer, FALSE);
 
