@@ -268,36 +268,31 @@ glade_app_get_lib_dir (void)
 }
 
 static void
-pointer_mode_register_icon (GtkIconFactory  *factory,
-                            const gchar     *icon_name,
+pointer_mode_register_icon (const gchar     *icon_name,
+                            gint             real_size,
                             GladePointerMode mode,
                             GtkIconSize      size)
 {
   GdkPixbuf *pixbuf;
 
-  pixbuf = glade_utils_pointer_mode_render_icon (mode, size);
-  if (pixbuf)
+  if ((pixbuf = glade_utils_pointer_mode_render_icon (mode, size)))
     {
-      GtkIconSet *icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
-      gtk_icon_factory_add (factory, icon_name, icon_set);
+      gtk_icon_theme_add_builtin_icon (icon_name, real_size, pixbuf);
       g_object_unref (pixbuf);
     }
 }
 
 static void
-register_stock_icon (GtkIconFactory *factory,
-                     const gchar    *stock_id,
-                     const gchar    *icon_name,
-                     const gchar    *file_name,
-                     GtkIconSize     size)
+register_icon (const gchar    *new_icon_name,
+               gint            size,
+               const gchar    *icon_name,
+               const gchar    *file_name)
 {
   GtkIconTheme *icon_theme = gtk_icon_theme_get_default ();
   GdkPixbuf *pixbuf;
   GtkIconInfo *info;
-  gint w, h;  
 
-  if (gtk_icon_size_lookup (size, &w, &h) &&
-      (info = gtk_icon_theme_lookup_icon (icon_theme, icon_name, MIN (w, h), 0)))
+  if ((info = gtk_icon_theme_lookup_icon (icon_theme, icon_name, size, 0)))
     {
       pixbuf = gtk_icon_info_load_icon (info, NULL);
     }
@@ -310,36 +305,37 @@ register_stock_icon (GtkIconFactory *factory,
 
   if (pixbuf)
     {
-      GtkIconSet *icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
-      gtk_icon_factory_add (factory, stock_id, icon_set);
+      gtk_icon_theme_add_builtin_icon (new_icon_name, size, pixbuf);
       g_object_unref (pixbuf);
     }
 }
 
 /*
- * glade_app_register_stock_icons:
+ * glade_app_register_icon_names:
  * @size: icon size
  *
- * Register a new stock icon for most of GladePointerMode.
+ * Register a new icon name for most of GladePointerMode.
  * After calling this function "glade-selector", "glade-drag-resize",
- * "glade-margin-edit" and "glade-align-edit" stock icons will be available.
+ * "glade-margin-edit" and "glade-align-edit" icon names will be available.
  */ 
 static void
-glade_app_register_stock_icons (GtkIconSize size)
+glade_app_register_icon_names (GtkIconSize size)
 {
-  GtkIconFactory *factory = gtk_icon_factory_new ();
+  gint w, h, real_size;
 
-  pointer_mode_register_icon (factory, "glade-selector", GLADE_POINTER_SELECT, size);
-  pointer_mode_register_icon (factory, "glade-drag-resize", GLADE_POINTER_DRAG_RESIZE, size);
-  pointer_mode_register_icon (factory, "glade-margin-edit", GLADE_POINTER_MARGIN_EDIT, size);
-  pointer_mode_register_icon (factory, "glade-align-edit", GLADE_POINTER_ALIGN_EDIT, size);
+  if (gtk_icon_size_lookup (size, &w, &h) == FALSE)
+    return;
 
-  register_stock_icon (factory, "glade-devhelp",
-                       GLADE_DEVHELP_ICON_NAME,
-                       GLADE_DEVHELP_FALLBACK_ICON_FILE,
-                       size);
-  
-  gtk_icon_factory_add_default (factory);
+  real_size = MIN (w, h);
+
+  pointer_mode_register_icon ("glade-selector", real_size, GLADE_POINTER_SELECT, size);
+  pointer_mode_register_icon ("glade-drag-resize", real_size, GLADE_POINTER_DRAG_RESIZE, size);
+  pointer_mode_register_icon ("glade-margin-edit", real_size, GLADE_POINTER_MARGIN_EDIT, size);
+  pointer_mode_register_icon ("glade-align-edit", real_size, GLADE_POINTER_ALIGN_EDIT, size);
+
+  register_icon ("glade-devhelp", real_size,
+                 GLADE_DEVHELP_ICON_NAME,
+                 GLADE_DEVHELP_FALLBACK_ICON_FILE);
 }
 
 /**
@@ -358,7 +354,7 @@ glade_init (void)
   glade_init_check ();
 
   /* Register icons needed by the UI */
-  glade_app_register_stock_icons (GTK_ICON_SIZE_LARGE_TOOLBAR);
+  glade_app_register_icon_names (GTK_ICON_SIZE_LARGE_TOOLBAR);
   
   init = TRUE;
 }

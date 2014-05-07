@@ -34,10 +34,10 @@
       </signals>
       
       <actions>
-        <action id="preview" _name="Preview snapshot" stock="gtk-execute" important="True"/>
+        <action id="preview" _name="Preview snapshot" stock="system-run" important="True"/>
         <action id="edit_separate" _name="Edit Separately" stock="gtk-edit"/>
-        <action id="remove_parent" _name="Remove Parent" stock="gtk-remove"/>
-        <action id="add_parent" _name="Add Parent" stock="gtk-add">
+        <action id="remove_parent" _name="Remove Parent" stock="list-remove"/>
+        <action id="add_parent" _name="Add Parent" stock="list-add">
           <action id="alignment" _name="Alignment"/>
           <action id="viewport" _name="Viewport"/>
           <action id="eventbox" _name="Event Box"/>
@@ -50,7 +50,7 @@
           <action id="paned" _name="Paned"/>
         </action>
         <action id="sizegroup_add" _name="Add to Size Group"/>
-        <action id="clear_properties" _name="Clear properties" stock="gtk-clear"/>
+        <action id="clear_properties" _name="Clear properties" stock="edit-clear"/>
         <action id="read_documentation" _name="Read documentation" stock="glade-devhelp" important="True"/>
       </actions>
         
@@ -629,9 +629,9 @@
         <child-action-activate-function>glade_gtk_box_child_action_activate</child-action-activate-function>
         
         <packing-actions>
-          <action id="insert_before" _name="Insert Before" stock="gtk-add"/>
-          <action id="insert_after" _name="Insert After" stock="gtk-add"/>
-          <action id="remove_slot" _name="Remove Slot" stock="gtk-remove"/>
+          <action id="insert_before" _name="Insert Before" stock="list-add"/>
+          <action id="insert_after" _name="Insert After" stock="list-add"/>
+          <action id="remove_slot" _name="Remove Slot" stock="list-remove"/>
         </packing-actions>
         
         <properties>
@@ -2195,16 +2195,16 @@
         <child-action-activate-function>glade_gtk_table_child_action_activate</child-action-activate-function>
         
         <packing-actions>
-          <action id="insert_row" _name="Insert Row" stock="gtk-add">
+          <action id="insert_row" _name="Insert Row" stock="list-add">
             <action id="before" _name="Before"/>
             <action id="after" _name="After"/>
           </action>
-          <action id="insert_column" _name="Insert Column" stock="gtk-add">
+          <action id="insert_column" _name="Insert Column" stock="list-add">
             <action id="before" _name="Before"/>
             <action id="after" _name="After"/>
           </action>
-          <action id="remove_row" _name="Remove Row" stock="gtk-remove"/>
-          <action id="remove_column" _name="Remove Column" stock="gtk-remove"/>
+          <action id="remove_row" _name="Remove Row" stock="list-remove"/>
+          <action id="remove_column" _name="Remove Column" stock="list-remove"/>
         </packing-actions>
         
         <properties>
@@ -2245,16 +2245,16 @@
         <child-action-activate-function>glade_gtk_grid_child_action_activate</child-action-activate-function>
         
         <packing-actions>
-          <action id="insert_row" _name="Insert Row" stock="gtk-add">
+          <action id="insert_row" _name="Insert Row" stock="list-add">
             <action id="before" _name="Before"/>
             <action id="after" _name="After"/>
           </action>
-          <action id="insert_column" _name="Insert Column" stock="gtk-add">
+          <action id="insert_column" _name="Insert Column" stock="list-add">
             <action id="before" _name="Before"/>
             <action id="after" _name="After"/>
           </action>
-          <action id="remove_row" _name="Remove Row" stock="gtk-remove"/>
-          <action id="remove_column" _name="Remove Column" stock="gtk-remove"/>
+          <action id="remove_row" _name="Remove Row" stock="list-remove"/>
+          <action id="remove_column" _name="Remove Column" stock="list-remove"/>
         </packing-actions>
         
         <properties>
@@ -2338,9 +2338,9 @@
         </signals>
         
         <packing-actions>
-          <action id="insert_page_before" _name="Insert Page Before" stock="gtk-add"/>
-          <action id="insert_page_after" _name="Insert Page After" stock="gtk-add"/>
-          <action id="remove_page" _name="Remove Page"  stock="gtk-remove"/>
+          <action id="insert_page_before" _name="Insert Page Before" stock="list-add"/>
+          <action id="insert_page_after" _name="Insert Page After" stock="list-add"/>
+          <action id="remove_page" _name="Remove Page"  stock="list-remove"/>
         </packing-actions>
         
         <properties>
@@ -2427,12 +2427,12 @@
         <child-get-property-function>glade_gtk_listbox_get_child_property</child-get-property-function>
         
         <actions>
-          <action id="add_row" _name="Add Row" stock="gtk-add" important="True"/>
+          <action id="add_row" _name="Add Row" stock="list-add" important="True"/>
         </actions>
         
         <packing-actions>
-          <action id="insert_before" _name="Insert Before" stock="gtk-add"/>
-          <action id="insert_after" _name="Insert After" stock="gtk-add"/>
+          <action id="insert_before" _name="Insert Before" stock="list-add"/>
+          <action id="insert_after" _name="Insert After" stock="list-add"/>
         </packing-actions>
         
         <properties>

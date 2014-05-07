@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 
+<!-- Generated with glade 3.18.1 
 
 Glade - A user interface designer for GTK+ and GNOME.
 Copyright (C) 2012-2014 Juan Pablo Ugarte
@@ -95,7 +95,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Select</property>
         <property name="short_label" translatable="yes">Select</property>
         <property name="tooltip" translatable="yes">Select widgets in the workspace</property>
-        <property name="stock_id">glade-selector</property>
         <property name="icon_name">glade-selector</property>
         <property name="draw_as_radio">True</property>
         <signal name="changed" handler="on_selector_radioaction_changed" swapped="no"/>
@@ -106,7 +105,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Drag Resize</property>
         <property name="short_label" translatable="yes">Drag Resize</property>
         <property name="tooltip" translatable="yes">Drag and resize widgets in the workspace</property>
-        <property name="stock_id">glade-drag-resize</property>
+        <property name="icon_name">glade-drag-resize</property>
         <property name="draw_as_radio">True</property>
         <property name="value">2</property>
         <property name="group">selector_radioaction</property>
@@ -117,7 +116,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Margin Edit</property>
         <property name="short_label" translatable="yes">Margin Edit</property>
         <property name="tooltip" translatable="yes">Edit widget margins</property>
-        <property name="stock_id">glade-margin-edit</property>
+        <property name="icon_name">glade-margin-edit</property>
         <property name="draw_as_radio">True</property>
         <property name="value">3</property>
         <property name="group">selector_radioaction</property>
@@ -128,7 +127,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Alignment Edit</property>
         <property name="short_label" translatable="yes">Alignment Edit</property>
         <property name="tooltip" translatable="yes">Edit widget alignment</property>
-        <property name="stock_id">glade-align-edit</property>
+        <property name="icon_name">glade-align-edit</property>
         <property name="draw_as_radio">True</property>
         <property name="value">4</property>
         <property name="group">selector_radioaction</property>
@@ -144,7 +143,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="save_action">
         <property name="label" translatable="yes">Save</property>
         <property name="tooltip" translatable="yes">Save the current project</property>
-        <property name="stock_id">gtk-save</property>
+        <property name="icon_name">document-save</property>
         <signal name="activate" handler="on_save_action_activate" swapped="no"/>
       </object>
       <accelerator key="s" modifiers="GDK_CONTROL_MASK"/>
@@ -153,7 +152,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="save_as_action">
         <property name="label" translatable="yes">Save _As</property>
         <property name="tooltip" translatable="yes">Save the current project with a different name</property>
-        <property name="stock_id">gtk-save-as</property>
+        <property name="icon_name">document-save-as</property>
         <signal name="activate" handler="on_save_as_action_activate" swapped="no"/>
       </object>
     </child>
@@ -161,7 +160,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="properties_action">
         <property name="label" translatable="yes">Properties</property>
         <property name="tooltip" translatable="yes">Edit project properties</property>
-        <property name="stock_id">gtk-properties</property>
+        <property name="icon_name">document-properties</property>
         <signal name="activate" handler="on_properties_action_activate" swapped="no"/>
       </object>
       <accelerator key="p" modifiers="GDK_CONTROL_MASK"/>
@@ -170,7 +169,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="close_action">
         <property name="label" translatable="yes">Close</property>
         <property name="tooltip" translatable="yes">Close the current project</property>
-        <property name="stock_id">gtk-close</property>
+        <property name="icon_name">window-close</property>
         <signal name="activate" handler="on_close_action_activate" swapped="no"/>
       </object>
       <accelerator key="w" modifiers="GDK_CONTROL_MASK"/>
@@ -180,7 +179,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Undo</property>
         <property name="short_label" translatable="yes">Undo</property>
         <property name="tooltip" translatable="yes">Undo the last action</property>
-        <property name="stock_id">gtk-undo</property>
+        <property name="icon_name">edit-undo</property>
         <signal name="activate" handler="on_undo_action_activate" swapped="no"/>
       </object>
       <accelerator key="z" modifiers="GDK_CONTROL_MASK"/>
@@ -190,7 +189,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Redo</property>
         <property name="short_label" translatable="yes">Redo</property>
         <property name="tooltip" translatable="yes">Redo the last action</property>
-        <property name="stock_id">gtk-redo</property>
+        <property name="icon_name">edit-redo</property>
         <signal name="activate" handler="on_redo_action_activate" swapped="no"/>
       </object>
       <accelerator key="z" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
@@ -200,7 +199,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Cut</property>
         <property name="short_label" translatable="yes">Cut</property>
         <property name="tooltip" translatable="yes">Cut the selection</property>
-        <property name="stock_id">gtk-cut</property>
+        <property name="icon_name">edit-cut</property>
         <signal name="activate" handler="on_cut_action_activate" swapped="no"/>
       </object>
       <accelerator key="x" modifiers="GDK_CONTROL_MASK"/>
@@ -210,7 +209,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Copy</property>
         <property name="short_label" translatable="yes">Copy</property>
         <property name="tooltip" translatable="yes">Copy the selection</property>
-        <property name="stock_id">gtk-copy</property>
+        <property name="icon_name">edit-copy</property>
         <signal name="activate" handler="on_copy_action_activate" swapped="no"/>
       </object>
       <accelerator key="c" modifiers="GDK_CONTROL_MASK"/>
@@ -220,7 +219,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Paste</property>
         <property name="short_label" translatable="yes">Paste</property>
         <property name="tooltip" translatable="yes">Paste the clipboard</property>
-        <property name="stock_id">gtk-paste</property>
+        <property name="icon_name">edit-paste</property>
         <signal name="activate" handler="on_paste_action_activate" swapped="no"/>
       </object>
       <accelerator key="v" modifiers="GDK_CONTROL_MASK"/>
@@ -230,7 +229,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Delete</property>
         <property name="short_label" translatable="yes">Delete</property>
         <property name="tooltip" translatable="yes">Delete the selection</property>
-        <property name="stock_id">Delete</property>
+        <property name="icon_name">edit-delete</property>
         <signal name="activate" handler="on_delete_action_activate" swapped="no"/>
       </object>
       <accelerator key="Delete"/>
@@ -367,7 +366,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="new_action">
         <property name="label" translatable="yes">New</property>
         <property name="tooltip" translatable="yes">Create a new project</property>
-        <property name="stock_id">gtk-new</property>
+        <property name="icon_name">document-new</property>
         <signal name="activate" handler="glade_window_new_project" swapped="yes"/>
       </object>
       <accelerator key="n" modifiers="GDK_CONTROL_MASK"/>
@@ -376,7 +375,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="open_action">
         <property name="label" translatable="yes">Open</property>
         <property name="tooltip" translatable="yes">Open a project</property>
-        <property name="stock_id">gtk-open</property>
+        <property name="icon_name">document-open</property>
         <signal name="activate" handler="on_open_action_activate" swapped="no"/>
       </object>
       <accelerator key="o" modifiers="GDK_CONTROL_MASK"/>
@@ -385,7 +384,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="quit_action">
         <property name="label" translatable="yes">Quit</property>
         <property name="tooltip" translatable="yes">Quit the program</property>
-        <property name="stock_id">gtk-quit</property>
+        <property name="icon_name">application-exit</property>
         <signal name="activate" handler="on_quit_action_activate" swapped="no"/>
       </object>
       <accelerator key="q" modifiers="GDK_CONTROL_MASK"/>
@@ -394,7 +393,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="about_action">
         <property name="label" translatable="yes">About</property>
         <property name="tooltip" translatable="yes">About this application</property>
-        <property name="stock_id">gtk-about</property>
+        <property name="icon_name">help-about</property>
         <signal name="activate" handler="on_about_action_activate" swapped="no"/>
       </object>
     </child>
@@ -402,6 +401,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="reference_action">
         <property name="label" translatable="yes">_Developer Reference</property>
         <property name="tooltip" translatable="yes">Display the developer reference manual</property>
+        <property name="icon_name">help-contents</property>
         <signal name="activate" handler="on_reference_action_activate" swapped="no"/>
       </object>
       <accelerator key="F1"/>
@@ -411,6 +411,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">Preferences</property>
         <property name="tooltip" translatable="yes">Edit Glade preferences</property>
         <property name="stock_id">gtk-preferences</property>
+        <property name="icon_name">document-properties</property>
         <signal name="activate" handler="on_preferences_action_activate" swapped="no"/>
       </object>
     </child>

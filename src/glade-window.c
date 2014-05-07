@@ -410,6 +410,7 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
     {
       GladeWidgetAction *action = l->data;
       GWActionClass     *aclass = glade_widget_action_get_class (action);
+      GtkWidget         *image;
 
       if (!aclass->important || !glade_widget_action_get_visible (action))
         continue;
@@ -420,12 +421,11 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
           continue;
         }
 
-      item = gtk_tool_button_new_from_stock ((aclass->stock) ? aclass->stock : "gtk-execute");
+      image = gtk_image_new_from_icon_name ((aclass->stock) ? aclass->stock : "system-run",
+                                            GTK_ICON_SIZE_LARGE_TOOLBAR);
+      item = gtk_tool_button_new (image, NULL);
       if (aclass->label)
-	{
-	  gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), aclass->label);
-	  gtk_widget_set_tooltip_text (GTK_WIDGET (item), aclass->label);
-	}
+        gtk_widget_set_tooltip_text (GTK_WIDGET (item), aclass->label);
 
       g_object_set_data (G_OBJECT (item), "glade-widget", widget);
 
@@ -445,7 +445,7 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
 
       gtk_toolbar_insert (bar, item, -1);
       gtk_tool_item_set_homogeneous (item, FALSE);
-      gtk_widget_show (GTK_WIDGET (item));
+      gtk_widget_show_all (GTK_WIDGET (item));
       n++;
     }
 
