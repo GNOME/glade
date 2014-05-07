@@ -125,6 +125,45 @@ G_DEFINE_TYPE_WITH_PRIVATE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN
 
 #define RECTANGLE_POINT_IN(rect,x,y) (x >= rect.x && x <= (rect.x + rect.width) && y >= rect.y && y <= (rect.y + rect.height))
 
+static inline gint
+get_margin_left (GtkWidget *widget)
+{
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  return gtk_widget_get_margin_left (widget);
+G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
+static inline gint
+get_margin_right (GtkWidget *widget)
+{
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  return gtk_widget_get_margin_right (widget);
+G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
+static inline gint
+get_margin_top (GtkWidget *widget)
+{
+  return gtk_widget_get_margin_top (widget);
+}
+
+static inline gint
+get_margin_bottom (GtkWidget *widget)
+{
+  return gtk_widget_get_margin_bottom (widget);
+}
+
+static inline void
+get_margins (GtkWidget *widget, gint *l, gint *r, gint *t, gint *b)
+{
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  *l = gtk_widget_get_margin_left (widget);
+  *r = gtk_widget_get_margin_right (widget);
+G_GNUC_END_IGNORE_DEPRECATIONS
+  *t = gtk_widget_get_margin_top (widget);
+  *b = gtk_widget_get_margin_bottom (widget);
+}
+
 static Margins
 gdl_get_margins_from_pointer (GladeDesignLayout *layout, GtkWidget *widget, gint x, gint y)
 {
@@ -137,11 +176,8 @@ gdl_get_margins_from_pointer (GladeDesignLayout *layout, GtkWidget *widget, gint
   height = gtk_widget_get_allocated_height (widget);
 
   gtk_widget_translate_coordinates (widget, GTK_WIDGET (layout), 0, 0, &xx, &yy);
-  
-  top = gtk_widget_get_margin_top (widget);
-  bottom = gtk_widget_get_margin_bottom (widget);
-  left = gtk_widget_get_margin_left (widget);
-  right = gtk_widget_get_margin_right (widget);
+
+  get_margins (widget, &left, &right, &top, &bottom);
 
   rec.x = xx - left - OUTLINE_WIDTH;
   rec.y = yy - top - OUTLINE_WIDTH;
@@ -260,11 +296,8 @@ gdl_update_max_margins (GladeDesignLayout *layout,
   
   gtk_widget_get_preferred_size (child, &req, NULL);
 
-  top = gtk_widget_get_margin_top (priv->selection);
-  bottom = gtk_widget_get_margin_bottom (priv->selection);
-  left = gtk_widget_get_margin_left (priv->selection);
-  right = gtk_widget_get_margin_right (priv->selection);
-  
+  get_margins (priv->selection, &left, &right, &top, &bottom);
+
   priv->max_width = width - (req.width - left - right);
 
   parent_w = gtk_widget_get_allocated_width (GTK_WIDGET (priv->view));
@@ -319,12 +352,12 @@ gdl_alignments_invalidate (GdkWindow *window,
 
   gtk_widget_translate_coordinates (selection, parent, 0, 0, &x, &y);
 
-  x1 = x - gtk_widget_get_margin_left (selection);
+  x1 = x - get_margin_left (selection);
   x2 = x + w/2;
-  x3 = x + w + gtk_widget_get_margin_right (selection);
-  y1 = y - gtk_widget_get_margin_top (selection);
+  x3 = x + w + get_margin_right (selection);
+  y1 = y - get_margin_top (selection);
   y2 = y + h/2;
-  y3 = y + h + gtk_widget_get_margin_bottom (selection);
+  y3 = y + h + get_margin_bottom (selection);
 
   /* Only invalidate node area */
   if (nodes & MARGIN_TOP)
@@ -412,7 +445,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
           if (margin & MARGIN_TOP)
             {
               gint max_height = (shift) ? priv->max_height/2 : priv->max_height -
-                gtk_widget_get_margin_bottom (selection);
+                get_margin_bottom (selection);
               gint val = MAX (0, MIN (priv->m_dy - y, max_height));
               
               if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
@@ -422,7 +455,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
           else if (margin & MARGIN_BOTTOM)
             {
               gint max_height = (shift) ? priv->max_height/2 : priv->max_height -
-                gtk_widget_get_margin_top (selection);
+                get_margin_top (selection);
               gint val = MAX (0, MIN (y - priv->m_dy, max_height));
               
               if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
@@ -433,22 +466,22 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
           if (margin & MARGIN_LEFT)
             {
               gint max_width = (shift) ? priv->max_width/2 : priv->max_width -
-                gtk_widget_get_margin_right (selection);
+                get_margin_right (selection);
               gint val = MAX (0, MIN (priv->m_dx - x, max_width));
               
               if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
-              gtk_widget_set_margin_left (selection, val);
-              if (shift) gtk_widget_set_margin_right (selection, val);
+              gtk_widget_set_margin_start (selection, val);
+              if (shift) gtk_widget_set_margin_end (selection, val);
             }
           else if (margin & MARGIN_RIGHT)
             {
               gint max_width = (shift) ? priv->max_width/2 : priv->max_width -
-                gtk_widget_get_margin_left (selection);
+                get_margin_left (selection);
               gint val = MAX (0, MIN (x - priv->m_dx, max_width));
               
               if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
-              gtk_widget_set_margin_right (selection, val);
-              if (shift) gtk_widget_set_margin_left (selection, val);
+              gtk_widget_set_margin_end (selection, val);
+              if (shift) gtk_widget_set_margin_start (selection, val);
             }
         }
       break;
@@ -517,10 +550,7 @@ gdl_edit_mode_set_selection (GladeDesignLayout *layout,
           GtkWidget *child = gtk_bin_get_child (GTK_BIN (layout));
 
           /* Save initital margins to know which one where edited */
-          priv->top = gtk_widget_get_margin_top (selection);
-          priv->bottom = gtk_widget_get_margin_bottom (selection);
-          priv->left = gtk_widget_get_margin_left (selection);
-          priv->right = gtk_widget_get_margin_right (selection);
+          get_margins (selection, &priv->left, &priv->right, &priv->top, &priv->bottom);
 
           gdl_update_max_margins (layout, child,
                                   gtk_widget_get_allocated_width (child),
@@ -637,11 +667,11 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
           break;
           case ACTIVITY_MARGINS:
             priv->m_dx = x + ((priv->margin & MARGIN_LEFT) ? 
-                              gtk_widget_get_margin_left (selection) :
-                                gtk_widget_get_margin_right (selection) * -1);
+                              get_margin_left (selection) :
+                                get_margin_right (selection) * -1);
             priv->m_dy = y + ((priv->margin & MARGIN_TOP) ?
-                              gtk_widget_get_margin_top (selection) :
-                                gtk_widget_get_margin_bottom (selection) * -1);
+                              get_margin_top (selection) :
+                                get_margin_bottom (selection) * -1);
 
             gdl_set_cursor (priv, priv->cursors[gdl_margin_get_activity (priv->margin)]);
             return FALSE;
@@ -687,10 +717,7 @@ glade_design_layout_button_release_event (GtkWidget *widget,
       gint top, bottom, left, right;
       GladeProperty *property;
 
-      top = gtk_widget_get_margin_top (priv->selection);
-      bottom = gtk_widget_get_margin_bottom (priv->selection);
-      left = gtk_widget_get_margin_left (priv->selection);
-      right = gtk_widget_get_margin_right (priv->selection);
+      get_margins (priv->selection, &left, &right, &top, &bottom);
 
       glade_command_push_group (_("Editing margins of %s"),
                                 glade_widget_get_name (gwidget));
@@ -1083,10 +1110,7 @@ draw_selection (cairo_t *cr,
   xw = x + w;
   yh = y + h;
 
-  top = gtk_widget_get_margin_top (widget);
-  bottom = gtk_widget_get_margin_bottom (widget);
-  left = gtk_widget_get_margin_left (widget);
-  right = gtk_widget_get_margin_right (widget);
+  get_margins (widget, &left, &right, &top, &bottom);
   
   y_top = y - top;
   yh_bottom = yh + bottom;
@@ -1373,10 +1397,7 @@ draw_selection_nodes (cairo_t *cr,
   w = alloc.width;
   h = alloc.height;
   
-  top = gtk_widget_get_margin_top (widget);
-  bottom = gtk_widget_get_margin_bottom (widget);
-  left = gtk_widget_get_margin_left (widget);
-  right = gtk_widget_get_margin_right (widget);
+  get_margins (widget, &left, &right, &top, &bottom);
 
   /* Draw nodes */
   x1 = x - left;
@@ -1709,8 +1730,7 @@ glade_design_layout_realize (GtkWidget *widget)
     else
       attributes.width = attributes.height = 0;
 
-  priv->offscreen_window = gdk_window_new (gtk_widget_get_root_window (widget),
-                                           &attributes, attributes_mask);
+  priv->offscreen_window = gdk_window_new (NULL, &attributes, attributes_mask);
   gdk_window_set_user_data (priv->offscreen_window, widget);
 
   if (child) gtk_widget_set_parent_window (child, priv->offscreen_window);
@@ -2240,11 +2260,11 @@ find_first_child_inside_container (GtkWidget *widget, FindInContainerData *data)
                                     &x, &y);
   
   /* Margins are not part of the widget allocation */
-  w = gtk_widget_get_allocated_width (widget) + gtk_widget_get_margin_right (widget);
-  h = gtk_widget_get_allocated_height (widget) + gtk_widget_get_margin_bottom (widget);
+  w = gtk_widget_get_allocated_width (widget) + get_margin_right (widget);
+  h = gtk_widget_get_allocated_height (widget) + get_margin_bottom (widget);
 
-  if (x >= (0 - gtk_widget_get_margin_left (widget)) && x < w &&
-      y >= (0 - gtk_widget_get_margin_top (widget)) && y < h)
+  if (x >= (0 - get_margin_left (widget)) && x < w &&
+      y >= (0 - get_margin_top (widget)) && y < h)
     {
       if (GLADE_IS_PLACEHOLDER (widget))
         data->child = widget;
@@ -2280,11 +2300,11 @@ find_last_child_inside_container (GtkWidget *widget, FindInContainerData *data)
                                     &x, &y);
 
   /* Margins are not part of the widget allocation */
-  w = gtk_widget_get_allocated_width (widget) + gtk_widget_get_margin_right (widget);
-  h = gtk_widget_get_allocated_height (widget) + gtk_widget_get_margin_bottom (widget);
+  w = gtk_widget_get_allocated_width (widget) + get_margin_right (widget);
+  h = gtk_widget_get_allocated_height (widget) + get_margin_bottom (widget);
 
-  if (x >= (0 - gtk_widget_get_margin_left (widget)) && x < w &&
-      y >= (0 - gtk_widget_get_margin_top (widget)) && y < h)
+  if (x >= (0 - get_margin_left (widget)) && x < w &&
+      y >= (0 - get_margin_top (widget)) && y < h)
     {
       GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
 
