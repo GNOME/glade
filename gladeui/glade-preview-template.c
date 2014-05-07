@@ -44,12 +44,25 @@ template_init (GTypeInstance *instance, gpointer g_class)
   gtk_widget_init_template (GTK_WIDGET (instance));
 }
 
+static void
+template_connect_function (GtkBuilder   *builder,
+                           GObject      *object,
+                           const gchar  *signal_name,
+                           const gchar  *handler_name,
+                           GObject      *connect_object,
+                           GConnectFlags flags,
+                           gpointer      data)
+{
+  /* Ignore signal connections */
+}
+
 /* Need to associate the class with a template */
 static void
 template_class_init (gpointer g_class, gpointer user_data)
 {
   TypeData *data = user_data;
   gtk_widget_class_set_template (g_class, data->template_data);
+  gtk_widget_class_set_connect_func (g_class, template_connect_function, NULL, NULL);
 }
 
 static GQuark type_data_quark = 0;
