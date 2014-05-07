@@ -58,12 +58,15 @@ glade_preview_window_init (GladePreviewWindow *window)
   priv->info = gtk_info_bar_new ();
   priv->message_label = gtk_label_new ("");
   gtk_label_set_line_wrap (GTK_LABEL (priv->message_label), TRUE);
+  gtk_label_set_selectable (GTK_LABEL (priv->message_label), TRUE);
 
   gtk_widget_set_valign (priv->info, GTK_ALIGN_END);
   gtk_widget_set_vexpand (priv->info, FALSE);
   content_area = gtk_info_bar_get_content_area (GTK_INFO_BAR (priv->info));
   gtk_container_add (GTK_CONTAINER (content_area), priv->message_label);
-  
+
+  gtk_info_bar_set_show_close_button (GTK_INFO_BAR (priv->info), TRUE);
+
   g_signal_connect (priv->info, "response", G_CALLBACK (gtk_widget_hide), NULL);
   
   gtk_box_pack_start (GTK_BOX (priv->box), priv->info, FALSE, FALSE, 0);
