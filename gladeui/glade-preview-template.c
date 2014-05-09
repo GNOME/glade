@@ -32,6 +32,9 @@ typedef struct
   GTypeInfo info;
   GString *template_string;
   GBytes *template_data;
+
+  GtkBuilderConnectFunc connect_func;
+  gpointer connect_data;
   gint count;
 } TypeData;
 
@@ -61,8 +64,13 @@ static void
 template_class_init (gpointer g_class, gpointer user_data)
 {
   TypeData *data = user_data;
+
   gtk_widget_class_set_template (g_class, data->template_data);
-  gtk_widget_class_set_connect_func (g_class, template_connect_function, NULL, NULL);
+
+  if (data->connect_func && data->connect_data)
+    gtk_widget_class_set_connect_func (g_class, data->connect_func, data->connect_data, NULL);
+  else
+    gtk_widget_class_set_connect_func (g_class, template_connect_function, NULL, NULL);
 }
 
 static GQuark type_data_quark = 0;
@@ -70,7 +78,9 @@ static GQuark type_data_quark = 0;
 static GType
 template_generate_type (const gchar *name,
                         const gchar *parent_name,
-                        GString *template_string)
+                        GString *template_string,
+                        GtkBuilderConnectFunc connect_func,
+                        gpointer connect_data)
 {
   GType parent_type, retval;
   gchar *real_name = NULL;
@@ -124,6 +134,8 @@ template_generate_type (const gchar *name,
   data->info.instance_init = template_init;
   data->info.class_data = data;
   data->template_data = g_bytes_new_static (template_string->str, template_string->len);
+  data->connect_func = connect_func;
+  data->connect_data = connect_data;
 
   retval = g_type_register_static (parent_type, real_name ? real_name : name, &data->info, 0);
 
@@ -237,7 +249,10 @@ passthrough (GMarkupParseContext *context,
 }
 
 GObject *
-glade_preview_template_object_new (const gchar *template_data, gsize len)
+glade_preview_template_object_new (const gchar          *template_data,
+                                   gsize                 len,
+                                   GtkBuilderConnectFunc connect_func,
+                                   gpointer              connect_data)
 {
   GMarkupParser parser = { start_element, end_element, text, passthrough};
   ParseData state = { FALSE, NULL};
@@ -264,7 +279,9 @@ glade_preview_template_object_new (const gchar *template_data, gsize len)
     {
       GType template_type = template_generate_type (state.klass,
                                                     state.parent,
-                                                    state.xml);
+                                                    state.xml,
+                                                    connect_func,
+                                                    connect_data);
       if (template_type)
         object = g_object_new (template_type, NULL);
       else

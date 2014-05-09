@@ -59,6 +59,9 @@ GtkWidget *glade_preview_window_new         (void);
 void       glade_preview_window_set_widget  (GladePreviewWindow *window,
                                              GtkWidget          *widget);
 
+void       glade_preview_window_set_print_handlers (GladePreviewWindow *window,
+                                                    gboolean            print);
+
 void       glade_preview_window_set_message (GladePreviewWindow *window,
                                              GtkMessageType      type,
                                              const gchar        *message);
@@ -75,6 +78,14 @@ void       glade_preview_window_screenshot  (GladePreviewWindow *window,
 
 void       glade_preview_window_slideshow_save (GladePreviewWindow *window,
                                                 const gchar        *filename);
+
+void       glade_preview_window_connect_function (GtkBuilder   *builder,
+                                                  GObject      *object,
+                                                  const gchar  *signal_name,
+                                                  const gchar  *handler_name,
+                                                  GObject      *connect_object,
+                                                  GConnectFlags flags,
+                                                  gpointer      window);
 
 G_END_DECLS
 

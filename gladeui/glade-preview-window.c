@@ -1,7 +1,7 @@
 /*
  * glade-preview-window.c
  *
- * Copyright (C) 2013 Juan Pablo Ugarte
+ * Copyright (C) 2013-2014 Juan Pablo Ugarte
    *
  * Author: Juan Pablo Ugarte <juanpablougarte@gmail.com>
  *
@@ -24,6 +24,7 @@
 
 #include "glade-preview-window.h"
 #include <glib/gi18n-lib.h>
+#include <glib/gprintf.h>
 #include <cairo-pdf.h>
 #include <cairo-svg.h>
 #include <cairo-ps.h>
@@ -39,6 +40,7 @@ struct _GladePreviewWindowPrivate
   GFileMonitor *css_monitor;
   gchar *css_file;
   gchar *extension;
+  gboolean print_handlers;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladePreviewWindow, glade_preview_window, GTK_TYPE_WINDOW);
@@ -77,13 +79,24 @@ glade_preview_window_init (GladePreviewWindow *window)
 }
 
 static void
+glade_preview_window_dispose (GObject *object)
+{
+  GladePreviewWindowPrivate *priv = GLADE_PREVIEW_WINDOW (object)->priv;
+
+  priv->info = NULL;
+  g_clear_object (&priv->css_provider);
+  g_clear_object (&priv->css_monitor);
+
+  G_OBJECT_CLASS (glade_preview_window_parent_class)->dispose (object);
+}
+
+static void
 glade_preview_window_finalize (GObject *object)
 {
   GladePreviewWindowPrivate *priv = GLADE_PREVIEW_WINDOW (object)->priv;
 
   g_free (priv->css_file);
-  g_clear_object (&priv->css_provider);
-  g_clear_object (&priv->css_monitor);
+  g_free (priv->extension);
 
   G_OBJECT_CLASS (glade_preview_window_parent_class)->finalize (object);
 }
@@ -158,6 +171,7 @@ glade_preview_window_class_init (GladePreviewWindowClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->dispose = glade_preview_window_dispose;
   object_class->finalize = glade_preview_window_finalize;
 
   widget_class->realize = glade_preview_window_realize;
@@ -221,6 +235,9 @@ glade_preview_window_set_message (GladePreviewWindow *window,
 
   g_return_if_fail (GLADE_IS_PREVIEW_WINDOW (window));
   priv = window->priv;
+
+  if (!priv->info)
+    return;
 
   gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info), type);
   
@@ -550,4 +567,221 @@ glade_preview_window_slideshow_save (GladePreviewWindow *window,
     }
   else
     g_warning ("Could not save slideshow to %s", filename);
+}
+
+/**
+ * glade_preview_window_set_print_handlers:
+ * @window: A GladePreviewWindow
+ * @print: whether to print handlers or not
+ * 
+ * Set whether to print handlers when they are activated or not.
+ * It only works if you use glade_preview_window_connect_function() as the 
+ * connect funtion.
+ */
+void
+glade_preview_window_set_print_handlers (GladePreviewWindow *window,
+                                         gboolean            print)
+{
+  g_return_if_fail (GLADE_IS_PREVIEW_WINDOW (window));
+  window->priv->print_handlers = print;
+}
+
+typedef struct
+{
+  gchar        *handler_name;
+  GObject      *connect_object;
+  GConnectFlags flags;
+} HandlerData;
+
+typedef struct
+{
+  GladePreviewWindow *window;
+  gint     n_invocations;
+
+  GSignalQuery  query;
+  GObject      *object;
+  GList        *handlers;
+} SignalData;
+
+static void
+handler_data_free (gpointer udata)
+{
+  HandlerData *hd = udata;
+  g_clear_object (&hd->connect_object);
+  g_free (hd->handler_name);
+  g_free (hd);
+}
+
+static void
+signal_data_free (gpointer udata, GClosure *closure)
+{
+  SignalData *data = udata;
+
+  g_list_free_full (data->handlers, handler_data_free);
+  data->handlers = NULL;
+
+  g_clear_object (&data->window);
+  g_clear_object (&data->object);
+
+  g_free (data);
+}
+
+static inline const gchar *
+object_get_name (GObject *object)
+{
+  if (GTK_IS_BUILDABLE (object))
+    return gtk_buildable_get_name (GTK_BUILDABLE (object));
+  else
+    return g_object_get_data (object, "gtk-builder-name");
+}
+
+static void
+glade_handler_append (GString      *message,
+                      GSignalQuery *query,
+                      const gchar  *object,
+                      GList        *handlers,
+                      gboolean     after)
+{
+  GList *l;
+
+  for (l = handlers; l; l = g_list_next (l))
+    {
+      HandlerData *hd = l->data;
+      gboolean handler_after = (hd->flags & G_CONNECT_AFTER);
+      gboolean swapped = (hd->flags & G_CONNECT_SWAPPED);
+      GObject *obj = hd->connect_object;
+      gint i;
+
+      if ((after && !handler_after) || (!after && handler_after))
+        continue;
+
+      g_string_append_printf (message, "\n\t-> %s%s %s (%s%s%s",
+                              g_type_name (query->return_type),
+                              g_type_is_a (query->return_type, G_TYPE_OBJECT) ? " *" : "",
+                              hd->handler_name,
+                              (swapped) ? ((obj) ? G_OBJECT_TYPE_NAME (obj) : "") : g_type_name (query->itype),
+                              (swapped) ? ((obj) ? " *" : "") : " *",
+                              (swapped) ? ((obj) ? object_get_name (obj) : _("user_data")) : object);
+
+      for (i = 1; i < query->n_params; i++)
+        g_string_append_printf (message, ", %s%s", 
+                                g_type_name (query->param_types[i]),
+                                g_type_is_a (query->param_types[i], G_TYPE_OBJECT) ? " *" : "");
+
+      g_string_append_printf (message, ", %s%s%s); ",
+                              (swapped) ? g_type_name (query->itype) : ((obj) ? G_OBJECT_TYPE_NAME (obj) : ""),
+                              (swapped) ? " *" : ((obj) ? " *" : ""),
+                              (swapped) ? object : ((obj) ? object_get_name (obj) : _("user_data")));
+
+      if (swapped && after)
+        /* translators: GConnectFlags values */
+        g_string_append (message, _("Swapped | After"));
+      else if (swapped)
+        /* translators: GConnectFlags value */
+        g_string_append (message, _("Swapped"));
+      else if (after)
+        /* translators: GConnectFlags value */
+        g_string_append (message, _("After"));
+    }
+}
+
+static inline void
+glade_handler_method_append (GString *msg, GSignalQuery *q, const gchar *flags)
+{
+  g_string_append_printf (msg, "\n\t%sClass->%s(); %s", g_type_name (q->itype),
+                          q->signal_name, flags);
+}
+
+static void
+on_handler_called (SignalData *data)
+{
+  GSignalQuery *query = &data->query;
+  GObject *object = data->object;
+  const gchar *object_name = object_get_name (object);
+  GString *message = g_string_new ("");
+
+  /* translators: this will be shown in glade previewer when a signal %s::%s is emited %d times */
+  g_string_append_printf (message, _("%s::%s emited %d time(s)"),
+                          G_OBJECT_TYPE_NAME (object), query->signal_name,
+                          ++data->n_invocations);
+
+  if (query->signal_flags & G_SIGNAL_RUN_FIRST)
+    glade_handler_method_append (message, query, _("Run First"));
+
+  glade_handler_append (message, query, object_name, data->handlers, FALSE);
+
+  if (query->signal_flags & G_SIGNAL_RUN_LAST)
+    glade_handler_method_append (message, query, _("Run Last"));
+
+  glade_handler_append (message, query, object_name, data->handlers, TRUE);
+
+  if (query->signal_flags & G_SIGNAL_RUN_CLEANUP)
+    glade_handler_method_append (message, query, _("Run Cleanup"));
+
+  glade_preview_window_set_message (data->window, GTK_MESSAGE_INFO, message->str);
+
+  if (data->window->priv->print_handlers)
+    g_printf ("\n%s\n", message->str);
+
+  g_string_free (message, TRUE);
+}
+
+/**
+ * glade_preview_window_connect_function:
+ * @builder:
+ * @object:
+ * @signal_name:
+ * @handler_name:
+ * @connect_object:
+ * @flags:
+ * @window: a #GladePreviewWindow
+ * 
+ * Function that collects every signal handler in @builder and shows them
+ * in @window info bar when the callback is activated
+ */
+void
+glade_preview_window_connect_function (GtkBuilder   *builder,
+                                       GObject      *object,
+                                       const gchar  *signal_name,
+                                       const gchar  *handler_name,
+                                       GObject      *connect_object,
+                                       GConnectFlags flags,
+                                       gpointer      window)
+{
+  SignalData *data;
+  HandlerData *hd;
+  guint signal_id;
+  gchar *key;
+
+  g_return_if_fail (GLADE_IS_PREVIEW_WINDOW (window));
+
+  if (!(signal_id = g_signal_lookup (signal_name, G_OBJECT_TYPE (object))))
+    return;
+
+  key = g_strconcat ("glade-signal-data-", signal_name, NULL);
+  data = g_object_get_data (object, key);
+
+  if (!data)
+    {
+      data = g_new0 (SignalData, 1);
+
+      data->window = g_object_ref (window);
+      g_signal_query (signal_id, &data->query);
+      data->object = g_object_ref (object);
+
+      g_signal_connect_data (object, signal_name,
+                             G_CALLBACK (on_handler_called),
+                             data, signal_data_free, G_CONNECT_SWAPPED);
+
+      g_object_set_data (object, key, data);
+    }
+
+  hd = g_new0 (HandlerData, 1);
+  hd->handler_name = g_strdup (handler_name);
+  hd->connect_object = connect_object ? g_object_ref (connect_object) : NULL;
+  hd->flags = flags;
+
+  data->handlers = g_list_append (data->handlers, hd);
+
+  g_free (key);
 }

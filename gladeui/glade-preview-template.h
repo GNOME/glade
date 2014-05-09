@@ -29,7 +29,10 @@
 G_BEGIN_DECLS
 
 GObject *
-glade_preview_template_object_new (const gchar *template_data, gsize len);
+glade_preview_template_object_new (const gchar          *template_data,
+                                   gsize                 len,
+                                   GtkBuilderConnectFunc connect_func,
+                                   gpointer              connect_data);
 
 G_END_DECLS
 

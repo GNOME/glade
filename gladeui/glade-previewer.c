@@ -96,7 +96,7 @@ static GObject *
 get_toplevel_from_string (GladePreviewer *app, gchar *name, gchar *string, gsize size)
 {
   gchar *wd = NULL;
-  GObject *retval;
+  GObject *retval = NULL;
 
   /* We need to change the working directory so builder get a chance to load resources */
   if (app->file_name)
@@ -110,7 +110,10 @@ get_toplevel_from_string (GladePreviewer *app, gchar *name, gchar *string, gsize
   /* We use template flag as a hint since the user can turn on and off template
    * while the preview is live.
    */
-  retval = (app->is_template) ? glade_preview_template_object_new (string, size) : NULL;
+  if (app->is_template)
+    retval = glade_preview_template_object_new (string, size,
+                                                glade_preview_window_connect_function,
+                                                app->window);
 
   if (!retval)
     {
@@ -121,11 +124,18 @@ get_toplevel_from_string (GladePreviewer *app, gchar *name, gchar *string, gsize
       app->is_template = FALSE;
 
       if (gtk_builder_add_from_string (builder, string, size, &error))
-        retval = get_toplevel (builder, name);
+        {
+          gtk_builder_connect_signals_full (builder,
+                                            glade_preview_window_connect_function,
+                                            app->window);
+          retval = get_toplevel (builder, name);
+        }
       else
         {
           if (error->code == GTK_BUILDER_ERROR_UNHANDLED_TAG &&
-              (retval = glade_preview_template_object_new (string, size)))
+              (retval = glade_preview_template_object_new (string, size, NULL, NULL)
+                                                           glade_preview_window_connect_function,
+                                                           app->window)))
             {
               /* At this point we know it is a template, so keep a hint for next time */
               app->is_template = TRUE;
@@ -367,6 +377,7 @@ static gboolean listen = FALSE;
 static gboolean version = FALSE;
 static gboolean slideshow = FALSE;
 static gboolean template = FALSE;
+static gboolean print_handler = FALSE;
 static gchar *file_name = NULL;
 static gchar *toplevel_name = NULL;
 static gchar *css_file_name = NULL;
@@ -381,6 +392,7 @@ static GOptionEntry option_entries[] =
     {"css", 0, 0, G_OPTION_ARG_FILENAME, &css_file_name, N_("CSS file to use"), NULL},
     {"listen", 'l', 0, G_OPTION_ARG_NONE, &listen, N_("Listen standard input"), NULL},
     {"slideshow", 0, 0, G_OPTION_ARG_NONE, &slideshow, N_("make a slideshow of every toplevel widget by adding them in a GtkStack"), NULL},
+    {"print-handler", 0, 0, G_OPTION_ARG_NONE, &print_handler, N_("Print handlers signature on invocation"), NULL},
     {"version", 'v', 0, G_OPTION_ARG_NONE, &version, N_("Display previewer version"), NULL},
     {NULL}
 };
@@ -432,7 +444,12 @@ main (int argc, char **argv)
 
   app = glade_previewer_new (file_name, toplevel_name);
   gtk_widget_show (GTK_WIDGET (app->window));
-  
+
+  app->is_template = template;
+
+  if (print_handler)
+    glade_preview_window_set_print_handlers (GLADE_PREVIEW_WINDOW (app->window), TRUE);
+
   if (css_file_name)
     glade_preview_window_set_css_file (app->window, css_file_name);
 
@@ -443,8 +460,6 @@ main (int argc, char **argv)
 #else
       GIOChannel *input = g_io_channel_unix_new (fileno (stdin));
 #endif
-
-      app->is_template = template;
 
       g_io_add_watch (input, G_IO_IN | G_IO_HUP, on_data_incoming, app);
 
