@@ -133,7 +133,7 @@ get_toplevel_from_string (GladePreviewer *app, gchar *name, gchar *string, gsize
       else
         {
           if (error->code == GTK_BUILDER_ERROR_UNHANDLED_TAG &&
-              (retval = glade_preview_template_object_new (string, size, NULL, NULL)
+              (retval = glade_preview_template_object_new (string, size,
                                                            glade_preview_window_connect_function,
                                                            app->window)))
             {
