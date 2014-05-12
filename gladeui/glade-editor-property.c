@@ -151,6 +151,26 @@ glade_editor_property_editable_init (GladeEditableIface *iface)
                                GladeEditorPropertyClass
  *******************************************************************************/
 
+static void
+deepest_child_grab_focus (GtkWidget *widget, gpointer data)
+{
+  gboolean *focus_set = data;
+
+  if (*focus_set)
+    return;
+  
+  if (GTK_IS_CONTAINER (widget))
+    gtk_container_foreach (GTK_CONTAINER (widget),
+                           deepest_child_grab_focus,
+                           data);
+
+  if (gtk_widget_get_can_focus (widget))
+    {
+      gtk_widget_grab_focus (widget);
+      *focus_set = TRUE;
+    }
+}
+
 /* declare this forwardly for the finalize routine */
 static void glade_editor_property_load_common (GladeEditorProperty *eprop,
                                                GladeProperty       *property);
@@ -169,6 +189,22 @@ glade_editor_property_commit_common (GladeEditorProperty *eprop,
    */
   if (!glade_property_equals_value (eprop->priv->property, value))
     glade_editor_property_load (eprop, eprop->priv->property);
+
+  /* Restore input focus. If the property is construct-only, then 
+   * glade_widget_rebuild() will be called which means the object will be
+   * removed from the project/selection and a new one will be added, which makes
+   * the eprop loose its focus.
+   * 
+   * FIXME: find a better way to set focus?
+   * make gtk_widget_grab_focus(eprop->priv->input) work?
+   */
+  if (glade_property_class_get_construct_only (eprop->priv->klass))
+    {
+      gboolean focus_set = FALSE;
+      gtk_container_foreach (GTK_CONTAINER (eprop->priv->input),
+                             deepest_child_grab_focus,
+                             &focus_set);
+    }
 }
 
 void
