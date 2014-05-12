@@ -1965,7 +1965,7 @@ about_cb (GtkAction *action, GladeWindow *window)
 	static const gchar copyright[] =
 		"Copyright \xc2\xa9 2001-2006 Ximian, Inc.\n"
 		"Copyright \xc2\xa9 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-		"Copyright \xc2\xa9 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al.";
+		"Copyright \xc2\xa9 2004-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al.";
 	
 	gtk_show_about_dialog (GTK_WINDOW (window),
 			       "name", g_get_application_name (),
