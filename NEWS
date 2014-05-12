@@ -1,4 +1,14 @@
 ===========
+Glade 3.8.5
+===========
+
+	- Backported topological sort object dependancy (Thomas Martitz)
+	- Closes Bug 709609 "[PATCH] Change way of sorting before writing XML output."
+	- Fixes Bug 711858 "editing glade project results in long CPU usage spikes after upgrading to 3.16 and GTK+3.10"
+	- Closes Bug 689667 "backport support for GtkComboBoxText" (Rafał Mużyło)
+	- Backported feature to make GladeProject remember unknown object classes
+
+===========
 Glade 3.8.4
 ===========
 	- Added workaround for Bug 625867 "RadioButton information lost on cut+paste, add/remove parent, etc"

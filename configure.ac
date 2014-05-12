@@ -4,7 +4,7 @@ AC_PREREQ(2.52)
 
 m4_define(glade_major_version, 3)
 m4_define(glade_minor_version, 8)
-m4_define(glade_micro_version, 4)
+m4_define(glade_micro_version, 5)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
 AC_INIT([glade3], [glade_version],
@@ -52,9 +52,9 @@ AM_PROG_LIBTOOL
 # If any interfaces have been added since the last public release, then increment GLADE_AGE.
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual.html#Versioning
-GLADE_REVISION=3
-GLADE_CURRENT=12
-GLADE_AGE=1
+GLADE_REVISION=0
+GLADE_CURRENT=13
+GLADE_AGE=2
 GLADE_CURRENT_MINUS_AGE=`expr $GLADE_CURRENT - $GLADE_AGE`
 AC_SUBST(GLADE_REVISION)
 AC_SUBST(GLADE_CURRENT)

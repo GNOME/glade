@@ -124,7 +124,7 @@ noinst_HEADERS = \
 	glade-design-layout.h \
 	glade-object-stub.h \
 	glade-popup.h \
-	glade-accumulators.h
+	glade-accumulators.h \
 	glade-tsort.h \
 	glade-widget-private.h
 
