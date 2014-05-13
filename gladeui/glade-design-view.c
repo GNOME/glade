@@ -41,6 +41,7 @@
 #include "glade-design-layout.h"
 #include "glade-design-private.h"
 #include "glade-path.h"
+#include "glade-adaptor-chooser.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -365,6 +366,46 @@ glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
 }
 
 static void
+on_chooser_adaptor_selected (_GladeAdaptorChooser *chooser,
+                             GladeWidgetAdaptor   *adaptor,
+                             GladeProject         *project)
+
+{
+  gtk_widget_hide (GTK_WIDGET (chooser));
+  glade_command_create (adaptor, NULL, NULL, project);
+  gtk_widget_destroy (GTK_WIDGET (chooser));
+}
+
+static gboolean
+glade_design_view_viewport_button_press (GtkWidget       *widget,
+                                         GdkEventButton  *event,
+                                         GladeDesignView *view)
+{
+  GladeDesignViewPrivate *priv = view->priv;
+  GdkRectangle rect = {event->x, event->y, 8, 8};
+  GtkWidget *pop, *chooser;
+  
+  if (event->type != GDK_2BUTTON_PRESS)
+    return FALSE;
+
+  pop = gtk_popover_new (widget);
+  gtk_popover_set_pointing_to (GTK_POPOVER (pop), &rect);
+  gtk_popover_set_position (GTK_POPOVER (pop), GTK_POS_BOTTOM);
+  
+  chooser = _glade_adaptor_chooser_new (GLADE_ADAPTOR_CHOOSER_TOPLEVEL,
+                                        priv->project);
+  g_signal_connect (chooser, "adaptor-selected",
+                    G_CALLBACK (on_chooser_adaptor_selected),
+                    priv->project);
+
+  gtk_container_add (GTK_CONTAINER (pop), chooser);
+  gtk_widget_show (chooser);
+  gtk_widget_show (pop);
+
+  return TRUE;
+}
+
+static void
 glade_design_view_init (GladeDesignView *view)
 {
   GtkWidget *viewport;
@@ -386,6 +427,10 @@ glade_design_view_init (GladeDesignView *view)
                                   GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   viewport = gtk_viewport_new (NULL, NULL);
+  gtk_widget_add_events (viewport, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
+  g_signal_connect (viewport, "button-press-event",
+                    G_CALLBACK (glade_design_view_viewport_button_press),
+                    view);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
   gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout_box);
   gtk_container_add (GTK_CONTAINER (view->priv->scrolled_window), viewport);

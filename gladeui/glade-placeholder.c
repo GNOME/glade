@@ -45,6 +45,7 @@
 #include "glade-cursor.h"
 #include "glade-widget.h"
 #include "glade-app.h"
+#include "glade-adaptor-chooser.h"
 #include <math.h>
 
 #include "glade-dnd.h"
@@ -380,6 +381,38 @@ glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
   return FALSE;
 }
 
+static void
+on_chooser_adaptor_selected (_GladeAdaptorChooser *chooser,
+                             GladeWidgetAdaptor  *adaptor,
+                             GladePlaceholder    *placeholder)
+
+{
+  gtk_widget_hide (GTK_WIDGET (chooser));
+  glade_command_create (adaptor, glade_placeholder_get_parent (placeholder),
+                        placeholder, glade_placeholder_get_project (placeholder));
+  gtk_widget_destroy (GTK_WIDGET (chooser));
+}
+
+static GtkWidget *
+glade_placeholder_popover_new (GladePlaceholder *placeholder, GtkWidget *relative_to)
+{
+  GtkWidget *pop = gtk_popover_new (relative_to);
+  GtkWidget *chooser;
+
+  chooser = _glade_adaptor_chooser_new (GLADE_ADAPTOR_CHOOSER_WIDGET |
+                                        GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL,
+                                        glade_placeholder_get_project (placeholder));
+
+  g_signal_connect (chooser, "adaptor-selected",
+                    G_CALLBACK (on_chooser_adaptor_selected),
+                    placeholder);
+  gtk_popover_set_position (GTK_POPOVER (pop), GTK_POS_BOTTOM);
+  gtk_container_add (GTK_CONTAINER (pop), chooser);
+  gtk_widget_show (chooser);
+
+  return pop;
+}
+
 static gboolean
 glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 {
@@ -397,9 +430,9 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
   if (!gtk_widget_has_focus (widget))
     gtk_widget_grab_focus (widget);
 
-  if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
+  if (event->button == 1)
     {
-      if (adaptor != NULL)
+      if (event->type == GDK_BUTTON_PRESS && adaptor != NULL)
         {
           GladeWidget *parent = glade_placeholder_get_parent (placeholder);
 
@@ -412,6 +445,21 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
           /* reset the cursor */
           glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
+          handled = TRUE;
+        }
+      else if (event->type == GDK_2BUTTON_PRESS && adaptor == NULL)
+        {
+          GtkWidget *event_widget = gtk_get_event_widget ((GdkEvent*) event);
+          GladeWidget *toplevel = glade_widget_get_toplevel (glade_placeholder_get_parent (placeholder));
+          GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (glade_widget_get_object (toplevel)));
+          GtkWidget *pop = glade_placeholder_popover_new (placeholder, parent);
+          GdkRectangle rect = {0, 0, 8, 8};
+
+          gtk_widget_translate_coordinates (event_widget, parent,
+                                            event->x, event->y,
+                                            &rect.x, &rect.y);
+          gtk_popover_set_pointing_to (GTK_POPOVER (pop), &rect);
+          gtk_widget_show (pop);
           handled = TRUE;
         }
     }
