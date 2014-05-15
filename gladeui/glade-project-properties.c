@@ -259,7 +259,7 @@ target_version_box_fill (GladeProjectProperties *properties)
         label = gtk_label_new ("GTK+");
       else
         label = gtk_label_new (glade_catalog_get_name (catalog));
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0F, 0.5F);
+      gtk_widget_set_halign (label, GTK_ALIGN_START);
 
       gtk_widget_show (label);
       gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 2);

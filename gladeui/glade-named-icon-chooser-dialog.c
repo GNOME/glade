@@ -1401,7 +1401,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
   gtk_widget_show (contents);
 
   label = gtk_label_new_with_mnemonic (_("Icon _Name:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_widget_show (label);
 
   dialog->priv->entry = gtk_entry_new ();
@@ -1447,7 +1447,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
   label = gtk_label_new_with_mnemonic (_("C_ontexts:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label),
                                  dialog->priv->contexts_view);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_size_group_add_widget (group, label);
   gtk_widget_show (label);
 
@@ -1469,7 +1469,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 
   label = gtk_label_new_with_mnemonic (_("Icon Na_mes:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), dialog->priv->icons_view);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_size_group_add_widget (group, label);
   gtk_widget_show (label);
 

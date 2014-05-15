@@ -1121,8 +1121,7 @@ glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
   label = gtk_label_new (string);
   g_free (string);
   gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label), 2, 0);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
   button = gtk_button_new ();

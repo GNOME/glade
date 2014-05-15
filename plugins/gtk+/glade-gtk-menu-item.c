@@ -91,7 +91,7 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
   if (gtk_bin_get_child (GTK_BIN (object)) == NULL)
     {
       GtkWidget *label = gtk_label_new ("");
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+      gtk_widget_set_halign (label, GTK_ALIGN_START);
       gtk_container_add (GTK_CONTAINER (object), label);
     }
 }

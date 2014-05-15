@@ -1338,7 +1338,7 @@ glade_eprop_flags_show_dialog (GladeEditorProperty *eprop)
   view = glade_eprop_flags_create_treeview (eprop);
 
   label = gtk_label_new_with_mnemonic (_("_Select individual fields:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label),
                                  gtk_bin_get_child (GTK_BIN (view)));
 
@@ -2026,7 +2026,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
   /* Text */
   label = gtk_label_new_with_mnemonic (_("_Text:"));
   gtk_widget_show (label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   sw = gtk_scrolled_window_new (NULL, NULL);
@@ -2076,7 +2076,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
 
   label = gtk_label_new_with_mnemonic (_("Conte_xt for translation:"));
   gtk_widget_show (label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_container_add (GTK_CONTAINER (alignment), label);
   gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
   gtk_widget_set_tooltip_text (alignment,
@@ -2114,7 +2114,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
 
   label = gtk_label_new_with_mnemonic (_("Co_mments for translators:"));
   gtk_widget_show (label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_container_add (GTK_CONTAINER (alignment), label);
   gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
 
@@ -3181,7 +3181,7 @@ glade_editor_property_show_object_dialog (GladeProject *project,
   /* Checklist */
   label = gtk_label_new_with_mnemonic (_("O_bjects:"));
   gtk_widget_show (label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   sw = gtk_scrolled_window_new (NULL, NULL);
@@ -3322,7 +3322,7 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
   /* Checklist */
   label = gtk_label_new_with_mnemonic (_("O_bjects:"));
   gtk_widget_show (label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   sw = gtk_scrolled_window_new (NULL, NULL);
@@ -3625,7 +3625,7 @@ glade_eprop_objects_show_dialog (GladeEditorProperty *eprop)
   /* Checklist */
   label = gtk_label_new (_("Objects:"));
   gtk_widget_show (label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   sw = gtk_scrolled_window_new (NULL, NULL);

@@ -321,7 +321,7 @@ glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
   /* Add a box to avoid the ellipsize on the items */
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label = gtk_label_new (glade_widget_adaptor_get_title (adaptor));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_widget_show (label);
   gtk_widget_show (box);
   gtk_container_add (GTK_CONTAINER (box), label);
@@ -363,7 +363,7 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 
   /* Give the item group a left aligned label */
   label = gtk_label_new (glade_widget_group_get_title (group));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_widget_show (label);
 
   item_group = gtk_tool_item_group_new ("");

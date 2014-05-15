@@ -552,7 +552,7 @@ append_name_field (GladeEditorTable *table)
 
   /* translators: The unique identifier of an object in the project */
   table->priv->name_label = gtk_label_new (_("ID:"));
-  gtk_misc_set_alignment (GTK_MISC (table->priv->name_label), 0.0, 0.5);
+  gtk_widget_set_halign (table->priv->name_label, GTK_ALIGN_START);
   gtk_widget_show (table->priv->name_label);
   gtk_widget_set_no_show_all (table->priv->name_label, TRUE);
 

@@ -2018,7 +2018,8 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 
   /* Name */
   label = gtk_label_new (_("Name:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
+  gtk_widget_set_halign (label, GTK_ALIGN_END);
+  gtk_widget_set_valign (label, GTK_ALIGN_START);
 
   entry = gtk_entry_new ();
   gtk_entry_set_text (GTK_ENTRY (entry), glade_widget_get_name (gchild));
@@ -2033,7 +2034,8 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
     {
       /* Type */
       label = gtk_label_new (_("Type:"));
-      gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
+      gtk_widget_set_halign (label, GTK_ALIGN_END);
+      gtk_widget_set_valign (label, GTK_ALIGN_START);
 
       entry = gtk_combo_box_new ();
       gtk_combo_box_set_model (GTK_COMBO_BOX (entry), child_class);
@@ -2156,8 +2158,10 @@ glade_base_editor_add_label (GladeBaseEditor *editor, gchar *str)
   row = editor->priv->row;
 
   gtk_label_set_markup (GTK_LABEL (label), markup);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  gtk_misc_set_padding (GTK_MISC (label), 0, 6);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
+  gtk_widget_set_valign (label, GTK_ALIGN_START);
+  gtk_widget_set_margin_top (label, 6);
+  gtk_widget_set_margin_bottom (label, 6);
 
   gtk_grid_attach (GTK_GRID (editor->priv->table), label, 0, row, 2, 1);
   gtk_widget_show (label);
