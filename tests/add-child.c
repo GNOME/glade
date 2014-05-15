@@ -159,6 +159,9 @@ assert_column_parented (GObject *parent,
   g_assert (gtk_tree_view_get_column (GTK_TREE_VIEW (parent), 0) == GTK_TREE_VIEW_COLUMN (child));
 }
 
+/* Ignore deprecated classes, we test them regardless */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 static void
 add_child_widgets (GType parent_type)
 {
