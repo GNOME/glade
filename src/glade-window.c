@@ -1470,8 +1470,8 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
 
   gtk_dialog_add_buttons (GTK_DIALOG (dialog),
                           _("Close _without Saving"), GTK_RESPONSE_NO,
-                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                          GTK_STOCK_SAVE, GTK_RESPONSE_YES, NULL);
+                          _("_Cancel"), GTK_RESPONSE_CANCEL,
+                          _("_Save"), GTK_RESPONSE_YES, NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_YES,
@@ -2646,8 +2646,7 @@ check_reload_project (GladeWindow *window, GladeProject *project)
                                                       GTK_ICON_SIZE_BUTTON));
   gtk_widget_show (button);
 
-  gtk_dialog_add_button (GTK_DIALOG (dialog), GTK_STOCK_CANCEL,
-                         GTK_RESPONSE_REJECT);
+  gtk_dialog_add_button (GTK_DIALOG (dialog), _("_Cancel"), GTK_RESPONSE_REJECT);
   gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
                                 GTK_RESPONSE_ACCEPT);
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),

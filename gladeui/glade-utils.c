@@ -465,11 +465,10 @@ glade_util_file_dialog_new (const gchar *title,
                          GLADE_IS_PROJECT (project)), NULL);
 
   file_dialog = gtk_file_chooser_dialog_new (title, parent, action,
-                                             GTK_STOCK_CANCEL,
-                                             GTK_RESPONSE_CANCEL,
+                                             _("_Cancel"), GTK_RESPONSE_CANCEL,
                                              action ==
                                              GLADE_FILE_DIALOG_ACTION_OPEN ?
-                                             GTK_STOCK_OPEN : GTK_STOCK_SAVE,
+                                             _("_Open") : _("_Save"),
                                              GTK_RESPONSE_OK, NULL);
 
   file_filter = gtk_file_filter_new ();

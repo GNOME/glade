@@ -521,9 +521,9 @@ glade_eprop_accel_show_dialog (GladeEditorProperty *eprop)
                                         GTK_WINDOW (parent),
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
-                                        GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
-                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
+                                        _("C_lear"), GLADE_RESPONSE_CLEAR,
+                                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                        _("_OK"), GTK_RESPONSE_OK, NULL);
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);

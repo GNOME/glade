@@ -1317,8 +1317,7 @@ glade_eprop_flags_show_dialog (GladeEditorProperty *eprop)
   dialog = gtk_dialog_new_with_buttons (_("Select Fields"),
                                         GTK_WINDOW (window),
                                         GTK_DIALOG_MODAL,
-                                        GTK_STOCK_CLOSE,
-                                        GTK_RESPONSE_CLOSE,
+                                        _("_Close"), GTK_RESPONSE_CLOSE,
                                         NULL);
 
   gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
@@ -1691,9 +1690,8 @@ glade_eprop_named_icon_show_chooser_dialog (GladeEditorProperty *eprop)
                                                 GTK_WINDOW
                                                 (gtk_widget_get_toplevel
                                                  (GTK_WIDGET (eprop))),
-                                                GTK_STOCK_CANCEL,
-                                                GTK_RESPONSE_CANCEL,
-                                                GTK_STOCK_OK, GTK_RESPONSE_OK,
+                                                _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                                _("_OK"), GTK_RESPONSE_OK,
                                                 NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
@@ -1998,9 +1996,9 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
                                         parent ?
                                         GTK_WINDOW (gtk_widget_get_toplevel
                                                     (parent)) : NULL,
-                                        GTK_DIALOG_MODAL, GTK_STOCK_CANCEL,
-                                        GTK_RESPONSE_CANCEL, GTK_STOCK_OK,
-                                        GTK_RESPONSE_OK, NULL);
+                                        GTK_DIALOG_MODAL,
+                                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                        _("_OK"), GTK_RESPONSE_OK, NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -2206,8 +2204,8 @@ glade_editor_property_show_resource_dialog (GladeProject *project,
                                    parent ?
                                    GTK_WINDOW (gtk_widget_get_toplevel (parent))
                                    : NULL, GTK_FILE_CHOOSER_ACTION_OPEN,
-                                   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                   GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+                                   _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                   _("_Open"), GTK_RESPONSE_OK, NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -3150,9 +3148,9 @@ glade_editor_property_show_object_dialog (GladeProject *project,
   dialog = gtk_dialog_new_with_buttons (title,
                                         GTK_WINDOW (parent),
                                         GTK_DIALOG_MODAL,
-                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
-                                        GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
+                                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                        _("C_lear"), GLADE_RESPONSE_CLEAR,
+                                        _("_OK"), GTK_RESPONSE_OK, NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
@@ -3269,12 +3267,10 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
       dialog = gtk_dialog_new_with_buttons (title,
                                             GTK_WINDOW (parent),
                                             GTK_DIALOG_MODAL,
-                                            GTK_STOCK_CANCEL,
-                                            GTK_RESPONSE_CANCEL,
-                                            GTK_STOCK_CLEAR,
-                                            GLADE_RESPONSE_CLEAR, _("_New"),
-                                            GLADE_RESPONSE_CREATE, GTK_STOCK_OK,
-                                            GTK_RESPONSE_OK, NULL);
+                                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                            _("C_lear"), GLADE_RESPONSE_CLEAR,
+                                            _("_New"), GLADE_RESPONSE_CREATE,
+                                            _("_OK"), GTK_RESPONSE_OK, NULL);
       g_free (title);
 
       gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
@@ -3288,11 +3284,9 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
       dialog = gtk_dialog_new_with_buttons (title,
                                             GTK_WINDOW (parent),
                                             GTK_DIALOG_MODAL,
-                                            GTK_STOCK_CANCEL,
-                                            GTK_RESPONSE_CANCEL,
-                                            GTK_STOCK_CLEAR,
-                                            GLADE_RESPONSE_CLEAR, GTK_STOCK_OK,
-                                            GTK_RESPONSE_OK, NULL);
+                                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                            _("C_lear"), GLADE_RESPONSE_CLEAR,
+                                            _("_OK"), GTK_RESPONSE_OK, NULL);
       g_free (title);
 
       gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
@@ -3606,9 +3600,9 @@ glade_eprop_objects_show_dialog (GladeEditorProperty *eprop)
                                         GTK_WINDOW (parent),
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
-                                        GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
-                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
+                                        _("C_lear"), GLADE_RESPONSE_CLEAR,
+                                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                        _("_OK"), GTK_RESPONSE_OK, NULL);
   g_free (title);
 
   gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
