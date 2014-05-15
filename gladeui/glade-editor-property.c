@@ -52,6 +52,7 @@
 #include "glade-marshallers.h"
 #include "glade-displayable-values.h"
 #include "glade-named-icon-chooser-dialog.h"
+#include "glade-private.h"
 
 enum
 {
@@ -1312,7 +1313,6 @@ glade_eprop_flags_show_dialog (GladeEditorProperty *eprop)
   GtkWidget *label;
   GtkWidget *vbox;
   GtkWidget *content_area;
-  GtkWidget *action_area;
 
   dialog = gtk_dialog_new_with_buttons (_("Select Fields"),
                                         GTK_WINDOW (window),
@@ -1323,14 +1323,8 @@ glade_eprop_flags_show_dialog (GladeEditorProperty *eprop)
   gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
 
-  /* HIG spacings */
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+  _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-  gtk_box_set_spacing (GTK_BOX (content_area), 2);      /* 2 * 5 + 2 = 12 */
-  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
-  gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
-  gtk_box_set_spacing (GTK_BOX (action_area), 6);
-
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
 
@@ -1987,7 +1981,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
   GtkWidget *text_view, *comment_view, *context_view;
   GtkTextBuffer *text_buffer, *comment_buffer, *context_buffer = NULL;
   GtkWidget *translatable_button;
-  GtkWidget *content_area, *action_area;
+  GtkWidget *content_area;
   gint res;
 
   g_return_val_if_fail (text && context && comment && translatable, FALSE);
@@ -2006,15 +2000,8 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL, -1);
 
-  /* HIG spacings */
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-  gtk_box_set_spacing (GTK_BOX (content_area), 2);      /* 2 * 5 + 2 = 12 */
-  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
-  gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
-  gtk_box_set_spacing (GTK_BOX (action_area), 6);
-
-
+  _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
+  content_area =  gtk_dialog_get_content_area (GTK_DIALOG (dialog));
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
   gtk_widget_show (vbox);
@@ -2193,7 +2180,6 @@ glade_editor_property_show_resource_dialog (GladeProject *project,
 {
 
   GtkWidget *dialog;
-  GtkWidget *action_area;
   gchar *folder;
 
   g_return_val_if_fail (filename != NULL, FALSE);
@@ -2213,12 +2199,7 @@ glade_editor_property_show_resource_dialog (GladeProject *project,
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL, -1);
 
-  /* HIG spacings */
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  gtk_box_set_spacing (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 2); /* 2 * 5 + 2 = 12 */
-  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
-  gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
-  gtk_box_set_spacing (GTK_BOX (action_area), 6);
+  _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
 
   folder = glade_project_resource_fullpath (project, ".");
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), folder);
@@ -3136,7 +3117,6 @@ glade_editor_property_show_object_dialog (GladeProject *project,
   GtkWidget *vbox, *label, *sw;
   GtkWidget *tree_view;
   GtkWidget *content_area;
-  GtkWidget *action_area;
   GList *selected_list = NULL, *exception_list = NULL;
   gint res;
 
@@ -3161,14 +3141,8 @@ glade_editor_property_show_object_dialog (GladeProject *project,
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
-  /* HIG settings */
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-  gtk_box_set_spacing (GTK_BOX (content_area), 2);      /* 2 * 5 + 2 = 12 */
-  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
-  gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
-  gtk_box_set_spacing (GTK_BOX (action_area), 6);
-
+  _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
+  content_area =  gtk_dialog_get_content_area (GTK_DIALOG (dialog));
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
@@ -3241,7 +3215,6 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
   GtkWidget *vbox, *label, *sw;
   GtkWidget *tree_view;
   GtkWidget *content_area;
-  GtkWidget *action_area;
   GladeProject *project;
   GladeWidget  *widget;
   GParamSpec *pspec;
@@ -3298,14 +3271,8 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
   gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
-  /* HIG settings */
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-  gtk_box_set_spacing (GTK_BOX (content_area), 2);      /* 2 * 5 + 2 = 12 */
-  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
-  gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
-  gtk_box_set_spacing (GTK_BOX (action_area), 6);
-
+  _glade_util_dialog_set_hig (GTK_DIALOG (dialog));  
+  content_area =  gtk_dialog_get_content_area (GTK_DIALOG (dialog));
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
@@ -3607,6 +3574,7 @@ glade_eprop_objects_show_dialog (GladeEditorProperty *eprop)
 
   gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
 
+  _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 

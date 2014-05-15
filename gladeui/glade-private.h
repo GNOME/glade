@@ -61,11 +61,12 @@ _glade_project_properties_get_license_data (GladeProjectProperties *props,
 
 /* glade-utils.c */
 
-gchar *
-_glade_util_strreplace (gchar *str,
-                        gboolean free_str,
-                        const gchar *key,
-                        const gchar *replacement);
+void   _glade_util_dialog_set_hig (GtkDialog *dialog);
+
+gchar *_glade_util_strreplace (gchar *str,
+                               gboolean free_str,
+                               const gchar *key,
+                               const gchar *replacement);
 
 /* glade-xml-utils.c */
 

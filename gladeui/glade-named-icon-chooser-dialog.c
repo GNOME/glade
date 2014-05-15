@@ -22,6 +22,7 @@
 
 #include <config.h>
 
+#include "glade-private.h"
 #include "glade-named-icon-chooser-dialog.h"
 #include "icon-naming-spec.c"
 
@@ -1353,7 +1354,6 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
   GtkWidget *label;
   GtkWidget *hpaned;
   GtkWidget *content_area;
-  GtkWidget *action_area;
   GtkSizeGroup *group;
 
   dialog->priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
@@ -1370,15 +1370,8 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 
   gtk_window_set_default_size (GTK_WINDOW (dialog), 610, 480);
 
-#if !GTK_CHECK_VERSION (2, 21, 8)
-  gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
-#endif
+  _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-  gtk_container_set_border_width (GTK_CONTAINER (content_area), 12);
-  gtk_box_set_spacing (GTK_BOX (content_area), 12);
-  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
-  gtk_container_set_border_width (GTK_CONTAINER (action_area), 0);
-  gtk_box_set_spacing (GTK_BOX (action_area), 6);
 
   /* We do a signal connection here rather than overriding the method in
    * class_init because GtkDialog::response is a RUN_LAST signal.  We want *our*
@@ -1398,6 +1391,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
     standard_icon_quarks = create_standard_icon_quarks ();
 
   contents = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_container_set_border_width (GTK_CONTAINER (contents), 5);
   gtk_widget_show (contents);
 
   label = gtk_label_new_with_mnemonic (_("Icon _Name:"));
