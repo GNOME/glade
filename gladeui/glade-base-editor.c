@@ -1566,9 +1566,8 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeBaseEditorClass, build_child),
-                    glade_stop_emission_accumulator, NULL,
-                    glade_marshal_OBJECT__OBJECT_UINT,
-                    G_TYPE_OBJECT, 2, G_TYPE_OBJECT, G_TYPE_UINT);
+                    glade_stop_emission_accumulator, NULL, NULL,
+                    G_TYPE_OBJECT, 2, G_TYPE_OBJECT, G_TYPE_GTYPE);
 
   /**
    * GladeBaseEditor::delete-child:
