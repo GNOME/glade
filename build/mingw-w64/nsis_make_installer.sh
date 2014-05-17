@@ -48,7 +48,6 @@ case $1 in
     ;;
   makedev)
     DEVELOPER="true"
-    MINGW_ROOT_BIN=$MINGW_ROOT
     INCLUDE_DIR=include
     EXCLUDE_FILES=
     ;;
@@ -90,12 +89,13 @@ if test ! -e download-mingw-rpm.py; then
 fi
 
 if test ! -d $MINGW_ROOT; then
-  python3 download-mingw-rpm.py --deps gtk2-devel libxml2-devel
+  python3 download-mingw-rpm.py --deps gtk2 hicolor-icon-theme gtk2-devel libxml2-devel
   mv $MINGW_ROOT_BIN $MINGW_ROOT
-fi
-
-if test $DEVELOPER = "false" -a ! -d $MINGW_ROOT_BIN; then
-  python3 download-mingw-rpm.py --deps gtk2 hicolor-icon-theme
+  if test $DEVELOPER = "true"; then
+    python3 download-mingw-rpm.py --deps gtk2 hicolor-icon-theme gtk2-devel libxml2-devel
+  else
+    python3 download-mingw-rpm.py --deps gtk2 hicolor-icon-theme
+  fi
 fi
 
 if test ! -e $MINGW_ROOT_BIN/bin/glade-3.exe; then
@@ -108,7 +108,7 @@ fi
 
 fi
 
-if test ! -e $MINGW_ROOT_BIN/bin/glade.exe; then
+if test ! -e $MINGW_ROOT_BIN/bin/glade-3.exe; then
 	echo Executable not found! Aborting...
 	exit 1
 fi
@@ -117,8 +117,17 @@ fi
 
 cp $ROOT/build/mingw-w64/glade.nsi $ROOT/data/icons/glade-3.ico $MINGW_ROOT_BIN
 
+# Move locale files
+if test -d $MINGW_ROOT_BIN/lib/locale; then
+  cp -r $MINGW_ROOT_BIN/lib/locale/* $MINGW_ROOT_BIN/share/locale/
+  rm -rf $MINGW_ROOT_BIN/lib/locale
+fi
+
 #change to installer directory
 cd $MINGW_ROOT_BIN
+
+# remove locales whitout a glade file
+rm -r `find share/locale/ -mindepth 1 -maxdepth 1 -type d -exec test ! -e "{}/LC_MESSAGES/glade3.mo" \; -print`
 
 if test ! -d COPYING; then
 cat > COPYING << EOF
@@ -126,7 +135,7 @@ Glade - A user interface designer for GTK+ and GNOME.
 
 Copyright © 2001-2006 Ximian, Inc.
 Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
-Copyright © 2001-2012 Tristan Van Berkom, Juan Pablo Ugarte, et al.
+Copyright © 2001-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -151,11 +160,13 @@ if test $DEVELOPER = "true"; then
 
 cat > install_files.nsh << EOF
         file /r lib
+        file /r etc
         file /r share
         file /r include
 EOF
 else
 cat > install_files.nsh << EOF
+        file /r etc
         file /r /x pkgconfig /x *.dll.a /x *.la lib
         file /r share
 EOF
@@ -173,8 +184,8 @@ makensis glade.nsi
 
 rm install_files.nsh uninstall_files.nsh
 
-#copy installer in build directory
-cp glade-*-installer.exe $CWD
+#move installer in build directory
+mv glade-*-installer.exe $CWD
 
 #go back to start
 cd $CWD
