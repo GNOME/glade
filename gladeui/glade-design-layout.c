@@ -75,7 +75,6 @@ struct _GladeDesignLayoutPrivate
 
   gint child_offset;
   GdkRectangle east, south, south_east;
-  GdkCursor *cursor;            /* Current cursor */
   GdkCursor *cursors[N_ACTIVITY];
 
   GdkRectangle child_rect;
@@ -229,14 +228,11 @@ gdl_get_activity_from_pointer (GladeDesignLayout *layout, gint x, gint y)
   return ACTIVITY_NONE;
 }
 
-static void
+static inline void
 gdl_set_cursor (GladeDesignLayoutPrivate *priv, GdkCursor *cursor)
 {
-  if (cursor != priv->cursor)
-    {
-      priv->cursor = cursor;
-      gdk_window_set_cursor (priv->window, cursor);
-    }
+  if (cursor != gdk_window_get_cursor (priv->window))
+    gdk_window_set_cursor (priv->window, cursor);
 }
 
 static Activity
@@ -267,7 +263,7 @@ gdl_margin_get_activity (Margins margin)
 }
 
 static gboolean
-glade_design_layout_leave_notify_event (GtkWidget *widget, GdkEventCrossing *ev)
+glade_design_layout_enter_leave_notify_event (GtkWidget *widget, GdkEventCrossing *ev)
 {
   GtkWidget *child;
   GladeDesignLayoutPrivate *priv;
@@ -278,7 +274,16 @@ glade_design_layout_leave_notify_event (GtkWidget *widget, GdkEventCrossing *ev)
 
   priv = GLADE_DESIGN_LAYOUT_PRIVATE (widget);
 
-  if (priv->activity == ACTIVITY_NONE)
+  if (ev->type == GDK_ENTER_NOTIFY)
+    {
+      Activity activity = priv->activity;
+
+      if (priv->activity == ACTIVITY_MARGINS)
+        activity = gdl_margin_get_activity (priv->margin);
+
+      gdl_set_cursor (priv, priv->cursors[activity]);
+    }
+  else if (priv->activity == ACTIVITY_NONE)
     gdl_set_cursor (priv, NULL);
 
   return FALSE;
@@ -390,18 +395,44 @@ gdl_alignments_invalidate (GdkWindow *window,
   cairo_region_destroy (region);
 }
 
+static void
+gdl_update_cursor_for_position (GtkWidget *widget, gint x, gint y)
+{
+  GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (widget);
+  Activity activity = gdl_get_activity_from_pointer (layout, x, y);
+  GladeDesignLayoutPrivate *priv = layout->priv;
+
+  if (priv->node_over != priv->margin &&
+      (activity == ACTIVITY_ALIGNMENTS ||
+       glade_project_get_pointer_mode (priv->project) == GLADE_POINTER_ALIGN_EDIT))
+    {
+      if (priv->selection)
+        gdl_alignments_invalidate (priv->window, widget, priv->selection,
+                                   priv->node_over | priv->margin);
+      else
+        gdk_window_invalidate_rect (priv->window, NULL, FALSE);
+
+      priv->node_over = priv->margin;
+    }
+
+  if (activity == ACTIVITY_MARGINS)
+    activity = gdl_margin_get_activity (priv->margin);
+  
+  /* Only set the cursor if changed */
+  gdl_set_cursor (priv, priv->cursors[activity]);
+}
+
 static gboolean
 glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 {
-  GladeDesignLayoutPrivate *priv;
+  GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (widget);
+  GladeDesignLayoutPrivate *priv = layout->priv;
   GtkAllocation allocation;
   GtkWidget *child;
   gint x, y;
 
   if ((child = gtk_bin_get_child (GTK_BIN (widget))) == NULL)
     return FALSE;
-
-  priv = GLADE_DESIGN_LAYOUT_PRIVATE (widget);
 
   x = ev->x;
   y = ev->y;
@@ -427,13 +458,16 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
     {
       case ACTIVITY_RESIZE_WIDTH:
         allocation.width = MAX (0, x - priv->dx - PADDING - OUTLINE_WIDTH);
+        glade_design_layout_update_child (layout, child, &allocation);
       break;
       case ACTIVITY_RESIZE_HEIGHT:
         allocation.height = MAX (0, y - priv->dy - PADDING - OUTLINE_WIDTH);
+        glade_design_layout_update_child (layout, child, &allocation);
       break;
       case ACTIVITY_RESIZE_WIDTH_AND_HEIGHT:
         allocation.height = MAX (0, y - priv->dy - PADDING - OUTLINE_WIDTH);
         allocation.width = MAX (0, x - priv->dx - PADDING - OUTLINE_WIDTH);
+        glade_design_layout_update_child (layout, child, &allocation);
       break;
       case ACTIVITY_MARGINS:
         {
@@ -486,33 +520,11 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
         }
       break;
       default:
-        {
-          Activity activity = gdl_get_activity_from_pointer (GLADE_DESIGN_LAYOUT (widget), x, y);
-
-          if (priv->node_over != priv->margin && (activity == ACTIVITY_ALIGNMENTS ||
-              glade_project_get_pointer_mode (priv->project) == GLADE_POINTER_ALIGN_EDIT))
-            {
-              if (priv->selection)
-                gdl_alignments_invalidate (priv->window, widget, priv->selection,
-                                           priv->node_over | priv->margin);
-              else
-                gdk_window_invalidate_rect (priv->window, NULL, FALSE);
-
-              priv->node_over = priv->margin;
-            }
-           
-          if (activity == ACTIVITY_MARGINS)
-            activity = gdl_margin_get_activity (priv->margin);
-
-          /* Only set the cursor if changed */
-          gdl_set_cursor (priv, priv->cursors[activity]);
-          return TRUE;
-        }
+        gdl_update_cursor_for_position (widget, x, y);
       break;
     }
 
-  glade_design_layout_update_child (GLADE_DESIGN_LAYOUT (widget), child, &allocation);
-  return FALSE;
+  return (priv->activity != ACTIVITY_NONE);
 }
 
 static gboolean
@@ -674,7 +686,7 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
                                 get_margin_bottom (selection) * -1);
 
             gdl_set_cursor (priv, priv->cursors[gdl_margin_get_activity (priv->margin)]);
-            return FALSE;
+            return TRUE;
           break;
           default:
             gdl_set_cursor (priv, priv->cursors[priv->activity]);
@@ -696,8 +708,9 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
       _glade_design_view_thaw (priv->view);
     }
 
-  return FALSE;
+  return (activity != ACTIVITY_NONE);
 }
+
 static gboolean
 glade_design_layout_button_release_event (GtkWidget *widget,
                                           GdkEventButton *ev)
@@ -749,11 +762,11 @@ glade_design_layout_button_release_event (GtkWidget *widget,
       priv->node_over = 0;
       gdk_window_invalidate_rect (priv->window, NULL, FALSE);
     }
-  
-  priv->activity = ACTIVITY_NONE;
-  gdl_set_cursor (priv, NULL);
 
-  return FALSE;
+  priv->activity = ACTIVITY_NONE;
+  gdl_update_cursor_for_position (widget, ev->x, ev->y);
+
+  return TRUE;
 }
 
 static void
@@ -1790,8 +1803,6 @@ glade_design_layout_unrealize (GtkWidget * widget)
         }
     }
 
-  priv->cursor = NULL;
-
   if (priv->widget_name)
     {
       g_object_unref (priv->widget_name);
@@ -2052,7 +2063,8 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   widget_class->realize = glade_design_layout_realize;
   widget_class->unrealize = glade_design_layout_unrealize;
   widget_class->motion_notify_event = glade_design_layout_motion_notify_event;
-  widget_class->leave_notify_event = glade_design_layout_leave_notify_event;
+  widget_class->enter_notify_event = glade_design_layout_enter_leave_notify_event;
+  widget_class->leave_notify_event = glade_design_layout_enter_leave_notify_event;
   widget_class->button_press_event = glade_design_layout_button_press_event;
   widget_class->button_release_event = glade_design_layout_button_release_event;
   widget_class->draw = glade_design_layout_draw;
