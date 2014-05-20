@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-05-08 17:41+0000\n"
-"PO-Revision-Date: 2014-05-10 18:27+0200\n"
+"POT-Creation-Date: 2014-05-20 05:41+0000\n"
+"PO-Revision-Date: 2014-05-20 18:54+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -103,7 +103,7 @@ msgstr "Activar «%s»"
 
 #. Name
 #: ../src/glade-window.c:587 ../src/glade-registration.glade.h:4
-#: ../gladeui/glade-base-editor.c:2020
+#: ../gladeui/glade-base-editor.c:2019
 #: ../gladeui/glade-project-properties.ui.h:12
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
 msgid "Name:"
@@ -225,6 +225,25 @@ msgstr "Sus cambios se perderán si no los guarda."
 msgid "Close _without Saving"
 msgstr "Cerrar _sin guardar"
 
+#: ../src/glade-window.c:1473 ../src/glade-window.c:2649
+#: ../gladeui/glade-editor.c:750 ../gladeui/glade-editor.c:1106
+#: ../gladeui/glade-editor-property.c:1687
+#: ../gladeui/glade-editor-property.c:1994
+#: ../gladeui/glade-editor-property.c:2193
+#: ../gladeui/glade-editor-property.c:3131
+#: ../gladeui/glade-editor-property.c:3243
+#: ../gladeui/glade-editor-property.c:3260
+#: ../gladeui/glade-editor-property.c:3571 ../gladeui/glade-utils.c:483
+#: ../plugins/gtk+/glade-accels.c:525 ../plugins/gtk+/glade-attributes.c:1062
+#| msgid "Cancel"
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: ../src/glade-window.c:1474 ../gladeui/glade-utils.c:486
+#| msgid "Save"
+msgid "_Save"
+msgstr "_Guardar"
+
 #: ../src/glade-window.c:1502
 msgid "Save…"
 msgstr "Guardar…"
@@ -233,57 +252,57 @@ msgstr "Guardar…"
 msgid "Close document"
 msgstr "Cerrar el documento"
 
-#: ../src/glade-window.c:2565
+#: ../src/glade-window.c:2564
 msgid "Could not create a new project."
 msgstr "No se pudo crear un proyecto nuevo."
 
-#: ../src/glade-window.c:2618
+#: ../src/glade-window.c:2617
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "El proyecto %s tiene cambios no guardados"
 
-#: ../src/glade-window.c:2623
+#: ../src/glade-window.c:2622
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Si lo recarga, todos los cambios externos pueden perderse. ¿Recargarlo de "
 "todos modos?"
 
-#: ../src/glade-window.c:2633
+#: ../src/glade-window.c:2632
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "El archivo de proyecto «%s» ha sido modificado externamente"
 
-#: ../src/glade-window.c:2638
+#: ../src/glade-window.c:2637
 msgid "Do you want to reload the project?"
 msgstr "¿Quiere volver a cargar el proyecto?"
 
-#: ../src/glade-window.c:2644
+#: ../src/glade-window.c:2643
 msgid "_Reload"
 msgstr "Re_cargar"
 
-#: ../src/glade-window.c:3230
+#: ../src/glade-window.c:3228
 msgid "Palette"
 msgstr "Paleta"
 
-#: ../src/glade-window.c:3232
+#: ../src/glade-window.c:3230
 msgid "Inspector"
 msgstr "Inspector"
 
-#: ../src/glade-window.c:3234 ../src/glade.glade.h:33
+#: ../src/glade-window.c:3232 ../src/glade.glade.h:33
 #: ../gladeui/glade-editor.c:320 ../gladeui/glade-widget.c:1392
 #: ../gladeui/glade-project-properties.ui.h:11
-#: ../plugins/gtk+/glade-gtk-action-group.c:177
+#: ../plugins/gtk+/glade-gtk-action-group.c:184
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:361
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:511
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:538
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:557
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:595
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:518
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:545
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:564
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:605
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:126
 msgid "Properties"
 msgstr "Propiedades"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:3495
+#: ../src/glade-window.c:3493
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -292,16 +311,16 @@ msgstr ""
 "¿le gustaría tomarla en este momento?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:3499
+#: ../src/glade-window.c:3497
 msgid "If not, you can always find it in the Help menu."
 msgstr "Sino, siempre puede encontrarla en el menú Ayuda"
 
-#: ../src/glade-window.c:3501
+#: ../src/glade-window.c:3499
 msgid "_Do not show this dialog again"
 msgstr "_No mostrar este dialogo nuevamente"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: ../src/glade-window.c:3522
+#: ../src/glade-window.c:3520
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
 "Ve a Ayuda -> Registro y encuesta de usuarios y completa nuestra encuesta!"
@@ -689,15 +708,15 @@ msgstr ""
 "Ayúdenos a mejorar Glade registrándose y completando la encuesta para "
 "usuarios."
 
-#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:113
+#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:115
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../src/glade.glade.h:91 ../plugins/gtk+/glade-gtk-menu-bar.c:124
+#: ../src/glade.glade.h:91 ../plugins/gtk+/glade-gtk-menu-bar.c:126
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/glade.glade.h:92 ../plugins/gtk+/glade-gtk-menu-bar.c:133
+#: ../src/glade.glade.h:92 ../plugins/gtk+/glade-gtk-menu-bar.c:135
 msgid "_View"
 msgstr "_Ver"
 
@@ -709,7 +728,7 @@ msgstr "_Apariencia de la paleta"
 msgid "_Projects"
 msgstr "_Proyectos"
 
-#: ../src/glade.glade.h:95 ../plugins/gtk+/glade-gtk-menu-bar.c:137
+#: ../src/glade.glade.h:95 ../plugins/gtk+/glade-gtk-menu-bar.c:139
 msgid "_Help"
 msgstr "Ay_uda"
 
@@ -916,7 +935,6 @@ msgid "Name and Email fields are required"
 msgstr "Los campos Nombre y Correo-e son obligatorios"
 
 #: ../src/glade-registration.c:437
-#, fuzzy
 #| msgid ""
 #| "Ops! Email address is already in use!\n"
 #| "To update information you need to provide the token that was sent to your "
@@ -932,19 +950,16 @@ msgstr ""
 
 #: ../src/glade-registration.c:440
 #, c-format
-#| msgid "Ops! Error saving user information: %s"
 msgid "Oops! Error saving user information: %s"
 msgstr "Error al guardar la información del usuario: %s"
 
 #: ../src/glade-registration.c:443
 #, c-format
-#| msgid "Ops! Error saving survey data: %s"
 msgid "Oops! Error saving survey data: %s"
 msgstr "Error al guardar los datos de la encuesta: %s"
 
 #: ../src/glade-registration.c:446
 #, c-format
-#| msgid "Ops! Error accessing DB: %s"
 msgid "Oops! Error accessing DB: %s"
 msgstr "Error al acceder a la BB.DD: %s"
 
@@ -1490,7 +1505,7 @@ msgstr "Enviar"
 msgid "Information will be sent to https://people.gnome.org/~jpu"
 msgstr "La información se enviará a https://people.gnome.org/~jpu"
 
-#: ../gladeui/glade-app.c:539
+#: ../gladeui/glade-app.c:535
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -1500,7 +1515,7 @@ msgstr ""
 "pero es un archivo regular.\n"
 "No se guardará ningún dato privado en esta sesión"
 
-#: ../gladeui/glade-app.c:551
+#: ../gladeui/glade-app.c:547
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -1510,7 +1525,7 @@ msgstr ""
 "datos privados.\n"
 "No se guardará ningún dato privado en esta sesión"
 
-#: ../gladeui/glade-app.c:579
+#: ../gladeui/glade-app.c:575
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -1519,7 +1534,7 @@ msgstr ""
 "Error al escribir los datos privados en %s (%s).\n"
 "No se guardará ningún dato privado en esta sesión"
 
-#: ../gladeui/glade-app.c:591
+#: ../gladeui/glade-app.c:587
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -1528,7 +1543,7 @@ msgstr ""
 "Error al serializar los datos de configuración para guardar (%s).\n"
 "No se guardarán ningún dato privado en esta sesión"
 
-#: ../gladeui/glade-app.c:604
+#: ../gladeui/glade-app.c:600
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -1576,23 +1591,23 @@ msgid "The container object this editor is currently editing"
 msgstr "El objeto contenedor que este editor está editando actualmente"
 
 #. translators: refers to a tab name used to group all the relevant widget's properties
-#: ../gladeui/glade-base-editor.c:1721 ../gladeui/glade-editor.c:904
+#: ../gladeui/glade-base-editor.c:1720 ../gladeui/glade-editor.c:904
 msgid "General"
 msgstr "General"
 
 #. translators: refers to a tab name used to show the widget hierarchy
-#: ../gladeui/glade-base-editor.c:1730
+#: ../gladeui/glade-base-editor.c:1729
 msgid "Hierarchy"
 msgstr "Jerarquía"
 
 #. AtkRole enumeration value
-#: ../gladeui/glade-base-editor.c:1768 ../plugins/gtk+/gtk+.xml.in.h:141
+#: ../gladeui/glade-base-editor.c:1767 ../plugins/gtk+/gtk+.xml.in.h:141
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:9
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:2
 msgid "Label"
 msgstr "Etiqueta"
 
-#: ../gladeui/glade-base-editor.c:1783 ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-base-editor.c:1782 ../gladeui/glade-widget-adaptor.c:1460
 msgid "Type"
 msgstr "Tipo"
 
@@ -1602,7 +1617,7 @@ msgstr "Tipo"
 msgid "Type:"
 msgstr "Tipo:"
 
-#: ../gladeui/glade-base-editor.c:2251
+#: ../gladeui/glade-base-editor.c:2254
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1654,53 +1669,53 @@ msgstr "Archivo"
 msgid "Missing Image"
 msgstr "Falta una imagen"
 
-#: ../gladeui/glade-builtins.c:354
+#: ../gladeui/glade-builtins.c:365
 msgid "Stock"
 msgstr "Stock"
 
-#: ../gladeui/glade-builtins.c:355
+#: ../gladeui/glade-builtins.c:366
 msgid "A builtin stock item"
 msgstr "Un elemento de stock integrado"
 
-#: ../gladeui/glade-builtins.c:362
+#: ../gladeui/glade-builtins.c:373
 msgid "Stock Image"
 msgstr "Imagen de stock"
 
-#: ../gladeui/glade-builtins.c:363
+#: ../gladeui/glade-builtins.c:374
 msgid "A builtin stock image"
 msgstr "Una imagen de stock integrada"
 
-#: ../gladeui/glade-builtins.c:507
+#: ../gladeui/glade-builtins.c:518
 msgid "Objects"
 msgstr "Objetos"
 
-#: ../gladeui/glade-builtins.c:508
+#: ../gladeui/glade-builtins.c:519
 msgid "A list of objects"
 msgstr "Una lista de objetos"
 
-#: ../gladeui/glade-builtins.c:516
+#: ../gladeui/glade-builtins.c:527
 msgid "Image File Name"
 msgstr "Nombre del archivo de imagen"
 
-#: ../gladeui/glade-builtins.c:517
+#: ../gladeui/glade-builtins.c:528
 msgid "Enter a filename, relative path or full path to load the image"
 msgstr ""
 "Introduzca un nombre de archivo, relativo o una ruta completa para cargar la "
 "imagen"
 
-#: ../gladeui/glade-builtins.c:526
+#: ../gladeui/glade-builtins.c:537
 msgid "Color"
 msgstr "Color"
 
-#: ../gladeui/glade-builtins.c:527
+#: ../gladeui/glade-builtins.c:538
 msgid "A GDK color value"
 msgstr "Un valor de color GDK"
 
-#: ../gladeui/glade-builtins.c:553
+#: ../gladeui/glade-builtins.c:564
 msgid "String"
 msgstr "Cadena"
 
-#: ../gladeui/glade-builtins.c:554
+#: ../gladeui/glade-builtins.c:565
 msgid "An entry"
 msgstr "Una entrada"
 
@@ -1724,7 +1739,7 @@ msgstr "Estableciendo propiedades múltiples"
 msgid "Setting %s of %s"
 msgstr "Estableciendo %s de %s"
 
-#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3369
+#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3365
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Estableciendo %s de %s a %s"
@@ -1856,21 +1871,21 @@ msgstr "Quitando la plantilla"
 msgid "Unable to load image (%s)"
 msgstr "Imposible cargar la imagen (%s)"
 
-#: ../gladeui/glade-design-layout.c:621
+#: ../gladeui/glade-design-layout.c:651
 #, c-format
 msgid "Editing alignments of %s"
 msgstr "Editando la alineación de %s"
 
-#: ../gladeui/glade-design-layout.c:695
+#: ../gladeui/glade-design-layout.c:722
 #, c-format
 msgid "Editing margins of %s"
 msgstr "Editando márgenes de %s"
 
-#: ../gladeui/glade-design-layout.c:2050
+#: ../gladeui/glade-design-layout.c:2070
 msgid "Design View"
 msgstr "Vista de diseño"
 
-#: ../gladeui/glade-design-layout.c:2051
+#: ../gladeui/glade-design-layout.c:2071
 msgid "The GladeDesignView that contains this layout"
 msgstr "El GladeDesignView que contiene esta disposición"
 
@@ -1952,6 +1967,16 @@ msgstr ""
 msgid "Reset Widget Properties"
 msgstr "Restablecer propiedades del widget"
 
+#: ../gladeui/glade-editor.c:1107 ../gladeui/glade-editor-property.c:1688
+#: ../gladeui/glade-editor-property.c:1995
+#: ../gladeui/glade-editor-property.c:3133
+#: ../gladeui/glade-editor-property.c:3246
+#: ../gladeui/glade-editor-property.c:3262
+#: ../gladeui/glade-editor-property.c:3572 ../plugins/gtk+/glade-accels.c:526
+#: ../plugins/gtk+/glade-attributes.c:1063
+msgid "_OK"
+msgstr "_Aceptar"
+
 #. Checklist
 #: ../gladeui/glade-editor.c:1119
 msgid "_Properties:"
@@ -1976,80 +2001,85 @@ msgstr "_Descripción de propiedad:"
 msgid "%s - %s Properties"
 msgstr "Propiedades de %s - %s"
 
-#: ../gladeui/glade-editor-property.c:687
+#: ../gladeui/glade-editor-property.c:724
 msgid "Property Class"
 msgstr "Clase de propiedad"
 
-#: ../gladeui/glade-editor-property.c:688
+#: ../gladeui/glade-editor-property.c:725
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
 "La clase GladePropertyClass para la que se creó este GladeEditorProperty"
 
-#: ../gladeui/glade-editor-property.c:694
+#: ../gladeui/glade-editor-property.c:731
 #: ../gladeui/glade-property-shell.c:125
 msgid "Use Command"
 msgstr "Usar comando"
 
-#: ../gladeui/glade-editor-property.c:695
+#: ../gladeui/glade-editor-property.c:732
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr ""
 "Indica si se debería usar el API de comandos para la pila de deshacer/rehacer"
 
-#: ../gladeui/glade-editor-property.c:701
+#: ../gladeui/glade-editor-property.c:738
 #: ../gladeui/glade-property-shell.c:143
 msgid "Disable Check"
 msgstr "Desactivar comprobación"
 
-#: ../gladeui/glade-editor-property.c:702
+#: ../gladeui/glade-editor-property.c:739
 #: ../gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
 msgstr "Indica si se debe desactivar explícitamente el botón de comprobación"
 
-#: ../gladeui/glade-editor-property.c:708
+#: ../gladeui/glade-editor-property.c:745
 #: ../gladeui/glade-property-label.c:152 ../gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "Texto personalizado"
 
-#: ../gladeui/glade-editor-property.c:709
+#: ../gladeui/glade-editor-property.c:746
 #: ../gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
 msgstr "Testo personalizado que mostrar en la etiqueta de la propiedad"
 
-#: ../gladeui/glade-editor-property.c:1281
+#: ../gladeui/glade-editor-property.c:1317
 msgid "Select Fields"
 msgstr "Seleccionar campos"
 
-#: ../gladeui/glade-editor-property.c:1304
+#: ../gladeui/glade-editor-property.c:1320
+#| msgid "Close"
+msgid "_Close"
+msgstr "_Cerrar"
+
+#: ../gladeui/glade-editor-property.c:1333
 msgid "_Select individual fields:"
 msgstr "_Seleccionar campos individuales:"
 
-#: ../gladeui/glade-editor-property.c:1654
+#: ../gladeui/glade-editor-property.c:1683
 msgid "Select Named Icon"
 msgstr "Seleccionar icono de nombre"
 
-#: ../gladeui/glade-editor-property.c:1961
+#: ../gladeui/glade-editor-property.c:1989
 msgid "Edit Text"
 msgstr "Editar texto"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1991
+#: ../gladeui/glade-editor-property.c:2012
 msgid "_Text:"
 msgstr "_Texto:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:2027
+#: ../gladeui/glade-editor-property.c:2048
 msgid "T_ranslatable"
 msgstr "_Traducible"
 
-#: ../gladeui/glade-editor-property.c:2033 ../gladeui/glade-property.c:680
+#: ../gladeui/glade-editor-property.c:2054 ../gladeui/glade-property.c:680
 msgid "Whether this property is translatable"
 msgstr "Indica si esta propiedad se puede traducir"
 
-#: ../gladeui/glade-editor-property.c:2041
+#: ../gladeui/glade-editor-property.c:2062
 msgid "Conte_xt for translation:"
 msgstr "Conte_xto para traducción:"
 
-#: ../gladeui/glade-editor-property.c:2047
+#: ../gladeui/glade-editor-property.c:2068
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -2059,63 +2089,77 @@ msgstr ""
 "significado de esta cadena del significado de otras ocurrencias de la misma "
 "cadena"
 
-#: ../gladeui/glade-editor-property.c:2079
+#: ../gladeui/glade-editor-property.c:2100
 msgid "Co_mments for translators:"
 msgstr "_Comentarios para los traductores:"
 
-#: ../gladeui/glade-editor-property.c:2169
+#: ../gladeui/glade-editor-property.c:2189
 msgid "Select a file from the project resource directory"
 msgstr "Seleccionar un archivo desde la carpeta de recursos del proyecto"
 
+#: ../gladeui/glade-editor-property.c:2194 ../gladeui/glade-utils.c:486
+#| msgid "Open"
+msgid "_Open"
+msgstr "_Abrir"
+
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:3037
+#: ../gladeui/glade-editor-property.c:3051
 #: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1356
 #: ../plugins/gtk+/gtk+.xml.in.h:529
 msgid "Name"
 msgstr "Nombre"
 
-#: ../gladeui/glade-editor-property.c:3046 ../gladeui/glade-property.c:647
+#: ../gladeui/glade-editor-property.c:3060 ../gladeui/glade-property.c:647
 msgid "Class"
 msgstr "Clase"
 
-#: ../gladeui/glade-editor-property.c:3066
+#: ../gladeui/glade-editor-property.c:3080
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Elegir tipos de objeto %s huérfanos en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3068
+#: ../gladeui/glade-editor-property.c:3082
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Elegir tipos de objeto %s en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3088
+#: ../gladeui/glade-editor-property.c:3102
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Eligir un %s huérfano en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3090
+#: ../gladeui/glade-editor-property.c:3104
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Elija un %s en este proyecto"
 
+#: ../gladeui/glade-editor-property.c:3132
+#: ../gladeui/glade-editor-property.c:3244
+#: ../gladeui/glade-editor-property.c:3261
+#: ../gladeui/glade-editor-property.c:3570 ../plugins/gtk+/glade-accels.c:524
+#: ../plugins/gtk+/glade-attributes.c:1061
+#| msgid "Clear text"
+msgid "C_lear"
+msgstr "_Limpiar"
+
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3147
-#: ../gladeui/glade-editor-property.c:3288
+#: ../gladeui/glade-editor-property.c:3154
+#: ../gladeui/glade-editor-property.c:3284
 msgid "O_bjects:"
 msgstr "O_bjetos:"
 
-#: ../gladeui/glade-editor-property.c:3240
+#: ../gladeui/glade-editor-property.c:3245
 msgid "_New"
 msgstr "_Nuevo"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3395
+#: ../gladeui/glade-editor-property.c:3391
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Creando %s para %s de %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3591
+#: ../gladeui/glade-editor-property.c:3588
 msgid "Objects:"
 msgstr "Objetos:"
 
@@ -2165,7 +2209,7 @@ msgstr " < Buscar widgets >"
 msgid "Expand all"
 msgstr "Expandir todos"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:481
+#: ../gladeui/glade-named-icon-chooser-dialog.c:482
 msgid "All Contexts"
 msgstr "Todos los contextos"
 
@@ -2173,23 +2217,23 @@ msgstr "Todos los contextos"
 msgid "Named Icon Chooser"
 msgstr "Selector de iconos llamado"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1403
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1397
 msgid "Icon _Name:"
 msgstr "_Nombre del icono:"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1447
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1441
 msgid "C_ontexts:"
 msgstr "C_ontextos:"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1470
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1464
 msgid "Icon Na_mes:"
 msgstr "No_mbres del icono:"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1494
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1488
 msgid "_List standard icons only"
 msgstr "_Listar sólo los iconos estándar"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1694
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1688
 #, c-format
 msgid "Could not create directory: %s"
 msgstr "No se pudo crear la carpeta: %s"
@@ -2202,23 +2246,43 @@ msgstr "Eliminar todo"
 msgid "Widget selector"
 msgstr "Selector de widgets"
 
-#: ../gladeui/glade-popup.c:402
+#: ../gladeui/glade-popup.c:381
 msgid "_Add widget here"
 msgstr "_Añadir widget aquí"
 
-#: ../gladeui/glade-popup.c:407 ../gladeui/glade-popup.c:566
+#: ../gladeui/glade-popup.c:386 ../gladeui/glade-popup.c:545
 msgid "Add widget as _toplevel"
 msgstr "Añadir widget como nivel _superior"
 
-#: ../gladeui/glade-popup.c:417
+#: ../gladeui/glade-popup.c:396
 msgid "_Select"
 msgstr "_Seleccionar"
 
-#: ../gladeui/glade-popup.c:572 ../gladeui/glade-popup.c:649
+#: ../gladeui/glade-popup.c:398
+msgid "Cu_t"
+msgstr "C_ortar"
+
+#: ../gladeui/glade-popup.c:400
+#| msgid "Copy"
+msgid "_Copy"
+msgstr "_Copiar"
+
+#: ../gladeui/glade-popup.c:407 ../gladeui/glade-popup.c:410
+#: ../gladeui/glade-popup.c:413
+#| msgid "Paste"
+msgid "_Paste"
+msgstr "_Pegar"
+
+#: ../gladeui/glade-popup.c:417
+#| msgid "Delete"
+msgid "_Delete"
+msgstr "_Eliminar"
+
+#: ../gladeui/glade-popup.c:549 ../gladeui/glade-popup.c:624
 msgid "Read _documentation"
 msgstr "Leer la _documentación"
 
-#: ../gladeui/glade-popup.c:641
+#: ../gladeui/glade-popup.c:617
 msgid "Set default value"
 msgstr "Establecer valor predeterminado"
 
@@ -2247,74 +2311,78 @@ msgstr "No se encontró el objeto %s en la definición de la IU.\n"
 msgid "Object is not previewable.\n"
 msgstr "El objeto no permite vista previa.\n"
 
-#: ../gladeui/glade-previewer.c:135 ../gladeui/glade-previewer.c:471
+#: ../gladeui/glade-previewer.c:145 ../gladeui/glade-previewer.c:486
 #, c-format
 msgid "Couldn't load builder definition: %s"
 msgstr "No se pudo cargar la definición del constructor: %s"
 
-#: ../gladeui/glade-previewer.c:167 ../gladeui/glade-previewer.c:187
+#: ../gladeui/glade-previewer.c:177 ../gladeui/glade-previewer.c:197
 #, c-format
 msgid "Error: %s.\n"
 msgstr "Error: %s.\n"
 
-#: ../gladeui/glade-previewer.c:218
+#: ../gladeui/glade-previewer.c:228
 #, c-format
 msgid "Previewing %s (%s)"
 msgstr "Previsualizando %s (%s)"
 
-#: ../gladeui/glade-previewer.c:220 ../gladeui/glade-previewer.c:224
+#: ../gladeui/glade-previewer.c:230 ../gladeui/glade-previewer.c:234
 #, c-format
 msgid "Previewing %s"
 msgstr "Previsualizando %s"
 
-#: ../gladeui/glade-previewer.c:228
+#: ../gladeui/glade-previewer.c:238
 msgid "Glade Preview"
 msgstr "Vista previa de Glade"
 
-#: ../gladeui/glade-previewer.c:253
+#: ../gladeui/glade-previewer.c:263
 #, c-format
 msgid "Broken pipe!\n"
 msgstr "Tubería rota.\n"
 
-#: ../gladeui/glade-previewer.c:377
+#: ../gladeui/glade-previewer.c:388
 msgid "Name of the file to preview"
 msgstr "Nombre del archivo para la vista previa"
 
-#: ../gladeui/glade-previewer.c:378
+#: ../gladeui/glade-previewer.c:389
 msgid "Creates dummy widget class to load a template"
 msgstr "Crea una clase de widget de prueba para cargar una plantilla"
 
-#: ../gladeui/glade-previewer.c:379
+#: ../gladeui/glade-previewer.c:390
 msgid "Name of the toplevel to preview"
 msgstr "Nombre del nivel superior para la vista previa"
 
-#: ../gladeui/glade-previewer.c:380
+#: ../gladeui/glade-previewer.c:391
 msgid "File name to save a screenshot"
 msgstr "Nnombre del archivo para guardar una captura de pantalla"
 
-#: ../gladeui/glade-previewer.c:381
+#: ../gladeui/glade-previewer.c:392
 msgid "CSS file to use"
 msgstr "Archivo CSS que usar"
 
-#: ../gladeui/glade-previewer.c:382
+#: ../gladeui/glade-previewer.c:393
 msgid "Listen standard input"
 msgstr "Escuchar la salida estándar"
 
-#: ../gladeui/glade-previewer.c:383
+#: ../gladeui/glade-previewer.c:394
 msgid "make a slideshow of every toplevel widget by adding them in a GtkStack"
 msgstr ""
 "crear una presentación para cada widget de nivel superior añadiéndolos a una "
 "GtkStack"
 
-#: ../gladeui/glade-previewer.c:384
+#: ../gladeui/glade-previewer.c:395
+msgid "Print handlers signature on invocation"
+msgstr "Imprimir la firma de los manejadores al invocar"
+
+#: ../gladeui/glade-previewer.c:396
 msgid "Display previewer version"
 msgstr "Mostrar la versión de la vista previa"
 
-#: ../gladeui/glade-previewer.c:403
+#: ../gladeui/glade-previewer.c:415
 msgid "- previews a glade UI definition"
 msgstr ": vista previa de una definición de IU Glade"
 
-#: ../gladeui/glade-previewer.c:409
+#: ../gladeui/glade-previewer.c:421
 #, c-format
 msgid ""
 "%s\n"
@@ -2324,15 +2392,56 @@ msgstr ""
 "Ejecute «%s --help» para ver una lista completa de todas las opciones "
 "disponibles de la línea de comandos.\n"
 
-#: ../gladeui/glade-previewer.c:426
+#: ../gladeui/glade-previewer.c:438
 #, c-format
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "Se debe especificar --listen o --filename.\n"
 
-#: ../gladeui/glade-preview-window.c:54
+#: ../gladeui/glade-preview-window.c:56
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:10
 msgid "Preview"
 msgstr "Vista previa"
+
+#: ../gladeui/glade-preview-window.c:664 ../gladeui/glade-preview-window.c:674
+#| msgid "User data"
+msgid "user_data"
+msgstr "datos de usuario"
+
+#. translators: GConnectFlags values
+#: ../gladeui/glade-preview-window.c:678
+#| msgid "Swapped"
+msgid "Swapped | After"
+msgstr "Intercambiado | Después"
+
+#. translators: GConnectFlags value
+#: ../gladeui/glade-preview-window.c:681 ../gladeui/glade-signal.c:213
+msgid "Swapped"
+msgstr "Intercambiado"
+
+#. translators: GConnectFlags value
+#: ../gladeui/glade-preview-window.c:684 ../gladeui/glade-signal.c:207
+#: ../gladeui/glade-signal-editor.c:1378 ../plugins/gtk+/gtk+.xml.in.h:630
+msgid "After"
+msgstr "Después"
+
+#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#: ../gladeui/glade-preview-window.c:704
+#, c-format
+msgid "%s::%s emited %d time(s)"
+msgstr "%s::%s emitida %d vez/veces"
+
+#: ../gladeui/glade-preview-window.c:709
+#| msgid "Monday First"
+msgid "Run First"
+msgstr "Ejecutar primero"
+
+#: ../gladeui/glade-preview-window.c:714
+msgid "Run Last"
+msgstr "Ejecutar al final"
+
+#: ../gladeui/glade-preview-window.c:719
+msgid "Run Cleanup"
+msgstr "Ejecutar limpieza"
 
 #: ../gladeui/glade-project.c:957
 msgid "Whether project has been modified since it was last saved"
@@ -2512,7 +2621,7 @@ msgstr "Propiedades del documento %s"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2899
+#: ../gladeui/glade-project.c:2901
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2520,24 +2629,24 @@ msgstr ""
 "%d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2903
+#: ../gladeui/glade-project.c:2905
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] La clase del objeto «%s» se introdujo en %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2905
+#: ../gladeui/glade-project.c:2907
 msgid "This widget is deprecated"
 msgstr "Este widget está obsoleto"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2908
+#: ../gladeui/glade-project.c:2910
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
 msgstr "[%s] La clase del objeto «%s» de %s %d.%d está obsoleta\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2913
+#: ../gladeui/glade-project.c:2915
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2545,14 +2654,14 @@ msgstr ""
 "%s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2917
+#: ../gladeui/glade-project.c:2919
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 "[%s] La propiedad «%s» de la clase de objeto«%s» se introdujo en %s %d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2921
+#: ../gladeui/glade-project.c:2923
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
@@ -2560,19 +2669,19 @@ msgstr ""
 "[%s] La propiedad de empaquetado «%s» de la clase del objeto «%s» se "
 "introdujo en %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2924
+#: ../gladeui/glade-project.c:2926
 msgid "This property is deprecated"
 msgstr "Esta propiedad está obsoleta"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2927
+#: ../gladeui/glade-project.c:2929
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' is deprecated"
 msgstr "[%s] La propiedad «%s» de la clase de objeto«%s» está obsoleta"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2931
+#: ../gladeui/glade-project.c:2933
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2580,83 +2689,84 @@ msgstr ""
 "%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2935
+#: ../gladeui/glade-project.c:2937
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 "[%s] La señal «%s» de la clase de objeto «%s» se introdujo en %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2938
+#: ../gladeui/glade-project.c:2940
 msgid "This signal is deprecated"
 msgstr "La señal está obsoleta"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2941
+#: ../gladeui/glade-project.c:2943
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' is deprecated"
 msgstr ""
 "[%s] La señal «%s» de la clase de objeto «%s» se introdujo está obsoleta"
 
-#: ../gladeui/glade-project.c:3237
+#: ../gladeui/glade-project.c:3239
 msgid "Details"
 msgstr "Detalles"
 
-#: ../gladeui/glade-project.c:3252
+#: ../gladeui/glade-project.c:3254
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "El proyecto «%s» tiene errores. ¿Guardarlo de todas formas?"
 
-#: ../gladeui/glade-project.c:3253
+#: ../gladeui/glade-project.c:3255
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 "El proyecto «%s» tiene widgets obsoletos y/o inconsistencias entre versiones."
 
-#: ../gladeui/glade-project.c:3278
+#: ../gladeui/glade-project.c:3280
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr ""
+"El objeto %s es una plantilla de clase, pero no está soportado en GTK+ %d.%d"
 
-#: ../gladeui/glade-project.c:3293
+#: ../gladeui/glade-project.c:3295
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "El objeto %s tiene un tipo %s no reconocido\n"
 
-#: ../gladeui/glade-project.c:4762
+#: ../gladeui/glade-project.c:4764
 #, c-format
 msgid "Unsaved %i"
 msgstr "Sin guardar %i"
 
-#: ../gladeui/glade-project.c:5061 ../gladeui/glade-project.c:5112
-#: ../gladeui/glade-project.c:5269
+#: ../gladeui/glade-project.c:5063 ../gladeui/glade-project.c:5114
+#: ../gladeui/glade-project.c:5271
 msgid "No widget selected."
 msgstr "No hay ningún widget seleccionado."
 
-#: ../gladeui/glade-project.c:5077
+#: ../gladeui/glade-project.c:5079
 msgid "Unable to copy unrecognized widget type."
 msgstr "No se pudo copiar el tipo de widget no reconocido."
 
-#: ../gladeui/glade-project.c:5109
+#: ../gladeui/glade-project.c:5111
 msgid "Unable to cut unrecognized widget type"
 msgstr "No se pudo cortar el tipo de widget no reconocido."
 
-#: ../gladeui/glade-project.c:5161
+#: ../gladeui/glade-project.c:5163
 msgid "Unable to paste to the selected parent"
 msgstr "Imposible pegar al padre seleccionado"
 
-#: ../gladeui/glade-project.c:5172
+#: ../gladeui/glade-project.c:5174
 msgid "Unable to paste to multiple widgets"
 msgstr "Imposible pegar múltiples widgets"
 
-#: ../gladeui/glade-project.c:5182
+#: ../gladeui/glade-project.c:5184
 msgid "No widget on the clipboard"
 msgstr "No hay ningún widget en el portapapeles"
 
-#: ../gladeui/glade-project.c:5227
+#: ../gladeui/glade-project.c:5229
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Sólo se puede pegar un widget cada vez en este contenedor"
 
-#: ../gladeui/glade-project.c:5239
+#: ../gladeui/glade-project.c:5241
 msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 "Cantidad insuficiente de lugares de colocación en el contenedor destino"
@@ -2748,8 +2858,8 @@ msgid "Whether to append a colon ':' to the property name"
 msgstr "Indica si se deben añadir «:» al nombre de la propiedad"
 
 #: ../gladeui/glade-property-label.c:141 ../gladeui/glade-property-shell.c:119
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:521
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:544
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:528
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:551
 msgid "Packing"
 msgstr "Empaquetado"
 
@@ -2830,19 +2940,10 @@ msgstr "Advertencia de soporte"
 msgid "The versioning support warning for this signal"
 msgstr "El aviso de soporte de versión para esta señal"
 
-#: ../gladeui/glade-signal.c:207 ../gladeui/glade-signal-editor.c:1378
-#: ../plugins/gtk+/gtk+.xml.in.h:630
-msgid "After"
-msgstr "Después"
-
 #: ../gladeui/glade-signal.c:208
 msgid "Whether this signal is run after default handlers"
 msgstr ""
 "Indica si esta señal se ejecuta después de los manejadores predeterminados"
-
-#: ../gladeui/glade-signal.c:213
-msgid "Swapped"
-msgstr "Intercambiado"
 
 #: ../gladeui/glade-signal.c:214
 msgid "Whether the user data is swapped with the instance for the handler"
@@ -2854,7 +2955,7 @@ msgstr ""
 msgid "Select an object to pass to the handler"
 msgstr "Seleccionar un objeto que pasar al manejador"
 
-#: ../gladeui/glade-signal-editor.c:1286 ../plugins/gtk+/glade-accels.c:445
+#: ../gladeui/glade-signal-editor.c:1286 ../plugins/gtk+/glade-accels.c:451
 msgid "Signal"
 msgstr "Señal"
 
@@ -2884,7 +2985,7 @@ msgstr "No se ha podido encontrar el símbolo «%s»"
 msgid "Could not get the type from \"%s\""
 msgstr "No se ha podido obtener el tipo de «%s»"
 
-#: ../gladeui/glade-utils.c:295
+#: ../gladeui/glade-utils.c:310
 #, c-format
 msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
@@ -2893,29 +2994,29 @@ msgstr ""
 "No se puede añadir directamente un widget %s con desplazamiento a un %s.\n"
 "Añada un %s primero."
 
-#: ../gladeui/glade-utils.c:475
+#: ../gladeui/glade-utils.c:491
 msgid "All Files"
 msgstr "Todos los archivos"
 
-#: ../gladeui/glade-utils.c:480
+#: ../gladeui/glade-utils.c:496
 msgid "Libglade Files"
 msgstr "Archivos de libglade"
 
-#: ../gladeui/glade-utils.c:485
+#: ../gladeui/glade-utils.c:501
 msgid "GtkBuilder Files"
 msgstr "Archivos de GtkBuilder"
 
-#: ../gladeui/glade-utils.c:491
+#: ../gladeui/glade-utils.c:507
 msgid "All Glade Files"
 msgstr "Todos los archivos de Glade"
 
-#: ../gladeui/glade-utils.c:1214
+#: ../gladeui/glade-utils.c:1230
 msgid "Could not show link:"
 msgstr "No se pudo mostrar el enlace:"
 
 #. Reset the column
 #. GtkTextDirection enumeration value
-#: ../gladeui/glade-utils.c:1623 ../plugins/gtk+/glade-attributes.c:827
+#: ../gladeui/glade-utils.c:1639 ../plugins/gtk+/glade-attributes.c:827
 #: ../plugins/gtk+/gtk+.xml.in.h:413
 msgid "None"
 msgstr "Ninguno"
@@ -3138,7 +3239,7 @@ msgstr "Indica si este widget es la plantilla para un widget compuesto"
 #: ../gladeui/glade-widget.c:4757
 #, c-format
 msgid "Template classes are not supported in gtk+ %d.%d"
-msgstr ""
+msgstr "Las plantillas de clases no están soportadas en GTK+ %d.%d"
 
 #: ../gladeui/glade-widget.c:4766
 #, c-format
@@ -3161,7 +3262,7 @@ msgstr "La señal tiene problemas de versión:"
 msgid "Some signals have versioning problems: "
 msgstr "Algunas señales tienen problemas de versión:"
 
-#: ../gladeui/icon-naming-spec.c:38 ../plugins/gtk+/gtk+.xml.in.h:1004
+#: ../gladeui/icon-naming-spec.c:38 ../plugins/gtk+/gtk+.xml.in.h:1005
 msgid "Actions"
 msgstr "Acciones"
 
@@ -3341,15 +3442,15 @@ msgstr "Configurando %s para que use un archivo de logotipo"
 msgid "Setting %s to use a logo icon"
 msgstr "Configurando %s para que use un icono con un logotipo"
 
-#: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:389
+#: ../plugins/gtk+/glade-accels.c:323 ../plugins/gtk+/glade-accels.c:395
 msgid "<choose a key>"
 msgstr "<elija una tecla>"
 
-#: ../plugins/gtk+/glade-accels.c:461
+#: ../plugins/gtk+/glade-accels.c:467
 msgid "Accelerator Key"
 msgstr "Tecla de la combinación"
 
-#: ../plugins/gtk+/glade-accels.c:514
+#: ../plugins/gtk+/glade-accels.c:520
 msgid "Choose accelerator keys..."
 msgstr "Elegir teclas de aceleradores…"
 
@@ -3485,7 +3586,7 @@ msgid "Setting %s to use a stock button"
 msgstr "Ajustando %s para que use un botón de stock"
 
 #: ../plugins/gtk+/glade-button-editor.c:364
-#: ../plugins/gtk+/glade-image-item-editor.c:220
+#: ../plugins/gtk+/glade-image-item-editor.c:222
 #, c-format
 msgid "Setting %s to use a label and image"
 msgstr "Ajustando %s para que use una etiqueta y una imagen"
@@ -3530,11 +3631,11 @@ msgstr "< definir una columna nueva >"
 msgid "Add and remove columns:"
 msgstr "Añadir y quitar columnas:"
 
-#: ../plugins/gtk+/glade-column-types.c:879
+#: ../plugins/gtk+/glade-column-types.c:878
 msgid "Column type"
 msgstr "Tipo de columna"
 
-#: ../plugins/gtk+/glade-column-types.c:901
+#: ../plugins/gtk+/glade-column-types.c:900
 msgid "Column name"
 msgstr "Nombre de la columna"
 
@@ -3648,35 +3749,35 @@ msgstr "Puede redimensionarse"
 msgid "Whether this container supports resizes of child widgets"
 msgstr "Indica si este contenedor soporta redimensionados de los widgets hijos"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:173
-#: ../plugins/gtk+/glade-gtk-action-group.c:206
+#: ../plugins/gtk+/glade-gtk-action-group.c:180
+#: ../plugins/gtk+/glade-gtk-action-group.c:219
 #: ../plugins/gtk+/gtk+.xml.in.h:808
 msgid "Action"
 msgstr "Acción"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:207
+#: ../plugins/gtk+/glade-gtk-action-group.c:220
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:418
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:180
-#: ../plugins/gtk+/glade-gtk-toolbar.c:233
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:183
+#: ../plugins/gtk+/glade-gtk-toolbar.c:236
 #: ../plugins/gtk+/glade-gtk-tree-view.c:97
 msgid "Toggle"
 msgstr "Conmutar"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:208
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:181
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:191
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:200
-#: ../plugins/gtk+/glade-gtk-toolbar.c:234
-#: ../plugins/gtk+/glade-gtk-toolbar.c:245
-#: ../plugins/gtk+/glade-gtk-toolbar.c:253
+#: ../plugins/gtk+/glade-gtk-action-group.c:221
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:184
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:194
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:203
+#: ../plugins/gtk+/glade-gtk-toolbar.c:237
+#: ../plugins/gtk+/glade-gtk-toolbar.c:248
+#: ../plugins/gtk+/glade-gtk-toolbar.c:256
 msgid "Radio"
 msgstr "Radio"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:209
+#: ../plugins/gtk+/glade-gtk-action-group.c:222
 msgid "Recent"
 msgstr "Recientes"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:217
+#: ../plugins/gtk+/glade-gtk-action-group.c:230
 msgid "Action Group Editor"
 msgstr "Editor de grupo de acción"
 
@@ -3902,54 +4003,54 @@ msgstr "%s ya tiene un menú."
 msgid "%s item already has a submenu."
 msgstr "el elemento %s ya tiene un submenú."
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:461
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:469
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:468
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:476
 msgid "Normal item"
 msgstr "Elemento normal"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:462
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:470
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:469
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:477
 msgid "Image item"
 msgstr "Elemento de imagen"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:463
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:471
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:470
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:478
 msgid "Check item"
 msgstr "Elemento de verificación"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:464
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:472
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:471
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:479
 msgid "Radio item"
 msgstr "Elemento de radio"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:465
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:473
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:472
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:480
 msgid "Separator item"
 msgstr "Elemento separador"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:474
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:193
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:202
-#: ../plugins/gtk+/glade-gtk-toolbar.c:255
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:481
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:196
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:205
+#: ../plugins/gtk+/glade-gtk-toolbar.c:258
 msgid "Recent Menu"
 msgstr "Menú «Recientes»"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:507
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:514
 msgid "Tool Item"
 msgstr "Elemento de herramienta"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:534
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:541
 #: ../plugins/gtk+/gtk+.xml.in.h:480
 msgid "Tool Item Group"
 msgstr "Grupo de elementos de herramienta"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:553
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:560
 #: ../plugins/gtk+/gtk+.xml.in.h:681
 msgid "Recent Chooser Menu"
 msgstr "Menú del selector de recientes"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:588
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:598
 #: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Menu Item"
 msgstr "Elemento del menú"
@@ -3990,69 +4091,69 @@ msgstr "Editor de la tabla de etiquetas de texto"
 msgid "This property only applies when configuring the label with text"
 msgstr "Esta propiedad sólo se aplica al configurar la etiqueta con texto"
 
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:175
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:178
 msgid "Group"
 msgstr "Grupo"
 
 #. GtkIconSize enumeration value
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:179
-#: ../plugins/gtk+/glade-gtk-toolbar.c:232 ../plugins/gtk+/gtk+.xml.in.h:467
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:182
+#: ../plugins/gtk+/glade-gtk-toolbar.c:235 ../plugins/gtk+/gtk+.xml.in.h:467
 msgid "Button"
 msgstr "Botón"
 
 #. GtkIconSize enumeration value
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:182
-#: ../plugins/gtk+/glade-gtk-toolbar.c:235 ../plugins/gtk+/gtk+.xml.in.h:149
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:185
+#: ../plugins/gtk+/glade-gtk-toolbar.c:238 ../plugins/gtk+/gtk+.xml.in.h:149
 msgid "Menu"
 msgstr "Menú"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:183
-#: ../plugins/gtk+/glade-gtk-toolbar.c:236 ../plugins/gtk+/gtk+.xml.in.h:733
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:186
+#: ../plugins/gtk+/glade-gtk-toolbar.c:239 ../plugins/gtk+/gtk+.xml.in.h:733
 #: ../plugins/gtk+/glade-widget-editor.ui.h:7
 msgid "Custom"
 msgstr "Personalizado"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:184
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:192
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:201
-#: ../plugins/gtk+/glade-gtk-toolbar.c:237
-#: ../plugins/gtk+/glade-gtk-toolbar.c:246
-#: ../plugins/gtk+/glade-gtk-toolbar.c:254 ../plugins/gtk+/gtk+.xml.in.h:183
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:187
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:195
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:204
+#: ../plugins/gtk+/glade-gtk-toolbar.c:240
+#: ../plugins/gtk+/glade-gtk-toolbar.c:249
+#: ../plugins/gtk+/glade-gtk-toolbar.c:257 ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Separator"
 msgstr "Separador"
 
 #. PangoVariant enumeration value
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:188
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:197
-#: ../plugins/gtk+/glade-gtk-toolbar.c:242
-#: ../plugins/gtk+/glade-gtk-toolbar.c:250 ../plugins/gtk+/gtk+.xml.in.h:387
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:191
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:200
+#: ../plugins/gtk+/glade-gtk-toolbar.c:245
+#: ../plugins/gtk+/glade-gtk-toolbar.c:253 ../plugins/gtk+/gtk+.xml.in.h:387
 msgid "Normal"
 msgstr "Normal"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:189
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:198
-#: ../plugins/gtk+/glade-gtk-toolbar.c:243
-#: ../plugins/gtk+/glade-gtk-toolbar.c:251 ../plugins/gtk+/gtk+.xml.in.h:137
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:192
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:201
+#: ../plugins/gtk+/glade-gtk-toolbar.c:246
+#: ../plugins/gtk+/glade-gtk-toolbar.c:254 ../plugins/gtk+/gtk+.xml.in.h:137
 #: ../plugins/gtk+/glade-image-editor.ui.h:1
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:5
 msgid "Image"
 msgstr "Imagen"
 
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:190
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:199
-#: ../plugins/gtk+/glade-gtk-toolbar.c:244
-#: ../plugins/gtk+/glade-gtk-toolbar.c:252
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:193
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:202
+#: ../plugins/gtk+/glade-gtk-toolbar.c:247
+#: ../plugins/gtk+/glade-gtk-toolbar.c:255
 msgid "Check"
 msgstr "Casilla"
 
-#: ../plugins/gtk+/glade-gtk-tool-palette.c:222
+#: ../plugins/gtk+/glade-gtk-tool-palette.c:225
 msgid "Tool Palette Editor"
 msgstr "Editor de la paleta de herramientas"
 
-#: ../plugins/gtk+/glade-gtk-toolbar.c:276
+#: ../plugins/gtk+/glade-gtk-toolbar.c:279
 msgid "Tool Bar Editor"
 msgstr "Editor de barras de herramientas"
 
@@ -4121,7 +4222,7 @@ msgstr ""
 "Primero añada un nombre de stock en la entrada de abajo, después añada y "
 "defina los fuentes para ese icono en la vista de árbol."
 
-#: ../plugins/gtk+/glade-icon-sources.c:732
+#: ../plugins/gtk+/glade-icon-sources.c:757
 #, c-format
 msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
@@ -4131,7 +4232,7 @@ msgstr ""
 "fuente de «%s» (Glade sólo los cargará en el tiempo de ejecución para la "
 "carpeta de su proyecto)."
 
-#: ../plugins/gtk+/glade-icon-sources.c:740
+#: ../plugins/gtk+/glade-icon-sources.c:765
 #, c-format
 msgid ""
 "Set whether you want to specify a text direction for this source of '%s'"
@@ -4139,33 +4240,33 @@ msgstr ""
 "Ajustar si quiere especificar una dirección del texto para esta fuente de "
 "«%s»"
 
-#: ../plugins/gtk+/glade-icon-sources.c:747
+#: ../plugins/gtk+/glade-icon-sources.c:772
 #, c-format
 msgid "Set the text direction for this source of '%s'"
 msgstr "Ajustar la dirección del texto para esta fuente de «%s»"
 
-#: ../plugins/gtk+/glade-icon-sources.c:753
+#: ../plugins/gtk+/glade-icon-sources.c:778
 #, c-format
 msgid "Set whether you want to specify an icon size for this source of '%s'"
 msgstr ""
 "Ajustar si quiere especificar un tamaño de icono para esta fuente de «%s»"
 
-#: ../plugins/gtk+/glade-icon-sources.c:760
+#: ../plugins/gtk+/glade-icon-sources.c:785
 #, c-format
 msgid "Set the icon size for this source of '%s'"
 msgstr "Ajustar el tamaño de icono para esta fuente de «%s»"
 
-#: ../plugins/gtk+/glade-icon-sources.c:766
+#: ../plugins/gtk+/glade-icon-sources.c:791
 #, c-format
 msgid "Set whether you want to specify a state for this source of '%s'"
 msgstr "Ajustar si quiere especificar un estado para esta fuente de «%s»"
 
-#: ../plugins/gtk+/glade-icon-sources.c:773
+#: ../plugins/gtk+/glade-icon-sources.c:798
 #, c-format
 msgid "Set the state for this source of '%s'"
 msgstr "Establecer el estado para este fuente de «%s»"
 
-#: ../plugins/gtk+/glade-icon-sources.c:823 ../plugins/gtk+/gtk+.xml.in.h:623
+#: ../plugins/gtk+/glade-icon-sources.c:848 ../plugins/gtk+/gtk+.xml.in.h:623
 msgid "File Name"
 msgstr "Nombre del archivo"
 
@@ -4192,26 +4293,26 @@ msgstr "Configurando %s para que use un nombre de recurso"
 msgid "Setting %s to use an image from filename"
 msgstr "Ajustando %s para que use una imagen desde un nombre de archivo"
 
-#: ../plugins/gtk+/glade-image-item-editor.c:173
+#: ../plugins/gtk+/glade-image-item-editor.c:175
 #, c-format
 msgid "Setting %s to use a stock item"
 msgstr "Ajustando %s para que use un elemento de stock"
 
-#: ../plugins/gtk+/glade-image-item-editor.c:302
+#: ../plugins/gtk+/glade-image-item-editor.c:304
 msgid "Stock Item:"
 msgstr "Elemento de stock:"
 
-#: ../plugins/gtk+/glade-image-item-editor.c:334
+#: ../plugins/gtk+/glade-image-item-editor.c:336
 msgid "Custom label and image:"
 msgstr "Imagen y etiqueta personalizadas:"
 
 #. Label area frame...
-#: ../plugins/gtk+/glade-image-item-editor.c:341
+#: ../plugins/gtk+/glade-image-item-editor.c:343
 msgid "Edit Label"
 msgstr "Editar etiqueta"
 
 #. Internal Image area...
-#: ../plugins/gtk+/glade-image-item-editor.c:377
+#: ../plugins/gtk+/glade-image-item-editor.c:379
 msgid "Edit Image"
 msgstr "Editar imagen"
 
@@ -4245,7 +4346,7 @@ msgstr "Ajustando %s para que use una sola línea"
 msgid "Setting %s to use specific Pango word wrapping"
 msgstr "Ajustando %s para que use ajuste de palabra específico de Pango"
 
-#: ../plugins/gtk+/glade-model-data.c:1118
+#: ../plugins/gtk+/glade-model-data.c:1120
 msgid "Add and remove rows:"
 msgstr "Añadir y quitar filas:"
 
@@ -5071,14 +5172,13 @@ msgstr "Barra de nivel"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:283
-#| msgid "Title"
 msgid "Title Bar"
 msgstr "Barra de título"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:285
 msgid "Block Quote"
-msgstr ""
+msgstr "Bloque de cita"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:287
@@ -5092,13 +5192,11 @@ msgstr "Vídeo"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:291
-#| msgid "Description:"
 msgid "Definition"
 msgstr "Definición"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:293
-#| msgid "Vertical"
 msgid "Article"
 msgstr "Artículo"
 
@@ -5109,14 +5207,13 @@ msgstr "Marca"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:297
-#| msgid "Logo:"
 msgid "Log"
 msgstr "Registro"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:299
 msgid "Marquee"
-msgstr ""
+msgstr "Marquesina"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:301
@@ -5125,31 +5222,26 @@ msgstr "Matemáticas"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:303
-#| msgid "Formatting"
 msgid "Rating"
 msgstr "Puntuación"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:305
-#| msgid "Show Time"
 msgid "Time"
 msgstr "Hora"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:307
-#| msgid "Description:"
 msgid "Description List"
 msgstr "Lista de descripción"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:309
-#| msgid "Description For"
 msgid "Description Term"
 msgstr "Término de descripción"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:311
-#| msgid "Description:"
 msgid "Description Value"
 msgstr "Valor de la descripción"
 
@@ -6361,7 +6453,6 @@ msgid "Menu Button"
 msgstr "Botón del menú"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:703
-#| msgid "Stock Button"
 msgid "Lock Button"
 msgstr "Botón de bloqueo"
 
@@ -7290,27 +7381,32 @@ msgstr "La lista de nombres de aplicaciones que añadir al filtro"
 msgid "Recent Manager"
 msgstr "Gestor reciente"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1005
+#: ../plugins/gtk+/gtk+.xml.in.h:1004
+#| msgid "Select Named Icon"
+msgid "Themed Icon"
+msgstr "Icono de tema"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:1006
 msgid "Toplevels"
 msgstr "Niveles superiores"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1006
+#: ../plugins/gtk+/gtk+.xml.in.h:1007
 msgid "Containers"
 msgstr "Contenedores"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1007
+#: ../plugins/gtk+/gtk+.xml.in.h:1008
 msgid "Control and Display"
 msgstr "Control y exhibición"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1008
+#: ../plugins/gtk+/gtk+.xml.in.h:1009
 msgid "Composite Widgets"
 msgstr "Widgets compuestos"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1009
+#: ../plugins/gtk+/gtk+.xml.in.h:1010
 msgid "Miscellaneous"
 msgstr "Varios"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1010
+#: ../plugins/gtk+/gtk+.xml.in.h:1011
 msgid "Deprecated"
 msgstr "Obsoleto"
 
@@ -7873,9 +7969,6 @@ msgstr "Sugerencia:"
 #: ../plugins/gtk+/glade-window-editor.ui.h:12
 msgid "Gravity:"
 msgstr "Gravedad:"
-
-#~ msgid "Clear text"
-#~ msgstr "Limpiar texto"
 
 #~ msgid "Insert GPL v2"
 #~ msgstr "Insertar GPL v2"
@@ -8630,9 +8723,6 @@ msgstr "Gravedad:"
 
 #~ msgid "Message"
 #~ msgstr "Mensaje"
-
-#~ msgid "Monday First"
-#~ msgstr "Lunes primero"
 
 #~ msgid "Pixmap"
 #~ msgstr "Pixmap"
