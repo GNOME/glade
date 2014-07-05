@@ -276,6 +276,22 @@ case $host_os in
 esac
 AM_CONDITIONAL(NATIVE_WIN32, test x"$native_win32" = "xyes")
 
+dnl ================================================================
+dnl Check for osx
+dnl ================================================================
+AC_MSG_CHECKING([for Mac OS X platform])
+case "$host" in
+  *-*-darwin*)
+    platform_osx=yes
+    ;;
+  *)
+    platform_osx=no
+    ;;
+esac
+AC_MSG_RESULT([$platform_osx])
+AM_CONDITIONAL(PLATFORM_OSX, test x"$platform_osx" = "xyes")
+AC_DEFINE(PLATFORM_OSX, test x"$platform_osx" = "xyes", [On OSX Platform])
+
 if test "$native_win32" = "yes"; then
   AC_CHECK_TOOL(WINDRES, windres, no)
   if test "$WINDRES" = no; then

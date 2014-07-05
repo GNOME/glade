@@ -876,6 +876,31 @@ try_load_library (const gchar *library_path, const gchar *library_name)
         g_warning ("Failed to load %s: %s", path, g_module_error ());
     }
 
+#ifdef PLATFORM_OSX
+  /* Handle .dylib's on OSX */
+  if (!module)
+    {
+      gchar *osx_path;
+
+      /* Remove possible trailing .so */
+      if (g_str_has_suffix (path, ".so"))
+        {
+          gchar *tmp = g_strndup (path, strlen(path) - 3);
+          g_free (path);
+          path = tmp;
+        }
+
+      osx_path = g_strconcat (path, ".dylib", NULL);
+      if (!library_path || g_file_test (osx_path, G_FILE_TEST_EXISTS))
+        {
+          if (!(module = g_module_open (osx_path, G_MODULE_BIND_LAZY)))
+            g_warning ("Failed to load %s: %s", osx_path, g_module_error ());
+        }
+
+      g_free (osx_path);
+    }
+#endif
+
   g_free (path);
 
   return module;
