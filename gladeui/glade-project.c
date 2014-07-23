@@ -1435,7 +1435,6 @@ glade_project_read_requires (GladeProject *project,
 
   GString *string = g_string_new (NULL);
   GladeXmlNode *node;
-  gchar *required_lib = NULL;
   gboolean loadable = TRUE;
   guint16 major, minor;
   gint position = 0;
@@ -1443,6 +1442,8 @@ glade_project_read_requires (GladeProject *project,
   for (node = glade_xml_node_get_children_with_comments (root_node);
        node; node = glade_xml_node_next_with_comments (node))
     {
+      gchar *required_lib = NULL;
+
       /* Skip non "requires" tags */
       if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_REQUIRES) ||
             (required_lib =
