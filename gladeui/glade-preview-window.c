@@ -700,10 +700,17 @@ on_handler_called (SignalData *data)
   const gchar *object_name = object_get_name (object);
   GString *message = g_string_new ("");
 
-  /* translators: this will be shown in glade previewer when a signal %s::%s is emited %d times */
-  g_string_append_printf (message, _("%s::%s emited %d time(s)"),
-                          G_OBJECT_TYPE_NAME (object), query->signal_name,
-                          ++data->n_invocations);
+  data->n_invocations++;
+
+  if (data->n_invocations == 1)
+    /* translators: this will be shown in glade previewer when a signal %s::%s is emited one time */
+    g_string_append_printf (message, _("%s::%s emitted one time"),
+                            G_OBJECT_TYPE_NAME (object), query->signal_name);
+  else
+    /* translators: this will be shown in glade previewer when a signal %s::%s is emited %d times */
+    g_string_append_printf (message, _("%s::%s emitted %d times"),
+                            G_OBJECT_TYPE_NAME (object), query->signal_name,
+                            data->n_invocations);
 
   if (query->signal_flags & G_SIGNAL_RUN_FIRST)
     glade_handler_method_append (message, query, _("Run First"));
