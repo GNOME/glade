@@ -532,6 +532,10 @@ main (int argc, char **argv)
       else
         {
           toplevel = get_toplevel (builder, toplevel_name);
+
+          gtk_builder_connect_signals_full (builder,
+                                            glade_preview_window_connect_function,
+                                            app->window);
         }
 
       g_object_unref (builder);
