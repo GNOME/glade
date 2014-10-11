@@ -136,10 +136,16 @@ struct _GladeWindowPrivate
   GtkActionGroup *static_actiongroup;
   GtkActionGroup *view_actiongroup;
 
+  GtkMenuShell *menubar;
   GtkMenuShell *project_menu;
   
   GtkRecentManager *recent_manager;
   GtkWidget *recent_menu;
+
+  GtkWidget *quit_menuitem;
+  GtkWidget *about_menuitem;
+  GtkWidget *properties_menuitem;
+  GtkMenuItem *help_menuitem;
 
   gchar *default_path;          /* the default path for open/save operations */
 
@@ -3272,33 +3278,29 @@ glade_window_constructed (GObject *object)
 #ifdef MAC_INTEGRATION
   {
     /* Fix up the menubar for MacOSX Quartz builds */
-    GtkWidget *menubar = GET_OBJECT (builder, GTK_WIDGET, "menubar");
-    GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
-    GtkWidget *sep, *widget;
+    GtkosxApplication *theApp = gtkosx_application_get ();
+    GtkWidget *sep;
 
-    gtk_widget_hide (menubar);
-    gtk_osxapplication_set_menu_bar(theApp, GTK_MENU_SHELL(menubar));
-    widget = GET_OBJECT (builder, GTK_WIDGET, "quit_menuitem");
-    gtk_widget_hide (widget);
-    widget = GET_OBJECT (builder, GTK_WIDGET, "about_menuitem");
-    gtk_osxapplication_insert_app_menu_item (theApp, widget, 0);
+    gtk_widget_hide (priv->menubar);
+    gtkosx_application_set_menu_bar (theApp, priv->menubar);
+    gtk_widget_hide (priv->quit_menuitem);
+    gtkosx_application_insert_app_menu_item (theApp, priv->about_menuitem, 0);
     sep = gtk_separator_menu_item_new();
     g_object_ref(sep);
-    gtk_osxapplication_insert_app_menu_item (theApp, sep, 1);
+    gtkosx_application_insert_app_menu_item (theApp, sep, 1);
 
-    widget = GET_OBJECT (builder, GTK_WIDGET, "properties_menuitem");
-    gtk_osxapplication_insert_app_menu_item  (theApp, widget, 2);
+    gtkosx_application_insert_app_menu_item (theApp, priv->properties_menuitem,
+                                             2);
     sep = gtk_separator_menu_item_new();
     g_object_ref(sep);
-    gtk_osxapplication_insert_app_menu_item (theApp, sep, 3);
+    gtkosx_application_insert_app_menu_item (theApp, sep, 3);
 
-    widget = GET_OBJECT (builder, GTK_WIDGET, "help_menuitem");
-    gtk_osxapplication_set_help_menu(theApp, GTK_MENU_ITEM(widget));
+    gtkosx_application_set_help_menu (theApp, priv->help_menuitem);
 
     g_signal_connect(theApp, "NSApplicationWillTerminate",
                      G_CALLBACK(on_quit_action_activate), window);
 
-    gtk_osxapplication_ready(theApp);
+    gtkosx_application_ready (theApp);
   }
 #endif
 
@@ -3391,7 +3393,12 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, pointer_mode_actiongroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, static_actiongroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, view_actiongroup);
-  
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, menubar);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, quit_menuitem);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, properties_menuitem);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, about_menuitem);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, help_menuitem);
+
   /* Actions */
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, save_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, quit_action);
