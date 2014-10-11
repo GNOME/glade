@@ -3270,36 +3270,36 @@ glade_window_constructed (GObject *object)
                     G_CALLBACK (clipboard_notify_handler_cb), window);
   
 #ifdef MAC_INTEGRATION
-	{
-	  /* Fix up the menubar for MacOSX Quartz builds */
-	  GtkWidget *menubar = GET_OBJECT (builder, GTK_WIDGET, "menubar");
-	  GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
-          GtkWidget *sep, *widget;
+  {
+    /* Fix up the menubar for MacOSX Quartz builds */
+    GtkWidget *menubar = GET_OBJECT (builder, GTK_WIDGET, "menubar");
+    GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
+    GtkWidget *sep, *widget;
 
-	  gtk_widget_hide (menubar);
-	  gtk_osxapplication_set_menu_bar(theApp, GTK_MENU_SHELL(menubar));
-	  widget = GET_OBJECT (builder, GTK_WIDGET, "quit_menuitem");
-	  gtk_widget_hide (widget);
-	  widget = GET_OBJECT (builder, GTK_WIDGET, "about_menuitem");
-	  gtk_osxapplication_insert_app_menu_item (theApp, widget, 0);
-	  sep = gtk_separator_menu_item_new();
-	  g_object_ref(sep);
-	  gtk_osxapplication_insert_app_menu_item (theApp, sep, 1);
+    gtk_widget_hide (menubar);
+    gtk_osxapplication_set_menu_bar(theApp, GTK_MENU_SHELL(menubar));
+    widget = GET_OBJECT (builder, GTK_WIDGET, "quit_menuitem");
+    gtk_widget_hide (widget);
+    widget = GET_OBJECT (builder, GTK_WIDGET, "about_menuitem");
+    gtk_osxapplication_insert_app_menu_item (theApp, widget, 0);
+    sep = gtk_separator_menu_item_new();
+    g_object_ref(sep);
+    gtk_osxapplication_insert_app_menu_item (theApp, sep, 1);
 
-	  widget = GET_OBJECT (builder, GTK_WIDGET, "properties_menuitem");
-	  gtk_osxapplication_insert_app_menu_item  (theApp, widget, 2);
-	  sep = gtk_separator_menu_item_new();
-	  g_object_ref(sep);
-	  gtk_osxapplication_insert_app_menu_item (theApp, sep, 3);
+    widget = GET_OBJECT (builder, GTK_WIDGET, "properties_menuitem");
+    gtk_osxapplication_insert_app_menu_item  (theApp, widget, 2);
+    sep = gtk_separator_menu_item_new();
+    g_object_ref(sep);
+    gtk_osxapplication_insert_app_menu_item (theApp, sep, 3);
 
-	  widget = GET_OBJECT (builder, GTK_WIDGET, "help_menuitem");
-	  gtk_osxapplication_set_help_menu(theApp, GTK_MENU_ITEM(widget));
+    widget = GET_OBJECT (builder, GTK_WIDGET, "help_menuitem");
+    gtk_osxapplication_set_help_menu(theApp, GTK_MENU_ITEM(widget));
 
-	  g_signal_connect(theApp, "NSApplicationWillTerminate",
-	                   G_CALLBACK(on_quit_action_activate), window);
+    g_signal_connect(theApp, "NSApplicationWillTerminate",
+                     G_CALLBACK(on_quit_action_activate), window);
 
-	  gtk_osxapplication_ready(theApp);
-	}
+    gtk_osxapplication_ready(theApp);
+  }
 #endif
 
   show_dock_first_time (window, DOCK_PALETTE, priv->dock_palette_action);
