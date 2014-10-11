@@ -263,7 +263,7 @@ dnl ================================================================
 _gdk_tgt=`$PKG_CONFIG --variable=targets gdk-3.0`
 AM_CONDITIONAL([GDK_TARGET_QUARTZ], [test x$_gdk_tgt = xquartz])
 if test "x$_gdk_tgt" = xquartz; then 
-   PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration)
+   PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration-gtk3)
 
    GTK_MAC_BUNDLE_FLAG=
 
