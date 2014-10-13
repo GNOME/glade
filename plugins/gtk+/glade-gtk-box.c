@@ -56,11 +56,21 @@ glade_gtk_box_create_editable (GladeWidgetAdaptor * adaptor,
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
+static void
+glade_gtk_box_parse_finished (GladeProject * project, GObject * object)
+{
+  GladeWidget *gbox;
+
+  gbox = glade_widget_get_from_gobject (object);
+  glade_widget_property_set (gbox, "use-center-child", gtk_box_get_center_widget (GTK_BOX (object)) != NULL);
+}
+
 void
 glade_gtk_box_post_create (GladeWidgetAdaptor * adaptor,
                            GObject * container, GladeCreateReason reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+  GladeProject *project = glade_widget_get_project (gwidget);
 
   /* Implement drag in GtkBox but not resize.
    */
@@ -75,6 +85,12 @@ glade_gtk_box_post_create (GladeWidgetAdaptor * adaptor,
   g_signal_connect (G_OBJECT (gwidget), "configure-end",
                     G_CALLBACK (glade_gtk_box_configure_end), container);
 
+  if (reason == GLADE_CREATE_LOAD)
+    {
+      g_signal_connect (project, "parse-finished",
+                        G_CALLBACK (glade_gtk_box_parse_finished),
+                        container);
+    }
 }
 
 static gint
@@ -91,6 +107,11 @@ sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b, GtkWidget *box)
     return -1;
   if (box != gtk_widget_get_parent (widget_b))
     return 1;
+
+  if (gtk_box_get_center_widget (GTK_BOX (box)) == widget_a)
+    return -1;
+  if (gtk_box_get_center_widget (GTK_BOX (box)) == widget_b)
+    return -1;
 
   /* XXX Sometimes the packing "position" property doesnt exist here, why ?
    */
@@ -226,6 +247,8 @@ glade_gtk_box_get_num_children (GObject *box)
 {
   GList *children = gtk_container_get_children (GTK_CONTAINER (box));
   gint retval = g_list_length (children);
+  if (gtk_box_get_center_widget (GTK_BOX (box)) != NULL)
+    retval -= 1;
   g_list_free (children);
   return retval;
 }
@@ -234,7 +257,12 @@ void
 glade_gtk_box_get_property (GladeWidgetAdaptor * adaptor,
                             GObject * object, const gchar * id, GValue * value)
 {
-  if (!strcmp (id, "size"))
+  if (!strcmp (id, "use-center-child"))
+    {
+      g_value_reset (value);
+      g_value_set_boolean (value, gtk_box_get_center_widget (GTK_BOX (object)) != NULL);
+    }
+  else if (!strcmp (id, "size"))
     {
       g_value_reset (value);
       g_value_set_int (value, glade_gtk_box_get_num_children (object));
@@ -257,6 +285,9 @@ glade_gtk_box_get_first_blank (GtkBox * box)
        child && child->data; child = child->next, position++)
     {
       GtkWidget *widget = child->data;
+
+      if (widget == gtk_box_get_center_widget (GTK_BOX (box)))
+        continue;
 
       if ((gwidget = glade_widget_get_from_gobject (widget)) != NULL)
         {
@@ -292,6 +323,7 @@ glade_gtk_box_set_size (GObject * object, const GValue * value)
     return;
 
   children = gtk_container_get_children (GTK_CONTAINER (box));
+  children = g_list_remove (children, gtk_box_get_center_widget (GTK_BOX (box)));
 
   old_size = g_list_length (children);
   new_size = g_value_get_int (value);
@@ -344,7 +376,23 @@ glade_gtk_box_set_property (GladeWidgetAdaptor * adaptor,
                             GObject * object,
                             const gchar * id, const GValue * value)
 {
-  if (!strcmp (id, "size"))
+  if (!strcmp (id, "use-center-child"))
+    {
+      GtkWidget *child;
+
+      if (g_value_get_boolean (value))
+        {
+          child = gtk_box_get_center_widget (GTK_BOX (object));
+          if (!child)
+            child = glade_placeholder_new ();
+          g_object_set_data (G_OBJECT (child), "special-child-type", "center");
+        }
+      else
+        child = NULL;
+      gtk_box_set_center_widget (GTK_BOX (object), child);
+    }
+
+  else if (!strcmp (id, "size"))
     glade_gtk_box_set_size (object, value);
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
@@ -359,6 +407,7 @@ glade_gtk_box_verify_size (GObject *object, const GValue *value)
   gint new_size = g_value_get_int (value);
   
   children = gtk_container_get_children (GTK_CONTAINER (object));
+  children = g_list_remove (children, gtk_box_get_center_widget (GTK_BOX (object)));
   old_size = g_list_length (children);
 
   for (child = g_list_last (children);
@@ -420,11 +469,19 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *gbox, *gchild;
   gint num_children;
+  gchar *special_child_type;
 
   g_return_if_fail (GTK_IS_BOX (object));
   g_return_if_fail (GTK_IS_WIDGET (child));
 
   gbox = glade_widget_get_from_gobject (object);
+
+  special_child_type = g_object_get_data (child, "special-child-type");
+  if (special_child_type && !strcmp (special_child_type, "center"))
+    {
+      gtk_box_set_center_widget (GTK_BOX (object), GTK_WIDGET (child));
+       return;
+    }
 
   /*
      Try to remove the last placeholder if any, this way GtkBox`s size 
@@ -477,11 +534,23 @@ glade_gtk_box_remove_child (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *gbox;
   gint size;
+  gchar *special_child_type;
 
   g_return_if_fail (GTK_IS_BOX (object));
   g_return_if_fail (GTK_IS_WIDGET (child));
 
   gbox = glade_widget_get_from_gobject (object);
+
+  special_child_type = g_object_get_data (child, "special-child-type");
+  if (special_child_type && !strcmp (special_child_type, "center"))
+    {
+      GtkWidget *w;
+
+      w = glade_placeholder_new ();
+      g_object_set_data (G_OBJECT (w), "special-child-type", "center");
+      gtk_box_set_center_widget (GTK_BOX (object), w);
+      return;
+    }
 
   gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 
@@ -502,6 +571,18 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *gchild;
   GladeWidget *gbox;
+
+  gchar *special_child_type;
+
+  special_child_type =
+      g_object_get_data (G_OBJECT (current), "special-child-type");
+
+  if (special_child_type && !strcmp (special_child_type, "center"))
+    {
+      g_object_set_data (G_OBJECT (new_widget), "special-child-type", "center");
+      gtk_box_set_center_widget (GTK_BOX (container), GTK_WIDGET (new_widget));
+      return;
+    }
 
   g_object_ref (G_OBJECT (current));
 

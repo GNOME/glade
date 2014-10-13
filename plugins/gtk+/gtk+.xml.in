@@ -627,6 +627,7 @@
         <replace-child-function>glade_gtk_box_replace_child</replace-child-function>
         <child-set-property-function>glade_gtk_box_set_child_property</child-set-property-function>
         <child-action-activate-function>glade_gtk_box_child_action_activate</child-action-activate-function>
+        <special-child-type>type</special-child-type>
         
         <packing-actions>
           <action id="insert_before" _name="Insert Before" stock="list-add"/>
@@ -654,6 +655,11 @@
               <!-- GtkBaselinePosition enumeration value -->
               <value id="GTK_BASELINE_POSITION_BOTTOM" _name="Bottom"/>
             </displayable-values>
+          </property>
+          <property visible="True" save="False" id="use-center-child" since="3.12" default="FALSE" name="Center Child">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
           </property>
         </properties>
         
@@ -1791,6 +1797,7 @@
           <property id="orientation" disabled="True"/>
           <property id="spacing" disabled="True"/>
           <property id="baseline-position" disabled="True"/>
+          <property id="use-center-child" disabled="True"/>
           
           <!-- GtkFileChooser properties are custom-layout, handled in GladeFileChooserEditor -->
           <property id="extra-widget" parentless-widget="True" custom-layout="True"/>
@@ -1861,6 +1868,7 @@
           <property id="orientation" disabled="True"/>
           <property id="spacing" disabled="True"/>
           <property id="baseline-position" disabled="True"/>
+          <property id="use-center-child" disabled="True"/>
           
           <!-- GtkFileChooser properties are custom-layout, handled in GladeFileChooserEditor -->
           <property id="extra-widget" parentless-widget="True" custom-layout="True"/>
@@ -3089,6 +3097,7 @@
           <property id="orientation" disabled="True"/>
           <property id="spacing" disabled="True"/>
           <property id="baseline-position" disabled="True"/>
+          <property id="use-center-child" disabled="True"/>
           
           <!-- Claim the GladeFontChooserEditor properties -->
           <property id="font" custom-layout="True"/>
@@ -3190,6 +3199,7 @@
           <property id="orientation" disabled="True"/>
           <property id="spacing" disabled="True"/>
           <property id="baseline-position" disabled="True"/>
+          <property id="use-center-child" disabled="True"/>
           
           <!-- Claim the GladeRecentChooserEditor properties  -->
           <property id="recent-manager" custom-layout="True"/>
