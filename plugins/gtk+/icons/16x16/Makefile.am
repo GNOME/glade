@@ -101,6 +101,8 @@ icons_DATA = \
 	widget-gtk-sizegroup.png \
 	widget-gtk-spinbutton.png \
 	widget-gtk-spinner.png \
+	widget-gtk-stack.png \
+	widget-gtk-stackswitcher.png \
 	widget-gtk-statusbar.png \
 	widget-gtk-statusicon.png \
 	widget-gtk-table.png \

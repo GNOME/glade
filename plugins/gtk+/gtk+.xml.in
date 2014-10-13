@@ -2399,7 +2399,7 @@
           <property id="tab-label" disabled="True"/>
         </packing-properties>
       </glade-widget-class>
-     
+
     <glade-widget-class name="GtkHeaderBar" generic-name="headerbar" _title="HeaderBar" since="3.10">
       <post-create-function>glade_gtk_header_bar_post_create</post-create-function>
       <add-child-function>glade_gtk_header_bar_add_child</add-child-function>
@@ -2454,6 +2454,33 @@
         <action id="add_slot" _name="Add Slot" stock="gtk-add"/>
       </actions>
     </glade-widget-class>
+      
+      <glade-widget-class name="GtkStack" generic-name="stack" _title="Stack" since="3.10">
+        <post-create-function>glade_gtk_stack_post_create</post-create-function>
+        <child-action-activate-function>glade_gtk_stack_child_action_activate</child-action-activate-function>
+        <packing-actions>
+          <action id="insert_page_before" _name="Insert Page Before" stock="list-add"/>
+          <action id="insert_page_after" _name="Insert Page After" stock="list-add"/>
+          <action id="remove_page" _name="Remove Page"  stock="list-remove"/>
+        </packing-actions>
+        <properties>
+          <property id="visible-child" save="False"/>
+          <property id="visible-child-name" save="False"/>
+        </properties>
+      </glade-widget-class>
+
+      <glade-widget-class name="GtkStackSwitcher" generic-name="stackswitcher" _title="Stack Switcher" since="3.10">
+
+        <properties>
+          <property id="orientation" default="GTK_ORIENTATION_HORIZONTAL"/>
+          <!-- Disable GtkBox stuff -->
+          <property id="size" disabled="True" default="0"/>
+          <property id="homogeneous" disabled="True"/>
+          <property id="spacing" disabled="True"/>
+          <property id="baseline-position" disabled="True"/>
+        </properties>
+
+      </glade-widget-class>
 
       <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer" since="3.10">
         <post-create-function>glade_gtk_revealer_post_create</post-create-function>
@@ -5243,6 +5270,7 @@
       <glade-widget-class-ref name="GtkRevealer" />
       <glade-widget-class-ref name="GtkSearchBar" />
       <glade-widget-class-ref name="GtkHeaderBar" />
+      <glade-widget-class-ref name="GtkStack" />
     </glade-widget-group>
     
     <glade-widget-group name="gtk-control-display" _title="Control and Display">
@@ -5296,6 +5324,7 @@
       <glade-widget-class-ref name="GtkDrawingArea"/>
       
       <glade-widget-class-ref name="GtkInfoBar"/>
+      <glade-widget-class-ref name="GtkStackSwitcher" />
     </glade-widget-group>
     
     <glade-widget-group name="gtk-composite" _title="Composite Widgets">
