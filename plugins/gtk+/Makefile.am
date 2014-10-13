@@ -104,6 +104,8 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-searchbar.c		\
 	glade-gtk-size-group.c		\
 	glade-gtk-spin-button.c		\
+	glade-gtk-stack.c		\
+	glade-gtk-stack-switcher.c	\
 	glade-gtk-switch.c		\
 	glade-gtk-table.c		\
 	glade-gtk-text-buffer.c		\
