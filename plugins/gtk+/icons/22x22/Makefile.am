@@ -80,6 +80,7 @@ icons_DATA = \
 	widget-gtk-placessidebar.png \
 	widget-gtk-printdialog.png \
 	widget-gtk-progressbar.png \
+	widget-gtk-searchbar.png \
 	widget-gtk-levelbar.png \
 	widget-gtk-radiobutton.png \
 	widget-gtk-radiomenuitem.png \

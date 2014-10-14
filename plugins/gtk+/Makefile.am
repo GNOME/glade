@@ -101,6 +101,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-scale.c		\
 	glade-gtk-scrollbar.c		\
 	glade-gtk-scrolled-window.c	\
+	glade-gtk-searchbar.c		\
 	glade-gtk-size-group.c		\
 	glade-gtk-spin-button.c		\
 	glade-gtk-switch.c		\

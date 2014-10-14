@@ -1606,6 +1606,18 @@
         </properties>
       </glade-widget-class>
       
+      <glade-widget-class name="GtkSearchBar" generic-name="searchbar" _title="Search Bar" since="3.10">
+        <post-create-function>glade_gtk_search_bar_post_create</post-create-function>
+        <add-child-verify-function>glade_gtk_search_bar_add_verify</add-child-verify-function>
+        <add-child-function>glade_gtk_search_bar_add_child</add-child-function>
+        <remove-child-function>glade_gtk_search_bar_remove_child</remove-child-function>
+        <replace-child-function>glade_gtk_search_bar_replace_child</replace-child-function>
+        <properties>
+          <property id="search-mode-enabled" save="False" default="True"/>
+        </properties>
+
+      </glade-widget-class>
+
       <glade-widget-class name="GtkButton" generic-name="button" _title="Button">
         <post-create-function>glade_gtk_button_post_create</post-create-function>
         <create-editable-function>glade_gtk_button_create_editable</create-editable-function>
@@ -5152,6 +5164,7 @@
       <glade-widget-class-ref name="GtkScrolledWindow"/>
       <glade-widget-class-ref name="GtkAlignment"/>
       <glade-widget-class-ref name="GtkRevealer" />
+      <glade-widget-class-ref name="GtkSearchBar" />
     </glade-widget-group>
     
     <glade-widget-group name="gtk-control-display" _title="Control and Display">
