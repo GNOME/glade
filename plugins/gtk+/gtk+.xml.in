@@ -2512,6 +2512,8 @@
 
       </glade-widget-class>
 
+      <glade-widget-class name="GtkSidebar" generic-name="sidebar" _title="Sidebar" since="3.15"/>
+
       <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer" since="3.10">
         <post-create-function>glade_gtk_revealer_post_create</post-create-function>
         <properties>
@@ -5355,6 +5357,7 @@
       
       <glade-widget-class-ref name="GtkInfoBar"/>
       <glade-widget-class-ref name="GtkStackSwitcher" />
+      <glade-widget-class-ref name="GtkSidebar" />
     </glade-widget-group>
     
     <glade-widget-group name="gtk-composite" _title="Composite Widgets">
