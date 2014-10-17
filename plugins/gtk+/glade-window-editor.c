@@ -31,6 +31,7 @@ static void glade_window_editor_grab_focus (GtkWidget * widget);
 /* Callbacks */
 static void icon_name_toggled    (GtkWidget *widget, GladeWindowEditor * window_editor);
 static void icon_file_toggled    (GtkWidget *widget, GladeWindowEditor * window_editor);
+static void use_csd_toggled      (GtkWidget *widget, GladeWindowEditor * window_editor);
 
 struct _GladeWindowEditorPrivate {
   GtkWidget *embed;
@@ -38,6 +39,10 @@ struct _GladeWindowEditorPrivate {
   GtkWidget *extension_port;
   GtkWidget *icon_name_radio;
   GtkWidget *icon_file_radio;
+  GtkWidget *use_csd_check;
+  GtkWidget *title_editor;
+  GtkWidget *decorated_editor;
+  GtkWidget *hide_titlebar_editor;
 };
 
 static GladeEditableIface *parent_editable_iface;
@@ -59,9 +64,14 @@ glade_window_editor_class_init (GladeWindowEditorClass * klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, embed);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, icon_name_radio);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, icon_file_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, use_csd_check);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, title_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, decorated_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, hide_titlebar_editor);
 
   gtk_widget_class_bind_template_callback (widget_class, icon_name_toggled);
   gtk_widget_class_bind_template_callback (widget_class, icon_file_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, use_csd_toggled);
 }
 
 static void
@@ -94,13 +104,17 @@ glade_window_editor_load (GladeEditable *editable,
   if (gwidget)
     {
       gboolean icon_name;
+      gboolean use_csd;
 
       glade_widget_property_get (gwidget, "glade-window-icon-name", &icon_name);
+      glade_widget_property_get (gwidget, "use-csd", &use_csd);
 
       if (icon_name)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->icon_name_radio), TRUE);
       else
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->icon_file_radio), TRUE);
+
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->use_csd_check), use_csd);
     }
 }
 
@@ -171,6 +185,84 @@ icon_file_toggled (GtkWidget         *widget,
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "glade-window-icon-name");
   glade_command_set_property (property, FALSE);
+
+  glade_command_pop_group ();
+
+  glade_editable_unblock (GLADE_EDITABLE (window_editor));
+
+  /* reload buttons and sensitivity and stuff... */
+  glade_editable_load (GLADE_EDITABLE (window_editor), gwidget);
+}
+
+#if !GTK_CHECK_VERSION (3,15,0)
+/* Hack to find the titlebar */
+static void check_titlebar (GtkWidget *widget, gpointer data)
+{
+  GtkWidget **titlebar = data;
+  if (gtk_style_context_has_class (gtk_widget_get_style_context (widget), "titlebar"))
+    *titlebar = widget;
+}
+
+static GtkWidget *
+gtk_window_get_titlebar (GtkWindow *window)
+{
+  GtkWidget *titlebar = NULL;
+  gtk_container_forall (GTK_CONTAINER (window), check_titlebar, &titlebar);
+  return titlebar;
+}
+#endif
+
+static void
+use_csd_toggled (GtkWidget         *widget,
+		 GladeWindowEditor *window_editor)
+{
+  GladeWindowEditorPrivate *priv = window_editor->priv;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (window_editor));
+  GladeWidget   *gtitlebar = NULL;
+  GtkWidget     *window;
+  GtkWidget     *titlebar;
+  GladeProperty *property;
+  gboolean       use_csd;
+
+  if (glade_editable_loading (GLADE_EDITABLE (window_editor)) || !gwidget)
+    return;
+
+  /* Get new desired property state */
+  use_csd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->use_csd_check));
+
+  gtk_widget_set_sensitive (priv->title_editor, !use_csd);
+  gtk_widget_set_sensitive (priv->decorated_editor, !use_csd);
+  gtk_widget_set_sensitive (priv->hide_titlebar_editor, !use_csd);
+
+  /* Get any existing titlebar widget */
+  window = (GtkWidget *)glade_widget_get_object (gwidget);
+  titlebar = gtk_window_get_titlebar (GTK_WINDOW (window));
+
+  if (titlebar && !GLADE_IS_PLACEHOLDER (titlebar))
+    gtitlebar = glade_widget_get_from_gobject (titlebar);
+
+  glade_editable_block (GLADE_EDITABLE (window_editor));
+
+  if (use_csd)
+    glade_command_push_group (_("Setting %s to use a custom titlebar"),
+			      glade_widget_get_name (gwidget));
+  else
+    glade_command_push_group (_("Setting %s to use a system provided titlebar"),
+			      glade_widget_get_name (gwidget));
+
+  /* If a project widget exists when were disabling CSD, it needs
+   * to be removed first as a part of the issuing GladeCommand group
+   */
+  if (gtitlebar)
+    {
+      GList list;
+      list.prev = list.next = NULL;
+      list.data = gtitlebar;
+      glade_command_delete (&list);
+    }
+
+  property = glade_widget_get_property (gwidget, "use-csd");
+  glade_command_set_property (property, use_csd);
 
   glade_command_pop_group ();
 
