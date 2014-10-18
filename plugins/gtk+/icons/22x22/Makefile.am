@@ -47,6 +47,8 @@ icons_DATA = \
 	widget-gtk-filechooserwidget.png \
 	widget-gtk-filefilter.png \
 	widget-gtk-fixed.png \
+	widget-gtk-flowbox.png \
+	widget-gtk-flowboxchild.png \
 	widget-gtk-fontbutton.png \
 	widget-gtk-fontselection.png \
 	widget-gtk-fontselectiondialog.png \
