@@ -2233,7 +2233,7 @@
           <property id="default-height" default="260" optional="True" optional-default="False"/>
           <property id="type-hint" default="GDK_WINDOW_TYPE_HINT_DIALOG" save-always="True"/>
           <!-- We disabled this property until Glade supports GtkHeaderBar editing -->
-          <property id="use-header-bar" since="3.12" disabled="True"/>
+          <property id="use-header-bar" since="3.12" disabled="False"/>
         </properties>
         
       </glade-widget-class>
@@ -2384,6 +2384,7 @@
         <child-verify-function>glade_gtk_notebook_child_verify_property</child-verify-function>
         <special-child-type>type</special-child-type>
         <set-property-function>glade_gtk_notebook_set_property</set-property-function>
+        <get-property-function>glade_gtk_notebook_get_property</get-property-function>
         <verify-function>glade_gtk_notebook_verify_property</verify-function>
         <child-action-activate-function>glade_gtk_notebook_child_action_activate</child-action-activate-function>
         
@@ -2418,7 +2419,19 @@
             </parameter-spec>
             <_tooltip>The number of pages in the notebook</_tooltip>
           </property>
+
+          <property id="has-action-start" _name="Start Action" visible="False" save="False" default="False" custom-layout="True">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+          </property>
+          <property id="has-action-end" _name="End Action" visible="False" save="False" default="False" custom-layout="True">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+          </property>
         </properties>
+        
         
         <packing-properties>
           <property id="tab-label" disabled="True"/>

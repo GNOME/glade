@@ -380,11 +380,25 @@ glade_gtk_notebook_project_changed (GladeWidget * gwidget,
   g_object_set_data (G_OBJECT (gwidget), "notebook-project-ptr", project);
 }
 
+static void
+glade_gtk_notebook_parse_finished (GladeProject * project, GObject * object)
+{
+  GtkWidget *action;
+
+  action = gtk_notebook_get_action_widget (GTK_NOTEBOOK (object), GTK_PACK_START);
+  glade_widget_property_set (glade_widget_get_from_gobject (object),
+                             "has-action-start", action != NULL);
+  action = gtk_notebook_get_action_widget (GTK_NOTEBOOK (object), GTK_PACK_END);
+  glade_widget_property_set (glade_widget_get_from_gobject (object),
+                             "has-action-end", action != NULL);
+}
+
 void
 glade_gtk_notebook_post_create (GladeWidgetAdaptor * adaptor,
                                 GObject * notebook, GladeCreateReason reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (notebook);
+  GladeProject *project = glade_widget_get_project (gwidget);
 
   gtk_notebook_popup_disable (GTK_NOTEBOOK (notebook));
 
@@ -395,6 +409,11 @@ glade_gtk_notebook_post_create (GladeWidgetAdaptor * adaptor,
 
   g_signal_connect (G_OBJECT (notebook), "switch-page",
                     G_CALLBACK (glade_gtk_notebook_switch_page), NULL);
+
+  if (reason == GLADE_CREATE_LOAD)
+    g_signal_connect (project, "parse-finished",
+                      G_CALLBACK (glade_gtk_notebook_parse_finished),
+                      notebook);
 }
 
 static gint
@@ -533,9 +552,54 @@ glade_gtk_notebook_set_property (GladeWidgetAdaptor * adaptor,
 {
   if (!strcmp (id, "pages"))
     glade_gtk_notebook_set_n_pages (object, value);
+  else if (!strcmp (id, "has-action-start"))
+    {
+      if (g_value_get_boolean (value))
+        {
+          GtkWidget *action = gtk_notebook_get_action_widget (GTK_NOTEBOOK (object), GTK_PACK_START);
+          if (!action)
+            action = glade_placeholder_new ();
+          g_object_set_data (G_OBJECT (action), "special-child-type", "action-start");
+          gtk_notebook_set_action_widget (GTK_NOTEBOOK (object), action, GTK_PACK_START); 
+        }
+      else
+        gtk_notebook_set_action_widget (GTK_NOTEBOOK (object), NULL, GTK_PACK_START); 
+    }
+  else if (!strcmp (id, "has-action-end"))
+    {
+      if (g_value_get_boolean (value))
+        {
+          GtkWidget *action = gtk_notebook_get_action_widget (GTK_NOTEBOOK (object), GTK_PACK_END);
+          if (!action)
+            action = glade_placeholder_new ();
+          g_object_set_data (G_OBJECT (action), "special-child-type", "action-end");
+          gtk_notebook_set_action_widget (GTK_NOTEBOOK (object), action, GTK_PACK_END); 
+        }
+      else
+        gtk_notebook_set_action_widget (GTK_NOTEBOOK (object), NULL, GTK_PACK_END); 
+    }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
                                                       id, value);
+}
+
+void
+glade_gtk_notebook_get_property (GladeWidgetAdaptor * adaptor,
+                            GObject * object, const gchar * id, GValue * value)
+{
+  if (!strcmp (id, "has-action-start"))
+    {
+      g_value_reset (value);
+      g_value_set_boolean (value, gtk_notebook_get_action_widget (GTK_NOTEBOOK (object), GTK_PACK_START) != NULL);
+    }
+  else if (!strcmp (id, "has-action-end"))
+    {
+      g_value_reset (value);
+      g_value_set_boolean (value, gtk_notebook_get_action_widget (GTK_NOTEBOOK (object), GTK_PACK_END) != NULL);
+    }
+  else
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
+                                                      value);
 }
 
 static gboolean
@@ -592,10 +656,18 @@ glade_gtk_notebook_add_child (GladeWidgetAdaptor * adaptor,
   num_page = gtk_notebook_get_n_pages (notebook);
   gwidget = glade_widget_get_from_gobject (object);
 
-  /* Just append pages blindly when loading/dupping
-   */
-  if (glade_widget_superuser ())
+  special_child_type = g_object_get_data (child, "special-child-type");
+  if (special_child_type && !strcmp (special_child_type, "action-start"))
     {
+      gtk_notebook_set_action_widget (notebook, GTK_WIDGET (child), GTK_PACK_START);
+    }
+  else if (special_child_type && !strcmp (special_child_type, "action-end"))
+    {
+      gtk_notebook_set_action_widget (notebook, GTK_WIDGET (child), GTK_PACK_END);
+    }
+  else if (glade_widget_superuser ())
+    {
+      /* Just append pages blindly when loading/dupping */
       special_child_type = g_object_get_data (child, "special-child-type");
       if (special_child_type && !strcmp (special_child_type, "tab"))
         {
@@ -674,6 +746,23 @@ glade_gtk_notebook_remove_child (GladeWidgetAdaptor * adaptor,
                                  GObject * object, GObject * child)
 {
   NotebookChildren *nchildren;
+  gchar *special_child_type;
+
+  special_child_type = g_object_get_data (child, "special-child-type");
+  if (special_child_type && !strcmp (special_child_type, "action-start"))
+    {
+      GtkWidget *placeholder = glade_placeholder_new ();
+      g_object_set_data (G_OBJECT (placeholder), "special-child-type", "action-start");
+      gtk_notebook_set_action_widget (GTK_NOTEBOOK (object), placeholder, GTK_PACK_START);
+      return;
+    }
+  else if (special_child_type && !strcmp (special_child_type, "action-end"))
+    {
+      GtkWidget *placeholder = glade_placeholder_new ();
+      g_object_set_data (G_OBJECT (placeholder), "special-child-type", "action-end");
+      gtk_notebook_set_action_widget (GTK_NOTEBOOK (object), placeholder, GTK_PACK_END);
+      return;
+    }
 
   nchildren = glade_gtk_notebook_extract_children (GTK_WIDGET (object));
 
@@ -711,8 +800,22 @@ glade_gtk_notebook_replace_child (GladeWidgetAdaptor * adaptor,
   GtkNotebook *notebook;
   GladeWidget *gcurrent, *gnew;
   gint position = 0;
+  gchar *special_child_type;
 
   notebook = GTK_NOTEBOOK (container);
+
+  special_child_type = g_object_get_data (G_OBJECT (current), "special-child-type");
+  g_object_set_data (G_OBJECT (new_widget), "special-child-type", special_child_type);
+  if (!g_strcmp0 (special_child_type, "action-start"))
+    {
+      gtk_notebook_set_action_widget (notebook, GTK_WIDGET (new_widget), GTK_PACK_START);
+      return;
+    }
+  else if (!g_strcmp0 (special_child_type, "action-end"))
+    {
+      gtk_notebook_set_action_widget (notebook, GTK_WIDGET (new_widget), GTK_PACK_END);
+      return;
+    }
 
   if ((gcurrent = glade_widget_get_from_gobject (current)) != NULL)
     glade_widget_pack_property_get (gcurrent, "position", &position);
@@ -724,9 +827,6 @@ glade_gtk_notebook_replace_child (GladeWidgetAdaptor * adaptor,
           g_assert (position >= 0);
         }
     }
-
-  if (g_object_get_data (G_OBJECT (current), "special-child-type"))
-    g_object_set_data (G_OBJECT (new_widget), "special-child-type", "tab");
 
   glade_gtk_notebook_remove_child (adaptor,
                                    G_OBJECT (container), G_OBJECT (current));
@@ -803,13 +903,17 @@ glade_gtk_notebook_get_child_property (GladeWidgetAdaptor * adaptor,
 
   if (strcmp (property_name, "position") == 0)
     {
-      if (g_object_get_data (child, "special-child-type") != NULL)
+      if (g_strcmp0 (g_object_get_data (child, "special-child-type"), "tab") == 0)
         {
           if ((position = notebook_search_tab (GTK_NOTEBOOK (container),
                                                GTK_WIDGET (child))) >= 0)
             g_value_set_int (value, position);
           else
             g_value_set_int (value, 0);
+        }
+      else if (g_object_get_data (child, "special-child-type") != NULL)
+        {
+          g_value_set_int (value, 0);
         }
       else
         gtk_container_child_get_property (GTK_CONTAINER (container),
