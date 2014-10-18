@@ -2649,6 +2649,59 @@
           <property id="selectable" since="3.14"/>
         </properties>
       </glade-widget-class>
+      <glade-widget-class name="GtkListBoxRow" generic-name="listboxrow" _title="List Box Row" since="3.10"/>
+
+      <glade-widget-class name="GtkFlowBox" generic-name="flowbox" _title="Flow Box" use-placeholders="False" since="3.12">
+        
+        <action-activate-function>glade_gtk_flowbox_action_activate</action-activate-function>
+        <child-action-activate-function>glade_gtk_flowbox_child_action_activate</child-action-activate-function>
+        <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
+        <!-- We do not want glade_gtk_container_post_create be executed -->
+        <post-create-function>empty</post-create-function>
+        <add-child-verify-function>glade_gtk_flowbox_add_verify</add-child-verify-function>
+        <add-child-function>glade_gtk_flowbox_add_child</add-child-function>
+        <remove-child-function>glade_gtk_flowbox_remove_child</remove-child-function>
+        <child-set-property-function>glade_gtk_flowbox_set_child_property</child-set-property-function>
+        <child-get-property-function>glade_gtk_flowbox_get_child_property</child-get-property-function>
+        
+        <actions>
+          <action id="add_child" _name="Add Child" stock="list-add" important="True"/>
+        </actions>
+        
+        <packing-actions>
+          <action id="insert_before" _name="Insert Before" stock="list-add"/>
+          <action id="insert_after" _name="Insert After" stock="list-add"/>
+        </packing-actions>
+        
+        <properties>
+          <property id="activate-on-single-click" default="True"/>
+          <property id="selection-mode">
+            <displayable-values>
+              <!-- GtkSelectionMode enumeration value -->
+              <value id="GTK_SELECTION_NONE" _name="None"/>
+              <!-- GtkSelectionMode enumeration value -->
+              <value id="GTK_SELECTION_SINGLE" _name="Single"/>
+              <!-- GtkSelectionMode enumeration value -->
+              <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
+              <!-- GtkSelectionMode enumeration value -->
+              <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
+            </displayable-values>
+          </property>
+        </properties>
+        
+        <packing-properties>
+          <property id="position" _name="Position" default="0" save="False">
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>0</min>
+            </parameter-spec>
+            <_tooltip>The position of the child in the flowbox</_tooltip>
+          </property>
+        </packing-properties>
+        
+      </glade-widget-class>
+      
+      <glade-widget-class name="GtkFlowBoxChild" generic-name="flowboxchild" _title="Flow Box Child" since="3.12"/>
       
       <glade-widget-class name="GtkRange" _title="Range">
         <properties>
@@ -5334,6 +5387,7 @@
       <glade-widget-class-ref name="GtkFrame"/>
       <glade-widget-class-ref name="GtkAspectFrame"/>
       <glade-widget-class-ref name="GtkListBox"/>
+      <glade-widget-class-ref name="GtkFlowBox"/>
       <glade-widget-class-ref name="GtkOverlay"/>
       <glade-widget-class-ref name="GtkMenuBar"/>
       <glade-widget-class-ref name="GtkToolbar"/>

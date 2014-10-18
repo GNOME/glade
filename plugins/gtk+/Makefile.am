@@ -70,6 +70,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-expander.c		\
 	glade-gtk-file-chooser-widget.c	\
 	glade-gtk-fixed-layout.c	\
+	glade-gtk-flow-box.c		\
 	glade-gtk-font-chooser-widget.c	\
 	glade-gtk-frame.c		\
 	glade-gtk-grid.c		\
