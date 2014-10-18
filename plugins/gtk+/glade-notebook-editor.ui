@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 
+<!-- Generated with glade 3.18.1 
 
 libgladegtk - Glade UI Designer Gtk+ support plugin
 Copyright (C) 2013 Tristan Van Berkom <tvb@gnome.org>
@@ -43,7 +43,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
             <property name="width">6</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -61,7 +60,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
             <property name="width">6</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -76,8 +74,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -90,8 +86,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -105,8 +99,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -121,8 +113,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -148,7 +138,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
                 <property name="left_attach">0</property>
                 <property name="top_attach">0</property>
                 <property name="width">6</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -163,7 +152,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
                 <property name="left_attach">0</property>
                 <property name="top_attach">1</property>
                 <property name="width">2</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -177,7 +165,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
                 <property name="left_attach">2</property>
                 <property name="top_attach">1</property>
                 <property name="width">2</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -192,7 +179,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
                 <property name="left_attach">0</property>
                 <property name="top_attach">2</property>
                 <property name="width">2</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -206,7 +192,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
                 <property name="left_attach">2</property>
                 <property name="top_attach">2</property>
                 <property name="width">2</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -222,7 +207,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
                 <property name="left_attach">0</property>
                 <property name="top_attach">3</property>
                 <property name="width">2</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -237,7 +221,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
                 <property name="left_attach">2</property>
                 <property name="top_attach">3</property>
                 <property name="width">2</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -261,10 +244,81 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">6</property>
             <property name="width">6</property>
-            <property name="height">1</property>
           </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="action_start_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">has-action-start</property>
+            <property name="custom_text" translatable="yes">Start Action:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSwitch" id="action_start_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="halign">start</property>
+            <signal name="notify::active" handler="has_start_action_changed" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="action_end_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">has-action-end</property>
+            <property name="custom_text" translatable="yes">End Action:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSwitch" id="action_end_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="halign">start</property>
+            <signal name="notify::active" handler="has_end_action_changed" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>
