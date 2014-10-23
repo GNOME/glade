@@ -194,24 +194,6 @@ icon_file_toggled (GtkWidget         *widget,
   glade_editable_load (GLADE_EDITABLE (window_editor), gwidget);
 }
 
-#if !GTK_CHECK_VERSION (3,15,0)
-/* Hack to find the titlebar */
-static void check_titlebar (GtkWidget *widget, gpointer data)
-{
-  GtkWidget **titlebar = data;
-  if (gtk_style_context_has_class (gtk_widget_get_style_context (widget), "titlebar"))
-    *titlebar = widget;
-}
-
-static GtkWidget *
-gtk_window_get_titlebar (GtkWindow *window)
-{
-  GtkWidget *titlebar = NULL;
-  gtk_container_forall (GTK_CONTAINER (window), check_titlebar, &titlebar);
-  return titlebar;
-}
-#endif
-
 static void
 use_csd_toggled (GtkWidget         *widget,
 		 GladeWindowEditor *window_editor)
