@@ -36,6 +36,8 @@
 #define GLADE_TAG_ACCEL_GROUPS "accel-groups"
 #define GLADE_TAG_ACCEL_GROUP  "group"
 
+#define CSD_DISABLED_MESSAGE _("This property does not apply to client-side decorated windows")
+
 #if !GTK_CHECK_VERSION (3,15,0)
 static void check_titlebar (GtkWidget *widget, gpointer data)
 {
@@ -260,12 +262,9 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
           g_object_set_data (G_OBJECT (titlebar), "special-child-type", "titlebar");
           gtk_window_set_titlebar (GTK_WINDOW (object), titlebar);
 
-          glade_widget_property_set_sensitive (gwidget, "title", FALSE,
-               _("This property does not apply to client-side decorated windows"));
-          glade_widget_property_set_sensitive (gwidget, "decorated", FALSE,
-               _("This property does not apply to client-side decorated windows"));
-          glade_widget_property_set_sensitive (gwidget, "hide-titlebar-when-maximized", FALSE,
-               _("This property does not apply to client-side decorated windows"));
+          glade_widget_property_set_sensitive (gwidget, "title", FALSE, CSD_DISABLED_MESSAGE);
+          glade_widget_property_set_sensitive (gwidget, "decorated", FALSE, CSD_DISABLED_MESSAGE);
+          glade_widget_property_set_sensitive (gwidget, "hide-titlebar-when-maximized", FALSE, CSD_DISABLED_MESSAGE);
         }
       else
         {
