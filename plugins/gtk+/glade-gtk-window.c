@@ -236,10 +236,10 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
 			       GObject * object,
 			       const gchar * id, const GValue * value)
 {
+  GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
   if (!strcmp (id, "glade-window-icon-name"))
     {
-      GladeWidget *gwidget = glade_widget_get_from_gobject (object);
-
       glade_widget_property_set_sensitive (gwidget, "icon", FALSE, NOT_SELECTED_MSG);
       glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE, NOT_SELECTED_MSG);
 
@@ -259,9 +259,22 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
             titlebar = glade_placeholder_new ();
           g_object_set_data (G_OBJECT (titlebar), "special-child-type", "titlebar");
           gtk_window_set_titlebar (GTK_WINDOW (object), titlebar);
+
+          glade_widget_property_set_sensitive (gwidget, "title", FALSE,
+               _("This property does not apply to client-side decorated windows"));
+          glade_widget_property_set_sensitive (gwidget, "decorated", FALSE,
+               _("This property does not apply to client-side decorated windows"));
+          glade_widget_property_set_sensitive (gwidget, "hide-titlebar-when-maximized", FALSE,
+               _("This property does not apply to client-side decorated windows"));
         }
       else
-        gtk_window_set_titlebar (GTK_WINDOW (object), NULL);
+        {
+          gtk_window_set_titlebar (GTK_WINDOW (object), NULL);
+
+          glade_widget_property_set_sensitive (gwidget, "title", TRUE, NULL);
+          glade_widget_property_set_sensitive (gwidget, "decorated", TRUE, NULL);
+          glade_widget_property_set_sensitive (gwidget, "hide-titlebar-when-maximized", TRUE, NULL);
+        }
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);

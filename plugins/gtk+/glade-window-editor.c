@@ -230,10 +230,6 @@ use_csd_toggled (GtkWidget         *widget,
   /* Get new desired property state */
   use_csd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->use_csd_check));
 
-  gtk_widget_set_sensitive (priv->title_editor, !use_csd);
-  gtk_widget_set_sensitive (priv->decorated_editor, !use_csd);
-  gtk_widget_set_sensitive (priv->hide_titlebar_editor, !use_csd);
-
   /* Get any existing titlebar widget */
   window = (GtkWidget *)glade_widget_get_object (gwidget);
   titlebar = gtk_window_get_titlebar (GTK_WINDOW (window));
@@ -263,6 +259,16 @@ use_csd_toggled (GtkWidget         *widget,
 
   property = glade_widget_get_property (gwidget, "use-csd");
   glade_command_set_property (property, use_csd);
+
+  if (use_csd)
+    {
+      property = glade_widget_get_property (gwidget, "title");
+      glade_command_set_property (property, NULL);
+      property = glade_widget_get_property (gwidget, "decorated");
+      glade_command_set_property (property, TRUE);
+      property = glade_widget_get_property (gwidget, "hide-titlebar-when-maximized");
+      glade_command_set_property (property, FALSE);
+    }
 
   glade_command_pop_group ();
 
