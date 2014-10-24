@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-10-12 10:49+0000\n"
-"PO-Revision-Date: 2014-10-20 12:31+0200\n"
+"POT-Creation-Date: 2014-10-23 08:22+0000\n"
+"PO-Revision-Date: 2014-10-24 18:51+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -1607,7 +1607,7 @@ msgstr "Tipo"
 
 #. Type
 #: ../gladeui/glade-base-editor.c:2035
-#: ../plugins/gtk+/glade-window-editor.ui.h:9
+#: ../plugins/gtk+/glade-window-editor.ui.h:8
 msgid "Type:"
 msgstr "Tipo:"
 
@@ -2413,14 +2413,12 @@ msgstr "Después"
 #. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
 #: ../gladeui/glade-preview-window.c:707
 #, c-format
-#| msgid "%s::%s emited %d time(s)"
 msgid "%s::%s emitted one time"
 msgstr "%s::%s emitida una vez"
 
 #. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
 #: ../gladeui/glade-preview-window.c:711
 #, c-format
-#| msgid "%s::%s emited %d time(s)"
 msgid "%s::%s emitted %d times"
 msgstr "%s::%s emitida %d veces"
 
@@ -3070,7 +3068,7 @@ msgid "Used to generate names of new widgets"
 msgstr "Usado para generar nombres de nuevos widgets"
 
 #: ../gladeui/glade-widget-adaptor.c:1481 ../plugins/gtk+/gtk+.xml.in.h:622
-#: ../plugins/gtk+/glade-window-editor.ui.h:7
+#: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "Nombre del icono"
 
@@ -4206,6 +4204,12 @@ msgstr "Añadiendo %s a un Grupo de tamaño nuevo"
 msgid "New Size Group"
 msgstr "Grupo de tamaño nuevo"
 
+#: ../plugins/gtk+/glade-gtk-window.c:39
+#| msgid "This property does not apply unless Use Underline is set."
+msgid "This property does not apply to client-side decorated windows"
+msgstr ""
+"Esta propiedad no se aplica a las ventanas decoradas del lado del cliente"
+
 #. Add descriptive label
 #: ../plugins/gtk+/glade-icon-factory-editor.c:160
 msgid ""
@@ -4411,15 +4415,28 @@ msgstr "Configurando %s para que use marcado en las sugerencias"
 msgid "Setting %s to not use tooltip markup"
 msgstr "Configurando %s para que no use marcado en las sugerencias"
 
-#: ../plugins/gtk+/glade-window-editor.c:131
+#: ../plugins/gtk+/glade-window-editor.c:145
 #, c-format
 msgid "Setting %s to use a named icon"
 msgstr "Configurando %s para que use un icono con nombre"
 
-#: ../plugins/gtk+/glade-window-editor.c:165
+#: ../plugins/gtk+/glade-window-editor.c:179
 #, c-format
 msgid "Setting %s to use an icon file"
 msgstr "Configurando %s para que use un archivo de icono"
+
+#: ../plugins/gtk+/glade-window-editor.c:225
+#, c-format
+#| msgid "Setting %s to use a custom child"
+msgid "Setting %s to use a custom titlebar"
+msgstr "Configurando %s para que use una barra de título personalizada"
+
+#: ../plugins/gtk+/glade-window-editor.c:228
+#, c-format
+#| msgid "Setting %s to use a stock item"
+msgid "Setting %s to use a system provided titlebar"
+msgstr ""
+"Configurando %s para que use una barra de título proporcionada por el sistema"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 msgid "Page Setup Dialog"
@@ -7531,7 +7548,7 @@ msgid "Image:"
 msgstr "Imagen:"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:11
-#: ../plugins/gtk+/glade-window-editor.ui.h:11
+#: ../plugins/gtk+/glade-window-editor.ui.h:10
 msgid "Position:"
 msgstr "Posición:"
 
@@ -7943,24 +7960,32 @@ msgid "Attached To:"
 msgstr "Acoplada a:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:5
-msgid "Title:"
-msgstr "Título:"
-
-#: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon File"
 msgstr "Archivo del icono"
 
-#: ../plugins/gtk+/glade-window-editor.ui.h:8
+#: ../plugins/gtk+/glade-window-editor.ui.h:7
 msgid "Window Flags"
 msgstr "Opciones de la ventana"
 
-#: ../plugins/gtk+/glade-window-editor.ui.h:10
+#: ../plugins/gtk+/glade-window-editor.ui.h:9
 msgid "Hint:"
 msgstr "Sugerencia:"
 
-#: ../plugins/gtk+/glade-window-editor.ui.h:12
+#: ../plugins/gtk+/glade-window-editor.ui.h:11
 msgid "Gravity:"
 msgstr "Gravedad:"
+
+#: ../plugins/gtk+/glade-window-editor.ui.h:12
+msgid "Title:"
+msgstr "Título:"
+
+#: ../plugins/gtk+/glade-window-editor.ui.h:13
+msgid "Client side window decorations"
+msgstr "Decoraciones de la ventana del lado del cliente"
+
+#: ../plugins/gtk+/glade-window-editor.ui.h:14
+msgid "Whether this window should include a custom titlebar."
+msgstr "Indica si la ventana debe incluir una barra de título personalizada."
 
 #~ msgid "Insert GPL v2"
 #~ msgstr "Insertar GPL v2"
@@ -8166,10 +8191,6 @@ msgstr "Gravedad:"
 
 #~ msgid "Loading %s: loaded %d of %d objects"
 #~ msgstr "Cargando %s: %d de %d objetos cargados"
-
-#~ msgid "This property does not apply unless Use Underline is set."
-#~ msgstr ""
-#~ "Esta propiedad no se aplica a no ser que Usar subrayado esté activada."
 
 #~ msgid "Property not selected"
 #~ msgstr "Propiedad no seleccionada"
