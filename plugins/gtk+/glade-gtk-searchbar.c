@@ -44,6 +44,17 @@ glade_gtk_search_bar_post_create (GladeWidgetAdaptor *adaptor,
   gtk_search_bar_set_show_close_button (GTK_SEARCH_BAR (widget), FALSE);
 }
 
+GList *
+glade_gtk_search_bar_get_children (GladeWidgetAdaptor * adaptor,
+                                   GtkSearchBar       * searchbar)
+{
+  GObject *current;
+
+  current = g_object_get_data (G_OBJECT (searchbar), "child");
+
+  return g_list_append (NULL, current);
+}
+
 gboolean
 glade_gtk_search_bar_add_verify (GladeWidgetAdaptor *adaptor,
                               GtkWidget          *container,

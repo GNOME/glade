@@ -1608,6 +1608,7 @@
       
       <glade-widget-class name="GtkSearchBar" generic-name="searchbar" _title="Search Bar" since="3.10">
         <post-create-function>glade_gtk_search_bar_post_create</post-create-function>
+        <get-children-function>glade_gtk_search_bar_get_children</get-children-function>
         <add-child-verify-function>glade_gtk_search_bar_add_verify</add-child-verify-function>
         <add-child-function>glade_gtk_search_bar_add_child</add-child-function>
         <remove-child-function>glade_gtk_search_bar_remove_child</remove-child-function>
