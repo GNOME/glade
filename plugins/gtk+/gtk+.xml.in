@@ -1613,7 +1613,8 @@
         <remove-child-function>glade_gtk_search_bar_remove_child</remove-child-function>
         <replace-child-function>glade_gtk_search_bar_replace_child</replace-child-function>
         <properties>
-          <property id="search-mode-enabled" save="False" default="True"/>
+          <property id="search-mode-enabled" save="True" ignore="True"/>
+          <property id="show-close-button" save="True" ignore="True"/>
         </properties>
 
       </glade-widget-class>

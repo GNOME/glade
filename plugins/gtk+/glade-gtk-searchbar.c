@@ -39,6 +39,9 @@ glade_gtk_search_bar_post_create (GladeWidgetAdaptor *adaptor,
       gtk_container_add (GTK_CONTAINER (widget), child);
       g_object_set_data (G_OBJECT (widget), "child", child);
     }
+
+  gtk_search_bar_set_search_mode (GTK_SEARCH_BAR (widget), TRUE);
+  gtk_search_bar_set_show_close_button (GTK_SEARCH_BAR (widget), FALSE);
 }
 
 gboolean
