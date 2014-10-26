@@ -85,8 +85,11 @@ glade_gtk_search_bar_add_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *child)
 {
   GObject *current;
+
   current = g_object_get_data (G_OBJECT (object), "child");
-  gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (GTK_WIDGET (current))), GTK_WIDGET (current));
+  if (current)
+    gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (GTK_WIDGET (current))), GTK_WIDGET (current));
+
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
   g_object_set_data (G_OBJECT (object), "child", child);
 }
