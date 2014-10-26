@@ -808,14 +808,9 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object), *gparent;
   GList this_widget = { 0, }, that_widget = { 0,};
-  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (object));
   GladeProject *project;
 
-  if (parent)
-    gparent = glade_widget_get_from_gobject (parent);
-  else
-    gparent = NULL;
-
+  gparent = glade_widget_get_parent (gwidget);
   project = glade_widget_get_project (gwidget);
 
   if (strcmp (action_path, "preview") == 0)
@@ -971,7 +966,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
     }
   else if (strcmp (action_path, "clear_properties") == 0)
     {
-      glade_editor_reset_dialog_run (gtk_widget_get_toplevel (parent), gwidget);
+      glade_editor_reset_dialog_run (gtk_widget_get_toplevel (GTK_WIDGET (object)), gwidget);
     }
   else if (strcmp (action_path, "read_documentation") == 0)
     {
