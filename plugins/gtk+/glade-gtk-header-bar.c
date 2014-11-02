@@ -3,6 +3,8 @@
 #include <gladeui/glade.h>
 #include "glade-gtk.h"
 
+#include "glade-header-bar-editor.h"
+
 static gint
 glade_gtk_header_bar_get_num_children (GObject *hb, GtkPackType type)
 {
@@ -323,4 +325,14 @@ glade_gtk_header_bar_replace_child (GladeWidgetAdaptor * adaptor,
                                            G_OBJECT (container),
                                            G_OBJECT (current),
                                            G_OBJECT (new_widget));
+}
+
+GladeEditable *
+glade_gtk_header_bar_create_editable (GladeWidgetAdaptor * adaptor,
+                                      GladeEditorPageType  type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_header_bar_editor_new ();
+  else
+    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }

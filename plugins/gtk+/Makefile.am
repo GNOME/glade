@@ -119,6 +119,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-widget.c		\
 	glade-gtk-window.c		\
 	glade-gtk-header-bar.c 		\
+	glade-header-bar-editor.c	\
 	glade-icon-factory-editor.c	\
 	glade-icon-sources.c		\
 	glade-icon-view-editor.c	\
@@ -195,6 +196,7 @@ noinst_HEADERS =			\
 	glade-gtk-menu-shell.h		\
 	glade-gtk-notebook.h		\
 	glade-gtk-tree-view.h		\
+	glade-header-bar-editor.h	\
 	glade-icon-factory-editor.h	\
 	glade-icon-sources.h		\
 	glade-icon-view-editor.h	\
@@ -273,6 +275,7 @@ UI_FILES = 				\
 	glade-font-chooser-editor.ui	\
 	glade-font-chooser-widget-editor.ui \
 	glade-grid-editor.ui		\
+	glade-header-bar-editor.ui	\
 	glade-icon-view-editor.ui	\
 	glade-image-editor.ui		\
 	glade-label-editor.ui		\

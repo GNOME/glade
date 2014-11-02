@@ -2409,22 +2409,34 @@
       <add-child-function>glade_gtk_header_bar_add_child</add-child-function>
       <remove-child-function>glade_gtk_header_bar_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_header_bar_replace_child</replace-child-function>
+      <create-editable-function>glade_gtk_header_bar_create_editable</create-editable-function>
       <special-child-type>type</special-child-type>
       <properties>
+	<property id="title" custom-layout="True"/>
+	<property id="subtitle" custom-layout="True"/>
+	<property id="has-subtitle" _name="Reserve space for subtitle" custom-layout="True">
+          <_tooltip>Keep the headerbar height the same as the subtitle changes dynamically.</_tooltip>
+        </property>
+	<property id="show-close-button" _name="Show window controls" custom-layout="True">
+          <_tooltip>Whether to show window controls, e.g. a close button</_tooltip>
+        </property>
+	<property id="spacing" custom-layout="True"/>
+	<property id="decoration-layout" _name="Decoration Layout" optional="True" optional-default="False" custom-layout="True"/>
+        <property id="decoration-layout-set" disabled="True"/>
         <property id="custom-title" disabled="True"/>
-        <property id="use-custom-title" _name="Custom Title" default="FALSE" visible="True" save="False">
+        <property id="use-custom-title" _name="Custom Title" default="FALSE" visible="True" save="False" custom-layout="True">
           <parameter-spec>
             <type>GParamBoolean</type>
           </parameter-spec>
         </property>
-        <property visible="True" save="False" id="start-size" default="1" _name="Number of items at the start">
+        <property visible="True" save="False" id="start-size" default="1" _name="Number of items at the start" custom-layout="True">
           <parameter-spec>
             <type>GParamInt</type>
             <min>0</min>
           </parameter-spec>
           <_tooltip>The number of items at the start</_tooltip>
         </property>
-        <property visible="True" save="False" id="end-size" default="1" _name="Number of items at the end">
+        <property visible="True" save="False" id="end-size" default="1" _name="Number of items at the end" custom-layout="True">
           <parameter-spec>
             <type>GParamInt</type>
             <min>0</min>
