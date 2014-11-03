@@ -2456,6 +2456,7 @@
     </glade-widget-class>
       
       <glade-widget-class name="GtkStack" generic-name="stack" _title="Stack" since="3.10">
+        <create-editable-function>glade_gtk_stack_create_editable</create-editable-function>
         <post-create-function>glade_gtk_stack_post_create</post-create-function>
         <child-action-activate-function>glade_gtk_stack_child_action_activate</child-action-activate-function>
         <packing-actions>
@@ -2464,12 +2465,41 @@
           <action id="remove_page" _name="Remove Page"  stock="list-remove"/>
         </packing-actions>
         <properties>
-          <property id="visible-child" save="False"/>
-          <property id="visible-child-name" save="False"/>
+          <property id="visible-child" save="False" disabled="True"/>
+          <property id="visible-child-name" _name="Visible child" save="False" custom-layout="True"/>
+          <property id="homogeneous" save="False" disabled="True"/>
+          <property id="hhomogeneous" _name="Horizontal" custom-layout="True"/>
+          <property id="vhomogeneous" _name="Vertical" custom-layout="True"/>
+          <property id="transition-type" custom-layout="True">
+            <displayable-values>
+              <value id="GTK_STACK_TRANSITION_TYPE_NONE"	      _name="None" />
+              <value id="GTK_STACK_TRANSITION_TYPE_CROSSFADE"         _name="Crossfade" />
+              <value id="GTK_STACK_TRANSITION_TYPE_SLIDE_RIGHT"       _name="Slide Right" />
+              <value id="GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT"        _name="Slide Left" />
+              <value id="GTK_STACK_TRANSITION_TYPE_SLIDE_UP"          _name="Slide Up" />
+              <value id="GTK_STACK_TRANSITION_TYPE_SLIDE_DOWN"        _name="Slide Down" />
+              <value id="GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT"  _name="Slide Left-Right" />
+              <value id="GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN"     _name="Slide Up-Down" />
+              <value id="GTK_STACK_TRANSITION_TYPE_OVER_UP"           _name="Move Over Up" />
+              <value id="GTK_STACK_TRANSITION_TYPE_OVER_DOWN"         _name="Move Over Down" />
+              <value id="GTK_STACK_TRANSITION_TYPE_OVER_LEFT"         _name="Move Over Left" />
+              <value id="GTK_STACK_TRANSITION_TYPE_OVER_RIGHT"        _name="Move Over Right" />
+              <value id="GTK_STACK_TRANSITION_TYPE_OVER_UP_DOWN"      _name="Move Over Up-Down" />
+              <value id="GTK_STACK_TRANSITION_TYPE_OVER_DOWN_UP"      _name="Move Over Down-Up" />
+              <value id="GTK_STACK_TRANSITION_TYPE_OVER_LEFT_RIGHT"   _name="Move Over Left-Right" />
+              <value id="GTK_STACK_TRANSITION_TYPE_OVER_RIGHT_LEFT"   _name="Move Over Right-Left" />
+              <value id="GTK_STACK_TRANSITION_TYPE_UNDER_UP"          _name="Move Under Up" />
+              <value id="GTK_STACK_TRANSITION_TYPE_UNDER_DOWN"        _name="Move Under Down" />
+              <value id="GTK_STACK_TRANSITION_TYPE_UNDER_LEFT"        _name="Move Under Left" />
+              <value id="GTK_STACK_TRANSITION_TYPE_UNDER_RIGHT"       _name="Move Under Right" />
+            </displayable-values>
+          </property>
+          <property id="transition-duration" custom-layout="True"/>
         </properties>
       </glade-widget-class>
 
       <glade-widget-class name="GtkStackSwitcher" generic-name="stackswitcher" _title="Stack Switcher" since="3.10">
+        <create-editable-function>glade_gtk_stack_switcher_create_editable</create-editable-function>
 
         <properties>
           <property id="orientation" default="GTK_ORIENTATION_HORIZONTAL"/>

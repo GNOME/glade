@@ -147,6 +147,8 @@ libgladegtk_la_SOURCES = 		\
 	glade-scrollbar-editor.c	\
 	glade-scrolled-window-editor.c	\
 	glade-spin-button-editor.c	\
+	glade-stack-editor.c		\
+	glade-stack-switcher-editor.c	\
 	glade-store-editor.c		\
 	glade-string-list.c		\
 	glade-text-view-editor.c	\
@@ -224,6 +226,8 @@ noinst_HEADERS =			\
 	glade-scrollbar-editor.h	\
 	glade-scrolled-window-editor.h	\
 	glade-spin-button-editor.h	\
+	glade-stack-editor.h		\
+	glade-stack-switcher-editor.h	\
 	glade-store-editor.h		\
 	glade-string-list.h		\
 	glade-text-view-editor.h	\
@@ -299,6 +303,8 @@ UI_FILES = 				\
 	glade-scrollbar-editor.ui	\
 	glade-scrolled-window-editor.ui	\
 	glade-spin-button-editor.ui	\
+	glade-stack-editor.ui		\
+	glade-stack-switcher-editor.ui	\
 	glade-text-view-editor.ui	\
 	glade-tool-button-editor.ui	\
 	glade-tool-palette-editor.ui	\
