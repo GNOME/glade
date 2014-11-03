@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+libgladegtk - Glade UI Designer Gtk+ support plugin
+Copyright (C) 2014 Red Hat, Inc.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+Author: Matthias Clasen <mclasen@redhat.com>
+
+-->
+<interface domain="glade">
+  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gladeui" version="0.0"/>
+  <template class="GladeStackEditor" parent="GladeEditorSkeleton">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkGrid" id="grid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="row_spacing">6</property>
+        <property name="column_spacing">6</property>
+        <child>
+          <object class="GladeEditorTable" id="embed">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Stack Attributes</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="visible_child_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="margin_left">12</property>
+            <property name="property_name">visible-child-name</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="visible_child_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="property_name">visible-child-name</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">2</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="margin_left">12</property>
+            <property name="xalign">0.0</property>
+            <property name="label" translatable="yes">Homogeneous:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="hhomogeneous_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">hhomogeneous</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">3</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="vhomogeneous_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">vhomogeneous</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">3</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="transition_type_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">transition-type</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">4</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="transition_type_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">transition-type</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">4</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="transition_duration_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">transition-duration</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="transition_duration_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">transition-duration</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">5</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child-editors>
+      <editor id="embed"/>
+      <editor id="visible_child_label"/>
+      <editor id="visible_child_editor"/>
+      <editor id="hhomogeneous_editor"/>
+      <editor id="vhomogeneous_editor"/>
+      <editor id="transition_type_label"/>
+      <editor id="transition_type_editor"/>
+      <editor id="transition_duration_label"/>
+      <editor id="transition_duration_editor"/>
+    </child-editors>
+  </template>
+</interface>

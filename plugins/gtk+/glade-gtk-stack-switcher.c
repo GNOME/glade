@@ -25,10 +25,16 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
+#include "glade-stack-switcher-editor.h"
+
+
 GladeEditable *
 glade_gtk_stack_switcher_create_editable (GladeWidgetAdaptor * adaptor,
                                           GladeEditorPageType type)
 {
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_stack_switcher_editor_new ();
+
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 

@@ -24,6 +24,8 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
+#include "glade-stack-editor.h"
+
 void
 glade_gtk_stack_post_create (GladeWidgetAdaptor *adaptor,
                              GObject            *container,
@@ -73,5 +75,15 @@ glade_gtk_stack_child_action_activate (GladeWidgetAdaptor * adaptor,
                                                                container,
                                                                object,
                                                                action_path);
+}
+
+GladeEditable *
+glade_gtk_stack_create_editable (GladeWidgetAdaptor * adaptor,
+                                 GladeEditorPageType  type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_stack_editor_new ();
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
