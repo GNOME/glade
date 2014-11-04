@@ -32,7 +32,8 @@ glade_gtk_header_bar_get_num_children (GObject *hb, GtkPackType type)
 }
 
 static void
-glade_gtk_header_bar_parse_finished (GladeProject * project, GObject * object)
+glade_gtk_header_bar_parse_finished (GladeProject * project,
+                                     GObject * object)
 {
   GladeWidget *gbox;
 
@@ -42,7 +43,11 @@ glade_gtk_header_bar_parse_finished (GladeProject * project, GObject * object)
   glade_widget_property_set (gbox, "use-custom-title", gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object)) != NULL);
 }
 
-void glade_gtk_header_bar_post_create(GladeWidgetAdaptor *adaptor, GObject *container, GladeCreateReason reason) {
+void
+glade_gtk_header_bar_post_create (GladeWidgetAdaptor *adaptor,
+                                  GObject *container,
+                                  GladeCreateReason reason)
+{
   GladeWidget *parent = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (parent);
 
@@ -54,12 +59,16 @@ void glade_gtk_header_bar_post_create(GladeWidgetAdaptor *adaptor, GObject *cont
     }
   else if (reason == GLADE_CREATE_USER)
     {
-      gtk_header_bar_pack_start( GTK_HEADER_BAR(container), glade_placeholder_new() );
-      gtk_header_bar_pack_end( GTK_HEADER_BAR(container), glade_placeholder_new() );
+      gtk_header_bar_pack_start (GTK_HEADER_BAR (container), glade_placeholder_new ());
+      gtk_header_bar_pack_end (GTK_HEADER_BAR (container), glade_placeholder_new ());
     }
 }
 
-void glade_gtk_header_bar_add_child(GladeWidgetAdaptor *adaptor, GObject *parent, GObject *child) {
+void
+glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
+                                GObject *parent,
+                                GObject *child)
+{
   GladeWidget *gbox, *gchild;
   GtkPackType pack_type;
   gint num_children;
@@ -71,25 +80,30 @@ void glade_gtk_header_bar_add_child(GladeWidgetAdaptor *adaptor, GObject *parent
       return;
     }
 
-    // check if its a placeholder bein added, and add it to the end if anything is at the start
-    if (GLADE_IS_PLACEHOLDER(child)) {
-        GList *list = gtk_container_get_children(GTK_CONTAINER(parent));
+    // check if its a placeholder being added, and add it to the end if anything is at the start
+    if (GLADE_IS_PLACEHOLDER (child))
+      {
+        GList *list = gtk_container_get_children (GTK_CONTAINER (parent));
         GList *l;
-        if (list) {
-            for(l = list; l; l = g_list_next(l)) {
+        if (list)
+          {
+            for (l = list; l; l = l->next)
+              {
                 GObject *c = l->data;
                 GtkPackType t;
-                gtk_container_child_get( GTK_CONTAINER(parent), GTK_WIDGET(c), "pack-type", &t, NULL);
-                if (t == GTK_PACK_START) {
-                    gtk_header_bar_pack_end( GTK_HEADER_BAR(parent), GTK_WIDGET(child) );
-                    g_list_free(list);
+                gtk_container_child_get (GTK_CONTAINER (parent), GTK_WIDGET (c), "pack-type", &t, NULL);
+                if (t == GTK_PACK_START)
+                  {
+                    gtk_header_bar_pack_end (GTK_HEADER_BAR (parent), GTK_WIDGET (child) );
+                    g_list_free (list);
                     return;
-                }
-            }
-            g_list_free(list);
-        }
-    }
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->add(adaptor, parent, child);
+                  }
+              }
+            g_list_free (list);
+          }
+      }
+
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->add (adaptor, parent, child);
   
   gbox = glade_widget_get_from_gobject (parent);
 
@@ -162,7 +176,9 @@ glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor * adaptor,
 
 void
 glade_gtk_header_bar_get_property (GladeWidgetAdaptor * adaptor,
-                            GObject * object, const gchar * id, GValue * value)
+                                   GObject * object,
+                                   const gchar * id,
+                                   GValue * value)
 {
   if (!strcmp (id, "use-custom-title"))
     {
@@ -180,12 +196,13 @@ glade_gtk_header_bar_get_property (GladeWidgetAdaptor * adaptor,
       g_value_set_int (value, glade_gtk_header_bar_get_num_children (object, GTK_PACK_END));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
-                                                      value);
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
 }
 
 static void
-glade_gtk_header_bar_set_size (GObject * object, const GValue * value, GtkPackType type)
+glade_gtk_header_bar_set_size (GObject * object,
+                               const GValue * value,
+                               GtkPackType type)
 {
   GList *l, *next, *children;
   GtkWidget *child;
@@ -246,8 +263,9 @@ glade_gtk_header_bar_set_size (GObject * object, const GValue * value, GtkPackTy
 
 void
 glade_gtk_header_bar_set_property (GladeWidgetAdaptor * adaptor,
-                            GObject * object,
-                            const gchar * id, const GValue * value)
+                                   GObject * object,
+                                   const gchar * id,
+                                   const GValue * value)
 {
   if (!strcmp (id, "use-custom-title"))
     {
@@ -270,13 +288,13 @@ glade_gtk_header_bar_set_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "end-size"))
     glade_gtk_header_bar_set_size (object, value, GTK_PACK_END);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
-                                                      value);
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
 void
 glade_gtk_header_bar_remove_child (GladeWidgetAdaptor * adaptor,
-                            GObject * object, GObject * child)
+                                   GObject * object,
+                                   GObject * child)
 {
   GladeWidget *gbox;
   gint num_children;
@@ -305,13 +323,14 @@ glade_gtk_header_bar_remove_child (GladeWidgetAdaptor * adaptor,
 
 void
 glade_gtk_header_bar_replace_child (GladeWidgetAdaptor * adaptor,
-                             GObject * container,
-                             GObject * current, GObject * new_widget)
+                                    GObject * container,
+                                    GObject * current,
+                                    GObject * new_widget)
 {
   gchar *special_child_type;
 
   special_child_type =
-      g_object_get_data (G_OBJECT (current), "special-child-type");
+    g_object_get_data (G_OBJECT (current), "special-child-type");
 
   if (special_child_type && !strcmp (special_child_type, "title"))
     {
@@ -321,10 +340,7 @@ glade_gtk_header_bar_replace_child (GladeWidgetAdaptor * adaptor,
     }
 
   GWA_GET_CLASS
-      (GTK_TYPE_CONTAINER)->replace_child (adaptor,
-                                           G_OBJECT (container),
-                                           G_OBJECT (current),
-                                           G_OBJECT (new_widget));
+      (GTK_TYPE_CONTAINER)->replace_child (adaptor, container, current, new_widget);
 }
 
 GladeEditable *
