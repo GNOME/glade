@@ -156,13 +156,16 @@ Author: Matthias Clasen <mclasen@redhat.com>
           </packing>
         </child>
         <child>
-          <object class="GladePropertyShell" id="show_decoration_editor">
+          <object class="GtkCheckButton" id="show_decoration_check">
+            <property name="label" translatable="yes">Show window controls</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="tooltip-text" translatable="yes">Whether to show window controls, e.g. a close button.</property>
             <property name="margin_left">12</property>
-            <property name="property_name">show-close-button</property>
-            <property name="editor_type">GladeEpropCheck</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="show_decoration_toggled"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -292,7 +295,6 @@ Author: Matthias Clasen <mclasen@redhat.com>
       <editor id="subtitle_label"/>
       <editor id="subtitle_editor"/>
       <editor id="has_subtitle_editor"/>
-      <editor id="show_decoration_editor"/>
       <editor id="decoration_layout_label"/>
       <editor id="decoration_layout_editor"/>
       <editor id="spacing_label"/>
