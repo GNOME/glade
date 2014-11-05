@@ -2403,12 +2403,14 @@
     <glade-widget-class name="GtkHeaderBar" generic-name="headerbar" _title="HeaderBar" since="3.10">
       <post-create-function>glade_gtk_header_bar_post_create</post-create-function>
       <add-child-function>glade_gtk_header_bar_add_child</add-child-function>
+      <action-activate-function>glade_gtk_header_bar_action_activate</action-activate-function>
       <child-action-activate-function>glade_gtk_header_bar_child_action_activate</child-action-activate-function>
       <set-property-function>glade_gtk_header_bar_set_property</set-property-function>
       <get-property-function>glade_gtk_header_bar_get_property</get-property-function>
       <add-child-function>glade_gtk_header_bar_add_child</add-child-function>
       <remove-child-function>glade_gtk_header_bar_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_header_bar_replace_child</replace-child-function>
+      <verify-function>glade_gtk_header_bar_verify_property</verify-function>
       <create-editable-function>glade_gtk_header_bar_create_editable</create-editable-function>
       <special-child-type>type</special-child-type>
       <properties>
@@ -2443,10 +2445,12 @@
         </property>
       </properties>
       <packing-actions>
-        <action id="add_start" _name="Add Slot at start" stock="gtk-add"/>
-        <action id="add_end" _name="Add Slot at end" stock="gtk-add"/>
         <action id="remove_slot" _name="Remove Slot" stock="gtk-remove"/>
       </packing-actions>
+      <actions>
+        <action id="add_start" _name="Add Slot at start" stock="gtk-add"/>
+        <action id="add_end" _name="Add Slot at end" stock="gtk-add"/>
+      </actions>
     </glade-widget-class>
 
       <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer" since="3.10">

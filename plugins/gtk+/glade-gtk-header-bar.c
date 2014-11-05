@@ -73,6 +73,11 @@ glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
   GtkPackType pack_type;
   gint num_children;
   gchar *special_child_type;
+
+  gchild = glade_widget_get_from_gobject (child);
+  if (gchild)
+    glade_widget_set_pack_action_visible (gchild, "remove_slot", FALSE);
+
   special_child_type = g_object_get_data (child, "special-child-type");
   if (special_child_type && !strcmp (special_child_type, "title"))
     {
@@ -113,34 +118,35 @@ glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
     glade_widget_property_set (gbox, "start-size", num_children);
   else
     glade_widget_property_set (gbox, "end-size", num_children);
-
-  gchild = glade_widget_get_from_gobject (child);
-  if (gchild)
-    glade_widget_set_pack_action_visible (gchild, "remove_slot", FALSE);
-
 }
 
 void
-glade_gtk_header_bar_child_insert_remove_action (GladeWidgetAdaptor * adaptor,
-                                                 GObject * container,
-                                                 GObject * object,
-                                                 const gchar * group_format,
-                                                 gboolean remove,
-                                                 GtkPackType pack_type)
+glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
+                                      GObject * object,
+                                      const gchar *action_path)
 {
-  GladeWidget *parent;
+  if (!strcmp (action_path, "add_start") || !strcmp (action_path, "add_end"))
+    {
+      GladeWidget *parent;
+      GladeProperty *property;
+      gint size;
 
-  parent = glade_widget_get_from_gobject (container);
-  glade_command_push_group (group_format, glade_widget_get_name (parent));
+      parent = glade_widget_get_from_gobject (object);
 
-  if (remove)
-    gtk_container_remove (GTK_CONTAINER (container), GTK_WIDGET (object));
-  else if (pack_type == GTK_PACK_START)
-    gtk_header_bar_pack_start (GTK_HEADER_BAR (container), glade_placeholder_new ());
+      glade_command_push_group (_("Insert placeholer to %s"), glade_widget_get_name (parent));
+
+      if (!strcmp (action_path, "add_start"))
+        property = glade_widget_get_property (parent, "start-size");
+      else
+        property = glade_widget_get_property (parent, "end-size");
+
+      glade_property_get (property, &size);
+      glade_command_set_property (property, size + 1);
+
+      glade_command_pop_group ();
+    }
   else
-    gtk_header_bar_pack_end (GTK_HEADER_BAR (container), glade_placeholder_new ());
-
-  glade_command_pop_group ();
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor, object, action_path);
 }
 
 void
@@ -149,23 +155,36 @@ glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor * adaptor,
                                             GObject * object,
                                             const gchar * action_path)
 {
-  if (strcmp (action_path, "add_start") == 0)
+  if (strcmp (action_path, "remove_slot") == 0)
     {
-      glade_gtk_header_bar_child_insert_remove_action (adaptor, container, object,
-                                                       _("Insert placeholder to %s"),
-                                                        FALSE, GTK_PACK_START);
-    }
-  else if (strcmp (action_path, "add_end") == 0)
-    {
-      glade_gtk_header_bar_child_insert_remove_action (adaptor, container, object,
-                                                       _("Insert placeholder to %s"),
-                                                        FALSE, GTK_PACK_END);
-    }
-  else if (strcmp (action_path, "remove_slot") == 0)
-    {
-      glade_gtk_header_bar_child_insert_remove_action (adaptor, container, object,
-                                                       _("Remove placeholder from %s"),
-                                                       TRUE, GTK_PACK_START);
+      GladeWidget *parent;
+      GladeProperty *property;
+
+      parent = glade_widget_get_from_gobject (container);
+      glade_command_push_group (_("Remove placeholder from %s"), glade_widget_get_name (parent));
+
+      if (g_object_get_data (object, "special-child-type"))
+        {
+          property = glade_widget_get_property (parent, "use-custom-title");
+          glade_command_set_property (property, FALSE);
+        }
+      else
+        {
+          GtkPackType pt;
+          gint size;
+
+          g_object_set_data (object, "remove-this", GINT_TO_POINTER (1));
+          gtk_container_child_get (GTK_CONTAINER (container), GTK_WIDGET (object), "pack-type", &pt, NULL);
+          if (pt == GTK_PACK_START)
+            property = glade_widget_get_property (parent, "start-size");
+          else
+            property = glade_widget_get_property (parent, "end-size");
+
+          glade_property_get (property, &size);
+          glade_command_set_property (property, size - 1);
+        }
+
+      glade_command_pop_group ();
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
@@ -188,7 +207,7 @@ glade_gtk_header_bar_get_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "start-size"))
     {
       g_value_reset (value);
-       g_value_set_int (value, glade_gtk_header_bar_get_num_children (object, GTK_PACK_START));
+      g_value_set_int (value, glade_gtk_header_bar_get_num_children (object, GTK_PACK_START));
     }
   else if (!strcmp (id, "end-size"))
     {
@@ -245,6 +264,17 @@ glade_gtk_header_bar_set_size (GObject * object,
             gtk_header_bar_pack_end (GTK_HEADER_BAR (object), placeholder);
         }
     }
+  for (l = children; l && old_size > new_size; l = l->next)
+    {
+      child = l->data;
+      if (!g_object_get_data (G_OBJECT (child), "remove-this"))
+        continue;
+
+      g_object_ref (G_OBJECT (child));
+      gtk_container_remove (GTK_CONTAINER (object), child);
+      gtk_widget_destroy (child);
+      old_size--;
+    }
   for (l = g_list_last (children); l && old_size > new_size; l = l->prev)
     {
       child = l->data;
@@ -275,13 +305,28 @@ glade_gtk_header_bar_set_property (GladeWidgetAdaptor * adaptor,
         {
           child = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object));
           if (!child)
-            child = glade_placeholder_new ();
-          g_object_set_data (G_OBJECT (child), "special-child-type", "title");
+            {
+              child = glade_placeholder_new ();
+              g_object_set_data (G_OBJECT (child), "special-child-type", "title");
+            }
         }
       else
         child = NULL;
 
       gtk_header_bar_set_custom_title (GTK_HEADER_BAR (object), child);
+
+      if (GLADE_IS_PLACEHOLDER (child))
+        {
+          GList *list, *l;
+
+          list = glade_placeholder_packing_actions (GLADE_PLACEHOLDER (child));
+          for (l = list; l; l = l->next)
+            {
+              GladeWidgetAction *gwa = l->data;
+              if (!strcmp (glade_widget_action_get_class (gwa)->id, "remove_slot"))
+                glade_widget_action_set_visible (gwa, FALSE);
+            }
+        }
     }
   else if (!strcmp (id, "start-size"))
     glade_gtk_header_bar_set_size (object, value, GTK_PACK_START);
@@ -341,6 +386,69 @@ glade_gtk_header_bar_replace_child (GladeWidgetAdaptor * adaptor,
 
   GWA_GET_CLASS
       (GTK_TYPE_CONTAINER)->replace_child (adaptor, container, current, new_widget);
+}
+
+typedef struct
+{
+  GtkContainer *parent;
+  GtkPackType pack_type;
+  GtkWidget *custom_title;
+  gint count;
+} ChildrenData;
+
+static void
+count_children (GtkWidget *widget, gpointer data)
+{
+  ChildrenData *cdata = data;
+  GtkPackType pt;
+
+  if (widget == cdata->custom_title)
+    return;
+
+  gtk_container_child_get (cdata->parent, widget, "pack-type", &pt, NULL);
+  if (pt != cdata->pack_type)
+    return;
+
+  if (glade_widget_get_from_gobject (widget) == NULL)
+    return;
+
+  cdata->count++;
+}
+
+static gboolean
+glade_gtk_header_bar_verify_size (GObject      *object,
+                                  const GValue *value,
+                                  GtkPackType   pack_type)
+{
+  gint new_size;
+  ChildrenData data;
+
+  new_size = g_value_get_int (value);
+
+  data.parent = GTK_CONTAINER (object);
+  data.pack_type = pack_type;
+  data.custom_title = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object));
+  data.count = 0;
+
+  gtk_container_forall (data.parent, count_children, &data);
+
+  return data.count <= new_size;
+}
+
+gboolean
+glade_gtk_header_bar_verify_property (GladeWidgetAdaptor *adaptor,
+                                      GObject            *object,
+                                      const gchar        *id,
+                                      const GValue       *value)
+{
+  if (!strcmp (id, "start-size"))
+    return glade_gtk_header_bar_verify_size (object, value, GTK_PACK_START);
+  else if (!strcmp (id, "end-size"))
+    return glade_gtk_header_bar_verify_size (object, value, GTK_PACK_END);
+  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object, id, value);
+
+  return TRUE;
 }
 
 GladeEditable *
