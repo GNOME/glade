@@ -1441,20 +1441,15 @@ glade_command_remove (GList *widgets)
         }
       me->widgets = g_list_prepend (me->widgets, cdata);
 
-      /* Dont record props in create_execute (whether or not we actually
-       * record any props here
-       */
-      cdata->props_recorded = TRUE;
-
       /* Record packing props if not deleted from the clipboard */
       if (me->from_clipboard == FALSE)
-        {
-          for (l = glade_widget_get_packing_properties (widget); l; l = l->next)
-            cdata->pack_props =
-                g_list_prepend (cdata->pack_props,
-                                glade_property_dup (GLADE_PROPERTY (l->data),
-                                                    cdata->widget));
-        }
+	{
+	  for (l = glade_widget_get_packing_properties (widget); l; l = l->next)
+	    cdata->pack_props =
+	      g_list_prepend (cdata->pack_props,
+			      glade_property_dup (GLADE_PROPERTY (l->data),
+						  cdata->widget));
+	}
     }
 
   g_assert (widget);
@@ -1504,25 +1499,21 @@ glade_command_add_execute (GladeCommandAddRemove *me)
           cdata = list->data;
           saved_props = NULL;
 
+	  GLADE_NOTE (COMMANDS,
+		      g_print ("Adding widget '%s' to parent '%s' "
+			       "(from clipboard: %s, props recorded: %s, have placeholder: %s, child_type: %s)\n",
+			       glade_widget_get_name (cdata->widget),
+			       cdata->parent ? glade_widget_get_name (cdata->parent) : "(none)",
+			       me->from_clipboard ? "yes" : "no",
+			       cdata->props_recorded ? "yes" : "no",
+			       cdata->placeholder ? "yes" : "no",
+			       cdata->special_type));
+
           if (cdata->parent != NULL)
             {
               /* Prepare special-child-type for the paste. */
               if (me->from_clipboard)
                 {
-                  if (cdata->props_recorded == FALSE)
-                    {
-                      /* Clear it the first time */
-                      g_object_set_data (glade_widget_get_object (cdata->widget),
-                                         "special-child-type", NULL);
-                    }
-                  else
-                    {
-                      g_object_set_data_full (glade_widget_get_object (cdata->widget),
-                                              "special-child-type",
-                                              g_strdup (cdata->special_type),
-                                              g_free);
-                    }
-
                   /* Only transfer properties when they are from the clipboard,
                    * otherwise prioritize packing defaults. 
                    */
@@ -1533,6 +1524,16 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 
                   glade_widget_set_packing_properties (cdata->widget, cdata->parent);
                 }
+
+	      /* Clear it the first time around, ensure we record it after adding */
+	      if (cdata->props_recorded == FALSE)
+		g_object_set_data (glade_widget_get_object (cdata->widget),
+				   "special-child-type", NULL);
+	      else
+		g_object_set_data_full (glade_widget_get_object (cdata->widget),
+					"special-child-type",
+					g_strdup (cdata->special_type),
+					g_free);
 
               /* glade_command_paste ganauntees that if 
                * there we are pasting to a placeholder, 
@@ -1572,6 +1573,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 
               if (cdata->props_recorded == FALSE)
                 {
+
                   /* Save the packing properties after the initial paste.
                    * (this will be the defaults returned by the container
                    * implementation after initially adding them).
@@ -1593,6 +1595,12 @@ glade_command_add_execute (GladeCommandAddRemove *me)
                       g_free (cdata->special_type);
                       cdata->special_type = g_strdup (special_child_type);
                     }
+
+		  GLADE_NOTE (COMMANDS,
+			      g_print ("Recorded properties for adding widget '%s' to parent '%s' (special child: %s)\n",
+				       glade_widget_get_name (cdata->widget),
+				       cdata->parent ? glade_widget_get_name (cdata->parent) : "(none)",
+				       cdata->special_type));
 
                   /* Mark the properties as recorded */
                   cdata->props_recorded = TRUE;
@@ -1626,12 +1634,44 @@ glade_command_remove_execute (GladeCommandAddRemove *me)
   CommandData *cdata;
   GladeWidget *reffed;
   GList *list, *l;
+  gchar *special_child_type;
 
   for (list = me->widgets; list && list->data; list = list->next)
     {
       cdata = list->data;
 
+      GLADE_NOTE (COMMANDS,
+		  g_print ("Removing widget '%s' from parent '%s' "
+			   "(from clipboard: %s, props recorded: %s, have placeholder: %s, child_type: %s)\n",
+			   glade_widget_get_name (cdata->widget),
+			   cdata->parent ? glade_widget_get_name (cdata->parent) : "(none)",
+			   me->from_clipboard ? "yes" : "no",
+			   cdata->props_recorded ? "yes" : "no",
+			   cdata->placeholder ? "yes" : "no",
+			   cdata->special_type));
+
       glade_widget_hide (cdata->widget);
+
+      if (cdata->props_recorded == FALSE)
+	{
+	  /* Record the special-type here after replacing */
+	  if ((special_child_type =
+	       g_object_get_data (glade_widget_get_object (cdata->widget),
+				  "special-child-type")) != NULL)
+	    {
+	      g_free (cdata->special_type);
+	      cdata->special_type = g_strdup (special_child_type);
+	    }
+
+	  GLADE_NOTE (COMMANDS,
+		      g_print ("Recorded properties for removing widget '%s' from parent '%s' (special child: %s)\n",
+			       glade_widget_get_name (cdata->widget),
+			       cdata->parent ? glade_widget_get_name (cdata->parent) : "(none)",
+			       cdata->special_type));
+
+	  /* Mark the properties as recorded */
+	  cdata->props_recorded = TRUE;
+	}
 
       glade_project_remove_object (GLADE_COMMAND (me)->priv->project,
                                    glade_widget_get_object (cdata->widget));
