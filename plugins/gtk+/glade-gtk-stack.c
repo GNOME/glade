@@ -26,17 +26,78 @@
 
 #include "glade-stack-editor.h"
 
+static void
+glade_gtk_stack_selection_changed (GladeProject * project,
+                                   GladeWidget * gwidget)
+{
+  GList *list;
+  GtkWidget *page, *sel_widget;
+  GtkStack *stack = GTK_STACK (glade_widget_get_object (gwidget));
+
+  if ((list = glade_project_selection_get (project)) != NULL &&
+      g_list_length (list) == 1)
+    {
+      sel_widget = list->data;
+
+      if (GTK_IS_WIDGET (sel_widget) &&
+          gtk_widget_is_ancestor (sel_widget, GTK_WIDGET (stack)))
+        {
+          GList *children, *l;
+
+          children = gtk_container_get_children (GTK_CONTAINER (stack));
+          for (l = children; l; l = l->next)
+            {
+              page = l->data;
+              if (sel_widget == page ||
+                  gtk_widget_is_ancestor (sel_widget, page))
+                {
+                  gtk_stack_set_visible_child (stack, page);
+                  break;
+                }
+            }
+          g_list_free (children);
+        }
+    }
+}
+
+static void
+glade_gtk_stack_project_changed (GladeWidget * gwidget,
+                                 GParamSpec * pspec,
+                                 gpointer userdata)
+{
+  GladeProject * project = glade_widget_get_project (gwidget);
+  GladeProject * old_project = g_object_get_data (G_OBJECT (gwidget), "stack-project-ptr");
+
+  if (old_project)
+    g_signal_handlers_disconnect_by_func (G_OBJECT (old_project),
+                                          G_CALLBACK (glade_gtk_stack_selection_changed),
+                                          gwidget);
+
+  if (project)
+    g_signal_connect (G_OBJECT (project), "selection-changed",
+                      G_CALLBACK (glade_gtk_stack_selection_changed),
+                      gwidget);
+
+  g_object_set_data (G_OBJECT (gwidget), "stack-project-ptr", project);
+}
+
 void
 glade_gtk_stack_post_create (GladeWidgetAdaptor *adaptor,
                              GObject            *container,
                              GladeCreateReason   reason)
 {
+  GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+
   if (reason == GLADE_CREATE_USER)
-    {
-      gtk_stack_add_named (GTK_STACK (container),
-                           glade_placeholder_new (),
-                           "page0");
-    }
+    gtk_stack_add_named (GTK_STACK (container),
+                         glade_placeholder_new (),
+                         "page0");
+
+  g_signal_connect (G_OBJECT (gwidget), "notify::project",
+                    G_CALLBACK (glade_gtk_stack_project_changed), NULL);
+
+  glade_gtk_stack_project_changed (gwidget, NULL, NULL);
+
 }
 
 void
