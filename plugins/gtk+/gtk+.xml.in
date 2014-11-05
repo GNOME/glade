@@ -2419,9 +2419,9 @@
 	<property id="has-subtitle" _name="Reserve space for subtitle" custom-layout="True">
           <_tooltip>Keep the headerbar height the same as the subtitle changes dynamically.</_tooltip>
         </property>
-	<property id="show-close-button" ignore="True" save="True" custom-layout="True"/>
+	<property id="show-close-button" custom-layout="True" needs-sync="True"/>
 	<property id="spacing" custom-layout="True"/>
-	<property id="decoration-layout" _name="Decoration Layout" optional="True" optional-default="False" custom-layout="True"/>
+	<property id="decoration-layout" custom-layout="True"/>
         <property id="decoration-layout-set" disabled="True"/>
         <property id="custom-title" disabled="True"/>
         <property id="use-custom-title" _name="Custom Title" default="FALSE" visible="True" save="False" custom-layout="True">

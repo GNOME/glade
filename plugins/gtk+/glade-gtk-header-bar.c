@@ -5,6 +5,8 @@
 
 #include "glade-header-bar-editor.h"
 
+#define TITLE_DISABLED_MESSAGE _("This property does not apply when a custom title is set")
+
 static gint
 glade_gtk_header_bar_get_num_children (GObject *hb, GtkPackType type)
 {
@@ -292,41 +294,74 @@ glade_gtk_header_bar_set_size (GObject * object,
 }
 
 void
+glade_gtk_header_bar_set_use_custom_title (GObject *object,
+					   gboolean use_custom_title)
+{
+  GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+  GtkWidget *child;
+
+  if (use_custom_title)
+    {
+      child = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object));
+      if (!child)
+	{
+	  child = glade_placeholder_new ();
+	  g_object_set_data (G_OBJECT (child), "special-child-type", "title");
+	}
+    }
+  else
+    child = NULL;
+
+  gtk_header_bar_set_custom_title (GTK_HEADER_BAR (object), child);
+
+  if (GLADE_IS_PLACEHOLDER (child))
+    {
+      GList *list, *l;
+
+      list = glade_placeholder_packing_actions (GLADE_PLACEHOLDER (child));
+      for (l = list; l; l = l->next)
+	{
+	  GladeWidgetAction *gwa = l->data;
+	  if (!strcmp (glade_widget_action_get_class (gwa)->id, "remove_slot"))
+	    glade_widget_action_set_visible (gwa, FALSE);
+	}
+    }
+
+  if (use_custom_title)
+    {
+      glade_widget_property_set_sensitive (gwidget, "title", FALSE, TITLE_DISABLED_MESSAGE);
+      glade_widget_property_set_sensitive (gwidget, "subtitle", FALSE, TITLE_DISABLED_MESSAGE);
+      glade_widget_property_set_sensitive (gwidget, "has-subtitle", FALSE, TITLE_DISABLED_MESSAGE);
+    }
+  else
+    {
+      glade_widget_property_set_sensitive (gwidget, "title", TRUE, NULL);
+      glade_widget_property_set_sensitive (gwidget, "subtitle", TRUE, NULL);
+      glade_widget_property_set_sensitive (gwidget, "has-subtitle", TRUE, NULL);
+    }
+}
+
+void
 glade_gtk_header_bar_set_property (GladeWidgetAdaptor * adaptor,
                                    GObject * object,
                                    const gchar * id,
                                    const GValue * value)
 {
   if (!strcmp (id, "use-custom-title"))
+    glade_gtk_header_bar_set_use_custom_title (object, g_value_get_boolean (value));
+  else if (!strcmp (id, "show-close-button"))
     {
-      GtkWidget *child;
+      GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 
-      if (g_value_get_boolean (value))
-        {
-          child = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object));
-          if (!child)
-            {
-              child = glade_placeholder_new ();
-              g_object_set_data (G_OBJECT (child), "special-child-type", "title");
-            }
-        }
-      else
-        child = NULL;
-
-      gtk_header_bar_set_custom_title (GTK_HEADER_BAR (object), child);
-
-      if (GLADE_IS_PLACEHOLDER (child))
-        {
-          GList *list, *l;
-
-          list = glade_placeholder_packing_actions (GLADE_PLACEHOLDER (child));
-          for (l = list; l; l = l->next)
-            {
-              GladeWidgetAction *gwa = l->data;
-              if (!strcmp (glade_widget_action_get_class (gwa)->id, "remove_slot"))
-                glade_widget_action_set_visible (gwa, FALSE);
-            }
-        }
+      /* We don't set the property to 'ignore' so that we catch this in the adaptor,
+       * but we also do not apply the property to the runtime object here, thus
+       * avoiding showing the close button which would in turn close glade itself
+       * when clicked.
+       */
+      glade_widget_property_set_sensitive (gwidget, "decoration-layout",
+					   g_value_get_boolean (value),
+					   _("The decoration layout does not apply to header bars "
+					     "which do no show window controls"));
     }
   else if (!strcmp (id, "start-size"))
     glade_gtk_header_bar_set_size (object, value, GTK_PACK_START);

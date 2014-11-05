@@ -26,8 +26,6 @@
 
 #include "glade-header-bar-editor.h"
 
-#define TITLE_DISABLED_MESSAGE _("This property does not apply when a custom title is set")
-
 static void glade_header_bar_editor_editable_init (GladeEditableIface * iface);
 static void glade_header_bar_editor_grab_focus    (GtkWidget          * widget);
 
@@ -149,29 +147,23 @@ use_custom_title_toggled (GtkWidget            *widget,
       glade_command_delete (&list);
     }
 
+  if (use_custom_title)
+    {
+      property = glade_widget_get_property (gwidget, "title");
+      glade_command_set_property (property, NULL);
+
+      property = glade_widget_get_property (gwidget, "subtitle");
+      glade_command_set_property (property, NULL);
+
+      property = glade_widget_get_property (gwidget, "has-subtitle");
+      glade_command_set_property (property, TRUE);
+    }
+
   property = glade_widget_get_property (gwidget, "use-custom-title");
   glade_command_set_property (property, use_custom_title);
 
-  if (use_custom_title)
-    {
-      glade_widget_property_set (gwidget, "title", NULL);
-      glade_widget_property_set (gwidget, "subtitle", NULL);
-      glade_widget_property_set (gwidget, "has-subtitle", TRUE);
-      glade_widget_property_set_sensitive (gwidget, "title", FALSE, TITLE_DISABLED_MESSAGE);
-      glade_widget_property_set_sensitive (gwidget, "subtitle", FALSE, TITLE_DISABLED_MESSAGE);
-      glade_widget_property_set_sensitive (gwidget, "has-subtitle", FALSE, TITLE_DISABLED_MESSAGE);
-    }
-  else
-    {
-      glade_widget_property_set_sensitive (gwidget, "title", TRUE, NULL);
-      glade_widget_property_set_sensitive (gwidget, "subtitle", TRUE, NULL);
-      glade_widget_property_set_sensitive (gwidget, "has-subtitle", TRUE, NULL);
-    }
-
   glade_command_pop_group ();
-
   glade_editable_unblock (GLADE_EDITABLE (editor));
-
   glade_editable_load (GLADE_EDITABLE (editor), gwidget);
 }
 
@@ -181,6 +173,7 @@ show_decoration_toggled (GtkWidget            *widget,
 {
   GladeHeaderBarEditorPrivate *priv = editor->priv;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (editor));
+  GladeProperty *property;
   gboolean       show_decoration;
 
   if (glade_editable_loading (GLADE_EDITABLE (editor)) || !gwidget)
@@ -188,8 +181,27 @@ show_decoration_toggled (GtkWidget            *widget,
 
   show_decoration = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->show_decoration_check));
 
-  glade_widget_property_set (gwidget, "show-close-button", show_decoration);
-  glade_widget_property_set_sensitive (gwidget, "decoration-layout", show_decoration, "");
+  glade_editable_block (GLADE_EDITABLE (editor));
+
+  if (show_decoration)
+    glade_command_push_group (_("Setting %s to show window controls"),
+                              glade_widget_get_name (gwidget));
+  else
+    glade_command_push_group (_("Setting %s to not show window controls"),
+                              glade_widget_get_name (gwidget));
+
+  if (!show_decoration)
+    {
+      property = glade_widget_get_property (gwidget, "decoration-layout");
+      glade_command_set_property (property, NULL);
+    }
+
+  property = glade_widget_get_property (gwidget, "show-close-button");
+  glade_command_set_property (property, show_decoration);
+
+  glade_command_pop_group ();
+  glade_editable_unblock (GLADE_EDITABLE (editor));
+  glade_editable_load (GLADE_EDITABLE (editor), gwidget);
 }
 
 GtkWidget *
