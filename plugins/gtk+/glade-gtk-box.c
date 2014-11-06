@@ -362,9 +362,7 @@ glade_gtk_box_set_size (GObject * object, const GValue * value)
           GLADE_IS_PLACEHOLDER (child_widget) == FALSE)
         continue;
 
-      g_object_ref (G_OBJECT (child_widget));
       gtk_container_remove (GTK_CONTAINER (box), child_widget);
-      gtk_widget_destroy (child_widget);
       old_size--;
     }
   g_list_free (children);
