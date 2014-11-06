@@ -11,30 +11,59 @@
 //#define d(x) x
 #define d(x)
 
-static gint
-glade_gtk_header_bar_get_num_children (GObject *hb, GtkPackType type)
+typedef struct
 {
-  GList *children, *l;
-  GtkPackType pt;
-  gint num;
+  GtkContainer *parent;
   GtkWidget *custom_title;
+  gboolean include_placeholders;
+  gint count;
+} ChildrenData;
 
-  custom_title = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (hb));
+static void
+count_children (GtkWidget *widget, gpointer data)
+{
+  ChildrenData *cdata = data;
 
-  num = 0;
+  if (widget == cdata->custom_title)
+    return;
 
-  children = gtk_container_get_children (GTK_CONTAINER (hb));
-  for (l = children; l; l = l->next)
-    {
-      if (l->data == custom_title)
-        continue;
-      gtk_container_child_get (GTK_CONTAINER (hb), GTK_WIDGET (l->data), "pack-type", &pt, NULL);
-      if (type == pt)
-        num++;
-    }
-  g_list_free (children);
+  if ((GLADE_IS_PLACEHOLDER (widget) && cdata->include_placeholders) ||
+      glade_widget_get_from_gobject (widget) != NULL)
+    cdata->count++;
+}
 
-  return num;
+static gboolean
+glade_gtk_header_bar_verify_size (GObject      *object,
+                                  const GValue *value)
+{
+  gint new_size;
+  ChildrenData data;
+
+  new_size = g_value_get_int (value);
+
+  data.parent = GTK_CONTAINER (object);
+  data.custom_title = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object));
+  data.include_placeholders = FALSE;
+  data.count = 0;
+
+  gtk_container_forall (data.parent, count_children, &data);
+
+  return data.count <= new_size;
+}
+
+static gint
+glade_gtk_header_bar_get_num_children (GObject *object)
+{
+  ChildrenData data;
+
+  data.parent = GTK_CONTAINER (object);
+  data.custom_title = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object));
+  data.include_placeholders = TRUE;
+  data.count = 0;
+
+  gtk_container_forall (data.parent, count_children, &data);
+
+  return data.count;
 }
 
 static void
@@ -44,8 +73,7 @@ glade_gtk_header_bar_parse_finished (GladeProject * project,
   GladeWidget *gbox;
 
   gbox = glade_widget_get_from_gobject (object);
-  glade_widget_property_set (gbox, "start-size", glade_gtk_header_bar_get_num_children (object, GTK_PACK_START));
-  glade_widget_property_set (gbox, "end-size", glade_gtk_header_bar_get_num_children (object, GTK_PACK_END));
+  glade_widget_property_set (gbox, "size", glade_gtk_header_bar_get_num_children (object));
   glade_widget_property_set (gbox, "use-custom-title", gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object)) != NULL);
 }
 
@@ -66,7 +94,6 @@ glade_gtk_header_bar_post_create (GladeWidgetAdaptor *adaptor,
   else if (reason == GLADE_CREATE_USER)
     {
       gtk_header_bar_pack_start (GTK_HEADER_BAR (container), glade_placeholder_new ());
-      gtk_header_bar_pack_end (GTK_HEADER_BAR (container), glade_placeholder_new ());
     }
 }
 
@@ -75,7 +102,7 @@ glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
                                       GObject * object,
                                       const gchar *action_path)
 {
-  if (!strcmp (action_path, "add_start") || !strcmp (action_path, "add_end"))
+  if (!strcmp (action_path, "add_slot"))
     {
       GladeWidget *parent;
       GladeProperty *property;
@@ -85,11 +112,7 @@ glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
 
       glade_command_push_group (_("Insert placeholer to %s"), glade_widget_get_name (parent));
 
-      if (!strcmp (action_path, "add_start"))
-        property = glade_widget_get_property (parent, "start-size");
-      else
-        property = glade_widget_get_property (parent, "end-size");
-
+      property = glade_widget_get_property (parent, "size");
       glade_property_get (property, &size);
       glade_command_set_property (property, size + 1);
 
@@ -120,16 +143,11 @@ glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor * adaptor,
         }
       else
         {
-          GtkPackType pt;
           gint size;
 
-          g_object_set_data (object, "remove-this", GINT_TO_POINTER (1));
-          gtk_container_child_get (GTK_CONTAINER (container), GTK_WIDGET (object), "pack-type", &pt, NULL);
-          if (pt == GTK_PACK_START)
-            property = glade_widget_get_property (parent, "start-size");
-          else
-            property = glade_widget_get_property (parent, "end-size");
+          gtk_container_remove (GTK_CONTAINER (container), GTK_WIDGET (object));
 
+          property = glade_widget_get_property (parent, "size");
           glade_property_get (property, &size);
           glade_command_set_property (property, size - 1);
         }
@@ -154,15 +172,10 @@ glade_gtk_header_bar_get_property (GladeWidgetAdaptor * adaptor,
       g_value_reset (value);
       g_value_set_boolean (value, gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object)) != NULL);
     }
-  else if (!strcmp (id, "start-size"))
+  else if (!strcmp (id, "size"))
     {
       g_value_reset (value);
-      g_value_set_int (value, glade_gtk_header_bar_get_num_children (object, GTK_PACK_START));
-    }
-  else if (!strcmp (id, "end-size"))
-    {
-      g_value_reset (value);
-      g_value_set_int (value, glade_gtk_header_bar_get_num_children (object, GTK_PACK_END));
+      g_value_set_int (value, glade_gtk_header_bar_get_num_children (object));
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
@@ -170,19 +183,15 @@ glade_gtk_header_bar_get_property (GladeWidgetAdaptor * adaptor,
 
 static void
 glade_gtk_header_bar_set_size (GObject * object,
-                               const GValue * value,
-                               GtkPackType type)
+                               const GValue * value)
 {
   GList *l, *next, *children;
   GtkWidget *child;
   guint new_size, old_size, i;
-  GtkPackType pt;
 
   g_return_if_fail (GTK_IS_HEADER_BAR (object));
 
-  d(g_message ("Setting %s size to %d",
-	       type == GTK_PACK_START ? "start" : "end",
-	       g_value_get_int (value)));
+  d(g_message ("Setting size to %d", g_value_get_int (value)));
 
   if (glade_util_object_is_loading (object))
     return;
@@ -192,8 +201,8 @@ glade_gtk_header_bar_set_size (GObject * object,
   while (l)
     {
       next = l->next;
-      gtk_container_child_get (GTK_CONTAINER (object), GTK_WIDGET (l->data), "pack-type", &pt, NULL);
-      if (type != pt || l->data == gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object)))
+      if (l->data == gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object)) ||
+          (!glade_widget_get_from_gobject (l->data) && !GLADE_IS_PLACEHOLDER (l->data)))
         children = g_list_delete_link (children, l);
       l = next;
     }
@@ -207,38 +216,18 @@ glade_gtk_header_bar_set_size (GObject * object,
       return;
     }
 
-  for (i = 0; i < new_size; i++)
+  for (i = old_size; i < new_size; i++)
     {
-      if (g_list_length (children) < i + 1)
-        {
-          GtkWidget *placeholder = glade_placeholder_new ();
-          if (type == GTK_PACK_START)
-            gtk_header_bar_pack_start (GTK_HEADER_BAR (object), placeholder);
-          else
-            gtk_header_bar_pack_end (GTK_HEADER_BAR (object), placeholder);
-        }
-    }
-  for (l = children; l && old_size > new_size; l = l->next)
-    {
-      child = l->data;
-      if (!g_object_get_data (G_OBJECT (child), "remove-this"))
-        continue;
-
-      g_object_set_data (G_OBJECT (child), "remove-this", GINT_TO_POINTER (0));
-
-      gtk_container_remove (GTK_CONTAINER (object), child);
-
-      old_size--;
+      GtkWidget *placeholder = glade_placeholder_new ();
+      gtk_header_bar_pack_start (GTK_HEADER_BAR (object), placeholder);
     }
   for (l = g_list_last (children); l && old_size > new_size; l = l->prev)
     {
       child = l->data;
-      if (glade_widget_get_from_gobject (child) ||
-          !GLADE_IS_PLACEHOLDER (child))
+      if (glade_widget_get_from_gobject (child) || !GLADE_IS_PLACEHOLDER (child))
         continue;
 
       gtk_container_remove (GTK_CONTAINER (object), child);
-
       old_size--;
     }
 
@@ -315,10 +304,8 @@ glade_gtk_header_bar_set_property (GladeWidgetAdaptor * adaptor,
 					   _("The decoration layout does not apply to header bars "
 					     "which do no show window controls"));
     }
-  else if (!strcmp (id, "start-size"))
-    glade_gtk_header_bar_set_size (object, value, GTK_PACK_START);
-  else if (!strcmp (id, "end-size"))
-    glade_gtk_header_bar_set_size (object, value, GTK_PACK_END);
+  else if (!strcmp (id, "size"))
+    glade_gtk_header_bar_set_size (object, value);
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
@@ -353,11 +340,8 @@ glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
   gbox = glade_widget_get_from_gobject (parent);
   if (!glade_widget_superuser ())
     {
-      glade_widget_property_get (gbox, "start-size", &size);
-      glade_widget_property_set (gbox, "start-size", size);
-
-      glade_widget_property_get (gbox, "end-size", &size);
-      glade_widget_property_set (gbox, "end-size", size);
+      glade_widget_property_get (gbox, "size", &size);
+      glade_widget_property_set (gbox, "size", size);
     }
 }
 
@@ -393,11 +377,8 @@ glade_gtk_header_bar_remove_child (GladeWidgetAdaptor * adaptor,
   gbox = glade_widget_get_from_gobject (object);
   if (!glade_widget_superuser ())
     {
-      glade_widget_property_get (gbox, "start-size", &size);
-      glade_widget_property_set (gbox, "start-size", size);
-
-      glade_widget_property_get (gbox, "end-size", &size);
-      glade_widget_property_set (gbox, "end-size", size);
+      glade_widget_property_get (gbox, "size", &size);
+      glade_widget_property_set (gbox, "size", size);
     }
 }
 
@@ -407,7 +388,9 @@ glade_gtk_header_bar_replace_child (GladeWidgetAdaptor * adaptor,
                                     GObject * current,
                                     GObject * new_widget)
 {
+  GladeWidget *gbox;
   gchar *special_child_type;
+  gint size;
 
   special_child_type =
     g_object_get_data (G_OBJECT (current), "special-child-type");
@@ -424,56 +407,18 @@ glade_gtk_header_bar_replace_child (GladeWidgetAdaptor * adaptor,
       gtk_header_bar_set_custom_title (GTK_HEADER_BAR (container), GTK_WIDGET (new_widget));
       return;
     }
+  else
+    g_object_set_data (G_OBJECT (new_widget), "special-child-type", NULL);
 
   GWA_GET_CLASS
       (GTK_TYPE_CONTAINER)->replace_child (adaptor, container, current, new_widget);
-}
 
-typedef struct
-{
-  GtkContainer *parent;
-  GtkPackType pack_type;
-  GtkWidget *custom_title;
-  gint count;
-} ChildrenData;
-
-static void
-count_children (GtkWidget *widget, gpointer data)
-{
-  ChildrenData *cdata = data;
-  GtkPackType pt;
-
-  if (widget == cdata->custom_title)
-    return;
-
-  gtk_container_child_get (cdata->parent, widget, "pack-type", &pt, NULL);
-  if (pt != cdata->pack_type)
-    return;
-
-  if (glade_widget_get_from_gobject (widget) == NULL)
-    return;
-
-  cdata->count++;
-}
-
-static gboolean
-glade_gtk_header_bar_verify_size (GObject      *object,
-                                  const GValue *value,
-                                  GtkPackType   pack_type)
-{
-  gint new_size;
-  ChildrenData data;
-
-  new_size = g_value_get_int (value);
-
-  data.parent = GTK_CONTAINER (object);
-  data.pack_type = pack_type;
-  data.custom_title = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object));
-  data.count = 0;
-
-  gtk_container_forall (data.parent, count_children, &data);
-
-  return data.count <= new_size;
+  gbox = glade_widget_get_from_gobject (container);
+  if (!glade_widget_superuser ())
+    {
+      glade_widget_property_get (gbox, "size", &size);
+      glade_widget_property_set (gbox, "size", size);
+    }
 }
 
 gboolean
@@ -482,15 +427,39 @@ glade_gtk_header_bar_verify_property (GladeWidgetAdaptor *adaptor,
                                       const gchar        *id,
                                       const GValue       *value)
 {
-  if (!strcmp (id, "start-size"))
-    return glade_gtk_header_bar_verify_size (object, value, GTK_PACK_START);
-  else if (!strcmp (id, "end-size"))
-    return glade_gtk_header_bar_verify_size (object, value, GTK_PACK_END);
+  if (!strcmp (id, "size"))
+    return glade_gtk_header_bar_verify_size (object, value);
   else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
     return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object, id, value);
 
   return TRUE;
 }
+
+void
+glade_gtk_header_bar_child_set_property (GladeWidgetAdaptor *adaptor,
+                                         GObject *container,
+                                         GObject *child,
+                                         const gchar *property_name,
+                                         const GValue *value)
+{
+  GladeWidget *gbox;
+  gint size;
+
+  d(g_message ("Set child prop %s %s\n", g_type_name_from_instance (child), property_name));
+
+  gtk_container_child_set_property (GTK_CONTAINER (container),
+                                    GTK_WIDGET (child),
+                                    property_name,
+                                    value);
+
+  gbox = glade_widget_get_from_gobject (container);
+  if (!glade_widget_superuser ())
+    {
+      glade_widget_property_get (gbox, "size", &size);
+      glade_widget_property_set (gbox, "size", size);
+    }
+}
+
 
 GladeEditable *
 glade_gtk_header_bar_create_editable (GladeWidgetAdaptor * adaptor,
