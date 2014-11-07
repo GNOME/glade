@@ -97,8 +97,7 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor * adaptor,
   guint nproperties;
   guint i;
 
-  if (gtk_widget_get_parent (current) != container)
-    return;
+  g_return_if_fail (gtk_widget_get_parent (current) == container);
 
   param_spec = gtk_container_class_list_child_properties
       (G_OBJECT_GET_CLASS (container), &nproperties);
