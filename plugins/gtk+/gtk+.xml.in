@@ -3151,7 +3151,18 @@
       </glade-widget-class>
       
       <glade-widget-class name="GtkColorChooserWidget" generic-name="colorchooserwidget"
-			_title="Color Chooser Widget" icon-name="widget-gtk-colorselection" since="3.4"/>
+			_title="Color Chooser Widget" icon-name="widget-gtk-colorselection" since="3.4">
+        <properties>
+          <!-- Disable GtkBox stuff -->
+          <property id="size" disabled="True"/>
+          <property id="homogeneous" disabled="True"/>
+          <property id="orientation" disabled="True"/>
+          <property id="spacing" disabled="True"/>
+          <property id="baseline-position" disabled="True"/>
+        </properties>
+      
+      </glade-widget-class>
+
       <glade-widget-class name="GtkColorChooserDialog" generic-name="colorchooserdialog"
 			_title="Color Chooser Dialog" icon-name="widget-gtk-colorselectiondialog" since="3.4"/>
       <glade-widget-class name="GtkFontChooserWidget" generic-name="fontchooserwidget"
