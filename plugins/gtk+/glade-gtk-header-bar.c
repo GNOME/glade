@@ -110,7 +110,7 @@ glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
 
       parent = glade_widget_get_from_gobject (object);
 
-      glade_command_push_group (_("Insert placeholer to %s"), glade_widget_get_name (parent));
+      glade_command_push_group (_("Insert placeholder to %s"), glade_widget_get_name (parent));
 
       property = glade_widget_get_property (parent, "size");
       glade_property_get (property, &size);
