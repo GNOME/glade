@@ -2458,13 +2458,34 @@
       <glade-widget-class name="GtkStack" generic-name="stack" _title="Stack" since="3.10">
         <create-editable-function>glade_gtk_stack_create_editable</create-editable-function>
         <post-create-function>glade_gtk_stack_post_create</post-create-function>
+        <add-child-function>glade_gtk_stack_add_child</add-child-function>
+        <remove-child-function>glade_gtk_stack_remove_child</remove-child-function>
+        <replace-child-function>glade_gtk_stack_replace_child</replace-child-function>
         <child-action-activate-function>glade_gtk_stack_child_action_activate</child-action-activate-function>
+        <get-property-function>glade_gtk_stack_get_property</get-property-function>
+        <set-property-function>glade_gtk_stack_set_property</set-property-function>
+        <child-set-property-function>glade_gtk_stack_set_child_property</child-set-property-function>
+        <verify-function>glade_gtk_stack_verify_property</verify-function>
         <packing-actions>
           <action id="insert_page_before" _name="Insert Page Before" stock="list-add"/>
           <action id="insert_page_after" _name="Insert Page After" stock="list-add"/>
           <action id="remove_page" _name="Remove Page"  stock="list-remove"/>
         </packing-actions>
         <properties>
+          <property id="pages" _name="Number of pages" save="False" default="1" custom-layout="True">
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>1</min>
+            </parameter-spec>
+            <_tooltip>The number of pages in the stack</_tooltip>
+          </property>
+          <property id="page" _name="Edit page" save="False" default="0" custom-layout="True">
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>0</min>
+            </parameter-spec>
+            <_tooltip>Set the currently active page to edit, this property will not be saved</_tooltip>
+          </property>
           <property id="visible-child" save="False" disabled="True"/>
           <property id="visible-child-name" _name="Visible child" save="False" custom-layout="True"/>
           <property id="homogeneous" save="False" disabled="True"/>
