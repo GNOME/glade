@@ -2517,13 +2517,17 @@
           </property>
           <property id="transition-duration" custom-layout="True"/>
         </properties>
+        <packing-properties>
+          <property id="title" translatable="True"/>
+        </packing-properties>
       </glade-widget-class>
 
       <glade-widget-class name="GtkStackSwitcher" generic-name="stackswitcher" _title="Stack Switcher" since="3.10">
         <create-editable-function>glade_gtk_stack_switcher_create_editable</create-editable-function>
 
         <properties>
-          <property id="orientation" default="GTK_ORIENTATION_HORIZONTAL"/>
+          <property id="orientation" default="GTK_ORIENTATION_HORIZONTAL" custom-layout="True"/>
+          <property id="stack" custom-layout="True"/>
           <!-- Disable GtkBox stuff -->
           <property id="size" disabled="True" default="0"/>
           <property id="homogeneous" disabled="True"/>
