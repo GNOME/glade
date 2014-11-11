@@ -92,7 +92,8 @@ glade_gtk_stack_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
 
   if (reason == GLADE_CREATE_USER)
-    gtk_stack_add_named (GTK_STACK (container), glade_placeholder_new (), "page0");
+    gtk_stack_add_titled (GTK_STACK (container), glade_placeholder_new (),
+                          "page0", "page0");
 
   g_signal_connect (G_OBJECT (gwidget), "notify::project",
                     G_CALLBACK (glade_gtk_stack_project_changed), NULL);
@@ -166,7 +167,7 @@ glade_gtk_stack_child_action_activate (GladeWidgetAdaptor * adaptor,
 
       name = get_unused_name (GTK_STACK (container));
       new_widget = glade_placeholder_new ();
-      gtk_stack_add_named (GTK_STACK (container), new_widget, name);
+      gtk_stack_add_titled (GTK_STACK (container), new_widget, name, name);
       gtk_container_child_set (GTK_CONTAINER (container), new_widget,
                                "position", position, NULL);
       gtk_stack_set_visible_child (GTK_STACK (container), new_widget);
@@ -304,7 +305,7 @@ glade_gtk_stack_set_n_pages (GObject * object,
     {
       name = get_unused_name (stack);
       child = glade_placeholder_new ();
-      gtk_stack_add_named (stack, child, name);
+      gtk_stack_add_titled (stack, child, name, name);
       g_free (name);
     }
 
