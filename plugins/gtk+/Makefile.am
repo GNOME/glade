@@ -31,6 +31,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-app-chooser-widget-editor.c \
 	glade-arrow-editor.c		\
 	glade-attributes.c		\
+	glade-action-bar-editor.c	\
 	glade-box-editor.c		\
 	glade-button-editor.c		\
 	glade-cell-renderer-editor.c	\
@@ -50,6 +51,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-grid-editor.c		\
 	glade-gtk-about-dialog.c	\
 	glade-gtk-action.c		\
+	glade-gtk-action-bar.c		\
 	glade-gtk-action-group.c	\
 	glade-gtk-action-widgets.c	\
 	glade-gtk-adjustment.c		\
@@ -178,6 +180,7 @@ noinst_HEADERS =			\
 	glade-app-chooser-widget-editor.h \
 	glade-arrow-editor.h		\
 	glade-attributes.h		\
+	glade-action-bar-editor.h	\
 	glade-box-editor.h		\
 	glade-button-editor.h		\
 	glade-cell-renderer-editor.h	\
@@ -276,6 +279,7 @@ UI_FILES = 				\
 	glade-app-chooser-button-editor.ui \
 	glade-app-chooser-widget-editor.ui \
 	glade-arrow-editor.ui		\
+	glade-action-bar-editor.ui	\
 	glade-box-editor.ui		\
 	glade-button-editor.ui		\
 	glade-combo-box-editor.ui	\

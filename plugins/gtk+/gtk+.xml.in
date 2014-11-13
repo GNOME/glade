@@ -704,6 +704,45 @@
         </properties>
       </glade-widget-class>
       
+      <glade-widget-class name="GtkActionBar" generic-name="actionbar" _title="Action Bar" since="3.12">
+        <create-editable-function>glade_gtk_action_bar_create_editable</create-editable-function>
+        <post-create-function>glade_gtk_action_bar_post_create</post-create-function>
+        <get-children-function>glade_gtk_action_bar_get_children</get-children-function>
+        <set-property-function>glade_gtk_action_bar_set_property</set-property-function>
+        <get-property-function>glade_gtk_action_bar_get_property</get-property-function>
+        <verify-function>glade_gtk_action_bar_verify_property</verify-function>
+        <add-child-function>glade_gtk_action_bar_add_child</add-child-function>
+        <remove-child-function>glade_gtk_action_bar_remove_child</remove-child-function>
+        <replace-child-function>glade_gtk_action_bar_replace_child</replace-child-function>
+        <child-set-property-function>glade_gtk_action_bar_set_child_property</child-set-property-function>
+        <special-child-type>type</special-child-type>
+        
+        <properties>
+          <property id="size" _name="Number of items" default="1" save="False" custom-layout="True">
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>1</min>
+            </parameter-spec>
+            <_tooltip>The number of items in the action bar</_tooltip>
+          </property>
+          <property save="False" id="use-center-child" since="3.12" default="FALSE" _name="Center Child" custom-layout="True">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+          </property>
+        </properties>
+        
+        <packing-properties>
+          <property id="position" weight="0" save-always="True"/>
+          <property id="pack-type" transfer-on-paste="True">
+            <displayable-values>
+              <value id="GTK_PACK_START" _name="Start"/>
+              <value id="GTK_PACK_END" _name="End"/>
+            </displayable-values>
+          </property>
+        </packing-properties>
+      </glade-widget-class>
+      
       <glade-widget-class name="GtkWindow" generic-name="window" _title="Window" toplevel="True" default-width="440" default-height="250">
         <post-create-function>glade_gtk_window_post_create</post-create-function>
         <read-widget-function>glade_gtk_window_read_widget</read-widget-function>
@@ -5450,6 +5489,7 @@
       <glade-widget-class-ref name="GtkStack" />
       <glade-widget-class-ref name="GtkPopover"/>
       <glade-widget-class-ref name="GtkPopoverMenu"/>
+      <glade-widget-class-ref name="GtkActionBar" />
     </glade-widget-group>
     
     <glade-widget-group name="gtk-control-display" _title="Control and Display">

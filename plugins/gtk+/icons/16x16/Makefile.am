@@ -6,6 +6,7 @@ icons_DATA = \
 	widget-gtk-aboutdialog.png \
 	widget-gtk-accelgroup.png \
 	widget-gtk-accellabel.png \
+	widget-gtk-actionbar.png \
 	widget-gtk-adjustment.png \
 	widget-gtk-alignment.png \
 	widget-gtk-appchooserbutton.png \
