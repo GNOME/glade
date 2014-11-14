@@ -79,6 +79,7 @@ icons_DATA = \
 	widget-gtk-paned.png \
 	widget-gtk-pagesetupdialog.png \
 	widget-gtk-placessidebar.png \
+	widget-gtk-popover.png \
 	widget-gtk-printdialog.png \
 	widget-gtk-progressbar.png \
 	widget-gtk-searchbar.png \
