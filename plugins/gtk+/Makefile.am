@@ -88,6 +88,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-menu-shell.c		\
 	glade-gtk-menu-tool-button.c	\
 	glade-gtk-message-dialog.c	\
+	glade-gtk-model-button.c	\
 	glade-gtk-notebook.c		\
 	glade-gtk-overlay.c		\
 	glade-gtk-paned.c		\
@@ -134,6 +135,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-level-bar-editor.c	\
 	glade-message-dialog-editor.c	\
 	glade-misc-editor.c		\
+	glade-model-button-editor.c	\
 	glade-model-data.c		\
 	glade-notebook-editor.c		\
 	glade-popover-editor.c		\
@@ -215,6 +217,7 @@ noinst_HEADERS =			\
 	glade-level-bar-editor.h	\
 	glade-message-dialog-editor.h	\
 	glade-misc-editor.h		\
+	glade-model-button-editor.h	\
 	glade-model-data.h		\
 	glade-notebook-editor.h		\
 	glade-popover-editor.h		\
@@ -295,6 +298,7 @@ UI_FILES = 				\
 	glade-level-bar-editor.ui	\
 	glade-message-dialog-editor.ui	\
 	glade-misc-editor.ui		\
+	glade-model-button-editor.ui	\
 	glade-notebook-editor.ui	\
 	glade-popover-editor.ui		\
 	glade-popover-menu-editor.ui	\
