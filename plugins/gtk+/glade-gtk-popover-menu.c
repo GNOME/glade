@@ -115,6 +115,62 @@ glade_gtk_popover_menu_project_changed (GladeWidget * gwidget,
   g_object_set_data (G_OBJECT (gwidget), "popover-menu-project-ptr", project);
 }
 
+static gint
+get_visible_child (GtkPopoverMenu *popover)
+{
+  gchar *visible;
+  GList *children, *l;
+  gint ret, i;
+
+  ret = -1;
+
+  g_object_get (G_OBJECT (popover), "visible-submenu", &visible, NULL);
+  children = gtk_container_get_children (GTK_CONTAINER (popover));
+  for (l = children, i = 0; l; l = l->next, i++)
+    {
+      GtkWidget *child = l->data;
+      gchar *name;
+      gboolean found;
+
+      gtk_container_child_get (GTK_CONTAINER (popover), child, "submenu", &name, NULL);
+      found = !strcmp (visible, name);
+      g_free (name);
+      if (found)
+        {
+          ret = i;
+          break;
+        }
+    }
+  g_list_free (children);
+  g_free (visible);
+
+  return ret;
+}
+
+static void
+glade_gtk_popover_menu_visible_submenu_changed (GObject *popover,
+                                                GParamSpec *pspec,
+                                                gpointer data)
+{
+  GladeWidget *gwidget = glade_widget_get_from_gobject (popover);
+  GladeProject *project = glade_widget_get_project (gwidget);
+  gint current;
+  GList *list;
+
+  current = get_visible_child (GTK_POPOVER_MENU (popover));
+  glade_widget_property_set (gwidget, "current", current);
+
+  if ((list = glade_project_selection_get (project)) != NULL &&
+      g_list_length (list) == 1)
+    {
+      GObject *selected = list->data;
+
+      if (GTK_IS_WIDGET (selected) &&
+          gtk_widget_is_ancestor (GTK_WIDGET (selected), GTK_WIDGET (popover)))
+        glade_project_selection_clear (project, TRUE);
+    }
+}
+
 void
 glade_gtk_popover_menu_post_create (GladeWidgetAdaptor *adaptor,
                                     GObject *container,
@@ -134,6 +190,9 @@ glade_gtk_popover_menu_post_create (GladeWidgetAdaptor *adaptor,
                     G_CALLBACK (glade_gtk_popover_menu_project_changed), NULL);
 
   glade_gtk_popover_menu_project_changed (parent, NULL, NULL);
+
+  g_signal_connect (container, "notify::visible-submenu",
+                    G_CALLBACK (glade_gtk_popover_menu_visible_submenu_changed), NULL);
 }
 
 void
@@ -364,38 +423,6 @@ glade_gtk_popover_menu_set_property (GladeWidgetAdaptor * adaptor,
     glade_gtk_popover_menu_set_current (object, value);
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
-}
-
-static gint
-get_visible_child (GtkPopoverMenu *popover)
-{
-  gchar *visible;
-  GList *children, *l;
-  gint ret, i;
-
-  ret = -1;
-
-  g_object_get (G_OBJECT (popover), "visible-submenu", &visible, NULL);
-  children = gtk_container_get_children (GTK_CONTAINER (popover));
-  for (l = children, i = 0; l; l = l->next, i++)
-    {
-      GtkWidget *child = l->data;
-      gchar *name;
-      gboolean found;
-
-      gtk_container_child_get (GTK_CONTAINER (popover), child, "submenu", &name, NULL);
-      found = !strcmp (visible, name);
-      g_free (name);
-      if (found)
-        {
-          ret = i;
-          break;
-        }
-    }
-  g_list_free (children);
-  g_free (visible);
-
-  return ret;
 }
 
 void
