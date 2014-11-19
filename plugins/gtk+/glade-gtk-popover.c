@@ -25,6 +25,8 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
+#include "glade-popover-editor.h"
+
 GObject *
 glade_gtk_popover_constructor (GType type,
                                guint n_construct_properties,
@@ -43,3 +45,14 @@ glade_gtk_popover_constructor (GType type,
 
   return ret_obj;
 }
+
+GladeEditable *
+glade_gtk_popover_create_editable (GladeWidgetAdaptor * adaptor,
+                                   GladeEditorPageType  type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_popover_editor_new ();
+  else
+    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
+
