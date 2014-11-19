@@ -3374,6 +3374,37 @@
         </properties>
       </glade-widget-class>
 
+      <glade-widget-class name="GtkPopoverMenu" generic-name="popovermenu" _title="Popover Menu">
+        <constructor-function>glade_gtk_popover_menu_constructor</constructor-function>
+        <post-create-function>glade_gtk_popover_menu_post_create</post-create-function>
+        <add-child-function>glade_gtk_popover_menu_add_child</add-child-function>
+        <remove-child-function>glade_gtk_popover_menu_remove_child</remove-child-function>
+        <replace-child-function>glade_gtk_popover_menu_replace_child</replace-child-function>
+        <get-property-function>glade_gtk_popover_menu_get_property</get-property-function>
+        <set-property-function>glade_gtk_popover_menu_set_property</set-property-function>
+        <verify-function>glade_gtk_popover_menu_verify_property</verify-function>
+        <child-set-property-function>glade_gtk_popover_menu_set_child_property</child-set-property-function>
+        <child-get-property-function>glade_gtk_popover_menu_get_child_property</child-get-property-function>
+
+        <properties>
+          <property id="visible-submenu" disabled="True"/>
+          <property id="submenus" _name="Number of submenus" save="False" default="1"> <!-- custom-layout="True" -->
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>1</min>
+            </parameter-spec>
+            <_tooltip>The number of submenus in the popover menu</_tooltip>
+          </property>
+          <property id="current" _name="Edit menu" save="False" default="0"> <!-- custom-layout="True" -->
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>0</min>
+            </parameter-spec>
+            <_tooltip>Set the currently active submenu to edit, this property will not be saved</_tooltip>
+          </property>
+        </properties>
+      </glade-widget-class>
+
       <glade-widget-class name="GtkLinkButton" generic-name="linkbutton" _title="Link Button">
         <properties>
           <!-- The pspec of this prop says that the default is http://www.gtk.org but gtk_link_button_init() does
@@ -5368,6 +5399,7 @@
       <glade-widget-class-ref name="GtkHeaderBar" />
       <glade-widget-class-ref name="GtkStack" />
       <glade-widget-class-ref name="GtkPopover"/>
+      <glade-widget-class-ref name="GtkPopoverMenu"/>
     </glade-widget-group>
     
     <glade-widget-group name="gtk-control-display" _title="Control and Display">
