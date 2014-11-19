@@ -56,6 +56,63 @@ glade_gtk_popover_menu_parse_finished (GladeProject * project,
   glade_widget_property_set (gbox, "submenus", submenus);
 }
 
+static void
+glade_gtk_popover_menu_selection_changed (GladeProject * project,
+                                          GladeWidget * gwidget)
+{
+  GList *list;
+  GtkWidget *page, *sel_widget;
+  GtkWidget *popover = GTK_WIDGET (glade_widget_get_object (gwidget));
+
+  if ((list = glade_project_selection_get (project)) != NULL &&
+      g_list_length (list) == 1)
+    {
+      sel_widget = list->data;
+
+      if (GTK_IS_WIDGET (sel_widget) &&
+          gtk_widget_is_ancestor (sel_widget, popover))
+        {
+          GList *children, *l;
+
+          children = gtk_container_get_children (GTK_CONTAINER (popover));
+          for (l = children; l; l = l->next)
+            {
+              page = l->data;
+              if (sel_widget == page ||
+                  gtk_widget_is_ancestor (sel_widget, page))
+                {
+                  gint position;
+                  glade_widget_property_get (glade_widget_get_from_gobject (page), "position", &position);
+                  glade_widget_property_set (glade_widget_get_from_gobject (popover), "current", position);
+                  break;
+                }
+            }
+          g_list_free (children);
+        }
+    }
+}
+
+static void
+glade_gtk_popover_menu_project_changed (GladeWidget * gwidget,
+                                        GParamSpec * pspec,
+                                        gpointer userdata)
+{
+  GladeProject * project = glade_widget_get_project (gwidget);
+  GladeProject * old_project = g_object_get_data (G_OBJECT (gwidget), "popover-menu-project-ptr");
+
+  if (old_project)
+    g_signal_handlers_disconnect_by_func (G_OBJECT (old_project),
+                                          G_CALLBACK (glade_gtk_popover_menu_selection_changed),
+                                          gwidget);
+
+  if (project)
+    g_signal_connect (G_OBJECT (project), "selection-changed",
+                      G_CALLBACK (glade_gtk_popover_menu_selection_changed),
+                      gwidget);
+
+  g_object_set_data (G_OBJECT (gwidget), "popover-menu-project-ptr", project);
+}
+
 void
 glade_gtk_popover_menu_post_create (GladeWidgetAdaptor *adaptor,
                                     GObject *container,
@@ -65,15 +122,16 @@ glade_gtk_popover_menu_post_create (GladeWidgetAdaptor *adaptor,
   GladeProject *project = glade_widget_get_project (parent);
 
   if (reason == GLADE_CREATE_LOAD)
-    {
-      g_signal_connect (project, "parse-finished",
-                        G_CALLBACK (glade_gtk_popover_menu_parse_finished),
-                        container);
-    }
+    g_signal_connect (project, "parse-finished",
+                      G_CALLBACK (glade_gtk_popover_menu_parse_finished),
+                      container);
   else if (reason == GLADE_CREATE_USER)
-    {
-      gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
-    }
+    gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
+
+  g_signal_connect (G_OBJECT (parent), "notify::project",
+                    G_CALLBACK (glade_gtk_popover_menu_project_changed), NULL);
+
+  glade_gtk_popover_menu_project_changed (parent, NULL, NULL);
 }
 
 void
