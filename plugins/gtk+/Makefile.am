@@ -92,6 +92,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-overlay.c		\
 	glade-gtk-paned.c		\
 	glade-gtk-popover.c		\
+	glade-gtk-popover-menu.c	\
 	glade-gtk-progress-bar.c	\
 	glade-gtk-radio-button.c	\
 	glade-gtk-radio-menu-item.c	\
