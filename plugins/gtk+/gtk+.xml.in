@@ -3406,6 +3406,39 @@
         </properties>
       </glade-widget-class>
 
+      <glade-widget-class name="GtkModelButton" generic-name="modelbutton" _title="Model Button">
+        <post-create-function>glade_gtk_model_button_post_create</post-create-function>
+        <read-widget-function>glade_gtk_model_button_read_widget</read-widget-function>
+        <write-widget-function>glade_gtk_model_button_write_widget</write-widget-function>
+        <create-editable-function>glade_gtk_model_button_create_editable</create-editable-function>
+        <properties>
+          <property id="role" disabled="True"/>
+          <property id="active" disabled="True"/>
+          <property id="action-name" custom-layout="True"/>
+          <property id="text" translatable="True" custom-layout="True"/>
+          <property id="icon" custom-layout="True"/>
+          <property id="iconic" custom-layout="True"/>
+          <property id="menu-name" custom-layout="True"/>
+          <property id="inverted" custom-layout="True"/>
+          <property id="centered" custom-layout="True"/>
+
+          <!-- disable GtkButton properties -->
+          <property id="always-show-image" disabled="True"/>
+          <property id="image" disabled="True"/>
+          <property id="image-position" disabled="True"/>
+          <property id="use-stock" disabled="True"/>
+          <property id="label" disabled="True"/>
+          <property id="use-underline" disabled="True"/>
+          <property id="xalign" disabled="True"/>
+          <property id="yalign" disabled="True"/>
+          <property id="relief" disabled="True"/>
+          <property id="stock" disabled="True"/>
+          <property id="response-id" disabled="True"/>
+          <property id="related-action" disabled="True"/>
+          <property id="use-action-appearance" disabled="True"/>
+        </properties>
+      </glade-widget-class>
+    
       <glade-widget-class name="GtkLinkButton" generic-name="linkbutton" _title="Link Button">
         <properties>
           <!-- The pspec of this prop says that the default is http://www.gtk.org but gtk_link_button_init() does
@@ -5456,6 +5489,7 @@
       <glade-widget-class-ref name="GtkInfoBar"/>
       <glade-widget-class-ref name="GtkStackSwitcher" />
       <glade-widget-class-ref name="GtkSidebar" />
+      <glade-widget-class-ref name="GtkModelButton"/>
     </glade-widget-group>
     
     <glade-widget-group name="gtk-composite" _title="Composite Widgets">
