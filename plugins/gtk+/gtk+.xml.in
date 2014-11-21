@@ -1,6 +1,6 @@
 <glade-catalog name="gtk+"
-	       version="3.12"
-	       targetable="3.10,3.8,3.6,3.4,3.2,3.0"
+	       version="3.16"
+	       targetable="3.14,3.12,3.10,3.8,3.6,3.4,3.2,3.0"
 	       icon-prefix="gtk"
 	       library="gladegtk"
 	       domain="glade"
@@ -1174,6 +1174,11 @@
         <properties>
           <property id="label" translatable="True" multiline="True" default="toolitemgroup" custom-layout="True"/>
           <property id="label-widget" parentless-widget="True" create-type="GtkLabel" custom-layout="True"/>
+
+	  <!--
+	      Note xalign and yalign properties were added here, but they do the same as GtkMisc:xalign/yalign does,
+	      so no need to 'since' them, if you target < 3.16, you will hit the misc properties
+	  -->
           
           <!-- Virtual label type property -->
           <property id="custom-label" default="False" visible="False" save="False">
@@ -1770,6 +1775,9 @@
         <post-create-function>glade_gtk_switch_post_create</post-create-function>
         <create-editable-function>glade_gtk_switch_create_editable</create-editable-function>
         <properties>
+
+	  <!-- The GtkSwitch state is meant to be set in a state-set signal -->
+          <property id="state" disabled="True" since="3.14"/>
           
           <!-- GtkActivatable -->
           <property id="related-action" _name="Related Action" custom-layout="True" save="False" needs-sync="True"
@@ -1786,9 +1794,9 @@
           <property id="action-name" _name="Action Name" custom-layout="True" since="3.4"/>
         </properties>
         
-        <!-- GtkActionable -->
-        <property id="action-name" _name="Action Name" custom-layout="True" since="3.4"/>
-        
+        <signals>
+          <signal id="state-set" since="3.14"/>
+        </signals>
       </glade-widget-class>
       
       <glade-widget-class name="GtkFileChooserButton" generic-name="filechooserbutton" _title="File Chooser Button">
@@ -2325,6 +2333,8 @@
         <packing-properties>
           <property id="resize" transfer-on-paste="True" save-always="True"/>
           <property id="shrink" transfer-on-paste="True" save-always="True"/>
+
+          <property id="wide-handle" since="3.16"/>
           <!--
 	Whether to add the child to the top/left or bottom/right pane.
 	This virtual property is used to remember child position in undo/redo.
@@ -2537,7 +2547,7 @@
 
       </glade-widget-class>
 
-      <glade-widget-class name="GtkSidebar" generic-name="sidebar" _title="Sidebar" since="3.15"/>
+      <glade-widget-class name="GtkSidebar" generic-name="sidebar" _title="Sidebar" since="3.16"/>
 
       <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer" since="3.10">
         <post-create-function>glade_gtk_revealer_post_create</post-create-function>
@@ -2632,9 +2642,19 @@
           </property>
         </packing-properties>
         
+        <signals>
+          <signal id="select-all" since="3.14"/>
+          <signal id="unselect-all" since="3.14"/>
+          <signal id="selected-rows-changed" since="3.14"/>
+        </signals>
       </glade-widget-class>
       
-      <glade-widget-class name="GtkListBoxRow" generic-name="listboxrow" _title="List Box Row" since="3.10"/>
+      <glade-widget-class name="GtkListBoxRow" generic-name="listboxrow" _title="List Box Row" since="3.10">
+        <properties>
+          <property id="activatable" since="3.14"/>
+          <property id="selectable" since="3.14"/>
+        </properties>
+      </glade-widget-class>
       
       <glade-widget-class name="GtkRange" _title="Range">
         <properties>
@@ -3056,8 +3076,12 @@
               <value id="GTK_CORNER_BOTTOM_RIGHT" _name="Bottom Right"/>
             </displayable-values>
           </property>
+          <property id="overlay-scrolling" optional="True" optional-default="False" since="3.16" custom-layout="True"/>
         </properties>
          
+        <signals>
+          <signal id="edge-overshoot" since="3.16"/>
+        </signals>
       </glade-widget-class>
       
       <!-- NOT AVAILABLES ON WIN32
@@ -3549,6 +3573,9 @@
         <actions>
           <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
         </actions>
+        <signals>
+          <signal id="no-matches" since="3.14"/>
+        </signals>
       </glade-widget-class>
       
       <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" 
