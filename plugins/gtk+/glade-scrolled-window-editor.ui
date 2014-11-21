@@ -322,27 +322,17 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </packing>
         </child>
         <child>
-          <object class="GladePropertyLabel" id="overlay_scrolling_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">overlay-scrolling</property>
-          </object>
-          <packing>
-            <property name="left_attach">3</property>
-            <property name="top_attach">4</property>
-          </packing>
-        </child>
-        <child>
           <object class="GladePropertyShell" id="overlay_scrolling_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">overlay-scrolling</property>
+            <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
-            <property name="left_attach">4</property>
+            <property name="left_attach">3</property>
             <property name="top_attach">4</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -398,7 +388,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
       <editor id="vadj_label"/>
       <editor id="hadj_editor"/>
       <editor id="vadj_editor"/>
-      <editor id="overlay_scrolling_label"/>
       <editor id="overlay_scrolling_editor"/>
     </child-editors>
   </template>

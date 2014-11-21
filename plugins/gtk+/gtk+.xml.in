@@ -3076,7 +3076,9 @@
               <value id="GTK_CORNER_BOTTOM_RIGHT" _name="Bottom Right"/>
             </displayable-values>
           </property>
-          <property id="overlay-scrolling" optional="True" optional-default="False" since="3.16" custom-layout="True"/>
+          <property id="overlay-scrolling" since="3.16" custom-layout="True">
+            <_tooltip>If overlay scrolling is enabled, scrollbars are only added as traditional widgets when a mouse is present</_tooltip>
+	  </property>
         </properties>
          
         <signals>
