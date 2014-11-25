@@ -504,15 +504,15 @@ glade_gtk_stack_add_child (GladeWidgetAdaptor * adaptor,
 
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
+  gchild = glade_widget_get_from_gobject (child);
+  if (gchild != NULL)
+    glade_widget_set_pack_action_visible (gchild, "remove_page", FALSE);
+
   gbox = glade_widget_get_from_gobject (object);
   glade_widget_property_get (gbox, "pages", &pages);
   glade_widget_property_set (gbox, "pages", pages);
   glade_widget_property_get (gbox, "page", &page);
   glade_widget_property_set (gbox, "page", page);
-
-  gchild = glade_widget_get_from_gobject (child);
-  if (gchild != NULL)
-    glade_widget_set_pack_action_visible (gchild, "remove_page", FALSE);
 }
 
 void
