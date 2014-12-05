@@ -498,7 +498,7 @@ glade_preview_window_screenshot (GladePreviewWindow *window,
       const gchar *ext = glade_preview_get_extension (filename);
       GError *error = NULL;
       
-      if (gdk_pixbuf_save (pix, filename, ext ? ext : "png", &error, NULL))
+      if (!gdk_pixbuf_save (pix, filename, ext ? ext : "png", &error, NULL))
         {
           g_warning ("Could not save screenshot to %s because %s", filename, error->message);
           g_error_free (error);
