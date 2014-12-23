@@ -15,4 +15,5 @@ URL: http://glade.gnome.org
 Version: @PACKAGE_VERSION@
 Requires: gtk+-3.0 >= 2.91.2 libxml-2.0 >= 2.4.0
 Libs: -L${libdir} -lgladeui-2
+Libs.private: -lm
 Cflags: -I${includedir}

@@ -156,6 +156,8 @@ PKG_CHECK_MODULES([GMODULE_EXPORT],[
   gmodule-export-2.0
 ])
 
+LT_LIB_M
+
 dnl ================================================================
 dnl Check for the unix print widgets in gtk+
 dnl ================================================================
