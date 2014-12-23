@@ -145,7 +145,7 @@ libgladeui_2_la_CFLAGS =    \
 	$(AM_CFLAGS)
 
 libgladeui_2_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
-libgladeui_2_la_LIBADD = $(GTK_LIBS) $(GTK_MAC_LIBS)
+libgladeui_2_la_LIBADD = $(GTK_LIBS) $(GTK_MAC_LIBS) $(LIBM)
 
 libgladeuiincludedir=$(includedir)/libgladeui-2.0/gladeui
 libgladeuiinclude_HEADERS = \
