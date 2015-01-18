@@ -59,6 +59,15 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
 
       return FALSE;
     }
+  else if (GTK_IS_POPOVER (child))
+    {
+      if (user_feedback)
+	glade_util_ui_message (glade_app_get_window (),
+			       GLADE_UI_INFO, NULL,
+			       _("Cannot add a popover to a container."));
+
+      return FALSE;
+    }
   else if (!GTK_IS_WIDGET (child) ||
 	   GTK_IS_TOOL_ITEM (child) ||
 	   GTK_IS_MENU_ITEM (child))
