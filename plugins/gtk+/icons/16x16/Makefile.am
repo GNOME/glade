@@ -74,6 +74,7 @@ icons_DATA = \
 	widget-gtk-menuitem.png \
 	widget-gtk-menutoolbutton.png \
 	widget-gtk-messagedialog.png \
+	widget-gtk-modelbutton.png \
 	widget-gtk-notebook.png \
 	widget-gtk-offscreenwindow.png \
 	widget-gtk-paned.png \
