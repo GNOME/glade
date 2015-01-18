@@ -3368,6 +3368,7 @@
         <constructor-function>glade_gtk_popover_constructor</constructor-function>
         <create-editable-function>glade_gtk_popover_create_editable</create-editable-function>
         <properties>
+          <property id="visible" default="False"/>
           <property id="relative-to" ignore="True" custom-layout="True"/>
           <property id="position" ignore="True" custom-layout="True"/>
           <property id="modal" ignore="True" custom-layout="True"/>
@@ -3388,6 +3389,7 @@
         <child-get-property-function>glade_gtk_popover_menu_get_child_property</child-get-property-function>
 
         <properties>
+          <property id="visible" default="False"/>
           <property id="visible-submenu" disabled="True"/>
           <property id="submenus" _name="Number of submenus" save="False" default="1" custom-layout="True">
             <parameter-spec>
