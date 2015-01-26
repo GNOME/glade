@@ -43,13 +43,17 @@ AC_DEFUN([AM_CHECK_PYTHON_HEADERS],
 [AC_REQUIRE([AM_PATH_PYTHON])
 AC_MSG_CHECKING(for headers required to compile python extensions)
 dnl deduce PYTHON_INCLUDES
-py_prefix=`$PYTHON -c "import sys; print sys.prefix"`
-py_exec_prefix=`$PYTHON -c "import sys; print sys.exec_prefix"`
+am_python_print_includes="\
+from distutils import sysconfig as sc
+incldirs = [[]]
+
+for d in sc.get_config_var('INCLDIRSTOMAKE').split():
+    incldirs.append('-I' + d)
+
+print(' '.join(incldirs))
+"
 if test "x$PYTHON_INCLUDES" == x; then
-  PYTHON_INCLUDES="-I${py_prefix}/include/python${PYTHON_VERSION}"
-  if test "$py_prefix" != "$py_exec_prefix"; then
-    PYTHON_INCLUDES="$PYTHON_INCLUDES -I${py_exec_prefix}/include/python${PYTHON_VERSION}"
-  fi
+  PYTHON_INCLUDES=`$PYTHON -c "$am_python_print_includes"`
 fi
 AC_SUBST(PYTHON_INCLUDES)
 dnl check if the headers exist:
@@ -70,12 +74,19 @@ AC_DEFUN([AM_CHECK_PYTHON_LIBS],
 [AC_REQUIRE([AM_CHECK_PYTHON_HEADERS])
 AC_MSG_CHECKING(for libraries required to embed python)
 dnl deduce PYTHON_LIBS
-py_exec_prefix=`$PYTHON -c "import sys; print sys.exec_prefix"`
+am_python_print_libs="\
+from distutils import sysconfig as sc
+libs = '-L' + sc.get_config_var('LIBDIR').strip()
+libs += ' ' + sc.get_config_var('BLDLIBRARY')
+print(libs)"
+am_python_print_lib_loc="\
+from distutils import sysconfig as sc
+print(sc.get_config_var('LIBDIR'))"
 if test "x$PYTHON_LIBS" == x; then
-	PYTHON_LIBS="-L${py_prefix}/lib -lpython${PYTHON_VERSION}"
+	PYTHON_LIBS=`$PYTHON -c "$am_python_print_libs"`
 fi
 if test "x$PYTHON_LIB_LOC" == x; then
-	PYTHON_LIB_LOC="${py_prefix}/lib" 
+	PYTHON_LIB_LOC=`$PYTHON -c "$am_python_print_lib_loc"`
 fi
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_LIB_LOC)
