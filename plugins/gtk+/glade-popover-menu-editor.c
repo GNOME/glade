@@ -30,7 +30,7 @@ static void glade_popover_menu_editor_grab_focus (GtkWidget * widget);
 
 struct _GladePopoverMenuEditorPrivate
 {
-  GtkWidget *embed;
+  GtkWidget *popover_editor;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladePopoverMenuEditor, glade_popover_menu_editor, GLADE_TYPE_EDITOR_SKELETON)
@@ -43,7 +43,7 @@ glade_popover_menu_editor_class_init (GladePopoverMenuEditorClass * klass)
   widget_class->grab_focus = glade_popover_menu_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-popover-menu-editor.ui");
-  gtk_widget_class_bind_template_child_private (widget_class, GladePopoverMenuEditor, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePopoverMenuEditor, popover_editor);
 }
 
 static void
@@ -59,7 +59,7 @@ glade_popover_menu_editor_grab_focus (GtkWidget * widget)
 {
   GladePopoverMenuEditor *editor = GLADE_POPOVER_MENU_EDITOR (widget);
 
-  gtk_widget_grab_focus (editor->priv->embed);
+  gtk_widget_grab_focus (editor->priv->popover_editor);
 }
 
 GtkWidget *
