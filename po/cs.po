@@ -6,15 +6,15 @@
 # Petr Kovar <pknbe@volny.cz>, 2009.
 # Václav Švejcar <xwinus@gmail.com>, 2009.
 # Adam Matoušek <adydas95@gmail.com>, 2012.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014.
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-11-26 18:31+0000\n"
-"PO-Revision-Date: 2014-11-26 23:04+0100\n"
+"POT-Creation-Date: 2015-03-02 18:38+0000\n"
+"PO-Revision-Date: 2015-03-02 21:32+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -4196,22 +4196,28 @@ msgstr "Nová skupinová velikost"
 msgid "This property does not apply to client-side decorated windows"
 msgstr "Tato vlastnost se nepoužívá u oken dekorovaných na straně klienta"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:136
+#. Translators: %s is the name of a widget here, the sentence means:
+#. * Make the widget use a custom title
+#.
+#: ../plugins/gtk+/glade-header-bar-editor.c:139
 #, c-format
 msgid "Setting %s to use a custom title"
 msgstr "Nastavení %s, aby používal vlastní název"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:139
+#. Translators: %s is the name of a widget here, the sentence means:
+#. * Make the widget use the standard title
+#.
+#: ../plugins/gtk+/glade-header-bar-editor.c:145
 #, c-format
 msgid "Setting %s to use the standard title"
 msgstr "Nastavení %s, aby používal standardní název"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:187
+#: ../plugins/gtk+/glade-header-bar-editor.c:193
 #, c-format
 msgid "Setting %s to show window controls"
 msgstr "Nastavení %s, aby zobrazoval ovládací prvky okna"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:190
+#: ../plugins/gtk+/glade-header-bar-editor.c:196
 #, c-format
 msgid "Setting %s to not show window controls"
 msgstr "Nastavení %s, aby nezobrazoval ovládací prvky okna"
@@ -6434,8 +6440,8 @@ msgid "Stack Switcher"
 msgstr "Přepínač zásobníku"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:688
-msgid "Sidebar"
-msgstr "Postranní lišta"
+msgid "Stack Sidebar"
+msgstr "Postranní panel zásobníku"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:689
 msgid "Revealer"
