@@ -1040,6 +1040,11 @@ glade_widget_dispose (GObject *object)
       g_list_free (widget->priv->properties);
       widget->priv->properties = NULL;
     }
+  if (widget->priv->props_hash)
+    {
+      g_hash_table_destroy (widget->priv->props_hash);
+      widget->priv->props_hash = NULL;
+    }
 
   glade_widget_set_object (widget, NULL);
 
