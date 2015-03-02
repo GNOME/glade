@@ -133,9 +133,15 @@ use_custom_title_toggled (GtkWidget            *widget,
   glade_editable_block (GLADE_EDITABLE (editor));
 
   if (use_custom_title)
+    /* Translators: %s is the name of a widget here, the sentence means:
+     * Make the widget use a custom title
+     */
     glade_command_push_group (_("Setting %s to use a custom title"),
                               glade_widget_get_name (gwidget));
   else
+    /* Translators: %s is the name of a widget here, the sentence means:
+     * Make the widget use the standard title
+     */
     glade_command_push_group (_("Setting %s to use the standard title"),
                               glade_widget_get_name (gwidget));
 
