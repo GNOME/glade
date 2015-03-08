@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-12-07 06:36+0000\n"
+"POT-Creation-Date: 2015-03-02 18:28+0000\n"
 "PO-Revision-Date: 2012-02-19 01:17+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -599,11 +599,11 @@ msgstr "Visa statusraden"
 
 #: ../src/glade.glade.h:63
 msgid "Tool_bar"
-msgstr "Verkt_ygsrad"
+msgstr "Verkt_ygsfält"
 
 #: ../src/glade.glade.h:64
 msgid "Show the toolbar"
-msgstr "Visa verktygsraden"
+msgstr "Visa verktygsfältet"
 
 #: ../src/glade.glade.h:65
 msgid "Project _Tabs"
@@ -4235,7 +4235,7 @@ msgstr "Kryssa"
 
 #: ../plugins/gtk+/glade-gtk-toolbar.c:279
 msgid "Tool Bar Editor"
-msgstr "Verktygsradsredigerare"
+msgstr "Verktygsfältsredigerare"
 
 #: ../plugins/gtk+/glade-gtk-tool-button.c:80
 #, fuzzy
@@ -4313,25 +4313,31 @@ msgid "This property does not apply to client-side decorated windows"
 msgstr ""
 "Denna egenskap gäller inte såvida inte Använd understrykning är inställd."
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:136
+#. Translators: %s is the name of a widget here, the sentence means:
+#. * Make the widget use a custom title
+#.
+#: ../plugins/gtk+/glade-header-bar-editor.c:139
 #, fuzzy, c-format
 #| msgid "Setting %s to use a custom child"
 msgid "Setting %s to use a custom title"
 msgstr "Ställer in %s till att använda ett anpassat barn"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:139
+#. Translators: %s is the name of a widget here, the sentence means:
+#. * Make the widget use the standard title
+#.
+#: ../plugins/gtk+/glade-header-bar-editor.c:145
 #, fuzzy, c-format
 #| msgid "Setting %s to use standard label text"
 msgid "Setting %s to use the standard title"
 msgstr "Ställer in %s till att använda standardetikettext"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:187
+#: ../plugins/gtk+/glade-header-bar-editor.c:193
 #, fuzzy, c-format
 #| msgid "Setting %s to use standard configuration"
 msgid "Setting %s to show window controls"
 msgstr "Ställer in %s till att använda standardkonfiguration"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:190
+#: ../plugins/gtk+/glade-header-bar-editor.c:196
 #, fuzzy, c-format
 #| msgid "Setting %s to use a secondary icon from stock"
 msgid "Setting %s to not show window controls"
@@ -5188,7 +5194,7 @@ msgstr "Växlingsknapp"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "Tool Bar"
-msgstr "Verktygsrad"
+msgstr "Verktygsfält"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:207
@@ -5799,7 +5805,7 @@ msgstr "Statisk"
 #. GdkWindowTypeHint enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:390
 msgid "Toolbar"
-msgstr "Verktygsrad"
+msgstr "Verktygsfält"
 
 #. GdkWindowTypeHint enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:392
@@ -6002,12 +6008,12 @@ msgstr "Text bredvid ikoner"
 #. GtkIconSize enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:464
 msgid "Small Toolbar"
-msgstr "Liten verktygsrad"
+msgstr "Litet verktygsfält"
 
 #. GtkIconSize enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:466
 msgid "Large Toolbar"
-msgstr "Stor verktygsrad"
+msgstr "Stort verktygsfält"
 
 #. GtkIconSize enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:470
@@ -6020,7 +6026,7 @@ msgstr "En symbolisk ikonstorlek för standardikonen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:472
 msgid "The position of the tool item in the toolbar"
-msgstr "Positionen för verktygobjektet i verktygsraden"
+msgstr "Positionen för verktygsobjektet i verktygsfältet"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:473
 msgid "Tool Palette"
@@ -6046,7 +6052,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:480
 msgid "The position of the tool item group in the palette"
-msgstr "Positionen för verktygobjektgruppen i paletten"
+msgstr "Positionen för verktygsobjektgruppen i paletten"
 
 #. PangoEllipsizeMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:483
@@ -6739,9 +6745,12 @@ msgstr "Antal sidor i flikhäftet"
 msgid "Stack Switcher"
 msgstr "Växla"
 
+# Verb?
 #: ../plugins/gtk+/gtk+.xml.in.h:688
-msgid "Sidebar"
-msgstr ""
+#, fuzzy
+#| msgid "Switch"
+msgid "Stack Sidebar"
+msgstr "Växla"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:689
 #, fuzzy
@@ -6774,7 +6783,7 @@ msgstr "Flera"
 #, fuzzy
 #| msgid "The position of the tool item in the toolbar"
 msgid "The position of the row item in the listbox"
-msgstr "Positionen för verktygobjektet i verktygsraden"
+msgstr "Positionen för verktygobjektet i verktygsfältet"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:698
 msgid "List Box Row"
@@ -7768,7 +7777,7 @@ msgstr "Aktiv kolumn"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1014
 msgid "Toggle Renderer"
-msgstr "Växla rendererare"
+msgstr "Växla renderare"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1015
 msgid "Activatable column"
@@ -7946,7 +7955,7 @@ msgstr "Redigera attribut"
 #, fuzzy
 #| msgid "Toolbar"
 msgid "Toolbar Proxies"
-msgstr "Verktygsrad"
+msgstr "Verktygsfält"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:3
 #, fuzzy
