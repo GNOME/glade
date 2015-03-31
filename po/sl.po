@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2015-03-15 13:37+0000\n"
-"PO-Revision-Date: 2015-03-29 21:40+0100\n"
+"PO-Revision-Date: 2015-03-31 20:54+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -901,7 +901,6 @@ msgid "Name and Email fields are required"
 msgstr "Ime in elektronski naslov sta obvezna podatka"
 
 #: ../src/glade-registration.c:437
-#, fuzzy
 msgid ""
 "Oops! Email address is already in use!\n"
 "To update information you need to provide the token that was sent to your "
@@ -912,19 +911,19 @@ msgstr ""
 "elektronski naslov."
 
 #: ../src/glade-registration.c:440
-#, fuzzy, c-format
+#, c-format
 msgid "Oops! Error saving user information: %s"
-msgstr "Napaka med shranjevanjem podatkov o skladbi"
+msgstr "Opa! Prišlo je do napake med shranjevanjem podrobnosti uporabnika: %s"
 
 #: ../src/glade-registration.c:443
-#, fuzzy, c-format
+#, c-format
 msgid "Oops! Error saving survey data: %s"
 msgstr "Opa! Napaka shranjevanja podatkov ankete: %s"
 
 #: ../src/glade-registration.c:446
-#, fuzzy, c-format
+#, c-format
 msgid "Oops! Error accessing DB: %s"
-msgstr "Sporočena je napaka \"%s\" med dostopom do \"%s\""
+msgstr "Opa! Prišlo je do napake dostopa do podatkovne zbirke: %s"
 
 #: ../src/glade-registration.glade.h:1
 msgid "Glade Registration & User Survey"
@@ -2355,9 +2354,8 @@ msgstr "uporabniški_podatki"
 
 #. translators: GConnectFlags values
 #: ../gladeui/glade-preview-window.c:678
-#, fuzzy
 msgid "Swapped | After"
-msgstr "Zamenjano"
+msgstr "Zamenjano | Po preteku"
 
 #. translators: GConnectFlags value
 #: ../gladeui/glade-preview-window.c:681 ../gladeui/glade-signal.c:213
@@ -2372,15 +2370,15 @@ msgstr "Po"
 
 #. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
 #: ../gladeui/glade-preview-window.c:707
-#, fuzzy, c-format
+#, c-format
 msgid "%s::%s emitted one time"
-msgstr "%s ni javil napak."
+msgstr "%s::%s objavljeno enkrat"
 
 #. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
 #: ../gladeui/glade-preview-window.c:711
-#, fuzzy, c-format
+#, c-format
 msgid "%s::%s emitted %d times"
-msgstr "%s ni javil napak."
+msgstr "%s::%s objavljeno %d-krat"
 
 #: ../gladeui/glade-preview-window.c:716
 msgid "Run First"
@@ -3163,7 +3161,7 @@ msgstr "Ali je ta gradnik predloga za združeni gradnik"
 #: ../gladeui/glade-widget.c:4757
 #, c-format
 msgid "Template classes are not supported in gtk+ %d.%d"
-msgstr ""
+msgstr "Razredi predlog niso podprti v različici gtk+ %d.%d"
 
 #: ../gladeui/glade-widget.c:4766
 #, c-format
@@ -4023,9 +4021,8 @@ msgid "This property is disabled"
 msgstr "Lastnost je onemogočena"
 
 #: ../plugins/gtk+/glade-gtk-searchbar.c:72
-#, fuzzy
 msgid "Search bar is already full"
-msgstr "Istovetnost spletišča je preverjena"
+msgstr "Iskalna vrstica je že polna"
 
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:122
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:152
@@ -4167,10 +4164,8 @@ msgid "New Size Group"
 msgstr "Nova skupina velikosti ..."
 
 #: ../plugins/gtk+/glade-gtk-window.c:39
-#, fuzzy
 msgid "This property does not apply to client-side decorated windows"
-msgstr ""
-"Lastnost se uporablja samo pri slikah iz skladov ali poimenovanih ikonah."
+msgstr "Lastnost se ne uveljavi na okraskih okna odjamalca."
 
 #. Translators: %s is the name of a widget here, the sentence means:
 #. * Make the widget use a custom title
@@ -4415,9 +4410,9 @@ msgid "Setting %s to use a custom titlebar"
 msgstr "Nastavljanje %s za uporabo orodnega namiga po meri"
 
 #: ../plugins/gtk+/glade-window-editor.c:228
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a system provided titlebar"
-msgstr "Nastavitev %s za uporabo predmeta sklada"
+msgstr "Nastavitev %s za uporabo sistemsko določene naslovne vrstice"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 msgid "Page Setup Dialog"
@@ -5193,9 +5188,8 @@ msgstr "Članek"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:295
-#, fuzzy
 msgid "Landmark"
-msgstr "Skoči na naslednjo mestno oznako."
+msgstr "Mestna oznaka"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:297
@@ -5229,9 +5223,8 @@ msgstr "Seznam opisov"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:309
-#, fuzzy
 msgid "Description Term"
-msgstr "Opis za"
+msgstr "Opisni pojem"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:311
@@ -5454,9 +5447,8 @@ msgid "Bottom"
 msgstr "Dno"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:365
-#, fuzzy
 msgid "Center Child"
-msgstr "Sredinsko"
+msgstr "Sredini podrejeno okno"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:366
 msgid "The number of items in the box"
@@ -6029,10 +6021,8 @@ msgid "Text View"
 msgstr "Besedilni pogled"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:572
-#, fuzzy
 msgid "Search Bar"
-msgstr ""
-"Ali naj bo omogočen iskalni način in prikazana iskalna vrstica izbrano pisavo"
+msgstr "Iskalna vrstica"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:573
 #: ../plugins/gtk+/glade-button-editor.ui.h:7
@@ -6290,14 +6280,12 @@ msgid "The number of pages in the notebook"
 msgstr "Število strani v beležnici"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:653
-#, fuzzy
 msgid "HeaderBar"
-msgstr "glava"
+msgstr "Nazivna vrstica"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:654
-#, fuzzy
 msgid "Reserve space for subtitle"
-msgstr "Ali naj bo prihranjen prostor za podnapis"
+msgstr "Prihrani prostor za podnapis"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:655
 msgid "Custom Title"
@@ -6354,74 +6342,60 @@ msgid "Slide Down"
 msgstr "Zdrsni navzdol"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:672
-#, fuzzy
 msgid "Slide Left-Right"
-msgstr "Zdrsni z desne"
+msgstr "Zdrsni levo-desne"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:673
-#, fuzzy
 msgid "Slide Up-Down"
-msgstr "Zdrsni navzgor"
+msgstr "Zdrsni navzgor-navzdol"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:674
-#, fuzzy
 msgid "Move Over Up"
-msgstr "Premakni okno eno delovno površino navzgor"
+msgstr "Premakni nad zgornjo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:675
-#, fuzzy
 msgid "Move Over Down"
-msgstr "Prestavi okno eno delovno površino navzdol"
+msgstr "Premakni nad spodnjo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:676
-#, fuzzy
 msgid "Move Over Left"
-msgstr "Premakni okno eno delovno površino levo"
+msgstr "Premakni nad levo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:677
-#, fuzzy
 msgid "Move Over Right"
-msgstr "Premakni okno eno delovno površino desno"
+msgstr "Premakni nad desno"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:678
-#, fuzzy
 msgid "Move Over Up-Down"
-msgstr "Premakni se navzdol"
+msgstr "Premakni nad zgornjo-spodnjo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:679
-#, fuzzy
 msgid "Move Over Down-Up"
-msgstr "Premakni se navzdol"
+msgstr "Premakni nad spodnjo-zgornjo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:680
-#, fuzzy
 msgid "Move Over Left-Right"
-msgstr "Z leve proti desni"
+msgstr "Premakni nad levo-desno"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:681
-#, fuzzy
 msgid "Move Over Right-Left"
-msgstr "Z leve proti desni"
+msgstr "Premakni nad desno-levo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:682
-#, fuzzy
 msgid "Move Under Up"
-msgstr "Premakni okno eno delovno površino navzgor"
+msgstr "Premakni nad spodnje"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:683
-#, fuzzy
 msgid "Move Under Down"
-msgstr "Prestavi okno eno delovno površino navzdol"
+msgstr "Premakni pod spodnje"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:684
-#, fuzzy
 msgid "Move Under Left"
-msgstr "Premakni okno eno delovno površino levo"
+msgstr "Premakni pod levo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:685
-#, fuzzy
 msgid "Move Under Right"
-msgstr "Premakni okno eno delovno površino desno"
+msgstr "Premakni pod desno"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:686
 msgid "The number of pages in the stack"
@@ -7770,28 +7744,24 @@ msgid "Count:"
 msgstr "Števec:"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:1
-#, fuzzy
 msgid "Headerbar Attributes"
-msgstr "_Določila"
+msgstr "Atributi nazivne vrstice"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:2
 msgid "Custom title"
 msgstr "Naslov po meri"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:3
-#, fuzzy
 msgid "Whether the headerbar should use a custom title widget."
-msgstr "Nastavitev %s za uporabo gradnika oznake po meri"
+msgstr "Ali naj nazivna vrstica uporabi gradnik naslova po meri"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:4
-#, fuzzy
 msgid "Show window controls"
-msgstr "Pokaži/skrij ukazne gumbe"
+msgstr "Pokaži gumbe okna"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:5
-#, fuzzy
 msgid "Whether to show window controls, e.g. a close button."
-msgstr "Ali naj bo polje razreda prikazano na vrhu"
+msgstr "Ali naj bodo pokazani gumbi okna, na primer gumb za ugašanje"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:1
 msgid "Icon View Attributes"
@@ -8000,19 +7970,16 @@ msgid "Button Orientation:"
 msgstr "Usmerjenost gumbov:"
 
 #: ../plugins/gtk+/glade-stack-editor.ui.h:1
-#, fuzzy
 msgid "Stack Attributes"
-msgstr "Sklad"
+msgstr "Atributi sklada"
 
 #: ../plugins/gtk+/glade-stack-editor.ui.h:2
-#, fuzzy
 msgid "Homogeneous:"
-msgstr "Homogeno"
+msgstr "Homogeno:"
 
 #: ../plugins/gtk+/glade-stack-switcher-editor.ui.h:1
-#, fuzzy
 msgid "Stack Switcher Attributes"
-msgstr "Sklad"
+msgstr "Atributi preklopnika sklada"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:1
 msgid "Text View Attributes"
@@ -8135,13 +8102,12 @@ msgid "Title:"
 msgstr "Naslov:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:13
-#, fuzzy
 msgid "Client side window decorations"
-msgstr "Ali naj bodo okraski okna prikazani"
+msgstr "Okraski okna odjemalca"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
-msgstr ""
+msgstr "Ali naj okno vključuje tudi nazivno vrstico po meri."
 
 #~ msgid "Insert GPL v2"
 #~ msgstr "Vstavi GPL v2"
