@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2015-03-15 13:37+0000\n"
-"PO-Revision-Date: 2015-03-31 20:54+0100\n"
+"PO-Revision-Date: 2015-04-11 21:13+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -838,12 +838,25 @@ msgid ""
 "\n"
 "\tThe Glade team\n"
 msgstr ""
+"Zahvaljujemo se vam za izpolnjevanje ankete.\n"
+"\n"
+"Za overitev elektronskega naslova, kliknite na link:\n"
+"\n"
+"https://people.gnome.org/~jpu/glade/registration.php?email="
+"$email&validation_token=$new_validation_token\n"
+"\n"
+"V kolikor bi želeli katerega izmed odgovorov spremeniti, se lahko prijavite "
+"z žetonom:\n"
+"$new_token\n"
+"\n"
+"Lep pozdrav,\n"
+"\n"
+"\tSkupina razvijalcev Glade\n"
 
 #. translators: Email subject sent to the user after updating the survey
 #: ../src/glade-registration.c:37
-#, fuzzy
 msgid "Glade User Survey (update)"
-msgstr "Vpis uporabnikov Glade in anketa"
+msgstr "Anketa za uporabnike razvojnega okolja Glade (posodobljena)"
 
 #. translators: Email body sent to the user after updating the survey
 #: ../src/glade-registration.c:39
@@ -857,6 +870,15 @@ msgid ""
 "\n"
 "\tThe Glade team\n"
 msgstr ""
+"Zahvaljujemo se vam za izpolnjevanje ankete.\n"
+"\n"
+"V kolikor bi želeli katerega izmed odgovorov spremeniti, se lahko prijavite "
+"z žetonom:\n"
+"$new_token\n"
+"\n"
+"Lep pozdrav,\n"
+"\n"
+"\tSkupina razvijalcev Glade\n"
 
 #: ../src/glade-registration.c:306
 #, c-format
@@ -2318,7 +2340,7 @@ msgstr "Pripravi predstavitev za vsako raven gradnikov z dodajanjem v GtkStack"
 
 #: ../gladeui/glade-previewer.c:395
 msgid "Print handlers signature on invocation"
-msgstr ""
+msgstr "Ob zagonu izpiši podpise upravljalnikov"
 
 #: ../gladeui/glade-previewer.c:396
 msgid "Display previewer version"
@@ -2661,6 +2683,7 @@ msgstr "Projekt \"%s\" vsebuje opuščene gradnike in neustrezne različice."
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr ""
+"Predmet %s je predloga razreda, vendar ni podprta v različici gtk+ %d.%d."
 
 #: ../gladeui/glade-project.c:3296
 #, c-format
@@ -3493,14 +3516,14 @@ msgid "Edit Attributes"
 msgstr "Urejanje atributov"
 
 #: ../plugins/gtk+/glade-box-editor.c:133
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a center child"
-msgstr "Nastavitev %s za uporabo podrejenega procesa po meri"
+msgstr "Nastavitev %s za uporabo podrejenega okna"
 
 #: ../plugins/gtk+/glade-box-editor.c:136
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to not use a center child"
-msgstr "Nastavitev %s za uporabo podrejenega procesa po meri"
+msgstr "Nastavitev %s za onemogočanje uporabe podrejenega okna"
 
 #: ../plugins/gtk+/glade-button-editor.c:241
 #, c-format
@@ -3885,15 +3908,17 @@ msgid "Remove Row on %s"
 msgstr "Odstrani vrstico na %s"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
-#, fuzzy
 msgid "This property does not apply when a custom title is set"
-msgstr "Lastnosti ni mogoče uporabiti sočasno z uporabo okrajševanja besedila."
+msgstr ""
+"Lastnosti ni mogoče uporabiti sočasno z uporabo nastavitve naslova po meri"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:304
 msgid ""
 "The decoration layout does not apply to header bars which do no show window "
 "controls"
 msgstr ""
+"Razporeditev okrasov se ne uveljavi za vrstice naslovov, ki so brez gumbov "
+"okna."
 
 #: ../plugins/gtk+/glade-gtk-image.c:106
 msgid "This property only applies to stock images or named icons"
@@ -4171,27 +4196,27 @@ msgstr "Lastnost se ne uveljavi na okraskih okna odjamalca."
 #. * Make the widget use a custom title
 #.
 #: ../plugins/gtk+/glade-header-bar-editor.c:139
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a custom title"
-msgstr "Nastavitev %s za uporabo podrejenega procesa po meri"
+msgstr "Nastavitev %s za uporabo naslova po meri"
 
 #. Translators: %s is the name of a widget here, the sentence means:
 #. * Make the widget use the standard title
 #.
 #: ../plugins/gtk+/glade-header-bar-editor.c:145
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use the standard title"
-msgstr "Nastavitev %s na običajne nastavitve"
+msgstr "Nastavitev %s za uporabo standardnega naslova"
 
 #: ../plugins/gtk+/glade-header-bar-editor.c:193
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to show window controls"
-msgstr "Nastavljanje %s za uporabo poimenovane ikone"
+msgstr "Nastavljanje %s za prikaz gumbov okna"
 
 #: ../plugins/gtk+/glade-header-bar-editor.c:196
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to not show window controls"
-msgstr "Nastavitev %s za neuporabo označenega besedila namigov."
+msgstr "Nastavitev %s za skrivanje gumbov okna"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-icon-factory-editor.c:160
@@ -4405,9 +4430,9 @@ msgid "Setting %s to use an icon file"
 msgstr "Nastavljanje %s za uporabo datoteke ikone"
 
 #: ../plugins/gtk+/glade-window-editor.c:225
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a custom titlebar"
-msgstr "Nastavljanje %s za uporabo orodnega namiga po meri"
+msgstr "Nastavljanje %s za uporabo nazivne vrstice po meri"
 
 #: ../plugins/gtk+/glade-window-editor.c:228
 #, c-format
@@ -6298,11 +6323,11 @@ msgstr "Dodaj režo"
 #: ../plugins/gtk+/gtk+.xml.in.h:657
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr ""
+"Ohrani višino vrstice naslova enako ko se podnaslov dinamično spreminja."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:658
-#, fuzzy
 msgid "The number of items in the header bar"
-msgstr "Število predmetov v oknu"
+msgstr "Število predmetov v vrstici naslova"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:659
 msgid "Stack"
@@ -6406,9 +6431,8 @@ msgid "Stack Switcher"
 msgstr "Preklopnik sklada"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:688
-#, fuzzy
 msgid "Stack Sidebar"
-msgstr "Sklad"
+msgstr "Stransko okno sklada"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:689
 msgid "Revealer"
@@ -6602,6 +6626,8 @@ msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
 msgstr ""
+"Kadar je omogočeno prekrivno drsenje, so drsniki dodani kot običajni "
+"gradniki, kadar je priklopljena miška."
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
@@ -7593,13 +7619,12 @@ msgid "Baseline:"
 msgstr "Osnovnica:"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:3
-#, fuzzy
 msgid "Add center child"
-msgstr "Dodaj središče mase"
+msgstr "Dodaj središčen podrejen predmet"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:4
 msgid "Whether this box should include a centered child."
-msgstr ""
+msgstr "Ali naj okno vsebuje tudi podrejeno okno."
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:1
 msgid "Child alignments:"
