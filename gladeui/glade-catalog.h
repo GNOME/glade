@@ -55,6 +55,7 @@ typedef struct {
 
 void          glade_catalog_add_path                (const gchar      *path);
 void          glade_catalog_remove_path             (const gchar      *path);
+const GList  *glade_catalog_get_extra_paths         (void);
 const GList  *glade_catalog_load_all                (void);
 
 G_CONST_RETURN gchar  *glade_catalog_get_name       (GladeCatalog     *catalog);

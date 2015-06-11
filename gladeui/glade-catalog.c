@@ -601,6 +601,17 @@ glade_catalog_remove_path (const gchar *path)
 }
 
 /**
+ * glade_catalog_get_extra_paths:
+ *
+ * Returns a list paths added by glade_catalog_add_path()
+ */
+const GList *
+glade_catalog_get_extra_paths (void)
+{
+  return catalog_paths;
+}
+
+/**
  * glade_catalog_load_all:
  * 
  * Loads all available catalogs in the system.
