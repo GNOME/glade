@@ -1,4 +1,51 @@
 ============
+Glade 3.19.0
+============
+
+	- Bug 732328 "New: add python3 support" (Bohuslav "Slavek" Kabrda)
+	- Added new symbolic variant of the app icon (747024 - Jakub Steiner)
+	- Bug #741165 "Previewer crashes when taking PNG screenshot"
+	- Added GtkSidebarWidget support (Matthias Clasen)
+	- Added GtkStack and GtkStackSwitcher support (738480 - Matthias Clasen)
+	- Added GtkHeaderBar support (bug 700914 - Matthias Clasen)
+	- Improved undo/redo command list handling.
+	- Added GtkBox center-widget support (bug 738473 - Matthias Clasen)
+	- Added GtkSearchBar support (bug 738493 - Matthias Clasen)
+	- Support CSD windows (Bug 700914 - Matthias Clasen)
+	- Use current gtk-mac-integration API (bug 738339 - Philip Chimento)
+	- Fixed bug 732575 "Changed the type hint on the "Edit Separately" window to 'utility'" (Tristan)
+	- Fixed bug "Missing plural form for UI string: emited %d time(s)"
+	- Avoid reading freed data in glade_project_read_requires (David Shea)
+	- Added class chooser popover to workspace. (Bug 708146 "Catalog search entry")
+	- Added GThemedIcon support.
+	- GladePreviewer: show handler information in infobar when a signal is emited.
+	- Migrated UI from stock icons to icon names.
+	- Seal needed deprecated API and replaced deprecared API.
+	- GladeWindow: only show found recent files.
+	- Added GtkLockButton support.
+
+============
+Glade 3.18.3
+============
+
+	- Fixed property editor focus lost bug with construct-only properties
+	- GladePreviewer: Fixed bug previewing templates.
+	- Fixed Bug 727914 "Logo is not shown in About-dialog"
+	- Fixed Bug 353002 "wrong cursor over widgets"
+	- Fixed bug 728377 "sensitivity of mnemonic-widget entry is not correct when loading file" (David Shea)
+	- Fixed bug 728348 "impossible to set non-integer values for scale in text attribute dialog" (David Shea)
+	- Fixed bug 726410 "Save palette appearance between sessions" (TingPing)
+
+============
+Glade 3.18.2
+============
+
+	- Added dialog at start up to advertise user survey.
+	  Fixes bug 726800 "New: UI break: add dialog to advertise user survey"
+	- Fixes bug 727992 "Editing UI and saving does not remove deleted Combo with Entry"
+	- Fixed bug 364064 "Property Editor / Common tab: width & height request checkboxes have no effect"
+
+============
 Glade 3.18.1
 ============
 
