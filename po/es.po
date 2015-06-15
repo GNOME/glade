@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-17 06:36+0000\n"
-"PO-Revision-Date: 2015-02-17 17:48+0100\n"
+"POT-Creation-Date: 2015-06-15 05:40+0000\n"
+"PO-Revision-Date: 2015-06-15 \n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
-msgstr "Glade"
+msgstr "Gladec"
 
 #: ../data/glade.desktop.in.in.h:2
 msgid "Interface Designer"
@@ -369,14 +369,18 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Imposible abrir «%s», el archivo no existe.\n"
 
 #: ../src/glade.glade.h:1
+#| msgid ""
+#| "Copyright © 2001-2006 Ximian, Inc.\n"
+#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+#| "Copyright © 2004-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+"Copyright © 2004-2015 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgstr ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
-"Copyright © 2001-2006 Joaquín Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+"Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+"Copyright © 2004-2015 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 
 #: ../src/glade.glade.h:4
 msgid "A user interface designer for GTK+ and GNOME."
@@ -422,7 +426,7 @@ msgstr ""
 #: ../src/glade.glade.h:20
 msgid "translator-credits"
 msgstr ""
-"Daniel Mustieles, <daniel.mustieles@gmail.com>, 2011 - 2014\n"
+"Daniel Mustieles, <daniel.mustieles@gmail.com>, 2011 - 2015\n"
 "Jorge González <jorgegonz@svn.gnome.org>, 2007-2010\n"
 "Claudio Saavedra <csaavedra@alumnos.utalca.cl>, 2007\n"
 "Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2005, 2006\n"
@@ -2616,8 +2620,8 @@ msgstr "Propiedades del documento %s"
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
-"Este widget se introdujo en %s %d.%d, mientras que el proyecto apunta a %s "
-"%d.%d"
+"Este widget se introdujo en %s %d.%d, mientras que el proyecto apunta a %s %"
+"d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2906
@@ -2641,8 +2645,8 @@ msgstr "[%s] La clase del objeto «%s» de %s %d.%d está obsoleta\n"
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
-"Esta propiedad se introdujo en %s %d.%d, mientras que el proyecto apunta a "
-"%s %d.%d"
+"Esta propiedad se introdujo en %s %d.%d, mientras que el proyecto apunta a %"
+"s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2920
@@ -2657,8 +2661,8 @@ msgstr ""
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
-"[%s] La propiedad de empaquetado «%s» de la clase del objeto «%s» se "
-"introdujo en %s %d.%d\n"
+"[%s] La propiedad de empaquetado «%s» de la clase del objeto «%s» se introdujo "
+"en %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:2927
 msgid "This property is deprecated"
@@ -2683,8 +2687,7 @@ msgstr ""
 #: ../gladeui/glade-project.c:2938
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr ""
-"[%s] La señal «%s» de la clase de objeto «%s» se introdujo en %s %d.%d\n"
+msgstr "[%s] La señal «%s» de la clase de objeto «%s» se introdujo en %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:2941
 msgid "This signal is deprecated"
@@ -2694,8 +2697,7 @@ msgstr "La señal está obsoleta"
 #: ../gladeui/glade-project.c:2944
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' is deprecated"
-msgstr ""
-"[%s] La señal «%s» de la clase de objeto «%s» se introdujo está obsoleta"
+msgstr "[%s] La señal «%s» de la clase de objeto «%s» se introdujo está obsoleta"
 
 #: ../gladeui/glade-project.c:3240
 msgid "Details"
@@ -4247,22 +4249,28 @@ msgid "This property does not apply to client-side decorated windows"
 msgstr ""
 "Esta propiedad no se aplica a las ventanas decoradas del lado del cliente"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:136
+#. Translators: %s is the name of a widget here, the sentence means:
+#. * Make the widget use a custom title
+#.
+#: ../plugins/gtk+/glade-header-bar-editor.c:139
 #, c-format
 msgid "Setting %s to use a custom title"
 msgstr "Configurando %s para que use un título personalizado"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:139
+#. Translators: %s is the name of a widget here, the sentence means:
+#. * Make the widget use the standard title
+#.
+#: ../plugins/gtk+/glade-header-bar-editor.c:145
 #, c-format
 msgid "Setting %s to use the standard title"
 msgstr "Configurando %s para que use el título estándar"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:187
+#: ../plugins/gtk+/glade-header-bar-editor.c:193
 #, c-format
 msgid "Setting %s to show window controls"
 msgstr "Configurando %s para que muestre los controles de la ventana"
 
-#: ../plugins/gtk+/glade-header-bar-editor.c:190
+#: ../plugins/gtk+/glade-header-bar-editor.c:196
 #, c-format
 msgid "Setting %s to not show window controls"
 msgstr "Configurando %s para que no muestre los controles de la ventana"
@@ -4291,8 +4299,7 @@ msgstr ""
 msgid ""
 "Set whether you want to specify a text direction for this source of '%s'"
 msgstr ""
-"Ajustar si quiere especificar una dirección del texto para esta fuente de "
-"«%s»"
+"Ajustar si quiere especificar una dirección del texto para esta fuente de «%s»"
 
 #: ../plugins/gtk+/glade-icon-sources.c:772
 #, c-format
@@ -4411,8 +4418,8 @@ msgid ""
 "you to retrieve them when setting cell renderer attributes (press the Delete "
 "key to remove the selected column)"
 msgstr ""
-"Definir columnas para su «liststore», darlas nombres con sentido le ayudará "
-"a obtenerlas al establecer atributos de renderizado de las celdas (pulse la "
+"Definir columnas para su «liststore», darlas nombres con sentido le ayudará a "
+"obtenerlas al establecer atributos de renderizado de las celdas (pulse la "
 "tecla Supr para eliminar la columna seleccionada)"
 
 #: ../plugins/gtk+/glade-store-editor.c:190
@@ -6497,7 +6504,6 @@ msgid "Stack Switcher"
 msgstr "Interruptor de la pila"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:688
-#| msgid "Stack Switcher"
 msgid "Stack Sidebar"
 msgstr "Barra lateral de la pila"
 
@@ -8610,11 +8616,11 @@ msgstr "Indica si la ventana debe incluir una barra de título personalizada."
 #~ "que el proyecto apunta a %s %d.%d"
 
 #~ msgid ""
-#~ "[%s] Object class '%s' was made available in GtkBuilder format in %s %d."
-#~ "%d\n"
+#~ "[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%"
+#~ "d\n"
 #~ msgstr ""
-#~ "[%s] La clase del objeto «%s» se introdujo en el formato GtkBuilder en %s "
-#~ "%d.%d\n"
+#~ "[%s] La clase del objeto «%s» se introdujo en el formato GtkBuilder en %s %"
+#~ "d.%d\n"
 
 #~ msgid "This widget is only supported in libglade format"
 #~ msgstr "Este widget sólo está soportado en el formato libglade"
