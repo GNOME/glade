@@ -31,57 +31,43 @@ A typical basic example of a widget class definition is as follows:
 Here is the complete example of the form of the `glade-widget-class' definition:
       <programlisting>
 <![CDATA[<glade-widget-class name="FooFrobnicator" generic-name="frobnicator" title="Frobnicator"/>
-
   <post-create-function>foo_frobnicator_plugin_post_create</post-create-function>
 
   ... widget class support functions go here
 
   <properties>
-
     <property id="frobnicated" default="False"/>
 
     ... property definitions go here
-
   </properties>
 
   <signals>
-
     <signal id="frobnicate" since="1.0"/>
 
     ... signal definitions go here
-
   </signals>
 
   <packing-properties>
-
     ... child packing property definitions go here
-
   </packing-properties>
 
   <actions>
-
     <action id="launch_editor" name="Edit Frob" stock="gtk-edit"/>
 
     ... context menu action definitions go here
-
   </actions>
 
   <packing-actions>
-
     ... context menu action definitions for child objects go here
-
   </packing-actions>
 
   <packing-defaults>
-
     <parent-class name="GtkVBox">
       <child-property id="expand" default="false"/>
     </parent-class>
 
     ... packing default definitions go here
-
   </packing-defaults>
-
 </glade-widget-class>]]></programlisting>
     </para>
 
