@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 3.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-06-08 05:43+0000\n"
-"PO-Revision-Date: 2015-06-23 09:20+0100\n"
+"POT-Creation-Date: 2015-07-04 05:44+0000\n"
+"PO-Revision-Date: 2015-07-04 08:59+0100\n"
 "Last-Translator: Pedro Albuquerque <palbuquerque73@openmailbox.com>\n"
 "Language-Team: Português <palbuquerque73@openmailbox.com>\n"
 "Language: pt\n"
@@ -231,12 +231,10 @@ msgstr "Fechar _Sem gravar"
 #: ../gladeui/glade-editor-property.c:3260
 #: ../gladeui/glade-editor-property.c:3571 ../gladeui/glade-utils.c:483
 #: ../plugins/gtk+/glade-accels.c:525 ../plugins/gtk+/glade-attributes.c:1062
-#| msgid "Cancel"
 msgid "_Cancel"
 msgstr "_Cancelar"
 
 #: ../src/glade-window.c:1480 ../gladeui/glade-utils.c:486
-#| msgid "Save"
 msgid "_Save"
 msgstr "_Gravar"
 
@@ -367,14 +365,18 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Impossível abrir \"%s\", o ficheiro não existe.\n"
 
 #: ../src/glade.glade.h:1
+#| msgid ""
+#| "Copyright © 2001-2006 Ximian, Inc.\n"
+#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+#| "Copyright © 2004-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+"Copyright © 2004-2015 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgstr ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2001-2012 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+"Copyright © 2004-2015 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 
 #: ../src/glade.glade.h:4
 msgid "A user interface designer for GTK+ and GNOME."
@@ -859,7 +861,6 @@ msgstr ""
 
 #. translators: Email subject sent to the user after updating the survey
 #: ../src/glade-registration.c:37
-#| msgid "Glade User Survey"
 msgid "Glade User Survey (update)"
 msgstr "Questionário ao utilizador Glade (atualização)"
 
@@ -928,10 +929,6 @@ msgid "Name and Email fields are required"
 msgstr "Os campos Nome e Correio eletrónico são requeridos"
 
 #: ../src/glade-registration.c:437
-#| msgid ""
-#| "Ops! Email address is already in use!\n"
-#| "To update information you need to provide the token that was sent to your "
-#| "inbox."
 msgid ""
 "Oops! Email address is already in use!\n"
 "To update information you need to provide the token that was sent to your "
@@ -943,19 +940,16 @@ msgstr ""
 
 #: ../src/glade-registration.c:440
 #, c-format
-#| msgid "Ops! Error saving user information: %s"
 msgid "Oops! Error saving user information: %s"
 msgstr "Oops! Erro ao gravar informação do utilizador: %s"
 
 #: ../src/glade-registration.c:443
 #, c-format
-#| msgid "Ops! Error saving survey data: %s"
 msgid "Oops! Error saving survey data: %s"
 msgstr "Oops! Erro ao gravar dados do questionário: %s"
 
 #: ../src/glade-registration.c:446
 #, c-format
-#| msgid "Ops! Error accessing DB: %s"
 msgid "Oops! Error accessing DB: %s"
 msgstr "Oops! Erro ao aceder à BD: %s"
 
@@ -2039,7 +2033,6 @@ msgid "Select Fields"
 msgstr "Selecionar os campos"
 
 #: ../gladeui/glade-editor-property.c:1320
-#| msgid "Close"
 msgid "_Close"
 msgstr "Fe_Char"
 
@@ -2092,7 +2085,6 @@ msgid "Select a file from the project resource directory"
 msgstr "Selecione um ficheiro da pasta de recursos do projeto"
 
 #: ../gladeui/glade-editor-property.c:2194 ../gladeui/glade-utils.c:486
-#| msgid "Open"
 msgid "_Open"
 msgstr "_Abrir"
 
@@ -2256,18 +2248,15 @@ msgid "Cu_t"
 msgstr "Cor_Tar"
 
 #: ../gladeui/glade-popup.c:400
-#| msgid "Copy"
 msgid "_Copy"
 msgstr "_Copiar"
 
 #: ../gladeui/glade-popup.c:407 ../gladeui/glade-popup.c:410
 #: ../gladeui/glade-popup.c:413
-#| msgid "Paste"
 msgid "_Paste"
 msgstr "Co_Lar"
 
 #: ../gladeui/glade-popup.c:417
-#| msgid "Delete"
 msgid "_Delete"
 msgstr "_Eliminar"
 
@@ -2396,13 +2385,11 @@ msgid "Preview"
 msgstr "Antever"
 
 #: ../gladeui/glade-preview-window.c:664 ../gladeui/glade-preview-window.c:674
-#| msgid "User data"
 msgid "user_data"
 msgstr "Dados do utilizador"
 
 #. translators: GConnectFlags values
 #: ../gladeui/glade-preview-window.c:678
-#| msgid "Swapped"
 msgid "Swapped | After"
 msgstr "Trocado | Após"
 
@@ -3552,13 +3539,11 @@ msgstr "Editar os atributos"
 
 #: ../plugins/gtk+/glade-box-editor.c:133
 #, c-format
-#| msgid "Setting %s to use a custom child"
 msgid "Setting %s to use a center child"
 msgstr "A definir %s para utilizar um filho central"
 
 #: ../plugins/gtk+/glade-box-editor.c:136
 #, c-format
-#| msgid "Setting %s to use a custom child"
 msgid "Setting %s to not use a center child"
 msgstr "A definir %s para não utilizar um filho central"
 
@@ -3945,7 +3930,6 @@ msgid "Remove Row on %s"
 msgstr "Remover linha de %s"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
-#| msgid "This property does not apply when Ellipsize is set."
 msgid "This property does not apply when a custom title is set"
 msgstr ""
 "Esta propriedade não se aplica quando está definido um título personalizado"
@@ -4083,7 +4067,6 @@ msgid "This property is disabled"
 msgstr "Esta propriedade está desativada"
 
 #: ../plugins/gtk+/glade-gtk-searchbar.c:72
-#| msgid "Search is disabled"
 msgid "Search bar is already full"
 msgstr "A procura está desativada"
 
@@ -4228,7 +4211,6 @@ msgid "New Size Group"
 msgstr "Novo grupo de tamanho"
 
 #: ../plugins/gtk+/glade-gtk-window.c:39
-#| msgid "This property does not apply unless Use Underline is set."
 msgid "This property does not apply to client-side decorated windows"
 msgstr "Esta propriedade não se aplica a janelas decoradas pelo cliente"
 
@@ -4237,7 +4219,6 @@ msgstr "Esta propriedade não se aplica a janelas decoradas pelo cliente"
 #.
 #: ../plugins/gtk+/glade-header-bar-editor.c:139
 #, c-format
-#| msgid "Setting %s to use a custom child"
 msgid "Setting %s to use a custom title"
 msgstr "A definir %s para utilizar um título personalizado"
 
@@ -4246,19 +4227,16 @@ msgstr "A definir %s para utilizar um título personalizado"
 #.
 #: ../plugins/gtk+/glade-header-bar-editor.c:145
 #, c-format
-#| msgid "Setting %s to use standard label text"
 msgid "Setting %s to use the standard title"
 msgstr "A definir %s para utilizar o título padrão"
 
 #: ../plugins/gtk+/glade-header-bar-editor.c:193
 #, c-format
-#| msgid "Setting %s to use a named icon"
 msgid "Setting %s to show window controls"
 msgstr "A definir %s para mostrar controlos de janela"
 
 #: ../plugins/gtk+/glade-header-bar-editor.c:196
 #, c-format
-#| msgid "Setting %s to not use tooltip markup"
 msgid "Setting %s to not show window controls"
 msgstr "A definir %s para não mostrar controlos de janela"
 
@@ -4482,13 +4460,11 @@ msgstr "A definir %s para utilizar um ficheiro de ícone"
 
 #: ../plugins/gtk+/glade-window-editor.c:225
 #, c-format
-#| msgid "Setting %s to use a custom child"
 msgid "Setting %s to use a custom titlebar"
 msgstr "A definir %s para utilizar uma barra de título personalizada"
 
 #: ../plugins/gtk+/glade-window-editor.c:228
 #, c-format
-#| msgid "Setting %s to use a stock item"
 msgid "Setting %s to use a system provided titlebar"
 msgstr "A definir %s para utilizar uma barra de título do sistema"
 
@@ -5236,7 +5212,6 @@ msgstr "Alavanca"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:283
-#| msgid "Title"
 msgid "Title Bar"
 msgstr "Barra de título"
 
@@ -5257,13 +5232,11 @@ msgstr "Vídeo"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:291
-#| msgid "Description:"
 msgid "Definition"
 msgstr "Definição"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:293
-#| msgid "Vertical"
 msgid "Article"
 msgstr "Artigo"
 
@@ -5274,7 +5247,6 @@ msgstr "Marco"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:297
-#| msgid "Logo:"
 msgid "Log"
 msgstr "Registo"
 
@@ -5290,7 +5262,6 @@ msgstr "Matemática"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:303
-#| msgid "Formatting"
 msgid "Rating"
 msgstr "Classificação"
 
@@ -5301,19 +5272,16 @@ msgstr "Tempo"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:307
-#| msgid "Description:"
 msgid "Description List"
 msgstr "Lista de descrição"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:309
-#| msgid "Description For"
 msgid "Description Term"
 msgstr "Termo de descrição"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:311
-#| msgid "Description:"
 msgid "Description Value"
 msgstr "Valor de descrição"
 
@@ -5537,7 +5505,6 @@ msgid "Bottom"
 msgstr "Inferior"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:365
-#| msgid "Center"
 msgid "Center Child"
 msgstr "Centrar filho"
 
@@ -6112,7 +6079,6 @@ msgid "Text View"
 msgstr "Vista Texto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:572
-#| msgid "Search Entry"
 msgid "Search Bar"
 msgstr "Barra de procura"
 
@@ -6372,7 +6338,6 @@ msgid "The number of pages in the notebook"
 msgstr "O número de páginas no bloco de notas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:653
-#| msgid "Header"
 msgid "HeaderBar"
 msgstr "Barra de cabeçalho"
 
@@ -6381,12 +6346,10 @@ msgid "Reserve space for subtitle"
 msgstr "Reservar espaço para subtítulo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:655
-#| msgid "Custom Text"
 msgid "Custom Title"
 msgstr "Texto personalizado"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:656
-#| msgid "Add Row"
 msgid "Add Slot"
 msgstr "Adicionar linha"
 
@@ -6397,7 +6360,6 @@ msgstr ""
 "dinamicamente."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:658
-#| msgid "The number of items in the box"
 msgid "The number of items in the header bar"
 msgstr "O número de itens na barra de cabeçalho"
 
@@ -6406,12 +6368,10 @@ msgid "Stack"
 msgstr "Pilha"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:660
-#| msgid "Edit page:"
 msgid "Edit page"
 msgstr "Página a editar"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:661
-#| msgid "Visible column"
 msgid "Visible child"
 msgstr "Filho visível"
 
@@ -6441,12 +6401,10 @@ msgid "Slide Down"
 msgstr "Deslizar abaixo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:672
-#| msgid "Slide Right"
 msgid "Slide Left-Right"
 msgstr "Deslizar à direita"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:673
-#| msgid "Slide Down"
 msgid "Slide Up-Down"
 msgstr "Deslizar abaixo"
 
@@ -6463,7 +6421,6 @@ msgid "Move Over Left"
 msgstr "Mover sobre à esquerda"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:677
-#| msgid "Toplevel Height"
 msgid "Move Over Right"
 msgstr "Mover sobre à direita"
 
@@ -6500,12 +6457,10 @@ msgid "Move Under Right"
 msgstr "Mover sob à direita"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:686
-#| msgid "The number of pages in the notebook"
 msgid "The number of pages in the stack"
 msgstr "O número de páginas na pilha"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:687
-#| msgid "Switch"
 msgid "Stack Switcher"
 msgstr "Alternador de pilha"
 
@@ -6645,7 +6600,6 @@ msgid "Menu Button"
 msgstr "Botão de menu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:731
-#| msgid "Stock Button"
 msgid "Lock Button"
 msgstr "Botão de trancar"
 
@@ -7582,7 +7536,6 @@ msgid "Recent Manager"
 msgstr "Gestor de Recentes"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1033
-#| msgid "Select Named Icon"
 msgid "Themed Icon"
 msgstr "Ícone de tema"
 
@@ -7703,7 +7656,6 @@ msgid "Baseline:"
 msgstr "Linha base:"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:3
-#| msgid "Add child %s"
 msgid "Add center child"
 msgstr "Adicionar filho central"
 
@@ -7854,17 +7806,14 @@ msgid "Count:"
 msgstr "Contagem:"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:1
-#| msgid "Tab Attributes"
 msgid "Headerbar Attributes"
 msgstr "Atributos da barra de cabeçalho"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:2
-#| msgid "Custom Text"
 msgid "Custom title"
 msgstr "Título personalizado"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:3
-#| msgid "Setting %s to use a custom label widget"
 msgid "Whether the headerbar should use a custom title widget."
 msgstr "Se a barra de cabeçalho deve usar um wodget de título personalizado."
 
@@ -7873,7 +7822,6 @@ msgid "Show window controls"
 msgstr "Mostrar controlos de janela"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:5
-#| msgid "Whether to show the class field at the top"
 msgid "Whether to show window controls, e.g. a close button."
 msgstr ""
 "Se mostrar ou não controlos de janela, por exemplo, um botão para a fechar."
@@ -8085,17 +8033,14 @@ msgid "Button Orientation:"
 msgstr "Orientação do botão:"
 
 #: ../plugins/gtk+/glade-stack-editor.ui.h:1
-#| msgid "Scale Attributes"
 msgid "Stack Attributes"
 msgstr "Atributos da pilha"
 
 #: ../plugins/gtk+/glade-stack-editor.ui.h:2
-#| msgid "Homogeneous"
 msgid "Homogeneous:"
 msgstr "Homogéneo:"
 
 #: ../plugins/gtk+/glade-stack-switcher-editor.ui.h:1
-#| msgid "Scale Attributes"
 msgid "Stack Switcher Attributes"
 msgstr "Atributos de alternador da pilha"
 
