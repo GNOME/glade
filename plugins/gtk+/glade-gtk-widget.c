@@ -881,6 +881,8 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
         new_type = GTK_TYPE_BOX;
       else if (strcmp (action, "paned") == 0)
         new_type = GTK_TYPE_PANED;
+      else if (strcmp (action, "stack") == 0)
+        new_type = GTK_TYPE_STACK;
 
       if (new_type)
         {
