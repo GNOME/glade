@@ -240,7 +240,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
   /* GtkLockButton hides itself after setting a property so we need to make sure
    * we keep it visible.
    */
-  if (GTK_IS_LOCK_BUTTON (object) && glade_gtk_lock_button_is_own_property (property));
+  if (GTK_IS_LOCK_BUTTON (object) && glade_gtk_lock_button_is_own_property (property))
     gtk_widget_set_visible (GTK_WIDGET (object), TRUE);
 }
 
