@@ -46,6 +46,48 @@ glade_gtk_popover_constructor (GType type,
   return ret_obj;
 }
 
+static void
+glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy,
+                                 gpointer data)
+{
+  g_signal_stop_emission (instance, GPOINTER_TO_UINT (data), 0);
+}
+
+static void
+glade_gtk_popover_stop_offending_signals (GtkWidget * widget)
+{
+  static gpointer button_press = NULL,
+                  button_release,
+                  key_press;
+
+  if (button_press == NULL)
+    {
+      button_press = GUINT_TO_POINTER (g_signal_lookup ("button-press-event", GTK_TYPE_WIDGET));
+      button_release = GUINT_TO_POINTER (g_signal_lookup ("button-release-event", GTK_TYPE_WIDGET));
+      key_press = GUINT_TO_POINTER (g_signal_lookup ("key-press-event", GTK_TYPE_WIDGET));
+    }
+
+  g_signal_connect (widget, "button-press-event",
+                    G_CALLBACK (glade_gtk_stop_emission_POINTER), button_press);
+  g_signal_connect (widget, "button-release-event",
+                    G_CALLBACK (glade_gtk_stop_emission_POINTER), button_release);
+  g_signal_connect (widget, "key-press-event",
+                    G_CALLBACK (glade_gtk_stop_emission_POINTER), key_press);
+}
+
+void
+glade_gtk_popover_post_create (GladeWidgetAdaptor *adaptor,
+                               GObject            *object,
+                               GladeCreateReason   reason)
+{
+  if (reason == GLADE_CREATE_USER)
+    {
+      gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
+    }
+
+  glade_gtk_popover_stop_offending_signals (GTK_WIDGET (object));
+}
+
 GladeEditable *
 glade_gtk_popover_create_editable (GladeWidgetAdaptor * adaptor,
                                    GladeEditorPageType  type)
