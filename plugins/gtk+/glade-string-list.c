@@ -522,7 +522,10 @@ cell_data_func (GtkTreeViewColumn   *column,
 
       if (dummy)
 	{
-	  gtk_style_context_get_color (context, GTK_STATE_FLAG_INSENSITIVE, &color);
+          gtk_style_context_save (context);
+          gtk_style_context_set_state (context, gtk_style_context_get_state (context) | GTK_STATE_FLAG_INSENSITIVE);
+	  gtk_style_context_get_color (context, gtk_style_context_get_state (context), &color);
+          gtk_style_context_restore (context);
 	  g_object_set (renderer, 
 			"style", PANGO_STYLE_ITALIC,
 			"foreground-rgba", &color,
@@ -530,7 +533,7 @@ cell_data_func (GtkTreeViewColumn   *column,
 	}
       else
 	{
-	  gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL, &color);
+	  gtk_style_context_get_color (context, gtk_style_context_get_state (context), &color);
 	  g_object_set (renderer,
 			"style", PANGO_STYLE_NORMAL,
 			"foreground-rgba", &color,
