@@ -116,7 +116,7 @@ glade_gtk_popover_menu_project_changed (GladeWidget * gwidget,
 }
 
 static gint
-get_visible_child (GtkPopoverMenu *popover)
+get_visible_child (GtkPopoverMenu *popover, GtkWidget **visible_child)
 {
   gchar *visible;
   GList *children, *l;
@@ -137,6 +137,8 @@ get_visible_child (GtkPopoverMenu *popover)
       g_free (name);
       if (found)
         {
+          if (visible_child)
+            *visible_child = child;
           ret = i;
           break;
         }
@@ -156,18 +158,23 @@ glade_gtk_popover_menu_visible_submenu_changed (GObject *popover,
   GladeProject *project = glade_widget_get_project (gwidget);
   gint current;
   GList *list;
+  GtkWidget *visible_child;
 
-  current = get_visible_child (GTK_POPOVER_MENU (popover));
+  current = get_visible_child (GTK_POPOVER_MENU (popover), &visible_child);
   glade_widget_property_set (gwidget, "current", current);
 
   if ((list = glade_project_selection_get (project)) != NULL &&
-      g_list_length (list) == 1)
+      list->next == NULL)
     {
       GObject *selected = list->data;
 
       if (GTK_IS_WIDGET (selected) &&
-          gtk_widget_is_ancestor (GTK_WIDGET (selected), GTK_WIDGET (popover)))
-        glade_project_selection_clear (project, TRUE);
+          gtk_widget_is_ancestor (GTK_WIDGET (selected), GTK_WIDGET (popover)) &&
+          (GtkWidget*)selected != visible_child &&
+          !gtk_widget_is_ancestor (GTK_WIDGET (selected), GTK_WIDGET (visible_child)))
+        {
+          glade_project_selection_clear (project, TRUE);
+        }
     }
 }
 
@@ -439,7 +446,7 @@ glade_gtk_popover_menu_get_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "current"))
     {
       g_value_reset (value);
-      g_value_set_int (value, get_visible_child (GTK_POPOVER_MENU (object)));
+      g_value_set_int (value, get_visible_child (GTK_POPOVER_MENU (object), NULL));
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
@@ -533,7 +540,7 @@ glade_gtk_popover_menu_set_child_position (GObject * container,
   g_free (visible_child); 
 
   gbox = glade_widget_get_from_gobject (container);
-  glade_widget_pack_property_set (gbox, "visible-submenu", get_visible_child (GTK_POPOVER_MENU (container)));
+  glade_widget_pack_property_set (gbox, "visible-submenu", get_visible_child (GTK_POPOVER_MENU (container), NULL));
 }
 
 void
