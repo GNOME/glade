@@ -97,7 +97,7 @@ on_drag_icon_draw (GtkWidget *widget, cairo_t *cr)
   h = alloc.height;
   h2 = h/2.0;
 
-  gtk_style_context_get_background_color (context, GTK_STATE_NORMAL, &bg);
+  gtk_style_context_get_background_color (context, gtk_style_context_get_state (context), &bg);
 
   gradient = cairo_pattern_create_linear (x, y, x, y+h);
   cairo_pattern_add_color_stop_rgba (gradient, 0, bg.red, bg.green, bg.blue, 0);
