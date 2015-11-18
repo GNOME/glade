@@ -156,20 +156,22 @@ glade_cursor_init (void)
 {
   gchar *path;
   GError *error = NULL;
+  GdkDisplay *display;
 
   cursor = g_new0 (GladeCursor, 1);
+  display = gdk_display_get_default ();
 
   cursor->selector = NULL;
-  cursor->add_widget = gdk_cursor_new (GDK_PLUS);
-  cursor->resize_top_left = gdk_cursor_new (GDK_TOP_LEFT_CORNER);
-  cursor->resize_top_right = gdk_cursor_new (GDK_TOP_RIGHT_CORNER);
-  cursor->resize_bottom_left = gdk_cursor_new (GDK_BOTTOM_LEFT_CORNER);
-  cursor->resize_bottom_right = gdk_cursor_new (GDK_BOTTOM_RIGHT_CORNER);
-  cursor->resize_left = gdk_cursor_new (GDK_LEFT_SIDE);
-  cursor->resize_right = gdk_cursor_new (GDK_RIGHT_SIDE);
-  cursor->resize_top = gdk_cursor_new (GDK_TOP_SIDE);
-  cursor->resize_bottom = gdk_cursor_new (GDK_BOTTOM_SIDE);
-  cursor->drag = gdk_cursor_new (GDK_FLEUR);
+  cursor->add_widget = gdk_cursor_new_from_name (display, "crosshair");
+  cursor->resize_top_left = gdk_cursor_new_from_name (display, "nw-resize");
+  cursor->resize_top_right = gdk_cursor_new_from_name (display, "ne-resize");
+  cursor->resize_bottom_left = gdk_cursor_new_from_name (display, "sw-resize");
+  cursor->resize_bottom_right = gdk_cursor_new_from_name (display, "se-resize");
+  cursor->resize_left = gdk_cursor_new_from_name (display, "w-resize");
+  cursor->resize_right = gdk_cursor_new_from_name (display, "e-resize");
+  cursor->resize_top = gdk_cursor_new_from_name (display, "n-resize");
+  cursor->resize_bottom = gdk_cursor_new_from_name (display, "s-resize");
+  cursor->drag = gdk_cursor_new_from_name (display, "move");
   cursor->add_widget_pixbuf = NULL;
 
   /* load "add" cursor pixbuf */
