@@ -973,17 +973,21 @@ glade_signal_editor_handler_cell_data_func (GtkTreeViewColumn *column,
       dummy = glade_signal_is_dummy (signal);
       if (dummy)
 	{
-	  gtk_style_context_get_color (context, 
-				       GTK_STATE_FLAG_INSENSITIVE, &color);
+          gtk_style_context_save (context);
+          gtk_style_context_set_state (context, gtk_style_context_get_state (context) | GTK_STATE_FLAG_INSENSITIVE);
+	  gtk_style_context_get_color (context,
+                                       gtk_style_context_get_state (context),
+                                       &color);
 	  g_object_set (renderer, 
 			"style", PANGO_STYLE_ITALIC,
 			"foreground-rgba", &color,
 			NULL);
+          gtk_style_context_restore (context);
 	}
       else
 	{
-	  gtk_style_context_get_color (context, 
-				       GTK_STATE_FLAG_NORMAL,
+	  gtk_style_context_get_color (context,
+				       gtk_style_context_get_state (context),
 				       &color);
 	  g_object_set (renderer,
 			"style", PANGO_STYLE_NORMAL,
@@ -1030,17 +1034,21 @@ glade_signal_editor_detail_cell_data_func (GtkTreeViewColumn *column,
       dummy = glade_signal_is_dummy (signal);
       if (dummy || !glade_signal_get_detail (signal))
 	{
-	  gtk_style_context_get_color (context, 
-				       GTK_STATE_FLAG_INSENSITIVE, &color);
+          gtk_style_context_save (context);
+          gtk_style_context_set_state (context, gtk_style_context_get_state (context) | GTK_STATE_FLAG_INSENSITIVE);
+	  gtk_style_context_get_color (context,
+				       gtk_style_context_get_state (context),
+                                       &color);
 	  g_object_set (renderer,
 			"style", PANGO_STYLE_ITALIC,
 			"foreground-rgba", &color,
 			NULL);
+          gtk_style_context_restore (context);
 	}
       else
 	{
-	  gtk_style_context_get_color (context, 
-				       GTK_STATE_FLAG_NORMAL,
+	  gtk_style_context_get_color (context,
+				       gtk_style_context_get_state (context),
 				       &color);
 	  g_object_set (renderer,
 			"style", PANGO_STYLE_NORMAL,
@@ -1096,17 +1104,22 @@ glade_signal_editor_data_cell_data_func (GtkTreeViewColumn *column,
 
 	  if (dummy || !glade_signal_get_userdata (signal))
 	    {
-	      gtk_style_context_get_color (context, GTK_STATE_FLAG_INSENSITIVE, &color);
+              gtk_style_context_save (context);
+              gtk_style_context_set_state (context, gtk_style_context_get_state (context) | GTK_STATE_FLAG_INSENSITIVE);
+	      gtk_style_context_get_color (context,
+                                           gtk_style_context_get_state (context),
+                                           &color);
 	      g_object_set (renderer, 
 			    "style", PANGO_STYLE_ITALIC,
 			    "foreground-rgba", &color,
 			    NULL);
+              gtk_style_context_restore (context);
 	    }
 	  else
 	    {
-	      gtk_style_context_get_color (context, 
-					   GTK_STATE_FLAG_NORMAL,
-					   &color);
+	      gtk_style_context_get_color (context,
+                                           gtk_style_context_get_state (context),
+                                           &color);
 	      g_object_set (renderer,
 			    "style", PANGO_STYLE_NORMAL,
 			    "foreground-rgba", &color,
