@@ -2210,12 +2210,16 @@ _glade_design_layout_get_colors (GtkStyleContext *context,
                                  GdkRGBA *c3, GdkRGBA *c4)
 {
   gfloat off;
-  
-  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, c1);
-  gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL, c2);
 
-  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, c3);
-  gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, c4);
+  gtk_style_context_save (context);
+  gtk_style_context_set_state (context, GTK_STATE_FLAG_NORMAL);
+  gtk_style_context_get_background_color (context, gtk_style_context_get_state (context), c1);
+  gtk_style_context_get_color (context, gtk_style_context_get_state (context), c2);
+
+  gtk_style_context_set_state (context, gtk_style_context_get_state (context) | GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED);
+  gtk_style_context_get_background_color (context, gtk_style_context_get_state (context), c3);
+  gtk_style_context_get_color (context, gtk_style_context_get_state (context), c4);
+  gtk_style_context_restore (context);
 
   off = ((c1->red + c1->green + c1->blue)/3 < .5) ? .16 : -.16;
    
