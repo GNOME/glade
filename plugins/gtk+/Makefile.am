@@ -102,6 +102,9 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-scrollbar.c		\
 	glade-gtk-scrolled-window.c	\
 	glade-gtk-searchbar.c		\
+	glade-gtk-shortcutswindow.c	\
+	glade-gtk-shortcutssection.c	\
+	glade-gtk-shortcutsgroup.c	\
 	glade-gtk-size-group.c		\
 	glade-gtk-spin-button.c		\
 	glade-gtk-stack.c		\
@@ -146,6 +149,9 @@ libgladegtk_la_SOURCES = 		\
 	glade-scrollable-editor.c	\
 	glade-scrollbar-editor.c	\
 	glade-scrolled-window-editor.c	\
+	glade-shortcutswindow-editor.c	\
+	glade-shortcutssection-editor.c	\
+	glade-shortcutsgroup-editor.c	\
 	glade-spin-button-editor.c	\
 	glade-stack-editor.c		\
 	glade-stack-switcher-editor.c	\
@@ -225,6 +231,9 @@ noinst_HEADERS =			\
 	glade-scrollable-editor.h	\
 	glade-scrollbar-editor.h	\
 	glade-scrolled-window-editor.h	\
+	glade-shortcutswindow-editor.h	\
+	glade-shortcutssection-editor.h	\
+	glade-shortcutsgroup-editor.h	\
 	glade-spin-button-editor.h	\
 	glade-stack-editor.h		\
 	glade-stack-switcher-editor.h	\
@@ -302,6 +311,9 @@ UI_FILES = 				\
 	glade-scrollable-editor.ui	\
 	glade-scrollbar-editor.ui	\
 	glade-scrolled-window-editor.ui	\
+	glade-shortcutswindow-editor.ui	\
+	glade-shortcutssection-editor.ui	\
+	glade-shortcutsgroup-editor.ui	\
 	glade-spin-button-editor.ui	\
 	glade-stack-editor.ui		\
 	glade-stack-switcher-editor.ui	\

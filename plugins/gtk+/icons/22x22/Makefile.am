@@ -98,6 +98,9 @@ icons_DATA = \
 	widget-gtk-separator.png \
 	widget-gtk-separatormenuitem.png \
 	widget-gtk-separatortoolitem.png \
+	widget-gtk-shortcutsshortcut.png \
+	widget-gtk-shortcutsgesture.png \
+	widget-gtk-shortcutswindow.png \
 	widget-gtk-stacksidebar.png \
 	widget-gtk-sizegroup.png \
 	widget-gtk-spinbutton.png \

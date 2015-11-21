@@ -180,7 +180,7 @@
           <property id="double-buffered" custom-layout="True" since="2.18"/>
           
           <!-- Accelerators -->
-          <property id="accelerator" _name="Accelerators" ignore="True" custom-layout="True" save="False">
+          <property id="accelerators" _name="Accelerators" ignore="True" custom-layout="True" save="False">
             <parameter-spec>
               <type>GParamBoxed</type>
               <value-type>GladeAccelGList</value-type>
@@ -1815,12 +1815,12 @@
           <property id="width-chars" custom-layout="True"/>
           
           <!-- Disable GtkBox stuff -->
-          <property id="size" disabled="True"/>
-          <property id="homogeneous" disabled="True"/>
-          <property id="orientation" disabled="True"/>
-          <property id="spacing" disabled="True"/>
-          <property id="baseline-position" disabled="True"/>
-          <property id="use-center-child" disabled="True"/>
+          <property id="size" disabled="True" visible="False"/>
+          <property id="homogeneous" disabled="True" visible="False"/>
+          <property id="orientation" disabled="True" visible="False"/>
+          <property id="spacing" disabled="True" visible="False"/>
+          <property id="baseline-position" disabled="True" visible="False"/>
+          <property id="use-center-child" disabled="True" visible="False"/>
           
           <!-- GtkFileChooser properties are custom-layout, handled in GladeFileChooserEditor -->
           <property id="extra-widget" parentless-widget="True" custom-layout="True"/>
@@ -2936,7 +2936,6 @@
 
       <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" use-placeholders="False">
         <create-editable-function>glade_gtk_layout_create_editable</create-editable-function>
-        <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
         <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
         <add-child-function>glade_gtk_fixed_layout_add_child</add-child-function>
         <remove-child-function>glade_gtk_fixed_layout_remove_child</remove-child-function> 
@@ -5301,8 +5300,157 @@
 
       <glade-widget-class name="GThemedIcon" generic-name="themedicon" _title="Themed Icon" toplevel="True"/>
 
+      <glade-widget-class name="GtkShortcutsWindow" generic-name="shortcutswindow" _title="Shortcuts Window" toplevel="True" use-placeholders="False">
+        <post-create-function>glade_gtk_shortcutswindow_post_create</post-create-function>
+        <action-activate-function>glade_gtk_shortcutswindow_action_activate</action-activate-function>
+        <add-child-verify-function>glade_gtk_shortcutswindow_add_verify</add-child-verify-function>
+        <add-child-function>glade_gtk_shortcutswindow_add_child</add-child-function>
+        <remove-child-function>glade_gtk_shortcutswindow_remove_child</remove-child-function>
+        <replace-child-function>glade_gtk_shortcutswindow_replace_child</replace-child-function>
+        <create-editable-function>glade_gtk_shortcutswindow_create_editable</create-editable-function>
+        <get-property-function>glade_gtk_shortcutswindow_get_property</get-property-function>
+        <set-property-function>glade_gtk_shortcutswindow_set_property</set-property-function>
+        <verify-function>glade_gtk_shortcutswindow_verify_property</verify-function>
+        <actions>
+          <action id="add_section" _name="Add Section" stock="list-add" important="True"/>
+        </actions>
+        <packing-actions>
+        </packing-actions>
+
+        <properties>
+          <property id="view-name" disabled="True" visible="False"/>
+          <property id="section-name" disabled="True" visible="False"/>
+          <property id="use-csd" disabled="True" save="False" ignore="True" visible="False"/>
+          <property id="section" _name="Edit section" save="False" default="0" custom-layout="True">
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>0</min>
+            </parameter-spec>
+            <_tooltip>Set the currently active section to edit, this property will not be saved</_tooltip>
+          </property>
+        </properties>
+      </glade-widget-class>
+
+      <glade-widget-class name="GtkShortcutsSection" generic-name="shortcutssection" _title="Shortcuts Section" use-placeholders="False">
+        <action-activate-function>glade_gtk_shortcutssection_action_activate</action-activate-function>
+        <post-create-function>glade_gtk_shortcutssection_post_create</post-create-function>
+        <add-child-verify-function>glade_gtk_shortcutssection_add_verify</add-child-verify-function>
+        <add-child-function>glade_gtk_shortcutssection_add_child</add-child-function>
+        <remove-child-function>glade_gtk_shortcutssection_remove_child</remove-child-function>
+        <replace-child-function>glade_gtk_shortcutssection_replace_child</replace-child-function>
+        <create-editable-function>glade_gtk_shortcutssection_create_editable</create-editable-function>
+        <get-property-function>glade_gtk_shortcutssection_get_property</get-property-function>
+        <set-property-function>glade_gtk_shortcutssection_set_property</set-property-function>
+        <verify-function>glade_gtk_shortcutssection_verify_property</verify-function>
+        <actions>
+          <action id="add_group" _name="Add Group" stock="list-add" important="True"/>
+        </actions>
+        <properties>
+          <property id="size" default="1" query="False" />
+          <property id="groups" _name="Number of groups" save="False" default="0" custom-layout="True">
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>0</min>
+            </parameter-spec>
+            <_tooltip>The number of groups in the section</_tooltip>
+          </property>
+          <!-- Disable GtkBox stuff -->
+          <property id="size" disabled="True"/>
+          <property id="homogeneous" disabled="True"/>
+          <property id="orientation" disabled="True"/>
+          <property id="spacing" disabled="True"/>
+          <property id="baseline-position" disabled="True"/>
+          <property id="use-center-child" disabled="True"/>
+        </properties>
+      </glade-widget-class>
+
+      <glade-widget-class name="GtkShortcutsGroup" generic-name="shortcutsgroup" _title="Shortcuts Group" use-placeholders="False">
+        <action-activate-function>glade_gtk_shortcutsgroup_action_activate</action-activate-function>
+        <post-create-function>glade_gtk_shortcutsgroup_post_create</post-create-function>
+        <add-child-verify-function>glade_gtk_shortcutsgroup_add_verify</add-child-verify-function>
+        <add-child-function>glade_gtk_shortcutsgroup_add_child</add-child-function>
+        <remove-child-function>glade_gtk_shortcutsgroup_remove_child</remove-child-function>
+        <replace-child-function>glade_gtk_shortcutsgroup_replace_child</replace-child-function>
+        <create-editable-function>glade_gtk_shortcutsgroup_create_editable</create-editable-function>
+        <get-property-function>glade_gtk_shortcutsgroup_get_property</get-property-function>
+        <set-property-function>glade_gtk_shortcutsgroup_set_property</set-property-function>
+        <actions>
+          <action id="add_shortcut" _name="Add Shortcut" stock="list-add" important="True"/>
+        </actions>
+        <properties>
+          <property id="shortcuts" _name="Number of shortcuts" save="False" default="0" custom-layout="True">
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>0</min>
+            </parameter-spec>
+            <_tooltip>The number of shortcuts in the group</_tooltip>
+          </property>
+          <property id="size" default="1" query="False" />
+          <!-- Disable GtkBox stuff -->
+          <property id="size" disabled="True"/>
+          <property id="homogeneous" disabled="True"/>
+          <property id="orientation" disabled="True"/>
+          <property id="spacing" disabled="True"/>
+          <property id="baseline-position" disabled="True"/>
+          <property id="use-center-child" disabled="True"/>
+          <property id="title-size-group" ignore="True" disabled="True" visible="False"/>
+          <property id="accel-size-group" ignore="True" disabled="True" visible="False"/>
+        </properties>
+      </glade-widget-class>
+
+      <glade-widget-class name="GtkShortcutsShortcut" generic-name="shortcutsshortcut" _title="Shortcut" default-width="1" default-height="1">
+        <create-editable-function>glade_gtk_widget_create_editable</create-editable-function>
+        <properties>
+          <!-- Disable GtkBox stuff -->
+          <property id="size" default="1" query="False" disabled="True"/>
+          <property id="homogeneous" disabled="True"/>
+          <property id="orientation" disabled="True"/>
+          <property id="spacing" disabled="True"/>
+          <property id="baseline-position" disabled="True"/>
+          <property id="use-center-child" disabled="True"/>
+
+          <property id="title" weight="1"/>
+          <property id="icon" optional="True" optional-default="False"/>
+          <property id="subtitle" optional="True" optional-default="False"/>
+
+          <property id="icon-set" disabled="True"/>
+          <property id="subtitle-set" disabled="True"/>
+
+          <property id="title-size-group" ignore="True" disabled="True" visible="False"/>
+          <property id="accel-size-group" ignore="True" disabled="True" visible="False"/>
+          <property id="shortcut-type" weight="0">
+            <displayable-values>
+              <value id="GTK_SHORTCUT_ACCELERATOR" _name="Accelerator"/>
+              <value id="GTK_SHORTCUT_GESTURE_PINCH" _name="Pinch"/>
+              <value id="GTK_SHORTCUT_GESTURE_STRETCH" _name="Stretch"/>
+              <value id="GTK_SHORTCUT_GESTURE_ROTATE_CLOCKWISE" _name="Rotate Clockwise"/>
+              <value id="GTK_SHORTCUT_GESTURE_ROTATE_COUNTERCLOCKWISE" _name="Rotate Counterclockwise"/>
+              <value id="GTK_SHORTCUT_GESTURE_TWO_FINGER_SWIPE_LEFT" _name="Two-finger swipe left"/>
+              <value id="GTK_SHORTCUT_GESTURE_TWO_FINGER_SWIPE_RIGHT" _name="Two-finger swipe right"/>
+              <value id="GTK_SHORTCUT_GESTURE" _name="Other Gesture"/>
+            </displayable-values>
+          </property>
+        </properties>
+      </glade-widget-class>
+
+      <glade-widget-class name="GtkShortcutsGesture" generic-name="shortcutsgesture" _title="Gesture">
+        <create-editable-function>glade_gtk_widget_create_editable</create-editable-function>
+        <properties>
+          <!-- Disable GtkBox stuff -->
+          <property id="size" disabled="True"/>
+          <property id="homogeneous" disabled="True"/>
+          <property id="orientation" disabled="True"/>
+          <property id="spacing" disabled="True"/>
+          <property id="baseline-position" disabled="True"/>
+          <property id="use-center-child" disabled="True"/>
+
+          <property id="title-size-group" ignore="True" disabled="True" visible="False"/>
+          <property id="icon-size-group" ignore="True" disabled="True" visible="False"/>
+        </properties>
+      </glade-widget-class>
+
     </glade-widget-classes>
-    
+
     <glade-widget-group name="gtk-actions" _title="Actions">
       
       <glade-widget-class-ref name="GtkActionGroup"/>
@@ -5325,6 +5473,7 @@
       <glade-widget-class-ref name="GtkRecentChooserDialog"/>
       <glade-widget-class-ref name="GtkAssistant"/>
       <glade-widget-class-ref name="GtkAppChooserDialog"/>
+      <glade-widget-class-ref name="GtkShortcutsWindow"/>
     </glade-widget-group>
     
     <glade-widget-group name="gtk-containers" _title="Containers">
@@ -5446,6 +5595,17 @@
       <glade-widget-class-ref name="GThemedIcon"/>
     </glade-widget-group>
     
+    <glade-widget-group name="gtk-shortcuts" _title="Shortcuts">
+
+      <default-palette-state expanded="False"/>
+
+      <glade-widget-class-ref name="GtkShortcutsWindow"/>
+      <glade-widget-class-ref name="GtkShortcutsSection"/>
+      <glade-widget-class-ref name="GtkShortcutsGroup"/>
+      <glade-widget-class-ref name="GtkShortcutsShortcut"/>
+      <glade-widget-class-ref name="GtkShortcutsGesture"/>
+    </glade-widget-group>
+
     <glade-widget-group name="gtk-deprecated" _title="Deprecated">
       
       <default-palette-state expanded="False"/>

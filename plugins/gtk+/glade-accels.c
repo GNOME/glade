@@ -893,7 +893,7 @@ glade_gtk_read_accels (GladeWidget * widget,
       g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
       g_value_take_boxed (value, accels);
 
-      property = glade_widget_get_property (widget, "accelerator");
+      property = glade_widget_get_property (widget, "accelerators");
       glade_property_set_value (property, value);
 
       g_value_unset (value);
@@ -911,7 +911,7 @@ glade_gtk_write_accels (GladeWidget * widget,
   GList *list;
 
   /* Some child widgets may have disabled the property */
-  if (!(property = glade_widget_get_property (widget, "accelerator")))
+  if (!(property = glade_widget_get_property (widget, "accelerators")))
     return;
 
   for (list = g_value_get_boxed (glade_property_inline_value (property)); list; list = list->next)
