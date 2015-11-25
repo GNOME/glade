@@ -3,22 +3,22 @@
 # This file is distributed under the same license as the glade package.
 # Duarte Loreto <happyguy_pt@hotmail.com>, 2002, 2003, 2007, 2008, 2009, 2010, 2011, 2012, 2013.
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.8\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glade&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-19 06:04+0000\n"
-"PO-Revision-Date: 2015-11-25 06:59+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glade&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-07-28 09:07+0000\n"
+"PO-Revision-Date: 2015-07-28 10:17+0100\n"
 "Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
-"Language-Team: Pedro Albuquerque\n"
+"Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Gtranslator 2.91.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
-"X-Project-Style: gnome\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
@@ -348,6 +348,10 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Impossível abrir \"%s\", o ficheiro não existe.\n"
 
 #: ../src/glade.glade.h:1
+#| msgid ""
+#| "Copyright © 2001-2006 Ximian, Inc.\n"
+#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+#| "Copyright © 2004-2015 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -1903,7 +1907,8 @@ msgstr "Classe da propriedade"
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr "A GladePropertyClass para a qual esta GladeEditorProperty foi criada"
 
-#: ../gladeui/glade-editor-property.c:712 ../gladeui/glade-property-shell.c:122
+#: ../gladeui/glade-editor-property.c:712
+#: ../gladeui/glade-property-shell.c:122
 msgid "Use Command"
 msgstr "Utilizar comando"
 
@@ -1921,12 +1926,13 @@ msgstr "Desativar verificação"
 msgid "Whether to explicitly disable the check button"
 msgstr "Se deve ser explicitamente desativado o botão de verificação"
 
-#: ../gladeui/glade-editor-property.c:726 ../gladeui/glade-property-label.c:152
-#: ../gladeui/glade-property-shell.c:134
+#: ../gladeui/glade-editor-property.c:726
+#: ../gladeui/glade-property-label.c:152 ../gladeui/glade-property-shell.c:134
 msgid "Custom Text"
 msgstr "Texto personalizado"
 
-#: ../gladeui/glade-editor-property.c:727 ../gladeui/glade-property-shell.c:135
+#: ../gladeui/glade-editor-property.c:727
+#: ../gladeui/glade-property-shell.c:135
 msgid "Custom Text to display in the property label"
 msgstr "Texto personalizado a mostrar na etiqueta de propriedade"
 
@@ -3819,16 +3825,19 @@ msgstr "Menu Recentes"
 msgid "Tool Item"
 msgstr "Item de ferramenta"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:534 ../plugins/gtk+/gtk+.xml.in.h:450
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:534
+#: ../plugins/gtk+/gtk+.xml.in.h:450
 msgid "Tool Item Group"
 msgstr "Grupo de itens de ferramenta"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:553 ../plugins/gtk+/gtk+.xml.in.h:651
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:553
+#: ../plugins/gtk+/gtk+.xml.in.h:651
 msgid "Recent Chooser Menu"
 msgstr "Menu Seleção de recentes"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:588 ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:588
+#: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Menu Item"
 msgstr "Item de menu"
 
@@ -5311,7 +5320,8 @@ msgstr "Sobrepor"
 msgid "Menu Shell"
 msgstr "Terminal de menu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:395 ../plugins/gtk+/glade-button-editor.ui.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:395
+#: ../plugins/gtk+/glade-button-editor.ui.h:8
 msgid "Position"
 msgstr "Posição"
 
@@ -5629,7 +5639,6 @@ msgstr "Sem correção ortográfica"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:509
-#| msgid "Entry Completion"
 msgid "Word Completion"
 msgstr "Conclusão de palavras"
 
@@ -5739,7 +5748,8 @@ msgstr "Entrada de procura"
 msgid "Text View"
 msgstr "Vista Texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:541 ../plugins/gtk+/glade-button-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:541
+#: ../plugins/gtk+/glade-button-editor.ui.h:7
 msgid "Stock Button"
 msgstr "Botão base"
 
