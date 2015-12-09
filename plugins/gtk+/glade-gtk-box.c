@@ -57,12 +57,12 @@ glade_gtk_box_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_box_parse_finished (GladeProject * project, GObject * object)
+glade_gtk_box_parse_finished (GladeProject * project, GObject *gbox)
 {
-  GladeWidget *gbox;
+  GObject *box = glade_widget_get_object (gbox);
 
-  gbox = glade_widget_get_from_gobject (object);
-  glade_widget_property_set (gbox, "use-center-child", gtk_box_get_center_widget (GTK_BOX (object)) != NULL);
+  glade_widget_property_set (gbox, "use-center-child",
+                             gtk_box_get_center_widget (GTK_BOX (box)) != NULL);
 }
 
 void
@@ -87,9 +87,9 @@ glade_gtk_box_post_create (GladeWidgetAdaptor * adaptor,
 
   if (reason == GLADE_CREATE_LOAD)
     {
-      g_signal_connect (project, "parse-finished",
-                        G_CALLBACK (glade_gtk_box_parse_finished),
-                        container);
+      g_signal_connect_object (project, "parse-finished",
+                               G_CALLBACK (glade_gtk_box_parse_finished),
+                               gwidget, 0);
     }
 }
 
