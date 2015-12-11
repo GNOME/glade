@@ -332,11 +332,12 @@ glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
   GdkWindow *window = gtk_widget_get_window (widget);
   gboolean should_draw = gtk_cairo_should_draw_window (cr, window);
   gboolean sw_visible = gtk_widget_get_visible (priv->scrolled_window);
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
 
   if (should_draw)
     {
       if (sw_visible)
-        gtk_render_background (gtk_widget_get_style_context (widget),
+        gtk_render_background (context,
                                cr, 0, 0,
                                gtk_widget_get_allocated_width (widget),
                                gtk_widget_get_allocated_height (widget));
@@ -348,11 +349,14 @@ glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
 
   if (should_draw && sw_visible && priv->drag_highlight)
     {
-      GtkStyleContext *context = gtk_widget_get_style_context (widget);
       GdkRGBA c;
 
-      gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED |
+      gtk_style_context_save (context);
+      gtk_style_context_get_background_color (context,
+                                              gtk_style_context_get_state (context) |
+                                              GTK_STATE_FLAG_SELECTED |
                                               GTK_STATE_FLAG_FOCUSED, &c);
+      gtk_style_context_restore (context);
 
       cairo_set_line_width (cr, 2);
       gdk_cairo_set_source_rgba (cr, &c);

@@ -333,8 +333,12 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
       GdkRGBA c;
 
       context = gtk_widget_get_style_context (widget);
-      gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED |
+      gtk_style_context_save (context);
+      gtk_style_context_get_background_color (context,
+                                              gtk_style_context_get_state (context) |
+                                              GTK_STATE_FLAG_SELECTED |
                                               GTK_STATE_FLAG_FOCUSED, &c);
+      gtk_style_context_restore (context);
 
       ww = w/2.0;
       hh = h/2.0;
