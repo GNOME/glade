@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 3.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-05 07:23+0000\n"
-"PO-Revision-Date: 2015-12-05 07:51+0000\n"
+"POT-Creation-Date: 2015-12-13 07:23+0000\n"
+"PO-Revision-Date: 2015-12-13 08:28+0000\n"
 "Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
 "Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
@@ -283,7 +283,7 @@ msgid "Inspector"
 msgstr "Inspetor"
 
 #: ../src/glade-window.c:3238 ../src/glade.glade.h:33
-#: ../gladeui/glade-editor.c:320 ../gladeui/glade-widget.c:1392
+#: ../gladeui/glade-editor.c:320 ../gladeui/glade-widget.c:1397
 #: ../gladeui/glade-project-properties.ui.h:11
 #: ../plugins/gtk+/glade-gtk-action-group.c:184
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:361
@@ -2085,7 +2085,7 @@ msgstr "_Abrir"
 
 #. GtkInputPurpose enumeration value
 #: ../gladeui/glade-editor-property.c:3051
-#: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1356
+#: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1361
 #: ../plugins/gtk+/gtk+.xml.in.h:543
 msgid "Name"
 msgstr "Nome"
@@ -2164,7 +2164,7 @@ msgstr "ID:"
 msgid "The object's unique identifier"
 msgstr "O identificador exclusivo do objeto"
 
-#: ../gladeui/glade-editor-table.c:563 ../gladeui/glade-widget.c:1450
+#: ../gladeui/glade-editor-table.c:563 ../gladeui/glade-widget.c:1455
 msgid "Composite"
 msgstr "Composto"
 
@@ -2173,7 +2173,7 @@ msgid "Whether this widget is a composite template"
 msgstr "Se o widget é um modelo composto"
 
 #: ../gladeui/glade-inspector.c:195 ../gladeui/glade-project-properties.c:168
-#: ../gladeui/glade-widget.c:1385
+#: ../gladeui/glade-widget.c:1390
 msgid "Project"
 msgstr "Projeto"
 
@@ -2476,7 +2476,7 @@ msgstr "Domínio da tradução"
 msgid "The project translation domain"
 msgstr "O domíno da tradução do projeto"
 
-#: ../gladeui/glade-project.c:1006 ../gladeui/glade-widget.c:1408
+#: ../gladeui/glade-project.c:1006 ../gladeui/glade-widget.c:1413
 msgid "Template"
 msgstr "Modelo"
 
@@ -2901,7 +2901,7 @@ msgstr "Dados do utilizador"
 msgid "The user data for this signal"
 msgstr "Os dados de utilizador para este sinal"
 
-#: ../gladeui/glade-signal.c:201 ../gladeui/glade-widget.c:1440
+#: ../gladeui/glade-signal.c:201 ../gladeui/glade-widget.c:1445
 msgid "Support Warning"
 msgstr "Aviso de suporte"
 
@@ -3000,8 +3000,8 @@ msgstr "Ponteiro de estrutura GladeWidgetActionClass"
 msgid "Whether this action is sensitive"
 msgstr "Se esta ação é ou não sensível"
 
-#: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1445
-#: ../plugins/gtk+/gtk+.xml.in.h:899
+#: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1450
+#: ../plugins/gtk+/gtk+.xml.in.h:906
 msgid "Visible"
 msgstr "Visível"
 
@@ -3088,139 +3088,139 @@ msgstr "Cursor"
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Um cursor para inserir widgets no ambiente"
 
-#: ../gladeui/glade-widget.c:1357
+#: ../gladeui/glade-widget.c:1362
 msgid "The name of the widget"
 msgstr "O nome do widget"
 
-#: ../gladeui/glade-widget.c:1361
+#: ../gladeui/glade-widget.c:1366
 msgid "Internal name"
 msgstr "Nome interno"
 
-#: ../gladeui/glade-widget.c:1362
+#: ../gladeui/glade-widget.c:1367
 msgid "The internal name of the widget"
 msgstr "O nome interno do widget"
 
-#: ../gladeui/glade-widget.c:1366
+#: ../gladeui/glade-widget.c:1371
 msgid "Anarchist"
 msgstr "Anarca"
 
-#: ../gladeui/glade-widget.c:1367
+#: ../gladeui/glade-widget.c:1372
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "Se este filho composto é um filho ancestral ou um filho anarca"
 
-#: ../gladeui/glade-widget.c:1373
+#: ../gladeui/glade-widget.c:1378
 msgid "Object"
 msgstr "Objeto"
 
-#: ../gladeui/glade-widget.c:1374
+#: ../gladeui/glade-widget.c:1379
 msgid "The object associated"
 msgstr "O objeto associado"
 
-#: ../gladeui/glade-widget.c:1379
+#: ../gladeui/glade-widget.c:1384
 msgid "Adaptor"
 msgstr "Adaptador"
 
-#: ../gladeui/glade-widget.c:1380
+#: ../gladeui/glade-widget.c:1385
 msgid "The class adaptor for the associated widget"
 msgstr "A classe adaptadora do widget associado"
 
-#: ../gladeui/glade-widget.c:1386
+#: ../gladeui/glade-widget.c:1391
 msgid "The glade project that this widget belongs to"
 msgstr "O projeto glade a que este widget pertence"
 
-#: ../gladeui/glade-widget.c:1393
+#: ../gladeui/glade-widget.c:1398
 msgid "A list of GladeProperties"
 msgstr "Uma lista de GladeProperties"
 
 #. GtkResizeMode enumeration value
-#: ../gladeui/glade-widget.c:1397 ../plugins/gtk+/gtk+.xml.in.h:365
+#: ../gladeui/glade-widget.c:1402 ../plugins/gtk+/gtk+.xml.in.h:365
 msgid "Parent"
 msgstr "Pai"
 
-#: ../gladeui/glade-widget.c:1398
+#: ../gladeui/glade-widget.c:1403
 msgid "A pointer to the parenting GladeWidget"
 msgstr "Um ponteiro para o GladeWidget pai"
 
-#: ../gladeui/glade-widget.c:1403
+#: ../gladeui/glade-widget.c:1408
 msgid "Internal Name"
 msgstr "Nome interno"
 
-#: ../gladeui/glade-widget.c:1404
+#: ../gladeui/glade-widget.c:1409
 msgid "A generic name prefix for internal widgets"
 msgstr "Um prefixo de nome genérico para widgets internos"
 
-#: ../gladeui/glade-widget.c:1409
+#: ../gladeui/glade-widget.c:1414
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Um modelo GladeWidget em que basear um novo widget"
 
-#: ../gladeui/glade-widget.c:1414
+#: ../gladeui/glade-widget.c:1419
 msgid "Exact Template"
 msgstr "Modelo exato"
 
-#: ../gladeui/glade-widget.c:1416
+#: ../gladeui/glade-widget.c:1421
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr "Se, ao utilizar um modelo, estamos ou não a criar um duplicado exato"
 
-#: ../gladeui/glade-widget.c:1420
+#: ../gladeui/glade-widget.c:1425
 msgid "Reason"
 msgstr "Motivo"
 
-#: ../gladeui/glade-widget.c:1421
+#: ../gladeui/glade-widget.c:1426
 msgid "A GladeCreateReason for this creation"
 msgstr "Uma GladeCreateReason para esta criação"
 
-#: ../gladeui/glade-widget.c:1428
+#: ../gladeui/glade-widget.c:1433
 msgid "Toplevel Width"
 msgstr "Largura ao nível de topo"
 
-#: ../gladeui/glade-widget.c:1429
+#: ../gladeui/glade-widget.c:1434
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "A largura do widget quando no nível de topo do GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1434
+#: ../gladeui/glade-widget.c:1439
 msgid "Toplevel Height"
 msgstr "Altura ao nível de topo"
 
-#: ../gladeui/glade-widget.c:1435
+#: ../gladeui/glade-widget.c:1440
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "A altura do widget quando no nível de topo do GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1441
+#: ../gladeui/glade-widget.c:1446
 msgid "A warning string about version mismatches"
 msgstr "Uma cadeia de aviso sobre erros de versões"
 
-#: ../gladeui/glade-widget.c:1446
+#: ../gladeui/glade-widget.c:1451
 msgid "Wether the widget is visible or not"
 msgstr "Se o widget é ou não visível"
 
-#: ../gladeui/glade-widget.c:1451
+#: ../gladeui/glade-widget.c:1456
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Se este widget é o modelo para um widget composto"
 
-#: ../gladeui/glade-widget.c:4757
+#: ../gladeui/glade-widget.c:4762
 #, c-format
 msgid "Template classes are not supported in gtk+ %d.%d"
 msgstr "Modelos de classes não são suportados no gtk+ %d.%d"
 
-#: ../gladeui/glade-widget.c:4766
+#: ../gladeui/glade-widget.c:4771
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "O objeto tem um tipo %s não reconhecido"
 
-#: ../gladeui/glade-widget.c:4832
+#: ../gladeui/glade-widget.c:4837
 msgid "Property has versioning problems: "
 msgstr "A propriedade tem problemas de versão:"
 
-#: ../gladeui/glade-widget.c:4834
+#: ../gladeui/glade-widget.c:4839
 msgid "Some properties have versioning problems: "
 msgstr "Algumas propriedades têm problemas de versão:"
 
-#: ../gladeui/glade-widget.c:4854
+#: ../gladeui/glade-widget.c:4859
 msgid "Signal has versioning problems: "
 msgstr "O sinal tem problemas de versão:"
 
-#: ../gladeui/glade-widget.c:4856
+#: ../gladeui/glade-widget.c:4861
 msgid "Some signals have versioning problems: "
 msgstr "Alguns sinais têm problemas de versão:"
 
@@ -3228,7 +3228,7 @@ msgstr "Alguns sinais têm problemas de versão:"
 msgid "Actions"
 msgstr "Ações"
 
-#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1046
+#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1053
 msgid "Applications"
 msgstr "Aplicações"
 
@@ -3719,7 +3719,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:180
 #: ../plugins/gtk+/glade-gtk-action-group.c:219
-#: ../plugins/gtk+/gtk+.xml.in.h:853
+#: ../plugins/gtk+/gtk+.xml.in.h:860
 msgid "Action"
 msgstr "Ação"
 
@@ -3781,12 +3781,12 @@ msgid "Ordering children of %s"
 msgstr "Ordenar os filhos de %s"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:876
+#: ../plugins/gtk+/gtk+.xml.in.h:883
 msgid "Tree View Column"
 msgstr "Coluna da vista em árvore"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:884
+#: ../plugins/gtk+/gtk+.xml.in.h:891
 msgid "Cell Renderer"
 msgstr "Desenhador de célula"
 
@@ -3807,7 +3807,7 @@ msgstr "Texto"
 
 #. Accelerator
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:413
-#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:855
+#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:862
 msgid "Accelerator"
 msgstr "Atalho"
 
@@ -3870,16 +3870,20 @@ msgid "Tearoff menus are disabled"
 msgstr "Menus destacáveis desativados"
 
 #: ../plugins/gtk+/glade-gtk-container.c:58
-#| msgid "Cannot add a toplevel window to a containter."
 msgid "Cannot add a toplevel window to a container."
 msgstr "Impossível adicionar uma janela de nível de topo a um contentor."
 
-#: ../plugins/gtk+/glade-gtk-container.c:69
+#: ../plugins/gtk+/glade-gtk-container.c:67
+#| msgid "Cannot add a toplevel window to a container."
+msgid "Cannot add a popover to a container."
+msgstr "Impossível adicionar um balão contextual a um contentor."
+
+#: ../plugins/gtk+/glade-gtk-container.c:78
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
 msgstr "Widgets do tipo %s só podem ter widgets como filhos."
 
-#: ../plugins/gtk+/glade-gtk-container.c:80
+#: ../plugins/gtk+/glade-gtk-container.c:89
 #, c-format
 msgid "Widgets of type %s need placeholders to add children."
 msgstr ""
@@ -5292,13 +5296,11 @@ msgstr "Valor de descrição"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:316
-#| msgid "Generic Name"
 msgid "Generic object"
 msgstr "Objeto genérico"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:318
-#| msgid "the last action"
 msgid "Mathematical fraction"
 msgstr "Fração matemática"
 
@@ -6031,7 +6033,6 @@ msgstr "Inibir teclado no ecrã"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:565
-#| msgid "Vertical Padding"
 msgid "Vertical Writing"
 msgstr "Escrita vertical"
 
@@ -6673,7 +6674,6 @@ msgstr "Nunca"
 
 #. GtkPolicyType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:762
-#| msgid "Extended"
 msgid "External"
 msgstr "Externo"
 
@@ -6881,725 +6881,761 @@ msgid "The page position in the Assistant"
 msgstr "A posição da página no Assistente"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:839
+msgid "Popover"
+msgstr "Contextual"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:840
+#| msgid "Popup Menu"
+msgid "Popover Menu"
+msgstr "Menu contextual"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:841
+#| msgid "Number of items"
+msgid "Number of submenus"
+msgstr "Número de submenus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:842
+#| msgid "Edit Menu"
+msgid "Edit menu"
+msgstr "Editar menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:843
+#| msgid "The number of items in the box"
+msgid "The number of submenus in the popover menu"
+msgstr "O número de submenus no menu contextual"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:844
+#| msgid ""
+#| "Set the currently active page to edit, this property will not be saved"
+msgid ""
+"Set the currently active submenu to edit, this property will not be saved"
+msgstr "Definir o submenu atual para editar, esta propriedade não será gravada"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:845
+#| msgid "Tool Button"
+msgid "Model Button"
+msgstr "Botão modelo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:846
 msgid "Link Button"
 msgstr "Botão de ligação"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:840
+#: ../plugins/gtk+/gtk+.xml.in.h:847
 msgid "Recent Chooser"
 msgstr "Seletor de recentes"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:842
+#: ../plugins/gtk+/gtk+.xml.in.h:849
 msgid "Most Recently Used first"
 msgstr "Primeiro os mais recentemente utilizados"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:844
+#: ../plugins/gtk+/gtk+.xml.in.h:851
 msgid "Least Recently Used first"
 msgstr "Primeiro os menos recentemente utilizados"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:845
+#: ../plugins/gtk+/gtk+.xml.in.h:852
 msgid "Recent Chooser Dialog"
 msgstr "Diálogo Seletor de recentes"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:846
+#: ../plugins/gtk+/gtk+.xml.in.h:853
 msgid "Size Group"
 msgstr "Grupo de tamanho"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:847
+#: ../plugins/gtk+/gtk+.xml.in.h:854
 msgid "Widgets"
 msgstr "Widgets"
 
 #. GtkSizeGroupMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:849
+#: ../plugins/gtk+/gtk+.xml.in.h:856
 msgid "Both"
 msgstr "Ambos"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:850
+#: ../plugins/gtk+/gtk+.xml.in.h:857
 msgid "List of widgets in this group"
 msgstr "Lista de widgets neste grupo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:851
+#: ../plugins/gtk+/gtk+.xml.in.h:858
 msgid "Window Group"
 msgstr "Grupo de janelas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:852
+#: ../plugins/gtk+/gtk+.xml.in.h:859
 msgid "Adjustment"
 msgstr "Ajuste"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:856
+#: ../plugins/gtk+/gtk+.xml.in.h:863
 msgid "An accelerator key for this action"
 msgstr "Uma tecla de atalho para esta ação"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:857
+#: ../plugins/gtk+/gtk+.xml.in.h:864
 msgid "Toggle Action"
 msgstr "Ação de alternar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:858
+#: ../plugins/gtk+/gtk+.xml.in.h:865
 msgid "Radio Action"
 msgstr "Ação do botão rádio"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:859
+#: ../plugins/gtk+/gtk+.xml.in.h:866
 msgid "Recent Action"
 msgstr "Ação recente"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:860
+#: ../plugins/gtk+/gtk+.xml.in.h:867
 msgid "Action Group"
 msgstr "Grupo de ação"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:861
+#: ../plugins/gtk+/gtk+.xml.in.h:868
 msgid "Entry Completion"
 msgstr "Conclusão da introdução"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:862
+#: ../plugins/gtk+/gtk+.xml.in.h:869
 msgid "Icon Factory"
 msgstr "Fábrica de ícones"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:863
+#: ../plugins/gtk+/gtk+.xml.in.h:870
 msgid "Icon Sources"
 msgstr "Fontes de ícones"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:864
+#: ../plugins/gtk+/gtk+.xml.in.h:871
 msgid "A list of sources for this icon factory"
 msgstr "Uma lista de fontes para esta fábrica de ícones"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:865
+#: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "List Store"
 msgstr "Armazém de lista"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:866
+#: ../plugins/gtk+/gtk+.xml.in.h:873
 msgid "Data"
 msgstr "Dados"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:867
+#: ../plugins/gtk+/gtk+.xml.in.h:874
 msgid "Enter a list of column types for this data store"
 msgstr "Insira uma lista de tipos de colunas para este armazenamento de dados"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:868
+#: ../plugins/gtk+/gtk+.xml.in.h:875
 msgid "Enter a list of values to be applied on each row"
 msgstr "Insira uma lista de valores a ser aplicada em cada linha"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:869
+#: ../plugins/gtk+/gtk+.xml.in.h:876
 msgid "Tree Store"
 msgstr "Armazém de árvore"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:870
+#: ../plugins/gtk+/gtk+.xml.in.h:877
 msgid "Tree Model Filter"
 msgstr "Filtro do modelo de árvore"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:871
+#: ../plugins/gtk+/gtk+.xml.in.h:878
 msgid "Tree Model Sort"
 msgstr "Ordenação do modelo de árvore"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:872
+#: ../plugins/gtk+/gtk+.xml.in.h:879
 msgid "Tree Selection"
 msgstr "Seleção de ficheiro"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:873
+#: ../plugins/gtk+/gtk+.xml.in.h:880
 msgid "Tree View"
 msgstr "Vista em árvore"
 
 #. GtkTreeViewGridLines enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:875
+#: ../plugins/gtk+/gtk+.xml.in.h:882
 msgid "Horizontal and Vertical"
 msgstr "Horizontal e vertical"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:878
+#: ../plugins/gtk+/gtk+.xml.in.h:885
 msgid "Ascending"
 msgstr "Ascendente"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:880
+#: ../plugins/gtk+/gtk+.xml.in.h:887
 msgid "Descending"
 msgstr "Descendente"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:882
+#: ../plugins/gtk+/gtk+.xml.in.h:889
 msgid "Grow Only"
 msgstr "Só aumentar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:883
+#: ../plugins/gtk+/gtk+.xml.in.h:890
 msgid "Icon View"
 msgstr "Vista de ícones"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:885
+#: ../plugins/gtk+/gtk+.xml.in.h:892
 msgid "Cell Background Color name column"
 msgstr "Nome de coluna da cor de fundo da célula"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:886
+#: ../plugins/gtk+/gtk+.xml.in.h:893
 msgid "Cell Background Color column"
 msgstr "Coluna da cor de fundo da célula"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:887
+#: ../plugins/gtk+/gtk+.xml.in.h:894
 msgid "Cell Background RGBA column"
 msgstr "Coluna do RGBA de fundo da célula"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:888
+#: ../plugins/gtk+/gtk+.xml.in.h:895
 msgid "Width column"
 msgstr "Coluna de largura"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:889
+#: ../plugins/gtk+/gtk+.xml.in.h:896
 msgid "Height column"
 msgstr "Coluna da altura"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:890
+#: ../plugins/gtk+/gtk+.xml.in.h:897
 msgid "Horizontal Padding"
 msgstr "Espaço horizontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:891
+#: ../plugins/gtk+/gtk+.xml.in.h:898
 msgid "Horizontal Padding column"
 msgstr "Coluna do espaço horizontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:892
+#: ../plugins/gtk+/gtk+.xml.in.h:899
 msgid "Vertical Padding"
 msgstr "Espaço vertical"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:893
+#: ../plugins/gtk+/gtk+.xml.in.h:900
 msgid "Vertical Padding column"
 msgstr "Coluna do espaço vertical"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:894
+#: ../plugins/gtk+/gtk+.xml.in.h:901
 msgid "Horizontal Alignment"
 msgstr "Alinhamento horizontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:895
+#: ../plugins/gtk+/gtk+.xml.in.h:902
 msgid "Horizontal Alignment column"
 msgstr "Coluna do alinhamento horizontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:896
+#: ../plugins/gtk+/gtk+.xml.in.h:903
 msgid "Vertical Alignment"
 msgstr "Alinhamento vertical"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:897
+#: ../plugins/gtk+/gtk+.xml.in.h:904
 msgid "Vertical Alignment column"
 msgstr "Coluna do alinhamento vertical"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:898
+#: ../plugins/gtk+/gtk+.xml.in.h:905
 msgid "Sensitive column"
 msgstr "Coluna da sensibilidade"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:900
+#: ../plugins/gtk+/gtk+.xml.in.h:907
 msgid "Visible column"
 msgstr "Coluna de visibilidade"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:901
+#: ../plugins/gtk+/gtk+.xml.in.h:908
 msgid "The column in the model to load the value from"
 msgstr "A coluna no modelo da qual carregar o valor"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:902
+#: ../plugins/gtk+/gtk+.xml.in.h:909
 msgid "Text Renderer"
 msgstr "Analisador de texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:903
+#: ../plugins/gtk+/gtk+.xml.in.h:910
 msgid "Alignment column"
 msgstr "Coluna de alinhamento"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:904
+#: ../plugins/gtk+/gtk+.xml.in.h:911
 msgid "Attributes column"
 msgstr "Coluna dos atributos"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:905
+#: ../plugins/gtk+/gtk+.xml.in.h:912
 msgid "Background Color Name column"
 msgstr "Coluna da cor de fundo do nome"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:906
+#: ../plugins/gtk+/gtk+.xml.in.h:913
 msgid "Background Color column"
 msgstr "Coluna da cor de fundo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:907
+#: ../plugins/gtk+/gtk+.xml.in.h:914
 msgid "Editable column"
 msgstr "Coluna editável"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:908
+#: ../plugins/gtk+/gtk+.xml.in.h:915
 msgid "Ellipsize column"
 msgstr "Coluna de reticências"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:909
+#: ../plugins/gtk+/gtk+.xml.in.h:916
 msgid "Family column"
 msgstr "Coluna da família"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:910
+#: ../plugins/gtk+/gtk+.xml.in.h:917
 msgid "Font column"
 msgstr "Coluna de letra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:911
+#: ../plugins/gtk+/gtk+.xml.in.h:918
 msgid "Font Description column"
 msgstr "Coluna de descrição da letra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:912
+#: ../plugins/gtk+/gtk+.xml.in.h:919
 msgid "Foreground Color Name column"
 msgstr "Coluna do nome da cor do texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:913
+#: ../plugins/gtk+/gtk+.xml.in.h:920
 msgid "Foreground Color column"
 msgstr "Coluna da cor do texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:914
+#: ../plugins/gtk+/gtk+.xml.in.h:921
 msgid "Language column"
 msgstr "Coluna do idioma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:915
+#: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Markup column"
 msgstr "Coluna de markup"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:916
+#: ../plugins/gtk+/gtk+.xml.in.h:923
 msgid "Rise column"
 msgstr "Coluna de elevar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:917
+#: ../plugins/gtk+/gtk+.xml.in.h:924
 msgid "Scale column"
 msgstr "Coluna de escala"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:918
+#: ../plugins/gtk+/gtk+.xml.in.h:925
 msgid "Single Paragraph Mode column"
 msgstr "Coluna de modo de parágrafo único"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:919
+#: ../plugins/gtk+/gtk+.xml.in.h:926
 msgid "Size column"
 msgstr "Coluna de tamanho"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:920
+#: ../plugins/gtk+/gtk+.xml.in.h:927
 msgid "Data column"
 msgstr "Coluna de dados"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:922
+#: ../plugins/gtk+/gtk+.xml.in.h:929
 msgid "Ultra Condensed"
 msgstr "Ultra condensado"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:924
+#: ../plugins/gtk+/gtk+.xml.in.h:931
 msgid "Extra Condensed"
 msgstr "Extra condensado"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:926
+#: ../plugins/gtk+/gtk+.xml.in.h:933
 msgid "Condensed"
 msgstr "Condensado"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:928
+#: ../plugins/gtk+/gtk+.xml.in.h:935
 msgid "Semi Condensed"
 msgstr "Semi-condensado"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:930
+#: ../plugins/gtk+/gtk+.xml.in.h:937
 msgid "Semi Expanded"
 msgstr "Semi-expandido"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:932
+#: ../plugins/gtk+/gtk+.xml.in.h:939
 msgid "Expanded"
 msgstr "Expandido"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:934
+#: ../plugins/gtk+/gtk+.xml.in.h:941
 msgid "Extra Expanded"
 msgstr "Extra expandido"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:936
+#: ../plugins/gtk+/gtk+.xml.in.h:943
 msgid "Ultra Expanded"
 msgstr "Ultra expandido"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:937
+#: ../plugins/gtk+/gtk+.xml.in.h:944
 msgid "Stretch column"
 msgstr "Coluna de esticar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:938
+#: ../plugins/gtk+/gtk+.xml.in.h:945
 msgid "Strikethrough column"
 msgstr "Coluna de rasurado"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:940
+#: ../plugins/gtk+/gtk+.xml.in.h:947
 msgid "Oblique"
 msgstr "Oblíquo"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:942
+#: ../plugins/gtk+/gtk+.xml.in.h:949
 msgid "Italic"
 msgstr "Itálico"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:943
+#: ../plugins/gtk+/gtk+.xml.in.h:950
 msgid "Style column"
 msgstr "Coluna de estilo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:944
+#: ../plugins/gtk+/gtk+.xml.in.h:951
 msgid "Text column"
 msgstr "Coluna de texto"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:946
+#: ../plugins/gtk+/gtk+.xml.in.h:953
 msgid "Double"
 msgstr "Duplo"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:948
+#: ../plugins/gtk+/gtk+.xml.in.h:955
 msgid "Low"
 msgstr "Baixo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:949
+#: ../plugins/gtk+/gtk+.xml.in.h:956
 msgid "Underline column"
 msgstr "Coluna de sublinhado"
 
 #. PangoVariant enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:951
+#: ../plugins/gtk+/gtk+.xml.in.h:958
 msgid "Small Capitals"
 msgstr "Maiúsculas pequenas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:952
+#: ../plugins/gtk+/gtk+.xml.in.h:959
 msgid "Variant column"
 msgstr "Coluna de variante"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:953
+#: ../plugins/gtk+/gtk+.xml.in.h:960
 msgid "Weight column"
 msgstr "Coluna de peso"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:954
+#: ../plugins/gtk+/gtk+.xml.in.h:961
 msgid "Width in Characters column"
 msgstr "Coluna da largura em caracteres"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:955
+#: ../plugins/gtk+/gtk+.xml.in.h:962
 msgid "Wrap Mode column"
 msgstr "Coluna do modo de quebra de linha"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:956
+#: ../plugins/gtk+/gtk+.xml.in.h:963
 msgid "Wrap Width column"
 msgstr "Coluna da largura da quebra de linha"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:957
+#: ../plugins/gtk+/gtk+.xml.in.h:964
 msgid "Background RGBA column"
 msgstr "Coluna do RGBA de fundo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:958
+#: ../plugins/gtk+/gtk+.xml.in.h:965
 msgid "Foreground RGBA column"
 msgstr "Coluna do RGBA do texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:959
+#: ../plugins/gtk+/gtk+.xml.in.h:966
 msgid "Maximum width in characters"
 msgstr "Largura máxima em caracteres"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:960
+#: ../plugins/gtk+/gtk+.xml.in.h:967
 msgid "Placeholder text"
 msgstr "Texto do marcador de posição"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:961
+#: ../plugins/gtk+/gtk+.xml.in.h:968
 msgid "Accelerator Renderer"
 msgstr "Analisador do atalho"
 
 #. GtkCellRendererAccelMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:963
+#: ../plugins/gtk+/gtk+.xml.in.h:970
 msgid "Gtk"
 msgstr "Gtk"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:964
+#: ../plugins/gtk+/gtk+.xml.in.h:971
 msgid "Accelerator Mode column"
 msgstr "Coluna do modo de atalho"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:966
+#: ../plugins/gtk+/gtk+.xml.in.h:973
 msgid "Shift Key"
 msgstr "Tecla Shift"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:968
+#: ../plugins/gtk+/gtk+.xml.in.h:975
 msgid "Lock Key"
 msgstr "Bloquear tecla"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:970
+#: ../plugins/gtk+/gtk+.xml.in.h:977
 msgid "Control Key"
 msgstr "Tecla Ctrl"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:972
+#: ../plugins/gtk+/gtk+.xml.in.h:979
 msgid "Alt Key"
 msgstr "Tecla Alt"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:974
+#: ../plugins/gtk+/gtk+.xml.in.h:981
 msgid "Fifth Key"
 msgstr "Quinta tecla"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:976
+#: ../plugins/gtk+/gtk+.xml.in.h:983
 msgid "Sixth Key"
 msgstr "Sexta tecla"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:978
+#: ../plugins/gtk+/gtk+.xml.in.h:985
 msgid "Seventh Key"
 msgstr "Sétima tecla"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:980
+#: ../plugins/gtk+/gtk+.xml.in.h:987
 msgid "Eighth Key"
 msgstr "Oitava tecla"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:982
+#: ../plugins/gtk+/gtk+.xml.in.h:989
 msgid "First Mouse Button"
 msgstr "Primeiro botão do rato"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:984
+#: ../plugins/gtk+/gtk+.xml.in.h:991
 msgid "Second Mouse Button"
 msgstr "Segundo botão do rato"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:986
+#: ../plugins/gtk+/gtk+.xml.in.h:993
 msgid "Third Mouse Button"
 msgstr "Terceiro botão do rato"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:988
+#: ../plugins/gtk+/gtk+.xml.in.h:995
 msgid "Forth Mouse Button"
 msgstr "Quarto botão do rato"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:990
+#: ../plugins/gtk+/gtk+.xml.in.h:997
 msgid "Fifth Mouse Button"
 msgstr "Quinto botão do rato"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:992
+#: ../plugins/gtk+/gtk+.xml.in.h:999
 msgid "Super Modifier"
 msgstr "Modificador super"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:994
+#: ../plugins/gtk+/gtk+.xml.in.h:1001
 msgid "Hyper Modifier"
 msgstr "Modificador hyper"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:996
+#: ../plugins/gtk+/gtk+.xml.in.h:1003
 msgid "Meta Modifier"
 msgstr "Modificador meta"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:998
+#: ../plugins/gtk+/gtk+.xml.in.h:1005
 msgid "Release Modifier"
 msgstr "Modificador soltar"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1000
+#: ../plugins/gtk+/gtk+.xml.in.h:1007
 msgid "All Modifiers"
 msgstr "Todos os modificadores"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1001
+#: ../plugins/gtk+/gtk+.xml.in.h:1008
 msgid "Accelerator Modifiers column"
 msgstr "Coluna do modificador de atalho"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1002
+#: ../plugins/gtk+/gtk+.xml.in.h:1009
 msgid "Keycode column"
 msgstr "Coluna do código de teclado"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1003
+#: ../plugins/gtk+/gtk+.xml.in.h:1010
 msgid "Combo Renderer"
 msgstr "Analisador de caixa de combinação"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1004
+#: ../plugins/gtk+/gtk+.xml.in.h:1011
 msgid "Has Entry column"
 msgstr "Tem coluna de introdução"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1005
+#: ../plugins/gtk+/gtk+.xml.in.h:1012
 msgid "Model column"
 msgstr "Coluna de modelo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1006
+#: ../plugins/gtk+/gtk+.xml.in.h:1013
 msgid "Text Column column"
 msgstr "Coluna do texto da coluna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1007
+#: ../plugins/gtk+/gtk+.xml.in.h:1014
 msgid "Spin Renderer"
 msgstr "Analisador do botão rotativo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1008
+#: ../plugins/gtk+/gtk+.xml.in.h:1015
 msgid "Adjustment column"
 msgstr "Coluna de ajuste"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1009
+#: ../plugins/gtk+/gtk+.xml.in.h:1016
 msgid "Climb Rate column"
 msgstr "Coluna da taxa de subida"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1010
+#: ../plugins/gtk+/gtk+.xml.in.h:1017
 msgid "Digits column"
 msgstr "Coluna dos dígitos"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1011
+#: ../plugins/gtk+/gtk+.xml.in.h:1018
 msgid "Pixbuf Renderer"
 msgstr "Analisador de imagens"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1012
+#: ../plugins/gtk+/gtk+.xml.in.h:1019
 msgid "Follow State column"
 msgstr "Coluna Seguir o estado"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1013
+#: ../plugins/gtk+/gtk+.xml.in.h:1020
 msgid "Icon Name column"
 msgstr "Coluna Nome do ícone"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1014
+#: ../plugins/gtk+/gtk+.xml.in.h:1021
 msgid "Pixbuf column"
 msgstr "Coluna Imagem"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1015
+#: ../plugins/gtk+/gtk+.xml.in.h:1022
 msgid "GIcon column"
 msgstr "Coluna GIcon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1016
+#: ../plugins/gtk+/gtk+.xml.in.h:1023
 msgid "Pixbuf Expander Closed column"
 msgstr "Coluna Imagem de expansão fechada"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1017
+#: ../plugins/gtk+/gtk+.xml.in.h:1024
 msgid "Pixbuf Expander Open column"
 msgstr "Coluna Imagem de expansão aberta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1018
+#: ../plugins/gtk+/gtk+.xml.in.h:1025
 msgid "Stock Detail column"
 msgstr "Coluna Detalhe base"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1019
+#: ../plugins/gtk+/gtk+.xml.in.h:1026
 msgid "Stock column"
 msgstr "Coluna Base"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1020
+#: ../plugins/gtk+/gtk+.xml.in.h:1027
 msgid "Stock Size column"
 msgstr "Coluna Tamanho base"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1021
+#: ../plugins/gtk+/gtk+.xml.in.h:1028
 msgid "Progress Renderer"
 msgstr "Analisador de progresso"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1022
+#: ../plugins/gtk+/gtk+.xml.in.h:1029
 msgid "Orientation column"
 msgstr "Coluna Orientação"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1023
+#: ../plugins/gtk+/gtk+.xml.in.h:1030
 msgid "Pulse column"
 msgstr "Coluna Incremento"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1024
+#: ../plugins/gtk+/gtk+.xml.in.h:1031
 msgid "Text Horizontal Alignment column"
 msgstr "Coluna Alinhamento horizontal do texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1025
+#: ../plugins/gtk+/gtk+.xml.in.h:1032
 msgid "Text Vertical Alignment column"
 msgstr "Coluna Alinhamento vertical de texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1026
+#: ../plugins/gtk+/gtk+.xml.in.h:1033
 msgid "Value column"
 msgstr "Coluna Valor"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1027
+#: ../plugins/gtk+/gtk+.xml.in.h:1034
 msgid "Inverted column"
 msgstr "Coluna Invertido"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1028
+#: ../plugins/gtk+/gtk+.xml.in.h:1035
 msgid "Spinner Renderer"
 msgstr "Analisador do botão rotativo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1029
+#: ../plugins/gtk+/gtk+.xml.in.h:1036
 msgid "Active column"
 msgstr "Coluna ativa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1030
+#: ../plugins/gtk+/gtk+.xml.in.h:1037
 msgid "Toggle Renderer"
 msgstr "Analisador de alternância"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1031
+#: ../plugins/gtk+/gtk+.xml.in.h:1038
 msgid "Activatable column"
 msgstr "Coluna acionável"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1032
+#: ../plugins/gtk+/gtk+.xml.in.h:1039
 msgid "Inconsistent column"
 msgstr "Coluna Inconsistente"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1033
+#: ../plugins/gtk+/gtk+.xml.in.h:1040
 msgid "Indicator Size column"
 msgstr "Coluna Indicador de tamanho"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1034
+#: ../plugins/gtk+/gtk+.xml.in.h:1041
 msgid "Radio column"
 msgstr "Coluna Rádio"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1035
+#: ../plugins/gtk+/gtk+.xml.in.h:1042
 msgid "Status Icon"
 msgstr "Ícone de estado"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1036
+#: ../plugins/gtk+/gtk+.xml.in.h:1043
 msgid "Text Buffer"
 msgstr "Buffer de texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1037
+#: ../plugins/gtk+/gtk+.xml.in.h:1044
 msgid "Entry Buffer"
 msgstr "Buffer de introdução"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1038
+#: ../plugins/gtk+/gtk+.xml.in.h:1045
 msgid "Text Tag"
 msgstr "Etiqueta do texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1039
+#: ../plugins/gtk+/gtk+.xml.in.h:1046
 msgid "Text Tag Table"
 msgstr "Tabela das etiquetas de texto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1040
+#: ../plugins/gtk+/gtk+.xml.in.h:1047
 msgid "File Filter"
 msgstr "Filtro de ficheiros"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1041
+#: ../plugins/gtk+/gtk+.xml.in.h:1048
 msgid "Mime Types"
 msgstr "Tipos Mime"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1042
+#: ../plugins/gtk+/gtk+.xml.in.h:1049
 msgid "Patterns"
 msgstr "Padrões"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1043
+#: ../plugins/gtk+/gtk+.xml.in.h:1050
 msgid "The list of mime types to add to the filter"
 msgstr "A lista de tipos mime a adicionar ao filtro"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1044
+#: ../plugins/gtk+/gtk+.xml.in.h:1051
 msgid "The list of file name patterns to add to the filter"
 msgstr "A lista de padrões de nomes de ficheiro a adicionar ao filtro"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1045
+#: ../plugins/gtk+/gtk+.xml.in.h:1052
 msgid "Recent Filter"
 msgstr "Filtro de recentes"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1047
+#: ../plugins/gtk+/gtk+.xml.in.h:1054
 msgid "The list of application names to add to the filter"
 msgstr "A lista de nomes de aplicações a adicionar ao filtro"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1048
+#: ../plugins/gtk+/gtk+.xml.in.h:1055
 msgid "Recent Manager"
 msgstr "Gestor de Recentes"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1049
+#: ../plugins/gtk+/gtk+.xml.in.h:1056
 msgid "Themed Icon"
 msgstr "Ícone de tema"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1050
+#: ../plugins/gtk+/gtk+.xml.in.h:1057
 msgid "Toplevels"
 msgstr "Níveis de topo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1051
+#: ../plugins/gtk+/gtk+.xml.in.h:1058
 msgid "Containers"
 msgstr "Contentores"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1052
+#: ../plugins/gtk+/gtk+.xml.in.h:1059
 msgid "Control and Display"
 msgstr "Controlo e apresentação"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1053
+#: ../plugins/gtk+/gtk+.xml.in.h:1060
 msgid "Composite Widgets"
 msgstr "Widgets compostos"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1054
+#: ../plugins/gtk+/gtk+.xml.in.h:1061
 msgid "Miscellaneous"
 msgstr "Miscelânea"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1055
+#: ../plugins/gtk+/gtk+.xml.in.h:1062
 msgid "Deprecated"
 msgstr "Obsoleto"
 
@@ -7968,6 +8004,11 @@ msgstr "Alinhamento e espaço"
 msgid "Padding"
 msgstr "Espaço"
 
+#: ../plugins/gtk+/glade-model-button-editor.ui.h:1
+#| msgid "Button Attributes"
+msgid "Model Button Attributes"
+msgstr "Atributos do botão modelo"
+
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:1
 msgid "Notebook Attributes"
 msgstr "Atributos do bloco de notas"
@@ -7980,6 +8021,16 @@ msgstr "Página a editar:"
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:4
 msgid "Tab Attributes"
 msgstr "Atributos do separador"
+
+#: ../plugins/gtk+/glade-popover-editor.ui.h:1
+#| msgid "Program Attributes"
+msgid "Popover Attributes"
+msgstr "Atributos do balão contextual"
+
+#: ../plugins/gtk+/glade-popover-menu-editor.ui.h:1
+#| msgid "Attributes"
+msgid "Menu Attributes"
+msgstr "Atributos do menu"
 
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:1
 msgid "Progress Bar Attributes"
