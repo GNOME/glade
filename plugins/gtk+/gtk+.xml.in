@@ -2232,8 +2232,8 @@
           <property id="default-width"  default="320" optional="True" optional-default="False"/>
           <property id="default-height" default="260" optional="True" optional-default="False"/>
           <property id="type-hint" default="GDK_WINDOW_TYPE_HINT_DIALOG" save-always="True"/>
-          <!-- We disabled this property until Glade supports GtkHeaderBar editing -->
-          <property id="use-header-bar" since="3.12" disabled="False"/>
+          <!-- Dialogs have special automatic handling of the headerbar, they own the headerbar -->
+          <property id="use-header-bar" since="3.12" disabled="True"/>
         </properties>
         
       </glade-widget-class>
