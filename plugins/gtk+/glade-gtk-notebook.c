@@ -218,7 +218,7 @@ glade_gtk_notebook_extract_children (GtkWidget * notebook)
                     (nchildren->children, list->data,
                      (GCompareFunc) notebook_child_compare_func);
             }
-          else
+          else if (!strcmp (special_child_type, "tab"))
             {
               if (g_list_find_custom (nchildren->tabs,
                                       GINT_TO_POINTER (position),
