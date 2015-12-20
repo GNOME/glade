@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.1 
+<!-- Generated with glade 3.19.0 
 
 Glade - A user interface designer for GTK+ and GNOME.
 Copyright (C) 2012-2014 Juan Pablo Ugarte
@@ -1115,12 +1115,14 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="border_width">2</property>
+            <property name="wide_handle">True</property>
             <child>
               <object class="GtkPaned" id="left_paned">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="position">150</property>
                 <property name="position_set">True</property>
+                <property name="wide_handle">True</property>
                 <child>
                   <object class="GtkNotebook" id="palettes_notebook">
                     <property name="visible">True</property>
@@ -1170,6 +1172,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 <property name="orientation">vertical</property>
                 <property name="position">150</property>
                 <property name="position_set">True</property>
+                <property name="wide_handle">True</property>
                 <child>
                   <object class="GtkNotebook" id="inspectors_notebook">
                     <property name="visible">True</property>
