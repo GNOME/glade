@@ -2715,7 +2715,6 @@
           <property id="selectable" since="3.14"/>
         </properties>
       </glade-widget-class>
-      <glade-widget-class name="GtkListBoxRow" generic-name="listboxrow" _title="List Box Row" since="3.10"/>
 
       <glade-widget-class name="GtkFlowBox" generic-name="flowbox" _title="Flow Box" use-placeholders="False" since="3.12">
         
@@ -2741,18 +2740,6 @@
         
         <properties>
           <property id="activate-on-single-click" default="True"/>
-          <property id="selection-mode">
-            <displayable-values>
-              <!-- GtkSelectionMode enumeration value -->
-              <value id="GTK_SELECTION_NONE" _name="None"/>
-              <!-- GtkSelectionMode enumeration value -->
-              <value id="GTK_SELECTION_SINGLE" _name="Single"/>
-              <!-- GtkSelectionMode enumeration value -->
-              <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
-              <!-- GtkSelectionMode enumeration value -->
-              <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
-            </displayable-values>
-          </property>
         </properties>
         
         <packing-properties>
