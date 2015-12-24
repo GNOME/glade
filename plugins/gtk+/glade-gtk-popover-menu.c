@@ -126,14 +126,14 @@ get_visible_child (GtkPopoverMenu *popover, GtkWidget **visible_child)
 
   g_object_get (G_OBJECT (popover), "visible-submenu", &visible, NULL);
   children = gtk_container_get_children (GTK_CONTAINER (popover));
-  for (l = children, i = 0; l; l = l->next, i++)
+  for (l = children, i = 0; visible && l; l = l->next, i++)
     {
       GtkWidget *child = l->data;
       gchar *name;
       gboolean found;
 
       gtk_container_child_get (GTK_CONTAINER (popover), child, "submenu", &name, NULL);
-      found = !strcmp (visible, name);
+      found = name != NULL && !strcmp (visible, name);
       g_free (name);
       if (found)
         {
