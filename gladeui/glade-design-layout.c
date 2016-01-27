@@ -948,7 +948,16 @@ update_widget_name (GladeDesignLayout *layout, GladeWidget *gwidget)
 
   if (priv->widget_name && gwidget)
     {
-      pango_layout_set_text (priv->widget_name, glade_widget_get_name (gwidget), -1);
+      gchar *name = glade_widget_get_name (gwidget);
+
+      if (g_str_has_prefix (name, GLADE_UNNAMED_PREFIX))
+        {
+          GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (gwidget);
+          pango_layout_set_text (priv->widget_name, glade_widget_adaptor_get_name (adaptor), -1);
+        }
+      else
+        pango_layout_set_text (priv->widget_name, name, -1);
+
       gtk_widget_queue_resize (GTK_WIDGET (layout));
     }
 }
