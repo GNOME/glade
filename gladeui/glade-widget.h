@@ -227,6 +227,8 @@ gboolean                glade_widget_depends                (GladeWidget      *w
 
 GdkDevice              *glade_widget_get_device_from_event  (GdkEvent *event);
 
+void                    glade_widget_ensure_name            (GladeWidget      *widget,
+							     GladeProject     *project);
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/

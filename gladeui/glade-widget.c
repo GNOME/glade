@@ -5003,3 +5003,17 @@ glade_widget_get_packing_properties (GladeWidget *widget)
 
   return widget->priv->packing_properties;
 }
+
+void
+glade_widget_ensure_name (GladeWidget      *widget,
+			  GladeProject     *project)
+{
+  if (!widget->priv->name ||
+      strncmp (widget->priv->name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
+    {
+      gchar *new_name = glade_project_new_widget_name (project, NULL,
+						       glade_widget_adaptor_get_generic_name (widget->priv->adaptor));
+      glade_command_set_name (widget, new_name);
+      g_free (new_name);
+    }
+}
