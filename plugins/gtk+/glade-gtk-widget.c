@@ -1006,14 +1006,35 @@ glade_gtk_widget_add2group_cb (GtkMenuItem * item, GladeWidget * gwidget)
       glade_widget_adaptor_get_by_type (GTK_TYPE_SIZE_GROUP);
   GList *widget_list = NULL, *new_list;
   GladeProperty *property;
+  const gchar *current_name;
+  const gchar *size_group_name = NULL;
+  gchar *widget_name;
+
+  /* Display "(unnamed)" for unnamed size groups */
+  if (group)
+    {
+      size_group_name = glade_widget_get_name (group);
+      if (g_str_has_prefix (size_group_name, GLADE_UNNAMED_PREFIX))
+	size_group_name = _("(unnamed)");
+    }
+
+  /* Ensure the widget has a name if it's going to be referred to by a size group */
+  current_name = glade_widget_get_name (gwidget);
+  if (g_str_has_prefix (current_name, GLADE_UNNAMED_PREFIX))
+    widget_name = glade_project_new_widget_name (glade_widget_get_project (gwidget), NULL,
+						 glade_widget_adaptor_get_generic_name (glade_widget_get_adaptor (gwidget)));
+  else
+    widget_name = g_strdup (current_name);
 
   if (group)
-    glade_command_push_group (_("Adding %s to Size Group %s"), 
-			      glade_widget_get_name (gwidget),
-                              glade_widget_get_name (group));
+    glade_command_push_group (_("Adding %s to Size Group %s"),
+			      widget_name,
+                              size_group_name);
   else
     glade_command_push_group (_("Adding %s to a new Size Group"),
-                              glade_widget_get_name (gwidget));
+                              widget_name);
+
+  glade_command_set_name (gwidget, widget_name);
 
   if (!group)
     /* Cant cancel a size group */
@@ -1029,6 +1050,7 @@ glade_gtk_widget_add2group_cb (GtkMenuItem * item, GladeWidget * gwidget)
   glade_command_set_property (property, new_list);
 
   g_list_free (new_list);
+  g_free (widget_name);
 
   glade_command_pop_group ();
 }
@@ -1046,13 +1068,19 @@ glade_gtk_widget_action_submenu (GladeWidgetAdaptor * adaptor,
       GtkWidget *menu = gtk_menu_new ();
       GtkWidget *separator, *item;
       GladeWidget *group;
+      const gchar *size_group_name;
 
       if ((groups = list_sizegroups (gwidget)) != NULL)
         {
           for (list = groups; list; list = list->next)
             {
               group = list->data;
-              item = gtk_menu_item_new_with_label (glade_widget_get_name (group));
+
+	      size_group_name = glade_widget_get_name (group);
+	      if (g_str_has_prefix (size_group_name, GLADE_UNNAMED_PREFIX))
+		size_group_name = _("(unnamed)");
+
+	      item = gtk_menu_item_new_with_label (size_group_name);
 
               g_object_set_data (G_OBJECT (item), "glade-group-widget", group);
               g_signal_connect (G_OBJECT (item), "activate",
