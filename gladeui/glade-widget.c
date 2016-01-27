@@ -2189,6 +2189,13 @@ glade_widget_list_prop_refs (GladeWidget *widget)
   return g_list_copy (widget->priv->prop_refs);
 }
 
+gboolean
+glade_widget_has_prop_refs (GladeWidget *widget)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+  return widget->priv->prop_refs != NULL;
+}
 
 GladeProperty *
 glade_widget_get_parentless_widget_ref (GladeWidget *widget)

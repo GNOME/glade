@@ -240,6 +240,7 @@ void                    glade_widget_remove_prop_ref        (GladeWidget      *w
 							     GladeProperty    *property);
 
 GList                  *glade_widget_list_prop_refs         (GladeWidget      *widget);
+gboolean                glade_widget_has_prop_refs          (GladeWidget      *widget);
 
 GladeProperty          *glade_widget_get_parentless_widget_ref (GladeWidget  *widget);
 
