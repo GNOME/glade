@@ -3333,6 +3333,9 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
       if (selected)
         {
           GValue *value;
+	  GObject *new_object, *old_object = NULL;
+	  GladeWidget *new_widget;
+	  const gchar *current_name;
 
           glade_project_selection_set (project, 
 				       glade_widget_get_object (widget),
@@ -3341,44 +3344,54 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
           value = glade_property_class_make_gvalue_from_string
 	    (eprop->priv->klass, glade_widget_get_name (selected), project);
 
+	  glade_property_get (eprop->priv->property, &old_object);
+	  new_object = g_value_get_object (value);
+	  new_widget = glade_widget_get_from_gobject (new_object);
+
+	  glade_command_push_group (_("Setting %s of %s to %s"),
+				    glade_property_class_get_name (eprop->priv->klass),
+				    glade_widget_get_name (widget), 
+				    glade_widget_get_name (new_widget));
+
           /* Unparent the widget so we can reuse it for this property */
           if (glade_property_class_parentless_widget (eprop->priv->klass))
             {
-              GObject *new_object, *old_object = NULL;
-              GladeWidget *new_widget;
               GladeProperty *old_ref;
 
               if (!G_IS_PARAM_SPEC_OBJECT (pspec))
-                g_warning
-                    ("Parentless widget property should be of object type");
-              else
-                {
-                  glade_property_get (eprop->priv->property, &old_object);
-                  new_object = g_value_get_object (value);
-                  new_widget = glade_widget_get_from_gobject (new_object);
+                g_warning ("Parentless widget property should be of object type");
+              else if (new_object && old_object != new_object)
+		{
+		  /* Steal parentless reference widget references, basically some references
+		   * can only be referenced by one property, here we clear it if such a reference
+		   * exists for the target object
+		   */
+		  if ((old_ref = glade_widget_get_parentless_widget_ref (new_widget)))
+		    glade_command_set_property (old_ref, NULL);
+		}
+	    }
 
-                  if (new_object && old_object != new_object)
-                    {
-                      if ((old_ref =
-                           glade_widget_get_parentless_widget_ref (new_widget)))
-                        {
-                          glade_command_push_group (_("Setting %s of %s to %s"),
-                                                    glade_property_class_get_name (eprop->priv->klass),
-						    glade_widget_get_name (widget), 
-						    glade_widget_get_name (new_widget));
-                          glade_command_set_property (old_ref, NULL);
-                          glade_editor_property_commit (eprop, value);
-                          glade_command_pop_group ();
-                        }
-                      else
-                        glade_editor_property_commit (eprop, value);
-                    }
-                }
-            }
-          else
-            glade_editor_property_commit (eprop, value);
+	  /* Ensure that the object we will now refer to has an ID, the NULL
+	   * check is just paranoia, it *always* has a name.
+	   *
+	   * To refer to a widget, it needs to have a name.
+	   */
+	  current_name = glade_widget_get_name (new_widget);
+	  if (!current_name || strncmp (current_name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
+	    {
+	      gchar *new_name;
+	      GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (new_widget);
 
-          g_value_unset (value);
+	      new_name = glade_project_new_widget_name (project, NULL,
+							glade_widget_adaptor_get_generic_name (adaptor));
+	      glade_command_set_name (new_widget, new_name);
+	      g_free (new_name);
+	    }
+
+	  glade_editor_property_commit (eprop, value);
+	  glade_command_pop_group ();
+
+	  g_value_unset (value);
           g_free (value);
         }
     }
@@ -3386,6 +3399,7 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
     {
       GValue *value;
       GladeWidget *new_widget;
+      gchar *new_name;
 
       /* translators: Creating 'a widget' for 'a property' of 'a widget' */
       glade_command_push_group (_("Creating %s for %s of %s"),
@@ -3397,10 +3411,22 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
       if ((new_widget =
            glade_command_create (create_adaptor, NULL, NULL, project)) != NULL)
         {
+	  GValue *value;
+	  GParamSpec *pspec;
+
           glade_project_selection_set (project, glade_widget_get_object (widget), TRUE);
 
-          value = glade_property_class_make_gvalue_from_string
-	    (eprop->priv->klass, glade_widget_get_name (new_widget), project);
+	  /* Give the newly created object a name */
+	  new_name = glade_project_new_widget_name (project, NULL,
+						    glade_widget_adaptor_get_generic_name (create_adaptor));
+	  glade_command_set_name (new_widget, new_name);
+	  g_free (new_name);
+
+	  value = g_new0 (GValue, 1);
+	  pspec = glade_property_class_get_pspec (eprop->priv->klass);
+
+	  g_value_init (value, pspec->value_type);
+	  g_value_set_object (value, glade_widget_get_object (new_widget));
 
           glade_editor_property_commit (eprop, value);
 
