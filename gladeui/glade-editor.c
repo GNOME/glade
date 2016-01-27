@@ -296,18 +296,36 @@ glade_editor_update_class_field (GladeEditor *editor)
   if (priv->loaded_widget)
     {
       GladeWidget *widget = priv->loaded_widget;
-      gchar *text;
+      gchar *text, *name;
 
       gtk_image_set_from_icon_name (GTK_IMAGE (priv->class_icon),
                                     glade_widget_adaptor_get_icon_name (priv->loaded_adaptor),
                                     GTK_ICON_SIZE_BUTTON);
       gtk_widget_show (priv->class_icon);
 
-      /* translators: referring to the properties of a widget named '%s [%s]' */
-      text = g_strdup_printf (_("%s Properties - %s [%s]"),
-                              glade_widget_adaptor_get_title (priv->loaded_adaptor),
-                              glade_widget_adaptor_get_name (priv->loaded_adaptor), 
-			      glade_widget_get_name (widget));
+      name = glade_widget_get_name (widget);
+
+      if (g_str_has_prefix (name, GLADE_UNNAMED_PREFIX))
+        {
+          /* translators: %s(Class Title) Properties - %s (ClassName)
+           * example: Window Properties - GtkWindow
+           */
+          text = g_strdup_printf (_("%s Properties - %s"),
+                                  glade_widget_adaptor_get_title (priv->loaded_adaptor),
+                                  glade_widget_adaptor_get_name (priv->loaded_adaptor));
+	}
+      else
+        {
+          /* translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
+           * example: Window Properties - GtkWindow [window1]
+           */
+          text = g_strdup_printf (_("%s Properties - %s [%s]"),
+                                  glade_widget_adaptor_get_title (priv->loaded_adaptor),
+                                  glade_widget_adaptor_get_name (priv->loaded_adaptor), 
+		                  name);
+        }
+
+		 
       gtk_label_set_text (GTK_LABEL (priv->class_label), text);
       g_free (text);
 
