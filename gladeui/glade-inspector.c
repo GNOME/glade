@@ -862,6 +862,27 @@ glade_inspector_warning_cell_data_func (GtkTreeViewColumn *column,
 }
 
 static void
+glade_inspector_name_cell_data_func (GtkTreeViewColumn *column,
+				     GtkCellRenderer   *renderer,
+				     GtkTreeModel      *model,
+				     GtkTreeIter       *iter,
+				     gpointer           data)
+{
+  gchar *name = NULL;
+
+  gtk_tree_model_get (model, iter,
+		      GLADE_PROJECT_MODEL_COLUMN_NAME, &name,
+		      -1);
+
+  g_object_set (renderer, "text", 
+		(g_str_has_prefix (name, GLADE_UNNAMED_PREFIX)) ? NULL : name,
+		NULL);
+
+  g_free (name);
+}
+
+
+static void
 glade_inspector_detail_cell_data_func (GtkTreeViewColumn *column,
 				       GtkCellRenderer   *renderer,
 				       GtkTreeModel      *model,
@@ -944,6 +965,9 @@ add_columns (GtkTreeView *view)
                                        renderer,
                                        "text", GLADE_PROJECT_MODEL_COLUMN_NAME,
                                        NULL);
+  gtk_tree_view_column_set_cell_data_func (column, renderer,
+					   glade_inspector_name_cell_data_func,
+					   NULL, NULL);
 
   /* Padding */
   renderer = gtk_cell_renderer_text_new ();
