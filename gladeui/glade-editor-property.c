@@ -3376,17 +3376,7 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
 	   *
 	   * To refer to a widget, it needs to have a name.
 	   */
-	  current_name = glade_widget_get_name (new_widget);
-	  if (!current_name || strncmp (current_name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
-	    {
-	      gchar *new_name;
-	      GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (new_widget);
-
-	      new_name = glade_project_new_widget_name (project, NULL,
-							glade_widget_adaptor_get_generic_name (adaptor));
-	      glade_command_set_name (new_widget, new_name);
-	      g_free (new_name);
-	    }
+	  glade_widget_ensure_name (new_widget, project);
 
 	  glade_editor_property_commit (eprop, value);
 	  glade_command_pop_group ();
@@ -3399,7 +3389,6 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
     {
       GValue *value;
       GladeWidget *new_widget;
-      gchar *new_name;
 
       /* translators: Creating 'a widget' for 'a property' of 'a widget' */
       glade_command_push_group (_("Creating %s for %s of %s"),
@@ -3412,19 +3401,13 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
            glade_command_create (create_adaptor, NULL, NULL, project)) != NULL)
         {
 	  GValue *value;
-	  GParamSpec *pspec;
 
           glade_project_selection_set (project, glade_widget_get_object (widget), TRUE);
 
 	  /* Give the newly created object a name */
-	  new_name = glade_project_new_widget_name (project, NULL,
-						    glade_widget_adaptor_get_generic_name (create_adaptor));
-	  glade_command_set_name (new_widget, new_name);
-	  g_free (new_name);
+	  glade_widget_ensure_name (new_widget, project);
 
 	  value = g_new0 (GValue, 1);
-	  pspec = glade_property_class_get_pspec (eprop->priv->klass);
-
 	  g_value_init (value, pspec->value_type);
 	  g_value_set_object (value, glade_widget_get_object (new_widget));
 
@@ -3651,16 +3634,35 @@ glade_eprop_objects_show_dialog (GladeEditorProperty *eprop)
   if (res == GTK_RESPONSE_OK)
     {
       GValue *value;
-      GList *selected = NULL;
+      GList *selected = NULL, *l;
 
       gtk_tree_model_foreach
           (gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)),
            (GtkTreeModelForeachFunc)
            glade_eprop_objects_selected_widget, &selected);
 
-      value = glade_property_class_make_gvalue (eprop->priv->klass, selected);
+      if (selected)
+	{
+	  glade_command_push_group (_("Setting %s of %s"),
+				    glade_property_class_get_name (eprop->priv->klass),
+				    glade_widget_get_name (widget));
 
+	  /* Make sure the selected widgets have names now
+	   */
+	  for (l = selected; l; l = l->next)
+	    {
+	      GObject *object = l->data;
+	      GladeWidget *selected_widget = glade_widget_get_from_gobject (object);
+
+	      glade_widget_ensure_name (selected_widget, project);
+	    }
+	}
+
+      value = glade_property_class_make_gvalue (eprop->priv->klass, selected);
       glade_editor_property_commit (eprop, value);
+
+      if (selected)
+	glade_command_pop_group ();
 
       g_value_unset (value);
       g_free (value);
