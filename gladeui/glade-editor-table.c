@@ -224,9 +224,25 @@ widget_name_edited (GtkWidget *editable, GladeEditorTable *table)
   widget = table->priv->loaded_widget;
   new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
 
-  if (glade_project_available_widget_name (glade_widget_get_project (widget), 
-					   widget, new_name))
+  if (new_name == NULL || new_name[0] == '\0')
+    {
+      /* If we are explicitly trying to set the widget name to be empty,
+       * then we must not allow it there are any active references to
+       * the widget which would otherwise break.
+       *
+       * Otherwise, we need to allocate a new unnamed prefix name for the widget
+       */
+      if (!glade_widget_has_prop_refs (widget))
+	{
+	  gchar *unnamed_name = glade_project_new_widget_name (glade_widget_get_project (widget), NULL, GLADE_UNNAMED_PREFIX);
+	  glade_command_set_name (widget, unnamed_name);
+	  g_free (unnamed_name);
+	}
+    }
+  else if (glade_project_available_widget_name (glade_widget_get_project (widget), 
+						widget, new_name))
     glade_command_set_name (widget, new_name);
+
   g_free (new_name);
 }
 
@@ -264,9 +280,16 @@ widget_name_changed (GladeWidget      *widget,
 
   if (table->priv->name_entry)
     {
+      const gchar *widget_name;
+
       BLOCK_NAME_ENTRY_CB (table);
-      gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry),
-                          glade_widget_get_name (table->priv->loaded_widget));
+
+      widget_name = glade_widget_get_name (table->priv->loaded_widget);
+      if (!widget_name || strncmp (widget_name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
+	gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
+      else
+	gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), widget_name);
+
       UNBLOCK_NAME_ENTRY_CB (table);
     }
 }
@@ -368,8 +391,13 @@ glade_editor_table_load (GladeEditable *editable, GladeWidget *widget)
 	}
 
       if (table->priv->name_entry)
-        gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), 
-			    glade_widget_get_name (widget));
+	{
+	  const gchar *widget_name = glade_widget_get_name (widget);
+	  if (!widget_name || strncmp (widget_name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
+	    gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
+	  else
+	    gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), widget_name);
+	}
 
       if (table->priv->name_label)
 	widget_composite_changed (widget, NULL, table);
