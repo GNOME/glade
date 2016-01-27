@@ -3562,11 +3562,13 @@ glade_project_reserve_widget_name (GladeProject *project,
 /**
  * glade_project_new_widget_name:
  * @project: a #GladeProject
- * @widget: the #GladeWidget intended to recieve a new name
+ * @widget: the #GladeWidget intended to recieve a new name, or %NULL
  * @base_name: base name of the widget to create
  *
  * Creates a new name for a widget that doesn't collide with any of the names 
  * already in @project. This name will start with @base_name.
+ *
+ * Note the @widget parameter is ignored and preserved only for historical reasons.
  *
  * Returns: a string containing the new name, %NULL if there is not enough 
  *          memory for this string
@@ -3579,7 +3581,6 @@ glade_project_new_widget_name (GladeProject *project,
   gchar *name;
 
   g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-  g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
   g_return_val_if_fail (base_name && base_name[0], NULL);
 
   name = glade_name_context_new_name (project->priv->widget_names, base_name);
