@@ -867,30 +867,10 @@ glade_widget_constructor (GType                  type,
 
   if (gwidget->priv->name == NULL)
     {
-      if (gwidget->priv->internal)
-        {
-          gchar *name_base = g_strdup_printf ("%s-%s",
-                                              gwidget->priv->construct_internal,
-                                              gwidget->priv->internal);
-
-          if (gwidget->priv->project)
-            {
-              gwidget->priv->name =
-                  glade_project_new_widget_name (gwidget->priv->project,
-                                                 gwidget, name_base);
-              g_free (name_base);
-            }
-          else
-            gwidget->priv->name = name_base;
-
-        }
-      else if (gwidget->priv->project)
-        gwidget->priv->name = glade_project_new_widget_name
-            (gwidget->priv->project, gwidget, 
-	     glade_widget_adaptor_get_generic_name (gwidget->priv->adaptor));
+      if (gwidget->priv->project)
+        gwidget->priv->name = glade_project_new_widget_name (gwidget->priv->project, gwidget, GLADE_UNNAMED_PREFIX);
       else
-        gwidget->priv->name = 
-	  g_strdup (glade_widget_adaptor_get_generic_name (gwidget->priv->adaptor));
+        gwidget->priv->name = g_strdup (GLADE_UNNAMED_PREFIX);
     }
 
   if (gwidget->priv->construct_template)
@@ -3993,6 +3973,8 @@ glade_widget_read (GladeProject *project,
   GladeWidget *widget = NULL;
   gchar *klass, *id = NULL, *template_parent = NULL;
   gboolean template = FALSE;
+  GType type;
+  const gchar *type_to_use;
 
   if (glade_project_load_cancelled (project))
     return NULL;
@@ -4018,73 +4000,81 @@ glade_widget_read (GladeProject *project,
 	    id = g_strdup (klass);
 	}
       else
-	id = glade_xml_get_property_string_required (node, GLADE_XML_TAG_ID, NULL);
-	
-      if (id)
 	{
-          GType type;
-	  const gchar *type_to_use = template_parent ? template_parent : klass;
+	  id = glade_xml_get_property_string (node, GLADE_XML_TAG_ID);
 
-          /* 
-           * Create GladeWidget instance based on type. 
-           */
-          if ((adaptor = glade_widget_adaptor_get_by_name (type_to_use)) &&
-              (type = glade_widget_adaptor_get_object_type (adaptor)) &&
-              G_TYPE_IS_INSTANTIATABLE (type) &&
-              G_TYPE_IS_ABSTRACT (type) == FALSE)
-            {
-              /* Internal children !!! */
-              if (internal)
-                {
-                  GObject *child_object =
-		    glade_widget_get_internal_child (NULL, parent, internal);
+	  /* Here we use an internal unnamed prefix to identify unnamed widgets, then
+	   * we just issue a warning if anyone was dense enough to actually use
+	   * this prefix in a project as a widget name.
+	   */
+	  if (!id)
+	    id = glade_project_new_widget_name (project, NULL, GLADE_UNNAMED_PREFIX);
+	  else if (strncmp (id, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
+	    g_warning ("Loaded widget `%s' has internal glade prefix, please rename this widget", id);
+	}
 
-                  if (!child_object)
-                    {
-                      g_warning ("Failed to locate "
-                                 "internal child %s of %s",
-                                 internal, glade_widget_get_name (parent));
-		      goto out;
-                    }
+      type_to_use = template_parent ? template_parent : klass;
 
-                  if (!(widget = glade_widget_get_from_gobject (child_object)))
-                    g_error ("Unable to get GladeWidget "
-                             "for internal child %s\n", internal);
+      /* 
+       * Create GladeWidget instance based on type. 
+       */
+      if ((adaptor = glade_widget_adaptor_get_by_name (type_to_use)) &&
+	  (type = glade_widget_adaptor_get_object_type (adaptor)) &&
+	  G_TYPE_IS_INSTANTIATABLE (type) &&
+	  G_TYPE_IS_ABSTRACT (type) == FALSE)
+	{
+	  /* Internal children !!! */
+	  if (internal)
+	    {
+	      GObject *child_object =
+		glade_widget_get_internal_child (NULL, parent, internal);
 
-                  /* Apply internal widget name from here */
-                  glade_widget_set_name (widget, id);
-                }
-              else
-                {
-                  widget = glade_widget_adaptor_create_widget
-                      (adaptor, FALSE,
-                       "name", id,
-		       "composite", template,
-                       "parent", parent,
-                       "project", project, "reason", GLADE_CREATE_LOAD, NULL);
-                }
+	      if (!child_object)
+		{
+		  g_warning ("Failed to locate "
+			     "internal child %s of %s",
+			     internal, glade_widget_get_name (parent));
+		  goto out;
+		}
 
-              glade_widget_adaptor_read_widget (adaptor, widget, node);
-            }
-          else
-            {
-              GObject *stub = g_object_new (GLADE_TYPE_OBJECT_STUB,
-                                            "object-type", klass,
-                                            "xml-node", node,
-                                            NULL);
+	      if (!(widget = glade_widget_get_from_gobject (child_object)))
+		g_error ("Unable to get GladeWidget "
+			 "for internal child %s\n", internal);
+
+	      /* Apply internal widget name from here */
+	      glade_widget_set_name (widget, id);
+	    }
+	  else
+	    {
+	      widget = glade_widget_adaptor_create_widget
+		(adaptor, FALSE,
+		 "name", id,
+		 "composite", template,
+		 "parent", parent,
+		 "project", project, "reason", GLADE_CREATE_LOAD, NULL);
+	    }
+
+	  glade_widget_adaptor_read_widget (adaptor, widget, node);
+	}
+      else
+	{
+	  GObject *stub = g_object_new (GLADE_TYPE_OBJECT_STUB,
+					"object-type", klass,
+					"xml-node", node,
+					NULL);
               
-              widget = glade_widget_adaptor_create_widget (glade_widget_adaptor_get_by_type (GTK_TYPE_WIDGET),
-                                                           FALSE,
-                                                           "parent", parent,
-                                                           "composite", template,
-                                                           "project", project,
-                                                           "reason", GLADE_CREATE_LOAD,
-                                                           "object", stub,
-                                                           "name", id,
-                                                           NULL);
-            }
-          g_free (id);
-        }
+	  widget = glade_widget_adaptor_create_widget (glade_widget_adaptor_get_by_type (GTK_TYPE_WIDGET),
+						       FALSE,
+						       "parent", parent,
+						       "composite", template,
+						       "project", project,
+						       "reason", GLADE_CREATE_LOAD,
+						       "object", stub,
+						       "name", id,
+						       NULL);
+	}
+      g_free (id);
+
       g_free (template_parent);
       g_free (klass);
     }
@@ -4302,8 +4292,12 @@ glade_widget_write (GladeWidget     *widget,
       glade_xml_node_set_property_string (widget_node,
 					  GLADE_XML_TAG_CLASS,
 					  glade_widget_adaptor_get_name (widget->priv->adaptor));
-      glade_xml_node_set_property_string (widget_node,
-					  GLADE_XML_TAG_ID, widget->priv->name);
+
+      /* Conditionally omit the ID in the output if the name is 'unset'
+       */
+      if (strncmp (widget->priv->name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) != 0)
+	glade_xml_node_set_property_string (widget_node,
+					    GLADE_XML_TAG_ID, widget->priv->name);
     }
 
   glade_xml_node_append_child (node, widget_node);

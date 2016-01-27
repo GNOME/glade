@@ -56,6 +56,11 @@ struct _GladeWidgetClass
   void   (* glade_reserved8)   (void);
 };
 
+/* Nameless widgets in fact have a name, except
+ * that they are prefixed with this prefix
+ */
+#define GLADE_UNNAMED_PREFIX   "__glade_unnamed_"
+
 #define IS_GLADE_WIDGET_EVENT(event)		 \
 	((event) == GDK_BUTTON_PRESS ||		 \
 	 (event) == GDK_BUTTON_RELEASE ||	 \
