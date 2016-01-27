@@ -108,67 +108,6 @@ glade_name_context_new_name (GladeNameContext *context,
   return name;
 }
 
-gchar *
-glade_name_context_dual_new_name (GladeNameContext *context,
-                                  GladeNameContext *another_context,
-                                  const gchar      *base_name)
-{
-  GladeIDAllocator *id_allocator;
-  GList            *free_ids = NULL, *l;
-  const gchar      *number;
-  gchar            *name = NULL, *freeme = NULL;
-  guint             i;
-  gboolean          found = FALSE;
-
-  g_return_val_if_fail (context != NULL, NULL);
-  g_return_val_if_fail (another_context != NULL, NULL);
-  g_return_val_if_fail (base_name && base_name[0], NULL);
-
-  number = base_name + strlen (base_name);
-  while (number > base_name && g_ascii_isdigit (number[-1]))
-    --number;
-
-  if (*number)
-    {
-      freeme = g_strndup (base_name, number - base_name);
-      base_name = freeme;
-    }
-
-  id_allocator = g_hash_table_lookup (context->name_allocators, base_name);
-
-  if (id_allocator == NULL)
-    {
-      id_allocator = glade_id_allocator_new ();
-      g_hash_table_insert (context->name_allocators,
-                           g_strdup (base_name), id_allocator);
-    }
-
-  while (!found)
-    {
-      g_free (name);
-      i = glade_id_allocator_allocate (id_allocator);
-      name = g_strdup_printf ("%s%u", base_name, i);
-
-      if (!(glade_name_context_has_name (context, name) ||
-	    glade_name_context_has_name (another_context, name)))
-	found = TRUE;
-      else
-	free_ids = g_list_prepend (free_ids, GUINT_TO_POINTER (i));
-    }
-
-  /* Release all the ids that were not hits */
-  for (l = free_ids; l; l = l->next)
-    {
-      i = GPOINTER_TO_UINT (l->data);
-      
-      glade_id_allocator_release (id_allocator, i);
-    }
-  g_list_free (free_ids);
-
-  g_free (freeme);
-  return name;
-}
-
 guint
 glade_name_context_n_names (GladeNameContext *context)
 {

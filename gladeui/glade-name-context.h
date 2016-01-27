@@ -13,10 +13,6 @@ void               glade_name_context_destroy             (GladeNameContext *con
 gchar             *glade_name_context_new_name            (GladeNameContext *context,
 							   const gchar      *base_name);
 
-gchar             *glade_name_context_dual_new_name       (GladeNameContext *context,
-							   GladeNameContext *another_context,
-							   const gchar      *base_name);
-
 guint              glade_name_context_n_names             (GladeNameContext *context);
 
 gboolean           glade_name_context_has_name            (GladeNameContext *context,
