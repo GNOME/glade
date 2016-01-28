@@ -1274,6 +1274,22 @@ glade_editor_hide_class_field (GladeEditor *editor)
     }
 }
 
+static void
+editor_widget_name_changed (GladeWidget *widget,
+			    GParamSpec  *pspec,
+			    GtkWindow   *window)
+{
+  gchar *title, *prj_name;
+
+  prj_name = glade_project_get_name (glade_widget_get_project (widget));
+  /* Translators: first %s is the project name, second is a widget name */
+  title = g_strdup_printf (_("%s - %s Properties"), prj_name,
+                           glade_widget_get_display_name (widget));
+  gtk_window_set_title (window, title);
+  g_free (title);
+  g_free (prj_name);
+}
+
 /**
  * glade_editor_dialog_for_widget:
  * @widget: a #GladeWidget
@@ -1287,7 +1303,6 @@ GtkWidget *
 glade_editor_dialog_for_widget (GladeWidget *widget)
 {
   GtkWidget *window, *editor;
-  gchar *title, *prj_name;
 
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
@@ -1295,13 +1310,10 @@ glade_editor_dialog_for_widget (GladeWidget *widget)
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_UTILITY);
 
-  prj_name = glade_project_get_name (glade_widget_get_project (widget));
-  /* Translators: first %s is the project name, second is a widget name */
-  title = g_strdup_printf (_("%s - %s Properties"), prj_name,
-                           glade_widget_get_name (widget));
-  gtk_window_set_title (GTK_WINDOW (window), title);
-  g_free (title);
-  g_free (prj_name);
+  /* Keep the title up to date */
+  editor_widget_name_changed (widget, NULL, window);
+  g_signal_connect_object (G_OBJECT (widget), "notify::name",
+			   G_CALLBACK (editor_widget_name_changed), window, 0);
 
   if (glade_app_get_accel_group ())
     {
