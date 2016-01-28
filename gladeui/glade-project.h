@@ -52,7 +52,7 @@ typedef enum
  * @GLADE_PROJECT_MODEL_COLUMN_OBJECT: the GObject of the widget
  * @GLADE_PROJECT_MODEL_COLUMN_MISC: the auxilary text describing a widget's role
  * @GLADE_PROJECT_MODEL_COLUMN_WARNING: the support warning text for this widget
- * @GLADE_PROJECT_MODEL_ICON_NAME_N_COLUMNS: Number of columns
+ * @GLADE_PROJECT_MODEL_N_COLUMNS: Number of columns
  *
  * The tree view columns provided by the GtkTreeModel implemented
  * by GladeProject
