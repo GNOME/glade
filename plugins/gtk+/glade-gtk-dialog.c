@@ -173,6 +173,15 @@ glade_gtk_dialog_write_child (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *parent = glade_widget_get_parent (widget);
 
+  /* Before writing out the children, force any response id carrying buttons
+   * to have a name.
+   *
+   * This is NOT correct, but is an exception, we force the buttons to have
+   * names in a non-undoable way at save time for the purpose of action widgets
+   * only.
+   */
+  glade_gtk_action_widgets_ensure_names (parent, "action_area");
+  
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
 
   if (parent && GTK_IS_DIALOG (glade_widget_get_object (parent)))
