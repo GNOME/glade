@@ -5053,13 +5053,19 @@ glade_widget_get_packing_properties (GladeWidget *widget)
 
 void
 glade_widget_ensure_name (GladeWidget      *widget,
-			  GladeProject     *project)
+			  GladeProject     *project,
+			  gboolean          use_command)
 {
   if (!glade_widget_has_name (widget))
     {
       gchar *new_name = glade_project_new_widget_name (project, NULL,
 						       glade_widget_adaptor_get_generic_name (widget->priv->adaptor));
-      glade_command_set_name (widget, new_name);
+
+      if (use_command)
+	glade_command_set_name (widget, new_name);
+      else
+	glade_widget_set_name (widget, new_name);
+
       g_free (new_name);
     }
 }
