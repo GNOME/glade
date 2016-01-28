@@ -3415,7 +3415,7 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
 	   *
 	   * To refer to a widget, it needs to have a name.
 	   */
-	  glade_widget_ensure_name (new_widget, project);
+	  glade_widget_ensure_name (new_widget, project, TRUE);
 
 	  glade_editor_property_commit (eprop, value);
 	  glade_command_pop_group ();
@@ -3444,7 +3444,7 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
           glade_project_selection_set (project, glade_widget_get_object (widget), TRUE);
 
 	  /* Give the newly created object a name */
-	  glade_widget_ensure_name (new_widget, project);
+	  glade_widget_ensure_name (new_widget, project, TRUE);
 
 	  value = g_new0 (GValue, 1);
 	  g_value_init (value, pspec->value_type);
@@ -3693,7 +3693,7 @@ glade_eprop_objects_show_dialog (GladeEditorProperty *eprop)
 	      GObject *object = l->data;
 	      GladeWidget *selected_widget = glade_widget_get_from_gobject (object);
 
-	      glade_widget_ensure_name (selected_widget, project);
+	      glade_widget_ensure_name (selected_widget, project, TRUE);
 	    }
 	}
 
