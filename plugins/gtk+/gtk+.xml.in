@@ -3464,6 +3464,7 @@
       <glade-widget-class name="GtkPopover" generic-name="popover" _title="Popover" toplevel="True" since="3.12">
         <constructor-function>glade_gtk_popover_constructor</constructor-function>
         <create-editable-function>glade_gtk_popover_create_editable</create-editable-function>
+        <post-create-function>glade_gtk_popover_post_create</post-create-function>
         <properties>
           <property id="visible" default="False"/>
           <property id="relative-to" ignore="True" custom-layout="True"/>

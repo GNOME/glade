@@ -56,3 +56,25 @@ glade_gtk_popover_create_editable (GladeWidgetAdaptor * adaptor,
     return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
+static gint
+popover_key_press (GtkWidget   *popover,
+		   GdkEventKey *event,
+		   gpointer     user_data)
+{
+  if (event->keyval == GDK_KEY_Escape)
+    return TRUE;
+
+  return FALSE;
+}
+		   
+void
+glade_gtk_popover_post_create (GladeWidgetAdaptor * adaptor,
+			       GObject *popover, GladeCreateReason reason)
+{
+  /* Ignore some events causing the popover to disappear from the workspace
+   */
+  g_signal_connect (popover, "key-press-event",
+		    G_CALLBACK (popover_key_press), NULL);
+
+  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, popover, reason);
+}
