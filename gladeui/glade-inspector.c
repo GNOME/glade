@@ -311,6 +311,12 @@ search_common_matches (GtkTreeModel    *model,
 
   gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_NAME, &row_text, -1);
 
+  if (g_str_has_prefix (row_text, GLADE_UNNAMED_PREFIX))
+    {
+      g_free (row_text);
+      return FALSE;
+    }
+
   match = (strncmp (data->text, row_text, strlen (data->text)) == 0);
 
   if (match)
