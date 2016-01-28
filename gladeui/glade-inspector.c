@@ -93,6 +93,7 @@ struct _GladeInspectorPrivate
   guint idle_complete;
   gboolean search_disabled;
   gchar *completion_text;
+  gchar *completion_text_fold;
 };
 
 static GParamSpec *properties[N_PROPERTIES];
@@ -202,21 +203,6 @@ glade_inspector_class_init (GladeInspectorClass *klass)
 }
 
 static gboolean
-find_in_string_insensitive (const gchar *_haystack, const gchar *_needle)
-{
-  gboolean visible;
-  gchar *haystack = g_utf8_casefold (_haystack, -1);
-  gchar *needle = g_utf8_casefold (_needle, -1);
-
-  visible = strstr (haystack, needle) != NULL;
-
-  g_free (haystack);
-  g_free (needle);
-
-  return visible;
-}
-
-static gboolean
 glade_inspector_visible_func (GtkTreeModel *model,
                               GtkTreeIter  *parent,
                               gpointer      data)
@@ -242,13 +228,16 @@ glade_inspector_visible_func (GtkTreeModel *model,
 
   if (!retval)
     {
-      gchar *widget_name;
+      gchar *widget_name, *haystack;
 
       gtk_tree_model_get (model, parent, GLADE_PROJECT_MODEL_COLUMN_NAME,
                           &widget_name, -1);
 
-      retval = find_in_string_insensitive (widget_name, priv->completion_text);
+      haystack = g_utf8_casefold (widget_name, -1);
 
+      retval = strstr (haystack, priv->completion_text_fold) != NULL;
+
+      g_free (haystack);
       g_free (widget_name);
     }
 
@@ -367,6 +356,17 @@ get_partial_match (GladeInspector *inspector,
   return data.common_text;
 }
 
+static void
+inspector_set_completion_text (GladeInspector *inspector, const gchar *text)
+{
+  GladeInspectorPrivate *priv = inspector->priv;
+
+  g_free (priv->completion_text);
+  priv->completion_text = g_strdup (text);
+  priv->completion_text_fold = text ? g_utf8_casefold (text, -1) : NULL;
+
+}
+
 static gboolean
 search_complete_idle (GladeInspector *inspector)
 {
@@ -379,8 +379,7 @@ search_complete_idle (GladeInspector *inspector)
 
   completed = get_partial_match (inspector, str, NULL);
   
-  g_free (priv->completion_text);
-  priv->completion_text = g_strdup (str);
+  inspector_set_completion_text (inspector, str);
 
   if (completed)
     {
@@ -430,13 +429,7 @@ search_entry_text_deleted_cb (GtkEditable    *editable,
 
   if (!priv->search_disabled)
     {
-      const gchar *str;
-
-      str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
-
-      g_free (priv->completion_text);
-      priv->completion_text = g_strdup (str);
-
+      inspector_set_completion_text (inspector, gtk_entry_get_text (GTK_ENTRY (priv->entry)));
       glade_inspector_refilter (inspector);
     }
 }
@@ -460,8 +453,7 @@ search_entry_key_press_event_cb (GtkEntry       *entry,
         }
       else /* Tab: Move cursor forward and refine the filter to include all text */
         {
-	  g_free (priv->completion_text);
-	  priv->completion_text = g_strdup (str);
+          inspector_set_completion_text (inspector, str);
 
           gtk_editable_set_position (GTK_EDITABLE (entry), -1);
           gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
@@ -480,8 +472,7 @@ search_entry_key_press_event_cb (GtkEntry       *entry,
         {
 	  GladeWidget *widget;
 
-	  g_free (priv->completion_text);
-	  priv->completion_text = full_match;
+          inspector_set_completion_text (inspector, full_match);
 	  g_free (name);
 
 	  g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
@@ -560,8 +551,7 @@ search_entry_focus_out_cb (GtkWidget      *entry,
 
   priv->search_disabled = TRUE;
 
-  g_free (priv->completion_text);
-  priv->completion_text = NULL;
+  inspector_set_completion_text (inspector, NULL);
 
   gtk_entry_set_text (GTK_ENTRY (priv->entry), "");
 
@@ -663,8 +653,10 @@ static void
 glade_inspector_finalize (GObject *object)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
+  GladeInspectorPrivate *priv = inspector->priv;
 
-  g_free (inspector->priv->completion_text);
+  g_free (priv->completion_text);
+  g_free (priv->completion_text_fold);
 
   G_OBJECT_CLASS (glade_inspector_parent_class)->finalize (object);
 }
