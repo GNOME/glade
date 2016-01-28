@@ -920,6 +920,40 @@ glade_eprop_numeric_force_update (GtkSpinButton       *spin,
   g_free (text);
 }
 
+/* Use this to disable scroll events on property editors,
+ * we dont want them handling scroll because they are inside
+ * a scrolled window and interrupt workflow causing unexpected
+ * results when scrolled.
+ */
+static gint
+abort_scroll_events (GtkWidget *widget,
+		     GdkEvent  *event,
+		     gpointer   user_data)
+{
+  GtkWidget *parent = gtk_widget_get_parent (widget);
+
+  /* Removing the events from the mask doesnt work for
+   * stubborn combo boxes which call gtk_widget_add_events()
+   * in it's gtk_combo_box_init() - so handle the event and propagate
+   * it up the tree so the scrollwindow still handles the scroll event.
+   */
+  gtk_propagate_event (parent, event);
+
+  return TRUE;
+}
+
+static void
+remove_scroll_events (GtkWidget *widget)
+{
+  gint events = gtk_widget_get_events (widget);
+
+  events &= ~(GDK_SCROLL_MASK | GDK_SMOOTH_SCROLL_MASK);
+  gtk_widget_set_events (widget, events);
+
+  g_signal_connect (G_OBJECT (widget), "scroll-event",
+		    G_CALLBACK (abort_scroll_events), NULL);
+}
+
 static GtkWidget *
 glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
 {
@@ -940,6 +974,7 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
   gtk_entry_set_activates_default (GTK_ENTRY (eprop_numeric->spin), TRUE);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (eprop_numeric->spin), TRUE);
 
+  remove_scroll_events (eprop_numeric->spin);
   gtk_widget_show (eprop_numeric->spin);
 
   /* Limit the size of the spin if max allowed value is too big */
@@ -1093,6 +1128,7 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
   g_signal_connect (G_OBJECT (eprop_enum->combo_box), "changed",
                     G_CALLBACK (glade_eprop_enum_changed), eprop);
 
+  remove_scroll_events (eprop_enum->combo_box);
   gtk_widget_show_all (eprop_enum->combo_box);
 
   g_type_class_unref (eclass);
@@ -2358,6 +2394,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
       gtk_widget_set_halign (hbox, GTK_ALIGN_START);
       gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
       gtk_widget_set_hexpand (combo, TRUE);
+      remove_scroll_events (combo);
       
       eprop_text->store = (GtkTreeModel *)
           glade_eprop_text_create_store (glade_property_class_stock (klass) ? 
@@ -2407,6 +2444,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
                                       GTK_POLICY_AUTOMATIC);
       gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (swindow),
                                            GTK_SHADOW_IN);
+      remove_scroll_events (swindow);
 
       eprop_text->text_entry = gtk_text_view_new ();
       gtk_scrollable_set_hscroll_policy (GTK_SCROLLABLE (eprop_text->text_entry), GTK_SCROLL_MINIMUM);
