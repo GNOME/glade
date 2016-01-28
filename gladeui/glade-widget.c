@@ -2710,12 +2710,52 @@ glade_widget_set_name (GladeWidget *widget, const gchar *name)
  * @widget: a #GladeWidget
  *
  * Returns: a pointer to @widget's name
+ *
+ * This is what will be serialized as the widget's ID, unless
+ * the name currently carries the %GLADE_UNNAMED_PREFIX.
  */
 const gchar *
 glade_widget_get_name (GladeWidget *widget)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
   return widget->priv->name;
+}
+
+
+/**
+ * glade_widget_get_display_name:
+ * @widget: a #GladeWidget
+ *
+ * Returns: a pointer to @widget's displayable name
+ *
+ * This should be used to display the widget's ID in
+ * the UI, it will automatically return an "(unnamed)"
+ * string if the widget is not intended to be serialized
+ * with an ID (i.e. the user did not provide a name).
+ */
+G_CONST_RETURN gchar *
+glade_widget_get_display_name (GladeWidget *widget)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+  if (g_str_has_prefix (widget->priv->name, GLADE_UNNAMED_PREFIX))
+    return _("(unnamed)");
+
+  return widget->priv->name;
+}
+
+/**
+ * glade_widget_has_name:
+ * @widget: a #GladeWidget
+ *
+ * Returns: whether the user has named this widget with an ID
+ */
+gboolean
+glade_widget_has_name (GladeWidget *widget)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+  return !g_str_has_prefix (widget->priv->name, GLADE_UNNAMED_PREFIX);
 }
 
 /**
