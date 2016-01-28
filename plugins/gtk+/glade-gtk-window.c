@@ -52,6 +52,11 @@ glade_gtk_window_post_create (GladeWidgetAdaptor * adaptor,
   GladeWidget *parent = glade_widget_get_from_gobject (object);
   GladeProject *project = glade_widget_get_project (parent);
 
+  /* Avoid obnoxious window decorations comming up exposing close buttons
+   * which actually close glade itself.
+   */
+  gtk_window_set_decorated (GTK_WINDOW (object), FALSE);
+
   if (reason == GLADE_CREATE_LOAD)
     {
       g_signal_connect (project, "parse-finished",
