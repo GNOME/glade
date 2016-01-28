@@ -232,7 +232,6 @@ glade_base_editor_get_type_info (GladeBaseEditor *e,
   return FALSE;
 }
 
-
 static gchar *
 glade_base_editor_get_display_name (GladeBaseEditor *editor,
                                     GladeWidget     *gchild)
@@ -241,6 +240,7 @@ glade_base_editor_get_display_name (GladeBaseEditor *editor,
   g_signal_emit (editor,
                  glade_base_editor_signals[SIGNAL_GET_DISPLAY_NAME],
                  0, gchild, &retval);
+
   return retval;
 }
 
@@ -1422,7 +1422,7 @@ static gchar *
 glade_base_editor_get_display_name_impl (GladeBaseEditor *editor,
                                          GladeWidget     *gchild)
 {
-  return g_strdup (glade_widget_get_name (gchild));
+  return g_strdup (glade_widget_get_display_name (gchild));
 }
 
 static GladeWidget *
@@ -2016,7 +2016,7 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
       get_children_model_for_child_type (editor, G_OBJECT_TYPE (child));
 
   /* Name */
-  label = gtk_label_new (_("Name:"));
+  label = gtk_label_new (_("ID:"));
   gtk_widget_set_halign (label, GTK_ALIGN_END);
   gtk_widget_set_valign (label, GTK_ALIGN_START);
 
@@ -2229,9 +2229,10 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 
   if (title)
     {
-      real_title = g_strdup_printf ("%s - %s", title,
-                                    glade_widget_get_name (editor->priv->
-                                                           gcontainer));
+      const gchar *widget_name =
+	glade_widget_get_display_name (editor->priv->gcontainer);
+
+      real_title = g_strdup_printf ("%s - %s", title, widget_name);
       gtk_window_set_title (GTK_WINDOW (window), real_title);
       g_free (real_title);
     }
