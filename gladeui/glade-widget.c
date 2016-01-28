@@ -4342,7 +4342,7 @@ glade_widget_write (GladeWidget     *widget,
 
       /* Conditionally omit the ID in the output if the name is 'unset'
        */
-      if (strncmp (widget->priv->name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) != 0)
+      if (glade_widget_has_name (widget))
 	glade_xml_node_set_property_string (widget_node,
 					    GLADE_XML_TAG_ID, widget->priv->name);
     }
@@ -5055,8 +5055,7 @@ void
 glade_widget_ensure_name (GladeWidget      *widget,
 			  GladeProject     *project)
 {
-  if (!widget->priv->name ||
-      strncmp (widget->priv->name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
+  if (!glade_widget_has_name (widget))
     {
       gchar *new_name = glade_project_new_widget_name (project, NULL,
 						       glade_widget_adaptor_get_generic_name (widget->priv->adaptor));
