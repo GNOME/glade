@@ -270,7 +270,7 @@ typedef struct {
 
 static void
 reduce_string (gchar *str1,
-	       gchar *str2)
+	       const gchar *str2)
 {
   gint str1len = strlen (str1);
   gint i;
@@ -295,36 +295,35 @@ search_common_matches (GtkTreeModel    *model,
 		       GtkTreeIter     *iter,
 		       CommonMatchData *data)
 {
-  gchar *row_text = NULL;
+  GladeWidget *gwidget;
+  const gchar *name;
+  GObject *obj;
   gboolean match;
 
-  gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_NAME, &row_text, -1);
+  gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj, -1);
+  gwidget = glade_widget_get_from_gobject (obj);
 
-  if (g_str_has_prefix (row_text, GLADE_UNNAMED_PREFIX))
+  if (!glade_widget_has_name (gwidget))
     {
-      g_free (row_text);
+      g_object_unref (obj);
       return FALSE;
     }
 
-  match = (strncmp (data->text, row_text, strlen (data->text)) == 0);
+  name  = glade_widget_get_name (gwidget);
+  match = (strncmp (data->text, name, strlen (data->text)) == 0);
 
   if (match)
     {
       if (!data->first_match)
-	data->first_match = g_strdup (row_text);
+	data->first_match = g_strdup (name);
 
       if (data->common_text)
-	{
-	  reduce_string (data->common_text, row_text);
-
-	  g_free (row_text);
-	}
+        reduce_string (data->common_text, name);
       else
-	data->common_text = row_text;
+	data->common_text = g_strdup (name);
     }
-  else
-    g_free (row_text);
 
+  g_object_unref (obj);
   return FALSE;
 }
 
@@ -866,17 +865,21 @@ glade_inspector_name_cell_data_func (GtkTreeViewColumn *column,
 				     GtkTreeIter       *iter,
 				     gpointer           data)
 {
-  gchar *name = NULL;
+  GladeWidget *gwidget;
+  GObject *obj;
 
   gtk_tree_model_get (model, iter,
-		      GLADE_PROJECT_MODEL_COLUMN_NAME, &name,
+		      GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
 		      -1);
 
+  gwidget = glade_widget_get_from_gobject (obj);
+
   g_object_set (renderer, "text", 
-		(g_str_has_prefix (name, GLADE_UNNAMED_PREFIX)) ? NULL : name,
+		(glade_widget_has_name (gwidget)) ? 
+		  glade_widget_get_display_name (gwidget) : NULL,
 		NULL);
 
-  g_free (name);
+  g_object_unref (obj);
 }
 
 
