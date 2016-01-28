@@ -350,15 +350,30 @@ glade_base_editor_name_activate (GtkEntry *entry, GladeWidget *gchild)
 {
   const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
   GladeBaseEditor *editor = g_object_get_data (G_OBJECT (entry), "editor");
+  gchar *new_name = NULL;
 
-  if (text && text[0] && strcmp (glade_widget_get_name (gchild), text))
+  if (text == NULL || text[0] == '\0')
     {
-      g_signal_handlers_block_by_func (glade_widget_get_project (gchild),
+      /* If we are explicitly trying to set the widget name to be empty,
+       * then we must not allow it there are any active references to
+       * the widget which would otherwise break.
+       */
+      if (!glade_widget_has_prop_refs (gchild))
+	new_name = glade_project_new_widget_name (editor->priv->project, NULL, GLADE_UNNAMED_PREFIX);
+    }
+  else
+    new_name = g_strdup (text);
+
+  if (new_name && new_name[0])
+    {
+      g_signal_handlers_block_by_func (editor->priv->project,
                                        glade_base_editor_project_widget_name_changed, editor);
-      glade_command_set_name (gchild, text);
-      g_signal_handlers_unblock_by_func (glade_widget_get_project (gchild),
+      glade_command_set_name (gchild, new_name);
+      g_signal_handlers_unblock_by_func (editor->priv->project,
                                          glade_base_editor_project_widget_name_changed, editor);
     }
+
+  g_free (new_name);
 }
 
 static void
@@ -2021,7 +2036,11 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
   gtk_widget_set_valign (label, GTK_ALIGN_START);
 
   entry = gtk_entry_new ();
-  gtk_entry_set_text (GTK_ENTRY (entry), glade_widget_get_name (gchild));
+  if (glade_widget_has_name (gchild))
+    gtk_entry_set_text (GTK_ENTRY (entry), glade_widget_get_name (gchild));
+  else
+    gtk_entry_set_text (GTK_ENTRY (entry), "");
+
   g_object_set_data (G_OBJECT (entry), "editor", editor);
   g_signal_connect (entry, "activate",
                     G_CALLBACK (glade_base_editor_name_activate), gchild);
