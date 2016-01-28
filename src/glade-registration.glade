@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 
+<!-- Generated with glade 3.18.3 
 
 Glade - A user interface designer for GTK+ and GNOME
 Copyright (C) 2014 Juan Pablo Ugarte
@@ -52,6 +52,83 @@ Author: Juan Pablo Ugarte <juanpablougarte@gmail.com>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkBox" id="box9">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkSpinner" id="net_spinner">
+                    <property name="can_focus">False</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="status_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+                <property name="secondary">True</property>
+                <property name="non_homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="cancel_button">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="submit_button">
+                <property name="label" translatable="yes">Submit</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Information will be sent to https://people.gnome.org/~jpu</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
         <child>
           <object class="GtkInfoBar" id="infobar">
             <property name="app_paintable">True</property>
@@ -137,8 +214,8 @@ Author: Juan Pablo Ugarte <juanpablougarte@gmail.com>
                           <object class="GtkLabel" id="label24">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">User Information</property>
+                            <property name="xalign">0</property>
                           </object>
                         </child>
                         <child type="label_item">
@@ -160,8 +237,8 @@ Author: Juan Pablo Ugarte <juanpablougarte@gmail.com>
                         <property name="can_focus">False</property>
                         <property name="valign">start</property>
                         <property name="margin_left">12</property>
-                        <property name="margin_end">12</property>
                         <property name="margin_right">12</property>
+                        <property name="margin_end">12</property>
                         <property name="hexpand">False</property>
                         <property name="vexpand">False</property>
                         <property name="spacing">4</property>
@@ -187,36 +264,30 @@ Author: Juan Pablo Ugarte <juanpablougarte@gmail.com>
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">0</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel" id="label2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Name:</property>
+                                    <property name="xalign">1</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
                                     <property name="top_attach">0</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel" id="label3">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Email:</property>
+                                    <property name="xalign">1</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
                                     <property name="top_attach">1</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -231,36 +302,30 @@ Please be patient.</property>
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">1</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel" id="label4">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Country:</property>
+                                    <property name="xalign">1</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
                                     <property name="top_attach">2</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel" id="label19">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">1</property>
                                     <property name="label" translatable="yes">City:</property>
+                                    <property name="xalign">1</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
                                     <property name="top_attach">3</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -277,22 +342,18 @@ Please be patient.</property>
                                   <packing>
                                     <property name="left_attach">0</property>
                                     <property name="top_attach">4</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel" id="label27">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Website</property>
+                                    <property name="xalign">1</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
                                     <property name="top_attach">5</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -304,8 +365,6 @@ Please be patient.</property>
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">3</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -316,8 +375,6 @@ Please be patient.</property>
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">4</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -328,8 +385,6 @@ Please be patient.</property>
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">5</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -346,8 +401,6 @@ You will be sent email requesting confirmation!</property>
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">6</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -612,8 +665,6 @@ You will be sent email requesting confirmation!</property>
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">2</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -654,10 +705,10 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label6">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">We care about privacy!</property>
                                     <property name="wrap">True</property>
                                     <property name="max_width_chars">8</property>
+                                    <property name="xalign">0</property>
                                     <style>
                                       <class name="textbox_title"/>
                                     </style>
@@ -672,12 +723,12 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label25">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">All the data will be stored in a private location and will not be shared with the public or any third party.</property>
                                     <property name="wrap">True</property>
                                     <property name="wrap_mode">word-char</property>
                                     <property name="width_chars">18</property>
                                     <property name="max_width_chars">18</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
@@ -778,8 +829,8 @@ You will be sent email requesting confirmation!</property>
                           <object class="GtkLabel" id="label12">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Glade User Survey</property>
+                            <property name="xalign">0</property>
                           </object>
                         </child>
                         <child type="label_item">
@@ -800,8 +851,8 @@ You will be sent email requesting confirmation!</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_left">12</property>
-                        <property name="margin_end">12</property>
                         <property name="margin_right">12</property>
+                        <property name="margin_end">12</property>
                         <property name="margin_bottom">4</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">8</property>
@@ -820,8 +871,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label5">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">How long have you been programming?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -916,8 +967,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label7">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">Which programming languages do you prefer?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1102,8 +1153,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label8">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">When did you start using Glade?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1196,8 +1247,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label22">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">Which version do you normally use?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1355,8 +1406,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label9">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">On what operating systems?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1392,8 +1443,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">0</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1411,8 +1460,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">1</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1430,8 +1477,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">4</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1441,8 +1486,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">5</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1465,8 +1508,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">2</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1487,8 +1528,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">3</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1506,8 +1545,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">0</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1525,8 +1562,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">1</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1544,8 +1579,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">2</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1563,8 +1596,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">3</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1582,8 +1613,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">4</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1601,8 +1630,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">5</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                   </object>
@@ -1642,8 +1669,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label10">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">How often do you use it?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1796,8 +1823,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label11">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">What level of Glade user would you say you are?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1898,9 +1925,9 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label13">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">Under what kind of license(s) do you release the software you used Glade to create?</property>
                                     <property name="wrap">True</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1924,8 +1951,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">0</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1940,8 +1965,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">0</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1956,8 +1979,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">1</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1972,8 +1993,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">1</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                   </object>
@@ -2013,8 +2032,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label23">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">In what field(s) is the software you used Glade to create generally used?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2038,8 +2057,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">0</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2054,8 +2071,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">0</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2070,8 +2085,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">1</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2086,8 +2099,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">2</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2102,8 +2113,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">3</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2118,8 +2127,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">1</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2134,8 +2141,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">2</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2150,8 +2155,6 @@ You will be sent email requesting confirmation!</property>
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">3</property>
-                                        <property name="width">1</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2190,7 +2193,6 @@ You will be sent email requesting confirmation!</property>
                                         <property name="left_attach">0</property>
                                         <property name="top_attach">4</property>
                                         <property name="width">2</property>
-                                        <property name="height">1</property>
                                       </packing>
                                     </child>
                                   </object>
@@ -2230,8 +2232,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label14">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">What aspect of the software needs the most improvement?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2244,6 +2246,7 @@ You will be sent email requesting confirmation!</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="shadow_type">in</property>
+                                    <property name="min_content_height">64</property>
                                     <child>
                                       <object class="GtkTextView" id="improvement">
                                         <property name="visible">True</property>
@@ -2288,8 +2291,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label15">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">In your opinion what is the biggest problem with Glade?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2424,6 +2427,7 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkScrolledWindow" id="problem_other_scrolledwindow">
                                     <property name="can_focus">True</property>
                                     <property name="shadow_type">in</property>
+                                    <property name="min_content_height">64</property>
                                     <child>
                                       <object class="GtkTextView" id="problem_other">
                                         <property name="visible">True</property>
@@ -2469,9 +2473,9 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label16">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">Have you ever encountered a bug?</property>
                                     <property name="angle">0.059999998658895493</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2556,8 +2560,8 @@ You will be sent email requesting confirmation!</property>
                                   <object class="GtkLabel" id="label17">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">If so, did you file a bug report?</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2646,8 +2650,8 @@ You will be sent email requesting confirmation!</property>
                                       <object class="GtkLabel" id="label18">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="xalign">0</property>
                                         <property name="label" translatable="yes">Have you ever thought about contributing?</property>
+                                        <property name="xalign">0</property>
                                         <style>
                                           <class name="survey_question"/>
                                         </style>
@@ -2721,8 +2725,8 @@ You will be sent email requesting confirmation!</property>
                                       <object class="GtkLabel" id="label20">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="xalign">0</property>
                                         <property name="label" translatable="yes">Why not?</property>
+                                        <property name="xalign">0</property>
                                         <style>
                                           <class name="survey_question"/>
                                         </style>
@@ -2738,6 +2742,7 @@ You will be sent email requesting confirmation!</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="shadow_type">in</property>
+                                        <property name="min_content_height">64</property>
                                         <child>
                                           <object class="GtkTextView" id="contributing_whynot">
                                             <property name="visible">True</property>
@@ -2778,8 +2783,8 @@ You will be sent email requesting confirmation!</property>
                           <object class="GtkLabel" id="label26">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Comments:</property>
+                            <property name="xalign">0</property>
                             <style>
                               <class name="survey_question"/>
                             </style>
@@ -2795,6 +2800,7 @@ You will be sent email requesting confirmation!</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="shadow_type">in</property>
+                            <property name="min_content_height">64</property>
                             <child>
                               <object class="GtkTextView" id="comments">
                                 <property name="visible">True</property>
@@ -2833,9 +2839,9 @@ You will be sent email requesting confirmation!</property>
                               <object class="GtkLabel" id="label28">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Privacy Note:</property>
                                 <property name="wrap">True</property>
+                                <property name="xalign">0</property>
                                 <style>
                                   <class name="textbox_title"/>
                                 </style>
@@ -2853,12 +2859,12 @@ You will be sent email requesting confirmation!</property>
                                 <property name="halign">center</property>
                                 <property name="valign">start</property>
                                 <property name="hexpand">False</property>
-                                <property name="xalign">0</property>
                                 <property name="label" translatable="yes">The sole purpose of this survey is to better know our user base.
 Your email address will be used to uniquely identify you as a Glade user and send you back a modification token in case you want to modify something or add extra comments.
 Only statistics compiled from the whole dataset will be shared publicly.
 Individual data will be stored in a private database and it will not be shared with the public or any other third party.</property>
                                 <property name="wrap">True</property>
+                                <property name="xalign">0</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2892,83 +2898,6 @@ Individual data will be stored in a private database and it will not be shared w
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area1">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkBox" id="box9">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="spacing">4</property>
-                <child>
-                  <object class="GtkSpinner" id="net_spinner">
-                    <property name="can_focus">False</property>
-                    <property name="active">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="status_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="xalign">0</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-                <property name="secondary">True</property>
-                <property name="non_homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="cancel_button">
-                <property name="label" translatable="yes">Cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="submit_button">
-                <property name="label" translatable="yes">Submit</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Information will be sent to https://people.gnome.org/~jpu</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
             <property name="position">2</property>
           </packing>
         </child>
