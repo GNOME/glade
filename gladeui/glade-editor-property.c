@@ -2867,11 +2867,7 @@ glade_eprop_object_populate_view_real (GtkTreeStore *model,
           good_type = (glade_widget_adaptor_get_object_type (adaptor) == object_type ||
                        g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), object_type));
 
-	  /* If it's an unnamed widget, dont show any name */
-	  widget_name = glade_widget_get_name (widget);
-	  if (!widget_name || strncmp (widget_name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
-	    widget_name = _("(unnamed)");
-
+	  widget_name = glade_widget_get_display_name (widget);
           if (parentless)
             good_type = good_type && !GWA_IS_TOPLEVEL (adaptor);
 
