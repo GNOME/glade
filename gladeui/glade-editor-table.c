@@ -280,15 +280,12 @@ widget_name_changed (GladeWidget      *widget,
 
   if (table->priv->name_entry)
     {
-      const gchar *widget_name;
-
       BLOCK_NAME_ENTRY_CB (table);
 
-      widget_name = glade_widget_get_name (table->priv->loaded_widget);
-      if (!widget_name || strncmp (widget_name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
-	gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
+      if (glade_widget_has_name (table->priv->loaded_widget))
+	gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), glade_widget_get_name (table->priv->loaded_widget));
       else
-	gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), widget_name);
+	gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
 
       UNBLOCK_NAME_ENTRY_CB (table);
     }
@@ -392,11 +389,10 @@ glade_editor_table_load (GladeEditable *editable, GladeWidget *widget)
 
       if (table->priv->name_entry)
 	{
-	  const gchar *widget_name = glade_widget_get_name (widget);
-	  if (!widget_name || strncmp (widget_name, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
-	    gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
+	  if (glade_widget_has_name (widget))
+	    gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), glade_widget_get_name (widget));
 	  else
-	    gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), widget_name);
+	    gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
 	}
 
       if (table->priv->name_label)
