@@ -2,7 +2,7 @@
  * glade-design-view.c
  *
  * Copyright (C)      2006 Vincent Geddes
- *               2011-2013 Juan Pablo Ugarte
+ *               2011-2016 Juan Pablo Ugarte
  *
  * Authors:
  *   Vincent Geddes <vincent.geddes@gmail.com>
@@ -59,6 +59,8 @@ struct _GladeDesignViewPrivate
   GladeProject *project;
   GtkWidget *scrolled_window;  /* Main scrolled window */
   GtkWidget *layout_box;       /* Box to pack a GladeDesignLayout for each toplevel in project */
+
+  GdkRGBA fg_color;
 
   _GladeDrag *drag_target;
   GObject *drag_data;
@@ -302,7 +304,7 @@ glade_design_view_get_property (GObject *object,
 }
 
 static void
-logo_draw (GtkWidget *widget, cairo_t *cr)
+logo_draw (GtkWidget *widget, cairo_t *cr, GdkRGBA *c)
 {
   GtkAllocation alloc;
   gdouble scale;
@@ -311,7 +313,7 @@ logo_draw (GtkWidget *widget, cairo_t *cr)
 
   cairo_save (cr);
   
-  cairo_set_source_rgba (cr, 0, 0, 0, .08);
+  cairo_set_source_rgba (cr, c->red, c->green, c->blue, .06);
 
   scale = MIN ((alloc.width/1.5)/(glade_path_WIDTH), (alloc.height/1.5)/(glade_path_HEIGHT));
 
@@ -323,50 +325,6 @@ logo_draw (GtkWidget *widget, cairo_t *cr)
   cairo_fill (cr);
 
   cairo_restore (cr);
-}
-
-static gboolean
-glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
-{
-  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (widget)->priv;
-  GdkWindow *window = gtk_widget_get_window (widget);
-  gboolean should_draw = gtk_cairo_should_draw_window (cr, window);
-  gboolean sw_visible = gtk_widget_get_visible (priv->scrolled_window);
-  GtkStyleContext *context = gtk_widget_get_style_context (widget);
-
-  if (should_draw)
-    {
-      if (sw_visible)
-        gtk_render_background (context,
-                               cr, 0, 0,
-                               gtk_widget_get_allocated_width (widget),
-                               gtk_widget_get_allocated_height (widget));
-      else
-        logo_draw (widget, cr);
-    }
-
-  GTK_WIDGET_CLASS (glade_design_view_parent_class)->draw (widget, cr);
-
-  if (should_draw && sw_visible && priv->drag_highlight)
-    {
-      GdkRGBA c;
-
-      gtk_style_context_save (context);
-      gtk_style_context_get_background_color (context,
-                                              gtk_style_context_get_state (context) |
-                                              GTK_STATE_FLAG_SELECTED |
-                                              GTK_STATE_FLAG_FOCUSED, &c);
-      gtk_style_context_restore (context);
-
-      cairo_set_line_width (cr, 2);
-      gdk_cairo_set_source_rgba (cr, &c);
-      cairo_rectangle (cr, 0, 0,
-                       gtk_widget_get_allocated_width (widget),
-                       gtk_widget_get_allocated_height (widget));
-      cairo_stroke (cr);
-    }
-  
-  return FALSE;
 }
 
 static void
@@ -409,6 +367,37 @@ glade_design_view_viewport_button_press (GtkWidget       *widget,
   return TRUE;
 }
 
+static gboolean
+glade_design_view_viewport_draw (GtkWidget *widget, cairo_t *cr, GladeDesignView *view)
+{
+  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (view)->priv;
+
+  logo_draw (widget, cr, &priv->fg_color);
+
+  if (priv->drag_highlight)
+    {
+      GtkStyleContext *context = gtk_widget_get_style_context (widget);
+      GdkRGBA c;
+
+      gtk_style_context_save (context);
+      gtk_style_context_get_background_color (context,
+                                              gtk_style_context_get_state (context) |
+                                              GTK_STATE_FLAG_SELECTED |
+                                              GTK_STATE_FLAG_FOCUSED, &c);
+      gtk_style_context_restore (context);
+
+      cairo_set_line_width (cr, 2);
+      gdk_cairo_set_source_rgba (cr, &c);
+      cairo_rectangle (cr, 0, 0,
+                       gtk_widget_get_allocated_width (widget),
+                       gtk_widget_get_allocated_height (widget));
+      cairo_stroke (cr);
+    }
+
+  return FALSE;
+}
+
+
 static void
 glade_design_view_init (GladeDesignView *view)
 {
@@ -434,6 +423,9 @@ glade_design_view_init (GladeDesignView *view)
   gtk_widget_add_events (viewport, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
   g_signal_connect (viewport, "button-press-event",
                     G_CALLBACK (glade_design_view_viewport_button_press),
+                    view);
+  g_signal_connect (viewport, "draw",
+                    G_CALLBACK (glade_design_view_viewport_draw),
                     view);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
   gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout_box);
@@ -736,6 +728,16 @@ glade_design_view_drag_init (_GladeDragInterface *iface)
 }
 
 static void
+glade_design_view_style_updated (GtkWidget *widget)
+{
+  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (widget)->priv;
+
+  gtk_style_context_get_color (gtk_widget_get_style_context (widget),
+                               GTK_STATE_FLAG_NORMAL,
+                               &priv->fg_color);
+}
+
+static void
 glade_design_view_class_init (GladeDesignViewClass *klass)
 {
   GObjectClass *object_class;
@@ -753,7 +755,7 @@ glade_design_view_class_init (GladeDesignViewClass *klass)
   widget_class->drag_leave = glade_design_view_drag_leave;
   widget_class->drag_data_received = glade_design_view_drag_data_received;
   widget_class->drag_drop = glade_design_view_drag_drop;
-  widget_class->draw = glade_design_view_draw;
+  widget_class->style_updated = glade_design_view_style_updated;
   
   g_object_class_install_property (object_class,
                                    PROP_PROJECT,
