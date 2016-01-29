@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.19.0 -->
 <!--
 
 libgladegtk - Glade UI Designer Gtk+ support plugin
@@ -43,7 +44,6 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
             <property name="width">6</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -61,22 +61,20 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
             <property name="width">6</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
           <object class="GladePropertyLabel" id="stack_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
             <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
             <property name="property_name">stack</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
             <property name="width">2</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -90,7 +88,6 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="left_attach">2</property>
             <property name="top_attach">2</property>
             <property name="width">4</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -105,7 +102,6 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="left_attach">0</property>
             <property name="top_attach">3</property>
             <property name="width">2</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -119,7 +115,33 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="left_attach">2</property>
             <property name="top_attach">3</property>
             <property name="width">4</property>
-            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="icon_size_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">icon-size</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">4</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="icon_size_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">icon-size</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">4</property>
+            <property name="width">4</property>
           </packing>
         </child>
       </object>
@@ -135,6 +157,8 @@ Author: Matthias Clasen <mclasen@redhat.com>
       <editor id="stack_editor"/>
       <editor id="orientation_label"/>
       <editor id="orientation_editor"/>
+      <editor id="icon_size_label"/>
+      <editor id="icon_size_editor"/>
     </child-editors>
   </template>
 </interface>
