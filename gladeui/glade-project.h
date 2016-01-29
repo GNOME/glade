@@ -273,6 +273,7 @@ gchar              *glade_project_verify_widget_adaptor(GladeProject       *proj
 void                glade_project_verify_property      (GladeProperty      *property);
 void                glade_project_verify_signal        (GladeWidget        *widget,
                                                         GladeSignal        *signal);
+gboolean            glade_project_writing_preview      (GladeProject       *project);
 
 /* General selection driven commands */
 void                glade_project_copy_selection       (GladeProject       *project);

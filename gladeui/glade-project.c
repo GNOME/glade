@@ -156,6 +156,7 @@ struct _GladeProjectPrivate
                                   * for confirmation after a close or exit is
                                   * requested
                                   */
+  guint writing_preview : 1;     /* During serialization, if we are serializing for a preview */
   guint pointer_mode : 3;        /* The currently effective GladePointerMode */
 };
 
@@ -2846,7 +2847,9 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
+  project->priv->writing_preview = TRUE;
   context = glade_project_write (project);
+  project->priv->writing_preview = FALSE;
 
   text = glade_xml_dump_from_context (context);
 
@@ -2887,6 +2890,14 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
     }
 
   g_free (text);
+}
+
+gboolean
+glade_project_writing_preview (GladeProject       *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  return project->priv->writing_preview;
 }
 
 /*******************************************************************
