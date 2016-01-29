@@ -3475,7 +3475,16 @@
         <properties>
           <property id="visible" default="False"/>
           <property id="relative-to" ignore="True" custom-layout="True"/>
+          <property id="constrain-to" ignore="True" custom-layout="True" since="3.20">
+            <displayable-values>
+              <!-- GtkPopoverConstraint enumeration value -->
+              <value id="GTK_POPOVER_CONSTRAINT_NONE" _name="None"/>
+              <!-- GtkPopoverConstraint enumeration value -->
+              <value id="GTK_POPOVER_CONSTRAINT_WINDOW" _name="Window"/>
+            </displayable-values>
+	  </property>
           <property id="position" ignore="True" custom-layout="True"/>
+          <property id="transitions-enabled" ignore="True" custom-layout="True" since="3.16"/>
           <property id="modal" ignore="True" custom-layout="True"/>
         </properties>
       </glade-widget-class>

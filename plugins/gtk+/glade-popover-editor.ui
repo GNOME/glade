@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 
+<!-- Generated with glade 3.19.0 
 
 libgladegtk - Glade UI Designer Gtk+ support plugin
 Copyright (C) 2014 Red Hat, Inc.
@@ -43,7 +43,6 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
             <property name="width">6</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -61,13 +60,13 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
             <property name="width">6</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
           <object class="GladePropertyLabel" id="relative_to_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">end</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">relative-to</property>
@@ -88,20 +87,21 @@ Author: Matthias Clasen <mclasen@redhat.com>
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">2</property>
-            <property name="width">4</property>
+            <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GladePropertyLabel" id="position_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">end</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">position</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -114,22 +114,35 @@ Author: Matthias Clasen <mclasen@redhat.com>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">3</property>
-            <property name="width">4</property>
+            <property name="top_attach">4</property>
+            <property name="width">3</property>
           </packing>
         </child>
         <child>
-          <object class="GladePropertyLabel" id="modal_label">
+          <object class="GladePropertyLabel" id="constrain_to_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="halign">end</property>
             <property name="hexpand">False</property>
-            <property name="property_name">modal</property>
+            <property name="property_name">constrain-to</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">3</property>
             <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="constrain_to_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">constrain-to</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">3</property>
+            <property name="width">3</property>
           </packing>
         </child>
         <child>
@@ -138,12 +151,28 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="can_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">modal</property>
+            <property name="editor_type">GladeEPropCheck</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">4</property>
-            <property name="width">4</property>
+            <property name="left_attach">5</property>
+            <property name="top_attach">2</property>
           </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="transition_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">transitions-enabled</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">5</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
       <packing>
@@ -158,8 +187,10 @@ Author: Matthias Clasen <mclasen@redhat.com>
       <editor id="relative_to_editor"/>
       <editor id="position_label"/>
       <editor id="position_editor"/>
-      <editor id="modal_label"/>
+      <editor id="constrain_to_label"/>
+      <editor id="constrain_to_editor"/>
       <editor id="modal_editor"/>
+      <editor id="transition_editor"/>
     </child-editors>
   </template>
 </interface>
