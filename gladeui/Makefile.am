@@ -57,6 +57,7 @@ BUILT_SOURCES = \
 
 
 UI_FILES = 				\
+	glade-design-layout.css		\
 	glade-editor.ui			\
 	glade-project-properties.ui	\
 	glade-adaptor-chooser.ui	\

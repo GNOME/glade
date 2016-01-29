@@ -888,10 +888,10 @@ update_rectangles (GladeDesignLayoutPrivate *priv, GtkAllocation *alloc)
   priv->layout_width = width + (OUTLINE_WIDTH*2);
   width = MIN (alloc->width, width);
 
-  rect->x = alloc->x + priv->child_offset + alloc->width - width - OUTLINE_WIDTH/2;
-  rect->y = alloc->y + priv->child_offset + alloc->height + OUTLINE_WIDTH/2;
+  rect->x = alloc->x + priv->child_offset + alloc->width - width - OUTLINE_WIDTH;
+  rect->y = alloc->y + priv->child_offset + alloc->height;
   rect->width = width + (OUTLINE_WIDTH*2);
-  rect->height = height + OUTLINE_WIDTH;
+  rect->height = height + (OUTLINE_WIDTH*1.5);
 
   /* Update south rectangle width */
   priv->south.width = rect->x - priv->south.x;
@@ -1021,67 +1021,26 @@ glade_design_layout_damage (GtkWidget *widget, GdkEventExpose *event)
 }
 
 static inline void
-draw_frame (cairo_t *cr, GladeDesignLayoutPrivate *priv, gboolean selected,
+draw_frame (GtkWidget *widget, cairo_t *cr, gboolean selected,
             int x, int y, int w, int h)
 {
-  cairo_save (cr);
+  GladeDesignLayoutPrivate *priv = ((GladeDesignLayout *)widget)->priv;
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
 
-  cairo_set_line_width (cr, OUTLINE_WIDTH);
-
-  cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
-  cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
-
-  gdk_cairo_set_source_rgba (cr, (selected) ? &priv->frame_color_active[0] :
-                             &priv->frame_color[0]);
-
-  /* rectangle */
-  cairo_rectangle (cr, x, y, w, h);
-  cairo_stroke (cr);
+  gtk_render_background (context, cr, x, y, w, h);
+  gtk_render_frame (context, cr, x, y, w, h);
 
   if (priv->widget_name)
     {
-      GdkRGBA *color = (selected) ? &priv->frame_color_active[1] : &priv->frame_color[1];
       GdkRectangle *rect = &priv->south_east;
-      cairo_pattern_t *pattern;
-      gdouble xx, yy;
-      
-      xx = rect->x + rect->width;
-      yy = rect->y + rect->height;
 
-      /* Draw tab */
-      cairo_move_to (cr, rect->x, rect->y);
-      cairo_line_to (cr, xx, rect->y);
-      cairo_line_to (cr, xx, yy-8);
-      cairo_curve_to (cr, xx, yy, xx, yy, xx-8, yy);
-      cairo_line_to (cr, rect->x+8, yy);
-      cairo_curve_to (cr, rect->x, yy, rect->x, yy, rect->x, yy-8);
-      cairo_close_path (cr);
-      cairo_fill (cr);
-
-      /* Draw widget name */
-      if (rect->width < priv->layout_width)
-        {
-          gdouble r = color->red, g = color->green, b = color->blue;
-          
-          pattern = cairo_pattern_create_linear (xx-16-OUTLINE_WIDTH, 0,
-                                                 xx-OUTLINE_WIDTH, 0);
-          cairo_pattern_add_color_stop_rgba (pattern, 0, r, g, b, 1);
-          cairo_pattern_add_color_stop_rgba (pattern, 1, r, g, b, 0);
-          cairo_set_source (cr, pattern);
-        }
-      else
-        {
-          pattern = NULL;
-          gdk_cairo_set_source_rgba (cr, color);
-        }
-
-      cairo_move_to (cr, rect->x + OUTLINE_WIDTH, rect->y + OUTLINE_WIDTH);
-      pango_cairo_show_layout (cr, priv->widget_name);
-
-      if (pattern) cairo_pattern_destroy (pattern);
+      gtk_style_context_add_class (context, "handle");
+      gtk_render_background (context, cr, rect->x, rect->y, rect->width, rect->height);
+      gtk_render_frame (context, cr, rect->x, rect->y, rect->width, rect->height);
+      gtk_render_layout (context, cr, rect->x + OUTLINE_WIDTH, rect->y + OUTLINE_WIDTH,
+                         priv->widget_name);
+      gtk_style_context_remove_class (context, "handle");
     }
-
-  cairo_restore (cr);
 }
 
 static void
@@ -1553,6 +1512,13 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
           gboolean selected = FALSE;
           GList *l;
 
+          /* draw frame */
+          draw_frame (widget, cr, selected,
+                      border_width + PADDING,
+                      border_width + PADDING,
+                      priv->child_rect.width + 2 * OUTLINE_WIDTH,
+                      priv->child_rect.height + 2 * OUTLINE_WIDTH);
+
           /* draw offscreen widgets */
           gdk_cairo_set_source_window (cr, priv->offscreen_window,
                                        priv->child_offset, priv->child_offset);
@@ -1590,13 +1556,6 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
               else
                 selected = TRUE;
             }
-
-          /* draw frame */
-          draw_frame (cr, priv, selected,
-                      border_width + PADDING,
-                      border_width + PADDING,
-                      priv->child_rect.width + 2 * OUTLINE_WIDTH,
-                      priv->child_rect.height + 2 * OUTLINE_WIDTH);
 
           /* Draw selection nodes if we are in margins edit mode */
           if (priv->selection && gtk_widget_is_ancestor (priv->selection, child))
@@ -2055,6 +2014,7 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   GObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkContainerClass *container_class;
+  GtkCssProvider *css_provider;
 
   object_class = G_OBJECT_CLASS (klass);
   widget_class = GTK_WIDGET_CLASS (klass);
@@ -2097,6 +2057,15 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
                                    GLADE_TYPE_DESIGN_LAYOUT,
                                    g_cclosure_new (G_CALLBACK (glade_design_layout_damage),
                                                    NULL, NULL));
+
+  /* Setup Custom CSS */
+  css_provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_resource (css_provider, "/org/gnome/gladeui/glade-design-layout.css");
+
+  gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
+                                             GTK_STYLE_PROVIDER (css_provider),
+                                             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  g_object_unref (css_provider);
 }
 
 /* Internal API */
