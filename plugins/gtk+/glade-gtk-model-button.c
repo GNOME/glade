@@ -5,11 +5,24 @@
 
 #include "glade-model-button-editor.h"
 
+static void
+model_button_clicked (GtkWidget *widget,
+		      gpointer   user_data)
+{
+  GtkWidget *popover;
+
+  popover = gtk_widget_get_ancestor (widget, GTK_TYPE_POPOVER);
+  if (popover != NULL)
+    gtk_widget_show (popover);
+}
+
 void
 glade_gtk_model_button_post_create (GladeWidgetAdaptor *adaptor,
-                                    GObject *container,
+                                    GObject *object,
                                     GladeCreateReason reason)
 {
+  g_signal_connect (object, "clicked",
+		    G_CALLBACK (model_button_clicked), NULL);
 }
 
 void
