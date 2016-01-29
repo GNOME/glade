@@ -214,6 +214,9 @@ glade_previewer_window_set_title (GtkWindow *window,
                                   gchar *toplevel)
 {
   gchar *title, *pretty_path = NULL;
+  const gchar *widget_name = toplevel;
+  if (widget_name && g_str_has_prefix (widget_name, GLADE_UNNAMED_PREFIX))
+    widget_name = _("(unnamed)");
 
   if (filename && g_path_is_absolute (filename))
     {
@@ -225,13 +228,13 @@ glade_previewer_window_set_title (GtkWindow *window,
   if (filename)
     {
       if (toplevel)
-        title = g_strdup_printf (_("Previewing %s (%s)"), filename, toplevel);
+        title = g_strdup_printf (_("Previewing %s - %s"), filename, widget_name);
       else
         title = g_strdup_printf (_("Previewing %s"), filename);
     }
   else if (toplevel)
     {
-      title = g_strdup_printf (_("Previewing %s"), toplevel);
+      title = g_strdup_printf (_("Previewing %s"), widget_name);
     }
   else
     {
