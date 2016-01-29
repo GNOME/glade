@@ -1,6 +1,6 @@
 <glade-catalog name="gtk+"
-	       version="3.16"
-	       targetable="3.14,3.12,3.10,3.8,3.6,3.4,3.2,3.0"
+	       version="3.20"
+	       targetable="3.18,3.16,3.14,3.12,3.10,3.8,3.6,3.4,3.2,3.0"
 	       icon-prefix="gtk"
 	       library="gladegtk"
 	       domain="glade"
@@ -1639,10 +1639,12 @@
           <property id="indent" custom-layout="True"/>
           <property id="left-margin" custom-layout="True"/>
           <property id="right-margin" custom-layout="True"/>
+          <property id="bottom-margin" since="3.18"/>
+          <property id="top-margin" since="3.18"/>
           <property id="pixels-above-lines" custom-layout="True"/>
           <property id="pixels-below-lines" custom-layout="True"/>
           <property id="pixels-inside-wrap" custom-layout="True"/>
-          
+
           <property id="wrap-mode" custom-layout="True">
             <displayable-values>
               <!-- GtkWrapMode enumeration value -->
@@ -1993,7 +1995,11 @@
               <value id="GTK_PLACES_OPEN_NEW_WINDOW" _name="New Window"/>
             </displayable-values>
           </property>
+          <property id="populate-all" since="3.18"/>
         </properties>
+	<signals>
+          <signal id="show-other-locations" since="3.18"/>
+        </signals>
       </glade-widget-class>
       
       <glade-widget-class name="GtkColorButton" generic-name="colorbutton" _title="Color Button">
@@ -5356,8 +5362,7 @@
           <property id="text" translatable="True" multiline="True"/>
         </properties>
       </glade-widget-class>
-      
-      
+
       <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag" >
         <properties>
           <property id="background-gdk" default="White" deprecated="True" optional="True" optional-default="False"/>
@@ -5367,7 +5372,8 @@
           <property id="foreground-rgba" default="Black" since="3.2" optional="True" optional-default="False"/>
           <property id="paragraph-background-rgba" default="White" since="3.2" optional="True" optional-default="False"/>
           <property id="language" optional="True" optional-default="False"/>
-          
+          <property id="font-features" since="3.18"/>
+
           <!-- Disabled state parameters -->
           <property id="background-set" disabled="True"/>
           <property id="background-full-height-set" disabled="True"/>
