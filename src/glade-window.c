@@ -2982,7 +2982,7 @@ glade_window_set_initial_size (GladeWindow *window, GKeyFile *config)
   if (maximized)
     {
       gtk_window_maximize (GTK_WINDOW (window));
-      g_idle_add ((GSourceFunc) fix_paned_positions_idle, window);
+      g_timeout_add (200, (GSourceFunc) fix_paned_positions_idle, window);
     }
 
   if (position.width <= 0 || position.height <= 0)
