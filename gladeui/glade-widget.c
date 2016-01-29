@@ -4342,7 +4342,7 @@ glade_widget_write (GladeWidget     *widget,
 
       /* Conditionally omit the ID in the output if the name is 'unset'
        */
-      if (glade_widget_has_name (widget))
+      if (glade_widget_has_name (widget) || glade_project_writing_preview (widget->priv->project))
 	glade_xml_node_set_property_string (widget_node,
 					    GLADE_XML_TAG_ID, widget->priv->name);
     }
