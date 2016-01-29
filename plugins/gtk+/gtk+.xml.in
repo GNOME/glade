@@ -1450,10 +1450,10 @@
           <property id="track-visited-links" since="2.18" custom-layout="True"/>
           
           <!-- GtkMisc properties -->
-          <property id="xalign" custom-layout="True"/>
-          <property id="yalign" custom-layout="True"/>
-          <property id="xpad" custom-layout="True"/>
-          <property id="ypad" custom-layout="True"/>
+          <property id="xalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="yalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="xpad" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="ypad" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
         </properties>
         
         <signals>
@@ -1695,8 +1695,8 @@
           <property id="label" default="button" translatable="True" custom-layout="True" save="False"
 		  multiline="True"/>
           <property id="use-underline" custom-layout="True"/>
-          <property id="xalign" custom-layout="True"/>
-          <property id="yalign" custom-layout="True"/>
+          <property id="xalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="yalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
           <property id="relief" custom-layout="True"/>
           <property id="focus-on-click" custom-layout="True"/>
           
@@ -1777,7 +1777,6 @@
         <properties>
           <property id="label" default="checkbutton"/>
           <property id="draw-indicator" default="True" save-always="True"/>
-          <property id="xalign" save-always="True"/>
         </properties>
       </glade-widget-class>
       
@@ -1816,7 +1815,6 @@
         <properties>
           <property id="group" custom-layout="True"/>
           <property id="label" default="radiobutton"/>
-          <property id="xalign" save-always="True"/>
         </properties>
       </glade-widget-class>
       
@@ -2243,10 +2241,10 @@
           <property id="mask" disabled="True"/>
           
           <!-- GtkMisc properties -->
-          <property id="xalign" custom-layout="True"/>
-          <property id="yalign" custom-layout="True"/>
-          <property id="xpad" custom-layout="True"/>
-          <property id="ypad" custom-layout="True"/>
+          <property id="xalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="yalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="xpad" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="ypad" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
         </properties>
       </glade-widget-class>
       
@@ -2982,12 +2980,12 @@
               <value id="GTK_ARROW_NONE" _name="None"/>
             </displayable-values>
           </property>
-          
+
           <!-- GtkMisc properties -->
-          <property id="xalign" custom-layout="True"/>
-          <property id="yalign" custom-layout="True"/>
-          <property id="xpad" custom-layout="True"/>
-          <property id="ypad" custom-layout="True"/>
+          <property id="xalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="yalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="xpad" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
+          <property id="ypad" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
         </properties>
       </glade-widget-class>
       
