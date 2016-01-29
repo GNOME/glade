@@ -239,6 +239,25 @@ glade_gtk_label_set_content_mode (GObject * object, const GValue * value)
 }
 
 static void
+glade_gtk_label_update_lines_sensitivity (GObject * object)
+{
+  GladeWidget *glabel;
+  PangoEllipsizeMode ellipsize_mode;
+  gint wrap_mode;
+
+  glabel = glade_widget_get_from_gobject (object);
+
+  glade_widget_property_get (glabel, "label-wrap-mode", &wrap_mode);
+  glade_widget_property_get (glabel, "ellipsize", &ellipsize_mode);
+
+  if (wrap_mode == GLADE_LABEL_WRAP_MODE && ellipsize_mode != PANGO_ELLIPSIZE_NONE)
+    glade_widget_property_set_sensitive (glabel, "lines", TRUE, NULL);
+  else
+    glade_widget_property_set_sensitive (glabel, "lines", FALSE,
+                                         _("This property only applies if ellispize and wrapping are enabled"));
+}
+
+static void
 glade_gtk_label_set_wrap_mode (GObject * object, const GValue * value)
 {
   GladeLabelWrapMode mode = g_value_get_int (value);
@@ -256,6 +275,8 @@ glade_gtk_label_set_wrap_mode (GObject * object, const GValue * value)
                                          NULL);
   else if (mode == GLADE_LABEL_WRAP_MODE)
     glade_widget_property_set_sensitive (glabel, "wrap-mode", TRUE, NULL);
+
+  glade_gtk_label_update_lines_sensitivity (object);
 }
 
 static void
@@ -290,7 +311,12 @@ glade_gtk_label_set_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "use-underline"))
     glade_gtk_label_set_use_underline (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+    {
+      if (!strcmp (id, "ellipsize"))
+	glade_gtk_label_update_lines_sensitivity (object);
+
+      GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+    }
 }
 
 static void
