@@ -573,17 +573,6 @@ toggle_button_set_sensitive_on_toggle (GtkToggleButton *button, GtkWidget *widge
   gtk_widget_set_sensitive (widget, gtk_toggle_button_get_active (button));
 }
 
-static void 
-glade_registration_set_css_provider_forall (GtkWidget *widget, gpointer data)
-{
-  gtk_style_context_add_provider (gtk_widget_get_style_context (widget),
-                                  GTK_STYLE_PROVIDER (data),
-                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  
-  if (GTK_IS_CONTAINER (widget))
-    gtk_container_forall (GTK_CONTAINER (widget), glade_registration_set_css_provider_forall, data);
-}
-
 static gboolean
 on_viewport_draw (GtkWidget *viewport, cairo_t *cr, GladeRegistration *widget)
 {
@@ -614,8 +603,6 @@ static void
 glade_registration_init (GladeRegistration *registration)
 {
   GladeRegistrationPrivate *priv = glade_registration_get_instance_private (registration);
-  GtkCssProvider *css_provider;
-  GFile *file;
 
   registration->priv = priv;
 
@@ -630,13 +617,6 @@ glade_registration_init (GladeRegistration *registration)
                            registration, 0);
   
   gtk_widget_init_template (GTK_WIDGET (registration));
-
-  /* Apply Custom CSS */
-  css_provider = gtk_css_provider_new ();
-  file = g_file_new_for_uri ("resource:///org/gnome/glade/glade-registration.css");
-  if (gtk_css_provider_load_from_file (css_provider, file, NULL))
-    glade_registration_set_css_provider_forall (GTK_WIDGET (registration), css_provider);
-  g_object_unref (file);
 
   if (GTK_IS_COMBO_BOX_TEXT (priv->version_other))
     {
@@ -718,6 +698,7 @@ glade_registration_class_init (GladeRegistrationClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  GtkCssProvider *css_provider;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/glade/glade-registration.glade");
 
@@ -811,6 +792,15 @@ glade_registration_class_init (GladeRegistrationClass *klass)
                                                          "Skip registration reminder dialog",
                                                          FALSE,
                                                          G_PARAM_READWRITE));
+
+  /* Setup Custom CSS */
+  css_provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_resource (css_provider, "/org/gnome/glade/glade-registration.css");
+
+  gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
+                                             GTK_STYLE_PROVIDER (css_provider),
+                                             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+ g_object_unref (css_provider);
 }
 
 GtkWidget*
