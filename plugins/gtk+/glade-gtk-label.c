@@ -254,7 +254,7 @@ glade_gtk_label_update_lines_sensitivity (GObject * object)
     glade_widget_property_set_sensitive (glabel, "lines", TRUE, NULL);
   else
     glade_widget_property_set_sensitive (glabel, "lines", FALSE,
-                                         _("This property only applies if ellispize and wrapping are enabled"));
+                                         _("This property only applies if ellipsize and wrapping are enabled"));
 }
 
 static void
