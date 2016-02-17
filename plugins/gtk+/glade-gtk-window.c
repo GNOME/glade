@@ -246,9 +246,11 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
 
           titlebar = gtk_window_get_titlebar (GTK_WINDOW (object));
           if (!titlebar)
-            titlebar = glade_placeholder_new ();
+            {
+              titlebar = glade_placeholder_new ();
+              gtk_window_set_titlebar (GTK_WINDOW (object), titlebar);
+            }
           g_object_set_data (G_OBJECT (titlebar), "special-child-type", "titlebar");
-          gtk_window_set_titlebar (GTK_WINDOW (object), titlebar);
 
           glade_widget_property_set_sensitive (gwidget, "title", FALSE, CSD_DISABLED_MESSAGE);
           glade_widget_property_set_sensitive (gwidget, "decorated", FALSE, CSD_DISABLED_MESSAGE);
