@@ -154,6 +154,9 @@ glade_python_setup ()
   /* Close python statement */
   g_string_append (command, "];\n");
 
+  /* Make sure we load Gtk 3 */
+  g_string_append (command, "import gi; gi.require_version('Gtk', '3.0');\n");
+
   /* Finally run statement in vm */
   PyRun_SimpleString (command->str);
 
