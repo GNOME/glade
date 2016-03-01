@@ -6,15 +6,15 @@
 # Petr Kovar <pknbe@volny.cz>, 2009.
 # Václav Švejcar <xwinus@gmail.com>, 2009.
 # Adam Matoušek <adydas95@gmail.com>, 2012.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014, 2015.
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-24 19:23+0000\n"
-"PO-Revision-Date: 2015-12-25 00:28+0100\n"
+"POT-Creation-Date: 2016-03-01 07:26+0000\n"
+"PO-Revision-Date: 2016-03-01 10:35+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -82,208 +82,206 @@ msgstr ""
 msgid "[Read Only]"
 msgstr "[Pouze pro čtení]"
 
-#: ../src/glade-window.c:330
+#: ../src/glade-window.c:331
 msgid "User Interface Designer"
 msgstr "Návrhář uživatelského rozhraní"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
 #. *              the second '%s'
-#: ../src/glade-window.c:531
+#: ../src/glade-window.c:532
 #, c-format
 msgid "Activate '%s' %s"
 msgstr "Aktivovat „%s“ %s"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
-#: ../src/glade-window.c:537 ../src/glade-window.c:545
+#: ../src/glade-window.c:538 ../src/glade-window.c:546
 #, c-format
 msgid "Activate '%s'"
 msgstr "Aktivovat „%s“"
 
-#. Name
-#: ../src/glade-window.c:593 ../src/glade-registration.glade.h:4
-#: ../gladeui/glade-base-editor.c:2019
+#: ../src/glade-window.c:594 ../src/glade-registration.glade.h:7
 #: ../gladeui/glade-project-properties.ui.h:12
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
 msgid "Name:"
 msgstr "Název:"
 
-#: ../src/glade-window.c:596
+#: ../src/glade-window.c:597
 msgid "Requires:"
 msgstr "Vyžaduje:"
 
-#: ../src/glade-window.c:655
+#: ../src/glade-window.c:656
 msgid "_Undo"
 msgstr "_Zpět"
 
-#: ../src/glade-window.c:658
+#: ../src/glade-window.c:659
 #, c-format
 msgid "Undo: %s"
 msgstr "Zpět: %s"
 
-#: ../src/glade-window.c:659 ../src/glade-window.c:670
+#: ../src/glade-window.c:660 ../src/glade-window.c:671
 msgid "the last action"
 msgstr "poslední akce"
 
-#: ../src/glade-window.c:666
+#: ../src/glade-window.c:667
 msgid "_Redo"
 msgstr "Zn_ovu"
 
-#: ../src/glade-window.c:669
+#: ../src/glade-window.c:670
 #, c-format
 msgid "Redo: %s"
 msgstr "Znovu: %s"
 
-#: ../src/glade-window.c:701
+#: ../src/glade-window.c:702
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Automaticky se ukládá „%s“"
 
-#: ../src/glade-window.c:706
+#: ../src/glade-window.c:707
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Chyba automatického ukládání „%s“"
 
-#: ../src/glade-window.c:1125
+#: ../src/glade-window.c:1126
 msgid "Open…"
 msgstr "Otevřít…"
 
-#: ../src/glade-window.c:1159
+#: ../src/glade-window.c:1160
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Projekt „%s“ se doposud načítá."
 
-#: ../src/glade-window.c:1178
+#: ../src/glade-window.c:1179
 msgid "Failed to backup existing file, continue saving?"
 msgstr "Selhalo zazálohování stávajícího souboru. Pokračovat v ukládání?"
 
-#: ../src/glade-window.c:1200
+#: ../src/glade-window.c:1201
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Nezdařilo se uložit %s: %s"
 
-#: ../src/glade-window.c:1239
+#: ../src/glade-window.c:1240
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Od svého načtení se soubor %s změnil"
 
-#: ../src/glade-window.c:1243
+#: ../src/glade-window.c:1244
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Pokud jej uložíte, všechny externí změny budou přepsány. Přesto uložit?"
 
-#: ../src/glade-window.c:1248
+#: ../src/glade-window.c:1249
 msgid "_Save Anyway"
 msgstr "Pře_sto uložit"
 
-#: ../src/glade-window.c:1256
+#: ../src/glade-window.c:1257
 msgid "_Don't Save"
 msgstr "Neuklá_dat"
 
-#: ../src/glade-window.c:1290
+#: ../src/glade-window.c:1291
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Projekt „%s“ byl uložen"
 
-#: ../src/glade-window.c:1321
+#: ../src/glade-window.c:1322
 msgid "Save As…"
 msgstr "Uložit jako…"
 
-#: ../src/glade-window.c:1385
+#: ../src/glade-window.c:1386
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Nelze uložit soubor %s"
 
-#: ../src/glade-window.c:1389
+#: ../src/glade-window.c:1390
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Nemáte dostatečná oprávnění nezbytná k uložení souboru."
 
-#: ../src/glade-window.c:1411
+#: ../src/glade-window.c:1412
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "Nelze uložit soubor %s. Je otevřený jiný projekt s touto cestou."
 
-#: ../src/glade-window.c:1436
+#: ../src/glade-window.c:1437
 msgid "No open projects to save"
 msgstr "Není otevřený žádný projekt, který by mohl být uložen"
 
-#: ../src/glade-window.c:1466
+#: ../src/glade-window.c:1467
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Uložit před zavření změny do projektu „%s“?"
 
-#: ../src/glade-window.c:1474
+#: ../src/glade-window.c:1475
 msgid "Your changes will be lost if you don't save them."
 msgstr "Pokud je neuložíte, budou všechny vaše změny navždy ztraceny."
 
-#: ../src/glade-window.c:1478
+#: ../src/glade-window.c:1479
 msgid "Close _without Saving"
 msgstr "Za_vřít bez uložení"
 
-#: ../src/glade-window.c:1479 ../src/glade-window.c:2655
-#: ../gladeui/glade-editor.c:750 ../gladeui/glade-editor.c:1106
-#: ../gladeui/glade-editor-property.c:1687
-#: ../gladeui/glade-editor-property.c:1994
-#: ../gladeui/glade-editor-property.c:2193
-#: ../gladeui/glade-editor-property.c:3131
-#: ../gladeui/glade-editor-property.c:3243
-#: ../gladeui/glade-editor-property.c:3260
-#: ../gladeui/glade-editor-property.c:3571 ../gladeui/glade-utils.c:483
+#: ../src/glade-window.c:1480 ../src/glade-window.c:2656
+#: ../gladeui/glade-editor.c:765 ../gladeui/glade-editor.c:1121
+#: ../gladeui/glade-editor-property.c:1723
+#: ../gladeui/glade-editor-property.c:2030
+#: ../gladeui/glade-editor-property.c:2229
+#: ../gladeui/glade-editor-property.c:3170
+#: ../gladeui/glade-editor-property.c:3282
+#: ../gladeui/glade-editor-property.c:3299
+#: ../gladeui/glade-editor-property.c:3619 ../gladeui/glade-utils.c:483
 #: ../plugins/gtk+/glade-accels.c:525 ../plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Zrušit"
 
-#: ../src/glade-window.c:1480 ../gladeui/glade-utils.c:486
+#: ../src/glade-window.c:1481 ../gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Uložit"
 
-#: ../src/glade-window.c:1508
+#: ../src/glade-window.c:1509
 msgid "Save…"
 msgstr "Uložit…"
 
-#: ../src/glade-window.c:2474
+#: ../src/glade-window.c:2475
 msgid "Close document"
 msgstr "Zavřít dokument"
 
-#: ../src/glade-window.c:2570
+#: ../src/glade-window.c:2571
 msgid "Could not create a new project."
 msgstr "Nelze vytvořit nový projekt."
 
-#: ../src/glade-window.c:2623
+#: ../src/glade-window.c:2624
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Projekt %s obsahuje neuložené změny"
 
-#: ../src/glade-window.c:2628
+#: ../src/glade-window.c:2629
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Pokud jej znovu načtete, všechny neuložené změny budou ztraceny. Přejete si "
 "přesto pokračovat?"
 
-#: ../src/glade-window.c:2638
+#: ../src/glade-window.c:2639
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Soubor projektu %s byl externě změněn"
 
-#: ../src/glade-window.c:2643
+#: ../src/glade-window.c:2644
 msgid "Do you want to reload the project?"
 msgstr "Chcete projekt znovu načíst?"
 
-#: ../src/glade-window.c:2649
+#: ../src/glade-window.c:2650
 msgid "_Reload"
 msgstr "_Obnovit"
 
-#: ../src/glade-window.c:3234
+#: ../src/glade-window.c:3249
 msgid "Palette"
 msgstr "Paleta"
 
-#: ../src/glade-window.c:3236
+#: ../src/glade-window.c:3251
 msgid "Inspector"
 msgstr "Inspektor"
 
-#: ../src/glade-window.c:3238 ../src/glade.glade.h:33
-#: ../gladeui/glade-editor.c:320 ../gladeui/glade-widget.c:1397
+#: ../src/glade-window.c:3253 ../src/glade.glade.h:33
+#: ../gladeui/glade-editor.c:335 ../gladeui/glade-widget.c:1377
 #: ../gladeui/glade-project-properties.ui.h:11
 #: ../plugins/gtk+/glade-gtk-action-group.c:184
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:361
@@ -296,7 +294,7 @@ msgid "Properties"
 msgstr "Vlastnosti"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:3500
+#: ../src/glade-window.c:3515
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -305,16 +303,16 @@ msgstr ""
 "Chtěli byste se jej nyní zůčastnit?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:3504
+#: ../src/glade-window.c:3519
 msgid "If not, you can always find it in the Help menu."
 msgstr "Pokud ne, kdykoliv později jej najdete v nabídce Nápověda."
 
-#: ../src/glade-window.c:3506
+#: ../src/glade-window.c:3521
 msgid "_Do not show this dialog again"
 msgstr "Toto _dialogové okno příště nezobrazovat"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: ../src/glade-window.c:3527
+#: ../src/glade-window.c:3542
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
 "Přejděte do „Nápověda“ -> „Registrace a dotazník“ a dokončete vyplňování!"
@@ -815,7 +813,7 @@ msgid "Select a catalog search path"
 msgstr "Vyberte umístění, kde katalog hledat"
 
 #. translators: Email subject sent to the user after completing the survey
-#: ../src/glade-registration.c:32 ../src/glade-registration.glade.h:24
+#: ../src/glade-registration.c:32 ../src/glade-registration.glade.h:27
 msgid "Glade User Survey"
 msgstr "Dotazník ke Glade"
 
@@ -880,50 +878,50 @@ msgstr ""
 "\n"
 "\tTým Glade\n"
 
-#: ../src/glade-registration.c:306
+#: ../src/glade-registration.c:308
 #, c-format
 msgid "Connecting to %s"
 msgstr "Připojuje se k %s"
 
-#: ../src/glade-registration.c:309
+#: ../src/glade-registration.c:311
 #, c-format
 msgid "Sending data to %s"
 msgstr "Odesílají se data na %s"
 
-#: ../src/glade-registration.c:312
+#: ../src/glade-registration.c:314
 #, c-format
 msgid "Waiting for %s"
 msgstr "Čeká se na %s"
 
-#: ../src/glade-registration.c:315
+#: ../src/glade-registration.c:317
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Přijímají se data z %s"
 
-#: ../src/glade-registration.c:347
+#: ../src/glade-registration.c:349
 msgid "Sorry, automatic subscription to Glade Users mailing list failed"
 msgstr ""
 "Bohužel, ale automatické přihlášení k poštovní konferenci uživatelů Glade "
 "selhalo"
 
-#: ../src/glade-registration.c:350
+#: ../src/glade-registration.c:352
 msgid "Open Glade Users Website"
 msgstr "Otevřít web uživatelů Glade"
 
-#: ../src/glade-registration.c:402
+#: ../src/glade-registration.c:404
 msgid "Internal server error"
 msgstr "Interní chyba serveru"
 
-#: ../src/glade-registration.c:426
+#: ../src/glade-registration.c:428
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
 msgstr ""
 "Děkujeme, že jste si udělali čas na vyplnění dotazníku. Vážíme si toho!"
 
-#: ../src/glade-registration.c:434
+#: ../src/glade-registration.c:436
 msgid "Name and Email fields are required"
 msgstr "Pole se jménem a e-mailem jsou povinná"
 
-#: ../src/glade-registration.c:437
+#: ../src/glade-registration.c:439
 msgid ""
 "Oops! Email address is already in use!\n"
 "To update information you need to provide the token that was sent to your "
@@ -933,17 +931,17 @@ msgstr ""
 "Abyste mohli údaje aktualizovat, musíte zadat tiket, který jste obdrželi e-"
 "mailem."
 
-#: ../src/glade-registration.c:440
+#: ../src/glade-registration.c:442
 #, c-format
 msgid "Oops! Error saving user information: %s"
 msgstr "Problém! Chyba při ukládání údajů o uživateli: %s"
 
-#: ../src/glade-registration.c:443
+#: ../src/glade-registration.c:445
 #, c-format
 msgid "Oops! Error saving survey data: %s"
 msgstr "Problém! Chyba při ukládání dotazníkových dat: %s"
 
-#: ../src/glade-registration.c:446
+#: ../src/glade-registration.c:448
 #, c-format
 msgid "Oops! Error accessing DB: %s"
 msgstr "Problém! Chyba při přístupu k DB: %s"
@@ -952,19 +950,32 @@ msgstr "Problém! Chyba při přístupu k DB: %s"
 msgid "Glade Registration & User Survey"
 msgstr "Registrace a dotazník ke Glade"
 
-#: ../src/glade-registration.glade.h:2
+#. GtkButtonsType enumeration value
+#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:820
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../src/glade-registration.glade.h:3
+msgid "Submit"
+msgstr "Odeslat"
+
+#: ../src/glade-registration.glade.h:4
+msgid "Information will be sent to https://people.gnome.org/~jpu"
+msgstr "Informace budou odeslány na https://people.gnome.org/~jpu"
+
+#: ../src/glade-registration.glade.h:5
 msgid "User Information"
 msgstr "Údaje o uživateli"
 
-#: ../src/glade-registration.glade.h:3
+#: ../src/glade-registration.glade.h:6
 msgid "<Your name or nickname is required>"
 msgstr "<vaše jméno nebo přezdívka je nutné>"
 
-#: ../src/glade-registration.glade.h:5
+#: ../src/glade-registration.glade.h:8
 msgid "Email:"
 msgstr "E-mail:"
 
-#: ../src/glade-registration.glade.h:6
+#: ../src/glade-registration.glade.h:9
 msgid ""
 "Tokens are processed manually in batches.\n"
 "Please be patient."
@@ -972,39 +983,39 @@ msgstr ""
 "Tikety jsou zpracovány ručně v dávkách\n"
 "Buďte trpěliví."
 
-#: ../src/glade-registration.glade.h:8
+#: ../src/glade-registration.glade.h:11
 msgid "<Required to send back registration token>"
 msgstr "<vyžaduje zpětně zaslaný registrační tiket>"
 
-#: ../src/glade-registration.glade.h:9
+#: ../src/glade-registration.glade.h:12
 msgid "Country:"
 msgstr "Země:"
 
-#: ../src/glade-registration.glade.h:10
+#: ../src/glade-registration.glade.h:13
 msgid "City:"
 msgstr "Město:"
 
-#: ../src/glade-registration.glade.h:11
+#: ../src/glade-registration.glade.h:14
 msgid "Company"
 msgstr "Firma"
 
-#: ../src/glade-registration.glade.h:12
+#: ../src/glade-registration.glade.h:15
 msgid "Organization"
 msgstr "Organizace"
 
-#: ../src/glade-registration.glade.h:13
+#: ../src/glade-registration.glade.h:16
 msgid "Personal"
 msgstr "Soukromá osoba"
 
-#: ../src/glade-registration.glade.h:14
+#: ../src/glade-registration.glade.h:17
 msgid "Website"
 msgstr "Webové stránky"
 
-#: ../src/glade-registration.glade.h:15
+#: ../src/glade-registration.glade.h:18
 msgid "Subscribe me to the mailing list"
 msgstr "Přihlásit mě do poštovní konference"
 
-#: ../src/glade-registration.glade.h:16
+#: ../src/glade-registration.glade.h:19
 msgid ""
 "Subscribe to Glade Users mailing list.\n"
 "You will be sent email requesting confirmation!"
@@ -1012,15 +1023,15 @@ msgstr ""
 "Přihlásit do poštovní konference uživatelů Glade.\n"
 "Bude vám zaslán e-mail s žádostí o potvrzení!"
 
-#: ../src/glade-registration.glade.h:18
+#: ../src/glade-registration.glade.h:21
 msgid "Choose your country"
 msgstr "vyberte svoji zemi"
 
-#: ../src/glade-registration.glade.h:19
+#: ../src/glade-registration.glade.h:22
 msgid "We care about privacy!"
 msgstr "Dbáme o soukromí!"
 
-#: ../src/glade-registration.glade.h:20
+#: ../src/glade-registration.glade.h:23
 msgid ""
 "All the data will be stored in a private location and will not be shared "
 "with the public or any third party."
@@ -1028,315 +1039,315 @@ msgstr ""
 "Všechna data budou uchována v soukromém úložišti a nebudou sdílena s "
 "veřejností nebo třetí stranou."
 
-#: ../src/glade-registration.glade.h:21
+#: ../src/glade-registration.glade.h:24
 msgid "See Privacy Note"
 msgstr "Viz ochrana osobních údajů"
 
-#: ../src/glade-registration.glade.h:22
+#: ../src/glade-registration.glade.h:25
 msgid "Update Info"
 msgstr "Informace o aktualizaci"
 
-#: ../src/glade-registration.glade.h:23
+#: ../src/glade-registration.glade.h:26
 msgid "<Insert update token, if you want to update previously sent data>"
 msgstr "<jestli chcete změnit dříve zaslaná data, vložte aktualizační tiket>"
 
-#: ../src/glade-registration.glade.h:25
+#: ../src/glade-registration.glade.h:28
 msgid "How long have you been programming?"
 msgstr "Jak dlouho se zabýváte programováním?"
 
-#: ../src/glade-registration.glade.h:26
+#: ../src/glade-registration.glade.h:29
 msgid "0"
 msgstr "0"
 
-#: ../src/glade-registration.glade.h:27
+#: ../src/glade-registration.glade.h:30
 msgid "years"
 msgstr "roků"
 
-#: ../src/glade-registration.glade.h:28
+#: ../src/glade-registration.glade.h:31
 msgid "months"
 msgstr "měsíců"
 
-#: ../src/glade-registration.glade.h:29
+#: ../src/glade-registration.glade.h:32
 msgid "I am not a programmer"
 msgstr "Nejsem programátor"
 
-#: ../src/glade-registration.glade.h:30
+#: ../src/glade-registration.glade.h:33
 msgid "Which programming languages do you prefer?"
 msgstr "Kterému programovacímu jazyku dáváte přednost?"
 
-#: ../src/glade-registration.glade.h:31
+#: ../src/glade-registration.glade.h:34
 msgid "C"
 msgstr "C"
 
-#: ../src/glade-registration.glade.h:32
+#: ../src/glade-registration.glade.h:35
 msgid "C++"
 msgstr "C++"
 
-#: ../src/glade-registration.glade.h:33
+#: ../src/glade-registration.glade.h:36
 msgid "C#"
 msgstr "C#"
 
-#: ../src/glade-registration.glade.h:34
+#: ../src/glade-registration.glade.h:37
 msgid "Java"
 msgstr "Java"
 
-#: ../src/glade-registration.glade.h:35
+#: ../src/glade-registration.glade.h:38
 msgid "Python"
 msgstr "Python"
 
-#: ../src/glade-registration.glade.h:36
+#: ../src/glade-registration.glade.h:39
 msgid "JavaScript"
 msgstr "JavaScript"
 
-#: ../src/glade-registration.glade.h:37
+#: ../src/glade-registration.glade.h:40
 msgid "Vala"
 msgstr "Vala"
 
-#: ../src/glade-registration.glade.h:38
+#: ../src/glade-registration.glade.h:41
 msgid "Perl"
 msgstr "Perl"
 
 #. GtkCellRendererAccelMode enumeration value
-#: ../src/glade-registration.glade.h:39
+#: ../src/glade-registration.glade.h:42
 #: ../gladeui/glade-project-properties.ui.h:19
 #: ../plugins/gtk+/gtk+.xml.in.h:766
 msgid "Other"
 msgstr "Jiný"
 
-#: ../src/glade-registration.glade.h:40
+#: ../src/glade-registration.glade.h:43
 msgid "When did you start using Glade?"
 msgstr "Kdy jste začali používat Glade?"
 
-#: ../src/glade-registration.glade.h:41
+#: ../src/glade-registration.glade.h:44
 msgid "ago"
 msgstr "před"
 
-#: ../src/glade-registration.glade.h:42
+#: ../src/glade-registration.glade.h:45
 msgid "Which version do you normally use?"
 msgstr "Kterou verzi normálně používáte?"
 
-#: ../src/glade-registration.glade.h:43
+#: ../src/glade-registration.glade.h:46
 msgid "What is available in my OS"
 msgstr "která je k dispozici v mém OS"
 
-#: ../src/glade-registration.glade.h:44
+#: ../src/glade-registration.glade.h:47
 msgid "Latest stable from sources"
 msgstr "nejnovější stabilní verzi ze zdrojového kódu"
 
-#: ../src/glade-registration.glade.h:45
+#: ../src/glade-registration.glade.h:48
 msgid "3.8 for GTK+ 2"
 msgstr "3.8 pro GTK+ 2"
 
-#: ../src/glade-registration.glade.h:46
+#: ../src/glade-registration.glade.h:49
 msgid "Master"
 msgstr "master"
 
-#: ../src/glade-registration.glade.h:47
+#: ../src/glade-registration.glade.h:50
 msgid "On what operating systems?"
 msgstr "V jakém operačním systému?"
 
-#: ../src/glade-registration.glade.h:48
+#: ../src/glade-registration.glade.h:51
 msgid "distribution"
 msgstr "distribuce"
 
-#: ../src/glade-registration.glade.h:49
+#: ../src/glade-registration.glade.h:52
 msgid "Arch Linux"
 msgstr "Arch Linux"
 
-#: ../src/glade-registration.glade.h:50
+#: ../src/glade-registration.glade.h:53
 msgid "Debian"
 msgstr "Debian"
 
-#: ../src/glade-registration.glade.h:51
+#: ../src/glade-registration.glade.h:54
 msgid "openSUSE"
 msgstr "openSUSE"
 
-#: ../src/glade-registration.glade.h:52
+#: ../src/glade-registration.glade.h:55
 msgid "Fedora"
 msgstr "Fedora"
 
-#: ../src/glade-registration.glade.h:53
+#: ../src/glade-registration.glade.h:56
 msgid "Gentoo"
 msgstr "Gentoo"
 
-#: ../src/glade-registration.glade.h:54
+#: ../src/glade-registration.glade.h:57
 msgid "Mandriva"
 msgstr "Mandriva"
 
-#: ../src/glade-registration.glade.h:55
+#: ../src/glade-registration.glade.h:58
 msgid "Red Hat"
 msgstr "Red Hat"
 
-#: ../src/glade-registration.glade.h:56
+#: ../src/glade-registration.glade.h:59
 msgid "Turbolinux"
 msgstr "Turbolinux"
 
-#: ../src/glade-registration.glade.h:57
+#: ../src/glade-registration.glade.h:60
 msgid "Ubuntu"
 msgstr "Ubuntu"
 
-#: ../src/glade-registration.glade.h:58
+#: ../src/glade-registration.glade.h:61
 msgid "Xandros"
 msgstr "Xandros"
 
-#: ../src/glade-registration.glade.h:59
+#: ../src/glade-registration.glade.h:62
 msgid "Oracle"
 msgstr "Oracle"
 
-#: ../src/glade-registration.glade.h:60
+#: ../src/glade-registration.glade.h:63
 msgid "variant"
 msgstr "varianta"
 
-#: ../src/glade-registration.glade.h:61
+#: ../src/glade-registration.glade.h:64
 msgid "FreeBSD"
 msgstr "FreeBSD"
 
-#: ../src/glade-registration.glade.h:62
+#: ../src/glade-registration.glade.h:65
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
-#: ../src/glade-registration.glade.h:63
+#: ../src/glade-registration.glade.h:66
 msgid "NetBSD"
 msgstr "NetBSD"
 
-#: ../src/glade-registration.glade.h:64
+#: ../src/glade-registration.glade.h:67
 msgid "Oracle Solaris"
 msgstr "Oracle Solaris"
 
-#: ../src/glade-registration.glade.h:65
+#: ../src/glade-registration.glade.h:68
 msgid "OpenSolaris"
 msgstr "OpenSolaris"
 
-#: ../src/glade-registration.glade.h:66
+#: ../src/glade-registration.glade.h:69
 msgid "illumos"
 msgstr "illumos"
 
-#: ../src/glade-registration.glade.h:67
+#: ../src/glade-registration.glade.h:70
 msgid "version"
 msgstr "verze"
 
-#: ../src/glade-registration.glade.h:68
+#: ../src/glade-registration.glade.h:71
 msgid "2000"
 msgstr "2000"
 
-#: ../src/glade-registration.glade.h:69
+#: ../src/glade-registration.glade.h:72
 msgid "XP"
 msgstr "XP"
 
-#: ../src/glade-registration.glade.h:70
+#: ../src/glade-registration.glade.h:73
 msgid "2003"
 msgstr "2003"
 
-#: ../src/glade-registration.glade.h:71
+#: ../src/glade-registration.glade.h:74
 msgid "Vista"
 msgstr "Vista"
 
-#: ../src/glade-registration.glade.h:72
+#: ../src/glade-registration.glade.h:75
 msgid "2008"
 msgstr "2008"
 
-#: ../src/glade-registration.glade.h:73
+#: ../src/glade-registration.glade.h:76
 msgid "7"
 msgstr "7"
 
-#: ../src/glade-registration.glade.h:74
+#: ../src/glade-registration.glade.h:77
 msgid "8"
 msgstr "8"
 
-#: ../src/glade-registration.glade.h:75
+#: ../src/glade-registration.glade.h:78
 msgid "2012"
 msgstr "2012"
 
-#: ../src/glade-registration.glade.h:76
+#: ../src/glade-registration.glade.h:79
 msgid "Tiger"
 msgstr "Tiger"
 
-#: ../src/glade-registration.glade.h:77
+#: ../src/glade-registration.glade.h:80
 msgid "Leopard"
 msgstr "Leopard"
 
-#: ../src/glade-registration.glade.h:78
+#: ../src/glade-registration.glade.h:81
 msgid "Snow Leopard"
 msgstr "Snow Leopard"
 
-#: ../src/glade-registration.glade.h:79
+#: ../src/glade-registration.glade.h:82
 msgid "Lion"
 msgstr "Lion"
 
-#: ../src/glade-registration.glade.h:80
+#: ../src/glade-registration.glade.h:83
 msgid "Mountain Lion"
 msgstr "Mountain Lion"
 
-#: ../src/glade-registration.glade.h:81
+#: ../src/glade-registration.glade.h:84
 msgid "Mavericks"
 msgstr "Mavericks"
 
-#: ../src/glade-registration.glade.h:82
+#: ../src/glade-registration.glade.h:85
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
 #. GtkLicense enumeration value
-#: ../src/glade-registration.glade.h:83 ../plugins/gtk+/gtk+.xml.in.h:796
+#: ../src/glade-registration.glade.h:86 ../plugins/gtk+/gtk+.xml.in.h:796
 msgid "BSD"
 msgstr "BSD"
 
-#: ../src/glade-registration.glade.h:84
+#: ../src/glade-registration.glade.h:87
 msgid "Windows"
 msgstr "Windows"
 
-#: ../src/glade-registration.glade.h:85
+#: ../src/glade-registration.glade.h:88
 msgid "Mac OS X"
 msgstr "Mac OS X"
 
-#: ../src/glade-registration.glade.h:86
+#: ../src/glade-registration.glade.h:89
 msgid "Solaris"
 msgstr "Solaris"
 
-#: ../src/glade-registration.glade.h:87
+#: ../src/glade-registration.glade.h:90
 msgid "How often do you use it?"
 msgstr "Jak často jej používáte?"
 
-#: ../src/glade-registration.glade.h:88
+#: ../src/glade-registration.glade.h:91
 msgid "Every day"
 msgstr "každý den"
 
-#: ../src/glade-registration.glade.h:89
+#: ../src/glade-registration.glade.h:92
 msgid "Few days a week"
 msgstr "párkrát do týdne"
 
-#: ../src/glade-registration.glade.h:90
+#: ../src/glade-registration.glade.h:93
 msgid "Every week"
 msgstr "každý týden"
 
-#: ../src/glade-registration.glade.h:91
+#: ../src/glade-registration.glade.h:94
 msgid "A few times a month"
 msgstr "párkrát do měsíce"
 
-#: ../src/glade-registration.glade.h:92
+#: ../src/glade-registration.glade.h:95
 msgid "Once a month"
 msgstr "jednou za měsíc"
 
-#: ../src/glade-registration.glade.h:93
+#: ../src/glade-registration.glade.h:96
 msgid "A few times a year"
 msgstr "párkrát do roka"
 
-#: ../src/glade-registration.glade.h:94
+#: ../src/glade-registration.glade.h:97
 msgid "What level of Glade user would you say you are?"
 msgstr "Na jaké úrovni jako uživatel Glade byste řekli, že jste?"
 
-#: ../src/glade-registration.glade.h:95
+#: ../src/glade-registration.glade.h:98
 msgid "Beginner"
 msgstr "začátečník"
 
-#: ../src/glade-registration.glade.h:96
+#: ../src/glade-registration.glade.h:99
 msgid "Intermediate"
 msgstr "mírně pokročilý"
 
-#: ../src/glade-registration.glade.h:97
+#: ../src/glade-registration.glade.h:100
 msgid "Advanced"
 msgstr "pokročilý"
 
-#: ../src/glade-registration.glade.h:98
+#: ../src/glade-registration.glade.h:101
 msgid ""
 "Under what kind of license(s) do you release the software you used Glade to "
 "create?"
@@ -1344,120 +1355,120 @@ msgstr ""
 "Pod jakým druhem licence (či licencí) vydáváte software, který v Glade "
 "vytvoříte?"
 
-#: ../src/glade-registration.glade.h:99
+#: ../src/glade-registration.glade.h:102
 msgid "Free software"
 msgstr "svobodný software"
 
-#: ../src/glade-registration.glade.h:100
+#: ../src/glade-registration.glade.h:103
 msgid "Open source software"
 msgstr "software s otevřeným kódem"
 
-#: ../src/glade-registration.glade.h:101
+#: ../src/glade-registration.glade.h:104
 msgid "Commercial/Closed software"
 msgstr "komerční/uzavřený software"
 
-#: ../src/glade-registration.glade.h:102
+#: ../src/glade-registration.glade.h:105
 msgid "None - distributed internally"
 msgstr "žádná – interní využití"
 
-#: ../src/glade-registration.glade.h:103
+#: ../src/glade-registration.glade.h:106
 msgid ""
 "In what field(s) is the software you used Glade to create generally used?"
 msgstr "V jaké oblasti je software, který v Glade vytvoříte, obvykle používán?"
 
-#: ../src/glade-registration.glade.h:104
+#: ../src/glade-registration.glade.h:107
 msgid "Academic"
 msgstr "akademická"
 
-#: ../src/glade-registration.glade.h:105
+#: ../src/glade-registration.glade.h:108
 msgid "Embedded applications"
 msgstr "vestavěné aplikace"
 
-#: ../src/glade-registration.glade.h:106
+#: ../src/glade-registration.glade.h:109
 msgid "Accounting"
 msgstr "účetnictví"
 
-#: ../src/glade-registration.glade.h:107
+#: ../src/glade-registration.glade.h:110
 msgid "Desktop applications"
 msgstr "desktopové aplikace"
 
-#: ../src/glade-registration.glade.h:108
+#: ../src/glade-registration.glade.h:111
 msgid "Educational"
 msgstr "vzdělávání"
 
-#: ../src/glade-registration.glade.h:109
+#: ../src/glade-registration.glade.h:112
 msgid "Medical"
 msgstr "zdravotnictví"
 
-#: ../src/glade-registration.glade.h:110
+#: ../src/glade-registration.glade.h:113
 msgid "Industrial applications"
 msgstr "průmyslové aplikace"
 
-#: ../src/glade-registration.glade.h:111
+#: ../src/glade-registration.glade.h:114
 msgid "Scientific"
 msgstr "věda"
 
-#: ../src/glade-registration.glade.h:112
+#: ../src/glade-registration.glade.h:115
 msgid "What aspect of the software needs the most improvement?"
 msgstr "Ve kterých ohledech vyžaduje software nejvíc zlepšit?"
 
-#: ../src/glade-registration.glade.h:113
+#: ../src/glade-registration.glade.h:116
 msgid "In your opinion what is the biggest problem with Glade?"
 msgstr "Co je podle vašeho názoru největším problémem Glade?"
 
-#: ../src/glade-registration.glade.h:114
+#: ../src/glade-registration.glade.h:117
 msgid "Lack of documentation"
 msgstr "Chybějící dokumentace"
 
-#: ../src/glade-registration.glade.h:115
+#: ../src/glade-registration.glade.h:118
 msgid "Lack of professional support"
 msgstr "Chybějící profesionální podpora"
 
-#: ../src/glade-registration.glade.h:116
+#: ../src/glade-registration.glade.h:119
 msgid "Lack of professional training"
 msgstr "Chybějící profesionální výuka"
 
-#: ../src/glade-registration.glade.h:117
+#: ../src/glade-registration.glade.h:120
 msgid "Lack of publicity/exposure"
 msgstr "Chybějící propagace/publicita"
 
-#: ../src/glade-registration.glade.h:118
+#: ../src/glade-registration.glade.h:121
 msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
 msgstr "Chybějící oficiální binární instalátory pro ostatní OS (Windows, OS X)"
 
-#: ../src/glade-registration.glade.h:119
+#: ../src/glade-registration.glade.h:122
 msgid "Have you ever encountered a bug?"
 msgstr "Už jste někdy narazili na chybu?"
 
-#: ../src/glade-registration.glade.h:120
+#: ../src/glade-registration.glade.h:123
 msgid "Yes"
 msgstr "ano"
 
-#: ../src/glade-registration.glade.h:121
+#: ../src/glade-registration.glade.h:124
 msgid "No"
 msgstr "ne"
 
-#: ../src/glade-registration.glade.h:122
+#: ../src/glade-registration.glade.h:125
 msgid "If so, did you file a bug report?"
 msgstr "Když ano, nahlásili jste ji?"
 
-#: ../src/glade-registration.glade.h:123
+#: ../src/glade-registration.glade.h:126
 msgid "Have you ever thought about contributing?"
 msgstr "Přemýšleli jste o tom, že byste přispěli k vývoji?"
 
-#: ../src/glade-registration.glade.h:124
+#: ../src/glade-registration.glade.h:127
 msgid "Why not?"
 msgstr "Proč ne?"
 
-#: ../src/glade-registration.glade.h:125
+#: ../src/glade-registration.glade.h:128
 msgid "Comments:"
 msgstr "Komentáře:"
 
-#: ../src/glade-registration.glade.h:126
+#: ../src/glade-registration.glade.h:129
 msgid "Privacy Note:"
 msgstr "Ochrana osobních údajů"
 
-#: ../src/glade-registration.glade.h:127
+#: ../src/glade-registration.glade.h:130
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -1475,19 +1486,6 @@ msgstr ""
 "celku.\n"
 "Osobní údaje budou uchovány v soukromé databázi a nebudou sdíleny ani "
 "veřejně, ani se třetími stranami."
-
-#. GtkButtonsType enumeration value
-#: ../src/glade-registration.glade.h:131 ../plugins/gtk+/gtk+.xml.in.h:820
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: ../src/glade-registration.glade.h:132
-msgid "Submit"
-msgstr "Odeslat"
-
-#: ../src/glade-registration.glade.h:133
-msgid "Information will be sent to https://people.gnome.org/~jpu"
-msgstr "Informace budou odeslány na https://people.gnome.org/~jpu"
 
 #: ../gladeui/glade-app.c:535
 #, c-format
@@ -1534,72 +1532,79 @@ msgstr ""
 "Chyba při otevírání %s pro zápis soukromých dat (%s).\n"
 "V tomto sezení nebudou uložena žádná soukromá data."
 
-#: ../gladeui/glade-base-editor.c:553
+#: ../gladeui/glade-base-editor.c:568
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "Nastavení typu objektu pro %s na %s"
 
-#: ../gladeui/glade-base-editor.c:715
+#: ../gladeui/glade-base-editor.c:730
 #, c-format
 msgid "Add a %s to %s"
 msgstr "Přidat %s do %s"
 
-#: ../gladeui/glade-base-editor.c:807 ../gladeui/glade-command.c:1240
+#: ../gladeui/glade-base-editor.c:822 ../gladeui/glade-command.c:1240
 #, c-format
 msgid "Add %s"
 msgstr "Přidat %s"
 
-#: ../gladeui/glade-base-editor.c:839
+#: ../gladeui/glade-base-editor.c:854
 #, c-format
 msgid "Add child %s"
 msgstr "Přidat potomka %s"
 
-#: ../gladeui/glade-base-editor.c:928
+#: ../gladeui/glade-base-editor.c:943
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "Smazat potomka %s z %s"
 
-#: ../gladeui/glade-base-editor.c:1054
+#: ../gladeui/glade-base-editor.c:1069
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Přeuspořádat potomky objektu %s"
 
-#: ../gladeui/glade-base-editor.c:1486 ../plugins/gtk+/gtk+.xml.in.h:363
+#: ../gladeui/glade-base-editor.c:1501 ../plugins/gtk+/gtk+.xml.in.h:363
 msgid "Container"
 msgstr "Kontejner"
 
-#: ../gladeui/glade-base-editor.c:1487
+#: ../gladeui/glade-base-editor.c:1502
 msgid "The container object this editor is currently editing"
 msgstr "Kontejnerový objekt, který se v tomto editoru právě upravuje"
 
 #. translators: refers to a tab name used to group all the relevant widget's properties
-#: ../gladeui/glade-base-editor.c:1720 ../gladeui/glade-editor.c:904
+#: ../gladeui/glade-base-editor.c:1735 ../gladeui/glade-editor.c:919
 msgid "General"
 msgstr "Obecné"
 
 #. translators: refers to a tab name used to show the widget hierarchy
-#: ../gladeui/glade-base-editor.c:1729
+#: ../gladeui/glade-base-editor.c:1744
 msgid "Hierarchy"
 msgstr "Hierarchie"
 
 #. AtkRole enumeration value
-#: ../gladeui/glade-base-editor.c:1767 ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../gladeui/glade-base-editor.c:1782 ../plugins/gtk+/gtk+.xml.in.h:144
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:9
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:2
 msgid "Label"
 msgstr "Popisek"
 
-#: ../gladeui/glade-base-editor.c:1782 ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1460
 msgid "Type"
 msgstr "Typ"
 
+#. Name
+#. translators: The unique identifier of an object in the project
+#: ../gladeui/glade-base-editor.c:2034 ../gladeui/glade-editor-table.c:305
+#: ../gladeui/glade-editor-table.c:578
+msgid "ID:"
+msgstr "ID:"
+
 #. Type
-#: ../gladeui/glade-base-editor.c:2035
+#: ../gladeui/glade-base-editor.c:2054
 #: ../plugins/gtk+/glade-window-editor.ui.h:8
 msgid "Type:"
 msgstr "Typ:"
 
-#: ../gladeui/glade-base-editor.c:2254
+#: ../gladeui/glade-base-editor.c:2274
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1714,12 +1719,12 @@ msgstr "Zakázání vlastnosti „%s“ u widgetu „%s“"
 msgid "Setting multiple properties"
 msgstr "Nastavení více vlastností"
 
-#: ../gladeui/glade-command.c:813
+#: ../gladeui/glade-command.c:813 ../gladeui/glade-editor-property.c:3685
 #, c-format
 msgid "Setting %s of %s"
 msgstr "Nastavení „%s“ pro „%s“"
 
-#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3365
+#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3390
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Nastavení „%s“ pro „%s“ na %s"
@@ -1861,11 +1866,11 @@ msgstr "Úprava zarovnání pro %s"
 msgid "Editing margins of %s"
 msgstr "Úprava odsazení pro %s"
 
-#: ../gladeui/glade-design-layout.c:2082
+#: ../gladeui/glade-design-layout.c:2091
 msgid "Design View"
 msgstr "Zobrazení návrhu"
 
-#: ../gladeui/glade-design-layout.c:2083
+#: ../gladeui/glade-design-layout.c:2092
 msgid "The GladeDesignView that contains this layout"
 msgstr "Objekt GladeDesignView, který obsahuje toto rozvržení"
 
@@ -1901,80 +1906,90 @@ msgstr "Pole s třídou"
 msgid "The class field string"
 msgstr "Řetězec v poli s třídou"
 
-#. translators: referring to the properties of a widget named '%s [%s]'
-#: ../gladeui/glade-editor.c:307
+#. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
+#. * example: Window Properties - GtkWindow [window1]
+#.
+#: ../gladeui/glade-editor.c:311
 #, c-format
 msgid "%s Properties - %s [%s]"
-msgstr "Vlastnosti pro %s - %s [%s]"
+msgstr "Vlastnosti pro %s – %s [%s]"
 
-#: ../gladeui/glade-editor.c:746
+#. translators: %s(Class Title) Properties - %s (ClassName)
+#. * example: Window Properties - GtkWindow
+#.
+#: ../gladeui/glade-editor.c:321
+#, c-format
+msgid "%s Properties - %s"
+msgstr "Vlastnosti pro %s – %s"
+
+#: ../gladeui/glade-editor.c:761
 #, c-format
 msgid "Create a %s"
 msgstr "Vytváření %s"
 
-#: ../gladeui/glade-editor.c:754
+#: ../gladeui/glade-editor.c:769
 msgid "Crea_te"
 msgstr "Vytvoři_t"
 
-#: ../gladeui/glade-editor.c:862
+#: ../gladeui/glade-editor.c:877
 msgid "Reset"
 msgstr "Resetovat"
 
-#: ../gladeui/glade-editor.c:873 ../gladeui/glade-property-label.c:119
+#: ../gladeui/glade-editor.c:888 ../gladeui/glade-property-label.c:119
 msgid "Property"
 msgstr "Vlastnost"
 
-#: ../gladeui/glade-editor.c:912
+#: ../gladeui/glade-editor.c:927
 msgid "Common"
 msgstr "Běžné"
 
-#: ../gladeui/glade-editor.c:920 ../gladeui/glade-editor.ui.h:5
+#: ../gladeui/glade-editor.c:935 ../gladeui/glade-editor.ui.h:5
 msgid "Accessibility"
 msgstr "Zpřístupnění"
 
-#: ../gladeui/glade-editor.c:953
+#: ../gladeui/glade-editor.c:968
 msgid "(default)"
 msgstr "(výchozí)"
 
-#: ../gladeui/glade-editor.c:968
+#: ../gladeui/glade-editor.c:983
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 "Vyberte vlastnosti, které chcete nastavit zpět na jejich výchozí hodnoty"
 
-#: ../gladeui/glade-editor.c:1102
+#: ../gladeui/glade-editor.c:1117
 msgid "Reset Widget Properties"
 msgstr "Nastavit vlastnosti widgetu na počáteční hodnoty"
 
-#: ../gladeui/glade-editor.c:1107 ../gladeui/glade-editor-property.c:1688
-#: ../gladeui/glade-editor-property.c:1995
-#: ../gladeui/glade-editor-property.c:3133
-#: ../gladeui/glade-editor-property.c:3246
-#: ../gladeui/glade-editor-property.c:3262
-#: ../gladeui/glade-editor-property.c:3572 ../plugins/gtk+/glade-accels.c:526
+#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1724
+#: ../gladeui/glade-editor-property.c:2031
+#: ../gladeui/glade-editor-property.c:3172
+#: ../gladeui/glade-editor-property.c:3285
+#: ../gladeui/glade-editor-property.c:3301
+#: ../gladeui/glade-editor-property.c:3620 ../plugins/gtk+/glade-accels.c:526
 #: ../plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_Budiž"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1119
+#: ../gladeui/glade-editor.c:1134
 msgid "_Properties:"
 msgstr "_Vlastnosti:"
 
-#: ../gladeui/glade-editor.c:1148
+#: ../gladeui/glade-editor.c:1163
 msgid "_Select All"
 msgstr "Vybrat _vše"
 
-#: ../gladeui/glade-editor.c:1156
+#: ../gladeui/glade-editor.c:1171
 msgid "_Unselect All"
 msgstr "_Zrušit výběr všeho"
 
 #. Description
-#: ../gladeui/glade-editor.c:1166
+#: ../gladeui/glade-editor.c:1181
 msgid "Property _Description:"
 msgstr "P_opis vlastnosti:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1282
+#: ../gladeui/glade-editor.c:1283
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - Vlastnosti %s"
@@ -2012,45 +2027,45 @@ msgstr "Vlastní text"
 msgid "Custom Text to display in the property label"
 msgstr "Vlastní text pro zobrazení v popisku vlastnosti"
 
-#: ../gladeui/glade-editor-property.c:1317
+#: ../gladeui/glade-editor-property.c:1353
 msgid "Select Fields"
 msgstr "Výběr polí"
 
-#: ../gladeui/glade-editor-property.c:1320
+#: ../gladeui/glade-editor-property.c:1356
 msgid "_Close"
 msgstr "_Zavřít"
 
-#: ../gladeui/glade-editor-property.c:1333
+#: ../gladeui/glade-editor-property.c:1369
 msgid "_Select individual fields:"
 msgstr "_Označte jednotlivá pole:"
 
-#: ../gladeui/glade-editor-property.c:1683
+#: ../gladeui/glade-editor-property.c:1719
 msgid "Select Named Icon"
 msgstr "Výběr pojmenované ikony"
 
-#: ../gladeui/glade-editor-property.c:1989
+#: ../gladeui/glade-editor-property.c:2025
 msgid "Edit Text"
 msgstr "Úprava textu"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:2012
+#: ../gladeui/glade-editor-property.c:2048
 msgid "_Text:"
 msgstr "_Text:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:2048
+#: ../gladeui/glade-editor-property.c:2084
 msgid "T_ranslatable"
 msgstr "_Přeložitelný"
 
-#: ../gladeui/glade-editor-property.c:2054 ../gladeui/glade-property.c:680
+#: ../gladeui/glade-editor-property.c:2090 ../gladeui/glade-property.c:680
 msgid "Whether this property is translatable"
 msgstr "Zda se má tato vlastnost překládat"
 
-#: ../gladeui/glade-editor-property.c:2062
+#: ../gladeui/glade-editor-property.c:2098
 msgid "Conte_xt for translation:"
 msgstr "Konte_xt pro překlad:"
 
-#: ../gladeui/glade-editor-property.c:2068
+#: ../gladeui/glade-editor-property.c:2104
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -2059,75 +2074,75 @@ msgstr ""
 "Pro krátké a nejednoznačné řetězce: zadejte zde slovo, které odliší význam "
 "tohoto řetězce od významu dalšího výskytu téhož řetězce"
 
-#: ../gladeui/glade-editor-property.c:2100
+#: ../gladeui/glade-editor-property.c:2136
 msgid "Co_mments for translators:"
 msgstr "Pozná_mky pro překladatele:"
 
-#: ../gladeui/glade-editor-property.c:2189
+#: ../gladeui/glade-editor-property.c:2225
 msgid "Select a file from the project resource directory"
 msgstr "Vyberte soubor ze složky s prostředky projektu"
 
-#: ../gladeui/glade-editor-property.c:2194 ../gladeui/glade-utils.c:486
+#: ../gladeui/glade-editor-property.c:2230 ../gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Otevřít"
 
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:3051
-#: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1361
+#: ../gladeui/glade-editor-property.c:3090
+#: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Name"
 msgstr "Název"
 
-#: ../gladeui/glade-editor-property.c:3060 ../gladeui/glade-property.c:647
+#: ../gladeui/glade-editor-property.c:3099 ../gladeui/glade-property.c:647
 msgid "Class"
 msgstr "Třída"
 
-#: ../gladeui/glade-editor-property.c:3080
+#: ../gladeui/glade-editor-property.c:3119
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Výběr objektu typu %s bez rodičů v tomto projektu"
 
-#: ../gladeui/glade-editor-property.c:3082
+#: ../gladeui/glade-editor-property.c:3121
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Výběr objektu typu %s v tomto projektu"
 
-#: ../gladeui/glade-editor-property.c:3102
+#: ../gladeui/glade-editor-property.c:3141
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Výběr objektu %s bez rodičů v tomto projektu"
 
-#: ../gladeui/glade-editor-property.c:3104
+#: ../gladeui/glade-editor-property.c:3143
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Výběr objektu %s v tomto projektu"
 
-#: ../gladeui/glade-editor-property.c:3132
-#: ../gladeui/glade-editor-property.c:3244
-#: ../gladeui/glade-editor-property.c:3261
-#: ../gladeui/glade-editor-property.c:3570 ../plugins/gtk+/glade-accels.c:524
+#: ../gladeui/glade-editor-property.c:3171
+#: ../gladeui/glade-editor-property.c:3283
+#: ../gladeui/glade-editor-property.c:3300
+#: ../gladeui/glade-editor-property.c:3618 ../plugins/gtk+/glade-accels.c:524
 #: ../plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "V_ymazat"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3154
-#: ../gladeui/glade-editor-property.c:3284
+#: ../gladeui/glade-editor-property.c:3193
+#: ../gladeui/glade-editor-property.c:3323
 msgid "O_bjects:"
 msgstr "O_bjekty:"
 
-#: ../gladeui/glade-editor-property.c:3245
+#: ../gladeui/glade-editor-property.c:3284
 msgid "_New"
 msgstr "_Nový"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3391
+#: ../gladeui/glade-editor-property.c:3433
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Vytvoření %s pro vlastnost %s widgetu %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3588
+#: ../gladeui/glade-editor-property.c:3636
 msgid "Objects:"
 msgstr "Objekty:"
 
@@ -2139,41 +2154,36 @@ msgstr "Typ stránky"
 msgid "The editor page type to create this GladeEditorTable for"
 msgstr "Typ stránky editoru pro vytvoření tohoto GladeEditorTable"
 
-#: ../gladeui/glade-editor-table.c:285
+#: ../gladeui/glade-editor-table.c:305
 msgid "Class Name:"
 msgstr "Název třídy:"
 
-#. translators: The unique identifier of an object in the project
-#: ../gladeui/glade-editor-table.c:285 ../gladeui/glade-editor-table.c:554
-msgid "ID:"
-msgstr "ID:"
-
-#: ../gladeui/glade-editor-table.c:551
+#: ../gladeui/glade-editor-table.c:575
 msgid "The object's unique identifier"
 msgstr "Jedinečný identifikátor objektu"
 
-#: ../gladeui/glade-editor-table.c:563 ../gladeui/glade-widget.c:1455
+#: ../gladeui/glade-editor-table.c:587 ../gladeui/glade-widget.c:1435
 msgid "Composite"
 msgstr "Složený"
 
-#: ../gladeui/glade-editor-table.c:565
+#: ../gladeui/glade-editor-table.c:589
 msgid "Whether this widget is a composite template"
 msgstr "Zda je widget složenou šablonou"
 
-#: ../gladeui/glade-inspector.c:195 ../gladeui/glade-project-properties.c:168
-#: ../gladeui/glade-widget.c:1390
+#: ../gladeui/glade-inspector.c:196 ../gladeui/glade-project-properties.c:168
+#: ../gladeui/glade-widget.c:1370
 msgid "Project"
 msgstr "Projekt"
 
-#: ../gladeui/glade-inspector.c:196
+#: ../gladeui/glade-inspector.c:197
 msgid "The project being inspected"
 msgstr "Projekt, který je prohlížen"
 
-#: ../gladeui/glade-inspector.c:583
+#: ../gladeui/glade-inspector.c:578
 msgid " < Search Widgets >"
 msgstr " < hledat widgety >"
 
-#: ../gladeui/glade-inspector.c:622
+#: ../gladeui/glade-inspector.c:617
 msgid "Expand all"
 msgstr "Rozbalit vše"
 
@@ -2278,7 +2288,7 @@ msgstr "Objekt %s nebyl nalezen v definici uživatelského rozhraní.\n"
 msgid "Object is not previewable.\n"
 msgstr "K objektu nelze vytvořit náhled.\n"
 
-#: ../gladeui/glade-previewer.c:145 ../gladeui/glade-previewer.c:486
+#: ../gladeui/glade-previewer.c:145 ../gladeui/glade-previewer.c:489
 #, c-format
 msgid "Couldn't load builder definition: %s"
 msgstr "Nelze načíst definici pro sestavení: %s"
@@ -2288,68 +2298,74 @@ msgstr "Nelze načíst definici pro sestavení: %s"
 msgid "Error: %s.\n"
 msgstr "Chyba: %s.\n"
 
-#: ../gladeui/glade-previewer.c:228
-#, c-format
-msgid "Previewing %s (%s)"
-msgstr "Zobrazuje se náhled projektu %s (%s)"
+#: ../gladeui/glade-previewer.c:219 ../gladeui/glade-widget.c:2742
+#: ../plugins/gtk+/glade-gtk-widget.c:1018
+#: ../plugins/gtk+/glade-gtk-widget.c:1081
+msgid "(unnamed)"
+msgstr "(bez názvu)"
 
-#: ../gladeui/glade-previewer.c:230 ../gladeui/glade-previewer.c:234
+#: ../gladeui/glade-previewer.c:231
+#, c-format
+msgid "Previewing %s - %s"
+msgstr "Náhled projektu %s – %s"
+
+#: ../gladeui/glade-previewer.c:233 ../gladeui/glade-previewer.c:237
 #, c-format
 msgid "Previewing %s"
 msgstr "Zobrazuje se náhled projektu %s"
 
-#: ../gladeui/glade-previewer.c:238
+#: ../gladeui/glade-previewer.c:241
 msgid "Glade Preview"
 msgstr "Náhled Glade"
 
-#: ../gladeui/glade-previewer.c:263
+#: ../gladeui/glade-previewer.c:266
 #, c-format
 msgid "Broken pipe!\n"
 msgstr "Přerušena roura!\n"
 
-#: ../gladeui/glade-previewer.c:388
+#: ../gladeui/glade-previewer.c:391
 msgid "Name of the file to preview"
 msgstr "Název souboru k náhledu"
 
-#: ../gladeui/glade-previewer.c:389
+#: ../gladeui/glade-previewer.c:392
 msgid "Creates dummy widget class to load a template"
 msgstr "Vytvořit falešnou třídu widgetu pro načtení šablony"
 
-#: ../gladeui/glade-previewer.c:390
+#: ../gladeui/glade-previewer.c:393
 msgid "Name of the toplevel to preview"
 msgstr "Název nejvyšší úrovně k náhledu"
 
-#: ../gladeui/glade-previewer.c:391
+#: ../gladeui/glade-previewer.c:394
 msgid "File name to save a screenshot"
 msgstr "Název souboru pro uložení snímku obrazovky"
 
-#: ../gladeui/glade-previewer.c:392
+#: ../gladeui/glade-previewer.c:395
 msgid "CSS file to use"
 msgstr "Soubor CSS, který se má použít"
 
-#: ../gladeui/glade-previewer.c:393
+#: ../gladeui/glade-previewer.c:396
 msgid "Listen standard input"
 msgstr "Naslouchat na standardním vstupu"
 
-#: ../gladeui/glade-previewer.c:394
+#: ../gladeui/glade-previewer.c:397
 msgid "make a slideshow of every toplevel widget by adding them in a GtkStack"
 msgstr ""
 "Vytvořit promítání ze všech widgetů nejvyšší úrovně jejich přidáním do "
 "GtkStack"
 
-#: ../gladeui/glade-previewer.c:395
+#: ../gladeui/glade-previewer.c:398
 msgid "Print handlers signature on invocation"
 msgstr "Vypsat identifikaci obslužných rutin při jejich vyvolání"
 
-#: ../gladeui/glade-previewer.c:396
+#: ../gladeui/glade-previewer.c:399
 msgid "Display previewer version"
 msgstr "Zobrazit verzi zobrazovače náhledu"
 
-#: ../gladeui/glade-previewer.c:415
+#: ../gladeui/glade-previewer.c:418
 msgid "- previews a glade UI definition"
 msgstr "– zobrazit náhled definice glade uživatelského rozhraní"
 
-#: ../gladeui/glade-previewer.c:421
+#: ../gladeui/glade-previewer.c:424
 #, c-format
 msgid ""
 "%s\n"
@@ -2359,7 +2375,7 @@ msgstr ""
 "Spuštěním „%s --help“ si zobrazíte úplný seznam dostupných přepínačů "
 "příkazové řádky.\n"
 
-#: ../gladeui/glade-previewer.c:438
+#: ../gladeui/glade-previewer.c:441
 #, c-format
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "Musíte zadat --listen nebo --filename.\n"
@@ -2413,113 +2429,113 @@ msgstr "Spustit poslední"
 msgid "Run Cleanup"
 msgstr "Spusti vyčištění"
 
-#: ../gladeui/glade-project.c:957
+#: ../gladeui/glade-project.c:958
 msgid "Whether project has been modified since it was last saved"
 msgstr "Zda byl projekt změněn od doby, kdy byl naposledy uložen"
 
-#: ../gladeui/glade-project.c:963
+#: ../gladeui/glade-project.c:964
 msgid "Has Selection"
 msgstr "Je něco vybráno"
 
-#: ../gladeui/glade-project.c:964
+#: ../gladeui/glade-project.c:965
 msgid "Whether project has a selection"
 msgstr "Zda je v projektu něco vybráno"
 
-#: ../gladeui/glade-project.c:970
+#: ../gladeui/glade-project.c:971
 msgid "Path"
 msgstr "Cesta"
 
-#: ../gladeui/glade-project.c:971
+#: ../gladeui/glade-project.c:972
 msgid "The filesystem path of the project"
 msgstr "Cesta k projektu v souborovém systému "
 
-#: ../gladeui/glade-project.c:977
+#: ../gladeui/glade-project.c:978
 msgid "Read Only"
 msgstr "Pouze ke čtení"
 
-#: ../gladeui/glade-project.c:978
+#: ../gladeui/glade-project.c:979
 msgid "Whether project is read-only"
 msgstr "Zda je projekt pouze ke čtení"
 
-#: ../gladeui/glade-project.c:984
+#: ../gladeui/glade-project.c:985
 msgid "Add Item"
 msgstr "Přidávaná položka"
 
-#: ../gladeui/glade-project.c:985
+#: ../gladeui/glade-project.c:986
 msgid "The current item to add to the project"
 msgstr "Aktuální položka, která se má přidat do projektu"
 
-#: ../gladeui/glade-project.c:991
+#: ../gladeui/glade-project.c:992
 msgid "Pointer Mode"
 msgstr "Režim ukazatele"
 
-#: ../gladeui/glade-project.c:992
+#: ../gladeui/glade-project.c:993
 msgid "The currently effective GladePointerMode"
 msgstr "Aktuálně platný režim GladePointerMode"
 
-#: ../gladeui/glade-project.c:999
+#: ../gladeui/glade-project.c:1000
 msgid "Translation Domain"
 msgstr "Doména překladu"
 
-#: ../gladeui/glade-project.c:1000
+#: ../gladeui/glade-project.c:1001
 msgid "The project translation domain"
 msgstr "Doména jazykového překladu projektu"
 
-#: ../gladeui/glade-project.c:1006 ../gladeui/glade-widget.c:1413
+#: ../gladeui/glade-project.c:1007 ../gladeui/glade-widget.c:1393
 msgid "Template"
 msgstr "Šablona"
 
-#: ../gladeui/glade-project.c:1007
+#: ../gladeui/glade-project.c:1008
 msgid "The project's template widget, if any"
 msgstr "Widget sloužící jako šablona projektu (podkud existuje)"
 
-#: ../gladeui/glade-project.c:1013
+#: ../gladeui/glade-project.c:1014
 msgid "Resource Path"
 msgstr "Cesta k prostředku"
 
-#: ../gladeui/glade-project.c:1014
+#: ../gladeui/glade-project.c:1015
 msgid "Path to load images and resources in Glade's runtime"
 msgstr "Cesta pro načtení obrázků a prostředků v běhovém prostředí Glade"
 
-#: ../gladeui/glade-project.c:1020 ../gladeui/glade-project-properties.ui.h:29
+#: ../gladeui/glade-project.c:1021 ../gladeui/glade-project-properties.ui.h:29
 msgid "License"
 msgstr "Licence"
 
-#: ../gladeui/glade-project.c:1021
+#: ../gladeui/glade-project.c:1022
 msgid "License for this project, it will be added as a document level comment."
 msgstr ""
 "Licence pro tento projekt, bude přidána jako komentář dokumentační úrovně."
 
-#: ../gladeui/glade-project.c:1027
+#: ../gladeui/glade-project.c:1028
 msgid "CSS Provider Path"
 msgstr "Cesta k poskytovateli CSS"
 
-#: ../gladeui/glade-project.c:1028
+#: ../gladeui/glade-project.c:1029
 msgid "Path to use as the custom CSS provider for this project."
 msgstr "Cesta použitá jako vlastní poskytovatel CSS pro tento projekt."
 
-#: ../gladeui/glade-project.c:1125
+#: ../gladeui/glade-project.c:1126
 #, c-format
 msgid "(internal %s)"
 msgstr "(interní %s)"
 
-#: ../gladeui/glade-project.c:1130
+#: ../gladeui/glade-project.c:1131
 #, c-format
 msgid "(%s child)"
 msgstr "(potomek %s)"
 
-#: ../gladeui/glade-project.c:1132
+#: ../gladeui/glade-project.c:1133
 #, c-format
 msgid "(template)"
 msgstr "(šablona)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: ../gladeui/glade-project.c:1140
+#: ../gladeui/glade-project.c:1141
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%s widgetu %s)"
 
-#: ../gladeui/glade-project.c:1501
+#: ../gladeui/glade-project.c:1502
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -2529,26 +2545,26 @@ msgstr ""
 "Nejsou dostupné následující vyžadované katalogy: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: ../gladeui/glade-project.c:1872
+#: ../gladeui/glade-project.c:1873
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s používá Gtk+ %d.%d"
 
-#: ../gladeui/glade-project.c:1911
+#: ../gladeui/glade-project.c:1912
 msgid "Specially because there is an object that can not be build with type "
 msgstr "Zejména proto, že jeden z objektů nemůže být sestaven s typem "
 
-#: ../gladeui/glade-project.c:1916
+#: ../gladeui/glade-project.c:1917
 #, c-format
 msgid ""
 "Specially because there are %d objects that can not be build with types "
 msgstr "Zejména proto, že několik objektů (%d) nemůže být sestaveno s typy "
 
-#: ../gladeui/glade-project.c:1923
+#: ../gladeui/glade-project.c:1924
 msgid " and "
 msgstr " a "
 
-#: ../gladeui/glade-project.c:1941
+#: ../gladeui/glade-project.c:1942
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -2561,7 +2577,7 @@ msgstr ""
 "v Glade 3.8 zavržené.\n"
 "%s"
 
-#: ../gladeui/glade-project.c:2002
+#: ../gladeui/glade-project.c:2003
 #, c-format
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
@@ -2572,7 +2588,7 @@ msgstr ""
 "\n"
 "Přejete si místo toho načíst automaticky uloženou verzi?"
 
-#: ../gladeui/glade-project.c:2142
+#: ../gladeui/glade-project.c:2143
 #, c-format
 msgid "%s document properties"
 msgstr "Vlastnosti dokumentu %s"
@@ -2585,7 +2601,7 @@ msgstr "Vlastnosti dokumentu %s"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2902
+#: ../gladeui/glade-project.c:2913
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2593,24 +2609,24 @@ msgstr ""
 "%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2906
+#: ../gladeui/glade-project.c:2917
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Třída objektu „%s“ byla zavedena v %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2908
+#: ../gladeui/glade-project.c:2919
 msgid "This widget is deprecated"
 msgstr "Tento widget je zavržený"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2911
+#: ../gladeui/glade-project.c:2922
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
 msgstr "[%s] Třída objektu „%s“ z %s %d.%d je zavržená\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2916
+#: ../gladeui/glade-project.c:2927
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2618,32 +2634,32 @@ msgstr ""
 "%s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2920
+#: ../gladeui/glade-project.c:2931
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Vlastnost „%s“ objektové třídy „%s“ byla zavedena v %s %d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2924
+#: ../gladeui/glade-project.c:2935
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 "[%s] Vlastnost balení „%s“ objektové třídy „%s“ byla zavedena v %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2927
+#: ../gladeui/glade-project.c:2938
 msgid "This property is deprecated"
 msgstr "Tato vlastnost je zavržená"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2930
+#: ../gladeui/glade-project.c:2941
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' is deprecated"
 msgstr "[%s] Vlastnost „%s“ objektové třídy „%s“ byla zavržena"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2934
+#: ../gladeui/glade-project.c:2945
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2651,81 +2667,81 @@ msgstr ""
 "%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2938
+#: ../gladeui/glade-project.c:2949
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Signál „%s“ třídy objektu „%s“ byl zaveden v %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2941
+#: ../gladeui/glade-project.c:2952
 msgid "This signal is deprecated"
 msgstr "Tento signál je zavržený"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2944
+#: ../gladeui/glade-project.c:2955
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' is deprecated"
 msgstr "[%s] Signál „%s“ třídy objektu „%s“ byl zavržen"
 
-#: ../gladeui/glade-project.c:3240
+#: ../gladeui/glade-project.c:3251
 msgid "Details"
 msgstr "Detaily"
 
-#: ../gladeui/glade-project.c:3255
+#: ../gladeui/glade-project.c:3266
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "Projekt „%s“ obsahuje chyby. Přesto uložit?"
 
-#: ../gladeui/glade-project.c:3256
+#: ../gladeui/glade-project.c:3267
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr "Projekt „%s“ obsahuje zavržené widgety a/nebo nesprávné verze."
 
-#: ../gladeui/glade-project.c:3281
+#: ../gladeui/glade-project.c:3292
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr "Objekt %s je šablona třídy, ale to není v gtk+ %d.%d podporováno"
 
-#: ../gladeui/glade-project.c:3296
+#: ../gladeui/glade-project.c:3307
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Objekt %s má nerozpoznaný typ %s\n"
 
-#: ../gladeui/glade-project.c:4765
+#: ../gladeui/glade-project.c:4777
 #, c-format
 msgid "Unsaved %i"
 msgstr "Neuložený %i"
 
-#: ../gladeui/glade-project.c:5064 ../gladeui/glade-project.c:5115
-#: ../gladeui/glade-project.c:5272
+#: ../gladeui/glade-project.c:5076 ../gladeui/glade-project.c:5127
+#: ../gladeui/glade-project.c:5284
 msgid "No widget selected."
 msgstr "Není vybrán žádný widget."
 
-#: ../gladeui/glade-project.c:5080
+#: ../gladeui/glade-project.c:5092
 msgid "Unable to copy unrecognized widget type."
 msgstr "Nelze kopírovat widget nerozpoznaného typu"
 
-#: ../gladeui/glade-project.c:5112
+#: ../gladeui/glade-project.c:5124
 msgid "Unable to cut unrecognized widget type"
 msgstr "Nelze vyjmout widget nerozpoznaného typu"
 
-#: ../gladeui/glade-project.c:5164
+#: ../gladeui/glade-project.c:5176
 msgid "Unable to paste to the selected parent"
 msgstr "Do vybraného rodiče není možné vkládat"
 
-#: ../gladeui/glade-project.c:5175
+#: ../gladeui/glade-project.c:5187
 msgid "Unable to paste to multiple widgets"
 msgstr "Není možné vkládat do více widgetů"
 
-#: ../gladeui/glade-project.c:5185
+#: ../gladeui/glade-project.c:5197
 msgid "No widget on the clipboard"
 msgstr "Ve schránce není žádný widget"
 
-#: ../gladeui/glade-project.c:5230
+#: ../gladeui/glade-project.c:5242
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 "Do tohoto kontejneru může být v jednom okamžiku vložen jen jeden widget"
 
-#: ../gladeui/glade-project.c:5242
+#: ../gladeui/glade-project.c:5254
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Nedostatečné množství vyhrazených míst v cílovém kontejneru"
 
@@ -2884,7 +2900,7 @@ msgstr "Uživatelská data"
 msgid "The user data for this signal"
 msgstr "Uživatelská data pro tento signál"
 
-#: ../gladeui/glade-signal.c:201 ../gladeui/glade-widget.c:1445
+#: ../gladeui/glade-signal.c:201 ../gladeui/glade-widget.c:1425
 msgid "Support Warning"
 msgstr "Varování o podpoře"
 
@@ -2983,7 +2999,7 @@ msgstr "Ukazatel na strukturu GladeWidgetActionClass"
 msgid "Whether this action is sensitive"
 msgstr "Zda je tato akce citlivá"
 
-#: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1450
+#: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1430
 #: ../plugins/gtk+/gtk+.xml.in.h:914
 msgid "Visible"
 msgstr "Viditelnost"
@@ -3071,139 +3087,139 @@ msgstr "Kurzor"
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Kurzor pro vkládání widgetů v uživatelském rozhraní"
 
-#: ../gladeui/glade-widget.c:1362
+#: ../gladeui/glade-widget.c:1342
 msgid "The name of the widget"
 msgstr "Název widgetu"
 
-#: ../gladeui/glade-widget.c:1366
+#: ../gladeui/glade-widget.c:1346
 msgid "Internal name"
 msgstr "Interní název"
 
-#: ../gladeui/glade-widget.c:1367
+#: ../gladeui/glade-widget.c:1347
 msgid "The internal name of the widget"
 msgstr "Interní název widgetu"
 
-#: ../gladeui/glade-widget.c:1371
+#: ../gladeui/glade-widget.c:1351
 msgid "Anarchist"
 msgstr "Anarchistický"
 
-#: ../gladeui/glade-widget.c:1372
+#: ../gladeui/glade-widget.c:1352
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "Zda je složený potomek zděděným potomkem nebo anarchistickým potomkem"
 
-#: ../gladeui/glade-widget.c:1378
+#: ../gladeui/glade-widget.c:1358
 msgid "Object"
 msgstr "Objekt"
 
-#: ../gladeui/glade-widget.c:1379
+#: ../gladeui/glade-widget.c:1359
 msgid "The object associated"
 msgstr "Přidružený objekt"
 
-#: ../gladeui/glade-widget.c:1384
+#: ../gladeui/glade-widget.c:1364
 msgid "Adaptor"
 msgstr "Adaptér"
 
-#: ../gladeui/glade-widget.c:1385
+#: ../gladeui/glade-widget.c:1365
 msgid "The class adaptor for the associated widget"
 msgstr "Adaptér třídy pro přidružený widget"
 
-#: ../gladeui/glade-widget.c:1391
+#: ../gladeui/glade-widget.c:1371
 msgid "The glade project that this widget belongs to"
 msgstr "Projekt glade, ke kterému tento widget náleží"
 
-#: ../gladeui/glade-widget.c:1398
+#: ../gladeui/glade-widget.c:1378
 msgid "A list of GladeProperties"
 msgstr "Seznam GladeProperties"
 
 #. GtkResizeMode enumeration value
-#: ../gladeui/glade-widget.c:1402 ../plugins/gtk+/gtk+.xml.in.h:365
+#: ../gladeui/glade-widget.c:1382 ../plugins/gtk+/gtk+.xml.in.h:365
 msgid "Parent"
 msgstr "Rodič"
 
-#: ../gladeui/glade-widget.c:1403
+#: ../gladeui/glade-widget.c:1383
 msgid "A pointer to the parenting GladeWidget"
 msgstr "Ukazatel na rodičovský GladeWidget"
 
-#: ../gladeui/glade-widget.c:1408
+#: ../gladeui/glade-widget.c:1388
 msgid "Internal Name"
 msgstr "Interní název"
 
-#: ../gladeui/glade-widget.c:1409
+#: ../gladeui/glade-widget.c:1389
 msgid "A generic name prefix for internal widgets"
 msgstr "Obecná předpona názvu pro interní widgety"
 
-#: ../gladeui/glade-widget.c:1414
+#: ../gladeui/glade-widget.c:1394
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Šablona GladeWidget, ze které vycházejí nové widgety"
 
-#: ../gladeui/glade-widget.c:1419
+#: ../gladeui/glade-widget.c:1399
 msgid "Exact Template"
 msgstr "Přesná šablona"
 
-#: ../gladeui/glade-widget.c:1421
+#: ../gladeui/glade-widget.c:1401
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr "Zda vytváříme přesnou kopii při použití šablony"
 
-#: ../gladeui/glade-widget.c:1425
+#: ../gladeui/glade-widget.c:1405
 msgid "Reason"
 msgstr "Důvod"
 
-#: ../gladeui/glade-widget.c:1426
+#: ../gladeui/glade-widget.c:1406
 msgid "A GladeCreateReason for this creation"
 msgstr "GladeCreateReason pro toto vytvoření"
 
-#: ../gladeui/glade-widget.c:1433
+#: ../gladeui/glade-widget.c:1413
 msgid "Toplevel Width"
 msgstr "Šířka nejvyšší úrovně"
 
-#: ../gladeui/glade-widget.c:1434
+#: ../gladeui/glade-widget.c:1414
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "Šířka widgetu, když je nejvyšší úrovní GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1439
+#: ../gladeui/glade-widget.c:1419
 msgid "Toplevel Height"
 msgstr "Výška nejvyšší úrovně"
 
-#: ../gladeui/glade-widget.c:1440
+#: ../gladeui/glade-widget.c:1420
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "Výška widgetu, když je nejvyšší úrovní GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1446
+#: ../gladeui/glade-widget.c:1426
 msgid "A warning string about version mismatches"
 msgstr "Varovný řetězec ohledně neodpovídajících verzí"
 
-#: ../gladeui/glade-widget.c:1451
+#: ../gladeui/glade-widget.c:1431
 msgid "Wether the widget is visible or not"
 msgstr "Zda je widget viditelný nebo ne"
 
-#: ../gladeui/glade-widget.c:1456
+#: ../gladeui/glade-widget.c:1436
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Zda je tento widget šablona pro složený widget"
 
-#: ../gladeui/glade-widget.c:4762
+#: ../gladeui/glade-widget.c:4803
 #, c-format
 msgid "Template classes are not supported in gtk+ %d.%d"
 msgstr "Šablony tříd nejsou v gtk+ %d.%d podporovány"
 
-#: ../gladeui/glade-widget.c:4771
+#: ../gladeui/glade-widget.c:4812
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "Objekt je nerozpoznaného typu %s"
 
-#: ../gladeui/glade-widget.c:4837
+#: ../gladeui/glade-widget.c:4878
 msgid "Property has versioning problems: "
 msgstr "Vlastnost má problém s verzí:"
 
-#: ../gladeui/glade-widget.c:4839
+#: ../gladeui/glade-widget.c:4880
 msgid "Some properties have versioning problems: "
 msgstr "Některé vlastnosti mají problém s verzí:"
 
-#: ../gladeui/glade-widget.c:4859
+#: ../gladeui/glade-widget.c:4900
 msgid "Signal has versioning problems: "
 msgstr "Signál má problém s verzí:"
 
-#: ../gladeui/glade-widget.c:4861
+#: ../gladeui/glade-widget.c:4902
 msgid "Some signals have versioning problems: "
 msgstr "Některé signály mají problém s verzí:"
 
@@ -3940,6 +3956,11 @@ msgstr ""
 msgid "This property only applies to named icons"
 msgstr "Tato vlastnost se používá jen u pojmenovaných ikon"
 
+#: ../plugins/gtk+/glade-gtk-label.c:257
+msgid "This property only applies if ellipsize and wrapping are enabled"
+msgstr ""
+"Tato vlastnost se použije, jen když jsou povolené výpustky a zalamování"
+
 #: ../plugins/gtk+/glade-gtk-menu-item.c:53
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:173
 msgid "Edit Menu Bar"
@@ -4181,18 +4202,18 @@ msgstr "Odstranění rodiče widgetu „%s“"
 msgid "Adding parent %s for %s"
 msgstr "Přidání rodiče „%s“ pro „%s“"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1011
+#: ../plugins/gtk+/glade-gtk-widget.c:1030
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Přidání „%s“ do skupinové velikosti „%s“"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1015
+#: ../plugins/gtk+/glade-gtk-widget.c:1034
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Přidání „%s“ do nové skupinové velikosti"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk-widget.c:1073
+#: ../plugins/gtk+/glade-gtk-widget.c:1101
 msgid "New Size Group"
 msgstr "Nová skupinová velikost"
 
@@ -4360,28 +4381,24 @@ msgid "Add and remove rows:"
 msgstr "Přidat a odebrat řádky:"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:158
-#, fuzzy, c-format
-#| msgid "Setting %s to use a stock button"
+#, c-format
 msgid "Setting %s to have a start action"
-msgstr "Nastavení %s, aby použil standardní tlačítko"
+msgstr "Nastavení %s, aby měl počáteční akci"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:161
-#, fuzzy, c-format
-#| msgid "Setting %s to use a named icon"
+#, c-format
 msgid "Setting %s to have an end action"
-msgstr "Nastavení %s, aby používal pojmenovanou ikonu"
+msgstr "Nastavení %s, aby měl koncovou akci"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:164
-#, fuzzy, c-format
-#| msgid "Setting %s to not use a center child"
+#, c-format
 msgid "Setting %s to not have a start action"
-msgstr "Nastavení %s, aby nepoužíval vystředěného potomka"
+msgstr "Nastavení %s, aby neměl počáteční akci"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:167
-#, fuzzy, c-format
-#| msgid "Setting %s to not use a center child"
+#, c-format
 msgid "Setting %s to not have an end action"
-msgstr "Nastavení %s, aby nepoužíval vystředěného potomka"
+msgstr "Nastavení %s, aby neměl koncovou akci"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:155
@@ -5057,7 +5074,7 @@ msgstr "Stromová tabulka"
 msgid "Unknown"
 msgstr "Neznámá"
 
-#. AtkRole enumeration value
+#. GtkPopoverConstraint enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Window"
 msgstr "Okno"
@@ -5304,15 +5321,13 @@ msgstr "Obecný objekt"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:318
-#, fuzzy
-#| msgid "the last action"
 msgid "Mathematical fraction"
-msgstr "poslední akce"
+msgstr "Matematický zlomek"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:320
 msgid "A radical expression (in math)"
-msgstr ""
+msgstr "Odmocnina"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:322
@@ -6380,16 +6395,12 @@ msgid "Number of pages"
 msgstr "Počet stránek"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:668
-#, fuzzy
-#| msgid "Related Action"
 msgid "Start Action"
-msgstr "Odpovídající akce"
+msgstr "Počáteční akce"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:669
-#, fuzzy
-#| msgid "Action"
 msgid "End Action"
-msgstr "Akce"
+msgstr "Koncová akce"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:670
 msgid "Set the currently active page to edit, this property will not be saved"
@@ -6562,10 +6573,8 @@ msgid "Flow Box"
 msgstr "Plovoucí box"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:718
-#, fuzzy
-#| msgid "Add child %s"
 msgid "Add Child"
-msgstr "Přidat potomka %s"
+msgstr "Přidat potomka"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:719
 msgid "The position of the child in the flowbox"
@@ -6932,10 +6941,8 @@ msgid "Number of submenus"
 msgstr "Počet podnabídek"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:850
-#, fuzzy
-#| msgid "Edit Menu"
 msgid "Edit menu"
-msgstr "Úprava nabídky"
+msgstr "Úpravit nabídku"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:851
 msgid "The number of submenus in the popover menu"
@@ -6949,10 +6956,8 @@ msgstr ""
 "neukládá"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:853
-#, fuzzy
-#| msgid "Tool Button"
 msgid "Model Button"
-msgstr "Nástrojové tlačítko"
+msgstr "Tlačítko s modelem"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:854
 msgid "Link Button"
@@ -7428,7 +7433,7 @@ msgstr "Třetí tlačítko myši"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1003
-msgid "Forth Mouse Button"
+msgid "Fourth Mouse Button"
 msgstr "Čtvrté tlačítko myši"
 
 #. GdkModifierType enumeration value
@@ -8000,12 +8005,16 @@ msgid "Never wrap"
 msgstr "Nikdy nezalamovat"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:6
+msgid "Label Width"
+msgstr "Šířka popisku"
+
+#: ../plugins/gtk+/glade-label-editor.ui.h:7
 msgid "Automatically wrap"
 msgstr "Zlamovat automaticky"
 
-#: ../plugins/gtk+/glade-label-editor.ui.h:7
-msgid "Label Width"
-msgstr "Šířka popisku"
+#: ../plugins/gtk+/glade-label-editor.ui.h:8
+msgid "Lines"
+msgstr "Řádků"
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:1
 msgid "Level Bar Attributes"
@@ -8048,10 +8057,8 @@ msgid "Padding"
 msgstr "Odsazení"
 
 #: ../plugins/gtk+/glade-model-button-editor.ui.h:1
-#, fuzzy
-#| msgid "Button Attributes"
 msgid "Model Button Attributes"
-msgstr "Atributy tlačítka"
+msgstr "Atributy tlačítka s modelem"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:1
 msgid "Notebook Attributes"
@@ -8067,16 +8074,12 @@ msgid "Tab Attributes"
 msgstr "Atributy karty"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:5
-#, fuzzy
-#| msgid "Related Action"
 msgid "Start Action:"
-msgstr "Odpovídající akce"
+msgstr "Počáteční akce:"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:6
-#, fuzzy
-#| msgid "Action"
 msgid "End Action:"
-msgstr "Akce"
+msgstr "Koncová akce:"
 
 #: ../plugins/gtk+/glade-popover-editor.ui.h:1
 msgid "Popover Attributes"
@@ -8237,6 +8240,16 @@ msgstr "Pod řádky:"
 msgid "Inside Wrap:"
 msgstr "V zalomení:"
 
+#: ../plugins/gtk+/glade-text-view-editor.ui.h:14
+#: ../plugins/gtk+/glade-widget-editor.ui.h:15
+msgid "Top:"
+msgstr "Nahoře:"
+
+#: ../plugins/gtk+/glade-text-view-editor.ui.h:15
+#: ../plugins/gtk+/glade-widget-editor.ui.h:16
+msgid "Bottom:"
+msgstr "Dole:"
+
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:3
 msgid "Text:"
 msgstr "Text:"
@@ -8268,14 +8281,6 @@ msgid ""
 msgstr ""
 "K zobrazení vysvětlivek použít „query-tooltip“\n"
 "namísto nastavení doslovné vysvětlivky"
-
-#: ../plugins/gtk+/glade-widget-editor.ui.h:15
-msgid "Top:"
-msgstr "Nahoře:"
-
-#: ../plugins/gtk+/glade-widget-editor.ui.h:16
-msgid "Bottom:"
-msgstr "Dole:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:1
 msgid "Window Attributes"
