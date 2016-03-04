@@ -4,19 +4,20 @@
 #
 # Balázs Úr <urbalazs@gmail.com>, 2014.
 # Balázs Úr <urbalazs at gmail dot com>, 2014.
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
-"POT-Creation-Date: 2014-03-04 12:06+0000\n"
-"PO-Revision-Date: 2014-03-04 20:33+0100\n"
-"Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
-"Language-Team: Hungarian <gnome-hu-list@gnome.org>\n"
+"POT-Creation-Date: 2016-03-04 07:25+0000\n"
+"PO-Revision-Date: 2016-03-04 09:04+0100\n"
+"Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
+"Language-Team: Hungarian <openscope at gmail dot com>\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 1.5\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
@@ -65,9 +66,8 @@ msgstr "<year>2002</year><year>2000</year> <holder>Michael Vance</holder>"
 
 #. (itstool) path: publisher/publishername
 #. (itstool) path: revdescription/para
-#: C/index.docbook:38 C/index.docbook:88 C/index.docbook:96
-#: C/index.docbook:104 C/index.docbook:112 C/index.docbook:120
-#: C/index.docbook:128
+#: C/index.docbook:38 C/index.docbook:88 C/index.docbook:96 C/index.docbook:104
+#: C/index.docbook:112 C/index.docbook:120 C/index.docbook:128
 msgid "GNOME Documentation Project"
 msgstr "GNOME dokumentációs projekt"
 
@@ -111,8 +111,8 @@ msgid ""
 "<revnumber>Glade Manual 3.0</revnumber> <date>5 December 2006</date> <_:"
 "revdescription-1/>"
 msgstr ""
-"<revnumber>Glade kézikönyv 3.0</revnumber> <date>2006. december 5.</date> <"
-"_:revdescription-1/>"
+"<revnumber>Glade kézikönyv 3.0</revnumber> <date>2006. december 5.</date> <_:"
+"revdescription-1/>"
 
 #. (itstool) path: revdescription/para
 #: C/index.docbook:95 C/index.docbook:103 C/index.docbook:111
@@ -125,8 +125,8 @@ msgid ""
 "<revnumber>Glade Manual 2.1;</revnumber> <date>17 June 2004</date> <_:"
 "revdescription-1/>"
 msgstr ""
-"<revnumber>Glade kézikönyv 2.1;</revnumber> <date>2004. június 17.</date> <"
-"_:revdescription-1/>"
+"<revnumber>Glade kézikönyv 2.1;</revnumber> <date>2004. június 17.</date> <_:"
+"revdescription-1/>"
 
 #. (itstool) path: revhistory/revision
 #: C/index.docbook:99
@@ -187,9 +187,8 @@ msgid ""
 "\"help\">GNOME Feedback Page</ulink>."
 msgstr ""
 "Egy hiba bejelentéséhez vagy a Glade alkalmazással, illetve ezzel a "
-"kézikönyvvel kapcsolatos javaslat tételéhez kövesse a <ulink "
-"url=\"help:gnome-feedback\" type=\"help\">GNOME visszajelzés oldal</ulink> "
-"útmutatásait."
+"kézikönyvvel kapcsolatos javaslat tételéhez kövesse a <ulink url=\"help:"
+"gnome-feedback\" type=\"help\">GNOME visszajelzés oldal</ulink> útmutatásait."
 
 #. (itstool) path: article/indexterm
 #: C/index.docbook:144
@@ -229,8 +228,8 @@ msgid ""
 msgstr ""
 "A GTK+ függvénykönyvtár egy bővíthető, felhasználói felületelemeket "
 "tartalmazó gyűjteményt biztosít. Ilyen elemek például a szövegdobozok, "
-"üzenetcímkék, numerikus beviteli mezők, jelölőnégyzetek és menük Ezeket <"
-"emphasis>felületi elemeknek</emphasis> is nevezzük. A Glade-et arra "
+"üzenetcímkék, numerikus beviteli mezők, jelölőnégyzetek és menük Ezeket "
+"<emphasis>felületi elemeknek</emphasis> is nevezzük. A Glade-et arra "
 "használhatja, hogy a felületi elemeket elrendezze, és beállítsa "
 "tulajdonságaikat. Emellett kapcsolatokat is megadhat a felületi elemek és a "
 "forráskód között."
@@ -275,8 +274,8 @@ msgid ""
 "Choose <menuchoice> <guisubmenu>Programming</guisubmenu> <guimenuitem>Glade "
 "Interface Designer</guimenuitem> </menuchoice>."
 msgstr ""
-"Válassza a <menuchoice> <guisubmenu>Programozás</guisubmenu> <guimenuitem>"
-"Glade felülettervezőt</guimenuitem> </menuchoice>."
+"Válassza a <menuchoice> <guisubmenu>Programozás</guisubmenu> "
+"<guimenuitem>Glade felülettervezőt</guimenuitem> </menuchoice>."
 
 #. (itstool) path: varlistentry/term
 #: C/index.docbook:189
@@ -285,13 +284,16 @@ msgstr "Parancssor"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:191
+#| msgid ""
+#| "To start <application>Glade</application> from a command line, type the "
+#| "following command, then press <keycap>Return</keycap>: <command>glade-3</"
+#| "command>"
 msgid ""
-"To start <application>Glade</application> from a command line, type the "
-"following command, then press <keycap>Return</keycap>: <command>glade-3</"
-"command>"
+"To start <application>Glade</application> from a command line, type "
+"<command>glade</command> and then press <keycap>Return</keycap>."
 msgstr ""
 "A <application>Glade</application> alkalmazás parancssoros indításához "
-"gépelje be a következő parancsot: <command>glade-3</command>, és nyomja meg "
+"gépelje be a következő parancsot: <command>glade</command>, és nyomja meg "
 "az <keycap>Enter</keycap> gombot."
 
 #. (itstool) path: sect2/title
@@ -404,9 +406,9 @@ msgid ""
 "The property editor is used to manipulate the properties of widgets, as well "
 "as adding connections to source code."
 msgstr ""
-"A tulajdonság-szerkesztő arra használható, hogy az egyes felületi elemek"
-"tulajdonságait megváltoztassuk, illetve hogy kapcsolatokat hozzunk létre a "
-"forráskóddal."
+"A tulajdonság-szerkesztő arra használható, hogy az egyes felületi "
+"elemektulajdonságait megváltoztassuk, illetve hogy kapcsolatokat hozzunk "
+"létre a forráskóddal."
 
 #. (itstool) path: varlistentry/term
 #: C/index.docbook:245
@@ -488,10 +490,10 @@ msgid ""
 "<guilabel>Save As</guilabel> dialog, then click <guibutton>Save</guibutton>."
 msgstr ""
 "Egy új projektfájl mentéséhez vagy egy létező projektfájl új fájlnév alatti "
-"mentéséhez válassza ki a <menuchoice> <guimenu>Fájl</guimenu> <guimenuitem>"
-"Mentés másként</guimenuitem> </menuchoice> menüelemet. Adjon meg egy nevet a "
-"projektfájlhoz a <guilabel>Mentés másként</guilabel> párbeszédablakban, majd "
-"kattintson a <guibutton>Mentés</guibutton> gombra."
+"mentéséhez válassza ki a <menuchoice> <guimenu>Fájl</guimenu> "
+"<guimenuitem>Mentés másként</guimenuitem> </menuchoice> menüelemet. Adjon "
+"meg egy nevet a projektfájlhoz a <guilabel>Mentés másként</guilabel> "
+"párbeszédablakban, majd kattintson a <guibutton>Mentés</guibutton> gombra."
 
 #. (itstool) path: sect1/title
 #: C/index.docbook:285
@@ -510,8 +512,7 @@ msgid ""
 "the following ways:"
 msgstr ""
 "A <guilabel>Paletta</guilabel> ablakban levő felületi elemeket az alábbi "
-"módokon "
-"használhatja:"
+"módokon használhatja:"
 
 #. (itstool) path: varlistentry/term
 #: C/index.docbook:295
@@ -530,8 +531,8 @@ msgstr ""
 "A kiválasztási mód használatához válassza a <guilabel>Kiválasztás</guilabel> "
 "nyilat. A kurzor ilyenkor egy nyilat mutat, jelezve, hogy ez a mód aktív. "
 "Ebben a módban az egérrel választhat ki elemeket a projektben. Ezután a "
-"<guilabel>Tulajdonságok</guilabel> ablakban szerkesztheti a felületi elemek"
-"tulajdonságait."
+"<guilabel>Tulajdonságok</guilabel> ablakban szerkesztheti a felületi "
+"elemektulajdonságait."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:306
@@ -551,10 +552,9 @@ msgid ""
 "guilabel> arrow or another widget in the <guilabel>Palette</guilabel> to "
 "return to normal mode."
 msgstr ""
-"Több egyforma típusú felületi elemet is hozzáadhat a <guilabel>Paletta<"
-"/guilabel> "
-"ablakból, csak tartsa nyomva a <keycap>Control</keycap> gombot, amikor "
-"kiválasztja az elemet. A normál módhoz visszatéréshez kattintson a "
+"Több egyforma típusú felületi elemet is hozzáadhat a <guilabel>Paletta</"
+"guilabel> ablakból, csak tartsa nyomva a <keycap>Control</keycap> gombot, "
+"amikor kiválasztja az elemet. A normál módhoz visszatéréshez kattintson a "
 "<guilabel>Kiválasztás</guilabel> nyílra, vagy egy másik felületi elemre a "
 "<guilabel>Paletta</guilabel> ablakban."
 
@@ -572,12 +572,11 @@ msgid ""
 "level widgets, and so on. After you place a widget, the mode returns to "
 "selection mode."
 msgstr ""
-"A felületi elem elhelyezési mód használatához válasszon egy felületi elemet a "
-"<guilabel>Palette</guilabel> ablakból. Ekkor az egérmutató is megváltozik. A "
-"felületi elemet konténerbe helyezheti, vagy felsőszintű ablakra teheti és így "
-"tovább. Miután elhelyezte a felületi elemet, a program újra kiválasztási "
-"módba "
-"kerül."
+"A felületi elem elhelyezési mód használatához válasszon egy felületi elemet "
+"a <guilabel>Palette</guilabel> ablakból. Ekkor az egérmutató is megváltozik. "
+"A felületi elemet konténerbe helyezheti, vagy felsőszintű ablakra teheti és "
+"így tovább. Miután elhelyezte a felületi elemet, a program újra kiválasztási "
+"módba kerül."
 
 #. (itstool) path: varlistentry/term
 #: C/index.docbook:335
@@ -595,10 +594,9 @@ msgid ""
 msgstr ""
 "A felsőszintű elhelyezési mód használatához válasszon egy felsőszintűnek "
 "jelzett felületi elemet a <guilabel>Paletta</guilabel> ablakból. Ekkor a "
-"felületi "
-"elem azonnal megjelenik a munkaasztalon. A felületi elem ekkor szerkeszthető. "
-"A felsőszintű felületi elem kiválasztása után a program újra kiválasztási "
-"módba kerül."
+"felületi elem azonnal megjelenik a munkaasztalon. A felületi elem ekkor "
+"szerkeszthető. A felsőszintű felületi elem kiválasztása után a program újra "
+"kiválasztási módba kerül."
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:354
@@ -613,9 +611,8 @@ msgid ""
 "<guilabel>Palette</guilabel> window:"
 msgstr ""
 "A felületi elem konténerek, azaz dobozok, arra használhatóak, hogy "
-"szerkezetbe "
-"foglalják és elrendezzék a többi felületi elemet. A következő konténerek "
-"választhatóak a <guilabel>Paletta</guilabel> ablakból:"
+"szerkezetbe foglalják és elrendezzék a többi felületi elemet. A következő "
+"konténerek választhatóak a <guilabel>Paletta</guilabel> ablakból:"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:360
@@ -704,9 +701,8 @@ msgstr ""
 "felületi elemeket, a címkéket, gombokat és a többit. A <application>Glade</"
 "application> program a felületi elemeket a szerkezetbe helyezi, így sok "
 "fáradságos munkától kíméli meg. A dobozok használatával lehetséges az, hogy "
-"az "
-"ablak mérete a címkéknek megfelelően méreteződik át. Ez a lokalizáció miatt "
-"fontos."
+"az ablak mérete a címkéknek megfelelően méreteződik át. Ez a lokalizáció "
+"miatt fontos."
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:387
@@ -721,9 +717,9 @@ msgid ""
 "<guisubmenu>Cut</guisubmenu> </menuchoice>."
 msgstr ""
 "Egy felületi elem szülőjétől való eltávolításához és a felületi elem "
-"vágólapra helyezéséhez jelölje ki a felületi elemet, majd válassza ki a <"
-"menuchoice> <guimenu>Szerkesztés</guimenu> <guisubmenu>Kivágás</guisubmenu> <"
-"/menuchoice> menüelemet."
+"vágólapra helyezéséhez jelölje ki a felületi elemet, majd válassza ki a "
+"<menuchoice> <guimenu>Szerkesztés</guimenu> <guisubmenu>Kivágás</guisubmenu> "
+"</menuchoice> menüelemet."
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:399
@@ -738,9 +734,9 @@ msgid ""
 "menuchoice>. The original widget remains attached to the parent."
 msgstr ""
 "Egy felületi elem vágólapra másolásához jelölje ki a felületi elemet, majd "
-"válassza ki a <menuchoice> <guimenu>Szerkesztés</guimenu> <guisubmenu>"
-"Másolás</guisubmenu> </menuchoice> menüelemet. Az eredeti felületi elem a "
-"szülőhöz csatolva marad."
+"válassza ki a <menuchoice> <guimenu>Szerkesztés</guimenu> "
+"<guisubmenu>Másolás</guisubmenu> </menuchoice> menüelemet. Az eredeti "
+"felületi elem a szülőhöz csatolva marad."
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:411
@@ -754,9 +750,9 @@ msgid ""
 "<menuchoice> <guimenu>Edit</guimenu> <guisubmenu>Paste</guisubmenu> </"
 "menuchoice>."
 msgstr ""
-"Egy vágólapon létező felületi elem beillesztéséhez a projektbe, válassza ki a "
-"<menuchoice> <guimenu>Szerkesztés</guimenu> <guisubmenu>Beillesztés<"
-"/guisubmenu> </menuchoice> menüelemet."
+"Egy vágólapon létező felületi elem beillesztéséhez a projektbe, válassza ki "
+"a <menuchoice> <guimenu>Szerkesztés</guimenu> <guisubmenu>Beillesztés</"
+"guisubmenu> </menuchoice> menüelemet."
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:420
@@ -768,11 +764,12 @@ msgid ""
 "then <application>Glade</application> generates new names for the widget "
 "copies."
 msgstr ""
-"Minden felületi elemnek egyedi névvel kell rendelkeznie a <application>Glade</"
-"application> alkalmazásban. Ha kivág egy felületi elemet, és újra beilleszti, "
-"akkor a kivágott felületi elem, és annak összes gyermeke megtartja az eredeti "
-"nevét. Ha másol egy felületi elemet, vagy többször illeszt be, akkor a "
-"<application>Glade</application> új neveket állít elő a másolatoknak."
+"Minden felületi elemnek egyedi névvel kell rendelkeznie a "
+"<application>Glade</application> alkalmazásban. Ha kivág egy felületi "
+"elemet, és újra beilleszti, akkor a kivágott felületi elem, és annak összes "
+"gyermeke megtartja az eredeti nevét. Ha másol egy felületi elemet, vagy "
+"többször illeszt be, akkor a <application>Glade</application> új neveket "
+"állít elő a másolatoknak."
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:429
@@ -787,9 +784,9 @@ msgid ""
 "guimenu> <guisubmenu>Delete</guisubmenu> </menuchoice>."
 msgstr ""
 "Egy felületi elem szülőjétől való törléséhez anélkül, hogy a felületi elemet "
-"a vágólapra helyezné át, jelölje ki a felületi elemet, majd válassza ki a <"
-"menuchoice> <guimenu>Szerkesztés</guimenu> <guisubmenu>Törlés</guisubmenu> <"
-"/menuchoice> menüelemet."
+"a vágólapra helyezné át, jelölje ki a felületi elemet, majd válassza ki a "
+"<menuchoice> <guimenu>Szerkesztés</guimenu> <guisubmenu>Törlés</guisubmenu> "
+"</menuchoice> menüelemet."
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:443
@@ -861,9 +858,10 @@ msgid ""
 msgstr ""
 "Ez a program a Free Software Foundation által kiadott GNU Lesser General "
 "Public License dokumentumban leírtak, akár a licenc 2-es, akár (tetszőleges) "
-"későbbi  változata szerint kerül terjesztésre. Ennek a licencnek egy példánya "
-"megtalálható ezen a <ulink url=\"help:gpl\" type=\"help\">hivatkozáson</ulink>"
-", vagy a program forráskódjában mellékelt fájl tartalmazza annak MÁSOLATÁT."
+"későbbi  változata szerint kerül terjesztésre. Ennek a licencnek egy "
+"példánya megtalálható ezen a <ulink url=\"help:gpl\" type=\"help"
+"\">hivatkozáson</ulink>, vagy a program forráskódjában mellékelt fájl "
+"tartalmazza annak MÁSOLATÁT."
 
 #. (itstool) path: para/ulink
 #: C/legal.xml:9
