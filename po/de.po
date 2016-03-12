@@ -17,24 +17,24 @@
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2008-2011.
 # Viktor Nyberg <greenscandic@googlemail.com>, 2012.
 # Benjamin Steinwender <b@stbe.at>, 2013.
-# Bernd Homuth <dev@hmt.im>, 2015.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2015.
+# Bernd Homuth <dev@hmt.im>, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-01 07:25+0000\n"
-"PO-Revision-Date: 2016-02-01 20:09+0100\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"POT-Creation-Date: 2016-03-12 07:25+0000\n"
+"PO-Revision-Date: 2016-03-12 12:20+0100\n"
+"Last-Translator: Bernd Homuth <dev@hmt.im>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 "X-Poedit-Bookmarks: -1,-1,49,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
@@ -2067,7 +2067,8 @@ msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
 "Die GladePropertyClass, für die dieses GladeEditorProperty erstellt wurde"
 
-#: ../gladeui/glade-editor-property.c:731 ../gladeui/glade-property-shell.c:125
+#: ../gladeui/glade-editor-property.c:731
+#: ../gladeui/glade-property-shell.c:125
 msgid "Use Command"
 msgstr "Befehl verwenden"
 
@@ -2077,21 +2078,24 @@ msgstr ""
 "Legt fest, ob das Befehls-API für den Rückgängig/Wiederholen-Speicher "
 "genutzt wird"
 
-#: ../gladeui/glade-editor-property.c:738 ../gladeui/glade-property-shell.c:143
+#: ../gladeui/glade-editor-property.c:738
+#: ../gladeui/glade-property-shell.c:143
 msgid "Disable Check"
 msgstr "Überprüfung deaktivieren"
 
-#: ../gladeui/glade-editor-property.c:739 ../gladeui/glade-property-shell.c:144
+#: ../gladeui/glade-editor-property.c:739
+#: ../gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
 msgstr ""
 "Festlegen, ob der Überprüfen-Knopf ausdrücklich deaktiviert werden soll"
 
-#: ../gladeui/glade-editor-property.c:745 ../gladeui/glade-property-label.c:152
-#: ../gladeui/glade-property-shell.c:137
+#: ../gladeui/glade-editor-property.c:745
+#: ../gladeui/glade-property-label.c:152 ../gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "Benutzerdefinierter Text"
 
-#: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-shell.c:138
+#: ../gladeui/glade-editor-property.c:746
+#: ../gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
 msgstr "Benutzerdefinierter Text in der Eigenschaftenbeschriftung anzeigen"
 
@@ -4084,12 +4088,10 @@ msgid "This property only applies to named icons"
 msgstr "Diese Eigenschaft wirkt sich nur auf benannte Symbole aus"
 
 #: ../plugins/gtk+/glade-gtk-label.c:257
-#, fuzzy
 #| msgid "This property only applies when configuring the label with text"
-msgid "This property only applies if ellispize and wrapping are enabled"
+msgid "This property only applies if ellipsize and wrapping are enabled"
 msgstr ""
-"Diese Eigenschaft wirkt nur wenn die Beschriftung mit einem Text "
-"konfiguriert wird."
+"Diese Eigenschaft wirkt nur, wenn Ellipsis und Wortumbruch eingestellt sind"
 
 #: ../plugins/gtk+/glade-gtk-menu-item.c:53
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:173
@@ -4171,16 +4173,19 @@ msgstr "Menü letzter Aktionen"
 msgid "Tool Item"
 msgstr "Werkzeugelement"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:541 ../plugins/gtk+/gtk+.xml.in.h:496
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:541
+#: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "Tool Item Group"
 msgstr "Werkzeuggruppe"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:731
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:560
+#: ../plugins/gtk+/gtk+.xml.in.h:731
 msgid "Recent Chooser Menu"
 msgstr "Auswahlmenü zuletzt genutzter"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:598 ../plugins/gtk+/gtk+.xml.in.h:156
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:598
+#: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "Menu Item"
 msgstr "Menüeintrag"
 
@@ -4238,7 +4243,8 @@ msgstr "Menü"
 #. GtkRecentSortType enumeration value
 #: ../plugins/gtk+/glade-gtk-toolbar.c:239
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:186
-#: ../plugins/gtk+/gtk+.xml.in.h:786 ../plugins/gtk+/glade-widget-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:786
+#: ../plugins/gtk+/glade-widget-editor.ui.h:7
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
@@ -5870,7 +5876,8 @@ msgstr "Überlagerung"
 msgid "Menu Shell"
 msgstr "Menü-Shell"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:441 ../plugins/gtk+/glade-button-editor.ui.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:441
+#: ../plugins/gtk+/glade-button-editor.ui.h:8
 msgid "Position"
 msgstr "Position"
 
@@ -6312,7 +6319,8 @@ msgstr "Textansicht"
 msgid "Search Bar"
 msgstr "Suchleiste"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:590 ../plugins/gtk+/glade-button-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:590
+#: ../plugins/gtk+/glade-button-editor.ui.h:7
 msgid "Stock Button"
 msgstr "Repertoire-Knopf"
 
@@ -7133,7 +7141,6 @@ msgstr ""
 
 # Ist hier vielleicht »modal button« gemeint?
 #: ../plugins/gtk+/gtk+.xml.in.h:853
-#, fuzzy
 msgid "Model Button"
 msgstr "Modellknopf"
 
@@ -8240,7 +8247,6 @@ msgid "Padding"
 msgstr "Innenabstand"
 
 #: ../plugins/gtk+/glade-model-button-editor.ui.h:1
-#, fuzzy
 msgid "Model Button Attributes"
 msgstr "Modellknopfattribute"
 
