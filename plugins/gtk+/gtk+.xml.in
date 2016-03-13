@@ -580,17 +580,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_TOOLBAR_BOTH_HORIZ" _name="Text beside icons"/>
 	  </displayable-values>
 	</property>
-      	<property id="icon-size" since="2.10">
-  	  <displayable-values>
-	    <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
-	    <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
-	    <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
-	    <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
-	    <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
-	    <value id="GTK_ICON_SIZE_DND" _name="Drag &amp; Drop"/>
-	    <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
-	  </displayable-values>
-	</property>
+      	<property id="icon-size" since="2.10"/>
       </properties>
 
       <packing-properties>
@@ -627,7 +617,17 @@ embedded in another object</_tooltip>
       <properties>
       	<property id="icon-size-set" disabled="True"/>
       	<property id="toolbar-style" save-always="True" optional="True" optional-default="False" weight="0.4"/>
-      	<property id="icon-size" optional="True" optional-default="False" weight="0.5"/>
+      	<property id="icon-size" optional="True" optional-default="False" weight="0.5">
+      	  <displayable-values>
+      	    <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
+      	    <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
+      	    <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
+      	    <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
+      	    <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
+      	    <value id="GTK_ICON_SIZE_DND" _name="Drag &amp; Drop"/>
+      	    <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
+      	  </displayable-values>
+      	</property>
       </properties>
 
       <packing-properties>
@@ -661,6 +661,21 @@ embedded in another object</_tooltip>
 	  <parameter-spec>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
+        </property>
+        <property id="ellipsize">
+	  <displayable-values>
+	    <value id="PANGO_ELLIPSIZE_NONE" _name="None"/>
+	    <value id="PANGO_ELLIPSIZE_START" _name="Start"/>
+	    <value id="PANGO_ELLIPSIZE_MIDDLE" _name="Middle"/>
+	    <value id="PANGO_ELLIPSIZE_END" _name="End"/>
+	  </displayable-values>
+        </property>
+        <property id="header-relief">
+	  <displayable-values>
+	    <value id="GTK_RELIEF_NORMAL" _name="Normal"/>
+	    <value id="GTK_RELIEF_HALF" _name="Half"/>
+	    <value id="GTK_RELIEF_NONE" _name="None"/>
+	  </displayable-values>
         </property>
       </properties>
 
@@ -829,14 +844,6 @@ embedded in another object</_tooltip>
 	    <value id="GTK_JUSTIFY_FILL" _name="Fill"/>
 	  </displayable-values>
 	</property>
-      	<property id="ellipsize">
-  	  <displayable-values>
-	    <value id="PANGO_ELLIPSIZE_NONE" _name="None"/>
-	    <value id="PANGO_ELLIPSIZE_START" _name="Start"/>
-	    <value id="PANGO_ELLIPSIZE_MIDDLE" _name="Middle"/>
-	    <value id="PANGO_ELLIPSIZE_END" _name="End"/>
-	  </displayable-values>
-	</property>
       	<property id="wrap-mode" since="2.10">
   	  <displayable-values>
              <value id="PANGO_WRAP_WORD" _name="Word"/>
@@ -988,13 +995,7 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	  <_tooltip>The response ID of this button in a dialog</_tooltip>
 	</property>
-      	<property id="relief">
-  	  <displayable-values>
-	    <value id="GTK_RELIEF_NORMAL" _name="Normal"/>
-	    <value id="GTK_RELIEF_HALF" _name="Half"/>
-	    <value id="GTK_RELIEF_NONE" _name="None"/>
-	  </displayable-values>
-	</property>
+      	<property id="relief"/>
 
 	<!-- GtkActivatable -->
       	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False" needs-sync="True"/>
@@ -1103,17 +1104,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button" since="2.12">
       <properties>
         <property id="orientation" since="2.14"/>
-      	<property id="size">
-  	  <displayable-values>
-	    <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
-	    <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
-	    <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
-	    <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
-	    <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
-	    <value id="GTK_ICON_SIZE_DND" _name="Drag &amp; Drop"/>
-	    <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
-	  </displayable-values>
-	</property>
+      	<property id="size"/>
 
 	<!-- These props dont apply to scale buttons -->
 	<property id="glade-type" disabled="True"/>
