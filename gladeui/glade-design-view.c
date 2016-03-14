@@ -60,8 +60,6 @@ struct _GladeDesignViewPrivate
   GtkWidget *scrolled_window;  /* Main scrolled window */
   GtkWidget *layout_box;       /* Box to pack a GladeDesignLayout for each toplevel in project */
 
-  GdkRGBA fg_color;
-
   _GladeDrag *drag_target;
   GObject *drag_data;
   gboolean drag_highlight;
@@ -370,12 +368,16 @@ static gboolean
 glade_design_view_viewport_draw (GtkWidget *widget, cairo_t *cr, GladeDesignView *view)
 {
   GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (view)->priv;
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
+  GdkRGBA fg_color;
 
-  logo_draw (widget, cr, &priv->fg_color);
+  gtk_style_context_get_color (context, gtk_style_context_get_state (context),
+                               &fg_color);
+
+  logo_draw (widget, cr, &fg_color);
 
   if (priv->drag_highlight)
     {
-      GtkStyleContext *context = gtk_widget_get_style_context (widget);
       GdkRGBA c;
 
       gtk_style_context_save (context);
@@ -727,16 +729,6 @@ glade_design_view_drag_init (_GladeDragInterface *iface)
 }
 
 static void
-glade_design_view_style_updated (GtkWidget *widget)
-{
-  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (widget)->priv;
-
-  gtk_style_context_get_color (gtk_widget_get_style_context (widget),
-                               GTK_STATE_FLAG_NORMAL,
-                               &priv->fg_color);
-}
-
-static void
 glade_design_view_class_init (GladeDesignViewClass *klass)
 {
   GObjectClass *object_class;
@@ -754,7 +746,6 @@ glade_design_view_class_init (GladeDesignViewClass *klass)
   widget_class->drag_leave = glade_design_view_drag_leave;
   widget_class->drag_data_received = glade_design_view_drag_data_received;
   widget_class->drag_drop = glade_design_view_drag_drop;
-  widget_class->style_updated = glade_design_view_style_updated;
   
   g_object_class_install_property (object_class,
                                    PROP_PROJECT,
