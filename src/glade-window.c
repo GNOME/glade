@@ -3371,7 +3371,7 @@ glade_window_class_init (GladeWindowClass *klass)
                                    "  unbind \"<Alt>9\";\n"
                                    "}\n"
                                    "GladeDesignView * {\n"
-                                   "  gtk-key-bindings: DisableBindings;\n"
+                                   "  -gtk-key-bindings: DisableBindings;\n"
                                    "}\n"
                                    "GtkProgressBar#glade-tab-label-progress {\n"
                                    "   -GtkProgressBar-min-horizontal-bar-width : 1;\n"
