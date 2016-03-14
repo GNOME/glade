@@ -333,9 +333,8 @@ on_chooser_adaptor_selected (_GladeAdaptorChooser *chooser,
                              GladeProject         *project)
 
 {
-  gtk_widget_hide (GTK_WIDGET (chooser));
   glade_command_create (adaptor, NULL, NULL, project);
-  gtk_widget_destroy (GTK_WIDGET (chooser));
+  gtk_widget_destroy (gtk_widget_get_ancestor (GTK_WIDGET (chooser), GTK_TYPE_POPOVER));
 }
 
 static gboolean
