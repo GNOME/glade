@@ -1075,14 +1075,16 @@ draw_selection (cairo_t *cr,
 {
   gint x, y, w, h, xw, yh, y_top, yh_bottom, x_left, xw_right;
   gint top, bottom, left, right;
-  cairo_pattern_t *gradient;
-  gdouble r, g, b, cx, cy;
+  gdouble r, g, b;
   GtkAllocation alloc;
+  GtkStyleContext *context;
 
   gtk_widget_get_allocation (widget, &alloc);
 
   if (alloc.x < 0 || alloc.y < 0) return;
-  
+
+  context = gtk_widget_get_style_context (parent);
+  gtk_style_context_add_class (context, "selection");
   r = color->red; g = color->green; b = color->blue;
   gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
 
@@ -1097,19 +1099,9 @@ draw_selection (cairo_t *cr,
   yh_bottom = yh + bottom;
   x_left = x - left;
   xw_right = xw + right;
-  
+
   /* Draw widget area overlay */
-  cx = x + w/2;
-  cy = y + h/2;
-  gradient = cairo_pattern_create_radial (cx, cy, MIN (w, h)/6, cx, cy, MAX (w, h)/2);
-  cairo_pattern_add_color_stop_rgba (gradient, 0, r+.24, g+.24, b+.24, .16);
-  cairo_pattern_add_color_stop_rgba (gradient, 1, r, g, b, .28);
-  cairo_set_source (cr, gradient);
-
-  cairo_rectangle (cr, x, y, w, h);
-  cairo_fill (cr);
-
-  cairo_pattern_destroy (gradient);
+  gtk_render_background (context, cr, x, y, w, h);
 
   /* Draw margins overlays */
   if (top)
@@ -1129,9 +1121,8 @@ draw_selection (cairo_t *cr,
                            r, g, b, xw_right, y);
 
   /* Draw Selection box */
-  cairo_set_source_rgba (cr, r, g, b, .75);
-  cairo_rectangle (cr, x - left, y - top, w + left + right, h + top + bottom);
-  cairo_stroke (cr);
+  gtk_render_frame (context, cr, x - left, y - top, w + left + right, h + top + bottom);
+  gtk_style_context_remove_class (context, "selection");
 }
 
 #define DIMENSION_OFFSET 9

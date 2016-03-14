@@ -32,3 +32,14 @@ GladeDesignLayout.handle {
   border-radius: 0px 0px 4px 4px;
 }
 
+GladeDesignLayout.selection {
+  border: 2px solid @theme_selected_bg_color;
+  border-radius: 4px;
+  background-color:transparent;
+  background-image: -gtk-gradient (radial,
+                                   center center, 0,
+                                   center center, 1,
+                                   from (alpha(@theme_selected_bg_color, 0)),
+                                   to   (alpha(@theme_selected_bg_color, .8)));
+}
+
