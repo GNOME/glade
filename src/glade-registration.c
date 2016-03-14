@@ -48,8 +48,6 @@ struct _GladeRegistrationPrivate
   GladeHTTP    *sub_http;
   GCancellable *cancellable;
 
-  GdkRGBA fg_color;
-
   /* Form widgets */
 
   GtkWidget *name;
@@ -577,9 +575,12 @@ static gboolean
 on_viewport_draw (GtkWidget *viewport, cairo_t *cr, GladeRegistration *widget)
 {
   GladeRegistrationPrivate *priv = GLADE_REGISTRATION (widget)->priv;
-  GdkRGBA *c = &priv->fg_color;
+  GtkStyleContext *context = gtk_widget_get_style_context (viewport);
   GtkAllocation alloc;
   gdouble scale;
+  GdkRGBA c;
+
+  gtk_style_context_get_color (context, gtk_style_context_get_state (context), &c);
 
   gtk_widget_get_allocation (viewport, &alloc);
       
@@ -587,7 +588,7 @@ on_viewport_draw (GtkWidget *viewport, cairo_t *cr, GladeRegistration *widget)
       
   cairo_save (cr);
 
-  cairo_set_source_rgba (cr, c->red, c->green, c->blue, .04);
+  cairo_set_source_rgba (cr, c.red, c.green, c.blue, .04);
   cairo_scale (cr, scale, scale);
   cairo_translate (cr, (alloc.width / scale) - GLADE_LOGO_WIDTH*.95,
                    (alloc.height / scale) - GLADE_LOGO_HEIGHT);
@@ -684,16 +685,6 @@ glade_registration_get_property (GObject *object, guint prop_id, GValue *value, 
 }
 
 static void
-glade_registration_style_updated (GtkWidget *widget)
-{
-  GladeRegistrationPrivate *priv = GLADE_REGISTRATION (widget)->priv;
-
-  gtk_style_context_get_color (gtk_widget_get_style_context (widget),
-                               GTK_STATE_FLAG_NORMAL,
-                               &priv->fg_color);
-}
-
-static void
 glade_registration_class_init (GladeRegistrationClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -770,8 +761,6 @@ glade_registration_class_init (GladeRegistrationClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, toggle_button_set_visible_on_toggle);
   gtk_widget_class_bind_template_callback (widget_class, toggle_button_set_sensitive_on_toggle);
   gtk_widget_class_bind_template_callback (widget_class, on_viewport_draw);
-
-  widget_class->style_updated = glade_registration_style_updated;
   
   object_class->finalize = glade_registration_finalize;
   object_class->set_property = glade_registration_set_property;
