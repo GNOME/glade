@@ -391,10 +391,9 @@ on_chooser_adaptor_selected (_GladeAdaptorChooser *chooser,
                              GladePlaceholder    *placeholder)
 
 {
-  gtk_widget_hide (GTK_WIDGET (chooser));
   glade_command_create (adaptor, glade_placeholder_get_parent (placeholder),
                         placeholder, glade_placeholder_get_project (placeholder));
-  gtk_widget_destroy (GTK_WIDGET (chooser));
+  gtk_widget_destroy (gtk_widget_get_ancestor (GTK_WIDGET (chooser), GTK_TYPE_POPOVER));
 }
 
 static GtkWidget *
