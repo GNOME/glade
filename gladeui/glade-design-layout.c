@@ -1776,8 +1776,7 @@ glade_design_layout_style_updated (GtkWidget *widget)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_PRIVATE (widget);
   
-  _glade_design_layout_get_colors (gtk_widget_get_style_context (widget),
-                                   &priv->frame_color[0],
+  _glade_design_layout_get_colors (&priv->frame_color[0],
                                    &priv->frame_color[1],
                                    &priv->frame_color_active[0],
                                    &priv->frame_color_active[1]);
@@ -2176,27 +2175,37 @@ _glade_design_layout_coords_from_event (GdkWindow *parent,
 }
 
 void
-_glade_design_layout_get_colors (GtkStyleContext *context, 
-                                 GdkRGBA *c1, GdkRGBA *c2,
+_glade_design_layout_get_colors (GdkRGBA *c1, GdkRGBA *c2,
                                  GdkRGBA *c3, GdkRGBA *c4)
 {
+  GtkStyleContext *context = gtk_style_context_new ();
+  GtkWidgetPath *path = gtk_widget_path_new ();
   gfloat off;
 
-  gtk_style_context_save (context);
+  /* Fake style context */
+  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
+  gtk_style_context_set_path (context, path);
+  gtk_style_context_add_class (context, GTK_STYLE_CLASS_VIEW);
+
+  /* Get colors */
   gtk_style_context_set_state (context, GTK_STATE_FLAG_NORMAL);
   gtk_style_context_get_background_color (context, gtk_style_context_get_state (context), c1);
   gtk_style_context_get_color (context, gtk_style_context_get_state (context), c2);
 
-  gtk_style_context_set_state (context, gtk_style_context_get_state (context) | GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED);
+  gtk_style_context_set_state (context, GTK_STATE_FLAG_NORMAL | GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED);
+  gtk_style_context_set_state (context, gtk_style_context_get_state (context));
   gtk_style_context_get_background_color (context, gtk_style_context_get_state (context), c3);
   gtk_style_context_get_color (context, gtk_style_context_get_state (context), c4);
-  gtk_style_context_restore (context);
 
   off = ((c1->red + c1->green + c1->blue)/3 < .5) ? .16 : -.16;
    
   c1->red += off;
   c1->green += off;
   c1->blue += off;
+
+  /* Free resources */
+  gtk_widget_path_free (path);
+  g_object_unref (context);
 }
 
 void

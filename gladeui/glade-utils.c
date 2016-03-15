@@ -1841,10 +1841,8 @@ draw_pointer (cairo_t *cr)
 GdkPixbuf *
 glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
 {
-  GtkStyleContext *ctx = gtk_style_context_new ();
   GdkRGBA c1, c2, fg, bg;
   cairo_surface_t *surface;
-  GtkWidgetPath *path;
   gint width, height;
   GdkPixbuf *pix;
   cairo_t *cr;
@@ -1855,16 +1853,8 @@ glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
   cr = cairo_create (surface);
   cairo_scale (cr, width/24.0, height/24.0);
 
-  /* Get Style context */
-  path = gtk_widget_path_new ();
-  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
-  gtk_style_context_set_path (ctx, path);
-  gtk_style_context_add_class (ctx, GTK_STYLE_CLASS_VIEW);
-  gtk_widget_path_free (path);
-
   /* Now get colors */
-  _glade_design_layout_get_colors (ctx, &bg, &fg, &c1, &c2);
-  g_object_unref (ctx);
+  _glade_design_layout_get_colors (&bg, &fg, &c1, &c2);
 
   /* Clear surface */
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
