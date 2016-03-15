@@ -2050,6 +2050,8 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
                                                    NULL, NULL));
 
   /* Setup Custom CSS */
+  gtk_widget_class_set_css_name (widget_class, "glade-design-layout");
+
   css_provider = gtk_css_provider_new ();
   gtk_css_provider_load_from_resource (css_provider, "/org/gnome/gladeui/glade-design-layout.css");
 

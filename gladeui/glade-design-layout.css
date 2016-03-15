@@ -21,25 +21,26 @@
  * 
  */
 
-GladeDesignLayout {
-  background-color: @theme_selected_bg_color;
+glade-design-layout {
+  background: none;
   border: 4px solid @theme_selected_bg_color;
   color: @theme_selected_fg_color;
   border-radius: 4px 4px 0px 4px;
 }
 
-GladeDesignLayout.handle {
+glade-design-layout.handle {
+  background-color: @theme_selected_bg_color;
   border-radius: 0px 0px 4px 4px;
 }
 
-GladeDesignLayout.selection {
+glade-design-layout.selection {
   border: 2px solid @theme_selected_bg_color;
   border-radius: 0px;
   background-color:transparent;
   background-image: -gtk-gradient (radial,
                                    center center, 0,
                                    center center, 1,
-                                   from (alpha(@theme_selected_bg_color, 0)),
-                                   to   (alpha(@theme_selected_bg_color, .8)));
+                                   from (alpha(@theme_selected_bg_color, .08)),
+                                   to   (alpha(@theme_selected_bg_color, .50)));
 }
 
