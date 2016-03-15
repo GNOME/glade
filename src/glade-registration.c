@@ -553,13 +553,6 @@ on_registration_dialog_response (GtkDialog *dialog, gint response_id)
 }
 
 static void
-on_privacy_button_clicked (GtkButton *button, GtkScrolledWindow *swindow)
-{
-  GtkAdjustment *adj = gtk_scrolled_window_get_vadjustment (swindow);
-  gtk_adjustment_set_value (adj, gtk_adjustment_get_upper (adj));
-}
-
-static void
 toggle_button_set_visible_on_toggle (GtkToggleButton *button, GtkWidget *widget)
 {
   gtk_widget_set_visible (widget, gtk_toggle_button_get_active (button));
@@ -574,7 +567,6 @@ toggle_button_set_sensitive_on_toggle (GtkToggleButton *button, GtkWidget *widge
 static gboolean
 on_viewport_draw (GtkWidget *viewport, cairo_t *cr, GladeRegistration *widget)
 {
-  GladeRegistrationPrivate *priv = GLADE_REGISTRATION (widget)->priv;
   GtkStyleContext *context = gtk_widget_get_style_context (viewport);
   GtkAllocation alloc;
   gdouble scale;
@@ -757,7 +749,6 @@ glade_registration_class_init (GladeRegistrationClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, comments);
   
   gtk_widget_class_bind_template_callback (widget_class, on_registration_dialog_response);
-  gtk_widget_class_bind_template_callback (widget_class, on_privacy_button_clicked);
   gtk_widget_class_bind_template_callback (widget_class, toggle_button_set_visible_on_toggle);
   gtk_widget_class_bind_template_callback (widget_class, toggle_button_set_sensitive_on_toggle);
   gtk_widget_class_bind_template_callback (widget_class, on_viewport_draw);
