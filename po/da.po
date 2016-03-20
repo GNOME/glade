@@ -1,11 +1,11 @@
 # Danish translation of Glade
-# Copyright (C) 1999-2009, 2011, 2014-2015 Free Software Foundation, Inc.
+# Copyright (C) 1999-2009, 2011, 2014-2016 Free Software Foundation, Inc.
 # Birger Langkjer <birger.langkjer@image.dk>, 1999.
 # Kenneth Christiansen <kenneth@ripen.dk>, 1999.
 # Keld Simonsen <keld@dkuug.dk>, 2000.
 # Ole Laursen <olau@hardworking.dk>, 2002, 03, 07.
 # Kenneth Nielsen <k.nielsen81@gmail.com>, 2011-2013.
-# Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 08, 09, 10, 11, 14, 15.
+# Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 08, 09, 10, 11, 14, 15, 16.
 #
 # Konventioner:
 #
@@ -25,7 +25,7 @@
 #   widget -> kontrol
 #
 #   Inspector (inspektør), Editor (redigeringspanel) og Palette (palet) refererer til tre komponenter i glades UI som kan hives af og dokkes, f.eks., og altså ikke widgets som man kan "programmere" med
-#       
+#
 # Husk at tilføje navn i strengen translator-credits
 # Jeg tror "stock items" refererer til lagerressourcer af en art (f.eks. indbyggede ikoner), og derfor er "punkter" ikke en korrekt oversættelse i disse tilfælde. (AHL)
 #
@@ -38,10 +38,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade 0.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-07 16:42+0100\n"
-"PO-Revision-Date: 2016-02-04 19:11+0100\n"
+"POT-Creation-Date: 2016-03-20 22:54+0100\n"
+"PO-Revision-Date: 2016-03-20 22:52+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
-"Language-Team: Dansk <dansk@dansk-gruppen.dk>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -846,7 +846,7 @@ msgid "Select a catalog search path"
 msgstr "Vælg en katalogsøgesti"
 
 #. translators: Email subject sent to the user after completing the survey
-#: ../src/glade-registration.c:32 ../src/glade-registration.glade.h:27
+#: ../src/glade-registration.c:32 ../src/glade-registration.glade.h:26
 msgid "Glade User Survey"
 msgstr "Glade-brugerundersøgelse"
 
@@ -909,69 +909,69 @@ msgstr ""
 "\n"
 "\tGlade-holdet\n"
 
-#: ../src/glade-registration.c:308
+#: ../src/glade-registration.c:306
 #, c-format
 msgid "Connecting to %s"
 msgstr "Forbinder til %s"
 
-#: ../src/glade-registration.c:311
+#: ../src/glade-registration.c:309
 #, c-format
 msgid "Sending data to %s"
 msgstr "Sender data til %s"
 
-#: ../src/glade-registration.c:314
+#: ../src/glade-registration.c:312
 #, c-format
 msgid "Waiting for %s"
 msgstr "Venter på %s"
 
-#: ../src/glade-registration.c:317
+#: ../src/glade-registration.c:315
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Modtager data fra %s"
 
-#: ../src/glade-registration.c:349
+#: ../src/glade-registration.c:347
 msgid "Sorry, automatic subscription to Glade Users mailing list failed"
 msgstr ""
 "Beklager, automatisk abonnering på Glade-brugermailinglisten mislykkedes"
 
-#: ../src/glade-registration.c:352
+#: ../src/glade-registration.c:350
 msgid "Open Glade Users Website"
 msgstr "Åben webside for Glade-brugere"
 
-#: ../src/glade-registration.c:404
+#: ../src/glade-registration.c:402
 msgid "Internal server error"
 msgstr "Intern serverfejl"
 
-#: ../src/glade-registration.c:428
+#: ../src/glade-registration.c:426
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
 msgstr ""
 "Tak for at du fandt tid til at udfylde undersøgelsen. Det sætter vi pris på!"
 
-#: ../src/glade-registration.c:436
+#: ../src/glade-registration.c:434
 msgid "Name and Email fields are required"
 msgstr "Navne- og e-mail-felterne er påkrævet"
 
-#: ../src/glade-registration.c:439
+#: ../src/glade-registration.c:437
 msgid ""
 "Oops! Email address is already in use!\n"
 "To update information you need to provide the token that was sent to your "
 "inbox."
 msgstr ""
-"Hov! E-post-adressen er allerede i brug!\n"
+"Hov! E-mail-adressen er allerede i brug!\n"
 "For at opdatere informationen skal du opgive den kode, der blev sendt til "
 "din indbakke."
 
-#: ../src/glade-registration.c:442
+#: ../src/glade-registration.c:440
 #, c-format
 msgid "Oops! Error saving user information: %s"
 msgstr "Hov! Fejl ved gemning af brugerinformation: %s"
 
-#: ../src/glade-registration.c:445
+#: ../src/glade-registration.c:443
 #, c-format
 msgid "Oops! Error saving survey data: %s"
 msgstr "Hov! Fejl ved gemning af undersøgelsesdata: %s"
 
-#: ../src/glade-registration.c:448
+#: ../src/glade-registration.c:446
 #, c-format
 msgid "Oops! Error accessing DB: %s"
 msgstr "Hov! Fejl ved tilgang til DB: %s"
@@ -1070,315 +1070,311 @@ msgstr ""
 "offentligt eller med nogen tredjepart."
 
 #: ../src/glade-registration.glade.h:24
-msgid "See Privacy Note"
-msgstr "Se privatlivsnotits"
-
-#: ../src/glade-registration.glade.h:25
 msgid "Update Info"
 msgstr "Opdatér info"
 
-#: ../src/glade-registration.glade.h:26
+#: ../src/glade-registration.glade.h:25
 msgid "<Insert update token, if you want to update previously sent data>"
 msgstr "<Indsæt opdateringskode, hvis du vil opdatere tidligere sendte data>"
 
-#: ../src/glade-registration.glade.h:28
+#: ../src/glade-registration.glade.h:27
 msgid "How long have you been programming?"
 msgstr "Hvor længe har du programmeret?"
 
-#: ../src/glade-registration.glade.h:29
+#: ../src/glade-registration.glade.h:28
 msgid "0"
 msgstr "0"
 
-#: ../src/glade-registration.glade.h:30
+#: ../src/glade-registration.glade.h:29
 msgid "years"
 msgstr "år"
 
-#: ../src/glade-registration.glade.h:31
+#: ../src/glade-registration.glade.h:30
 msgid "months"
 msgstr "måneder"
 
-#: ../src/glade-registration.glade.h:32
+#: ../src/glade-registration.glade.h:31
 msgid "I am not a programmer"
 msgstr "Jeg er ikke programmør"
 
-#: ../src/glade-registration.glade.h:33
+#: ../src/glade-registration.glade.h:32
 msgid "Which programming languages do you prefer?"
 msgstr "Hvilke programmeringssprog foretrækker du?"
 
-#: ../src/glade-registration.glade.h:34
+#: ../src/glade-registration.glade.h:33
 msgid "C"
 msgstr "C"
 
-#: ../src/glade-registration.glade.h:35
+#: ../src/glade-registration.glade.h:34
 msgid "C++"
 msgstr "C++"
 
-#: ../src/glade-registration.glade.h:36
+#: ../src/glade-registration.glade.h:35
 msgid "C#"
 msgstr "C#"
 
-#: ../src/glade-registration.glade.h:37
+#: ../src/glade-registration.glade.h:36
 msgid "Java"
 msgstr "Java"
 
-#: ../src/glade-registration.glade.h:38
+#: ../src/glade-registration.glade.h:37
 msgid "Python"
 msgstr "Python"
 
-#: ../src/glade-registration.glade.h:39
+#: ../src/glade-registration.glade.h:38
 msgid "JavaScript"
 msgstr "JavaScript"
 
-#: ../src/glade-registration.glade.h:40
+#: ../src/glade-registration.glade.h:39
 msgid "Vala"
 msgstr "Vala"
 
-#: ../src/glade-registration.glade.h:41
+#: ../src/glade-registration.glade.h:40
 msgid "Perl"
 msgstr "Perl"
 
 # Anden/andet...
 #. GtkCellRendererAccelMode enumeration value
-#: ../src/glade-registration.glade.h:42
+#: ../src/glade-registration.glade.h:41
 #: ../gladeui/glade-project-properties.ui.h:19
 #: ../plugins/gtk+/gtk+.xml.in.h:766
 msgid "Other"
 msgstr "Anden"
 
-#: ../src/glade-registration.glade.h:43
+#: ../src/glade-registration.glade.h:42
 msgid "When did you start using Glade?"
 msgstr "Hvornår begyndte du at bruge Glade?"
 
-#: ../src/glade-registration.glade.h:44
+#: ../src/glade-registration.glade.h:43
 msgid "ago"
 msgstr "siden"
 
-#: ../src/glade-registration.glade.h:45
+#: ../src/glade-registration.glade.h:44
 msgid "Which version do you normally use?"
 msgstr "Hvilken version bruger du normalt?"
 
-#: ../src/glade-registration.glade.h:46
+#: ../src/glade-registration.glade.h:45
 msgid "What is available in my OS"
 msgstr "Hvad er der tilgængeligt på mit operativsystem"
 
-#: ../src/glade-registration.glade.h:47
+#: ../src/glade-registration.glade.h:46
 msgid "Latest stable from sources"
 msgstr "Seneste stabile udgave fra kilder"
 
-#: ../src/glade-registration.glade.h:48
+#: ../src/glade-registration.glade.h:47
 msgid "3.8 for GTK+ 2"
 msgstr "3.8 til GTK+ 2"
 
-#: ../src/glade-registration.glade.h:49
+#: ../src/glade-registration.glade.h:48
 msgid "Master"
 msgstr "Master"
 
-#: ../src/glade-registration.glade.h:50
+#: ../src/glade-registration.glade.h:49
 msgid "On what operating systems?"
 msgstr "På hvilke operativsystemer?"
 
-#: ../src/glade-registration.glade.h:51
+#: ../src/glade-registration.glade.h:50
 msgid "distribution"
 msgstr "distribution"
 
-#: ../src/glade-registration.glade.h:52
+#: ../src/glade-registration.glade.h:51
 msgid "Arch Linux"
 msgstr "Arch Linux"
 
-#: ../src/glade-registration.glade.h:53
+#: ../src/glade-registration.glade.h:52
 msgid "Debian"
 msgstr "Debian"
 
-#: ../src/glade-registration.glade.h:54
+#: ../src/glade-registration.glade.h:53
 msgid "openSUSE"
 msgstr "openSUSE"
 
-#: ../src/glade-registration.glade.h:55
+#: ../src/glade-registration.glade.h:54
 msgid "Fedora"
 msgstr "Fedora"
 
-#: ../src/glade-registration.glade.h:56
+#: ../src/glade-registration.glade.h:55
 msgid "Gentoo"
 msgstr "Gentoo"
 
-#: ../src/glade-registration.glade.h:57
+#: ../src/glade-registration.glade.h:56
 msgid "Mandriva"
 msgstr "Mandriva"
 
-#: ../src/glade-registration.glade.h:58
+#: ../src/glade-registration.glade.h:57
 msgid "Red Hat"
 msgstr "Red Hat"
 
-#: ../src/glade-registration.glade.h:59
+#: ../src/glade-registration.glade.h:58
 msgid "Turbolinux"
 msgstr "Turbolinux"
 
-#: ../src/glade-registration.glade.h:60
+#: ../src/glade-registration.glade.h:59
 msgid "Ubuntu"
 msgstr "Ubuntu"
 
-#: ../src/glade-registration.glade.h:61
+#: ../src/glade-registration.glade.h:60
 msgid "Xandros"
 msgstr "Xandros"
 
-#: ../src/glade-registration.glade.h:62
+#: ../src/glade-registration.glade.h:61
 msgid "Oracle"
 msgstr "Oracle"
 
-#: ../src/glade-registration.glade.h:63
+#: ../src/glade-registration.glade.h:62
 msgid "variant"
 msgstr "variant"
 
-#: ../src/glade-registration.glade.h:64
+#: ../src/glade-registration.glade.h:63
 msgid "FreeBSD"
 msgstr "FreeBSD"
 
-#: ../src/glade-registration.glade.h:65
+#: ../src/glade-registration.glade.h:64
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
-#: ../src/glade-registration.glade.h:66
+#: ../src/glade-registration.glade.h:65
 msgid "NetBSD"
 msgstr "NetBSD"
 
-#: ../src/glade-registration.glade.h:67
+#: ../src/glade-registration.glade.h:66
 msgid "Oracle Solaris"
 msgstr "Oracle Solaris"
 
-#: ../src/glade-registration.glade.h:68
+#: ../src/glade-registration.glade.h:67
 msgid "OpenSolaris"
 msgstr "OpenSolaris"
 
-#: ../src/glade-registration.glade.h:69
+#: ../src/glade-registration.glade.h:68
 msgid "illumos"
 msgstr "illumos"
 
-#: ../src/glade-registration.glade.h:70
+#: ../src/glade-registration.glade.h:69
 msgid "version"
 msgstr "version"
 
-#: ../src/glade-registration.glade.h:71
+#: ../src/glade-registration.glade.h:70
 msgid "2000"
 msgstr "2000"
 
-#: ../src/glade-registration.glade.h:72
+#: ../src/glade-registration.glade.h:71
 msgid "XP"
 msgstr "XP"
 
-#: ../src/glade-registration.glade.h:73
+#: ../src/glade-registration.glade.h:72
 msgid "2003"
 msgstr "2003"
 
-#: ../src/glade-registration.glade.h:74
+#: ../src/glade-registration.glade.h:73
 msgid "Vista"
 msgstr "Vista"
 
-#: ../src/glade-registration.glade.h:75
+#: ../src/glade-registration.glade.h:74
 msgid "2008"
 msgstr "2008"
 
-#: ../src/glade-registration.glade.h:76
+#: ../src/glade-registration.glade.h:75
 msgid "7"
 msgstr "7"
 
-#: ../src/glade-registration.glade.h:77
+#: ../src/glade-registration.glade.h:76
 msgid "8"
 msgstr "8"
 
-#: ../src/glade-registration.glade.h:78
+#: ../src/glade-registration.glade.h:77
 msgid "2012"
 msgstr "2012"
 
-#: ../src/glade-registration.glade.h:79
+#: ../src/glade-registration.glade.h:78
 msgid "Tiger"
 msgstr "Tiger"
 
-#: ../src/glade-registration.glade.h:80
+#: ../src/glade-registration.glade.h:79
 msgid "Leopard"
 msgstr "Leopard"
 
-#: ../src/glade-registration.glade.h:81
+#: ../src/glade-registration.glade.h:80
 msgid "Snow Leopard"
 msgstr "Snow Leopard"
 
-#: ../src/glade-registration.glade.h:82
+#: ../src/glade-registration.glade.h:81
 msgid "Lion"
 msgstr "Lion"
 
-#: ../src/glade-registration.glade.h:83
+#: ../src/glade-registration.glade.h:82
 msgid "Mountain Lion"
 msgstr "Mountain Lion"
 
-#: ../src/glade-registration.glade.h:84
+#: ../src/glade-registration.glade.h:83
 msgid "Mavericks"
 msgstr "Mavericks"
 
-#: ../src/glade-registration.glade.h:85
+#: ../src/glade-registration.glade.h:84
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
 #. GtkLicense enumeration value
-#: ../src/glade-registration.glade.h:86 ../plugins/gtk+/gtk+.xml.in.h:796
+#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:796
 msgid "BSD"
 msgstr "BSD"
 
-#: ../src/glade-registration.glade.h:87
+#: ../src/glade-registration.glade.h:86
 msgid "Windows"
 msgstr "Windows"
 
-#: ../src/glade-registration.glade.h:88
+#: ../src/glade-registration.glade.h:87
 msgid "Mac OS X"
 msgstr "Mac OS X"
 
-#: ../src/glade-registration.glade.h:89
+#: ../src/glade-registration.glade.h:88
 msgid "Solaris"
 msgstr "Solaris"
 
-#: ../src/glade-registration.glade.h:90
+#: ../src/glade-registration.glade.h:89
 msgid "How often do you use it?"
 msgstr "Hvor ofte bruger du det?"
 
-#: ../src/glade-registration.glade.h:91
+#: ../src/glade-registration.glade.h:90
 msgid "Every day"
 msgstr "Hver dag"
 
-#: ../src/glade-registration.glade.h:92
+#: ../src/glade-registration.glade.h:91
 msgid "Few days a week"
 msgstr "Et par dage om ugen"
 
-#: ../src/glade-registration.glade.h:93
+#: ../src/glade-registration.glade.h:92
 msgid "Every week"
 msgstr "Hver uge"
 
-#: ../src/glade-registration.glade.h:94
+#: ../src/glade-registration.glade.h:93
 msgid "A few times a month"
 msgstr "Et par gange om måneden"
 
-#: ../src/glade-registration.glade.h:95
+#: ../src/glade-registration.glade.h:94
 msgid "Once a month"
 msgstr "En gang per måned"
 
-#: ../src/glade-registration.glade.h:96
+#: ../src/glade-registration.glade.h:95
 msgid "A few times a year"
 msgstr "Et par gange om året"
 
-#: ../src/glade-registration.glade.h:97
+#: ../src/glade-registration.glade.h:96
 msgid "What level of Glade user would you say you are?"
 msgstr "Hvilket niveau vil du sige du er på, som Glade-bruger?"
 
-#: ../src/glade-registration.glade.h:98
+#: ../src/glade-registration.glade.h:97
 msgid "Beginner"
 msgstr "Begynder"
 
-#: ../src/glade-registration.glade.h:99
+#: ../src/glade-registration.glade.h:98
 msgid "Intermediate"
 msgstr "Mellemniveau"
 
-#: ../src/glade-registration.glade.h:100
+#: ../src/glade-registration.glade.h:99
 msgid "Advanced"
 msgstr "Avanceret"
 
-#: ../src/glade-registration.glade.h:101
+#: ../src/glade-registration.glade.h:100
 msgid ""
 "Under what kind of license(s) do you release the software you used Glade to "
 "create?"
@@ -1386,123 +1382,123 @@ msgstr ""
 "Under hvilken type licenser udgiver du programmer, som du har skrevet ved "
 "hjælp af Glade?"
 
-#: ../src/glade-registration.glade.h:102
+#: ../src/glade-registration.glade.h:101
 msgid "Free software"
 msgstr "Fri software"
 
-#: ../src/glade-registration.glade.h:103
+#: ../src/glade-registration.glade.h:102
 msgid "Open source software"
 msgstr "Open source-software"
 
-#: ../src/glade-registration.glade.h:104
+#: ../src/glade-registration.glade.h:103
 msgid "Commercial/Closed software"
 msgstr "Commerciel/proprietær software"
 
-#: ../src/glade-registration.glade.h:105
+#: ../src/glade-registration.glade.h:104
 msgid "None - distributed internally"
 msgstr "Ingen - distribueres internt"
 
-#: ../src/glade-registration.glade.h:106
+#: ../src/glade-registration.glade.h:105
 msgid ""
 "In what field(s) is the software you used Glade to create generally used?"
 msgstr ""
 "I hvilke felter bruges den software, som du har udviklet med Glade, generelt?"
 
-#: ../src/glade-registration.glade.h:107
+#: ../src/glade-registration.glade.h:106
 msgid "Academic"
 msgstr "Akademisk"
 
-#: ../src/glade-registration.glade.h:108
+#: ../src/glade-registration.glade.h:107
 msgid "Embedded applications"
 msgstr "Indlejrede programmer"
 
-#: ../src/glade-registration.glade.h:109
+#: ../src/glade-registration.glade.h:108
 msgid "Accounting"
 msgstr "Regnskab"
 
-#: ../src/glade-registration.glade.h:110
+#: ../src/glade-registration.glade.h:109
 msgid "Desktop applications"
 msgstr "Skrivebordsprogrammer"
 
-#: ../src/glade-registration.glade.h:111
+#: ../src/glade-registration.glade.h:110
 msgid "Educational"
 msgstr "Uddannelse"
 
-#: ../src/glade-registration.glade.h:112
+#: ../src/glade-registration.glade.h:111
 msgid "Medical"
 msgstr "Medicinsk"
 
-#: ../src/glade-registration.glade.h:113
+#: ../src/glade-registration.glade.h:112
 msgid "Industrial applications"
 msgstr "Industrianvendelser"
 
-#: ../src/glade-registration.glade.h:114
+#: ../src/glade-registration.glade.h:113
 msgid "Scientific"
 msgstr "Videnskabeligt"
 
-#: ../src/glade-registration.glade.h:115
+#: ../src/glade-registration.glade.h:114
 msgid "What aspect of the software needs the most improvement?"
 msgstr "Hvilket aspekt af softwaren har mest brug for forbedring?"
 
-#: ../src/glade-registration.glade.h:116
+#: ../src/glade-registration.glade.h:115
 msgid "In your opinion what is the biggest problem with Glade?"
 msgstr "Efter din mening, hvad er det største problem med Glade?"
 
-#: ../src/glade-registration.glade.h:117
+#: ../src/glade-registration.glade.h:116
 msgid "Lack of documentation"
 msgstr "Mangel på dokumentation"
 
-#: ../src/glade-registration.glade.h:118
+#: ../src/glade-registration.glade.h:117
 msgid "Lack of professional support"
 msgstr "Mangel på professionel støtte"
 
-#: ../src/glade-registration.glade.h:119
+#: ../src/glade-registration.glade.h:118
 msgid "Lack of professional training"
 msgstr "Mangel på professionel træning"
 
-#: ../src/glade-registration.glade.h:120
+#: ../src/glade-registration.glade.h:119
 msgid "Lack of publicity/exposure"
 msgstr "Mangel på reklame/synlighed"
 
-#: ../src/glade-registration.glade.h:121
+#: ../src/glade-registration.glade.h:120
 msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
 msgstr ""
 "Mangel på officielle binærudgaver for andre operativsystemer (Windows, Mac "
 "OS X)"
 
-#: ../src/glade-registration.glade.h:122
+#: ../src/glade-registration.glade.h:121
 msgid "Have you ever encountered a bug?"
 msgstr "Har du nogensinde fundet en fejl?"
 
-#: ../src/glade-registration.glade.h:123
+#: ../src/glade-registration.glade.h:122
 msgid "Yes"
 msgstr "Ja"
 
-#: ../src/glade-registration.glade.h:124
+#: ../src/glade-registration.glade.h:123
 msgid "No"
 msgstr "Nej"
 
-#: ../src/glade-registration.glade.h:125
+#: ../src/glade-registration.glade.h:124
 msgid "If so, did you file a bug report?"
 msgstr "Hvis ja, indsendte du en fejlrapport?"
 
-#: ../src/glade-registration.glade.h:126
+#: ../src/glade-registration.glade.h:125
 msgid "Have you ever thought about contributing?"
 msgstr "Har du nogensinde tænkt på at bidrage?"
 
-#: ../src/glade-registration.glade.h:127
+#: ../src/glade-registration.glade.h:126
 msgid "Why not?"
 msgstr "Hvorfor ikke?"
 
-#: ../src/glade-registration.glade.h:128
+#: ../src/glade-registration.glade.h:127
 msgid "Comments:"
 msgstr "Kommentarer:"
 
-#: ../src/glade-registration.glade.h:129
+#: ../src/glade-registration.glade.h:128
 msgid "Privacy Note:"
 msgstr "Privatlivsnotits:"
 
-#: ../src/glade-registration.glade.h:130
+#: ../src/glade-registration.glade.h:129
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -1901,11 +1897,11 @@ msgstr "Redigerer justering for %s"
 msgid "Editing margins of %s"
 msgstr "Redigerer marginer for %s"
 
-#: ../gladeui/glade-design-layout.c:2091
+#: ../gladeui/glade-design-layout.c:2042
 msgid "Design View"
 msgstr "Designvisning"
 
-#: ../gladeui/glade-design-layout.c:2092
+#: ../gladeui/glade-design-layout.c:2043
 msgid "The GladeDesignView that contains this layout"
 msgstr "GladeDesignView'et, som indeholder dette layout"
 
@@ -1955,9 +1951,9 @@ msgstr "Egenskaber for %s - %s [%s]"
 #. * example: Window Properties - GtkWindow
 #.
 #: ../gladeui/glade-editor.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "%s Properties - %s"
-msgstr "Egenskaber for %s - %s [%s]"
+msgstr "Egenskaber for %s - %s"
 
 # Undgår en/et-problemet
 #: ../gladeui/glade-editor.c:761
@@ -2343,14 +2339,13 @@ msgstr "Fejl: %s.\n"
 #: ../gladeui/glade-previewer.c:219 ../gladeui/glade-widget.c:2742
 #: ../plugins/gtk+/glade-gtk-widget.c:1018
 #: ../plugins/gtk+/glade-gtk-widget.c:1081
-#, fuzzy
 msgid "(unnamed)"
-msgstr "Kolonnenavn"
+msgstr "(unavngivet)"
 
 #: ../gladeui/glade-previewer.c:231
-#, fuzzy, c-format
+#, c-format
 msgid "Previewing %s - %s"
-msgstr "Forhåndsvisning af %s (%s)"
+msgstr "Forhåndsvisning af %s - %s"
 
 #: ../gladeui/glade-previewer.c:233 ../gladeui/glade-previewer.c:237
 #, c-format
@@ -3941,14 +3936,17 @@ msgid "Tearoff menus are disabled"
 msgstr "Frakobling af menuer er slået fra"
 
 #: ../plugins/gtk+/glade-gtk-container.c:58
-#, fuzzy
 msgid "Cannot add a toplevel window to a container."
 msgstr "Kan ikke føje et topniveauvindue til en beholder."
 
+# https://developer.gnome.org/gtk3/stable/GtkPopover.html
+#
+# Teksten virker ikke så beskrivende...
+#
+# GtkPopover is a bubble-like context window, primarily meant to provide context-dependent information or options. Popovers are attached to a widget, passed at construction time on gtk_popover_new(), or updated afterwards through gtk_popover_set_relative_to(), by default they will point to the whole widget area, although this behavior can be changed through gtk_popover_set_pointing_to().
 #: ../plugins/gtk+/glade-gtk-container.c:67
-#, fuzzy
 msgid "Cannot add a popover to a container."
-msgstr "Kan ikke føje et topniveauvindue til en beholder."
+msgstr "Kan ikke føje en pop-over til en beholder."
 
 #: ../plugins/gtk+/glade-gtk-container.c:78
 #, c-format
@@ -3978,11 +3976,12 @@ msgstr ""
 "Denne egenskab er kun tilgængelig\n"
 "hvis tekstfeltstegnene er usynlige"
 
+# Så vidt jeg kan regne ud fra glade-gtk-flow-box.c er det Højre eller Venstre
 #: ../plugins/gtk+/glade-gtk-flow-box.c:249
 #: ../plugins/gtk+/glade-gtk-flow-box.c:255
-#, fuzzy, c-format
+#, c-format
 msgid "Insert Child on %s"
-msgstr "Indsæt kolonne på %s"
+msgstr "Indsæt underelement til %s"
 
 #: ../plugins/gtk+/glade-gtk-grid.c:597 ../plugins/gtk+/glade-gtk-grid.c:604
 #: ../plugins/gtk+/glade-gtk-list-box.c:252
@@ -4031,9 +4030,8 @@ msgid "This property only applies to named icons"
 msgstr "Denne egenskab gælder kun for navngivne ikoner"
 
 #: ../plugins/gtk+/glade-gtk-label.c:257
-#, fuzzy
 msgid "This property only applies if ellipsize and wrapping are enabled"
-msgstr "Denne egenskab gælder kun ved konfiguration af mærkat med tekst"
+msgstr "Denne egenskab gælder kun hvis ellipse og ombrydning er slået til"
 
 #: ../plugins/gtk+/glade-gtk-menu-item.c:53
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:173
@@ -4461,24 +4459,24 @@ msgid "Add and remove rows:"
 msgstr "Tilføj og fjern rækker:"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:158
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to have a start action"
-msgstr "Sætter %s til at bruge en indbygget knap"
+msgstr "Sætter %s til at have en starthandling"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:161
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to have an end action"
-msgstr "Sætter %s til at bruge et navngivet ikon"
+msgstr "Sætter %s til at have en sluthandling"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:164
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to not have a start action"
-msgstr "Sætter %s til ikke at bruge centreret underelement"
+msgstr "Sætter %s til ikke at have en starthandling"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:167
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to not have an end action"
-msgstr "Sætter %s til ikke at bruge centreret underelement"
+msgstr "Sætter %s til ikke at have en sluthandling"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:155
@@ -4571,11 +4569,11 @@ msgstr "Sætter %s til at bruge en systemtitelbjælke"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 msgid "Page Setup Dialog"
-msgstr "Sideopsætningsvindue"
+msgstr "Sideopsætningsdialog"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:2
 msgid "Print Dialog"
-msgstr "Udskriftsvindue"
+msgstr "Udskriftsdialog"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:3
 msgid "Page Set"
@@ -4844,7 +4842,7 @@ msgstr "Blød rulning"
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "Touchpad Gesture"
-msgstr ""
+msgstr "Pegepladegestus"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:82
@@ -5403,30 +5401,29 @@ msgstr "Beskrivelsesværdi"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:316
-#, fuzzy
 msgid "Generic object"
-msgstr "Generisk navn"
+msgstr "Generisk objekt"
 
+# Brøker er altid matematiske på dansk
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:318
-#, fuzzy
 msgid "Mathematical fraction"
-msgstr "den sidste handling"
+msgstr "Brøk"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:320
 msgid "A radical expression (in math)"
-msgstr ""
+msgstr "Et rodudtryk (matematisk)"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Subscript text"
-msgstr ""
+msgstr "Tekst i sænket skrift"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:324
 msgid "Superscript text"
-msgstr ""
+msgstr "Tekst i hævet skrift"
 
 #. Atk role enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:326
@@ -5666,14 +5663,12 @@ msgid "Vertical Box"
 msgstr "Lodret boks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:382
-#, fuzzy
 msgid "Action Bar"
-msgstr "Handlingsnavn"
+msgstr "Handlingsbjælke"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:383
-#, fuzzy
 msgid "The number of items in the action bar"
-msgstr "Antallet af elementer i titelbjælken"
+msgstr "Antallet af elementer i handlingsbjælken"
 
 #. GdkGravity enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:385
@@ -6158,9 +6153,8 @@ msgstr "Hindr skærmtastatur"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:567
-#, fuzzy
 msgid "Vertical Writing"
-msgstr "Lodret udfyldning"
+msgstr "Lodret skrift"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:568
 msgid "Primary Stock Icon"
@@ -6418,7 +6412,7 @@ msgstr "Ikonstørrelse"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:646
 msgid "Dialog Box"
-msgstr "Dialogvindue"
+msgstr "Dialogboks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:647
 msgid "Insert Row"
@@ -6496,14 +6490,12 @@ msgid "Number of pages"
 msgstr "Antal sider"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:668
-#, fuzzy
 msgid "Start Action"
-msgstr "Relateret handling"
+msgstr "Starthandling"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:669
-#, fuzzy
 msgid "End Action"
-msgstr "Handling"
+msgstr "Sluthandling"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:670
 msgid "Set the currently active page to edit, this property will not be saved"
@@ -6672,24 +6664,22 @@ msgstr "Positionen af rækkeelementet i listeboksen"
 msgid "List Box Row"
 msgstr "Listeboksrække"
 
+# https://developer.gnome.org/gtk3/stable/GtkFlowBox.html
 #: ../plugins/gtk+/gtk+.xml.in.h:717
-#, fuzzy
 msgid "Flow Box"
-msgstr "Strømmer til"
+msgstr "Flydekasse"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:718
-#, fuzzy
 msgid "Add Child"
-msgstr "Tilføj underelementet %s"
+msgstr "Tilføj underelement"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:719
-#, fuzzy
 msgid "The position of the child in the flowbox"
-msgstr "Positionen af rækkeelementet i listeboksen"
+msgstr "Positionen af underelementet i flydekassen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:720
 msgid "Flow Box Child"
-msgstr ""
+msgstr "Element i flydekasse"
 
 # Fra svar på bugreport om flertydighed:
 #
@@ -6839,9 +6829,8 @@ msgstr "Aldrig"
 
 #. GtkPolicyType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:770
-#, fuzzy
 msgid "External"
-msgstr "Udvidet"
+msgstr "Ekstern"
 
 #. GtkCornerType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:772
@@ -6877,7 +6866,7 @@ msgstr ""
 #.
 #: ../plugins/gtk+/gtk+.xml.in.h:784
 msgid "About Dialog"
-msgstr "Om-vindue"
+msgstr "Om-dialog"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:788
@@ -6941,15 +6930,15 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:810
 msgid "Color Selection Dialog"
-msgstr "Farvevælgervindue"
+msgstr "Farvevælgerdialog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:811
 msgid "File Chooser Dialog"
-msgstr "Filvælgervindue"
+msgstr "Filvælgerdialog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:812
 msgid "Font Selection Dialog"
-msgstr "Skrifttypevælgervindue"
+msgstr "Skrifttypevælgerdialog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:813
 msgid "Application Chooser Dialog"
@@ -6957,7 +6946,7 @@ msgstr "Programvælgerdialog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:814
 msgid "Message Dialog"
-msgstr "Meddelelsesvindue"
+msgstr "Meddelelsesdialog"
 
 #. GtkButtonsType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:816
@@ -7048,40 +7037,34 @@ msgstr "Sideplaceringen i Hjælperen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:847
 msgid "Popover"
-msgstr ""
+msgstr "Pop-over"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:848
-#, fuzzy
 msgid "Popover Menu"
-msgstr "Pop-op-menu"
+msgstr "Pop-over-menu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:849
-#, fuzzy
 msgid "Number of submenus"
-msgstr "Antal kolonner:"
+msgstr "Antal undermenuer"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:850
-#, fuzzy
 msgid "Edit menu"
 msgstr "Redigér menu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:851
-#, fuzzy
 msgid "The number of submenus in the popover menu"
-msgstr "Antal elementer i boksen"
+msgstr "Antal undermenuer i pop-over-menuen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:852
-#, fuzzy
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
-"Indstil den nuværende aktive side at redigere. Denne egenskab vil ikke blive "
-"gemt"
+"Indstil den nuværende aktive undermenu, der skal redigeres. Denne egenskab "
+"vil ikke blive gemt"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:853
-#, fuzzy
 msgid "Model Button"
-msgstr "Værktøjsknap"
+msgstr "Modelknap"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:854
 msgid "Link Button"
@@ -7104,7 +7087,7 @@ msgstr "Ældst benyttede først"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:860
 msgid "Recent Chooser Dialog"
-msgstr "Seneste vælgervindue"
+msgstr "Seneste vælger-dialog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:861
 msgid "Size Group"
@@ -7562,10 +7545,8 @@ msgstr "Anden museknap"
 msgid "Third Mouse Button"
 msgstr "Tredje museknap"
 
-# fejlrapport
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1003
-#, fuzzy
 msgid "Fourth Mouse Button"
 msgstr "Fjerde museknap"
 
@@ -7884,9 +7865,8 @@ msgid "Add center child"
 msgstr "Tilføj centreret underelement"
 
 #: ../plugins/gtk+/glade-action-bar-editor.ui.h:3
-#, fuzzy
 msgid "Whether this action bar should include a centered child."
-msgstr "Om denne boks skal inkludere et centreret underelement."
+msgstr "Om denne handlingsbjælke skal inkludere et centreret underelement."
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:1
 msgid "Action Attributes"
@@ -8155,9 +8135,8 @@ msgid "Automatically wrap"
 msgstr "Ombryd automatisk"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:8
-#, fuzzy
 msgid "Lines"
-msgstr "Lineær"
+msgstr "Linjer"
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:1
 msgid "Level Bar Attributes"
@@ -8199,10 +8178,11 @@ msgstr "Justering og udfyldning"
 msgid "Padding"
 msgstr "Udfyldning"
 
+# Jeg ved ikke hvad en modelknap er præcist, men den findes
+# https://mail.gnome.org/archives/commits-list/2015-October/msg08321.html
 #: ../plugins/gtk+/glade-model-button-editor.ui.h:1
-#, fuzzy
 msgid "Model Button Attributes"
-msgstr "Attributter for knap"
+msgstr "Atributter for modelknap"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:1
 msgid "Notebook Attributes"
@@ -8218,24 +8198,20 @@ msgid "Tab Attributes"
 msgstr "Attributter for faneblad"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:5
-#, fuzzy
 msgid "Start Action:"
-msgstr "Relateret handling"
+msgstr "Starthandling:"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:6
-#, fuzzy
 msgid "End Action:"
-msgstr "Handling"
+msgstr "Sluthandling:"
 
 #: ../plugins/gtk+/glade-popover-editor.ui.h:1
-#, fuzzy
 msgid "Popover Attributes"
-msgstr "Programattributter"
+msgstr "Attributter for pop-over"
 
 #: ../plugins/gtk+/glade-popover-menu-editor.ui.h:1
-#, fuzzy
 msgid "Menu Attributes"
-msgstr "Attributter"
+msgstr "Attributter for menu"
 
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:1
 msgid "Progress Bar Attributes"
@@ -8471,6 +8447,9 @@ msgstr "Vinduesdekorationer på klientside"
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
 msgstr "Om dette vindue skal inkludere en brugertilpasset titellinje."
+
+#~ msgid "See Privacy Note"
+#~ msgstr "Se privatlivsnotits"
 
 #~ msgid "--listen and --filename must not be simultaneously specified.\n"
 #~ msgstr "--listen og --filename må ikke være givet samtidigt.\n"
