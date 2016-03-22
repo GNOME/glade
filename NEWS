@@ -1,4 +1,38 @@
 ============
+Glade 3.20.0
+============
+
+	- Workspace layout: render frame and selection box with CSS
+	- GtkWindow: don't set the same titlebar multiple times (Ben Iofel)
+	- Fixed bug 761839: Fix 'glade' command name in user manual (Anders Jonsson)
+	- Fixed bug 536840 - Save palette small icon preference (Tristan)
+	- Fixed bug 430445 - null string default title for GtkFileChooserButton (Tristan)
+	- Integrate new properties in editor for GtkLabel, GtkTextView, GtkPopover, GtkStackSwitcher (Tristan)
+	- Fixed bug 750985 - GtkMisc property deprecations (Tristan)
+	- Fixed bug 759872 - Show popovers hidden by model buttons (Tristan)
+	- Fixed bug 751234 - Ignore tearoff-state property in the workspace (Tristan)
+	- Fixed bug 759455 - Avoid showing window decorations in Glade's workspace (Tristan)
+	- Fixed bug 759395 - Ignore ESC key press from popovers (Tristan)
+	- Fixed bug 760610: Disable scroll events on property editor widgets (Tristan)
+	- Support id-less builder files (DX hackfest)
+	- Added missing tags to the AppData file (Richard Hughes) 
+	- Fixed bug 759847 "Don't crash when popover menu children have no visible-submenu set" Руслан Ижбулатов
+	- Added support for GtkActionBar and GtkFlowBox (Matthias Clasen)
+	- Main UI frontend: Use wide paned handles (Tristan)
+	- Fixed warning about imbalanced children in GtkNotebook support (Tristan)
+	- Added support for GtkPopoverMenu and GtkModelButton (Matthias Clasen)
+	- Added support for GtkPopover bug 740104 (Matthias Clasen)
+	- Fixed bug 754131 "Avoid crashes when loading boxes with center-child children"
+	- Added <kudos> section to app data as requested by Richard Hughes.
+	- Added missing displayable values bugs 758290, 758289, 758288, 758287 (Matthias Clasen) 
+	- Deprecate GtkAction, GtkActivatable, and friends bug 757609 (Ben Iofel)
+	- Avoid GTK+ style context warnings bugs 758296, 758297, 758299, 758300 (Matthias Clasen)
+	- Drop deprecated style properties in GladeCloseButton bug 758280 (Matthias Clasen)
+	- Replace use of deprecated gdk_cursor_new (Ben Iofel)
+	- Add "Stack" to "Add parent" menu bug 754030 (Florian Richter)
+	- Fixed bug 741923 "build: Add dependency on libm for floor() and ceil()" (Philip Withnall)
+
+============
 Glade 3.19.0
 ============
 
