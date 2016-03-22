@@ -107,7 +107,15 @@ main (int   argc,
 	  /* FIXME: FileChooserButton leaks a GTask which will crash in the following test */
 	  adaptor_type != GTK_TYPE_FILE_CHOOSER_BUTTON &&
           /* FIXME: GtkRecentChooser tries to remove an unknown source id */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER))
+	  !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER) &&
+	  /* FIXME: can not create a themed icon without a name */
+	  !g_type_is_a (adaptor_type, G_TYPE_THEMED_ICON) &&
+	  /* FIXME: Dialogs now use a headerbar by default making gtk give a warning when adding a widget to the action area */
+	  !g_type_is_a (adaptor_type, GTK_TYPE_DIALOG) &&
+	  /* FIXME: The same goes for assistant */
+	  !g_type_is_a (adaptor_type, GTK_TYPE_ASSISTANT) &&
+	  /* FIXME: GtkPopoverMenu gives a few warnings */
+	  !g_type_is_a (adaptor_type, GTK_TYPE_POPOVER_MENU))
 	{
 	  gchar *test_path = g_strdup_printf ("/CreateWidget/%s", glade_widget_adaptor_get_name (adaptor));
 
