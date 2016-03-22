@@ -297,7 +297,11 @@ AM_CONDITIONAL(BUILD_GLADEUI, test x"$enable_gladeui" = "xyes")
 dnl ================================================================
 dnl Testing environment
 dnl ================================================================
-GLADE_TEST_ENVIRONMENT='GLADE_TESTING=1 GLADE_PIXMAP_DIR=$(top_srcdir)/data/icons GLADE_CATALOG_SEARCH_PATH=$(top_srcdir)/plugins/gtk+ GLADE_MODULE_SEARCH_PATH=$(top_builddir)/plugins/gtk+/.libs'
+#
+# Do not redefine pixmap dir as it does not work if not inside a proper directory structure
+# GLADE_PIXMAP_DIR=$(top_srcdir)/data/icons
+#
+GLADE_TEST_ENVIRONMENT='GLADE_TESTING=1 GLADE_CATALOG_SEARCH_PATH=$(top_srcdir)/plugins/gtk+ GLADE_MODULE_SEARCH_PATH=$(top_builddir)/plugins/gtk+/.libs'
 AC_SUBST(GLADE_TEST_ENVIRONMENT)
 
 AC_SUBST([AM_CPPFLAGS])
