@@ -22,8 +22,8 @@ glade_previewer_LDFLAGS = $(AM_LDFLAGS)
 glade_previewer_LDADD = libgladeui-2.la $(GTK_MAC_LIBS)
 
 glade_previewer_SOURCES = \
+	glade-previewer-main.c \
 	glade-previewer.c \
-	glade-preview-window.c \
 	glade-preview-template.c
 
 if NATIVE_WIN32
@@ -197,7 +197,7 @@ noinst_HEADERS = \
 	glade-popup.h \
 	glade-preview.h \
 	glade-preview-tokens.h \
-	glade-preview-window.h \
+	glade-previewer.h \
 	glade-preview-template.h \
 	glade-private.h \
 	glade-project-properties.h \
