@@ -573,7 +573,8 @@ glade_eprop_accel_show_dialog (GtkWidget           *dialog_button,
 			(gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)),
 			 (GtkTreeModelForeachFunc)
 			 glade_eprop_accel_accum_accelerators, &accelerators);
-		
+
+		accelerators = g_list_reverse (accelerators);
 		g_value_init (&value, GLADE_TYPE_ACCEL_GLIST);
 		g_value_take_boxed (&value, accelerators);
 
