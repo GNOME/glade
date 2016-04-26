@@ -611,24 +611,21 @@ glade_gtk_box_child_action_activate (GladeWidgetAdaptor * adaptor,
     {
       glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
                                                          object, "size",
-                                                         _
-                                                         ("Insert placeholder to %s"),
+                                                         FALSE, TRUE,
                                                          FALSE, TRUE);
     }
   else if (strcmp (action_path, "insert_before") == 0)
     {
       glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
                                                          object, "size",
-                                                         _
-                                                         ("Insert placeholder to %s"),
+                                                         FALSE, TRUE,
                                                          FALSE, FALSE);
     }
   else if (strcmp (action_path, "remove_slot") == 0)
     {
       glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
                                                          object, "size",
-                                                         _
-                                                         ("Remove placeholder from %s"),
+                                                         FALSE, FALSE,
                                                          TRUE, FALSE);
     }
   else

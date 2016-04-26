@@ -936,22 +936,21 @@ glade_gtk_notebook_child_action_activate (GladeWidgetAdaptor * adaptor,
     {
       glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
                                                          object, "pages",
-                                                         _("Insert page on %s"),
+                                                         TRUE, TRUE,
                                                          FALSE, TRUE);
     }
   else if (strcmp (action_path, "insert_page_before") == 0)
     {
       glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
                                                          object, "pages",
-                                                         _("Insert page on %s"),
+                                                         TRUE, TRUE,
                                                          FALSE, FALSE);
     }
   else if (strcmp (action_path, "remove_page") == 0)
     {
       glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
                                                          object, "pages",
-                                                         _
-                                                         ("Remove page from %s"),
+                                                         TRUE, FALSE,
                                                          TRUE, TRUE);
     }
   else
@@ -967,7 +966,8 @@ glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor * adaptor,
                                                    GObject * container,
                                                    GObject * object,
                                                    const gchar * size_prop,
-                                                   const gchar * group_format,
+                                                   gboolean is_notebook,
+                                                   gboolean is_insert,
                                                    gboolean remove,
                                                    gboolean after)
 {
@@ -985,7 +985,20 @@ glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor * adaptor,
                              GTK_WIDGET (object), "position", &child_pos, NULL);
 
   parent = glade_widget_get_from_gobject (container);
-  glade_command_push_group (group_format, glade_widget_get_name (parent));
+  if (is_notebook)
+    {
+      if (is_insert)
+        glade_command_push_group (_("Insert page on %s"), glade_widget_get_name (parent));
+      else
+        glade_command_push_group (_("Remove page from %s"), glade_widget_get_name (parent));
+    }
+  else
+    {
+      if (is_insert)
+        glade_command_push_group (_("Insert placeholder to %s"), glade_widget_get_name (parent));
+      else
+        glade_command_push_group (_("Remove placeholder from %s"), glade_widget_get_name (parent));
+    }
 
   /* Make sure widgets does not get destroyed */
   children = glade_widget_adaptor_get_children (adaptor, container);

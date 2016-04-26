@@ -30,7 +30,8 @@ void glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor * ada
 							GObject * container,
 							GObject * object,
 							const gchar * size_prop,
-							const gchar * group_format,
+							gboolean is_notebook,
+							gboolean is_insert,
 							gboolean remove,
 							gboolean after);
 
