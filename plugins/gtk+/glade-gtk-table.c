@@ -47,6 +47,14 @@ typedef enum
   DIR_RIGHT
 } GladeTableDir;
 
+typedef enum
+{
+  GROUP_ACTION_INSERT_ROW,
+  GROUP_ACTION_INSERT_COLUMN,
+  GROUP_ACTION_REMOVE_COLUMN,
+  GROUP_ACTION_REMOVE_ROW
+} GroupAction;
+
 /* Redefine GTK_TABLE() macro, as GtkTable is deprecated */
 #undef GTK_TABLE
 #define GTK_TABLE(obj) ((GtkTable *)obj)
@@ -508,7 +516,7 @@ static void
 glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor, 
 					    GObject            *container, 
 					    GObject            *object, 
-					    const gchar        *group_format, 
+					    GroupAction         group_action,
 					    const gchar        *n_row_col, 
 					    const gchar        *attach1,    /* should be smaller (top/left) attachment */
                                             const gchar        *attach2,      /* should be larger (bot/right) attachment */
@@ -524,7 +532,23 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
                            after ? attach2 : attach1, &child_pos, NULL);
 
   parent = glade_widget_get_from_gobject (container);
-  glade_command_push_group (group_format, glade_widget_get_name (parent));
+  switch (group_action)
+    {
+      case GROUP_ACTION_INSERT_ROW:
+        glade_command_push_group (_("Insert Row on %s"), glade_widget_get_name (parent));
+        break;
+      case GROUP_ACTION_INSERT_COLUMN:
+        glade_command_push_group (_("Insert Column on %s"), glade_widget_get_name (parent));
+        break;
+      case GROUP_ACTION_REMOVE_COLUMN:
+        glade_command_push_group (_("Remove Column on %s"), glade_widget_get_name (parent));
+        break;
+      case GROUP_ACTION_REMOVE_ROW:
+        glade_command_push_group (_("Remove Row on %s"), glade_widget_get_name (parent));
+        break;
+      default:
+        g_assert_not_reached ();
+    }
 
   children = glade_widget_adaptor_get_children (adaptor, container);
   /* Make sure widgets does not get destroyed */
@@ -640,14 +664,14 @@ glade_gtk_table_child_action_activate (GladeWidgetAdaptor * adaptor,
   if (strcmp (action_path, "insert_row/after") == 0)
     {
       glade_gtk_table_child_insert_remove_action (adaptor, container, object,
-                                                  _("Insert Row on %s"),
+                                                  GROUP_ACTION_INSERT_ROW,
                                                   "n-rows", "top-attach",
                                                   "bottom-attach", FALSE, TRUE);
     }
   else if (strcmp (action_path, "insert_row/before") == 0)
     {
       glade_gtk_table_child_insert_remove_action (adaptor, container, object,
-                                                  _("Insert Row on %s"),
+                                                  GROUP_ACTION_INSERT_ROW,
                                                   "n-rows", "top-attach",
                                                   "bottom-attach",
                                                   FALSE, FALSE);
@@ -655,28 +679,28 @@ glade_gtk_table_child_action_activate (GladeWidgetAdaptor * adaptor,
   else if (strcmp (action_path, "insert_column/after") == 0)
     {
       glade_gtk_table_child_insert_remove_action (adaptor, container, object,
-                                                  _("Insert Column on %s"),
+                                                  GROUP_ACTION_INSERT_COLUMN,
                                                   "n-columns", "left-attach",
                                                   "right-attach", FALSE, TRUE);
     }
   else if (strcmp (action_path, "insert_column/before") == 0)
     {
       glade_gtk_table_child_insert_remove_action (adaptor, container, object,
-                                                  _("Insert Column on %s"),
+                                                  GROUP_ACTION_INSERT_COLUMN,
                                                   "n-columns", "left-attach",
                                                   "right-attach", FALSE, FALSE);
     }
   else if (strcmp (action_path, "remove_column") == 0)
     {
       glade_gtk_table_child_insert_remove_action (adaptor, container, object,
-                                                  _("Remove Column on %s"),
+                                                  GROUP_ACTION_REMOVE_COLUMN,
                                                   "n-columns", "left-attach",
                                                   "right-attach", TRUE, FALSE);
     }
   else if (strcmp (action_path, "remove_row") == 0)
     {
       glade_gtk_table_child_insert_remove_action (adaptor, container, object,
-                                                  _("Remove Row on %s"),
+                                                  GROUP_ACTION_REMOVE_ROW,
                                                   "n-rows", "top-attach",
                                                   "bottom-attach", TRUE, FALSE);
     }
