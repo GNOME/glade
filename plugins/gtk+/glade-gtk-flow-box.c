@@ -194,7 +194,6 @@ static void
 glade_gtk_flowbox_child_insert_action (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *object,
-                                       const gchar        *group_format,
                                        gboolean            after)
 {
   GladeWidget *parent;
@@ -202,7 +201,7 @@ glade_gtk_flowbox_child_insert_action (GladeWidgetAdaptor *adaptor,
   gint position;
 
   parent = glade_widget_get_from_gobject (container);
-  glade_command_push_group (group_format, glade_widget_get_name (parent));
+  glade_command_push_group (_("Insert Child on %s"), glade_widget_get_name (parent));
 
   position = gtk_flow_box_child_get_index (GTK_FLOW_BOX_CHILD (object));
   if (after)
@@ -246,13 +245,11 @@ glade_gtk_flowbox_child_action_activate (GladeWidgetAdaptor *adaptor,
   if (strcmp (action_path, "insert_after") == 0)
     {
       glade_gtk_flowbox_child_insert_action (adaptor, container, object,
-                                             _("Insert Child on %s"),
                                              TRUE);
     }
   else if (strcmp (action_path, "insert_before") == 0)
     {
       glade_gtk_flowbox_child_insert_action (adaptor, container, object,
-                                             _("Insert Child on %s"),
                                              FALSE);
     }
   else
