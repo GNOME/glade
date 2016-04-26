@@ -197,7 +197,6 @@ static void
 glade_gtk_listbox_child_insert_action (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *object,
-                                       const gchar        *group_format,
                                        gboolean            after)
 {
   GladeWidget *parent;
@@ -205,7 +204,7 @@ glade_gtk_listbox_child_insert_action (GladeWidgetAdaptor *adaptor,
   gint position;
 
   parent = glade_widget_get_from_gobject (container);
-  glade_command_push_group (group_format, glade_widget_get_name (parent));
+  glade_command_push_group (_("Insert Row on %s"), glade_widget_get_name (parent));
 
   position = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (object));
   if (after)
@@ -249,13 +248,11 @@ glade_gtk_listbox_child_action_activate (GladeWidgetAdaptor *adaptor,
   if (strcmp (action_path, "insert_after") == 0)
     {
       glade_gtk_listbox_child_insert_action (adaptor, container, object,
-                                             _("Insert Row on %s"),
                                              TRUE);
     }
   else if (strcmp (action_path, "insert_before") == 0)
     {
       glade_gtk_listbox_child_insert_action (adaptor, container, object,
-                                             _("Insert Row on %s"),
                                              FALSE);
     }
   else
