@@ -45,6 +45,16 @@ glade_gtk_window_parse_finished (GladeProject * project, GObject * object)
                              "use-csd", gtk_window_get_titlebar(GTK_WINDOW (object)) != NULL);
 }
 
+static void
+glade_gtk_window_ensure_titlebar_placeholder (GObject *window)
+{
+  GtkWidget *placeholder = glade_placeholder_new ();
+
+  gtk_window_set_titlebar (GTK_WINDOW (window), placeholder);
+
+  gtk_widget_hide (placeholder);
+}
+
 void
 glade_gtk_window_post_create (GladeWidgetAdaptor * adaptor,
                               GObject * object, GladeCreateReason reason)
@@ -52,10 +62,17 @@ glade_gtk_window_post_create (GladeWidgetAdaptor * adaptor,
   GladeWidget *parent = glade_widget_get_from_gobject (object);
   GladeProject *project = glade_widget_get_project (parent);
 
-  /* Avoid obnoxious window decorations comming up exposing close buttons
-   * which actually close glade itself.
+  /* Add a placeholder as the titlebar widget and hide it.
+   *
+   * This way we avoid client side decorations in the workspace in non WM backends
+   * like wayland.
+   *
+   * We do not use gtk_window_set_decorated (FALSE) because we need to be able to show
+   * the decoration if the user enables CSD.
+   *
+   * See Bug 765885 - "client side decoration, no space to add header bar"
    */
-  gtk_window_set_decorated (GTK_WINDOW (object), FALSE);
+  glade_gtk_window_ensure_titlebar_placeholder (object);
 
   if (reason == GLADE_CREATE_LOAD)
     {
@@ -240,17 +257,14 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
     }
   else if (!strcmp (id, "use-csd"))
     {
+      GtkWidget *titlebar = gtk_window_get_titlebar (GTK_WINDOW (object));
+
       if (g_value_get_boolean (value))
         {
-          GtkWidget *titlebar;
-
-          titlebar = gtk_window_get_titlebar (GTK_WINDOW (object));
-          if (!titlebar)
-            {
-              titlebar = glade_placeholder_new ();
-              gtk_window_set_titlebar (GTK_WINDOW (object), titlebar);
-            }
           g_object_set_data (G_OBJECT (titlebar), "special-child-type", "titlebar");
+
+          /* make sure the titlebar widget is visible */
+          gtk_widget_show (titlebar);
 
           glade_widget_property_set_sensitive (gwidget, "title", FALSE, CSD_DISABLED_MESSAGE);
           glade_widget_property_set_sensitive (gwidget, "decorated", FALSE, CSD_DISABLED_MESSAGE);
@@ -258,7 +272,8 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
         }
       else
         {
-          gtk_window_set_titlebar (GTK_WINDOW (object), NULL);
+          /* Set a hidden placeholder as the titlebar */
+          glade_gtk_window_ensure_titlebar_placeholder (object);
 
           glade_widget_property_set_sensitive (gwidget, "title", TRUE, NULL);
           glade_widget_property_set_sensitive (gwidget, "decorated", TRUE, NULL);
