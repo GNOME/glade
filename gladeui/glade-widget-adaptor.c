@@ -207,21 +207,6 @@ gwa_create_cursor (GladeWidgetAdaptor *adaptor)
 	g_object_unref (widget_pixbuf);
 }
 
-
-
-static gboolean
-gwa_gtype_equal (gconstpointer v1,
-		 gconstpointer v2)
-{
-  return *((const GType*) v1) == *((const GType*) v2);
-}
-
-static guint
-gwa_gtype_hash (gconstpointer v)
-{
-  return *(const GType*) v;
-}
-
 static gboolean
 glade_widget_adaptor_hash_find (gpointer key, gpointer value, gpointer user_data)
 {
@@ -1629,7 +1614,7 @@ gwa_derive_adaptor_for_type (GType object_type, GWADerivedClassData *data)
                                      API
  *******************************************************************************/
 static void
-accum_adaptor (GType              *type,
+accum_adaptor (gpointer            key,
 	       GladeWidgetAdaptor *adaptor,
 	       GList             **list)
 {
@@ -1674,12 +1659,10 @@ glade_widget_adaptor_register (GladeWidgetAdaptor *adaptor)
 	}
 
 	if (!adaptor_hash)
-		adaptor_hash = g_hash_table_new_full (gwa_gtype_hash, gwa_gtype_equal,
-						      g_free, g_object_unref);
+		adaptor_hash = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+						      NULL, g_object_unref);
 
-	g_hash_table_insert (adaptor_hash, 
-			     g_memdup (&adaptor->type, 
-				       sizeof (GType)), adaptor);
+	g_hash_table_insert (adaptor_hash, GSIZE_TO_POINTER (adaptor->type), adaptor);
 }
 
 static GladePackingDefault *
@@ -2420,22 +2403,6 @@ glade_widget_adaptor_create_widget_real (gboolean          query,
 	return gwidget;
 }
 
-typedef struct
-{
-	const gchar        *name;
-	GladeWidgetAdaptor *adaptor;
-} GladeAdaptorSearchPair;
-
-
-static void
-search_adaptor_by_name (GType                  *type,
-			GladeWidgetAdaptor     *adaptor,
-			GladeAdaptorSearchPair *pair)
-{
-	if (!strcmp (adaptor->name, pair->name))
-		pair->adaptor = adaptor;
-}
-
 /**
  * glade_widget_adaptor_get_by_name:
  * @name: name of the widget class (for instance: GtkButton)
@@ -2446,16 +2413,12 @@ search_adaptor_by_name (GType                  *type,
 GladeWidgetAdaptor  *
 glade_widget_adaptor_get_by_name (const gchar  *name)
 {
-
-
-	GladeAdaptorSearchPair pair = { name, NULL };
+	GType type = g_type_from_name (name);
 	
-	if (adaptor_hash != NULL)
-	{
-		g_hash_table_foreach (adaptor_hash, 
-				      (GHFunc)search_adaptor_by_name, &pair);
-	}
-	return pair.adaptor;
+	if (adaptor_hash != NULL && type)
+		return g_hash_table_lookup (adaptor_hash, GSIZE_TO_POINTER (type));
+
+	return NULL;
 }
 
 
@@ -2470,7 +2433,7 @@ GladeWidgetAdaptor  *
 glade_widget_adaptor_get_by_type (GType  type)
 {
 	if (adaptor_hash != NULL)
-		return g_hash_table_lookup (adaptor_hash, &type);
+		return g_hash_table_lookup (adaptor_hash, GSIZE_TO_POINTER (type));
 	else
 		return NULL;
 }
