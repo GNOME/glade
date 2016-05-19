@@ -199,7 +199,7 @@ glade_previewer_set_widget (GladePreviewer *preview, GtkWidget *widget)
   /* Create dialog to display messages */
   priv->dialog = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size (GTK_WINDOW (priv->dialog), 640, 320);
-  gtk_window_set_title (GTK_WINDOW (priv->dialog), _("Glade Previewer log"));
+  gtk_window_set_title (GTK_WINDOW (priv->dialog), "Glade Previewer log");
   gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), GTK_WINDOW (priv->widget));
 
   priv->textview = gtk_text_view_new ();
