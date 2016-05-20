@@ -57,7 +57,7 @@ glade_gtk_box_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_box_parse_finished (GladeProject * project, GObject *gbox)
+glade_gtk_box_parse_finished (GladeProject * project, GladeWidget *gbox)
 {
   GObject *box = glade_widget_get_object (gbox);
 
