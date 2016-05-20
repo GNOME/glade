@@ -26,14 +26,11 @@
 
 G_BEGIN_DECLS
 
-void glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor * adaptor,
-							GObject * container,
-							GObject * object,
-							const gchar * size_prop,
-							gboolean is_notebook,
-							gboolean is_insert,
-							gboolean remove,
-							gboolean after);
+void glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
+							GObject            *container,
+							GObject            *object,
+							gboolean            remove,
+							gboolean            after);
 
 
 G_END_DECLS
