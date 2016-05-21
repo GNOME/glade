@@ -84,7 +84,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="scrollable">True</property>
-        <signal name="select-page" handler="glade_editor_switch_page" swapped="no"/>
+        <signal name="switch-page" handler="glade_editor_switch_page" swapped="no"/>
         <child>
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
