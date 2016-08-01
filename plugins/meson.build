@@ -12,6 +12,10 @@ plugins_kwargs = {
 
 subdir('gtk+')
 
+if have_gjs
+  subdir('gjs')
+endif
+
 if have_python
   subdir('python')
 endif

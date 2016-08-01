@@ -141,6 +141,10 @@ if not cc.links(va_copy_src.format('va_copy', name: 'how to copy va_list'))
   endif
 endif
 
+# GJS support
+gjs_dep = dependency('gjs-1.0', version: '>= 1.64.0', required: get_option('gjs'))
+have_gjs = gjs_dep.found()
+
 # Python for optional python dev libs
 pygobject_version = '3.8.0'
 pygobject_dep = dependency('pygobject-3.0', version: '>= ' + pygobject_version, required: get_option('python'))
@@ -212,6 +216,7 @@ output += '\tCompiler:                ' + cc.get_id() + '\n'
 output += '\tSource code location:    ' + source_root + '\n'
 output += '\tDebug Enabled:           ' + glade_debug.to_string() + '\n'
 output += '\tGTK+ UNIX Print Widgets: ' + have_gtk_unix_print.to_string() + '\n'
+output += '\tGJS Widgets support:     ' + have_gjs.to_string() + '\n'
 output += '\tPYTHON Widgets support:  ' + have_python.to_string() + '\n'
 output += '\tGladeui Catalog:         ' + enable_gladeui.to_string() + '\n'
 output += '\tWebKit2GTK+ Catalog:     ' + have_webkit2gtk.to_string() + '\n'
