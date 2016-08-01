@@ -6,6 +6,10 @@ if BUILD_PYTHON
 SUBDIRS += python
 endif
 
+if BUILD_GJS
+SUBDIRS += gjs
+endif
+
 if BUILD_GLADEUI
 SUBDIRS += gladeui
 endif

@@ -223,6 +223,21 @@ else
 fi
 AM_CONDITIONAL(BUILD_WEBKIT2GTK, test x"$have_webkit2gtk" = "xyes")
 
+dnl ================================================================
+dnl GJS for optional JavaScript support
+dnl ================================================================
+GJS_REQUIRED=1.45.3
+
+AC_ARG_ENABLE(gjs,
+    AS_HELP_STRING([--disable-gjs], [disable gjs catalog]),
+    check_gjs=$enableval, check_gjs=yes)
+
+if test x"$check_gjs" = x"yes"; then
+  PKG_CHECK_MODULES([GJS],[gtk+-3.0 gjs-1.0 >= $GJS_REQUIRED],[have_gjs=yes],[have_gjs=no])
+else
+  have_gjs=no
+fi
+AM_CONDITIONAL(BUILD_GJS, test x"$have_gjs" = "xyes")
 # ==================================================================
 # Glade User Manual (requires yelp-tools)
 # ==================================================================
@@ -357,6 +372,7 @@ plugins/gtk+/icons/Makefile
 plugins/gtk+/icons/16x16/Makefile
 plugins/gtk+/icons/22x22/Makefile
 plugins/python/Makefile
+plugins/gjs/Makefile
 plugins/gladeui/Makefile
 plugins/webkit2gtk/Makefile
 po/Makefile.in
@@ -379,6 +395,7 @@ Configuration:
 	Debug Enabled:           ${enable_debug}
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	PYTHON Widgets support:	 ${have_python}
+	GJS Widgets support:	 ${have_gjs}
 	Gladeui Catalog:         ${enable_gladeui}
 	WebKit2GTK+ Catalog:     ${have_webkit2gtk}
 	Introspection Data:      ${found_introspection}
