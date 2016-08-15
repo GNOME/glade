@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glade glade-3-20\n"
+"Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-06-27 00:07+0000\n"
-"PO-Revision-Date: 2016-08-15 11:38+0700\n"
+"POT-Creation-Date: 2016-07-17 15:32+0000\n"
+"PO-Revision-Date: 2016-08-15 11:45+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
@@ -20,7 +20,8 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 1.8.8\n"
 
-#: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
+#: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
+#: ../src/main.c:42
 msgid "Glade"
 msgstr "Glade"
 
@@ -32,7 +33,7 @@ msgstr "Perancang Antar Muka"
 msgid "Glade Interface Designer"
 msgstr "Perancang Antar Muka Glade"
 
-#: ../data/glade.desktop.in.in.h:4
+#: ../data/glade.desktop.in.in.h:4 ../data/glade.appdata.xml.in.h:2
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "Buat atau buka rancangan antar muka pengguna bagi aplikasi GTK+"
 
@@ -41,7 +42,7 @@ msgid "GUI designer;user interface;ui builder;"
 msgstr "Disainer GUI;antar muka pengguna;pembangun ui;"
 
 #. To translators: AppData description first paragraph
-#: ../data/glade.appdata.xml.in.h:2
+#: ../data/glade.appdata.xml.in.h:4
 msgid ""
 "Glade is a RAD tool to enable quick &amp; easy development of user "
 "interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
@@ -51,7 +52,7 @@ msgstr ""
 "GNOME."
 
 #. To translators: AppData description second paragraph
-#: ../data/glade.appdata.xml.in.h:4
+#: ../data/glade.appdata.xml.in.h:6
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
@@ -64,7 +65,7 @@ msgstr ""
 "objek baru turunan GtkWidget memakai fitur templat baru GTK+."
 
 #. To translators: AppData description third paragraph
-#: ../data/glade.appdata.xml.in.h:6
+#: ../data/glade.appdata.xml.in.h:8
 msgid ""
 "By using GtkBuilder, Glade XML files can be used in numerous programming "
 "languages including C, C++, C#, Vala, Java, Perl, Python, and others."
@@ -1582,7 +1583,7 @@ msgstr "Hirarki"
 msgid "Label"
 msgstr "Label"
 
-#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1446
 msgid "Type"
 msgstr "Jenis"
 
@@ -2084,7 +2085,7 @@ msgstr "_Buka"
 
 #. GtkInputPurpose enumeration value
 #: ../gladeui/glade-editor-property.c:3090
-#: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1341
+#: ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Name"
 msgstr "Nama"
@@ -2266,6 +2267,10 @@ msgstr "Galat saat meluncurkan pemratilik: %s\n"
 #, c-format
 msgid "Failed to launch preview: %s.\n"
 msgstr "Gagal meluncurkan pratilik:%s.\n"
+
+#: ../gladeui/glade-previewer.c:202
+msgid "Glade Previewer log"
+msgstr "Log Pemratinjau Glade"
 
 #: ../gladeui/glade-previewer.c:739 ../gladeui/glade-previewer.c:749
 msgid "user_data"
@@ -2974,70 +2979,70 @@ msgstr "Tampak"
 msgid "Whether this action is visible"
 msgstr "Apakah aksi ini nampak"
 
-#: ../gladeui/glade-widget-adaptor.c:255
+#: ../gladeui/glade-widget-adaptor.c:241
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Sebuah adaptor (%s) yang diturunkan dari %s telah ada!"
 
-#: ../gladeui/glade-widget-adaptor.c:957
+#: ../gladeui/glade-widget-adaptor.c:943
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s tak mendukung penambahan anak apapun."
 
-#: ../gladeui/glade-widget-adaptor.c:1454
+#: ../gladeui/glade-widget-adaptor.c:1440
 msgid "Name of the class"
 msgstr "Nama kelas"
 
-#: ../gladeui/glade-widget-adaptor.c:1461
+#: ../gladeui/glade-widget-adaptor.c:1447
 msgid "GType of the class"
 msgstr "GType dari kelas"
 
-#: ../gladeui/glade-widget-adaptor.c:1467
+#: ../gladeui/glade-widget-adaptor.c:1453
 msgid "Title"
 msgstr "Judul"
 
-#: ../gladeui/glade-widget-adaptor.c:1468
+#: ../gladeui/glade-widget-adaptor.c:1454
 msgid "Translated title for the class used in the glade UI"
 msgstr "Judul terjemahan bagi kelas yang dipakai dalam UI glade"
 
-#: ../gladeui/glade-widget-adaptor.c:1474
+#: ../gladeui/glade-widget-adaptor.c:1460
 msgid "Generic Name"
 msgstr "Nama Generik"
 
-#: ../gladeui/glade-widget-adaptor.c:1475
+#: ../gladeui/glade-widget-adaptor.c:1461
 msgid "Used to generate names of new widgets"
 msgstr "Dipakai untuk menjangkitkan nama dari widget baru"
 
-#: ../gladeui/glade-widget-adaptor.c:1481 ../plugins/gtk+/gtk+.xml.in.h:641
+#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:641
 #: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "Nama Ikon"
 
-#: ../gladeui/glade-widget-adaptor.c:1482
+#: ../gladeui/glade-widget-adaptor.c:1468
 msgid "The icon name"
 msgstr "Nama ikon"
 
-#: ../gladeui/glade-widget-adaptor.c:1488
+#: ../gladeui/glade-widget-adaptor.c:1474
 msgid "Catalog"
 msgstr "Katalog"
 
-#: ../gladeui/glade-widget-adaptor.c:1489
+#: ../gladeui/glade-widget-adaptor.c:1475
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Nama dari katalog widget yang dideklarasikan untuk kelas ini"
 
-#: ../gladeui/glade-widget-adaptor.c:1495
+#: ../gladeui/glade-widget-adaptor.c:1481
 msgid "Book"
 msgstr "Buku"
 
-#: ../gladeui/glade-widget-adaptor.c:1496
+#: ../gladeui/glade-widget-adaptor.c:1482
 msgid "DevHelp search namespace for this widget class"
 msgstr "Namespace pencarian DevHelp bagi kelas widget ini"
 
-#: ../gladeui/glade-widget-adaptor.c:1502
+#: ../gladeui/glade-widget-adaptor.c:1488
 msgid "Special Child Type"
 msgstr "Tipe Anak Khusus"
 
-#: ../gladeui/glade-widget-adaptor.c:1503
+#: ../gladeui/glade-widget-adaptor.c:1489
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -3045,11 +3050,11 @@ msgstr ""
 "Memuat nama dari properti kemasan untuk menggambarkan anak khusus bagi kelas "
 "wadah ini"
 
-#: ../gladeui/glade-widget-adaptor.c:1510
+#: ../gladeui/glade-widget-adaptor.c:1496
 msgid "Cursor"
 msgstr "Kursor"
 
-#: ../gladeui/glade-widget-adaptor.c:1511
+#: ../gladeui/glade-widget-adaptor.c:1497
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Suatu kursor untuk menyisipkan widget ke dalam UI"
 
@@ -3733,21 +3738,7 @@ msgstr "Halaman isi"
 msgid "Confirmation page"
 msgstr "Halaman konfirmasi"
 
-#: ../plugins/gtk+/glade-gtk-box.c:615 ../plugins/gtk+/glade-gtk-box.c:623
-#: ../plugins/gtk+/glade-gtk-header-bar.c:113
-#: ../plugins/gtk+/glade-gtk-stack.c:160
-#, c-format
-msgid "Insert placeholder to %s"
-msgstr "Menyisipkan placeholder ke %s"
-
-#: ../plugins/gtk+/glade-gtk-box.c:631
-#: ../plugins/gtk+/glade-gtk-header-bar.c:137
-#: ../plugins/gtk+/glade-gtk-stack.c:197
-#, c-format
-msgid "Remove placeholder from %s"
-msgstr "Menghapus placeholder dari %s"
-
-#: ../plugins/gtk+/glade-gtk-box.c:830
+#: ../plugins/gtk+/glade-gtk-box.c:821
 #, c-format
 msgid "Ordering children of %s"
 msgstr "Mengurutkan anak %s"
@@ -3906,6 +3897,20 @@ msgstr "Hapus Baris pada %s"
 msgid "This property does not apply when a custom title is set"
 msgstr "Properti ini tidak berlaku ketika judul ubahan ditata"
 
+#: ../plugins/gtk+/glade-gtk-header-bar.c:113
+#: ../plugins/gtk+/glade-gtk-notebook.c:992
+#: ../plugins/gtk+/glade-gtk-stack.c:160
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr "Menyisipkan placeholder ke %s"
+
+#: ../plugins/gtk+/glade-gtk-header-bar.c:137
+#: ../plugins/gtk+/glade-gtk-notebook.c:990
+#: ../plugins/gtk+/glade-gtk-stack.c:197
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr "Menghapus placeholder dari %s"
+
 #: ../plugins/gtk+/glade-gtk-header-bar.c:304
 msgid ""
 "The decoration layout does not apply to header bars which do no show window "
@@ -4016,16 +4021,15 @@ msgstr "Menu Pemilih Terkini"
 msgid "Menu Item"
 msgstr "Butir Menu"
 
-#: ../plugins/gtk+/glade-gtk-notebook.c:939
-#: ../plugins/gtk+/glade-gtk-notebook.c:946
-#, c-format
-msgid "Insert page on %s"
-msgstr "Sisipkan halaman pada %s"
-
-#: ../plugins/gtk+/glade-gtk-notebook.c:954
+#: ../plugins/gtk+/glade-gtk-notebook.c:983
 #, c-format
 msgid "Remove page from %s"
 msgstr "Hapus halaman dari %s"
+
+#: ../plugins/gtk+/glade-gtk-notebook.c:985
+#, c-format
+msgid "Insert page on %s"
+msgstr "Sisipkan halaman pada %s"
 
 #: ../plugins/gtk+/glade-gtk-progress-bar.c:30
 msgid "This progressbar does not show text"
