@@ -68,6 +68,8 @@ static void     on_css_filechooser_file_set           (GtkFileChooserButton   *w
                                                        GladeProjectProperties *properties);
 static void     on_css_checkbutton_toggled            (GtkWidget              *widget,
                                                        GladeProjectProperties *properties);
+static void     on_use_generic_name_checkbutton_toggled (GtkWidget              *widget,
+                                                         GladeProjectProperties *properties);
 static void     on_license_comboboxtext_changed       (GtkComboBox *widget,
                                                        GladeProjectProperties *properties);
 
@@ -91,6 +93,9 @@ static void     project_license_changed               (GladeProject           *p
 static void     project_css_provider_path_changed     (GladeProject           *project,
                                                        GParamSpec             *pspec,
                                                        GladeProjectProperties *properties);
+static void     project_use_generic_name_changed      (GladeProject           *project,
+                                                       GParamSpec             *pspec,
+                                                       GladeProjectProperties *properties);
 
 struct _GladeProjectPropertiesPrivate
 {
@@ -112,7 +117,9 @@ struct _GladeProjectPropertiesPrivate
 
   GtkWidget *css_filechooser;
   GtkWidget *css_checkbutton;
-  
+
+  GtkWidget *use_generic_name_checkbutton;
+
   GHashTable *target_radios;
 
   /* License */
@@ -187,6 +194,7 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, toolkit_box);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, css_filechooser);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, css_checkbutton);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, use_generic_name_checkbutton);
 
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, license_comboboxtext);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, license_textview);
@@ -213,6 +221,7 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_glade_project_properties_hide);  
   gtk_widget_class_bind_template_callback (widget_class, on_css_filechooser_file_set);
   gtk_widget_class_bind_template_callback (widget_class, on_css_checkbutton_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, on_use_generic_name_checkbutton_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_license_comboboxtext_changed);
   gtk_widget_class_bind_template_callback (widget_class, on_license_data_changed);
 }
@@ -372,7 +381,9 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
   g_signal_connect (priv->project, "notify::translation-domain",
 		    G_CALLBACK (project_domain_changed), properties);
   g_signal_connect (priv->project, "notify::css-provider-path",
-		    G_CALLBACK (project_css_provider_path_changed), properties);  
+		    G_CALLBACK (project_css_provider_path_changed), properties);
+  g_signal_connect (priv->project, "notify::use-generic-name",
+		    G_CALLBACK (project_use_generic_name_changed), properties);
   g_signal_connect (priv->project, "targets-changed",
 		    G_CALLBACK (project_targets_changed), properties);
   g_signal_connect (priv->project, "notify::license",
@@ -384,6 +395,7 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
   project_template_changed (project, NULL, properties);
   project_domain_changed (project, NULL, properties);
   project_css_provider_path_changed (project, NULL, properties);
+  project_use_generic_name_changed (project, NULL, properties);
 }
 
 static void
@@ -950,6 +962,25 @@ on_css_checkbutton_toggled (GtkWidget *widget, GladeProjectProperties *propertie
 }
 
 static void
+on_use_generic_name_checkbutton_toggled (GtkWidget *widget, GladeProjectProperties *properties)
+{
+  GladeProjectPropertiesPrivate *priv = properties->priv;
+  gboolean active;
+
+  if (priv->ignore_ui_cb)
+    return;
+
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
+
+  glade_project_set_use_generic_name (priv->project, active);
+
+  /* TODO: assign names to nameless objects if needed and warn the user
+   * that once you asign names and save/reload the project
+   * there is no way to undo the changes!
+   */
+}
+
+static void
 on_css_filechooser_file_set (GtkFileChooserButton   *widget,
                              GladeProjectProperties *properties)
 {
@@ -1134,6 +1165,19 @@ project_css_provider_path_changed (GladeProject           *project,
       gtk_file_chooser_unselect_all (chooser);
     }
 
+  priv->ignore_ui_cb = FALSE;
+}
+
+static void
+project_use_generic_name_changed (GladeProject           *project,
+                                  GParamSpec             *pspec,
+                                  GladeProjectProperties *properties)
+{
+  GladeProjectPropertiesPrivate *priv = properties->priv;
+g_message("%s ", __func__);
+  priv->ignore_ui_cb = TRUE;
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->use_generic_name_checkbutton),
+                                glade_project_get_use_generic_name (project));
   priv->ignore_ui_cb = FALSE;
 }
 

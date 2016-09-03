@@ -868,7 +868,15 @@ glade_widget_constructor (GType                  type,
   if (gwidget->priv->name == NULL)
     {
       if (gwidget->priv->project)
-        gwidget->priv->name = glade_project_new_widget_name (gwidget->priv->project, gwidget, GLADE_UNNAMED_PREFIX);
+        {
+          const gchar *base_name;
+
+          base_name = (glade_project_get_use_generic_name (gwidget->priv->project)) ?
+                       glade_widget_adaptor_get_generic_name (gwidget->priv->adaptor) :
+                       GLADE_UNNAMED_PREFIX;
+
+          gwidget->priv->name = glade_project_new_widget_name (gwidget->priv->project, gwidget, base_name);
+        }
       else
         gwidget->priv->name = g_strdup (GLADE_UNNAMED_PREFIX);
     }

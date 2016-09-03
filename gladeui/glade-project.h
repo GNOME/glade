@@ -196,6 +196,10 @@ void                glade_project_widget_changed       (GladeProject       *proj
                                                         GladeWidget        *gwidget);
 
 /* Widget names */
+gboolean            glade_project_get_use_generic_name (GladeProject       *project);
+void                glade_project_set_use_generic_name (GladeProject       *project,
+                                                        gboolean            use_generic);
+
 GladeWidget        *glade_project_get_widget_by_name   (GladeProject       *project,
                                                         const gchar        *name);
 void                glade_project_set_widget_name      (GladeProject       *project,

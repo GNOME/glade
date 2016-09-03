@@ -158,6 +158,7 @@ struct _GladeProjectPrivate
                                   */
   guint writing_preview : 1;     /* During serialization, if we are serializing for a preview */
   guint pointer_mode : 3;        /* The currently effective GladePointerMode */
+  guint use_generic_name : 1;    /* Whether to use generic names for new widgets or not */
 };
 
 typedef struct 
@@ -197,6 +198,7 @@ enum
   PROP_RESOURCE_PATH,
   PROP_LICENSE,
   PROP_CSS_PROVIDER_PATH,
+  PROP_USE_GENERIC_NAME,
   N_PROPERTIES
 };
 
@@ -405,6 +407,9 @@ glade_project_get_property (GObject    *object,
     case PROP_CSS_PROVIDER_PATH:
       g_value_set_string (value, project->priv->css_provider_path);
       break;
+    case PROP_USE_GENERIC_NAME:
+      g_value_set_boolean (value, project->priv->use_generic_name);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -438,6 +443,10 @@ glade_project_set_property (GObject      *object,
     case PROP_CSS_PROVIDER_PATH:
       glade_project_set_css_provider_path (GLADE_PROJECT (object),
                                            g_value_get_string (value));
+      break;
+    case PROP_USE_GENERIC_NAME:
+      glade_project_set_use_generic_name (GLADE_PROJECT (object),
+                                          g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1030,6 +1039,13 @@ glade_project_class_init (GladeProjectClass *klass)
                          NULL,
                          G_PARAM_READWRITE);
 
+  glade_project_props[PROP_USE_GENERIC_NAME] =
+    g_param_spec_boolean ("use-generic-name",
+                          _("Use generic name"),
+                          _("Whether to use generic names for objects in the project or leave them unnamed"),
+                          FALSE,
+                          G_PARAM_READWRITE);
+
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, glade_project_props);
 }
@@ -1619,7 +1635,11 @@ glade_project_read_comment_properties (GladeProject *project,
       
       if (gp_comment_strip_property (val, "interface-local-resource-path"))
         glade_project_set_resource_path (project, val);
-      else if (gp_comment_strip_property (val, "interface-css-provider-path"))
+      else if (gp_comment_strip_property (val, "interface-use-generic-name"))
+        {
+          glade_project_set_use_generic_name (project, !g_strcmp0 (val, "True"));
+        }
+        else if (gp_comment_strip_property (val, "interface-css-provider-path"))
         {
           if (g_path_is_absolute (val))
             glade_project_set_css_provider_path (project, val);
@@ -2319,6 +2339,17 @@ glade_project_write_css_provider_path (GladeProject    *project,
 }
 
 static void
+glade_project_write_use_generic_name (GladeProject    *project,
+                                      GladeXmlContext *context,
+                                      GladeXmlNode    *root)
+{
+  if (project->priv->use_generic_name)
+    glade_project_write_comment_property (project, context, root,
+                                          "interface-use-generic-name",
+                                          "True");
+}
+
+static void
 glade_project_write_license_data (GladeProject    *project,
                                   GladeXmlContext *context,
                                   GladeXmlNode    *root)
@@ -2623,6 +2654,8 @@ glade_project_write (GladeProject *project)
   glade_project_write_resource_path (project, context, root);
 
   glade_project_write_css_provider_path (project, context, root);
+
+  glade_project_write_use_generic_name (project, context, root);
 
   glade_project_write_license_data (project, context, root);
 
@@ -3493,6 +3526,41 @@ glade_project_verify_project_for_ui (GladeProject *project)
 }
 
 /**
+ * glade_project_get_use_generic_name:
+ * @project: a #GladeProject
+ *
+ */
+gboolean
+glade_project_get_use_generic_name (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+  return project->priv->use_generic_name;
+}
+
+/**
+ * glade_project_set_use_generic_name:
+ * @project: a #GladeProject
+ * @use_generic:
+ *
+ */
+void
+glade_project_set_use_generic_name (GladeProject *project, gboolean use_generic)
+{
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (project->priv->use_generic_name != use_generic)
+    {
+      gint major, minor;
+      glade_project_get_target_version (project, "gtk+", &major, &minor);
+
+      /* Id less object support was introducedin gtk 3.12 */
+      project->priv->use_generic_name = (major == 3 && minor < 12) ? TRUE : use_generic;
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_USE_GENERIC_NAME]);
+    }
+}
+
+
+/**
  * glade_project_get_widget_by_name:
  * @project: a #GladeProject
  * @name: The user visible name of the widget we are looking for
@@ -4131,6 +4199,10 @@ glade_project_set_target_version (GladeProject *project,
                        g_strdup (catalog), GINT_TO_POINTER ((int) major));
   g_hash_table_insert (project->priv->target_versions_minor,
                        g_strdup (catalog), GINT_TO_POINTER ((int) minor));
+
+  /* Gtk < 3.12 does not support IDless objects */
+  if (!g_strcmp0 (catalog, "gtk+") && major == 3 && minor < 12)
+    glade_project_set_use_generic_name (project, TRUE);
 
   glade_project_verify_project_for_ui (project);
 
