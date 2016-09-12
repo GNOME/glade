@@ -38,8 +38,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade 0.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-20 22:47+0100\n"
-"PO-Revision-Date: 2016-03-20 22:09+0100\n"
+"POT-Creation-Date: 2016-09-13 01:53+0200\n"
+"PO-Revision-Date: 2016-09-08 23:57+0200\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Dansk <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -48,7 +48,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
+#: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
+#: ../src/main.c:42
 msgid "Glade"
 msgstr "Glade"
 
@@ -60,7 +61,7 @@ msgstr "Grænsefladedesigner"
 msgid "Glade Interface Designer"
 msgstr "Glade - grænsefladedesigner"
 
-#: ../data/glade.desktop.in.in.h:4
+#: ../data/glade.desktop.in.in.h:4 ../data/glade.appdata.xml.in.h:2
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "Opret eller åbn grænsefladedesign for GTK+-programmer"
 
@@ -69,7 +70,7 @@ msgid "GUI designer;user interface;ui builder;"
 msgstr "GUI-designer;GUI designer;brugergrænseflade;ui-bygger; ui bygger;"
 
 #. To translators: AppData description first paragraph
-#: ../data/glade.appdata.xml.in.h:2
+#: ../data/glade.appdata.xml.in.h:4
 msgid ""
 "Glade is a RAD tool to enable quick &amp; easy development of user "
 "interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
@@ -78,7 +79,7 @@ msgstr ""
 "til GTK+ 3-værktøjskassen og GNOME-skrivebordsmiljøet."
 
 #. To translators: AppData description second paragraph
-#: ../data/glade.appdata.xml.in.h:4
+#: ../data/glade.appdata.xml.in.h:6
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
@@ -91,7 +92,7 @@ msgstr ""
 "+-funktionen ny skabelon."
 
 #. To translators: AppData description third paragraph
-#: ../data/glade.appdata.xml.in.h:6
+#: ../data/glade.appdata.xml.in.h:8
 msgid ""
 "By using GtkBuilder, Glade XML files can be used in numerous programming "
 "languages including C, C++, C#, Vala, Java, Perl, Python, and others."
@@ -1617,7 +1618,7 @@ msgstr "Hierarki"
 msgid "Label"
 msgstr "Mærkat"
 
-#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1446
 msgid "Type"
 msgstr "Type"
 
@@ -1897,11 +1898,11 @@ msgstr "Redigerer justering for %s"
 msgid "Editing margins of %s"
 msgstr "Redigerer marginer for %s"
 
-#: ../gladeui/glade-design-layout.c:2042
+#: ../gladeui/glade-design-layout.c:2041
 msgid "Design View"
 msgstr "Designvisning"
 
-#: ../gladeui/glade-design-layout.c:2043
+#: ../gladeui/glade-design-layout.c:2042
 msgid "The GladeDesignView that contains this layout"
 msgstr "GladeDesignView'et, som indeholder dette layout"
 
@@ -2127,7 +2128,7 @@ msgstr "_Åbn"
 
 #. GtkInputPurpose enumeration value
 #: ../gladeui/glade-editor-property.c:3090
-#: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1341
+#: ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Name"
 msgstr "Navn"
@@ -2311,99 +2312,133 @@ msgstr "Fejl ved start af forhåndsvisning: %s\n"
 msgid "Failed to launch preview: %s.\n"
 msgstr "Kunne ikke starte forhåndsvisning: %s.\n"
 
-#: ../gladeui/glade-previewer.c:69
+#: ../gladeui/glade-previewer.c:202
+msgid "Glade Previewer log"
+msgstr "Log for Glade-forhåndsvisning"
+
+#: ../gladeui/glade-previewer.c:739 ../gladeui/glade-previewer.c:749
+msgid "user_data"
+msgstr "bruger_data"
+
+# ?????????????  Det kan ikke være en gammeldags "desambiguation"
+#. translators: GConnectFlags values
+#: ../gladeui/glade-previewer.c:753
+msgid "Swapped | After"
+msgstr "Ombyttet | Efter"
+
+#. translators: GConnectFlags value
+#: ../gladeui/glade-previewer.c:756 ../gladeui/glade-signal.c:213
+msgid "Swapped"
+msgstr "Ombyttet"
+
+#. translators: GConnectFlags value
+#: ../gladeui/glade-previewer.c:759 ../gladeui/glade-signal.c:207
+#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:649
+msgid "After"
+msgstr "Efter"
+
+#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
+#: ../gladeui/glade-previewer.c:782
+#, c-format
+msgid "%s::%s emitted one time"
+msgstr "%s::%s udsendt en gang"
+
+#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#: ../gladeui/glade-previewer.c:786
+#, c-format
+msgid "%s::%s emitted %d times"
+msgstr "%s::%s udsendt %d gange"
+
+# Det er flag for nogle signaler, sandsynligvis om noget skal køres før eller
+# efter en hændelse.
+#
+# https://developer.gnome.org/gladeui/stable/GladeProject.html
+#: ../gladeui/glade-previewer.c:791
+msgid "Run First"
+msgstr "Kør først"
+
+# se kommentar for "run first"
+#: ../gladeui/glade-previewer.c:796
+msgid "Run Last"
+msgstr "Kør sidst"
+
+#: ../gladeui/glade-previewer.c:801
+msgid "Run Cleanup"
+msgstr "Kør oprydning"
+
+#: ../gladeui/glade-previewer-main.c:69
 #, c-format
 msgid "UI definition has no previewable widgets.\n"
 msgstr "Grænseflade-definition har ingen kontroller, der kan forhåndsvises.\n"
 
-#: ../gladeui/glade-previewer.c:79
+#: ../gladeui/glade-previewer-main.c:79
 #, c-format
 msgid "Object %s not found in UI definition.\n"
 msgstr "Objektet %s blev ikke fundet i grænseflade-definitionen.\n"
 
-#: ../gladeui/glade-previewer.c:85
+#: ../gladeui/glade-previewer-main.c:85
 #, c-format
 msgid "Object is not previewable.\n"
 msgstr "Objekt kan ikke forhåndsvises.\n"
 
-#: ../gladeui/glade-previewer.c:145 ../gladeui/glade-previewer.c:489
+#: ../gladeui/glade-previewer-main.c:145 ../gladeui/glade-previewer-main.c:396
 #, c-format
 msgid "Couldn't load builder definition: %s"
 msgstr "Kunne ikke indlæse byggedefinitionen: %s"
 
-#: ../gladeui/glade-previewer.c:177 ../gladeui/glade-previewer.c:197
+#: ../gladeui/glade-previewer-main.c:177 ../gladeui/glade-previewer-main.c:197
 #, c-format
 msgid "Error: %s.\n"
 msgstr "Fejl: %s.\n"
 
-#: ../gladeui/glade-previewer.c:219 ../gladeui/glade-widget.c:2742
-#: ../plugins/gtk+/glade-gtk-widget.c:1018
-#: ../plugins/gtk+/glade-gtk-widget.c:1081
-msgid "(unnamed)"
-msgstr "(unavngivet)"
-
-#: ../gladeui/glade-previewer.c:231
-#, c-format
-msgid "Previewing %s - %s"
-msgstr "Forhåndsvisning af %s - %s"
-
-#: ../gladeui/glade-previewer.c:233 ../gladeui/glade-previewer.c:237
-#, c-format
-msgid "Previewing %s"
-msgstr "Forhåndsvisning af %s"
-
-#: ../gladeui/glade-previewer.c:241
-msgid "Glade Preview"
-msgstr "Glade-forhåndsvisning"
-
 # Knækket pibe!
-#: ../gladeui/glade-previewer.c:266
+#: ../gladeui/glade-previewer-main.c:227
 #, c-format
 msgid "Broken pipe!\n"
 msgstr "Rørledning brudt!\n"
 
-#: ../gladeui/glade-previewer.c:391
+#: ../gladeui/glade-previewer-main.c:299
 msgid "Name of the file to preview"
 msgstr "Navn på filen til forhåndsvisning"
 
-#: ../gladeui/glade-previewer.c:392
+#: ../gladeui/glade-previewer-main.c:300
 msgid "Creates dummy widget class to load a template"
 msgstr "Opretter en prøvekontrolklasse til at indlæse en skabelon"
 
-#: ../gladeui/glade-previewer.c:393
+#: ../gladeui/glade-previewer-main.c:301
 msgid "Name of the toplevel to preview"
 msgstr "Navn på topniveau-objektet der skal forhåndsvises"
 
-#: ../gladeui/glade-previewer.c:394
+#: ../gladeui/glade-previewer-main.c:302
 msgid "File name to save a screenshot"
 msgstr "Filnavn at gemme et skærmbille til"
 
-#: ../gladeui/glade-previewer.c:395
+#: ../gladeui/glade-previewer-main.c:303
 msgid "CSS file to use"
 msgstr "CSS-fil der skal bruges"
 
-#: ../gladeui/glade-previewer.c:396
+#: ../gladeui/glade-previewer-main.c:304
 msgid "Listen standard input"
 msgstr "Lyt til standard-inddata"
 
-#: ../gladeui/glade-previewer.c:397
+#: ../gladeui/glade-previewer-main.c:305
 msgid "make a slideshow of every toplevel widget by adding them in a GtkStack"
 msgstr ""
 "opret et diasshow af hver topniveaukontrol ved at føje dem til en GtkStack"
 
-#: ../gladeui/glade-previewer.c:398
+#: ../gladeui/glade-previewer-main.c:306
 msgid "Print handlers signature on invocation"
 msgstr "Udskriv håndteringens signatur ved kald"
 
-#: ../gladeui/glade-previewer.c:399
+#: ../gladeui/glade-previewer-main.c:307
 msgid "Display previewer version"
 msgstr "Vis version af forhåndsviser"
 
-#: ../gladeui/glade-previewer.c:418
+#: ../gladeui/glade-previewer-main.c:326
 msgid "- previews a glade UI definition"
 msgstr "- forhåndsviser en glade-grænsefladedefinition"
 
-#: ../gladeui/glade-previewer.c:424
+#: ../gladeui/glade-previewer-main.c:332
 #, c-format
 msgid ""
 "%s\n"
@@ -2413,65 +2448,10 @@ msgstr ""
 "Kør \"%s --help\" for at se den fulde liste af tilgængelige "
 "kommandolinjetilvalg.\n"
 
-#: ../gladeui/glade-previewer.c:441
+#: ../gladeui/glade-previewer-main.c:349
 #, c-format
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "Enten --listen eller --filename skal angives.\n"
-
-#: ../gladeui/glade-preview-window.c:56
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
-msgid "Preview"
-msgstr "Miniature"
-
-#: ../gladeui/glade-preview-window.c:664 ../gladeui/glade-preview-window.c:674
-msgid "user_data"
-msgstr "bruger_data"
-
-# ?????????????  Det kan ikke være en gammeldags "desambiguation"
-#. translators: GConnectFlags values
-#: ../gladeui/glade-preview-window.c:678
-msgid "Swapped | After"
-msgstr "Ombyttet | Efter"
-
-#. translators: GConnectFlags value
-#: ../gladeui/glade-preview-window.c:681 ../gladeui/glade-signal.c:213
-msgid "Swapped"
-msgstr "Ombyttet"
-
-#. translators: GConnectFlags value
-#: ../gladeui/glade-preview-window.c:684 ../gladeui/glade-signal.c:207
-#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:649
-msgid "After"
-msgstr "Efter"
-
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
-#: ../gladeui/glade-preview-window.c:707
-#, c-format
-msgid "%s::%s emitted one time"
-msgstr "%s::%s udsendt en gang"
-
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
-#: ../gladeui/glade-preview-window.c:711
-#, c-format
-msgid "%s::%s emitted %d times"
-msgstr "%s::%s udsendt %d gange"
-
-# Det er flag for nogle signaler, sandsynligvis om noget skal køres før eller
-# efter en hændelse.
-#
-# https://developer.gnome.org/gladeui/stable/GladeProject.html
-#: ../gladeui/glade-preview-window.c:716
-msgid "Run First"
-msgstr "Kør først"
-
-# se kommentar for "run first"
-#: ../gladeui/glade-preview-window.c:721
-msgid "Run Last"
-msgstr "Kør sidst"
-
-#: ../gladeui/glade-preview-window.c:726
-msgid "Run Cleanup"
-msgstr "Kør oprydning"
 
 #: ../gladeui/glade-project.c:958
 msgid "Whether project has been modified since it was last saved"
@@ -3060,71 +3040,71 @@ msgstr "Synlig"
 msgid "Whether this action is visible"
 msgstr "Om denne handling er synlig"
 
-#: ../gladeui/glade-widget-adaptor.c:255
+#: ../gladeui/glade-widget-adaptor.c:241
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "En afledt adapter (%s) af %s findes allerede!"
 
-#: ../gladeui/glade-widget-adaptor.c:957
+#: ../gladeui/glade-widget-adaptor.c:943
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s understøtter ikke tilføjelse af underelementer."
 
-#: ../gladeui/glade-widget-adaptor.c:1454
+#: ../gladeui/glade-widget-adaptor.c:1440
 msgid "Name of the class"
 msgstr "Klassens navn"
 
-#: ../gladeui/glade-widget-adaptor.c:1461
+#: ../gladeui/glade-widget-adaptor.c:1447
 msgid "GType of the class"
 msgstr "Klassens GType"
 
-#: ../gladeui/glade-widget-adaptor.c:1467
+#: ../gladeui/glade-widget-adaptor.c:1453
 msgid "Title"
 msgstr "Titel"
 
-#: ../gladeui/glade-widget-adaptor.c:1468
+#: ../gladeui/glade-widget-adaptor.c:1454
 msgid "Translated title for the class used in the glade UI"
 msgstr "Klassens oversatte titel der bruges i glade brugergrænsefladen"
 
-#: ../gladeui/glade-widget-adaptor.c:1474
+#: ../gladeui/glade-widget-adaptor.c:1460
 msgid "Generic Name"
 msgstr "Generisk navn"
 
-#: ../gladeui/glade-widget-adaptor.c:1475
+#: ../gladeui/glade-widget-adaptor.c:1461
 msgid "Used to generate names of new widgets"
 msgstr "Bruges til at generere navne af nye kontroller"
 
-#: ../gladeui/glade-widget-adaptor.c:1481 ../plugins/gtk+/gtk+.xml.in.h:641
+#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:641
 #: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "Ikonnavn"
 
-#: ../gladeui/glade-widget-adaptor.c:1482
+#: ../gladeui/glade-widget-adaptor.c:1468
 msgid "The icon name"
 msgstr "Ikonnavnet"
 
-#: ../gladeui/glade-widget-adaptor.c:1488
+#: ../gladeui/glade-widget-adaptor.c:1474
 msgid "Catalog"
 msgstr "Katalog"
 
-#: ../gladeui/glade-widget-adaptor.c:1489
+#: ../gladeui/glade-widget-adaptor.c:1475
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Navnet på kontrolkataloget som erklærede denne klasse"
 
-#: ../gladeui/glade-widget-adaptor.c:1495
+#: ../gladeui/glade-widget-adaptor.c:1481
 msgid "Book"
 msgstr "Bog"
 
-#: ../gladeui/glade-widget-adaptor.c:1496
+#: ../gladeui/glade-widget-adaptor.c:1482
 msgid "DevHelp search namespace for this widget class"
 msgstr "DevHelp søgenavnerum for denne kontrolklasse"
 
-#: ../gladeui/glade-widget-adaptor.c:1502
+#: ../gladeui/glade-widget-adaptor.c:1488
 msgid "Special Child Type"
 msgstr "Speciel underkomponenttype"
 
 # Packing property angiver noget med hvordan tingene indlejres i deres parent containers
-#: ../gladeui/glade-widget-adaptor.c:1503
+#: ../gladeui/glade-widget-adaptor.c:1489
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -3132,11 +3112,11 @@ msgstr ""
 "Indeholder navnet af paknings-egenskaben der beskriver specielle "
 "underkomponenter til denne beholderklasse"
 
-#: ../gladeui/glade-widget-adaptor.c:1510
+#: ../gladeui/glade-widget-adaptor.c:1496
 msgid "Cursor"
 msgstr "Markør"
 
-#: ../gladeui/glade-widget-adaptor.c:1511
+#: ../gladeui/glade-widget-adaptor.c:1497
 msgid "A cursor for inserting widgets in the UI"
 msgstr "En markør til at indsætte kontroller i brugergrænsefladen"
 
@@ -3249,6 +3229,11 @@ msgstr "Om kontrollen er synlig"
 #: ../gladeui/glade-widget.c:1436
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Om denne kontrol er en skabelon for en sammensat kontrol"
+
+#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1018
+#: ../plugins/gtk+/glade-gtk-widget.c:1081
+msgid "(unnamed)"
+msgstr "(unavngivet)"
 
 #: ../gladeui/glade-widget.c:4803
 #, c-format
@@ -3728,7 +3713,7 @@ msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr ""
 "Sætter sekundære ikon for %s til ikke at bruge opmærkning i værktøjstip"
 
-#: ../plugins/gtk+/glade-fixed.c:623 ../plugins/gtk+/glade-gtk-grid.c:994
+#: ../plugins/gtk+/glade-fixed.c:623 ../plugins/gtk+/glade-gtk-grid.c:1018
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Placerer %s indeni %s"
@@ -3822,22 +3807,7 @@ msgstr "Indholdsside"
 msgid "Confirmation page"
 msgstr "Bekræftelsesside"
 
-# Det giver ikke megen mening, men til gengæld ligger det så tæt på den engelske streng at der forhåbentlig ikke kan skabes forvirring
-#: ../plugins/gtk+/glade-gtk-box.c:615 ../plugins/gtk+/glade-gtk-box.c:623
-#: ../plugins/gtk+/glade-gtk-header-bar.c:113
-#: ../plugins/gtk+/glade-gtk-stack.c:160
-#, c-format
-msgid "Insert placeholder to %s"
-msgstr "Indsæt pladsholder til %s"
-
-#: ../plugins/gtk+/glade-gtk-box.c:631
-#: ../plugins/gtk+/glade-gtk-header-bar.c:137
-#: ../plugins/gtk+/glade-gtk-stack.c:197
-#, c-format
-msgid "Remove placeholder from %s"
-msgstr "Fjern pladsholder fra %s"
-
-#: ../plugins/gtk+/glade-gtk-box.c:830
+#: ../plugins/gtk+/glade-gtk-box.c:821
 #, c-format
 msgid "Ordering children of %s"
 msgstr "Omrokerer underkomponenter til %s"
@@ -3977,32 +3947,29 @@ msgstr ""
 "hvis tekstfeltstegnene er usynlige"
 
 # Så vidt jeg kan regne ud fra glade-gtk-flow-box.c er det Højre eller Venstre
-#: ../plugins/gtk+/glade-gtk-flow-box.c:249
-#: ../plugins/gtk+/glade-gtk-flow-box.c:255
+#: ../plugins/gtk+/glade-gtk-flow-box.c:204
 #, c-format
 msgid "Insert Child on %s"
 msgstr "Indsæt underelement til %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:597 ../plugins/gtk+/glade-gtk-grid.c:604
-#: ../plugins/gtk+/glade-gtk-list-box.c:252
-#: ../plugins/gtk+/glade-gtk-list-box.c:258
-#: ../plugins/gtk+/glade-gtk-table.c:643 ../plugins/gtk+/glade-gtk-table.c:650
+#: ../plugins/gtk+/glade-gtk-grid.c:507
+#: ../plugins/gtk+/glade-gtk-list-box.c:207
+#: ../plugins/gtk+/glade-gtk-table.c:538
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Indsæt række på %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:612 ../plugins/gtk+/glade-gtk-grid.c:619
-#: ../plugins/gtk+/glade-gtk-table.c:658 ../plugins/gtk+/glade-gtk-table.c:665
+#: ../plugins/gtk+/glade-gtk-grid.c:510 ../plugins/gtk+/glade-gtk-table.c:541
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Indsæt kolonne på %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:626 ../plugins/gtk+/glade-gtk-table.c:672
+#: ../plugins/gtk+/glade-gtk-grid.c:513 ../plugins/gtk+/glade-gtk-table.c:544
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Fjern kolonne på %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:633 ../plugins/gtk+/glade-gtk-table.c:679
+#: ../plugins/gtk+/glade-gtk-grid.c:516 ../plugins/gtk+/glade-gtk-table.c:547
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Fjern række på %s"
@@ -4011,6 +3978,21 @@ msgstr "Fjern række på %s"
 msgid "This property does not apply when a custom title is set"
 msgstr ""
 "Denne egenskab gælder ikke, når der er angivet en brugertilpasset titel"
+
+# Det giver ikke megen mening, men til gengæld ligger det så tæt på den engelske streng at der forhåbentlig ikke kan skabes forvirring
+#: ../plugins/gtk+/glade-gtk-header-bar.c:113
+#: ../plugins/gtk+/glade-gtk-notebook.c:992
+#: ../plugins/gtk+/glade-gtk-stack.c:160
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr "Indsæt pladsholder til %s"
+
+#: ../plugins/gtk+/glade-gtk-header-bar.c:137
+#: ../plugins/gtk+/glade-gtk-notebook.c:990
+#: ../plugins/gtk+/glade-gtk-stack.c:197
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr "Fjern pladsholder fra %s"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:304
 msgid ""
@@ -4126,16 +4108,15 @@ msgstr "Menu for seneste valg"
 msgid "Menu Item"
 msgstr "Menuelement"
 
-#: ../plugins/gtk+/glade-gtk-notebook.c:939
-#: ../plugins/gtk+/glade-gtk-notebook.c:946
-#, c-format
-msgid "Insert page on %s"
-msgstr "Indsæt side på %s"
-
-#: ../plugins/gtk+/glade-gtk-notebook.c:954
+#: ../plugins/gtk+/glade-gtk-notebook.c:983
 #, c-format
 msgid "Remove page from %s"
 msgstr "Fjern side fra %s"
+
+#: ../plugins/gtk+/glade-gtk-notebook.c:985
+#, c-format
+msgid "Insert page on %s"
+msgstr "Indsæt side på %s"
 
 #: ../plugins/gtk+/glade-gtk-progress-bar.c:30
 msgid "This progressbar does not show text"
@@ -4602,6 +4583,10 @@ msgstr "Generér PDF"
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:9
 msgid "Generate PS"
 msgstr "Generér PS"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
+msgid "Preview"
+msgstr "Miniature"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:11
 msgid "Number Up"
@@ -8447,6 +8432,12 @@ msgstr "Vinduesdekorationer på klientside"
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
 msgstr "Om dette vindue skal inkludere en brugertilpasset titellinje."
+
+#~ msgid "Previewing %s - %s"
+#~ msgstr "Forhåndsvisning af %s - %s"
+
+#~ msgid "Previewing %s"
+#~ msgstr "Forhåndsvisning af %s"
 
 #~ msgid "See Privacy Note"
 #~ msgstr "Se privatlivsnotits"
