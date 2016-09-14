@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glade-catalog name="webkit2gtk"
+               version="2.12"
+               library="gladewebkit2gtk"
+               domain="glade"
+               depends="gtk+"
+               book="WebKit2GTK">
+
+  <glade-widget-classes>
+
+    <glade-widget-class name="WebKitWebView"
+                        generic-name="webview"
+                        title="WebKit Web View"
+                        get-type-function="webkit_web_view_get_type">
+      <set-property-function>glade_webkit_web_view_set_property</set-property-function>
+      <properties>
+	<property save="False" id="glade-url" name="URL" weight="1.1">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
+	  <tooltip>The URL to load in Glade (this property will not be saved)</tooltip>
+	</property>
+        <property id="user-content-manager" disabled="True" />
+        <property id="web-context" disabled="True" /> 
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="WebKitSettings" 
+                        generic-name="settings"
+                        title="WebKit Settings"
+                        toplevel="True"
+                        get-type-function="webkit_settings_get_type"/>
+
+  </glade-widget-classes>
+  
+  <glade-widget-group name="webkit2gtk" title="WebKit2GTK+ Widgets">
+    <glade-widget-class-ref name="WebKitWebView"/>
+    <glade-widget-class-ref name="WebKitSettings"/>
+  </glade-widget-group>
+
+</glade-catalog>

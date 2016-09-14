@@ -207,6 +207,22 @@ fi
 
 AM_CONDITIONAL(BUILD_PYTHON, test x"$have_python" = "xyes")
 
+dnl ================================================================
+dnl WebKit2GTK support
+dnl ================================================================
+WEBKIT2GTK_REQUIRED=2.12.0
+
+AC_ARG_ENABLE(webkit2gtk,
+    AS_HELP_STRING([--disable-webkit2gtk], [disable webkit2gtk catalog]),
+    check_webkit2gtk=$enableval, check_webkit2gtk=yes)
+
+if test x"$check_webkit2gtk" = x"yes"; then
+  PKG_CHECK_MODULES([WEBKIT2GTK],[webkit2gtk-4.0 >= $WEBKIT2GTK_REQUIRED],[have_webkit2gtk=yes],[have_webkit2gtk=no])
+else
+  have_webkit2gtk=no
+fi
+AM_CONDITIONAL(BUILD_WEBKIT2GTK, test x"$have_webkit2gtk" = "xyes")
+
 # ==================================================================
 # Glade User Manual (requires yelp-tools)
 # ==================================================================
@@ -342,6 +358,7 @@ plugins/gtk+/icons/16x16/Makefile
 plugins/gtk+/icons/22x22/Makefile
 plugins/python/Makefile
 plugins/gladeui/Makefile
+plugins/webkit2gtk/Makefile
 po/Makefile.in
 doc/Makefile
 doc/version.xml
@@ -363,6 +380,7 @@ Configuration:
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	PYTHON Widgets support:	 ${have_python}
 	Gladeui Catalog:         ${enable_gladeui}
+	WebKit2GTK+ Catalog:     ${have_webkit2gtk}
 	Introspection Data:      ${found_introspection}
 
 	Build Reference Manual:  ${enable_gtk_doc}

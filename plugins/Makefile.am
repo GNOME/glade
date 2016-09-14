@@ -10,6 +10,10 @@ if BUILD_GLADEUI
 SUBDIRS += gladeui
 endif
 
+if BUILD_WEBKIT2GTK
+SUBDIRS += webkit2gtk
+endif
+
 dtddir = $(pkgdatadir)/catalogs
 dtd_DATA = glade-catalog.dtd
 
