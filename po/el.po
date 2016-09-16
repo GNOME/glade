@@ -14,19 +14,20 @@ msgstr ""
 "Project-Id-Version: glade3.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-06 07:20+0000\n"
-"PO-Revision-Date: 2016-03-14 18:03+0200\n"
-"Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
+"POT-Creation-Date: 2016-08-15 04:43+0000\n"
+"PO-Revision-Date: 2016-09-15 11:52+0300\n"
+"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: Greek, Modern (1453-) <opensuse-translation-el@opensuse.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 1.8.9\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
+#: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
+#: ../src/main.c:42
 msgid "Glade"
 msgstr "Glade"
 
@@ -38,7 +39,7 @@ msgstr "Σχεδιαστής διεπαφών"
 msgid "Glade Interface Designer"
 msgstr "Σχεδιαστής διεπαφών Glade"
 
-#: ../data/glade.desktop.in.in.h:4
+#: ../data/glade.desktop.in.in.h:4 ../data/glade.appdata.xml.in.h:2
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "Δημιουργήστε ή ανοίξτε σχέδια διεπαφής χρήστη για εφαρμογές GTK+"
 
@@ -47,7 +48,7 @@ msgid "GUI designer;user interface;ui builder;"
 msgstr "Σχεδιαστής GUI;διεπαφή χρήστη;GUI designer;user interface;ui builder;"
 
 #. To translators: AppData description first paragraph
-#: ../data/glade.appdata.xml.in.h:2
+#: ../data/glade.appdata.xml.in.h:4
 msgid ""
 "Glade is a RAD tool to enable quick &amp; easy development of user "
 "interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
@@ -57,7 +58,7 @@ msgstr ""
 "περιβάλλον επιφάνειας εργασίας GNOME."
 
 #. To translators: AppData description second paragraph
-#: ../data/glade.appdata.xml.in.h:4
+#: ../data/glade.appdata.xml.in.h:6
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
@@ -71,7 +72,7 @@ msgstr ""
 "λειτουργίας του προτύπου Gtk+."
 
 #. To translators: AppData description third paragraph
-#: ../data/glade.appdata.xml.in.h:6
+#: ../data/glade.appdata.xml.in.h:8
 msgid ""
 "By using GtkBuilder, Glade XML files can be used in numerous programming "
 "languages including C, C++, C#, Vala, Java, Perl, Python, and others."
@@ -833,7 +834,7 @@ msgid "Select a catalog search path"
 msgstr "Επιλέξτε μια διαδρομή αναζήτησης καταλόγου"
 
 #. translators: Email subject sent to the user after completing the survey
-#: ../src/glade-registration.c:32 ../src/glade-registration.glade.h:27
+#: ../src/glade-registration.c:32 ../src/glade-registration.glade.h:26
 msgid "Glade User Survey"
 msgstr "Έρευνα χρήστη του Glade"
 
@@ -899,49 +900,49 @@ msgstr ""
 "\n"
 "\tΗ ομάδα του Glade\n"
 
-#: ../src/glade-registration.c:308
+#: ../src/glade-registration.c:306
 #, c-format
 msgid "Connecting to %s"
 msgstr "Σύνδεση στο %s"
 
-#: ../src/glade-registration.c:311
+#: ../src/glade-registration.c:309
 #, c-format
 msgid "Sending data to %s"
 msgstr "Αποστολή δεδομένων στο %s"
 
-#: ../src/glade-registration.c:314
+#: ../src/glade-registration.c:312
 #, c-format
 msgid "Waiting for %s"
 msgstr "Αναμονή για %s"
 
-#: ../src/glade-registration.c:317
+#: ../src/glade-registration.c:315
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Λήψη δεδομένων από %s"
 
-#: ../src/glade-registration.c:349
+#: ../src/glade-registration.c:347
 msgid "Sorry, automatic subscription to Glade Users mailing list failed"
 msgstr "Συγγνώμη, απέτυχε η εγγραφή στη λίστα αλληλογραφίας χρηστών του Glade"
 
-#: ../src/glade-registration.c:352
+#: ../src/glade-registration.c:350
 msgid "Open Glade Users Website"
 msgstr "Άνοιγμα της ιστοσελίδας χρηστών του Glade"
 
-#: ../src/glade-registration.c:404
+#: ../src/glade-registration.c:402
 msgid "Internal server error"
 msgstr "Εσωτερικό σφάλμα διακομιστή"
 
-#: ../src/glade-registration.c:428
+#: ../src/glade-registration.c:426
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
 msgstr ""
 "Σας ευχαριστούμε που βρήκατε τον χρόνο να συμπληρώσετε την έρευνα χρηστών "
 "του Glade, το εκτιμούμε!"
 
-#: ../src/glade-registration.c:436
+#: ../src/glade-registration.c:434
 msgid "Name and Email fields are required"
 msgstr "Είναι υποχρεωτικά το όνομα και η διεύθυνση ηλ. αλληλογγραφίας"
 
-#: ../src/glade-registration.c:439
+#: ../src/glade-registration.c:437
 msgid ""
 "Oops! Email address is already in use!\n"
 "To update information you need to provide the token that was sent to your "
@@ -951,17 +952,17 @@ msgstr ""
 "Για να ενημερώσετε τις πληροφορίες πρέπει να δώσετε το διακριτικό που σας "
 "στάλθηκε."
 
-#: ../src/glade-registration.c:442
+#: ../src/glade-registration.c:440
 #, c-format
 msgid "Oops! Error saving user information: %s"
 msgstr "Ωχ! Σφάλμα κατά την αποθήκευση πληροφοριών του χρήστη: %s"
 
-#: ../src/glade-registration.c:445
+#: ../src/glade-registration.c:443
 #, c-format
 msgid "Oops! Error saving survey data: %s"
 msgstr "Ωχ! Σφάλμα κατά την αποθήκευση δεδομένων της έρευνας: %s"
 
-#: ../src/glade-registration.c:448
+#: ../src/glade-registration.c:446
 #, c-format
 msgid "Oops! Error accessing DB: %s"
 msgstr "Ωχ! Σφάλμα κατά την πρόσβαση στη βάση δεδομένων: %s"
@@ -1060,316 +1061,312 @@ msgstr ""
 "διαμοιρασμός στο κοινό ή σε τρίτους."
 
 #: ../src/glade-registration.glade.h:24
-msgid "See Privacy Note"
-msgstr "Δείτε τη σημείωση απορρήτου"
-
-#: ../src/glade-registration.glade.h:25
 msgid "Update Info"
 msgstr "Πληροφορίες ενημέρωσης"
 
-#: ../src/glade-registration.glade.h:26
+#: ../src/glade-registration.glade.h:25
 msgid "<Insert update token, if you want to update previously sent data>"
 msgstr ""
 "<Εισαγωγή διακριτικού ενημέρωσης, αν θέλετε να ενημερώσετε προηγουμένως "
 "απεσταλμένα δεδομένα>"
 
-#: ../src/glade-registration.glade.h:28
+#: ../src/glade-registration.glade.h:27
 msgid "How long have you been programming?"
 msgstr "Πόσον καιρό προγραμματίζετε;"
 
-#: ../src/glade-registration.glade.h:29
+#: ../src/glade-registration.glade.h:28
 msgid "0"
 msgstr "0"
 
-#: ../src/glade-registration.glade.h:30
+#: ../src/glade-registration.glade.h:29
 msgid "years"
 msgstr "χρόνια"
 
-#: ../src/glade-registration.glade.h:31
+#: ../src/glade-registration.glade.h:30
 msgid "months"
 msgstr "μήνες"
 
-#: ../src/glade-registration.glade.h:32
+#: ../src/glade-registration.glade.h:31
 msgid "I am not a programmer"
 msgstr "Δεν είμαι προγραμματιστής"
 
-#: ../src/glade-registration.glade.h:33
+#: ../src/glade-registration.glade.h:32
 msgid "Which programming languages do you prefer?"
 msgstr "Ποιες γλώσσες προγραμματισμού προτιμάτε;"
 
-#: ../src/glade-registration.glade.h:34
+#: ../src/glade-registration.glade.h:33
 msgid "C"
 msgstr "C"
 
-#: ../src/glade-registration.glade.h:35
+#: ../src/glade-registration.glade.h:34
 msgid "C++"
 msgstr "C++"
 
-#: ../src/glade-registration.glade.h:36
+#: ../src/glade-registration.glade.h:35
 msgid "C#"
 msgstr "C#"
 
-#: ../src/glade-registration.glade.h:37
+#: ../src/glade-registration.glade.h:36
 msgid "Java"
 msgstr "Java"
 
-#: ../src/glade-registration.glade.h:38
+#: ../src/glade-registration.glade.h:37
 msgid "Python"
 msgstr "Python"
 
-#: ../src/glade-registration.glade.h:39
+#: ../src/glade-registration.glade.h:38
 msgid "JavaScript"
 msgstr "JavaScript"
 
-#: ../src/glade-registration.glade.h:40
+#: ../src/glade-registration.glade.h:39
 msgid "Vala"
 msgstr "Vala"
 
-#: ../src/glade-registration.glade.h:41
+#: ../src/glade-registration.glade.h:40
 msgid "Perl"
 msgstr "Perl"
 
 #. GtkCellRendererAccelMode enumeration value
-#: ../src/glade-registration.glade.h:42
+#: ../src/glade-registration.glade.h:41
 #: ../gladeui/glade-project-properties.ui.h:19
 #: ../plugins/gtk+/gtk+.xml.in.h:766
 msgid "Other"
 msgstr "Άλλο"
 
-#: ../src/glade-registration.glade.h:43
+#: ../src/glade-registration.glade.h:42
 msgid "When did you start using Glade?"
 msgstr "Πότε αρχίσατε να χρησιμοποιείτε το Glade;"
 
-#: ../src/glade-registration.glade.h:44
+#: ../src/glade-registration.glade.h:43
 msgid "ago"
 msgstr "πριν"
 
-#: ../src/glade-registration.glade.h:45
+#: ../src/glade-registration.glade.h:44
 msgid "Which version do you normally use?"
 msgstr "Ποια έκδοση χρησιμοποιείτε κανονικά;"
 
-#: ../src/glade-registration.glade.h:46
+#: ../src/glade-registration.glade.h:45
 msgid "What is available in my OS"
 msgstr "Όποια είναι διαθέσιμη στο λειτουργικό σύστημά μου"
 
-#: ../src/glade-registration.glade.h:47
+#: ../src/glade-registration.glade.h:46
 msgid "Latest stable from sources"
 msgstr "Τελευταία σταθερά από τον πηγαίο κώδικα"
 
-#: ../src/glade-registration.glade.h:48
+#: ../src/glade-registration.glade.h:47
 msgid "3.8 for GTK+ 2"
 msgstr "3.8 για το Gtk+ 2"
 
-#: ../src/glade-registration.glade.h:49
+#: ../src/glade-registration.glade.h:48
 msgid "Master"
 msgstr "Κύριο"
 
-#: ../src/glade-registration.glade.h:50
+#: ../src/glade-registration.glade.h:49
 msgid "On what operating systems?"
 msgstr "Σε ποια λειτουργικά συστήματα;"
 
-#: ../src/glade-registration.glade.h:51
+#: ../src/glade-registration.glade.h:50
 msgid "distribution"
 msgstr "διανομή"
 
-#: ../src/glade-registration.glade.h:52
+#: ../src/glade-registration.glade.h:51
 msgid "Arch Linux"
 msgstr "Arch Linux"
 
-#: ../src/glade-registration.glade.h:53
+#: ../src/glade-registration.glade.h:52
 msgid "Debian"
 msgstr "Debian"
 
-#: ../src/glade-registration.glade.h:54
+#: ../src/glade-registration.glade.h:53
 msgid "openSUSE"
 msgstr "openSUSE"
 
-#: ../src/glade-registration.glade.h:55
+#: ../src/glade-registration.glade.h:54
 msgid "Fedora"
 msgstr "Fedora"
 
-#: ../src/glade-registration.glade.h:56
+#: ../src/glade-registration.glade.h:55
 msgid "Gentoo"
 msgstr "Gentoo"
 
-#: ../src/glade-registration.glade.h:57
+#: ../src/glade-registration.glade.h:56
 msgid "Mandriva"
 msgstr "Mandriva"
 
-#: ../src/glade-registration.glade.h:58
+#: ../src/glade-registration.glade.h:57
 msgid "Red Hat"
 msgstr "Red Hat"
 
-#: ../src/glade-registration.glade.h:59
+#: ../src/glade-registration.glade.h:58
 msgid "Turbolinux"
 msgstr "Turbolinux"
 
-#: ../src/glade-registration.glade.h:60
+#: ../src/glade-registration.glade.h:59
 msgid "Ubuntu"
 msgstr "Ubuntu"
 
-#: ../src/glade-registration.glade.h:61
+#: ../src/glade-registration.glade.h:60
 msgid "Xandros"
 msgstr "Xandros"
 
-#: ../src/glade-registration.glade.h:62
+#: ../src/glade-registration.glade.h:61
 msgid "Oracle"
 msgstr "Oracle"
 
-#: ../src/glade-registration.glade.h:63
+#: ../src/glade-registration.glade.h:62
 msgid "variant"
 msgstr "παραλλαγή"
 
-#: ../src/glade-registration.glade.h:64
+#: ../src/glade-registration.glade.h:63
 msgid "FreeBSD"
 msgstr "FreeBSD"
 
-#: ../src/glade-registration.glade.h:65
+#: ../src/glade-registration.glade.h:64
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
-#: ../src/glade-registration.glade.h:66
+#: ../src/glade-registration.glade.h:65
 msgid "NetBSD"
 msgstr "NetBSD"
 
-#: ../src/glade-registration.glade.h:67
+#: ../src/glade-registration.glade.h:66
 msgid "Oracle Solaris"
 msgstr "Oracle Solaris"
 
-#: ../src/glade-registration.glade.h:68
+#: ../src/glade-registration.glade.h:67
 msgid "OpenSolaris"
 msgstr "OpenSolaris"
 
-#: ../src/glade-registration.glade.h:69
+#: ../src/glade-registration.glade.h:68
 msgid "illumos"
 msgstr "illumos"
 
-#: ../src/glade-registration.glade.h:70
+#: ../src/glade-registration.glade.h:69
 msgid "version"
 msgstr "έκδοση"
 
-#: ../src/glade-registration.glade.h:71
+#: ../src/glade-registration.glade.h:70
 msgid "2000"
 msgstr "2000"
 
-#: ../src/glade-registration.glade.h:72
+#: ../src/glade-registration.glade.h:71
 msgid "XP"
 msgstr "XP"
 
-#: ../src/glade-registration.glade.h:73
+#: ../src/glade-registration.glade.h:72
 msgid "2003"
 msgstr "2003"
 
-#: ../src/glade-registration.glade.h:74
+#: ../src/glade-registration.glade.h:73
 msgid "Vista"
 msgstr "Vista"
 
-#: ../src/glade-registration.glade.h:75
+#: ../src/glade-registration.glade.h:74
 msgid "2008"
 msgstr "2008"
 
-#: ../src/glade-registration.glade.h:76
+#: ../src/glade-registration.glade.h:75
 msgid "7"
 msgstr "7"
 
-#: ../src/glade-registration.glade.h:77
+#: ../src/glade-registration.glade.h:76
 msgid "8"
 msgstr "8"
 
-#: ../src/glade-registration.glade.h:78
+#: ../src/glade-registration.glade.h:77
 msgid "2012"
 msgstr "2012"
 
-#: ../src/glade-registration.glade.h:79
+#: ../src/glade-registration.glade.h:78
 msgid "Tiger"
 msgstr "Tiger"
 
-#: ../src/glade-registration.glade.h:80
+#: ../src/glade-registration.glade.h:79
 msgid "Leopard"
 msgstr "Leopard"
 
-#: ../src/glade-registration.glade.h:81
+#: ../src/glade-registration.glade.h:80
 msgid "Snow Leopard"
 msgstr "Snow Leopard"
 
-#: ../src/glade-registration.glade.h:82
+#: ../src/glade-registration.glade.h:81
 msgid "Lion"
 msgstr "Lion"
 
-#: ../src/glade-registration.glade.h:83
+#: ../src/glade-registration.glade.h:82
 msgid "Mountain Lion"
 msgstr "Mountain Lion"
 
-#: ../src/glade-registration.glade.h:84
+#: ../src/glade-registration.glade.h:83
 msgid "Mavericks"
 msgstr "Mavericks"
 
-#: ../src/glade-registration.glade.h:85
+#: ../src/glade-registration.glade.h:84
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
 #. GtkLicense enumeration value
-#: ../src/glade-registration.glade.h:86 ../plugins/gtk+/gtk+.xml.in.h:796
+#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:796
 msgid "BSD"
 msgstr "BSD"
 
-#: ../src/glade-registration.glade.h:87
+#: ../src/glade-registration.glade.h:86
 msgid "Windows"
 msgstr "Windows"
 
-#: ../src/glade-registration.glade.h:88
+#: ../src/glade-registration.glade.h:87
 msgid "Mac OS X"
 msgstr "Mac OSX"
 
-#: ../src/glade-registration.glade.h:89
+#: ../src/glade-registration.glade.h:88
 msgid "Solaris"
 msgstr "Solaris"
 
-#: ../src/glade-registration.glade.h:90
+#: ../src/glade-registration.glade.h:89
 msgid "How often do you use it?"
 msgstr "Πόσο συχνά το χρησιμοποιείτε;"
 
-#: ../src/glade-registration.glade.h:91
+#: ../src/glade-registration.glade.h:90
 msgid "Every day"
 msgstr "Κάθε ημέρα"
 
-#: ../src/glade-registration.glade.h:92
+#: ../src/glade-registration.glade.h:91
 msgid "Few days a week"
 msgstr "Λίγες ημέρες τη βδομάδα"
 
-#: ../src/glade-registration.glade.h:93
+#: ../src/glade-registration.glade.h:92
 msgid "Every week"
 msgstr "Κάθε εβδομάδα"
 
-#: ../src/glade-registration.glade.h:94
+#: ../src/glade-registration.glade.h:93
 msgid "A few times a month"
 msgstr "Λίγες φορές τον μήνα"
 
-#: ../src/glade-registration.glade.h:95
+#: ../src/glade-registration.glade.h:94
 msgid "Once a month"
 msgstr "Μια φορά το μήνα"
 
-#: ../src/glade-registration.glade.h:96
+#: ../src/glade-registration.glade.h:95
 msgid "A few times a year"
 msgstr "Λίγες φορές το έτος"
 
-#: ../src/glade-registration.glade.h:97
+#: ../src/glade-registration.glade.h:96
 msgid "What level of Glade user would you say you are?"
 msgstr "Ποιο επίπεδο χρήστη Glade θα λέγατε ότι είσαστε;"
 
-#: ../src/glade-registration.glade.h:98
+#: ../src/glade-registration.glade.h:97
 msgid "Beginner"
 msgstr "Αρχάριος"
 
-#: ../src/glade-registration.glade.h:99
+#: ../src/glade-registration.glade.h:98
 msgid "Intermediate"
 msgstr "Ενδιάμεσος"
 
-#: ../src/glade-registration.glade.h:100
+#: ../src/glade-registration.glade.h:99
 msgid "Advanced"
 msgstr "Προχωρημένος"
 
-#: ../src/glade-registration.glade.h:101
+#: ../src/glade-registration.glade.h:100
 msgid ""
 "Under what kind of license(s) do you release the software you used Glade to "
 "create?"
@@ -1377,123 +1374,123 @@ msgstr ""
 "Με ποιο είδος άδειας εκδίδετε το λογισμικό που δημιουργείτε χρησιμοποιώντας "
 "το Glade ;"
 
-#: ../src/glade-registration.glade.h:102
+#: ../src/glade-registration.glade.h:101
 msgid "Free software"
 msgstr "Ελεύθερο λογισμικό"
 
-#: ../src/glade-registration.glade.h:103
+#: ../src/glade-registration.glade.h:102
 msgid "Open source software"
 msgstr "Λογισμικό ανοικτού κώδικα"
 
-#: ../src/glade-registration.glade.h:104
+#: ../src/glade-registration.glade.h:103
 msgid "Commercial/Closed software"
 msgstr "Εμπορικό/Κλειστό λογισμικό"
 
-#: ../src/glade-registration.glade.h:105
+#: ../src/glade-registration.glade.h:104
 msgid "None - distributed internally"
 msgstr "Κανένα - εσωτερική διανομή"
 
-#: ../src/glade-registration.glade.h:106
+#: ../src/glade-registration.glade.h:105
 msgid ""
 "In what field(s) is the software you used Glade to create generally used?"
 msgstr ""
 "Σε ποια πεδία διατίθεται, γενικά, το λογισμικό που δημιουργείτε "
 "χρησιμοποιώντας το Glade;"
 
-#: ../src/glade-registration.glade.h:107
+#: ../src/glade-registration.glade.h:106
 msgid "Academic"
 msgstr "Ακαδημαϊκό"
 
-#: ../src/glade-registration.glade.h:108
+#: ../src/glade-registration.glade.h:107
 msgid "Embedded applications"
 msgstr "Ενσωματωμένες εφαρμογές"
 
-#: ../src/glade-registration.glade.h:109
+#: ../src/glade-registration.glade.h:108
 msgid "Accounting"
 msgstr "Λογιστικά"
 
-#: ../src/glade-registration.glade.h:110
+#: ../src/glade-registration.glade.h:109
 msgid "Desktop applications"
 msgstr "Εφαρμογές επιφάνειας εργασίας"
 
-#: ../src/glade-registration.glade.h:111
+#: ../src/glade-registration.glade.h:110
 msgid "Educational"
 msgstr "Εκπαιδευτικό"
 
-#: ../src/glade-registration.glade.h:112
+#: ../src/glade-registration.glade.h:111
 msgid "Medical"
 msgstr "Ιατρικό"
 
-#: ../src/glade-registration.glade.h:113
+#: ../src/glade-registration.glade.h:112
 msgid "Industrial applications"
 msgstr "Βιομηχανικές εφαρμογές"
 
-#: ../src/glade-registration.glade.h:114
+#: ../src/glade-registration.glade.h:113
 msgid "Scientific"
 msgstr "Επιστημονικό"
 
-#: ../src/glade-registration.glade.h:115
+#: ../src/glade-registration.glade.h:114
 msgid "What aspect of the software needs the most improvement?"
 msgstr "Ποια πλευρά του λογισμικού χρειάζεται την μεγαλύτερη βελτίωση;"
 
-#: ../src/glade-registration.glade.h:116
+#: ../src/glade-registration.glade.h:115
 msgid "In your opinion what is the biggest problem with Glade?"
 msgstr "Κατά τη γνώμη σας ποιο είναι το μεγαλύτερο πρόβλημα με το Glade;"
 
-#: ../src/glade-registration.glade.h:117
+#: ../src/glade-registration.glade.h:116
 msgid "Lack of documentation"
 msgstr "Έλλειψη τεκμηρίωσης"
 
-#: ../src/glade-registration.glade.h:118
+#: ../src/glade-registration.glade.h:117
 msgid "Lack of professional support"
 msgstr "Έλλειψη επαγγελματικής υποστήριξης"
 
-#: ../src/glade-registration.glade.h:119
+#: ../src/glade-registration.glade.h:118
 msgid "Lack of professional training"
 msgstr "Έλλειψη επαγγελματικής εκπαίδευσης"
 
-#: ../src/glade-registration.glade.h:120
+#: ../src/glade-registration.glade.h:119
 msgid "Lack of publicity/exposure"
 msgstr "Έλλειψη δημοσιότητας/έκθεση"
 
-#: ../src/glade-registration.glade.h:121
+#: ../src/glade-registration.glade.h:120
 msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
 msgstr ""
 "Έλλειψη επίσημων εκτελέσιμων εκδόσεων για άλλα λειτουργικά (Win32, OSX)"
 
-#: ../src/glade-registration.glade.h:122
+#: ../src/glade-registration.glade.h:121
 msgid "Have you ever encountered a bug?"
 msgstr "Έχετε ποτέ αντιμετωπίσει σφάλμα;"
 
-#: ../src/glade-registration.glade.h:123
+#: ../src/glade-registration.glade.h:122
 msgid "Yes"
 msgstr "Ναι"
 
-#: ../src/glade-registration.glade.h:124
+#: ../src/glade-registration.glade.h:123
 msgid "No"
 msgstr "Όχι"
 
-#: ../src/glade-registration.glade.h:125
+#: ../src/glade-registration.glade.h:124
 msgid "If so, did you file a bug report?"
 msgstr "Αν ναι, συμπληρώσατε μια αναφορά σφάλματος;"
 
-#: ../src/glade-registration.glade.h:126
+#: ../src/glade-registration.glade.h:125
 msgid "Have you ever thought about contributing?"
 msgstr "Σκεφτήκατε ποτέ να συνεισφέρετε;"
 
-#: ../src/glade-registration.glade.h:127
+#: ../src/glade-registration.glade.h:126
 msgid "Why not?"
 msgstr "Γιατί όχι;"
 
-#: ../src/glade-registration.glade.h:128
+#: ../src/glade-registration.glade.h:127
 msgid "Comments:"
 msgstr "Σχόλια:"
 
-#: ../src/glade-registration.glade.h:129
+#: ../src/glade-registration.glade.h:128
 msgid "Privacy Note:"
 msgstr "Σημείωση απορρήτου:"
 
-#: ../src/glade-registration.glade.h:130
+#: ../src/glade-registration.glade.h:129
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -1615,7 +1612,7 @@ msgstr "Ιεραρχία"
 msgid "Label"
 msgstr "Ετικέτα"
 
-#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1446
 msgid "Type"
 msgstr "Τύπος"
 
@@ -1897,11 +1894,11 @@ msgstr "Επεξεργασία στοίχισης του %s"
 msgid "Editing margins of %s"
 msgstr "Επεξεργασία περιθώριων του %s"
 
-#: ../gladeui/glade-design-layout.c:2091
+#: ../gladeui/glade-design-layout.c:2041
 msgid "Design View"
 msgstr "Προβολή σχεδίασης"
 
-#: ../gladeui/glade-design-layout.c:2092
+#: ../gladeui/glade-design-layout.c:2042
 msgid "The GladeDesignView that contains this layout"
 msgstr "Το GladeDesignView που περιέχει αυτή τη διάταξη"
 
@@ -2127,7 +2124,7 @@ msgstr "Άν_οιγμα"
 
 #. GtkInputPurpose enumeration value
 #: ../gladeui/glade-editor-property.c:3090
-#: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1341
+#: ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Name"
 msgstr "Όνομα"
@@ -2311,100 +2308,128 @@ msgstr "Σφάλμα εκκίνησης προεπισκόπησης: %s\n"
 msgid "Failed to launch preview: %s.\n"
 msgstr "Αποτυχία εκκίνησης προγράμματος για προβολή: %s.\n"
 
-#: ../gladeui/glade-previewer.c:69
+#: ../gladeui/glade-previewer.c:202
+msgid "Glade Previewer log"
+msgstr "Καταγραφής προεπισκόπησης Glade"
+
+#: ../gladeui/glade-previewer.c:739 ../gladeui/glade-previewer.c:749
+msgid "user_data"
+msgstr "_δεδομένα χρήστη"
+
+#. translators: GConnectFlags values
+#: ../gladeui/glade-previewer.c:753
+msgid "Swapped | After"
+msgstr "Ανταλλάχθηκε | Μετά από"
+
+#. translators: GConnectFlags value
+#: ../gladeui/glade-previewer.c:756 ../gladeui/glade-signal.c:213
+msgid "Swapped"
+msgstr "Ανταλλάχθηκε"
+
+#. translators: GConnectFlags value
+#: ../gladeui/glade-previewer.c:759 ../gladeui/glade-signal.c:207
+#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:649
+msgid "After"
+msgstr "Μετά από"
+
+#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
+#: ../gladeui/glade-previewer.c:782
+#, c-format
+msgid "%s::%s emitted one time"
+msgstr "%s::%s εκπέμφθηκε μία φορά"
+
+#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#: ../gladeui/glade-previewer.c:786
+#, c-format
+msgid "%s::%s emitted %d times"
+msgstr "%s::%s εκπέμφθηκε %d φορές"
+
+#: ../gladeui/glade-previewer.c:791
+msgid "Run First"
+msgstr "Εκτέλεση στην αρχή"
+
+#: ../gladeui/glade-previewer.c:796
+msgid "Run Last"
+msgstr "Εκτέλεση στο τέλος"
+
+#: ../gladeui/glade-previewer.c:801
+msgid "Run Cleanup"
+msgstr "Εκτέλεση εκκαθάρισης"
+
+#: ../gladeui/glade-previewer-main.c:69
 #, c-format
 msgid "UI definition has no previewable widgets.\n"
 msgstr ""
 "Στον ορισμό διεπαφής χρήστη δεν υπάρχουν προεπισκοπήσιμα γραφικά στοιχεία.\n"
 
-#: ../gladeui/glade-previewer.c:79
+#: ../gladeui/glade-previewer-main.c:79
 #, c-format
 msgid "Object %s not found in UI definition.\n"
 msgstr "Το αντικείμενο %s δεν βρέθηκε στον ορισμό διεπαφής χρήστη.\n"
 
-#: ../gladeui/glade-previewer.c:85
+#: ../gladeui/glade-previewer-main.c:85
 #, c-format
 msgid "Object is not previewable.\n"
 msgstr "Το αντικείμενο δεν μπορεί να προβληθεί.\n"
 
-#: ../gladeui/glade-previewer.c:145 ../gladeui/glade-previewer.c:489
+#: ../gladeui/glade-previewer-main.c:145 ../gladeui/glade-previewer-main.c:396
 #, c-format
 msgid "Couldn't load builder definition: %s"
 msgstr "Δεν ήταν δυνατή η φόρτωση ορισμού δομητή: %s"
 
-#: ../gladeui/glade-previewer.c:177 ../gladeui/glade-previewer.c:197
+#: ../gladeui/glade-previewer-main.c:177 ../gladeui/glade-previewer-main.c:197
 #, c-format
 msgid "Error: %s.\n"
 msgstr "Σφάλμα: %s.\n"
 
-#: ../gladeui/glade-previewer.c:219 ../gladeui/glade-widget.c:2742
-#: ../plugins/gtk+/glade-gtk-widget.c:1018
-#: ../plugins/gtk+/glade-gtk-widget.c:1081
-msgid "(unnamed)"
-msgstr "(ανώνυμο)"
-
-#: ../gladeui/glade-previewer.c:231
-#, c-format
-msgid "Previewing %s - %s"
-msgstr "Προεπισκόπηση %s - %s"
-
-#: ../gladeui/glade-previewer.c:233 ../gladeui/glade-previewer.c:237
-#, c-format
-msgid "Previewing %s"
-msgstr "Προεπισκόπηση %s"
-
-#: ../gladeui/glade-previewer.c:241
-msgid "Glade Preview"
-msgstr "Προεπισκόπηση Glade"
-
-#: ../gladeui/glade-previewer.c:266
+#: ../gladeui/glade-previewer-main.c:227
 #, c-format
 msgid "Broken pipe!\n"
 msgstr "Διακοπείσα διοχεύτεση!\n"
 
-#: ../gladeui/glade-previewer.c:391
+#: ../gladeui/glade-previewer-main.c:299
 msgid "Name of the file to preview"
 msgstr "Όνομα του αρχείου για προεπισκόπηση"
 
-#: ../gladeui/glade-previewer.c:392
+#: ../gladeui/glade-previewer-main.c:300
 msgid "Creates dummy widget class to load a template"
 msgstr "Δημιουργεί εικονική κλάση γραφικών στοιχείων για φόρτωση προτύπου"
 
-#: ../gladeui/glade-previewer.c:393
+#: ../gladeui/glade-previewer-main.c:301
 msgid "Name of the toplevel to preview"
 msgstr "Ονομασία του ανώτατου πεδίου για προεπισκόπιση"
 
-#: ../gladeui/glade-previewer.c:394
+#: ../gladeui/glade-previewer-main.c:302
 msgid "File name to save a screenshot"
 msgstr "Όνομα αρχείου για αποθήκευση στιγμιότυπου"
 
-#: ../gladeui/glade-previewer.c:395
+#: ../gladeui/glade-previewer-main.c:303
 msgid "CSS file to use"
 msgstr "Αρχείο CSS για χρήση"
 
-#: ../gladeui/glade-previewer.c:396
+#: ../gladeui/glade-previewer-main.c:304
 msgid "Listen standard input"
 msgstr "Αναμονή από κανονική είσοδο"
 
-#: ../gladeui/glade-previewer.c:397
+#: ../gladeui/glade-previewer-main.c:305
 msgid "make a slideshow of every toplevel widget by adding them in a GtkStack"
 msgstr ""
 "δημιουργία μιας προβολής διαφανειών κάθε γραφικού στοιχείου ανωτάτου "
 "επιπέδου προσθέτοντας τα σε μια GtkStack"
 
-#: ../gladeui/glade-previewer.c:398
+#: ../gladeui/glade-previewer-main.c:306
 msgid "Print handlers signature on invocation"
 msgstr "Εμφάνιση υπογραφής χειριστών ενέργειας"
 
-#: ../gladeui/glade-previewer.c:399
+#: ../gladeui/glade-previewer-main.c:307
 msgid "Display previewer version"
 msgstr "Εμφάνιση έκδοσης προεπισκόπισης"
 
-#: ../gladeui/glade-previewer.c:418
+#: ../gladeui/glade-previewer-main.c:326
 msgid "- previews a glade UI definition"
 msgstr "- Προεπισκόπηση ορισμού ενός Glade περιβάλλοντος εργασίας χρήστη"
 
-#: ../gladeui/glade-previewer.c:424
+#: ../gladeui/glade-previewer-main.c:332
 #, c-format
 msgid ""
 "%s\n"
@@ -2414,59 +2439,10 @@ msgstr ""
 "Εκτελέστε '%s --help' για να δείτε μια πλήρη λίστα των διαθέσιμων επιλογών "
 "γραμμής εντολών.\n"
 
-#: ../gladeui/glade-previewer.c:441
+#: ../gladeui/glade-previewer-main.c:349
 #, c-format
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "Είτε το --listen ή το --filename πρέπει να καθορισθεί.\n"
-
-#: ../gladeui/glade-preview-window.c:56
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
-msgid "Preview"
-msgstr "Προεπισκόπηση"
-
-#: ../gladeui/glade-preview-window.c:664 ../gladeui/glade-preview-window.c:674
-msgid "user_data"
-msgstr "_δεδομένα χρήστη"
-
-#. translators: GConnectFlags values
-#: ../gladeui/glade-preview-window.c:678
-msgid "Swapped | After"
-msgstr "Ανταλλάχθηκε | Μετά από"
-
-#. translators: GConnectFlags value
-#: ../gladeui/glade-preview-window.c:681 ../gladeui/glade-signal.c:213
-msgid "Swapped"
-msgstr "Ανταλλάχθηκε"
-
-#. translators: GConnectFlags value
-#: ../gladeui/glade-preview-window.c:684 ../gladeui/glade-signal.c:207
-#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:649
-msgid "After"
-msgstr "Μετά από"
-
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
-#: ../gladeui/glade-preview-window.c:707
-#, c-format
-msgid "%s::%s emitted one time"
-msgstr "%s::%s εκπέμφθηκε μία φορά"
-
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
-#: ../gladeui/glade-preview-window.c:711
-#, c-format
-msgid "%s::%s emitted %d times"
-msgstr "%s::%s εκπέμφθηκε %d φορές"
-
-#: ../gladeui/glade-preview-window.c:716
-msgid "Run First"
-msgstr "Εκτέλεση στην αρχή"
-
-#: ../gladeui/glade-preview-window.c:721
-msgid "Run Last"
-msgstr "Εκτέλεση στο τέλος"
-
-#: ../gladeui/glade-preview-window.c:726
-msgid "Run Cleanup"
-msgstr "Εκτέλεση εκκαθάρισης"
 
 #: ../gladeui/glade-project.c:958
 msgid "Whether project has been modified since it was last saved"
@@ -3062,74 +3038,74 @@ msgstr "Ορατό"
 msgid "Whether this action is visible"
 msgstr "Αν αυτή η ενέργεια είναι ορατή"
 
-#: ../gladeui/glade-widget-adaptor.c:255
+#: ../gladeui/glade-widget-adaptor.c:241
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Ένας προσαρμογέας (%s) έχει ήδη προσαρμοστεί από το %s!"
 
-#: ../gladeui/glade-widget-adaptor.c:957
+#: ../gladeui/glade-widget-adaptor.c:943
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s δεν υποστηρίζει την προσθήκη θυγατρικών."
 
-#: ../gladeui/glade-widget-adaptor.c:1454
+#: ../gladeui/glade-widget-adaptor.c:1440
 msgid "Name of the class"
 msgstr "Όνομα της κλάσης"
 
-#: ../gladeui/glade-widget-adaptor.c:1461
+#: ../gladeui/glade-widget-adaptor.c:1447
 msgid "GType of the class"
 msgstr "Τύπος GType της κλάσης"
 
-#: ../gladeui/glade-widget-adaptor.c:1467
+#: ../gladeui/glade-widget-adaptor.c:1453
 msgid "Title"
 msgstr "Τίτλος"
 
-#: ../gladeui/glade-widget-adaptor.c:1468
+#: ../gladeui/glade-widget-adaptor.c:1454
 msgid "Translated title for the class used in the glade UI"
 msgstr ""
 "Μεταφρασμένος τίτλος για την κλάση που θα χρησιμοποιηθεί στη γραφική διεπαφή "
 "του glade"
 
-#: ../gladeui/glade-widget-adaptor.c:1474
+#: ../gladeui/glade-widget-adaptor.c:1460
 msgid "Generic Name"
 msgstr "Γενικό όνομα"
 
-#: ../gladeui/glade-widget-adaptor.c:1475
+#: ../gladeui/glade-widget-adaptor.c:1461
 msgid "Used to generate names of new widgets"
 msgstr "Χρησιμοποιείται για τη δημιουργία ονομάτων των νέων γραφικών στοιχείων"
 
-#: ../gladeui/glade-widget-adaptor.c:1481 ../plugins/gtk+/gtk+.xml.in.h:641
+#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:641
 #: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "Όνομα εικονιδίου"
 
-#: ../gladeui/glade-widget-adaptor.c:1482
+#: ../gladeui/glade-widget-adaptor.c:1468
 msgid "The icon name"
 msgstr "Το όνομα του εικονιδίου"
 
-#: ../gladeui/glade-widget-adaptor.c:1488
+#: ../gladeui/glade-widget-adaptor.c:1474
 msgid "Catalog"
 msgstr "Κατάλογος"
 
-#: ../gladeui/glade-widget-adaptor.c:1489
+#: ../gladeui/glade-widget-adaptor.c:1475
 msgid "The name of the widget catalog this class was declared by"
 msgstr ""
 "Το όνομα του καταλόγου γραφικού στοιχείου από τον οποίο αυτή η κλάση δηλώθηκε"
 
-#: ../gladeui/glade-widget-adaptor.c:1495
+#: ../gladeui/glade-widget-adaptor.c:1481
 msgid "Book"
 msgstr "Βιβλίο"
 
-#: ../gladeui/glade-widget-adaptor.c:1496
+#: ../gladeui/glade-widget-adaptor.c:1482
 msgid "DevHelp search namespace for this widget class"
 msgstr ""
 "Αναζήτηση DevHelp για χώρο ονομάτων αυτής τηνς κλάσης γραφικού στοιχείου"
 
-#: ../gladeui/glade-widget-adaptor.c:1502
+#: ../gladeui/glade-widget-adaptor.c:1488
 msgid "Special Child Type"
 msgstr "Ειδικός θυγατρικός τύπος"
 
-#: ../gladeui/glade-widget-adaptor.c:1503
+#: ../gladeui/glade-widget-adaptor.c:1489
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -3137,11 +3113,11 @@ msgstr ""
 "Κρατά το όνομα της ιδιότητας πακεταρίσματος για να περιγράφονται ειδικά "
 "θυγατρικά για αυτήν τη κλάση του περιέκτη"
 
-#: ../gladeui/glade-widget-adaptor.c:1510
+#: ../gladeui/glade-widget-adaptor.c:1496
 msgid "Cursor"
 msgstr "Δρομέας"
 
-#: ../gladeui/glade-widget-adaptor.c:1511
+#: ../gladeui/glade-widget-adaptor.c:1497
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Ένας δρομέας για την εισαγωγή γραφικών στοιχείων στη γραφική διεπαφή"
 
@@ -3261,6 +3237,11 @@ msgstr "Αν το γραφικού στοιχείο θα είναι ορατό �
 msgid "Whether this widget is the template for a composite widget"
 msgstr ""
 "Αν αυτό το γραφικό στοιχείο είναι το πρότυπο για ένα σύνθετο γραφικό στοιχείο"
+
+#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1018
+#: ../plugins/gtk+/glade-gtk-widget.c:1081
+msgid "(unnamed)"
+msgstr "(ανώνυμο)"
 
 #: ../gladeui/glade-widget.c:4803
 #, c-format
@@ -3751,7 +3732,7 @@ msgstr ""
 "Ρύθμιση του δευτερεύοντος εικονιδίου του %s για μη χρήση σήμανσης συμβουλής "
 "οθόνης"
 
-#: ../plugins/gtk+/glade-fixed.c:623 ../plugins/gtk+/glade-gtk-grid.c:994
+#: ../plugins/gtk+/glade-fixed.c:623 ../plugins/gtk+/glade-gtk-grid.c:1018
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Τοποθέτηση του %s μέσα στο %s"
@@ -3850,21 +3831,7 @@ msgstr "Σελίδα περιεχομένων"
 msgid "Confirmation page"
 msgstr "Σελίδα επιβεβαίωσης"
 
-#: ../plugins/gtk+/glade-gtk-box.c:615 ../plugins/gtk+/glade-gtk-box.c:623
-#: ../plugins/gtk+/glade-gtk-header-bar.c:113
-#: ../plugins/gtk+/glade-gtk-stack.c:160
-#, c-format
-msgid "Insert placeholder to %s"
-msgstr "Εισαγωγή διαχωριστή στο %s"
-
-#: ../plugins/gtk+/glade-gtk-box.c:631
-#: ../plugins/gtk+/glade-gtk-header-bar.c:137
-#: ../plugins/gtk+/glade-gtk-stack.c:197
-#, c-format
-msgid "Remove placeholder from %s"
-msgstr "Αφαίρεση διαχωριστή από το %s"
-
-#: ../plugins/gtk+/glade-gtk-box.c:830
+#: ../plugins/gtk+/glade-gtk-box.c:821
 #, c-format
 msgid "Ordering children of %s"
 msgstr "Διάταξη των θυγατρικών του %s"
@@ -3997,32 +3964,29 @@ msgstr ""
 "Αυτή η ιδιότητα είναι διαθέσιμη μόνο\n"
 "αν οι χαρακτήρες της καταχώρισης είναι αόρατοι"
 
-#: ../plugins/gtk+/glade-gtk-flow-box.c:249
-#: ../plugins/gtk+/glade-gtk-flow-box.c:255
+#: ../plugins/gtk+/glade-gtk-flow-box.c:204
 #, c-format
 msgid "Insert Child on %s"
 msgstr "Προσθήκη θυγατρικού στο %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:597 ../plugins/gtk+/glade-gtk-grid.c:604
-#: ../plugins/gtk+/glade-gtk-list-box.c:252
-#: ../plugins/gtk+/glade-gtk-list-box.c:258
-#: ../plugins/gtk+/glade-gtk-table.c:643 ../plugins/gtk+/glade-gtk-table.c:650
+#: ../plugins/gtk+/glade-gtk-grid.c:507
+#: ../plugins/gtk+/glade-gtk-list-box.c:207
+#: ../plugins/gtk+/glade-gtk-table.c:538
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Προσθήκη γραμμής στο %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:612 ../plugins/gtk+/glade-gtk-grid.c:619
-#: ../plugins/gtk+/glade-gtk-table.c:658 ../plugins/gtk+/glade-gtk-table.c:665
+#: ../plugins/gtk+/glade-gtk-grid.c:510 ../plugins/gtk+/glade-gtk-table.c:541
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Προσθήκη στήλης στο %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:626 ../plugins/gtk+/glade-gtk-table.c:672
+#: ../plugins/gtk+/glade-gtk-grid.c:513 ../plugins/gtk+/glade-gtk-table.c:544
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Αφαίρεση στήλης από το %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:633 ../plugins/gtk+/glade-gtk-table.c:679
+#: ../plugins/gtk+/glade-gtk-grid.c:516 ../plugins/gtk+/glade-gtk-table.c:547
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Αφαίρεση γραμμής από το %s"
@@ -4031,6 +3995,20 @@ msgstr "Αφαίρεση γραμμής από το %s"
 msgid "This property does not apply when a custom title is set"
 msgstr ""
 "Αυτή η ιδιότητα δεν εφαρμόζεται όταν ορίζεται ένας προσαρμοσμένος τίτλος"
+
+#: ../plugins/gtk+/glade-gtk-header-bar.c:113
+#: ../plugins/gtk+/glade-gtk-notebook.c:992
+#: ../plugins/gtk+/glade-gtk-stack.c:160
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr "Εισαγωγή διαχωριστή στο %s"
+
+#: ../plugins/gtk+/glade-gtk-header-bar.c:137
+#: ../plugins/gtk+/glade-gtk-notebook.c:990
+#: ../plugins/gtk+/glade-gtk-stack.c:197
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr "Αφαίρεση διαχωριστή από το %s"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:304
 msgid ""
@@ -4145,16 +4123,15 @@ msgstr "Πρόσφατος επιλογέας μενού"
 msgid "Menu Item"
 msgstr "Στοιχείο μενού"
 
-#: ../plugins/gtk+/glade-gtk-notebook.c:939
-#: ../plugins/gtk+/glade-gtk-notebook.c:946
-#, c-format
-msgid "Insert page on %s"
-msgstr "Προσθήκη σελίδας στο %s"
-
-#: ../plugins/gtk+/glade-gtk-notebook.c:954
+#: ../plugins/gtk+/glade-gtk-notebook.c:983
 #, c-format
 msgid "Remove page from %s"
 msgstr "Αφαίρεση σελίδας από το %s"
+
+#: ../plugins/gtk+/glade-gtk-notebook.c:985
+#, c-format
+msgid "Insert page on %s"
+msgstr "Προσθήκη σελίδας στο %s"
 
 #: ../plugins/gtk+/glade-gtk-progress-bar.c:30
 msgid "This progressbar does not show text"
@@ -4628,6 +4605,10 @@ msgstr "Δημιουργία PDF"
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:9
 msgid "Generate PS"
 msgstr "Δημιουργία PS"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
+msgid "Preview"
+msgstr "Προεπισκόπηση"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:11
 msgid "Number Up"
@@ -8451,6 +8432,15 @@ msgstr "Διακοσμήσεις πλευρικού παραθύρου πελά�
 msgid "Whether this window should include a custom titlebar."
 msgstr ""
 "Αν αυτό το παράθυρο πρέπει να περιλαμβάνει μια προσαρμοσμένη γραμμή τίτλου."
+
+#~ msgid "See Privacy Note"
+#~ msgstr "Δείτε τη σημείωση απορρήτου"
+
+#~ msgid "Previewing %s - %s"
+#~ msgstr "Προεπισκόπηση %s - %s"
+
+#~ msgid "Previewing %s"
+#~ msgstr "Προεπισκόπηση %s"
 
 #~ msgid "Sidebar"
 #~ msgstr "Πλευρική στήλη"
