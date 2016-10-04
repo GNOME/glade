@@ -54,6 +54,7 @@ icons_DATA = \
 	widget-gtk-fontselectiondialog.png \
 	widget-gtk-frame.png \
 	widget-gtk-grid.png \
+	widget-gtk-glarea.png \
 	widget-gtk-handlebox.png \
 	widget-gtk-hbox.png \
 	widget-gtk-hbuttonbox.png \

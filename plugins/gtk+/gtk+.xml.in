@@ -3071,7 +3071,9 @@
       </glade-widget-class>
       
       <glade-widget-class name="GtkDrawingArea" generic-name="drawingarea" _title="Drawing Area"/>
-      
+
+      <glade-widget-class name="GtkGLArea" generic-name="glarea" _title="OpenGL Area"/>
+
       <glade-widget-class name="GtkInfoBar" generic-name="infobar" _title="Info Bar">
         <read-child-function>glade_gtk_info_bar_read_child</read-child-function>
         <write-child-function>glade_gtk_info_bar_write_child</write-child-function>
@@ -5596,7 +5598,8 @@
       <glade-widget-class-ref name="GtkSeparator"/>
       <glade-widget-class-ref name="GtkArrow"/>
       <glade-widget-class-ref name="GtkDrawingArea"/>
-      
+      <glade-widget-class-ref name="GtkGLArea"/>
+
       <glade-widget-class-ref name="GtkInfoBar"/>
       <glade-widget-class-ref name="GtkStackSwitcher" />
     </glade-widget-group>
