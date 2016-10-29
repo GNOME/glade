@@ -655,6 +655,7 @@ glade_editor_property_init (GladeEditorProperty *eprop)
 {
   eprop->priv = glade_editor_property_get_instance_private (eprop);
 
+  gtk_box_set_spacing (GTK_BOX (eprop), 4);
   gtk_orientable_set_orientation (GTK_ORIENTABLE (eprop),
 				  GTK_ORIENTATION_HORIZONTAL);
 }
