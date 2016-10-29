@@ -1686,13 +1686,47 @@
 
       <glade-widget-class name="GtkButton" generic-name="button" _title="Button">
         <post-create-function>glade_gtk_button_post_create</post-create-function>
+        <create-editor-property-function>glade_gtk_button_create_eprop</create-editor-property-function>
         <create-editable-function>glade_gtk_button_create_editable</create-editable-function>
         <set-property-function>glade_gtk_button_set_property</set-property-function>
         <read-widget-function>glade_gtk_button_read_widget</read-widget-function>
         <write-widget-function>glade_gtk_button_write_widget</write-widget-function>
         
         <properties>
-          <property id="always-show-image" since="3.6" custom-layout="True"/>
+
+          <!-- HACK: Add unused property to register GtkResponseType displayable values  -->
+          <property id="register-response-id-displayables" visible="False" save="False">
+            <parameter-spec>
+              <type>GParamEnum</type>
+	      <value-type>GtkResponseType</value-type>
+            </parameter-spec>
+            <displayable-values>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_NONE" _name="None"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_REJECT" _name="Reject"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_ACCEPT" _name="Accept"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_DELETE_EVENT" _name="Delete Event"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_OK" _name="OK"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_CANCEL" _name="Cancel"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_CLOSE" _name="Close"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_YES" _name="Yes"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_NO" _name="No"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_APPLY" _name="Apply"/>
+              <!-- GtkResponseType enumeration value -->
+              <value id="GTK_RESPONSE_HELP" _name="Help"/>
+            </displayable-values>
+	  </property>
+
+	  <property id="always-show-image" since="3.6" custom-layout="True"/>
           <property id="receives-default" save-always="True"/>
           <property id="image" parentless-widget="True" create-type="GtkImage" custom-layout="True"/>
           <property id="use-stock" visible="False" custom-layout="True"/>

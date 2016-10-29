@@ -28,6 +28,7 @@
 #include "glade-button-editor.h"
 #include "glade-scale-button-editor.h"
 #include "glade-font-button-editor.h"
+#include "glade-eprop-enum-int.h"
 #include "glade-gtk.h"
 #include "glade-gtk-button.h"
 
@@ -318,6 +319,25 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
                                                     node);
 
 }
+
+GladeEditorProperty *
+glade_gtk_button_create_eprop (GladeWidgetAdaptor * adaptor,
+				       GladePropertyClass * klass, 
+				       gboolean use_command)
+{
+  GladeEditorProperty *eprop;
+
+  if (strcmp (glade_property_class_id(klass), "response-id")==0)
+    {
+      eprop = glade_eprop_enum_int_new (klass, GTK_TYPE_RESPONSE_TYPE, use_command);
+    }
+  else
+    eprop = GWA_GET_CLASS
+        (GTK_TYPE_WIDGET)->create_eprop (adaptor, klass, use_command);
+
+  return eprop;
+}
+
 
 /* Shared with other classes */
 void 
