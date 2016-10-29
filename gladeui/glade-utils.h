@@ -132,6 +132,8 @@ void              glade_utils_get_pointer (GtkWidget *widget,
 					   gint      *y);
 
 
+void glade_util_remove_scroll_events (GtkWidget *widget);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */
