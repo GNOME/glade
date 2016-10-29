@@ -973,9 +973,12 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 {
   GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (container);
   GladeDesignLayoutPrivate *priv = layout->priv;
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
 
   priv->child_rect.width = 0;
   priv->child_rect.height = 0;
+
+  gtk_style_context_add_class (context, "background");
 
   gtk_widget_set_parent_window (widget, priv->offscreen_window);
 
