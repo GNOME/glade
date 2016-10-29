@@ -160,6 +160,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-stack-switcher-editor.c	\
 	glade-store-editor.c		\
 	glade-string-list.c		\
+	glade-eprop-enum-int.c		\
 	glade-text-view-editor.c	\
 	glade-tool-button-editor.c	\
 	glade-tool-item-group-editor.c	\
@@ -243,6 +244,7 @@ noinst_HEADERS =			\
 	glade-stack-switcher-editor.h	\
 	glade-store-editor.h		\
 	glade-string-list.h		\
+	glade-eprop-enum-int.h		\
 	glade-text-view-editor.h	\
 	glade-tool-button-editor.h	\
 	glade-tool-item-group-editor.h	\
