@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: Glade master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-10-04 19:30+0000\n"
-"PO-Revision-Date: 2016-10-04 21:46+0200\n"
+"POT-Creation-Date: 2016-10-29 13:23+0000\n"
+"PO-Revision-Date: 2016-11-03 13:28+0100\n"
 "Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
@@ -216,13 +216,13 @@ msgstr "Bezárás mentés _nélkül"
 
 #: ../src/glade-window.c:1480 ../src/glade-window.c:2656
 #: ../gladeui/glade-editor.c:765 ../gladeui/glade-editor.c:1121
-#: ../gladeui/glade-editor-property.c:1723
-#: ../gladeui/glade-editor-property.c:2030
-#: ../gladeui/glade-editor-property.c:2229
-#: ../gladeui/glade-editor-property.c:3170
-#: ../gladeui/glade-editor-property.c:3282
-#: ../gladeui/glade-editor-property.c:3299
-#: ../gladeui/glade-editor-property.c:3619 ../gladeui/glade-utils.c:483
+#: ../gladeui/glade-editor-property.c:1690
+#: ../gladeui/glade-editor-property.c:1997
+#: ../gladeui/glade-editor-property.c:2196
+#: ../gladeui/glade-editor-property.c:3137
+#: ../gladeui/glade-editor-property.c:3249
+#: ../gladeui/glade-editor-property.c:3266
+#: ../gladeui/glade-editor-property.c:3586 ../gladeui/glade-utils.c:483
 #: ../plugins/gtk+/glade-accels.c:525 ../plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "Mé_gse"
@@ -443,7 +443,7 @@ msgid "Edit widget alignment"
 msgstr "Felületi elem elrendezésének szerkesztése"
 
 #. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:29 ../plugins/gtk+/gtk+.xml.in.h:608
+#: ../src/glade.glade.h:29 ../plugins/gtk+/gtk+.xml.in.h:628
 msgid "Save"
 msgstr "Mentés"
 
@@ -464,7 +464,7 @@ msgid "Edit project properties"
 msgstr "Projekt tulajdonságainak szerkesztése"
 
 #. GtkButtonsType enumeration value
-#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:819
+#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:601
 msgid "Close"
 msgstr "Bezárás"
 
@@ -633,7 +633,7 @@ msgid "Create a new project"
 msgstr "Új projekt létrehozása"
 
 #. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:77 ../plugins/gtk+/gtk+.xml.in.h:610
+#: ../src/glade.glade.h:77 ../plugins/gtk+/gtk+.xml.in.h:630
 msgid "Open"
 msgstr "Megnyitás"
 
@@ -944,7 +944,7 @@ msgid "Glade Registration & User Survey"
 msgstr "Glade regisztráció és felhasználói felmérés"
 
 #. GtkButtonsType enumeration value
-#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:821
+#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:599
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -1102,7 +1102,7 @@ msgstr "Perl"
 #. GtkCellRendererAccelMode enumeration value
 #: ../src/glade-registration.glade.h:41
 #: ../gladeui/glade-project-properties.ui.h:19
-#: ../plugins/gtk+/gtk+.xml.in.h:767
+#: ../plugins/gtk+/gtk+.xml.in.h:787
 msgid "Other"
 msgstr "Egyéb"
 
@@ -1279,7 +1279,7 @@ msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
 #. GtkLicense enumeration value
-#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:797
+#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:817
 msgid "BSD"
 msgstr "BSD"
 
@@ -1431,11 +1431,13 @@ msgstr "Hivatalos bináris kiadások hiánya más rendszerekre (Windows, Mac OS 
 msgid "Have you ever encountered a bug?"
 msgstr "Találkozott valaha programhibával?"
 
-#: ../src/glade-registration.glade.h:122
+#. GtkResponseType enumeration value
+#: ../src/glade-registration.glade.h:122 ../plugins/gtk+/gtk+.xml.in.h:603
 msgid "Yes"
 msgstr "Igen"
 
-#: ../src/glade-registration.glade.h:123
+#. GtkResponseType enumeration value
+#: ../src/glade-registration.glade.h:123 ../plugins/gtk+/gtk+.xml.in.h:605
 msgid "No"
 msgstr "Nem"
 
@@ -1710,12 +1712,12 @@ msgstr "%s tulajdonság letiltása %s felületi elemen"
 msgid "Setting multiple properties"
 msgstr "Több tulajdonság beállítása"
 
-#: ../gladeui/glade-command.c:813 ../gladeui/glade-editor-property.c:3685
+#: ../gladeui/glade-command.c:813 ../gladeui/glade-editor-property.c:3652
 #, c-format
 msgid "Setting %s of %s"
 msgstr "%2$s %1$s tulajdonságának beállítása"
 
-#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3390
+#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3357
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "%2$s %1$s tulajdonságának beállítása erre: %3$s"
@@ -1952,12 +1954,12 @@ msgstr ""
 msgid "Reset Widget Properties"
 msgstr "Felületi elem tulajdonságainak visszaállítása"
 
-#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1724
-#: ../gladeui/glade-editor-property.c:2031
-#: ../gladeui/glade-editor-property.c:3172
-#: ../gladeui/glade-editor-property.c:3285
-#: ../gladeui/glade-editor-property.c:3301
-#: ../gladeui/glade-editor-property.c:3620 ../plugins/gtk+/glade-accels.c:526
+#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1691
+#: ../gladeui/glade-editor-property.c:1998
+#: ../gladeui/glade-editor-property.c:3139
+#: ../gladeui/glade-editor-property.c:3252
+#: ../gladeui/glade-editor-property.c:3268
+#: ../gladeui/glade-editor-property.c:3587 ../plugins/gtk+/glade-accels.c:526
 #: ../plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_OK"
@@ -1986,80 +1988,80 @@ msgstr "T_ulajdonságleírás:"
 msgid "%s - %s Properties"
 msgstr "%s – %s tulajdonságai"
 
-#: ../gladeui/glade-editor-property.c:724
+#: ../gladeui/glade-editor-property.c:725
 msgid "Property Class"
 msgstr "Tulajdonságosztály"
 
-#: ../gladeui/glade-editor-property.c:725
+#: ../gladeui/glade-editor-property.c:726
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
 "Az a GladePropertyClass, amelyhez ez a GladeEditorProperty létrehozásra "
 "került"
 
-#: ../gladeui/glade-editor-property.c:731 ../gladeui/glade-property-shell.c:125
+#: ../gladeui/glade-editor-property.c:732 ../gladeui/glade-property-shell.c:125
 msgid "Use Command"
 msgstr "Parancs használata"
 
-#: ../gladeui/glade-editor-property.c:732
+#: ../gladeui/glade-editor-property.c:733
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Használja-e a parancs API-ját a vissza/mégis veremhez"
 
-#: ../gladeui/glade-editor-property.c:738 ../gladeui/glade-property-shell.c:143
+#: ../gladeui/glade-editor-property.c:739 ../gladeui/glade-property-shell.c:143
 msgid "Disable Check"
 msgstr "Ellenőrzés tiltása"
 
-#: ../gladeui/glade-editor-property.c:739 ../gladeui/glade-property-shell.c:144
+#: ../gladeui/glade-editor-property.c:740 ../gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
 msgstr "Az ellenőrzés gomb kifejezett tiltása"
 
-#: ../gladeui/glade-editor-property.c:745 ../gladeui/glade-property-label.c:152
+#: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-label.c:152
 #: ../gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "Egyéni szöveg"
 
-#: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-shell.c:138
+#: ../gladeui/glade-editor-property.c:747 ../gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
 msgstr "A tulajdonság címkéjében megjelenítendő egyéni szöveg"
 
-#: ../gladeui/glade-editor-property.c:1353
+#: ../gladeui/glade-editor-property.c:1320
 msgid "Select Fields"
 msgstr "Válasszon mezőket"
 
-#: ../gladeui/glade-editor-property.c:1356
+#: ../gladeui/glade-editor-property.c:1323
 msgid "_Close"
 msgstr "_Bezárás"
 
-#: ../gladeui/glade-editor-property.c:1369
+#: ../gladeui/glade-editor-property.c:1336
 msgid "_Select individual fields:"
 msgstr "_Egyéni mezők kiválasztása:"
 
-#: ../gladeui/glade-editor-property.c:1719
+#: ../gladeui/glade-editor-property.c:1686
 msgid "Select Named Icon"
 msgstr "Válasszon megnevezett ikont"
 
-#: ../gladeui/glade-editor-property.c:2025
+#: ../gladeui/glade-editor-property.c:1992
 msgid "Edit Text"
 msgstr "Szöveg szerkesztése"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:2048
+#: ../gladeui/glade-editor-property.c:2015
 msgid "_Text:"
 msgstr "S_zöveg:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:2084
+#: ../gladeui/glade-editor-property.c:2051
 msgid "T_ranslatable"
 msgstr "_Fordítható:"
 
-#: ../gladeui/glade-editor-property.c:2090 ../gladeui/glade-property.c:680
+#: ../gladeui/glade-editor-property.c:2057 ../gladeui/glade-property.c:680
 msgid "Whether this property is translatable"
 msgstr "A tulajdonság fordítható-e?"
 
-#: ../gladeui/glade-editor-property.c:2098
+#: ../gladeui/glade-editor-property.c:2065
 msgid "Conte_xt for translation:"
 msgstr "Konte_xtus a fordításhoz:"
 
-#: ../gladeui/glade-editor-property.c:2104
+#: ../gladeui/glade-editor-property.c:2071
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -2069,75 +2071,75 @@ msgstr ""
 "jelentésének megkülönböztetéséhez a karakterlánc többi előfordulásának "
 "jelentésétől"
 
-#: ../gladeui/glade-editor-property.c:2136
+#: ../gladeui/glade-editor-property.c:2103
 msgid "Co_mments for translators:"
 msgstr "_Megjegyzések a fordítóknak:"
 
-#: ../gladeui/glade-editor-property.c:2225
+#: ../gladeui/glade-editor-property.c:2192
 msgid "Select a file from the project resource directory"
 msgstr "Válasszon egy fájlt a projekt erőforrás-könyvtárából"
 
-#: ../gladeui/glade-editor-property.c:2230 ../gladeui/glade-utils.c:486
+#: ../gladeui/glade-editor-property.c:2197 ../gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Megnyitás"
 
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:3090
+#: ../gladeui/glade-editor-property.c:3057
 #: ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Name"
 msgstr "Név"
 
-#: ../gladeui/glade-editor-property.c:3099 ../gladeui/glade-property.c:647
+#: ../gladeui/glade-editor-property.c:3066 ../gladeui/glade-property.c:647
 msgid "Class"
 msgstr "Osztály"
 
-#: ../gladeui/glade-editor-property.c:3119
+#: ../gladeui/glade-editor-property.c:3086
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Válasszon szülő nélküli %s típusú objektumokat ebben a projektben"
 
-#: ../gladeui/glade-editor-property.c:3121
+#: ../gladeui/glade-editor-property.c:3088
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Válasszon %s típusú objektumokat ebben a projektben"
 
-#: ../gladeui/glade-editor-property.c:3141
+#: ../gladeui/glade-editor-property.c:3108
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Válasszon ki egy szülő nélküli %s elemet ebben a projektben"
 
-#: ../gladeui/glade-editor-property.c:3143
+#: ../gladeui/glade-editor-property.c:3110
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Válasszon ki egy %s elemet ebben a projektben"
 
-#: ../gladeui/glade-editor-property.c:3171
-#: ../gladeui/glade-editor-property.c:3283
-#: ../gladeui/glade-editor-property.c:3300
-#: ../gladeui/glade-editor-property.c:3618 ../plugins/gtk+/glade-accels.c:524
+#: ../gladeui/glade-editor-property.c:3138
+#: ../gladeui/glade-editor-property.c:3250
+#: ../gladeui/glade-editor-property.c:3267
+#: ../gladeui/glade-editor-property.c:3585 ../plugins/gtk+/glade-accels.c:524
 #: ../plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "_Törlés"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3193
-#: ../gladeui/glade-editor-property.c:3323
+#: ../gladeui/glade-editor-property.c:3160
+#: ../gladeui/glade-editor-property.c:3290
 msgid "O_bjects:"
 msgstr "_Objektumok:"
 
-#: ../gladeui/glade-editor-property.c:3284
+#: ../gladeui/glade-editor-property.c:3251
 msgid "_New"
 msgstr "Ú_j"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3433
+#: ../gladeui/glade-editor-property.c:3400
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "%1$s létrehozása %3$s %2$s tulajdonságához"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3636
+#: ../gladeui/glade-editor-property.c:3603
 msgid "Objects:"
 msgstr "Objektumok:"
 
@@ -2287,7 +2289,7 @@ msgstr "Felcserélve"
 
 #. translators: GConnectFlags value
 #: ../gladeui/glade-previewer.c:759 ../gladeui/glade-signal.c:207
-#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:649
+#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:669
 msgid "After"
 msgstr "Ez után"
 
@@ -2982,7 +2984,7 @@ msgid "Whether this action is sensitive"
 msgstr "Ez a művelet érzékeny-e"
 
 #: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1430
-#: ../plugins/gtk+/gtk+.xml.in.h:915
+#: ../plugins/gtk+/gtk+.xml.in.h:931
 msgid "Visible"
 msgstr "Látható"
 
@@ -3024,7 +3026,7 @@ msgstr "Általános név"
 msgid "Used to generate names of new widgets"
 msgstr "Új felületi elemek nevének előállításához használatos"
 
-#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:641
+#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:661
 #: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "Ikonnév"
@@ -3214,7 +3216,7 @@ msgstr "Néhány szignálnak verziózási problémái vannak: "
 msgid "Actions"
 msgstr "Műveletek"
 
-#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1062
+#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1078
 msgid "Applications"
 msgstr "Alkalmazások"
 
@@ -3710,7 +3712,7 @@ msgstr "A tároló támogatja-e a gyermek felületi elemek átméretezését"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:180
 #: ../plugins/gtk+/glade-gtk-action-group.c:219
-#: ../plugins/gtk+/gtk+.xml.in.h:869
+#: ../plugins/gtk+/gtk+.xml.in.h:885
 msgid "Action"
 msgstr "Művelet"
 
@@ -3758,12 +3760,12 @@ msgid "Ordering children of %s"
 msgstr "%s gyermekeinek rendezése"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:892
+#: ../plugins/gtk+/gtk+.xml.in.h:908
 msgid "Tree View Column"
 msgstr "Fanézet oszlop"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:900
+#: ../plugins/gtk+/gtk+.xml.in.h:916
 msgid "Cell Renderer"
 msgstr "Cellamegjelenítő"
 
@@ -3784,7 +3786,7 @@ msgstr "Szöveg"
 
 #. Accelerator
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:413
-#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:871
+#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:887
 msgid "Accelerator"
 msgstr "Gyorsbillentyű"
 
@@ -3806,7 +3808,7 @@ msgstr "Kép"
 
 #. GtkAssistantPageType enumeration value
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:417
-#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:844
+#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:860
 #: ../plugins/gtk+/glade-entry-editor.ui.h:4
 msgid "Progress"
 msgstr "Előrehaladás"
@@ -4031,7 +4033,7 @@ msgstr "Eszközelem"
 msgid "Tool Item Group"
 msgstr "Eszközelemcsoport"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:731
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:751
 msgid "Recent Chooser Menu"
 msgstr "Előzményválasztó menü"
 
@@ -4092,7 +4094,7 @@ msgstr "Menü"
 #. GtkRecentSortType enumeration value
 #: ../plugins/gtk+/glade-gtk-toolbar.c:239
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:186
-#: ../plugins/gtk+/gtk+.xml.in.h:787 ../plugins/gtk+/glade-widget-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:807 ../plugins/gtk+/glade-widget-editor.ui.h:7
 msgid "Custom"
 msgstr "Egyéni"
 
@@ -4285,7 +4287,7 @@ msgstr "Állítsa be, hogy meg akar-e adni állapotot ezen „%s” forráshoz"
 msgid "Set the state for this source of '%s'"
 msgstr "Állapot beállítása ezen „%s” forráshoz"
 
-#: ../plugins/gtk+/glade-icon-sources.c:848 ../plugins/gtk+/gtk+.xml.in.h:642
+#: ../plugins/gtk+/glade-icon-sources.c:848 ../plugins/gtk+/gtk+.xml.in.h:662
 msgid "File Name"
 msgstr "Fájlnév"
 
@@ -4502,7 +4504,7 @@ msgstr "Szétválogatás"
 msgid "Reverse"
 msgstr "Fordított"
 
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:726
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:746
 msgid "Scale"
 msgstr "Méretezés"
 
@@ -6141,78 +6143,108 @@ msgstr "Szövegnézet"
 msgid "Search Bar"
 msgstr "Keresősáv"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:590 ../plugins/gtk+/glade-button-editor.ui.h:7
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:591
+msgid "Reject"
+msgstr "Visszautasítás"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:593
+msgid "Accept"
+msgstr "Elfogadás"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:595
+msgid "Delete Event"
+msgstr "Esemény törlése"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:597
+msgid "OK"
+msgstr "OK"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:607
+msgid "Apply"
+msgstr "Alkalmaz"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:609
+msgid "Help"
+msgstr "Súgó"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:610 ../plugins/gtk+/glade-button-editor.ui.h:7
 msgid "Stock Button"
 msgstr "Gyári gomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:591
+#: ../plugins/gtk+/gtk+.xml.in.h:611
 msgid "Response ID"
 msgstr "Válaszazonosító"
 
 #. Atk press property
-#: ../plugins/gtk+/gtk+.xml.in.h:593
+#: ../plugins/gtk+/gtk+.xml.in.h:613
 msgid "Press"
 msgstr "Lenyomás"
 
 #. Atk release property
-#: ../plugins/gtk+/gtk+.xml.in.h:595
+#: ../plugins/gtk+/gtk+.xml.in.h:615
 msgid "Release"
 msgstr "Elengedés"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:596
+#: ../plugins/gtk+/gtk+.xml.in.h:616
 msgid "The stock item for this button"
 msgstr "A gomb gyári eleme"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:597
+#: ../plugins/gtk+/gtk+.xml.in.h:617
 msgid "The response ID of this button in a dialog"
 msgstr "A gomb válaszazonosítója párbeszédablakban"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:598
+#: ../plugins/gtk+/gtk+.xml.in.h:618
 msgid "Set the description of the Press atk action"
 msgstr "A Lenyomás atk művelet leírásának beállítása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:599
+#: ../plugins/gtk+/gtk+.xml.in.h:619
 msgid "Set the description of the Release atk action"
 msgstr "Az Elengedés atk művelet leírásának beállítása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:600
+#: ../plugins/gtk+/gtk+.xml.in.h:620
 msgid "Check Button"
 msgstr "Jelölőgomb"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:602
+#: ../plugins/gtk+/gtk+.xml.in.h:622
 msgid "Always"
 msgstr "Mindig"
 
 #. GtkSpinButtonUpdatePolicy enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:604
+#: ../plugins/gtk+/gtk+.xml.in.h:624
 msgid "If Valid"
 msgstr "Ha érvényes"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:605
+#: ../plugins/gtk+/gtk+.xml.in.h:625
 msgid "Switch"
 msgstr "Kapcsoló"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:606
+#: ../plugins/gtk+/gtk+.xml.in.h:626
 #: ../plugins/gtk+/glade-file-chooser-button-editor.ui.h:1
 msgid "File Chooser Button"
 msgstr "Fájlválasztógomb"
 
 #. GtkFileChooserAction enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:612
+#: ../plugins/gtk+/gtk+.xml.in.h:632
 msgid "Select Folder"
 msgstr "Válasszon mappát"
 
 #. GtkFileChooserAction enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:614
+#: ../plugins/gtk+/gtk+.xml.in.h:634
 msgid "Create Folder"
 msgstr "Mappa létrehozása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:615
+#: ../plugins/gtk+/gtk+.xml.in.h:635
 msgid "Scale Button"
 msgstr "Skálagomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:616
+#: ../plugins/gtk+/gtk+.xml.in.h:636
 msgid ""
 "The names of the icons to be used by the scale button. The first item in the "
 "array will be used in the button when the current value is the lowest value, "
@@ -6224,525 +6256,525 @@ msgstr ""
 "legmagasabb. Minden ezeket követő ikon a többi értékhez lesz felhasználva, "
 "egyenletesen elosztva az értékek tartományán."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:617
+#: ../plugins/gtk+/gtk+.xml.in.h:637
 msgid "Volume Button"
 msgstr "Hangerőgomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:618
+#: ../plugins/gtk+/gtk+.xml.in.h:638
 msgid "File Chooser Widget"
 msgstr "Fájlválasztó felületi elem"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:619
+#: ../plugins/gtk+/gtk+.xml.in.h:639
 msgid "Application Chooser Widget"
 msgstr "Alkalmazásválasztó felületi elem"
 
 #. GtkPlacesOpenFlags enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:621
+#: ../plugins/gtk+/gtk+.xml.in.h:641
 msgid "New Tab"
 msgstr "Új lap"
 
 #. GtkPlacesOpenFlags enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:623
+#: ../plugins/gtk+/gtk+.xml.in.h:643
 msgid "New Window"
 msgstr "Új ablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:624
+#: ../plugins/gtk+/gtk+.xml.in.h:644
 msgid "Color Button"
 msgstr "Színgomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:625
+#: ../plugins/gtk+/gtk+.xml.in.h:645
 msgid "Font Button"
 msgstr "Betűkészletgomb"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:627
+#: ../plugins/gtk+/gtk+.xml.in.h:647
 msgid "Automatic"
 msgstr "Automatikus"
 
 #. GtkSensitivityType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:629
+#: ../plugins/gtk+/gtk+.xml.in.h:649
 msgid "On"
 msgstr "Be"
 
 #. GtkSensitivityType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:631
+#: ../plugins/gtk+/gtk+.xml.in.h:651
 msgid "Off"
 msgstr "Ki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:632
+#: ../plugins/gtk+/gtk+.xml.in.h:652
 msgid "Combo Box Text"
 msgstr "Legördülő lista szövege"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:633
+#: ../plugins/gtk+/gtk+.xml.in.h:653
 msgid "Items"
 msgstr "Elemek"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:634
+#: ../plugins/gtk+/gtk+.xml.in.h:654
 msgid "The list of items to show in the combo box"
 msgstr "A legördülő listában megjelenítendő elemek listája"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:635
+#: ../plugins/gtk+/gtk+.xml.in.h:655
 msgid "Application Chooser Button"
 msgstr "Alkalmazásválasztó gomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:636
+#: ../plugins/gtk+/gtk+.xml.in.h:656
 msgid "Progress Bar"
 msgstr "Folyamatjelző"
 
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:638
+#: ../plugins/gtk+/gtk+.xml.in.h:658
 msgid "Continuous"
 msgstr "Folyamatos"
 
 #. GtkLevelBarMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:640
+#: ../plugins/gtk+/gtk+.xml.in.h:660
 msgid "Discrete"
 msgstr "Diszkrét"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:643
+#: ../plugins/gtk+/gtk+.xml.in.h:663
 msgid "Resource Name"
 msgstr "Erőforrásnév"
 
 #. We have to save/load icon-size as int, and fake the enum
-#: ../plugins/gtk+/gtk+.xml.in.h:645
+#: ../plugins/gtk+/gtk+.xml.in.h:665
 msgid "Icon Size"
 msgstr "Ikonméret"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:646
+#: ../plugins/gtk+/gtk+.xml.in.h:666
 msgid "Dialog Box"
 msgstr "Párbeszédablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:647
+#: ../plugins/gtk+/gtk+.xml.in.h:667
 msgid "Insert Row"
 msgstr "Sor beszúrása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:648
+#: ../plugins/gtk+/gtk+.xml.in.h:668
 msgid "Before"
 msgstr "Előtte"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:650
+#: ../plugins/gtk+/gtk+.xml.in.h:670
 msgid "Insert Column"
 msgstr "Oszlop beszúrása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:651
+#: ../plugins/gtk+/gtk+.xml.in.h:671
 msgid "Remove Row"
 msgstr "Sor eltávolítása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:652
+#: ../plugins/gtk+/gtk+.xml.in.h:672
 msgid "Remove Column"
 msgstr "Oszlop eltávolítása"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:654
+#: ../plugins/gtk+/gtk+.xml.in.h:674
 #: ../plugins/gtk+/glade-widget-editor.ui.h:10
 msgid "Expand"
 msgstr "Nyújtás"
 
 #. GtkAttachOptions enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:656
+#: ../plugins/gtk+/gtk+.xml.in.h:676
 msgid "Shrink"
 msgstr "Zsugorodás"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:657 ../plugins/gtk+/glade-grid-editor.ui.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:677 ../plugins/gtk+/glade-grid-editor.ui.h:2
 msgid "Rows"
 msgstr "Sorok"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:658 ../plugins/gtk+/glade-grid-editor.ui.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:678 ../plugins/gtk+/glade-grid-editor.ui.h:3
 msgid "Columns"
 msgstr "Oszlopok"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:659
+#: ../plugins/gtk+/gtk+.xml.in.h:679
 msgid "The number of rows for this grid"
 msgstr "A rács sorainak száma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:660
+#: ../plugins/gtk+/gtk+.xml.in.h:680
 msgid "The number of columns for this grid"
 msgstr "A rács oszlopainak száma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:661
+#: ../plugins/gtk+/gtk+.xml.in.h:681
 msgid "Horizontal Panes"
 msgstr "Vízszintes ablaktáblák"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:662
+#: ../plugins/gtk+/gtk+.xml.in.h:682
 msgid "Vertical Panes"
 msgstr "Függőleges ablaktáblák"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:663
+#: ../plugins/gtk+/gtk+.xml.in.h:683
 msgid "Notebook"
 msgstr "Notesz"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:664
+#: ../plugins/gtk+/gtk+.xml.in.h:684
 msgid "Insert Page Before"
 msgstr "Oldal beszúrása elé"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:665
+#: ../plugins/gtk+/gtk+.xml.in.h:685
 msgid "Insert Page After"
 msgstr "Oldal beszúrása utána"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:666
+#: ../plugins/gtk+/gtk+.xml.in.h:686
 msgid "Remove Page"
 msgstr "Oldal eltávolítása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:667
+#: ../plugins/gtk+/gtk+.xml.in.h:687
 msgid "Number of pages"
 msgstr "Oldalszám"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:668
+#: ../plugins/gtk+/gtk+.xml.in.h:688
 msgid "Start Action"
 msgstr "Kezdő művelet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:669
+#: ../plugins/gtk+/gtk+.xml.in.h:689
 msgid "End Action"
 msgstr "Záró művelet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:670
+#: ../plugins/gtk+/gtk+.xml.in.h:690
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
 "Az aktív oldal beállítása szerkesztésre, ez a tulajdonság nem lesz mentve"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:671
+#: ../plugins/gtk+/gtk+.xml.in.h:691
 msgid "The number of pages in the notebook"
 msgstr "A notesz oldalainak száma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:672
+#: ../plugins/gtk+/gtk+.xml.in.h:692
 msgid "HeaderBar"
 msgstr "Fejlécsáv"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:673
+#: ../plugins/gtk+/gtk+.xml.in.h:693
 msgid "Reserve space for subtitle"
 msgstr "Helyfoglalás feliratnak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:674
+#: ../plugins/gtk+/gtk+.xml.in.h:694
 msgid "Custom Title"
 msgstr "Egyéni cím"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:675
+#: ../plugins/gtk+/gtk+.xml.in.h:695
 msgid "Add Slot"
 msgstr "Hely hozzáadása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:676
+#: ../plugins/gtk+/gtk+.xml.in.h:696
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr ""
 "A fejlécsáv magassága legyen állandó a felirat dinamikus változásakor is."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:677
+#: ../plugins/gtk+/gtk+.xml.in.h:697
 msgid "The number of items in the header bar"
 msgstr "A fejlécsáv elemszáma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:678
+#: ../plugins/gtk+/gtk+.xml.in.h:698
 msgid "Edit page"
 msgstr "Lap szerkesztése"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:679
+#: ../plugins/gtk+/gtk+.xml.in.h:699
 msgid "Visible child"
 msgstr "Látható gyermek"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:681
+#: ../plugins/gtk+/gtk+.xml.in.h:701
 msgid "Crossfade"
 msgstr "Áttűnés"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:683
+#: ../plugins/gtk+/gtk+.xml.in.h:703
 msgid "Slide Right"
 msgstr "Jobbra csúsztatás"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:685
+#: ../plugins/gtk+/gtk+.xml.in.h:705
 msgid "Slide Left"
 msgstr "Balra csúsztatás"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:687
+#: ../plugins/gtk+/gtk+.xml.in.h:707
 msgid "Slide Up"
 msgstr "Felfelé csúsztatás"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:689
+#: ../plugins/gtk+/gtk+.xml.in.h:709
 msgid "Slide Down"
 msgstr "Lefelé csúsztatás"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:690
+#: ../plugins/gtk+/gtk+.xml.in.h:710
 msgid "Slide Left-Right"
 msgstr "Balról jobbra csúsztatás"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:691
+#: ../plugins/gtk+/gtk+.xml.in.h:711
 msgid "Slide Up-Down"
 msgstr "Fentről lefelé csúsztatás"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:692
+#: ../plugins/gtk+/gtk+.xml.in.h:712
 msgid "Move Over Up"
 msgstr "Fenti mozgatása felfelé"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:693
+#: ../plugins/gtk+/gtk+.xml.in.h:713
 msgid "Move Over Down"
 msgstr "Fenti mozgatása lefelé"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:694
+#: ../plugins/gtk+/gtk+.xml.in.h:714
 msgid "Move Over Left"
 msgstr "Fenti mozgatása balra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:695
+#: ../plugins/gtk+/gtk+.xml.in.h:715
 msgid "Move Over Right"
 msgstr "Fenti mozgatása jobbra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:696
+#: ../plugins/gtk+/gtk+.xml.in.h:716
 msgid "Move Over Up-Down"
 msgstr "Fenti mozgatása fel/le"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:697
+#: ../plugins/gtk+/gtk+.xml.in.h:717
 msgid "Move Over Down-Up"
 msgstr "Fenti mozgatása le/fel"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:698
+#: ../plugins/gtk+/gtk+.xml.in.h:718
 msgid "Move Over Left-Right"
 msgstr "Fenti mozgatása balra/jobbra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:699
+#: ../plugins/gtk+/gtk+.xml.in.h:719
 msgid "Move Over Right-Left"
 msgstr "Fenti mozgatása jobbra/balra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:700
+#: ../plugins/gtk+/gtk+.xml.in.h:720
 msgid "Move Under Up"
 msgstr "Lenti mozgatása felfelé"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:701
+#: ../plugins/gtk+/gtk+.xml.in.h:721
 msgid "Move Under Down"
 msgstr "Lenti mozgatása lefelé"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:702
+#: ../plugins/gtk+/gtk+.xml.in.h:722
 msgid "Move Under Left"
 msgstr "Lenti mozgatása balra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:703
+#: ../plugins/gtk+/gtk+.xml.in.h:723
 msgid "Move Under Right"
 msgstr "Lenti mozgatása jobbra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:704
+#: ../plugins/gtk+/gtk+.xml.in.h:724
 msgid "The number of pages in the stack"
 msgstr "A lapok száma a veremben"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:705
+#: ../plugins/gtk+/gtk+.xml.in.h:725
 msgid "Stack Switcher"
 msgstr "Veremváltó"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:706
+#: ../plugins/gtk+/gtk+.xml.in.h:726
 msgid "Stack Sidebar"
 msgstr "Verem oldalsáv"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:707
+#: ../plugins/gtk+/gtk+.xml.in.h:727
 msgid "Revealer"
 msgstr "Megjelenítő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:708
+#: ../plugins/gtk+/gtk+.xml.in.h:728
 msgid "Add Row"
 msgstr "Sor hozzáadása"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:710
+#: ../plugins/gtk+/gtk+.xml.in.h:730
 msgid "Single"
 msgstr "Egyszeres"
 
 #. GtkSelectionMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:712
+#: ../plugins/gtk+/gtk+.xml.in.h:732
 msgid "Browse"
 msgstr "Tallózás"
 
 #. GtkSelectionMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:714
+#: ../plugins/gtk+/gtk+.xml.in.h:734
 msgid "Multiple"
 msgstr "Többszörös"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:715
+#: ../plugins/gtk+/gtk+.xml.in.h:735
 msgid "The position of the row item in the listbox"
 msgstr "A listapanel sorelemének elhelyezkedése"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:716
+#: ../plugins/gtk+/gtk+.xml.in.h:736
 msgid "List Box Row"
 msgstr "Listapanel sora"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:717
+#: ../plugins/gtk+/gtk+.xml.in.h:737
 msgid "Flow Box"
 msgstr "Folyamdoboz"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:718
+#: ../plugins/gtk+/gtk+.xml.in.h:738
 msgid "Add Child"
 msgstr "Gyermek hozzáadása"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:719
+#: ../plugins/gtk+/gtk+.xml.in.h:739
 msgid "The position of the child in the flowbox"
 msgstr "A gyermek pozíciója a folyamdobozban"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:720
+#: ../plugins/gtk+/gtk+.xml.in.h:740
 msgid "Flow Box Child"
 msgstr "Folyamdoboz gyermek"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:721
+#: ../plugins/gtk+/gtk+.xml.in.h:741
 msgid "Range"
 msgstr "Tartomány"
 
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:723
+#: ../plugins/gtk+/gtk+.xml.in.h:743
 msgid "Discontinuous"
 msgstr "Nem folytonos"
 
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:725
+#: ../plugins/gtk+/gtk+.xml.in.h:745
 msgid "Delayed"
 msgstr "Késleltetett"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:727
+#: ../plugins/gtk+/gtk+.xml.in.h:747
 msgid "The number of digits to round the value to when the value changes"
 msgstr "Az érték kerekítése ennyi számjegyre az érték változásakor"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:728
+#: ../plugins/gtk+/gtk+.xml.in.h:748
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr "Kiemelendő-e a vályú területe lentről vagy balról a gombig"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:729
+#: ../plugins/gtk+/gtk+.xml.in.h:749
 msgid "Horizontal Scale"
 msgstr "Vízszintes skála"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:730
+#: ../plugins/gtk+/gtk+.xml.in.h:750
 msgid "Vertical Scale"
 msgstr "Függőleges skála"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:732
+#: ../plugins/gtk+/gtk+.xml.in.h:752
 msgid "Scrollbar"
 msgstr "Görgetősáv"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:733
+#: ../plugins/gtk+/gtk+.xml.in.h:753
 msgid "Horizontal Scrollbar"
 msgstr "Vízszintes görgetősáv"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:734
+#: ../plugins/gtk+/gtk+.xml.in.h:754
 msgid "Vertical Scrollbar"
 msgstr "Függőleges görgetősáv"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:735
+#: ../plugins/gtk+/gtk+.xml.in.h:755
 msgid "Button Box"
 msgstr "Gombdoboz"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:737
+#: ../plugins/gtk+/gtk+.xml.in.h:757
 msgid "Default"
 msgstr "Alapértelmezett"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:739
+#: ../plugins/gtk+/gtk+.xml.in.h:759
 msgid "Spread"
 msgstr "Szórás"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:741
+#: ../plugins/gtk+/gtk+.xml.in.h:761
 msgid "Edge"
 msgstr "Szél"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:742
+#: ../plugins/gtk+/gtk+.xml.in.h:762
 msgid "Horizontal Button Box"
 msgstr "Vízszintes gombdoboz"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:743
+#: ../plugins/gtk+/gtk+.xml.in.h:763
 msgid "Vertical Button Box"
 msgstr "Függőleges gombdoboz"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:744
+#: ../plugins/gtk+/gtk+.xml.in.h:764
 msgid "Horizontal Separator"
 msgstr "Vízszintes elválasztó"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:745
+#: ../plugins/gtk+/gtk+.xml.in.h:765
 msgid "Vertical Separator"
 msgstr "Függőleges elválasztó"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:746
+#: ../plugins/gtk+/gtk+.xml.in.h:766
 msgid "Accel Label"
 msgstr "Gyorsítócímke"
 
 #. GtkArrowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:748
+#: ../plugins/gtk+/gtk+.xml.in.h:768
 msgid "Up"
 msgstr "Fel"
 
 #. GtkArrowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:750
+#: ../plugins/gtk+/gtk+.xml.in.h:770
 msgid "Down"
 msgstr "Le"
 
 #. Declare menu button here because the arrow-type values already exist
-#: ../plugins/gtk+/gtk+.xml.in.h:752
+#: ../plugins/gtk+/gtk+.xml.in.h:772
 msgid "Menu Button"
 msgstr "Menü gomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:753
+#: ../plugins/gtk+/gtk+.xml.in.h:773
 msgid "Lock Button"
 msgstr "Zárolás gomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:754
+#: ../plugins/gtk+/gtk+.xml.in.h:774
 msgid "Layout"
 msgstr "Elrendezés"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:756
+#: ../plugins/gtk+/gtk+.xml.in.h:776
 msgid "Fixed"
 msgstr "Rögzített"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:757
+#: ../plugins/gtk+/gtk+.xml.in.h:777
 msgid "OpenGL Area"
 msgstr "OpenGL terület"
 
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:759
+#: ../plugins/gtk+/gtk+.xml.in.h:779
 msgid "Info"
 msgstr "Információk"
 
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:761
+#: ../plugins/gtk+/gtk+.xml.in.h:781
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:763
+#: ../plugins/gtk+/gtk+.xml.in.h:783
 msgid "Question"
 msgstr "Kérdés"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:765
+#: ../plugins/gtk+/gtk+.xml.in.h:785
 msgid "Error"
 msgstr "Hiba"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:769
+#: ../plugins/gtk+/gtk+.xml.in.h:789
 msgid "Never"
 msgstr "Soha"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:771
+#: ../plugins/gtk+/gtk+.xml.in.h:791
 msgid "External"
 msgstr "Külső"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:773
+#: ../plugins/gtk+/gtk+.xml.in.h:793
 msgid "Top Left"
 msgstr "Balra fent"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:775
+#: ../plugins/gtk+/gtk+.xml.in.h:795
 msgid "Bottom Left"
 msgstr "Balra lent"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:777
+#: ../plugins/gtk+/gtk+.xml.in.h:797
 msgid "Top Right"
 msgstr "Jobbra fent"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:779
+#: ../plugins/gtk+/gtk+.xml.in.h:799
 msgid "Bottom Right"
 msgstr "Jobbra lent"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:780
+#: ../plugins/gtk+/gtk+.xml.in.h:800
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
@@ -6754,61 +6786,61 @@ msgstr ""
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
 #. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../plugins/gtk+/gtk+.xml.in.h:785
+#: ../plugins/gtk+/gtk+.xml.in.h:805
 msgid "About Dialog"
 msgstr "Névjegyablak"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:789
+#: ../plugins/gtk+/gtk+.xml.in.h:809
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:791
+#: ../plugins/gtk+/gtk+.xml.in.h:811
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:793
+#: ../plugins/gtk+/gtk+.xml.in.h:813
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:795
+#: ../plugins/gtk+/gtk+.xml.in.h:815
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:799
+#: ../plugins/gtk+/gtk+.xml.in.h:819
 msgid "MIT X11"
 msgstr "MIT X11"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:801
+#: ../plugins/gtk+/gtk+.xml.in.h:821
 msgid "Artistic"
 msgstr "Művészi"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:803
+#: ../plugins/gtk+/gtk+.xml.in.h:823
 msgid "GPL 2.0 Only"
 msgstr "Csak GPL 2.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:805
+#: ../plugins/gtk+/gtk+.xml.in.h:825
 msgid "GPL 3.0 Only"
 msgstr "Csak GPL 3.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:807
+#: ../plugins/gtk+/gtk+.xml.in.h:827
 msgid "LGPL 2.1 Only"
 msgstr "Csak LGPL 2.1"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:809
+#: ../plugins/gtk+/gtk+.xml.in.h:829
 msgid "LGPL 3.0 Only"
 msgstr "Csak LGPL 3.0"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:810
+#: ../plugins/gtk+/gtk+.xml.in.h:830
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -6819,102 +6851,102 @@ msgstr ""
 "fordítót fel szeretné sorolni, akkor hagyja lefordítatlanul ezt a "
 "karakterláncot."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:811
+#: ../plugins/gtk+/gtk+.xml.in.h:831
 msgid "Color Selection Dialog"
 msgstr "Színválasztó párbeszédablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:812
+#: ../plugins/gtk+/gtk+.xml.in.h:832
 msgid "File Chooser Dialog"
 msgstr "Fájlválasztó párbeszédablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:813
+#: ../plugins/gtk+/gtk+.xml.in.h:833
 msgid "Font Selection Dialog"
 msgstr "Betűkészlet-választó párbeszédablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:814
+#: ../plugins/gtk+/gtk+.xml.in.h:834
 msgid "Application Chooser Dialog"
 msgstr "Alkalmazásválasztó párbeszédablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:815
+#: ../plugins/gtk+/gtk+.xml.in.h:835
 msgid "Message Dialog"
 msgstr "Üzenet párbeszédablak"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:817
+#: ../plugins/gtk+/gtk+.xml.in.h:837
 msgid "Ok"
 msgstr "Ok"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:823
+#: ../plugins/gtk+/gtk+.xml.in.h:839
 msgid "Yes, No"
 msgstr "Igen, Nem"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:825
+#: ../plugins/gtk+/gtk+.xml.in.h:841
 msgid "Ok, Cancel"
 msgstr "Ok, Mégse"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:826
+#: ../plugins/gtk+/gtk+.xml.in.h:842
 msgid "Color Selection"
 msgstr "Színválasztó"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:827
+#: ../plugins/gtk+/gtk+.xml.in.h:843
 msgid "Color Chooser Widget"
 msgstr "Színválasztó felületi elem"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:828
+#: ../plugins/gtk+/gtk+.xml.in.h:844
 msgid "Color Chooser Dialog"
 msgstr "Színválasztó párbeszédablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:829
+#: ../plugins/gtk+/gtk+.xml.in.h:845
 msgid "Font Chooser Widget"
 msgstr "Betűkészlet-kiválasztó felületi elem"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:830
+#: ../plugins/gtk+/gtk+.xml.in.h:846
 msgid "Font Chooser Dialog"
 msgstr "Betűkészlet-kiválasztó párbeszédablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:831
+#: ../plugins/gtk+/gtk+.xml.in.h:847
 msgid "Font Selection"
 msgstr "Betűkészlet-választó"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:832
+#: ../plugins/gtk+/gtk+.xml.in.h:848
 msgid "Assistant"
 msgstr "Varázsló"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:833
+#: ../plugins/gtk+/gtk+.xml.in.h:849
 msgid "Number of Pages"
 msgstr "Oldalak száma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:834
+#: ../plugins/gtk+/gtk+.xml.in.h:850
 msgid "Initially Complete"
 msgstr "Kezdéskor kitöltve"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:836
+#: ../plugins/gtk+/gtk+.xml.in.h:852
 msgid "Content"
 msgstr "Tartalom"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:838
+#: ../plugins/gtk+/gtk+.xml.in.h:854
 msgid "Intro"
 msgstr "Bevezetés"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:840
+#: ../plugins/gtk+/gtk+.xml.in.h:856
 msgid "Confirm"
 msgstr "Megerősítés"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:842
+#: ../plugins/gtk+/gtk+.xml.in.h:858
 msgid "Summary"
 msgstr "Összefoglaló"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:845
+#: ../plugins/gtk+/gtk+.xml.in.h:861
 msgid "Number of pages in this assistant"
 msgstr "A varázsló oldalainak száma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:846
+#: ../plugins/gtk+/gtk+.xml.in.h:862
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
@@ -6922,761 +6954,761 @@ msgstr ""
 "Az oldal kezdéskor a felhasználói adatbeviteltől függetlenül meg legyen-e "
 "jelölve kitöltöttként."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:847
+#: ../plugins/gtk+/gtk+.xml.in.h:863
 msgid "The page position in the Assistant"
 msgstr "Oldalpozíció a varázslóban"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:848
+#: ../plugins/gtk+/gtk+.xml.in.h:864
 msgid "Popover"
 msgstr "Popover"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:849
+#: ../plugins/gtk+/gtk+.xml.in.h:865
 msgid "Popover Menu"
 msgstr "Popover menü"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:850
+#: ../plugins/gtk+/gtk+.xml.in.h:866
 msgid "Number of submenus"
 msgstr "Almenük száma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:851
+#: ../plugins/gtk+/gtk+.xml.in.h:867
 msgid "Edit menu"
 msgstr "Menü szerkesztése"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:852
+#: ../plugins/gtk+/gtk+.xml.in.h:868
 msgid "The number of submenus in the popover menu"
 msgstr "Az almenük száma a popover menüben"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:853
+#: ../plugins/gtk+/gtk+.xml.in.h:869
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
 "A jelenleg aktív almenü beállítása szerkesztésre, ez a tulajdonság nem lesz "
 "mentve"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:854
+#: ../plugins/gtk+/gtk+.xml.in.h:870
 msgid "Model Button"
 msgstr "Modellgomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:855
+#: ../plugins/gtk+/gtk+.xml.in.h:871
 msgid "Link Button"
 msgstr "Hivatkozás gomb"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:856
+#: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "Recent Chooser"
 msgstr "Előzményválasztó"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:858
+#: ../plugins/gtk+/gtk+.xml.in.h:874
 msgid "Most Recently Used first"
 msgstr "Legutóbb használt előre"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:860
+#: ../plugins/gtk+/gtk+.xml.in.h:876
 msgid "Least Recently Used first"
 msgstr "Legrégebben használt előre"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:861
+#: ../plugins/gtk+/gtk+.xml.in.h:877
 msgid "Recent Chooser Dialog"
 msgstr "Előzményválasztó párbeszédablak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:862
+#: ../plugins/gtk+/gtk+.xml.in.h:878
 msgid "Size Group"
 msgstr "Méretcsoport"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:863
+#: ../plugins/gtk+/gtk+.xml.in.h:879
 msgid "Widgets"
 msgstr "Felületi elemek"
 
 #. GtkSizeGroupMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:865
+#: ../plugins/gtk+/gtk+.xml.in.h:881
 msgid "Both"
 msgstr "Mindkettő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:866
+#: ../plugins/gtk+/gtk+.xml.in.h:882
 msgid "List of widgets in this group"
 msgstr "Csoport felületi elemeinek listája"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:867
+#: ../plugins/gtk+/gtk+.xml.in.h:883
 msgid "Window Group"
 msgstr "Ablakcsoport"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:868
+#: ../plugins/gtk+/gtk+.xml.in.h:884
 msgid "Adjustment"
 msgstr "Igazítás"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:872
+#: ../plugins/gtk+/gtk+.xml.in.h:888
 msgid "An accelerator key for this action"
 msgstr "Hívóbetű ehhez a művelethez"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:873
+#: ../plugins/gtk+/gtk+.xml.in.h:889
 msgid "Toggle Action"
 msgstr "Kapcsolóművelet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:874
+#: ../plugins/gtk+/gtk+.xml.in.h:890
 msgid "Radio Action"
 msgstr "Választóművelet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:875
+#: ../plugins/gtk+/gtk+.xml.in.h:891
 msgid "Recent Action"
 msgstr "Legutóbbi művelet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:876
+#: ../plugins/gtk+/gtk+.xml.in.h:892
 msgid "Action Group"
 msgstr "Műveletcsoport"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:877
+#: ../plugins/gtk+/gtk+.xml.in.h:893
 msgid "Entry Completion"
 msgstr "Bevitelimező-kiegészítés"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:878
+#: ../plugins/gtk+/gtk+.xml.in.h:894
 msgid "Icon Factory"
 msgstr "Ikon factory"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:879
+#: ../plugins/gtk+/gtk+.xml.in.h:895
 msgid "Icon Sources"
 msgstr "Ikonforrások"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:880
+#: ../plugins/gtk+/gtk+.xml.in.h:896
 msgid "A list of sources for this icon factory"
 msgstr "Források listája ezen ikongyárhoz"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:881
+#: ../plugins/gtk+/gtk+.xml.in.h:897
 msgid "List Store"
 msgstr "Listatároló"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:882
+#: ../plugins/gtk+/gtk+.xml.in.h:898
 msgid "Data"
 msgstr "Adat"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:883
+#: ../plugins/gtk+/gtk+.xml.in.h:899
 msgid "Enter a list of column types for this data store"
 msgstr "Adja meg az oszloptípusokat ezen adattárolóhoz"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:884
+#: ../plugins/gtk+/gtk+.xml.in.h:900
 msgid "Enter a list of values to be applied on each row"
 msgstr "Adja meg a minden sorhoz hozzáfűzendő értékek listáját"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:885
+#: ../plugins/gtk+/gtk+.xml.in.h:901
 msgid "Tree Store"
 msgstr "Fatároló"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:886
+#: ../plugins/gtk+/gtk+.xml.in.h:902
 msgid "Tree Model Filter"
 msgstr "Famodell-szűrő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:887
+#: ../plugins/gtk+/gtk+.xml.in.h:903
 msgid "Tree Model Sort"
 msgstr "Famodell-rendezés"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:888
+#: ../plugins/gtk+/gtk+.xml.in.h:904
 msgid "Tree Selection"
 msgstr "Faválasztó"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:889
+#: ../plugins/gtk+/gtk+.xml.in.h:905
 msgid "Tree View"
 msgstr "Fanézet"
 
 #. GtkTreeViewGridLines enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:891
+#: ../plugins/gtk+/gtk+.xml.in.h:907
 msgid "Horizontal and Vertical"
 msgstr "Vízszintes és függőleges"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:894
+#: ../plugins/gtk+/gtk+.xml.in.h:910
 msgid "Ascending"
 msgstr "Növekvő"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:896
+#: ../plugins/gtk+/gtk+.xml.in.h:912
 msgid "Descending"
 msgstr "Csökkenő"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:898
+#: ../plugins/gtk+/gtk+.xml.in.h:914
 msgid "Grow Only"
 msgstr "Csak növelés"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:899
+#: ../plugins/gtk+/gtk+.xml.in.h:915
 msgid "Icon View"
 msgstr "Ikonnézet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:901
+#: ../plugins/gtk+/gtk+.xml.in.h:917
 msgid "Cell Background Color name column"
 msgstr "Cellaháttérszín neve oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:902
+#: ../plugins/gtk+/gtk+.xml.in.h:918
 msgid "Cell Background Color column"
 msgstr "Cella háttérszíne oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:903
+#: ../plugins/gtk+/gtk+.xml.in.h:919
 msgid "Cell Background RGBA column"
 msgstr "Cellaháttér RGBA oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:904
+#: ../plugins/gtk+/gtk+.xml.in.h:920
 msgid "Width column"
 msgstr "Szélesség oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:905
+#: ../plugins/gtk+/gtk+.xml.in.h:921
 msgid "Height column"
 msgstr "Magasság oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:906
+#: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Horizontal Padding"
 msgstr "Vízszintes térköz"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:907
+#: ../plugins/gtk+/gtk+.xml.in.h:923
 msgid "Horizontal Padding column"
 msgstr "Vízszintes térköz oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:908
+#: ../plugins/gtk+/gtk+.xml.in.h:924
 msgid "Vertical Padding"
 msgstr "Függőleges térköz"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:909
+#: ../plugins/gtk+/gtk+.xml.in.h:925
 msgid "Vertical Padding column"
 msgstr "Függőleges térköz oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:910
+#: ../plugins/gtk+/gtk+.xml.in.h:926
 msgid "Horizontal Alignment"
 msgstr "Vízszintes elrendezés"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:911
+#: ../plugins/gtk+/gtk+.xml.in.h:927
 msgid "Horizontal Alignment column"
 msgstr "Vízszintes elrendezés oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:912
+#: ../plugins/gtk+/gtk+.xml.in.h:928
 msgid "Vertical Alignment"
 msgstr "Függőleges elrendezés"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:913
+#: ../plugins/gtk+/gtk+.xml.in.h:929
 msgid "Vertical Alignment column"
 msgstr "Függőleges elrendezés oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:914
+#: ../plugins/gtk+/gtk+.xml.in.h:930
 msgid "Sensitive column"
 msgstr "Érzékeny oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:916
+#: ../plugins/gtk+/gtk+.xml.in.h:932
 msgid "Visible column"
 msgstr "Látható oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:917
+#: ../plugins/gtk+/gtk+.xml.in.h:933
 msgid "The column in the model to load the value from"
 msgstr "A modell azon oszlopa, amelyből az érték betöltendő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:918
+#: ../plugins/gtk+/gtk+.xml.in.h:934
 msgid "Text Renderer"
 msgstr "Szövegmegjelenítő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:919
+#: ../plugins/gtk+/gtk+.xml.in.h:935
 msgid "Alignment column"
 msgstr "Elrendezésoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:920
+#: ../plugins/gtk+/gtk+.xml.in.h:936
 msgid "Attributes column"
 msgstr "Jellemzők oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:921
+#: ../plugins/gtk+/gtk+.xml.in.h:937
 msgid "Background Color Name column"
 msgstr "Háttérszín neve oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:922
+#: ../plugins/gtk+/gtk+.xml.in.h:938
 msgid "Background Color column"
 msgstr "Háttérszín oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:923
+#: ../plugins/gtk+/gtk+.xml.in.h:939
 msgid "Editable column"
 msgstr "Szerkeszthető oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:924
+#: ../plugins/gtk+/gtk+.xml.in.h:940
 msgid "Ellipsize column"
 msgstr "Oszlopcsonkítás"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:925
+#: ../plugins/gtk+/gtk+.xml.in.h:941
 msgid "Family column"
 msgstr "Család oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:926
+#: ../plugins/gtk+/gtk+.xml.in.h:942
 msgid "Font column"
 msgstr "Betűkészlet oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:927
+#: ../plugins/gtk+/gtk+.xml.in.h:943
 msgid "Font Description column"
 msgstr "Betűkészlet-leírás oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:928
+#: ../plugins/gtk+/gtk+.xml.in.h:944
 msgid "Foreground Color Name column"
 msgstr "Előtérszín neve oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:929
+#: ../plugins/gtk+/gtk+.xml.in.h:945
 msgid "Foreground Color column"
 msgstr "Előtérszín oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:930
+#: ../plugins/gtk+/gtk+.xml.in.h:946
 msgid "Language column"
 msgstr "Nyelv oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:931
+#: ../plugins/gtk+/gtk+.xml.in.h:947
 msgid "Markup column"
 msgstr "Jelölőkódoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:932
+#: ../plugins/gtk+/gtk+.xml.in.h:948
 msgid "Rise column"
 msgstr "Emelkedés oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:933
+#: ../plugins/gtk+/gtk+.xml.in.h:949
 msgid "Scale column"
 msgstr "Méretezés oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:934
+#: ../plugins/gtk+/gtk+.xml.in.h:950
 msgid "Single Paragraph Mode column"
 msgstr "Egy bekezdéses mód oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:935
+#: ../plugins/gtk+/gtk+.xml.in.h:951
 msgid "Size column"
 msgstr "Méretoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:936
+#: ../plugins/gtk+/gtk+.xml.in.h:952
 msgid "Data column"
 msgstr "Adatoszlop"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:938
+#: ../plugins/gtk+/gtk+.xml.in.h:954
 msgid "Ultra Condensed"
 msgstr "Ultra sűrű"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:940
+#: ../plugins/gtk+/gtk+.xml.in.h:956
 msgid "Extra Condensed"
 msgstr "Extra sűrű"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:942
+#: ../plugins/gtk+/gtk+.xml.in.h:958
 msgid "Condensed"
 msgstr "Sűrű"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:944
+#: ../plugins/gtk+/gtk+.xml.in.h:960
 msgid "Semi Condensed"
 msgstr "Félig sűrű"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:946
+#: ../plugins/gtk+/gtk+.xml.in.h:962
 msgid "Semi Expanded"
 msgstr "Félig kiterjesztett"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:948
+#: ../plugins/gtk+/gtk+.xml.in.h:964
 msgid "Expanded"
 msgstr "Kiterjesztett"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:950
+#: ../plugins/gtk+/gtk+.xml.in.h:966
 msgid "Extra Expanded"
 msgstr "Extra kiterjesztett"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:952
+#: ../plugins/gtk+/gtk+.xml.in.h:968
 msgid "Ultra Expanded"
 msgstr "Ultra kiterjesztett"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:953
+#: ../plugins/gtk+/gtk+.xml.in.h:969
 msgid "Stretch column"
 msgstr "Nyújtás oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:954
+#: ../plugins/gtk+/gtk+.xml.in.h:970
 msgid "Strikethrough column"
 msgstr "Áthúzás oszlop"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:956
+#: ../plugins/gtk+/gtk+.xml.in.h:972
 msgid "Oblique"
 msgstr "Ferde"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:958
+#: ../plugins/gtk+/gtk+.xml.in.h:974
 msgid "Italic"
 msgstr "Dőlt"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:959
+#: ../plugins/gtk+/gtk+.xml.in.h:975
 msgid "Style column"
 msgstr "Stílus oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:960
+#: ../plugins/gtk+/gtk+.xml.in.h:976
 msgid "Text column"
 msgstr "Szövegoszlop"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:962
+#: ../plugins/gtk+/gtk+.xml.in.h:978
 msgid "Double"
 msgstr "Dupla"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:964
+#: ../plugins/gtk+/gtk+.xml.in.h:980
 msgid "Low"
 msgstr "Alacsony"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:965
+#: ../plugins/gtk+/gtk+.xml.in.h:981
 msgid "Underline column"
 msgstr "Aláhúzásoszlop"
 
 #. PangoVariant enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:967
+#: ../plugins/gtk+/gtk+.xml.in.h:983
 msgid "Small Capitals"
 msgstr "Kis kapitális"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:968
+#: ../plugins/gtk+/gtk+.xml.in.h:984
 msgid "Variant column"
 msgstr "Változatoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:969
+#: ../plugins/gtk+/gtk+.xml.in.h:985
 msgid "Weight column"
 msgstr "Súly oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:970
+#: ../plugins/gtk+/gtk+.xml.in.h:986
 msgid "Width in Characters column"
 msgstr "Szélesség karakterekben oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:971
+#: ../plugins/gtk+/gtk+.xml.in.h:987
 msgid "Wrap Mode column"
 msgstr "Tördelési mód oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:972
+#: ../plugins/gtk+/gtk+.xml.in.h:988
 msgid "Wrap Width column"
 msgstr "Szélesség tördelése oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:973
+#: ../plugins/gtk+/gtk+.xml.in.h:989
 msgid "Background RGBA column"
 msgstr "Háttér RGBA oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:974
+#: ../plugins/gtk+/gtk+.xml.in.h:990
 msgid "Foreground RGBA column"
 msgstr "Előtér RGBA oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:975
+#: ../plugins/gtk+/gtk+.xml.in.h:991
 msgid "Maximum width in characters"
 msgstr "Maximális szélesség karakterekben"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:976
+#: ../plugins/gtk+/gtk+.xml.in.h:992
 msgid "Placeholder text"
 msgstr "Helykitöltő szöveg"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:977
+#: ../plugins/gtk+/gtk+.xml.in.h:993
 msgid "Accelerator Renderer"
 msgstr "Gyorsítómegjelenítő"
 
 #. GtkCellRendererAccelMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:979
+#: ../plugins/gtk+/gtk+.xml.in.h:995
 msgid "Gtk"
 msgstr "GTK"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:980
+#: ../plugins/gtk+/gtk+.xml.in.h:996
 msgid "Accelerator Mode column"
 msgstr "Gyorsítómód oszlop"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:982
+#: ../plugins/gtk+/gtk+.xml.in.h:998
 msgid "Shift Key"
 msgstr "Shift billentyű"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:984
+#: ../plugins/gtk+/gtk+.xml.in.h:1000
 msgid "Lock Key"
 msgstr "Billentyű zárolása"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:986
+#: ../plugins/gtk+/gtk+.xml.in.h:1002
 msgid "Control Key"
 msgstr "Vezérlőbillentyű"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:988
+#: ../plugins/gtk+/gtk+.xml.in.h:1004
 msgid "Alt Key"
 msgstr "Alt billentyű"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:990
+#: ../plugins/gtk+/gtk+.xml.in.h:1006
 msgid "Fifth Key"
 msgstr "Ötödik billentyű"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:992
+#: ../plugins/gtk+/gtk+.xml.in.h:1008
 msgid "Sixth Key"
 msgstr "Hatodik billentyű"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:994
+#: ../plugins/gtk+/gtk+.xml.in.h:1010
 msgid "Seventh Key"
 msgstr "Hetedik billentyű"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:996
+#: ../plugins/gtk+/gtk+.xml.in.h:1012
 msgid "Eighth Key"
 msgstr "Nyolcadik billentyű"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:998
+#: ../plugins/gtk+/gtk+.xml.in.h:1014
 msgid "First Mouse Button"
 msgstr "Első egérgomb"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1000
+#: ../plugins/gtk+/gtk+.xml.in.h:1016
 msgid "Second Mouse Button"
 msgstr "Második egérgomb"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1002
+#: ../plugins/gtk+/gtk+.xml.in.h:1018
 msgid "Third Mouse Button"
 msgstr "Harmadik egérgomb"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1004
+#: ../plugins/gtk+/gtk+.xml.in.h:1020
 msgid "Fourth Mouse Button"
 msgstr "Negyedik egérgomb"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1006
+#: ../plugins/gtk+/gtk+.xml.in.h:1022
 msgid "Fifth Mouse Button"
 msgstr "Ötödik egérgomb"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1008
+#: ../plugins/gtk+/gtk+.xml.in.h:1024
 msgid "Super Modifier"
 msgstr "Super módosító"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1010
+#: ../plugins/gtk+/gtk+.xml.in.h:1026
 msgid "Hyper Modifier"
 msgstr "Hyper módosító"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1012
+#: ../plugins/gtk+/gtk+.xml.in.h:1028
 msgid "Meta Modifier"
 msgstr "Meta módosító"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1014
+#: ../plugins/gtk+/gtk+.xml.in.h:1030
 msgid "Release Modifier"
 msgstr "Elengedés módosító"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1016
+#: ../plugins/gtk+/gtk+.xml.in.h:1032
 msgid "All Modifiers"
 msgstr "Minden módosító"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1017
+#: ../plugins/gtk+/gtk+.xml.in.h:1033
 msgid "Accelerator Modifiers column"
 msgstr "Gyorsítómódosítók oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1018
+#: ../plugins/gtk+/gtk+.xml.in.h:1034
 msgid "Keycode column"
 msgstr "Billentyűkód oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1019
+#: ../plugins/gtk+/gtk+.xml.in.h:1035
 msgid "Combo Renderer"
 msgstr "Legördülőlista-megjelenítő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1020
+#: ../plugins/gtk+/gtk+.xml.in.h:1036
 msgid "Has Entry column"
 msgstr "Van Szövegmező oszlopa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1021
+#: ../plugins/gtk+/gtk+.xml.in.h:1037
 msgid "Model column"
 msgstr "Modelloszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1022
+#: ../plugins/gtk+/gtk+.xml.in.h:1038
 msgid "Text Column column"
 msgstr "Szövegoszlop oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1023
+#: ../plugins/gtk+/gtk+.xml.in.h:1039
 msgid "Spin Renderer"
 msgstr "Léptetőmegjelenítő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1024
+#: ../plugins/gtk+/gtk+.xml.in.h:1040
 msgid "Adjustment column"
 msgstr "Igazításoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1025
+#: ../plugins/gtk+/gtk+.xml.in.h:1041
 msgid "Climb Rate column"
 msgstr "Emelkedés sebessége oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1026
+#: ../plugins/gtk+/gtk+.xml.in.h:1042
 msgid "Digits column"
 msgstr "Számjegyek oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1027
+#: ../plugins/gtk+/gtk+.xml.in.h:1043
 msgid "Pixbuf Renderer"
 msgstr "Képmegjelenítő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1028
+#: ../plugins/gtk+/gtk+.xml.in.h:1044
 msgid "Follow State column"
 msgstr "Állapotkövetés oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1029
+#: ../plugins/gtk+/gtk+.xml.in.h:1045
 msgid "Icon Name column"
 msgstr "Ikonnév oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1030
+#: ../plugins/gtk+/gtk+.xml.in.h:1046
 msgid "Pixbuf column"
 msgstr "Képoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1031
+#: ../plugins/gtk+/gtk+.xml.in.h:1047
 msgid "GIcon column"
 msgstr "GIcon oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1032
+#: ../plugins/gtk+/gtk+.xml.in.h:1048
 msgid "Pixbuf Expander Closed column"
 msgstr "Képkiterjesztő bezárva oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1033
+#: ../plugins/gtk+/gtk+.xml.in.h:1049
 msgid "Pixbuf Expander Open column"
 msgstr "Képkiterjesztő kinyitva oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1034
+#: ../plugins/gtk+/gtk+.xml.in.h:1050
 msgid "Stock Detail column"
 msgstr "Gyári részletek oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1035
+#: ../plugins/gtk+/gtk+.xml.in.h:1051
 msgid "Stock column"
 msgstr "Gyári oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1036
+#: ../plugins/gtk+/gtk+.xml.in.h:1052
 msgid "Stock Size column"
 msgstr "Gyári méret oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1037
+#: ../plugins/gtk+/gtk+.xml.in.h:1053
 msgid "Progress Renderer"
 msgstr "Folyamatjelző"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1038
+#: ../plugins/gtk+/gtk+.xml.in.h:1054
 msgid "Orientation column"
 msgstr "Tájolás oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1039
+#: ../plugins/gtk+/gtk+.xml.in.h:1055
 msgid "Pulse column"
 msgstr "Lépésoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1040
+#: ../plugins/gtk+/gtk+.xml.in.h:1056
 msgid "Text Horizontal Alignment column"
 msgstr "Szöveg vízszintes igazítása oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1041
+#: ../plugins/gtk+/gtk+.xml.in.h:1057
 msgid "Text Vertical Alignment column"
 msgstr "Szöveg függőleges igazítása oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1042
+#: ../plugins/gtk+/gtk+.xml.in.h:1058
 msgid "Value column"
 msgstr "Értékoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1043
+#: ../plugins/gtk+/gtk+.xml.in.h:1059
 msgid "Inverted column"
 msgstr "Invertált oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1044
+#: ../plugins/gtk+/gtk+.xml.in.h:1060
 msgid "Spinner Renderer"
 msgstr "Forgómegjelenítő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1045
+#: ../plugins/gtk+/gtk+.xml.in.h:1061
 msgid "Active column"
 msgstr "Aktív oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1046
+#: ../plugins/gtk+/gtk+.xml.in.h:1062
 msgid "Toggle Renderer"
 msgstr "Kapcsolómegjelenítő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1047
+#: ../plugins/gtk+/gtk+.xml.in.h:1063
 msgid "Activatable column"
 msgstr "Aktiválható oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1048
+#: ../plugins/gtk+/gtk+.xml.in.h:1064
 msgid "Inconsistent column"
 msgstr "Inkonzisztens oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1049
+#: ../plugins/gtk+/gtk+.xml.in.h:1065
 msgid "Indicator Size column"
 msgstr "Jelző mérete oszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1050
+#: ../plugins/gtk+/gtk+.xml.in.h:1066
 msgid "Radio column"
 msgstr "Választóoszlop"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1051
+#: ../plugins/gtk+/gtk+.xml.in.h:1067
 msgid "Status Icon"
 msgstr "Állapotikon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1052
+#: ../plugins/gtk+/gtk+.xml.in.h:1068
 msgid "Text Buffer"
 msgstr "Szöveges puffer"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1053
+#: ../plugins/gtk+/gtk+.xml.in.h:1069
 msgid "Entry Buffer"
 msgstr "Beviteli puffer"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1054
+#: ../plugins/gtk+/gtk+.xml.in.h:1070
 msgid "Text Tag"
 msgstr "Szövegcímke"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1055
+#: ../plugins/gtk+/gtk+.xml.in.h:1071
 msgid "Text Tag Table"
 msgstr "Szövegcímketábla"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1056
+#: ../plugins/gtk+/gtk+.xml.in.h:1072
 msgid "File Filter"
 msgstr "Fájlszűrő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1057
+#: ../plugins/gtk+/gtk+.xml.in.h:1073
 msgid "Mime Types"
 msgstr "MIME-típusok"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1058
+#: ../plugins/gtk+/gtk+.xml.in.h:1074
 msgid "Patterns"
 msgstr "Minták"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1059
+#: ../plugins/gtk+/gtk+.xml.in.h:1075
 msgid "The list of mime types to add to the filter"
 msgstr "A szűrőhöz adandó MIME-típusok listája"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1060
+#: ../plugins/gtk+/gtk+.xml.in.h:1076
 msgid "The list of file name patterns to add to the filter"
 msgstr "A szűrőhöz adandó fájlnévminták listája"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1061
+#: ../plugins/gtk+/gtk+.xml.in.h:1077
 msgid "Recent Filter"
 msgstr "Előzményszűrő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1063
+#: ../plugins/gtk+/gtk+.xml.in.h:1079
 msgid "The list of application names to add to the filter"
 msgstr "A szűrőhöz adandó alkalmazásnevek listája"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1064
+#: ../plugins/gtk+/gtk+.xml.in.h:1080
 msgid "Recent Manager"
 msgstr "Előzménykezelő"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1065
+#: ../plugins/gtk+/gtk+.xml.in.h:1081
 msgid "Themed Icon"
 msgstr "Témázott ikon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1066
+#: ../plugins/gtk+/gtk+.xml.in.h:1082
 msgid "Toplevels"
 msgstr "Felsőszintűk"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1067
+#: ../plugins/gtk+/gtk+.xml.in.h:1083
 msgid "Containers"
 msgstr "Tárolók"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1068
+#: ../plugins/gtk+/gtk+.xml.in.h:1084
 msgid "Control and Display"
 msgstr "Vezérlés és megjelenítés"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1069
+#: ../plugins/gtk+/gtk+.xml.in.h:1085
 msgid "Composite Widgets"
 msgstr "Összetett felületi elemek"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1070
+#: ../plugins/gtk+/gtk+.xml.in.h:1086
 msgid "Miscellaneous"
 msgstr "Egyebek"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1071
+#: ../plugins/gtk+/gtk+.xml.in.h:1087
 msgid "Deprecated"
 msgstr "Elavult"
 
