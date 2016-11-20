@@ -3036,7 +3036,14 @@ glade_widget_adaptor_create_widget_real (gboolean     query,
 GladeWidgetAdaptor *
 glade_widget_adaptor_get_by_name (const gchar *name)
 {
-  GType type = g_type_from_name (name);
+  
+  GType type;
+  if (g_strcmp0(name, "GtkBin") == 0) {
+     g_warning("Using GtkBox for GtkBin");
+     type = g_type_from_name("GtkBox");
+  } else {
+     type = g_type_from_name (name);
+  }
 
   if (adaptor_hash && type)
     return g_hash_table_lookup (adaptor_hash, GSIZE_TO_POINTER (type));
