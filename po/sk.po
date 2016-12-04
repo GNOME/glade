@@ -11,20 +11,19 @@ msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-10-04 19:30+0000\n"
-"PO-Revision-Date: 2016-10-20 16:12+0200\n"
+"POT-Creation-Date: 2016-10-27 08:01+0000\n"
+"PO-Revision-Date: 2016-12-04 09:29+0100\n"
 "Last-Translator: Peter Mráz <etkinator@gmail.com>\n"
 "Language-Team: slovenčina <>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
 
 # desktop entry name
-#: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
-#: ../src/main.c:42
+#: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
 msgstr "Glade"
 
@@ -39,7 +38,7 @@ msgid "Glade Interface Designer"
 msgstr "Glade - program na návrh rozhrania"
 
 # desktop entry comment
-#: ../data/glade.desktop.in.in.h:4 ../data/glade.appdata.xml.in.h:2
+#: ../data/glade.desktop.in.in.h:4
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "Vytvára alebo otvára návrhy rozhraní pre aplikácie GTK+."
 
@@ -48,7 +47,7 @@ msgid "GUI designer;user interface;ui builder;"
 msgstr "návrh;GUI;rozhranie;vizuál;vzhľad;grafické;"
 
 #. To translators: AppData description first paragraph
-#: ../data/glade.appdata.xml.in.h:4
+#: ../data/glade.appdata.xml.in.h:2
 msgid ""
 "Glade is a RAD tool to enable quick &amp; easy development of user "
 "interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
@@ -58,7 +57,7 @@ msgstr ""
 "pracovné prostredie GNOME."
 
 #. To translators: AppData description second paragraph
-#: ../data/glade.appdata.xml.in.h:6
+#: ../data/glade.appdata.xml.in.h:4
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
@@ -71,7 +70,7 @@ msgstr ""
 "funkcionalitu GTK+ na prácu so šablónami. "
 
 #. To translators: AppData description third paragraph
-#: ../data/glade.appdata.xml.in.h:8
+#: ../data/glade.appdata.xml.in.h:6
 msgid ""
 "By using GtkBuilder, Glade XML files can be used in numerous programming "
 "languages including C, C++, C#, Vala, Java, Perl, Python, and others."
@@ -551,7 +550,7 @@ msgstr "Upraví vlastnosti projektu"
 
 # GtkAction label;value (buttons)
 #. GtkButtonsType enumeration value
-#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:819
+#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:818
 msgid "Close"
 msgstr "Zatvoriť"
 
@@ -683,17 +682,17 @@ msgstr "Ukotví editor v hlavnom okne"
 # GtkToggleAction label
 #: ../src/glade.glade.h:61
 msgid "_Statusbar"
-msgstr "_Stavová lišta"
+msgstr "_Stavový panel"
 
 # tooltip ViewsMenu
 #: ../src/glade.glade.h:62
 msgid "Show the statusbar"
-msgstr "Zobrazí stavovú lištu"
+msgstr "Zobrazí stavový panel"
 
 # GtkToggleAction label
 #: ../src/glade.glade.h:63
 msgid "Tool_bar"
-msgstr "Lišta _nástrojov"
+msgstr "Panel _nástrojov"
 
 # tooltip ViewsMenu
 #: ../src/glade.glade.h:64
@@ -1091,7 +1090,7 @@ msgstr "Registrácia a dotazník aplikácie Glade"
 
 # value (buttons)
 #. GtkButtonsType enumeration value
-#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:821
+#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:820
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -1252,7 +1251,7 @@ msgstr "Perl"
 #. GtkCellRendererAccelMode enumeration value
 #: ../src/glade-registration.glade.h:41
 #: ../gladeui/glade-project-properties.ui.h:19
-#: ../plugins/gtk+/gtk+.xml.in.h:767
+#: ../plugins/gtk+/gtk+.xml.in.h:766
 msgid "Other"
 msgstr "Iné"
 
@@ -1436,7 +1435,7 @@ msgstr "GNU/Linux"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:797
+#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:796
 msgid "BSD"
 msgstr "BSD"
 
@@ -1769,7 +1768,7 @@ msgstr "Označenie"
 
 # 1. tree view column
 # 2. ?
-#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1446
+#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1460
 msgid "Type"
 msgstr "Typ"
 
@@ -2116,26 +2115,22 @@ msgstr "Momentálne načítaný ovládací prvok v tomto editore"
 
 #: ../gladeui/glade-editor.c:243
 msgid "Show Class Field"
-msgstr ""
+msgstr "Zobraziť pole triedy"
 
 #: ../gladeui/glade-editor.c:244
 msgid "Whether to show the class field at the top"
-msgstr ""
+msgstr "Určuje, či sa má navrchu zobraziť pole triedy"
 
 # 1. tree view column
 # 2. GladePropertyClass
 #: ../gladeui/glade-editor.c:250
-#, fuzzy
-#| msgid "Class"
 msgid "Class Field"
-msgstr "Trieda"
+msgstr "Pole triedy"
 
 # tooltip / popis
 #: ../gladeui/glade-editor.c:251
-#, fuzzy
-#| msgid "The signal class of this signal"
 msgid "The class field string"
-msgstr "Trieda tohto signálu"
+msgstr "Reťazec poľa triedy"
 
 # Nadpis v doku Properties
 #. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
@@ -2351,7 +2346,7 @@ msgstr "_Otvoriť"
 # 3. name of widget
 #. GtkInputPurpose enumeration value
 #: ../gladeui/glade-editor-property.c:3090
-#: ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
+#: ../gladeui/glade-widget-adaptor.c:1453 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Name"
 msgstr "Názov"
@@ -2476,7 +2471,7 @@ msgstr "Všetky kontexty"
 # dialog title
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1369
 msgid "Named Icon Chooser"
-msgstr "Výber ikony s názvom"
+msgstr "Výber pomenovanej ikony"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1397
 msgid "Icon _Name:"
@@ -2568,11 +2563,6 @@ msgstr "Chyba pri spúšťaní náhľadu: %s\n"
 #, c-format
 msgid "Failed to launch preview: %s.\n"
 msgstr "Nepodarilo sa spustiť náhľad: %s.\n"
-
-# 1.window title
-#: ../gladeui/glade-previewer.c:202
-msgid "Glade Previewer log"
-msgstr "Záznam náhľadu"
 
 # tree view column
 #: ../gladeui/glade-previewer.c:739 ../gladeui/glade-previewer.c:749
@@ -3190,11 +3180,11 @@ msgstr "Vlastný text pre nahradenie názvu vlastnosti"
 # PŠ: bublinový popis - zišlo by sa všade...
 #: ../gladeui/glade-property-label.c:158
 msgid "Custom Tooltip"
-msgstr "Vlastný bublinový popis"
+msgstr "Vlastný bublinový tip"
 
 #: ../gladeui/glade-property-label.c:159
 msgid "Custom tooltip to override the property description"
-msgstr "Vlastný bublinový popis ktorým sa nahradí popis vlastnosti"
+msgstr "Vlastný bublinový tip, ktorým sa nahradí popis vlastnosti"
 
 # tooltip / popis
 #: ../gladeui/glade-property-shell.c:126
@@ -3375,7 +3365,7 @@ msgstr "Či je táto akcia citlivá"
 # IM: Bug 660662
 # PŠ: ten bug je uz zmäť všeličoho... Treba hlásiť kontrétne veci s konkrétnym problémom aj navrhnutým riešením. A po jednom...
 #: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1430
-#: ../plugins/gtk+/gtk+.xml.in.h:915
+#: ../plugins/gtk+/gtk+.xml.in.h:914
 msgid "Visible"
 msgstr "Viditeľný"
 
@@ -3385,78 +3375,78 @@ msgid "Whether this action is visible"
 msgstr "Či je táto operácia viditeľná"
 
 # error; prve %s type name of widget adaptor; type name
-#: ../gladeui/glade-widget-adaptor.c:241
+#: ../gladeui/glade-widget-adaptor.c:255
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Odvodený adaptér (%s) prvku %s už existuje!"
 
 # message %s - adaptor title
-#: ../gladeui/glade-widget-adaptor.c:943
+#: ../gladeui/glade-widget-adaptor.c:957
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s nepodporuje pridávanie žiadnych podradených prvkov."
 
 # tooltip / popis
-#: ../gladeui/glade-widget-adaptor.c:1440
+#: ../gladeui/glade-widget-adaptor.c:1454
 msgid "Name of the class"
 msgstr "Názov triedy"
 
 # tooltip / popis
-#: ../gladeui/glade-widget-adaptor.c:1447
+#: ../gladeui/glade-widget-adaptor.c:1461
 msgid "GType of the class"
 msgstr "GType triedy"
 
-#: ../gladeui/glade-widget-adaptor.c:1453
+#: ../gladeui/glade-widget-adaptor.c:1467
 msgid "Title"
 msgstr "Titulok"
 
 # tooltip / popis
-#: ../gladeui/glade-widget-adaptor.c:1454
+#: ../gladeui/glade-widget-adaptor.c:1468
 msgid "Translated title for the class used in the glade UI"
 msgstr "Preložený titulok triedy použitý v používateľskom rozhraní Glade"
 
-#: ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-widget-adaptor.c:1474
 msgid "Generic Name"
 msgstr "Všeobecný názov"
 
 # tooltip / popis
-#: ../gladeui/glade-widget-adaptor.c:1461
+#: ../gladeui/glade-widget-adaptor.c:1475
 msgid "Used to generate names of new widgets"
 msgstr "Používa sa na vytvorenie názvov nových ovládacích prvkov"
 
-#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:641
+#: ../gladeui/glade-widget-adaptor.c:1481 ../plugins/gtk+/gtk+.xml.in.h:641
 #: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "Názov ikony"
 
 # tooltip / popis
-#: ../gladeui/glade-widget-adaptor.c:1468
+#: ../gladeui/glade-widget-adaptor.c:1482
 msgid "The icon name"
 msgstr "Názov ikony"
 
-#: ../gladeui/glade-widget-adaptor.c:1474
+#: ../gladeui/glade-widget-adaptor.c:1488
 msgid "Catalog"
 msgstr "Katalóg"
 
 # tooltip / popis
-#: ../gladeui/glade-widget-adaptor.c:1475
+#: ../gladeui/glade-widget-adaptor.c:1489
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Názov katalógu ovládacích prvkov, ktorý deklaroval túto triedu"
 
-#: ../gladeui/glade-widget-adaptor.c:1481
+#: ../gladeui/glade-widget-adaptor.c:1495
 msgid "Book"
 msgstr "Kniha"
 
-#: ../gladeui/glade-widget-adaptor.c:1482
+#: ../gladeui/glade-widget-adaptor.c:1496
 msgid "DevHelp search namespace for this widget class"
 msgstr "Menný priestor hľadania DevHelp pre túto triedu prvku"
 
-#: ../gladeui/glade-widget-adaptor.c:1488
+#: ../gladeui/glade-widget-adaptor.c:1502
 msgid "Special Child Type"
-msgstr "Špeciálny typ podradeného prvku"
+msgstr "Špeciálny typ potomka"
 
 # tooltip / popis
-#: ../gladeui/glade-widget-adaptor.c:1489
+#: ../gladeui/glade-widget-adaptor.c:1503
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -3466,12 +3456,12 @@ msgstr ""
 
 # 1. eidget adaptor
 # 2. value (extensions events)
-#: ../gladeui/glade-widget-adaptor.c:1496
+#: ../gladeui/glade-widget-adaptor.c:1510
 msgid "Cursor"
 msgstr "Kurzor"
 
 # tooltip / popis
-#: ../gladeui/glade-widget-adaptor.c:1497
+#: ../gladeui/glade-widget-adaptor.c:1511
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Kurzor na vkladanie ovládacích prvkov do rozhrania"
 
@@ -3643,7 +3633,7 @@ msgstr "Akcie"
 
 # 1. kategória názvov ikon
 # 2. property
-#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1062
+#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1061
 msgid "Applications"
 msgstr "Aplikácie"
 
@@ -4227,7 +4217,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:180
 #: ../plugins/gtk+/glade-gtk-action-group.c:219
-#: ../plugins/gtk+/gtk+.xml.in.h:869
+#: ../plugins/gtk+/gtk+.xml.in.h:868
 msgid "Action"
 msgstr "Akcia"
 
@@ -4283,20 +4273,36 @@ msgid "Confirmation page"
 msgstr "Stránka potvrdenia"
 
 # command
-#: ../plugins/gtk+/glade-gtk-box.c:821
+#: ../plugins/gtk+/glade-gtk-box.c:615 ../plugins/gtk+/glade-gtk-box.c:623
+#: ../plugins/gtk+/glade-gtk-header-bar.c:113
+#: ../plugins/gtk+/glade-gtk-stack.c:160
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr "Vloženie vyhradenia do %s"
+
+# command
+#: ../plugins/gtk+/glade-gtk-box.c:631
+#: ../plugins/gtk+/glade-gtk-header-bar.c:137
+#: ../plugins/gtk+/glade-gtk-stack.c:197
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr "Odstránenie vyhradenia z %s"
+
+# command
+#: ../plugins/gtk+/glade-gtk-box.c:830
 #, c-format
 msgid "Ordering children of %s"
 msgstr "Zoradenie podradených prvkov %s"
 
 # label
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:892
+#: ../plugins/gtk+/gtk+.xml.in.h:891
 msgid "Tree View Column"
 msgstr "Stĺpec stromového zobrazenia"
 
 # label
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:900
+#: ../plugins/gtk+/gtk+.xml.in.h:899
 msgid "Cell Renderer"
 msgstr "Vykresľovač bunky"
 
@@ -4320,7 +4326,7 @@ msgstr "Text"
 # GType cell render
 #. Accelerator
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:413
-#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:871
+#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:870
 msgid "Accelerator"
 msgstr "Akcelerátor"
 
@@ -4347,7 +4353,7 @@ msgstr "Pixbuf"
 # 3. value (page-type)
 #. GtkAssistantPageType enumeration value
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:417
-#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:844
+#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:843
 #: ../plugins/gtk+/glade-entry-editor.ui.h:4
 msgid "Progress"
 msgstr "Priebeh"
@@ -4440,7 +4446,7 @@ msgstr ""
 #: ../plugins/gtk+/glade-gtk-flow-box.c:204
 #, c-format
 msgid "Insert Child on %s"
-msgstr "Vloženie podriadeného prvku do %s"
+msgstr "Vloženie potomka do %s"
 
 # command
 #: ../plugins/gtk+/glade-gtk-grid.c:507
@@ -4473,22 +4479,6 @@ msgstr "Odstránenie riadka z %s"
 msgid "This property does not apply when a custom title is set"
 msgstr "Táto vlastnosť nie je relevantná keď je nastavený vlastný titulok"
 
-# command
-#: ../plugins/gtk+/glade-gtk-header-bar.c:113
-#: ../plugins/gtk+/glade-gtk-notebook.c:992
-#: ../plugins/gtk+/glade-gtk-stack.c:160
-#, c-format
-msgid "Insert placeholder to %s"
-msgstr "Vloženie vyhradeného miesta do %s"
-
-# command
-#: ../plugins/gtk+/glade-gtk-header-bar.c:137
-#: ../plugins/gtk+/glade-gtk-notebook.c:990
-#: ../plugins/gtk+/glade-gtk-stack.c:197
-#, c-format
-msgid "Remove placeholder from %s"
-msgstr "Odstránenie vyhradeného miesta z %s"
-
 #: ../plugins/gtk+/glade-gtk-header-bar.c:304
 msgid ""
 "The decoration layout does not apply to header bars which do no show window "
@@ -4499,10 +4489,8 @@ msgstr ""
 
 # message
 #: ../plugins/gtk+/glade-gtk-image.c:106
-#, fuzzy
-#| msgid "This property only applies to stock images"
 msgid "This property only applies to stock images or named icons"
-msgstr "Táto vlastnosť sa týka iba obrázkov z palety"
+msgstr "Táto vlastnosť sa týka iba štandardných obrázkov a pomenovaných ikon"
 
 # message
 #: ../plugins/gtk+/glade-gtk-image.c:108 ../plugins/gtk+/glade-gtk-image.c:110
@@ -4529,8 +4517,7 @@ msgstr "Upraviť ponuku"
 
 # message
 #: ../plugins/gtk+/glade-gtk-menu-item.c:142
-#, fuzzy, c-format
-#| msgid "A object of type %s cannot have any children."
+#, c-format
 msgid "An object of type %s cannot have any children."
 msgstr "Objekt typu %s nemôže mať žiadne podradené prvky."
 
@@ -4626,24 +4613,25 @@ msgid "Menu Item"
 msgstr "Položka ponuky"
 
 # command
-#: ../plugins/gtk+/glade-gtk-notebook.c:983
-#, c-format
-msgid "Remove page from %s"
-msgstr "Odstránenie stránky z %s"
-
-# command
-#: ../plugins/gtk+/glade-gtk-notebook.c:985
+#: ../plugins/gtk+/glade-gtk-notebook.c:939
+#: ../plugins/gtk+/glade-gtk-notebook.c:946
 #, c-format
 msgid "Insert page on %s"
 msgstr "Vloženie stránky do %s"
 
+# command
+#: ../plugins/gtk+/glade-gtk-notebook.c:954
+#, c-format
+msgid "Remove page from %s"
+msgstr "Odstránenie stránky z %s"
+
 #: ../plugins/gtk+/glade-gtk-progress-bar.c:30
 msgid "This progressbar does not show text"
-msgstr ""
+msgstr "Tento ukazovateľ priebehu nezobrazuje text."
 
 #: ../plugins/gtk+/glade-gtk-scale.c:30
 msgid "Scale is configured to not draw the value"
-msgstr ""
+msgstr "Škála je nastavená, aby nezobrazovala hodnotu"
 
 # Tooltip
 #: ../plugins/gtk+/glade-gtk-scrolled-window.c:56
@@ -4652,7 +4640,7 @@ msgstr "Táto vlastnosť je zakázaná"
 
 #: ../plugins/gtk+/glade-gtk-searchbar.c:72
 msgid "Search bar is already full"
-msgstr ""
+msgstr "Panel vyhľadávania je už plný"
 
 # label
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:122
@@ -4690,7 +4678,7 @@ msgstr "Ponuka"
 #. GtkRecentSortType enumeration value
 #: ../plugins/gtk+/glade-gtk-toolbar.c:239
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:186
-#: ../plugins/gtk+/gtk+.xml.in.h:787 ../plugins/gtk+/glade-widget-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:786 ../plugins/gtk+/glade-widget-editor.ui.h:7
 msgid "Custom"
 msgstr "Vlastné"
 
@@ -4783,15 +4771,15 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:294
 msgid "Search is disabled"
-msgstr ""
+msgstr "Vyhľadávanie je zakázané"
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:301
 msgid "Headers are invisible"
-msgstr ""
+msgstr "Záhlavia sú neviditeľné"
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:308
 msgid "Expanders are not shown"
-msgstr ""
+msgstr "Rozbaľovače nie sú zobrazené"
 
 # command
 #: ../plugins/gtk+/glade-gtk-widget.c:836
@@ -4825,30 +4813,26 @@ msgstr "Nová kupina veľkostí"
 
 # message
 #: ../plugins/gtk+/glade-gtk-window.c:39
-#, fuzzy
-#| msgid "This property only applies to stock images"
 msgid "This property does not apply to client-side decorated windows"
-msgstr "Táto vlastnosť sa týka iba obrázkov z palety"
+msgstr "Táto vlastnosť sa nevzťahuje na okná dekorované na strane klienta"
 
 # command
 #. Translators: %s is the name of a widget here, the sentence means:
 #. * Make the widget use a custom title
 #.
 #: ../plugins/gtk+/glade-header-bar-editor.c:139
-#, fuzzy, c-format
-#| msgid "Setting %s to use a custom child"
+#, c-format
 msgid "Setting %s to use a custom title"
-msgstr "Nastavenie, aby %s používal vlastný podradený prvok"
+msgstr "Nastavenie, aby %s používal vlastný titulok"
 
 # command
 #. Translators: %s is the name of a widget here, the sentence means:
 #. * Make the widget use the standard title
 #.
 #: ../plugins/gtk+/glade-header-bar-editor.c:145
-#, fuzzy, c-format
-#| msgid "Setting %s to use standard label text"
+#, c-format
 msgid "Setting %s to use the standard title"
-msgstr "Nastavenie, aby %s používal štandardný text označenia"
+msgstr "Nastavenie, aby %s používal štandardný titulok"
 
 # command
 #: ../plugins/gtk+/glade-header-bar-editor.c:193
@@ -4941,10 +4925,9 @@ msgstr "Nastavenie, aby %s používal obrázok z témy ikon"
 
 # command
 #: ../plugins/gtk+/glade-image-editor.c:275
-#, fuzzy, c-format
-#| msgid "Setting %s to use a stock item"
+#, c-format
 msgid "Setting %s to use a resource name"
-msgstr "Nastavenie, aby %s používal položku z palety"
+msgstr "Nastavenie, aby %s používal názov zdroja"
 
 # command
 #: ../plugins/gtk+/glade-image-editor.c:301
@@ -5023,31 +5006,27 @@ msgstr "Pridať alebo odstrániť riadky:"
 
 # command
 #: ../plugins/gtk+/glade-notebook-editor.c:158
-#, fuzzy, c-format
-#| msgid "Setting %s to use a stock button"
+#, c-format
 msgid "Setting %s to have a start action"
-msgstr "Nastavenie, aby %s používal tlačidlo z palety"
+msgstr "Nastavenie, aby %s mal úvodnú akciu"
 
 # command
 #: ../plugins/gtk+/glade-notebook-editor.c:161
-#, fuzzy, c-format
-#| msgid "Setting %s to use a single line"
+#, c-format
 msgid "Setting %s to have an end action"
-msgstr "Nastavenie, aby %s používal jediný riadok"
+msgstr "Nastavenie, aby %s mal koncovú akciu"
 
 # command
 #: ../plugins/gtk+/glade-notebook-editor.c:164
-#, fuzzy, c-format
-#| msgid "Setting %s to use a custom child"
+#, c-format
 msgid "Setting %s to not have a start action"
-msgstr "Nastavenie, aby %s používal vlastný podradený prvok"
+msgstr "Nastavenie, aby %s nemal úvodnú akciu"
 
 # command
 #: ../plugins/gtk+/glade-notebook-editor.c:167
-#, fuzzy, c-format
-#| msgid "Setting %s to use a custom child"
+#, c-format
 msgid "Setting %s to not have an end action"
-msgstr "Nastavenie, aby %s používal vlastný podradený prvok"
+msgstr "Nastavenie, aby %s nemal koncovú akciu"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:155
@@ -5110,52 +5089,45 @@ msgstr ""
 # command
 #: ../plugins/gtk+/glade-widget-editor.c:163
 #: ../plugins/gtk+/glade-widget-editor.c:183
-#, fuzzy, c-format
-#| msgid "Setting %s to use a custom child"
+#, c-format
 msgid "Setting %s to use a custom tooltip"
-msgstr "Nastavenie, aby %s používal vlastný podradený prvok"
+msgstr "Nastavenie, aby %s používal vlastný bublinový tip"
 
 # command
 #: ../plugins/gtk+/glade-widget-editor.c:265
-#, fuzzy, c-format
-#| msgid "Setting %s to use a Pango markup string"
+#, c-format
 msgid "Setting %s to use tooltip markup"
-msgstr "Nastavenie, aby %s používal značkovací reťazec Pango"
+msgstr "Nastavenie, aby %s používal bublinový tip so značkami"
 
 # command
 #: ../plugins/gtk+/glade-widget-editor.c:277
-#, fuzzy, c-format
-#| msgid "Setting %s to not use action appearance"
+#, c-format
 msgid "Setting %s to not use tooltip markup"
-msgstr "Nastavenie, aby %s nepoužíval vzhľad akcie"
+msgstr "Nastavenie, aby %s nepoužíval bublinový tip so značkami"
 
 # command
 #: ../plugins/gtk+/glade-window-editor.c:145
-#, fuzzy, c-format
-#| msgid "Setting %s to use a single line"
+#, c-format
 msgid "Setting %s to use a named icon"
-msgstr "Nastavenie, aby %s používal jediný riadok"
+msgstr "Nastavenie, aby %s používal pomenovanú ikonu"
 
 # command
 #: ../plugins/gtk+/glade-window-editor.c:179
-#, fuzzy, c-format
-#| msgid "Setting %s to use a single line"
+#, c-format
 msgid "Setting %s to use an icon file"
-msgstr "Nastavenie, aby %s používal jediný riadok"
+msgstr "Nastavenie, aby %s používal ikonu zo súboru"
 
 # command
 #: ../plugins/gtk+/glade-window-editor.c:225
-#, fuzzy, c-format
-#| msgid "Setting %s to use a custom child"
+#, c-format
 msgid "Setting %s to use a custom titlebar"
-msgstr "Nastavenie, aby %s používal vlastný podradený prvok"
+msgstr "Nastavenie, aby %s používal vlastný panel pre titulok"
 
 # command
 #: ../plugins/gtk+/glade-window-editor.c:228
-#, fuzzy, c-format
-#| msgid "Setting %s to use a stock item"
+#, c-format
 msgid "Setting %s to use a system provided titlebar"
-msgstr "Nastavenie, aby %s používal položku z palety"
+msgstr "Nastavenie, aby %s používal systémový panel pre titulok"
 
 # widget class
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
@@ -5190,7 +5162,7 @@ msgstr "Obrátené poradie"
 # GTK_PRINT_CAPABILITY_SCALE:	Print dialog will allow to scale the output.
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:726
 msgid "Scale"
-msgstr "Mierka"
+msgstr "Škála"
 
 # GTK_PRINT_CAPABILITY_GENERATE_PDF:	The program will send the document to the printer in PDF format
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:8
@@ -5295,9 +5267,10 @@ msgstr "Box"
 msgid "Paned"
 msgstr "Predelený"
 
+# widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:18
 msgid "Stack"
-msgstr ""
+msgstr "Stoh"
 
 # action
 #: ../plugins/gtk+/gtk+.xml.in.h:19
@@ -5318,25 +5291,21 @@ msgstr "Prečítať dokumentáciu"
 msgid "Style Classes"
 msgstr "Triedy štýlov"
 
-# value (x-options, halign, justify)
 #. GtkAttachOptions enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Fill"
 msgstr "Výplň"
 
-# value (button box layout style, ellipsize)
 #. GtkButtonBoxStyle enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:26
 msgid "Start"
 msgstr "Začiatok"
 
-# value (window-position, justify, gravity, buton box, aligment, haling)
 #. PangoAlignment enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Center"
 msgstr "Stred"
 
-# value (button box layout style, halign, pack-type, elipsize)
 #. GtkButtonBoxStyle enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "End"
@@ -5345,7 +5314,7 @@ msgstr "Koniec"
 #. GtkAlign enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "Baseline"
-msgstr ""
+msgstr "Základná čiara"
 
 # value (events)
 #. GdkEventMask enumeration value
@@ -5471,12 +5440,12 @@ msgstr "Subštruktúra"
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Scroll"
-msgstr "Rolovať"
+msgstr "Rolovanie"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Touch"
-msgstr ""
+msgstr "Dotknutie"
 
 # value (events)
 #. GdkEventMask enumeration value
@@ -5487,7 +5456,7 @@ msgstr "Jemné rolovanie"
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "Touchpad Gesture"
-msgstr ""
+msgstr "Gesto touchpadu"
 
 # value (events)
 #. GdkEventMask enumeration value
@@ -5512,17 +5481,16 @@ msgstr "Prístupný názov"
 msgid "Accessible Description"
 msgstr "Prístupný popis"
 
+# property
 #: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Role"
-msgstr ""
+msgstr "Rola"
 
-# value (icon-size)
 #. GtkIconSize enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Invalid"
 msgstr "Neplatná"
 
-# column
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "Accelerator Label"
@@ -5538,13 +5506,11 @@ msgstr "Varovanie"
 msgid "Animation"
 msgstr "Animácia"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Arrow"
 msgstr "Šípka"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Calendar"
@@ -5555,13 +5521,11 @@ msgstr "Kalendár"
 msgid "Canvas"
 msgstr "Plátno"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Check Box"
 msgstr "Zaškrtávacie pole"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Check Menu Item"
@@ -5572,7 +5536,6 @@ msgstr "Zaškrtávacia položka ponuky"
 msgid "Color Chooser"
 msgstr "Výber farby"
 
-# tree view column
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Column Header"
@@ -5584,31 +5547,26 @@ msgstr "Hlavička stĺpca"
 msgid "Combo Box"
 msgstr "Kombinované pole"
 
-# window title
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Date Editor"
 msgstr "Editor dátumu"
 
-# value (window type hint)
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Desktop Icon"
 msgstr "Ikona pracovnej plochy"
 
-# value (window type hint)
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Desktop Frame"
 msgstr "Rámec pracovnej plochy"
 
-# value (window hint type, icon size)
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "Dial"
 msgstr "Číselník"
 
-# value (window hint type, icon size)
 #. GtkIconSize enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Dialog"
@@ -5619,25 +5577,20 @@ msgstr "Dialógové okno"
 msgid "Directory Name"
 msgstr "Názov adresára"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Drawing Area"
 msgstr "Oblasť kreslenia"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:128
 msgid "File Chooser"
 msgstr "Výber súboru"
 
-# value (x-options, halign, justify)
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:130
-#, fuzzy
-#| msgid "Fill"
 msgid "Filler"
-msgstr "Výplň"
+msgstr "Vyplňovač"
 
 # widget class
 #. AtkRole enumeration value
@@ -5648,7 +5601,7 @@ msgstr "Výber písma"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Glass Pane"
-msgstr ""
+msgstr "Sklenná plocha"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:136
@@ -5669,7 +5622,7 @@ msgstr "Vnútorný rámec"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Layered Pane"
-msgstr ""
+msgstr "Vrstvená plocha"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:148
@@ -5691,20 +5644,17 @@ msgstr "Panel ponuky"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Option Pane"
-msgstr ""
+msgstr "Plát s voľbami"
 
-# GTK_PRINT_CAPABILITY_PAGE_SET:	Print dialog will offer printing even/odd pages.
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:160
-#, fuzzy
-#| msgid "Page Set"
 msgid "Page Tab"
-msgstr "Sady stránok"
+msgstr "Karta"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid "Page Tab List"
-msgstr ""
+msgstr "Zoznam kariet"
 
 # action, widget class
 #. AtkRole enumeration value
@@ -5729,22 +5679,16 @@ msgstr "Rozbaľovacia ponuka"
 msgid "Progress bar"
 msgstr "Ukazovateľ priebehu"
 
-# GType tool button
-# value (icon-size)
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:172
-#, fuzzy
-#| msgid "Button"
 msgid "Push Button"
-msgstr "Tlačidlo"
+msgstr "Zatláčacie tlačidlo"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Radio Button"
-msgstr "Pole výberu"
+msgstr "Rádiové tlačidlo"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "Radio Menu Item"
@@ -5753,10 +5697,8 @@ msgstr "Rádiová položka ponuky"
 # widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:178
-#, fuzzy
-#| msgid "Horizontal Panes"
 msgid "Root Pane"
-msgstr "Vodorovné panely"
+msgstr "Základný plocha"
 
 # label
 #. AtkRole enumeration value
@@ -5773,40 +5715,34 @@ msgstr "Lišta s posuvníkom"
 # value (events)
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:184
-#, fuzzy
-#| msgid "Scroll"
 msgid "Scroll pane"
-msgstr "Rolovať"
+msgstr "Rolovaná plocha"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Slider"
-msgstr ""
+msgstr "Posuvník"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "Split Pane"
-msgstr ""
+msgstr "Rozdelená plocha"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:192
 msgid "Spin Button"
 msgstr "Rolovacie tlačidlo"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Status Bar"
 msgstr "Stavový panel"
 
-# widget class, action
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:196
 msgid "Table"
 msgstr "Tabuľka"
 
-# widget class, action
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Table Cell"
@@ -5815,10 +5751,8 @@ msgstr "Bunka tabuľky"
 # widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:200
-#, fuzzy
-#| msgid "Separator Menu Item"
 msgid "Tear Off Menu Item"
-msgstr "Oddeľujúca položka ponuky"
+msgstr "Oddeliteľná položka ponuky"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:202
@@ -5837,14 +5771,10 @@ msgstr "Prepínacie tlačidlo"
 msgid "Tool Bar"
 msgstr "Panel nástrojov"
 
-# value (window type hint)
-# PŠ: bublinový popis - zišlo by sa všade...
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:210
-#, fuzzy
-#| msgid "Tooltip"
 msgid "Tool Tip"
-msgstr "Bublinový tip"
+msgstr "Bublinový popis"
 
 # widget class
 #. AtkRole enumeration value
@@ -5852,13 +5782,10 @@ msgstr "Bublinový tip"
 msgid "Tree"
 msgstr "Strom"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:214
-#, fuzzy
-#| msgid "Text Tag Table"
 msgid "Tree Table"
-msgstr "Tabuľka textových značiek"
+msgstr "Stromová tabuľka"
 
 # value (license)
 #. GtkLicense enumeration value
@@ -5866,19 +5793,15 @@ msgstr "Tabuľka textových značiek"
 msgid "Unknown"
 msgstr "Neznáma"
 
-# widget class
 #. GtkPopoverConstraint enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Window"
 msgstr "Okno"
 
-# label
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:220
-#, fuzzy
-#| msgid "Group Header"
 msgid "Header"
-msgstr "Hlavička skupiny"
+msgstr "Hlavička"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:222
@@ -5910,18 +5833,13 @@ msgstr "Automatické doplňovanie"
 # GtkMenuItem label
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:232
-#, fuzzy
-#| msgid "_Edit"
 msgid "Editbar"
-msgstr "_Upraviť"
+msgstr "Upraviteľný text panelu"
 
-# property
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:234
-#, fuzzy
-#| msgid "Embedded By"
 msgid "Embedded"
-msgstr "Vkladá ho"
+msgstr "Vložený obsah"
 
 # widget class
 #. AtkRole enumeration value
@@ -5938,7 +5856,7 @@ msgstr "Graf"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Caption"
-msgstr ""
+msgstr "Nápis"
 
 # action
 #. AtkRole enumeration value
@@ -5949,97 +5867,81 @@ msgstr "Rámec dokumentu"
 # value (sort-order)
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:244
-#, fuzzy
-#| msgid "Ascending"
 msgid "Heading"
-msgstr "Vzostupne"
+msgstr "Nadpis"
 
 # GTK_PRINT_CAPABILITY_PAGE_SET:	Print dialog will offer printing even/odd pages.
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:246
-#, fuzzy
-#| msgid "Page Set"
 msgid "Page"
-msgstr "Sady stránok"
+msgstr "Stránka"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:248
-#, fuzzy
-#| msgid "Action"
 msgid "Section"
-msgstr "Akcia"
+msgstr "Oddiel"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "Redundant Object"
-msgstr ""
+msgstr "Nadbytočný objekt"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Form"
-msgstr ""
+msgstr "Formulár"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:254
 msgid "Link"
-msgstr ""
+msgstr "Odkaz"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Input Method Window"
-msgstr ""
+msgstr "Okno metódy vstupu"
 
-# widget class, action
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:258
-#, fuzzy
-#| msgid "Table"
 msgid "Table Row"
-msgstr "Tabuľka"
+msgstr "Riadok tabuľky"
 
 # widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:260
-#, fuzzy
-#| msgid "Tree Store"
 msgid "Tree Item"
-msgstr "Úložisko stromu"
+msgstr "Položka stromu"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Document Spreadsheet"
-msgstr ""
+msgstr "Dokument s tabuľkovým zošitom"
 
 # popup menu item
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:264
-#, fuzzy
-#| msgid "Read _documentation"
 msgid "Document Presentation"
-msgstr "Prečítať _dokumentáciu"
+msgstr "Dokument s prezentáciou"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Document Text"
-msgstr ""
+msgstr "Dokument s textom"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "Document Web"
-msgstr ""
+msgstr "Dokument webu"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "Document Email"
-msgstr ""
+msgstr "Dokument emailu"
 
-# widget class
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:274
-#, fuzzy
-#| msgid "List Store"
 msgid "List Box"
-msgstr "Úložisko zoznamu"
+msgstr "Pole zoznamu"
 
 # GType tool item group
 #. AtkRole enumeration value
@@ -6047,13 +5949,10 @@ msgstr "Úložisko zoznamu"
 msgid "Grouping"
 msgstr "Zoskupovanie"
 
-# GType menu item
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:278
-#, fuzzy
-#| msgid "Image"
 msgid "Image Map"
-msgstr "Obrázok"
+msgstr "Mapa obrázka"
 
 # value (window type hint)
 #. GdkWindowTypeHint enumeration value
@@ -6070,140 +5969,119 @@ msgstr "Infopanel"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid "Level Bar"
-msgstr ""
+msgstr "Indikátor úrovne"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:286
-#, fuzzy
-#| msgid "Title"
 msgid "Title Bar"
-msgstr "Titulok"
+msgstr "Panel titulku"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Block Quote"
-msgstr ""
+msgstr "Úrivok"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:290
 msgid "Audio"
-msgstr ""
+msgstr "Zvuk"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:292
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 # property
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:294
-#, fuzzy
-#| msgid "Description For"
 msgid "Definition"
-msgstr "Je popisom"
+msgstr "Definícia"
 
 # value (size group mode, orientation, tree view grid lines)
 # PM: nebude dobré rozdeliť?
 # IM: Bug 660662
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:296
-#, fuzzy
-#| msgid "Vertical"
 msgid "Article"
-msgstr "Zvislé"
+msgstr "Článok"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:298
 msgid "Landmark"
-msgstr ""
+msgstr "Orientačný bod"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:300
-#, fuzzy
-#| msgid "Logo:"
 msgid "Log"
-msgstr "Logo:"
+msgstr "Záznam"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:302
 msgid "Marquee"
-msgstr ""
+msgstr "Pohyblivý pútač"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:304
 msgid "Math"
-msgstr ""
+msgstr "Vzorec"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:306
-#, fuzzy
-#| msgid "Formatting"
 msgid "Rating"
-msgstr "Formátovanie"
+msgstr "Hodnotenie"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Time"
-msgstr ""
+msgstr "Čas"
 
 # property
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:310
-#, fuzzy
-#| msgid "Description For"
 msgid "Description List"
-msgstr "Je popisom"
+msgstr "Zoznam pojmov"
 
 # property
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:312
-#, fuzzy
-#| msgid "Description For"
 msgid "Description Term"
-msgstr "Je popisom"
+msgstr "Pojem"
 
 # property
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:314
-#, fuzzy
-#| msgid "Description For"
 msgid "Description Value"
-msgstr "Je popisom"
+msgstr "Vysvetlenie pojmu"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:316
-#, fuzzy
-#| msgid "Generic Name"
 msgid "Generic object"
-msgstr "Všeobecný názov"
+msgstr "Všeobecný objekt"
 
-# súčasť tooltipu
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:318
-#, fuzzy
-#| msgid "the last action"
 msgid "Mathematical fraction"
-msgstr "poslednú operáciu"
+msgstr "Matematický zlomok"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:320
 msgid "A radical expression (in math)"
-msgstr ""
+msgstr "Zložený výraz (v matematike)"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Subscript text"
-msgstr ""
+msgstr "Text dolného indexu"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:324
 msgid "Superscript text"
-msgstr ""
+msgstr "Text horného indexu"
 
 #. Atk role enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:326
 msgid "Last Defined"
-msgstr ""
+msgstr "Naposledy definovaná"
 
 # property
 #. Atk relationset properties
@@ -6305,10 +6183,8 @@ msgstr "Popis objektu vo formáte prístupnom pre asistenčné technológie"
 
 # tooltip / popis
 #: ../plugins/gtk+/gtk+.xml.in.h:347
-#, fuzzy
-#| msgid "The filesystem path of the project"
 msgid "The accessible role of this object"
-msgstr "Cesta k projektu v súborovom systéme"
+msgstr "Rola prístupnosti tohto objektu"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:348
@@ -6323,8 +6199,6 @@ msgstr "Indikuje, že objekt ovláda jeden alebo viacero cieľových objektov"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:350
-#, fuzzy
-#| msgid "Indicates an object is labelled by one or more target objects"
 msgid "Indicates an object is labeled by one or more target objects"
 msgstr ""
 "Indikuje, že je objekt označovaný jedným alebo viacerými cieľovými objektmi"
@@ -6473,15 +6347,13 @@ msgstr "Dolu"
 
 # value (window-position, justify, gravity, buton box, aligment, haling)
 #: ../plugins/gtk+/gtk+.xml.in.h:378
-#, fuzzy
-#| msgid "Center"
 msgid "Center Child"
-msgstr "Stred"
+msgstr "Vystrediť potomkov"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:379
 msgid "The number of items in the box"
-msgstr "Počet položiek v paneli"
+msgstr "Počet položiek v boxe"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:380
@@ -6493,18 +6365,15 @@ msgstr "Vodorovný panel"
 msgid "Vertical Box"
 msgstr "Zvislý panel"
 
+# widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:382
-#, fuzzy
-#| msgid "Action Name"
 msgid "Action Bar"
-msgstr "Názov akcie"
+msgstr "Panel akcií"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:383
-#, fuzzy
-#| msgid "The number of items in the box"
 msgid "The number of items in the action bar"
-msgstr "Počet položiek v paneli"
+msgstr "Počet položiek na lište akcií"
 
 # value (gravity)
 #. GdkGravity enumeration value
@@ -6641,10 +6510,8 @@ msgstr "Vycentrovať na nadradenom"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:436
-#, fuzzy
-#| msgid "A list of style class names to apply to this widget"
 msgid "A list of accel groups to be added to this window"
-msgstr "Zoznam názvov tried štýlov, ktoré sa použijú na tento ovládací prvok"
+msgstr "Zoznam skupín akcelerátorov, ktoré sa majú pridať do tohto okna"
 
 # widget class
 # PM: čo je to za prvok? nebude lepšie skryté okno?
@@ -6653,17 +6520,15 @@ msgstr "Zoznam názvov tried štýlov, ktoré sa použijú na tento ovládací p
 msgid "Offscreen Window"
 msgstr "Okno mimo obrazovky"
 
-# 1. kategória názvov ikon
-# 2. property
+# widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:438
-#, fuzzy
-#| msgid "Applications"
 msgid "Application Window"
-msgstr "Aplikácie"
+msgstr "Okno aplikácie"
 
+# widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Overlay"
-msgstr ""
+msgstr "Prekrytie"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:440
@@ -6730,7 +6595,7 @@ msgstr "Položka z palety"
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:455
 msgid "Accel Group"
-msgstr "Skupina akcel."
+msgstr "Skupina akcelerátorov"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:456
@@ -6844,20 +6709,22 @@ msgstr "Paleta nástrojov"
 #. GtkScrollablePolicy enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:490
 msgid "Minimum"
-msgstr ""
+msgstr "Minimum"
 
 #. GtkScrollablePolicy enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:492
 msgid "Natural"
-msgstr ""
+msgstr "Prirodzené"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:493
 msgid "Whether to start scrolling at less than minimum or natural width"
 msgstr ""
+"Či sa má rolovanie začať pri prekročení minimálnej alebo prirodzenej šírky"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:494
 msgid "Whether to start scrolling at less than minimum or natural height"
 msgstr ""
+"Či sa má rolovanie začať pri prekročení minimálnej alebo prirodzenej výšky"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:495
@@ -6988,10 +6855,8 @@ msgstr "Textový vstup"
 # value (file chooser action)
 #. GtkInputPurpose enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:531
-#, fuzzy
-#| msgid "Create Folder"
 msgid "Free Form"
-msgstr "Vytvoriť priečinok"
+msgstr "Voľná forma"
 
 #. GtkInputPurpose enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:533
@@ -7055,35 +6920,33 @@ msgstr "Dopĺňanie slov"
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:557
 msgid "Lowercase"
-msgstr ""
+msgstr "Malé písmená"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:559
 msgid "Uppercase Chars"
-msgstr ""
+msgstr "Znaky veľkým"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:561
 msgid "Uppercase Words"
-msgstr ""
+msgstr "Slová veľkým"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:563
 msgid "Uppercase Sentences"
-msgstr ""
+msgstr "Vety veľkým"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:565
 msgid "Inhibit On-screen Keyboard"
-msgstr ""
+msgstr "Potlačenie klávesnice na obrazovke"
 
 # property
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:567
-#, fuzzy
-#| msgid "Vertical Padding"
 msgid "Vertical Writing"
-msgstr "Zvislá výplň"
+msgstr "Zvislé písanie"
 
 # property
 #: ../plugins/gtk+/gtk+.xml.in.h:568
@@ -7180,10 +7043,8 @@ msgstr "Nastaviť popis akcie atk Aktivovať"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:587
-#, fuzzy
-#| msgid "Text Entry"
 msgid "Search Entry"
-msgstr "Textový vstup"
+msgstr "Vstup vyhľadávania"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:588
@@ -7192,10 +7053,8 @@ msgstr "Zobrazenie textu"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:589
-#, fuzzy
-#| msgid "Text Entry"
 msgid "Search Bar"
-msgstr "Textový vstup"
+msgstr "Panel vyhľadávania"
 
 # property
 #: ../plugins/gtk+/gtk+.xml.in.h:590 ../plugins/gtk+/glade-button-editor.ui.h:7
@@ -7282,7 +7141,7 @@ msgstr "Vytvoriť priečinok"
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:615
 msgid "Scale Button"
-msgstr "Tlačidlo mierky"
+msgstr "Tlačidlo škály"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:616
 msgid ""
@@ -7291,6 +7150,10 @@ msgid ""
 "the second item for the highest value. All the subsequent icons will be used "
 "for all the other values, spread evenly over the range of values"
 msgstr ""
+"Názvy ikon, ktoré sa použijú tlačidlom škály. Prvá položka v poli bude "
+"použitá v tlačidle pri najnižšej hodnote, druhá pri najvyššej hodnote. "
+"Všetky ďalšie ikony budú použité pre ostatné hodnoty rovnomerne v celom "
+"rozsahu hodnôt."
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:617
@@ -7387,10 +7250,8 @@ msgid "Discrete"
 msgstr "Diskrétne"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:643
-#, fuzzy
-#| msgid "Generic Name"
 msgid "Resource Name"
-msgstr "Všeobecný názov"
+msgstr "Názov zdroja"
 
 #. We have to save/load icon-size as int, and fake the enum
 #: ../plugins/gtk+/gtk+.xml.in.h:645
@@ -7489,27 +7350,22 @@ msgstr "Vložiť stránku za"
 msgid "Remove Page"
 msgstr "Odstrániť stránku"
 
-# property
 #: ../plugins/gtk+/gtk+.xml.in.h:667
 msgid "Number of pages"
 msgstr "Počet strán"
 
-# property
 #: ../plugins/gtk+/gtk+.xml.in.h:668
-#, fuzzy
-#| msgid "Related Action"
 msgid "Start Action"
-msgstr "Súvisiaca akcia"
+msgstr "Úvodná akcia"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:669
-#, fuzzy
-#| msgid "Action"
 msgid "End Action"
-msgstr "Akcia"
+msgstr "Koncová akcia"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:670
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
+"Nastavením aktuálnej aktívnej stránky na úpravu sa táto vlastnosť neuloží"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:671
@@ -7518,171 +7374,145 @@ msgstr "Počet stránok v poznámkovom bloku"
 
 # label
 #: ../plugins/gtk+/gtk+.xml.in.h:672
-#, fuzzy
-#| msgid "Group Header"
 msgid "HeaderBar"
-msgstr "Hlavička skupiny"
+msgstr "Hlavičkový panel"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:673
 msgid "Reserve space for subtitle"
-msgstr ""
+msgstr "Rezervovať miesto pre podtitulok"
 
 # GType tool button
 # value (page-type, recent sort type, ...)
 # PM: Je tu správny rod? Asi bude potrebné požiadať o rozdelenie
 # IM: Bug 660662
 #: ../plugins/gtk+/gtk+.xml.in.h:674
-#, fuzzy
-#| msgid "Custom Text"
 msgid "Custom Title"
-msgstr "Vlastný text"
+msgstr "Vlastný titulok"
 
-# 1. popup menu item; %s - class name
-# 2. operácia; %s - widget name alebo slovo "multiple"
 #: ../plugins/gtk+/gtk+.xml.in.h:675
-#, fuzzy
-#| msgid "Add Row"
 msgid "Add Slot"
-msgstr "Pridať riadok"
+msgstr "Pridať miesto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:676
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr ""
+"Ponechá výšku hlavičkového panelu rovnakú aby sa podtitulok mohol dynamicky "
+"meniť."
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:677
-#, fuzzy
-#| msgid "The number of items in the box"
 msgid "The number of items in the header bar"
-msgstr "Počet položiek v paneli"
+msgstr "Počet položiek v hlavičkovom paneli"
 
 # label
 #: ../plugins/gtk+/gtk+.xml.in.h:678
-#, fuzzy
-#| msgid "Edit Image"
 msgid "Edit page"
-msgstr "Upraviť obrázok"
+msgstr "Upraviť stránku"
 
 # property
 #: ../plugins/gtk+/gtk+.xml.in.h:679
-#, fuzzy
-#| msgid "Visible column"
 msgid "Visible child"
-msgstr "Stĺpec Viditeľný"
+msgstr "Viditeľný podradený"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:681
 msgid "Crossfade"
-msgstr ""
+msgstr "Prelínanie"
 
-# value (handle-position, arrow-type, aligment, justify)
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:683
-#, fuzzy
-#| msgid "Right"
 msgid "Slide Right"
-msgstr "Vpravo"
+msgstr "Vkĺznutie doprava"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:685
 msgid "Slide Left"
-msgstr ""
+msgstr "Vkĺznutie doľava"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:687
 msgid "Slide Up"
-msgstr ""
+msgstr "Vkĺznutie hore"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:689
 msgid "Slide Down"
-msgstr ""
+msgstr "Vkĺznutie dole"
 
-# value (handle-position, arrow-type, aligment, justify)
 #: ../plugins/gtk+/gtk+.xml.in.h:690
-#, fuzzy
-#| msgid "Right"
 msgid "Slide Left-Right"
-msgstr "Vpravo"
+msgstr "Kĺzanie vľavo vpravo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:691
 msgid "Slide Up-Down"
-msgstr ""
+msgstr "Kĺzanie hore dolu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:692
 msgid "Move Over Up"
-msgstr ""
+msgstr "Presun nad hore"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:693
 msgid "Move Over Down"
-msgstr ""
+msgstr "Presun nad dole"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:694
 msgid "Move Over Left"
-msgstr ""
+msgstr "Presun nad vľavo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:695
-#, fuzzy
-#| msgid "Toplevel Height"
 msgid "Move Over Right"
-msgstr "Výška na najvyššej úrovni"
+msgstr "Presun nad vpravo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:696
 msgid "Move Over Up-Down"
-msgstr ""
+msgstr "Presun nad hore dole"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:697
 msgid "Move Over Down-Up"
-msgstr ""
+msgstr "Presun nad dole hore"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:698
 msgid "Move Over Left-Right"
-msgstr ""
+msgstr "Presun nad vľavo vpravo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:699
 msgid "Move Over Right-Left"
-msgstr ""
+msgstr "Presun nad vpravo vľavo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:700
 msgid "Move Under Up"
-msgstr ""
+msgstr "Presun pod hore"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:701
 msgid "Move Under Down"
-msgstr ""
+msgstr "Presun pod dole"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:702
 msgid "Move Under Left"
-msgstr ""
+msgstr "Presun pod vľavo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:703
 msgid "Move Under Right"
-msgstr ""
+msgstr "Presun pod vpravo"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:704
-#, fuzzy
-#| msgid "The number of pages in the notebook"
 msgid "The number of pages in the stack"
-msgstr "Počet stránok v poznámkovom bloku"
+msgstr "Počet stránok v stohu"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:705
-#, fuzzy
-#| msgid "Switch"
 msgid "Stack Switcher"
-msgstr "Prepínač"
+msgstr "Prepínač stohu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:706
 msgid "Stack Sidebar"
-msgstr ""
+msgstr "Bočný panel stohu"
 
 # GTK_PRINT_CAPABILITY_REVERSE:	Print dialog will allow to print pages in reverse order.
 #: ../plugins/gtk+/gtk+.xml.in.h:707
-#, fuzzy
-#| msgid "Reverse"
 msgid "Revealer"
-msgstr "Obrátené poradie"
+msgstr "Animovaný odkrývač"
 
 # 1. popup menu item; %s - class name
 # 2. operácia; %s - widget name alebo slovo "multiple"
@@ -7711,39 +7541,30 @@ msgstr "Viacero"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:715
-#, fuzzy
-#| msgid "The position of the tool item in the toolbar"
 msgid "The position of the row item in the listbox"
-msgstr "Pozícia nástrojovej položky v palete"
+msgstr "Pozícia riadkovej položky v zozname"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:716
 msgid "List Box Row"
-msgstr ""
+msgstr "Riadok boxu zoznamu"
 
 # property
 #: ../plugins/gtk+/gtk+.xml.in.h:717
-#, fuzzy
-#| msgid "Flows To"
 msgid "Flow Box"
-msgstr "Tečie do"
+msgstr "Tečúci box"
 
-# popup menu item; %s - class name
 #: ../plugins/gtk+/gtk+.xml.in.h:718
-#, fuzzy
-#| msgid "Add child %s"
 msgid "Add Child"
-msgstr "Pridanie podradeného prvku %s"
+msgstr "Pridať potomka"
 
 # tooltip
 #: ../plugins/gtk+/gtk+.xml.in.h:719
-#, fuzzy
-#| msgid "The position of the tool item in the toolbar"
 msgid "The position of the child in the flowbox"
-msgstr "Pozícia nástrojovej položky v palete"
+msgstr "Pozícia podriadeného prvku v tečúcom boxe"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:720
 msgid "Flow Box Child"
-msgstr ""
+msgstr "Potomok tečúceho boxu"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:721
@@ -7764,23 +7585,23 @@ msgstr "Oneskorené"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:727
 msgid "The number of digits to round the value to when the value changes"
-msgstr ""
+msgstr "Počet zaokrúhľovaných číslic pri zmene hodnoty"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:728
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
-msgstr ""
+msgstr "Či sa má zvýrazniť oblasť zdola alebo zľava vedúca ku gombíku"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:729
 msgid "Horizontal Scale"
-msgstr "Vodorovná mierka"
+msgstr "Vodorovná škála"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:730
 msgid "Vertical Scale"
-msgstr "Zvislá mierka"
+msgstr "Zvislá škála"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:732
@@ -7866,10 +7687,8 @@ msgstr "Tlačidlo ponuky"
 
 # property
 #: ../plugins/gtk+/gtk+.xml.in.h:753
-#, fuzzy
-#| msgid "Stock Button"
 msgid "Lock Button"
-msgstr "Tlačidlo z palety"
+msgstr "Tlačidlo uzamknutia"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:754
@@ -7877,160 +7696,147 @@ msgid "Layout"
 msgstr "Rozloženie"
 
 # widget class
-# value (tree view volumn sizing)
 #. GtkTreeViewColumnSizing enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:756
 msgid "Fixed"
 msgstr "Pevný"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:757
-msgid "OpenGL Area"
-msgstr ""
-
 # value (message-type)
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:759
+#: ../plugins/gtk+/gtk+.xml.in.h:758
 msgid "Info"
 msgstr "Informácia"
 
 # value (message-type)
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:761
+#: ../plugins/gtk+/gtk+.xml.in.h:760
 msgid "Warning"
 msgstr "Upozornenie"
 
 # value (message-type)
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:763
+#: ../plugins/gtk+/gtk+.xml.in.h:762
 msgid "Question"
 msgstr "Otázka"
 
 # value (underline, message-type)
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:765
+#: ../plugins/gtk+/gtk+.xml.in.h:764
 msgid "Error"
 msgstr "Chyba"
 
 # value (hsrollbar-policy)
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:769
+#: ../plugins/gtk+/gtk+.xml.in.h:768
 msgid "Never"
 msgstr "Nikdy"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:771
+#: ../plugins/gtk+/gtk+.xml.in.h:770
 msgid "External"
-msgstr ""
+msgstr "Externe"
 
 # value (window-placement)
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:773
+#: ../plugins/gtk+/gtk+.xml.in.h:772
 msgid "Top Left"
 msgstr "Vľavo hore"
 
 # value (window-placement)
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:775
+#: ../plugins/gtk+/gtk+.xml.in.h:774
 msgid "Bottom Left"
 msgstr "Vľavo dolu"
 
 # value (window-placement)
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:777
+#: ../plugins/gtk+/gtk+.xml.in.h:776
 msgid "Top Right"
 msgstr "Vpravo hore"
 
 # value (window-placement)
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:779
+#: ../plugins/gtk+/gtk+.xml.in.h:778
 msgid "Bottom Right"
 msgstr "Vpravo dolu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:780
+#: ../plugins/gtk+/gtk+.xml.in.h:779
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
-msgstr ""
+msgstr "Ak je  povolené "
 
 # widget class
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
 #. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../plugins/gtk+/gtk+.xml.in.h:785
+#: ../plugins/gtk+/gtk+.xml.in.h:784
 msgid "About Dialog"
 msgstr "Dialógové okno O aplikácii"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:789
+#: ../plugins/gtk+/gtk+.xml.in.h:788
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:791
+#: ../plugins/gtk+/gtk+.xml.in.h:790
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:793
+#: ../plugins/gtk+/gtk+.xml.in.h:792
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:795
+#: ../plugins/gtk+/gtk+.xml.in.h:794
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:799
+#: ../plugins/gtk+/gtk+.xml.in.h:798
 msgid "MIT X11"
 msgstr "MIT X11"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:801
+#: ../plugins/gtk+/gtk+.xml.in.h:800
 msgid "Artistic"
 msgstr "Umelecká"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:803
-#, fuzzy
-#| msgid "GPL 2.0"
+#: ../plugins/gtk+/gtk+.xml.in.h:802
 msgid "GPL 2.0 Only"
-msgstr "GPL 2.0"
+msgstr "Len GPL 2.0"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:805
-#, fuzzy
-#| msgid "GPL 3.0"
+#: ../plugins/gtk+/gtk+.xml.in.h:804
 msgid "GPL 3.0 Only"
-msgstr "GPL 3.0"
+msgstr "Len GPL 3.0"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:807
-#, fuzzy
-#| msgid "LGPL 2.1"
+#: ../plugins/gtk+/gtk+.xml.in.h:806
 msgid "LGPL 2.1 Only"
-msgstr "LGPL 2.1"
+msgstr "Len LGPL 2.1"
 
 # value (license)
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:809
-#, fuzzy
-#| msgid "LGPL 3.0"
+#: ../plugins/gtk+/gtk+.xml.in.h:808
 msgid "LGPL 3.0 Only"
-msgstr "LGPL 3.0"
+msgstr "Len LGPL 3.0"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:810
+#: ../plugins/gtk+/gtk+.xml.in.h:809
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -8041,124 +7847,124 @@ msgstr ""
 "uviesť všetkých prekladateľov a zrušiť označenie tohto reťazca na preklad"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:811
+#: ../plugins/gtk+/gtk+.xml.in.h:810
 msgid "Color Selection Dialog"
 msgstr "Dialógové okno Výber farby"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:812
+#: ../plugins/gtk+/gtk+.xml.in.h:811
 msgid "File Chooser Dialog"
 msgstr "Dialógové okno výberu súboru"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:813
+#: ../plugins/gtk+/gtk+.xml.in.h:812
 msgid "Font Selection Dialog"
 msgstr "Dialógové okno výberu písma"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:814
+#: ../plugins/gtk+/gtk+.xml.in.h:813
 msgid "Application Chooser Dialog"
 msgstr "Dialógové okno výberu aplikácie"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:815
+#: ../plugins/gtk+/gtk+.xml.in.h:814
 msgid "Message Dialog"
 msgstr "Dialógové okno správy"
 
 # value (buttons)
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:817
+#: ../plugins/gtk+/gtk+.xml.in.h:816
 msgid "Ok"
 msgstr "Ok"
 
 # value (buttons)
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:823
+#: ../plugins/gtk+/gtk+.xml.in.h:822
 msgid "Yes, No"
 msgstr "Áno, Nie"
 
 # value (buttons)
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:825
+#: ../plugins/gtk+/gtk+.xml.in.h:824
 msgid "Ok, Cancel"
 msgstr "Ok, Zrušiť"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:826
+#: ../plugins/gtk+/gtk+.xml.in.h:825
 msgid "Color Selection"
 msgstr "Výber farby"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:827
+#: ../plugins/gtk+/gtk+.xml.in.h:826
 msgid "Color Chooser Widget"
 msgstr "Ovládací prvok výberu farby"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:828
+#: ../plugins/gtk+/gtk+.xml.in.h:827
 msgid "Color Chooser Dialog"
 msgstr "Dialógové okno výberu farby"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:829
+#: ../plugins/gtk+/gtk+.xml.in.h:828
 msgid "Font Chooser Widget"
 msgstr "Ovládací prvok výberu písma"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:830
+#: ../plugins/gtk+/gtk+.xml.in.h:829
 msgid "Font Chooser Dialog"
 msgstr "Dialógové okno výberu písma"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:831
+#: ../plugins/gtk+/gtk+.xml.in.h:830
 msgid "Font Selection"
 msgstr "Výber písma"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:832
+#: ../plugins/gtk+/gtk+.xml.in.h:831
 msgid "Assistant"
 msgstr "Asistent"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:833
+#: ../plugins/gtk+/gtk+.xml.in.h:832
 msgid "Number of Pages"
 msgstr "Počet strán"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:834
+#: ../plugins/gtk+/gtk+.xml.in.h:833
 msgid "Initially Complete"
 msgstr "Pôvodne dokončené"
 
 # value (page-type)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:836
+#: ../plugins/gtk+/gtk+.xml.in.h:835
 msgid "Content"
 msgstr "Obsah"
 
 # value (page-type)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:838
+#: ../plugins/gtk+/gtk+.xml.in.h:837
 msgid "Intro"
 msgstr "Úvod"
 
 # value (page-type)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:840
+#: ../plugins/gtk+/gtk+.xml.in.h:839
 msgid "Confirm"
 msgstr "Potvrdiť"
 
 # value (page-type)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:842
+#: ../plugins/gtk+/gtk+.xml.in.h:841
 msgid "Summary"
 msgstr "Zhrnutie"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:845
+#: ../plugins/gtk+/gtk+.xml.in.h:844
 msgid "Number of pages in this assistant"
 msgstr "Počet strán v tomto asistentovi"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:846
+#: ../plugins/gtk+/gtk+.xml.in.h:845
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
@@ -8167,957 +7973,941 @@ msgstr ""
 "používateľa."
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:847
+#: ../plugins/gtk+/gtk+.xml.in.h:846
 msgid "The page position in the Assistant"
 msgstr "Pozícia stránky v asistentovi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:848
+# widget class
+#: ../plugins/gtk+/gtk+.xml.in.h:847
 msgid "Popover"
-msgstr ""
+msgstr "Bublinové okno"
 
 # widget class, value (window type hint)
-#: ../plugins/gtk+/gtk+.xml.in.h:849
-#, fuzzy
-#| msgid "Popup Menu"
+#: ../plugins/gtk+/gtk+.xml.in.h:848
 msgid "Popover Menu"
-msgstr "Rozbaľovacia ponuka"
+msgstr "Bublinová ponuka"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:850
-#, fuzzy
-#| msgid "Number of items"
+#: ../plugins/gtk+/gtk+.xml.in.h:849
 msgid "Number of submenus"
-msgstr "Počet položiek"
+msgstr "Počet podponúk"
 
 # window title
-#: ../plugins/gtk+/gtk+.xml.in.h:851
-#, fuzzy
-#| msgid "Edit Menu"
+#: ../plugins/gtk+/gtk+.xml.in.h:850
 msgid "Edit menu"
 msgstr "Upraviť ponuku"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:852
-#, fuzzy
-#| msgid "The number of items in the box"
+#: ../plugins/gtk+/gtk+.xml.in.h:851
 msgid "The number of submenus in the popover menu"
-msgstr "Počet položiek v paneli"
+msgstr "Počet podponúk v bublinovej ponuke"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:853
+#: ../plugins/gtk+/gtk+.xml.in.h:852
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
+"Nastaví aktuálne aktívnu podponuku na úpravu, táto vlastnosť nebude uložená"
+
+# widget class
+#: ../plugins/gtk+/gtk+.xml.in.h:853
+msgid "Model Button"
+msgstr "Modelové tlačidlo"
 
 # widget class
 #: ../plugins/gtk+/gtk+.xml.in.h:854
-#, fuzzy
-#| msgid "Tool Button"
-msgid "Model Button"
-msgstr "Nástrojové tlačidlo"
-
-# widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:855
 msgid "Link Button"
 msgstr "Tlačidlo odkazu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:856
+#: ../plugins/gtk+/gtk+.xml.in.h:855
 msgid "Recent Chooser"
 msgstr "Rozhranie výberu nedávneho"
 
 # value (recent sort type)
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:858
+#: ../plugins/gtk+/gtk+.xml.in.h:857
 msgid "Most Recently Used first"
 msgstr "Najprv posledné použité"
 
 # value (recent sort type)
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:860
+#: ../plugins/gtk+/gtk+.xml.in.h:859
 msgid "Least Recently Used first"
 msgstr "Najprv najskôr použité"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:861
+#: ../plugins/gtk+/gtk+.xml.in.h:860
 msgid "Recent Chooser Dialog"
 msgstr "Dialógové okno výberu nedávneho"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:862
+#: ../plugins/gtk+/gtk+.xml.in.h:861
 msgid "Size Group"
 msgstr "Skupina veľkostí"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:863
+#: ../plugins/gtk+/gtk+.xml.in.h:862
 msgid "Widgets"
 msgstr "Ovládacie prvky"
 
 # value (size group mode)
 #. GtkSizeGroupMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:865
+#: ../plugins/gtk+/gtk+.xml.in.h:864
 msgid "Both"
 msgstr "V oboch smeroch"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:866
+#: ../plugins/gtk+/gtk+.xml.in.h:865
 msgid "List of widgets in this group"
 msgstr "Zoznam ovládacích prvkov v tejto skupine"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:867
+#: ../plugins/gtk+/gtk+.xml.in.h:866
 msgid "Window Group"
 msgstr "Skupina Okien"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:868
+#: ../plugins/gtk+/gtk+.xml.in.h:867
 msgid "Adjustment"
 msgstr "Prispôsobenie"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:872
+#: ../plugins/gtk+/gtk+.xml.in.h:871
 msgid "An accelerator key for this action"
 msgstr "Akcelerátor tejto akcie"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:873
+#: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "Toggle Action"
 msgstr "Prepínacia akcia"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:874
+#: ../plugins/gtk+/gtk+.xml.in.h:873
 msgid "Radio Action"
 msgstr "Rádiová akcia"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:875
+#: ../plugins/gtk+/gtk+.xml.in.h:874
 msgid "Recent Action"
 msgstr "Nedávna akcia"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:876
+#: ../plugins/gtk+/gtk+.xml.in.h:875
 msgid "Action Group"
 msgstr "Skupina akcií"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:877
+#: ../plugins/gtk+/gtk+.xml.in.h:876
 msgid "Entry Completion"
 msgstr "Dopĺňanie vstupu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:878
+#: ../plugins/gtk+/gtk+.xml.in.h:877
 msgid "Icon Factory"
 msgstr "Vytváracie rozhranie ikon"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:879
+#: ../plugins/gtk+/gtk+.xml.in.h:878
 msgid "Icon Sources"
 msgstr "Zdroje ikon"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:880
+#: ../plugins/gtk+/gtk+.xml.in.h:879
 msgid "A list of sources for this icon factory"
 msgstr "Zoznam zdrojov tohto vytváracieho rozhrania ikon"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:881
+#: ../plugins/gtk+/gtk+.xml.in.h:880
 msgid "List Store"
 msgstr "Úložisko zoznamu"
 
 # property
 # údaje - viackrát
 # IM: podľa KSSJ je presnejšie "dáta"
-#: ../plugins/gtk+/gtk+.xml.in.h:882
+#: ../plugins/gtk+/gtk+.xml.in.h:881
 msgid "Data"
 msgstr "Dáta"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:883
+#: ../plugins/gtk+/gtk+.xml.in.h:882
 msgid "Enter a list of column types for this data store"
 msgstr "Zadajte zoznam typov stĺpca tohto úložiska údajov"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:884
+#: ../plugins/gtk+/gtk+.xml.in.h:883
 msgid "Enter a list of values to be applied on each row"
 msgstr "Zadajte zoznam hodnôt, ktoré sa aplikujú na každý riadok"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:885
+#: ../plugins/gtk+/gtk+.xml.in.h:884
 msgid "Tree Store"
 msgstr "Úložisko stromu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:886
+#: ../plugins/gtk+/gtk+.xml.in.h:885
 msgid "Tree Model Filter"
 msgstr "Filter stromoveho modelu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:887
+#: ../plugins/gtk+/gtk+.xml.in.h:886
 msgid "Tree Model Sort"
 msgstr "Zoradenie stromového modelu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:888
+#: ../plugins/gtk+/gtk+.xml.in.h:887
 msgid "Tree Selection"
 msgstr "Výber stromu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:889
+#: ../plugins/gtk+/gtk+.xml.in.h:888
 msgid "Tree View"
 msgstr "Stromové zobrazenie"
 
 # value (tree view grid lines)
 #. GtkTreeViewGridLines enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:891
+#: ../plugins/gtk+/gtk+.xml.in.h:890
 msgid "Horizontal and Vertical"
 msgstr "Vodorovné a zvislé"
 
 # value (sort-order)
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:894
+#: ../plugins/gtk+/gtk+.xml.in.h:893
 msgid "Ascending"
 msgstr "Vzostupne"
 
 # value (sort-order)
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:896
+#: ../plugins/gtk+/gtk+.xml.in.h:895
 msgid "Descending"
 msgstr "Zostupne"
 
 # value (tree view column sizing)
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:898
+#: ../plugins/gtk+/gtk+.xml.in.h:897
 msgid "Grow Only"
 msgstr "Iba zväčšovať"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:899
+#: ../plugins/gtk+/gtk+.xml.in.h:898
 msgid "Icon View"
 msgstr "Ikonové zobrazenie"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:901
+#: ../plugins/gtk+/gtk+.xml.in.h:900
 msgid "Cell Background Color name column"
 msgstr "Stĺpec Názov farby pozadia bunky"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:902
+#: ../plugins/gtk+/gtk+.xml.in.h:901
 msgid "Cell Background Color column"
 msgstr "Stĺpec Farba pozadia bunky"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:903
+#: ../plugins/gtk+/gtk+.xml.in.h:902
 msgid "Cell Background RGBA column"
 msgstr "Stĺpec RGBA pozadia bunky"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:904
+#: ../plugins/gtk+/gtk+.xml.in.h:903
 msgid "Width column"
 msgstr "Stĺpec Šírka"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:905
+#: ../plugins/gtk+/gtk+.xml.in.h:904
 msgid "Height column"
 msgstr "Stĺpec Výška"
 
 # property
 # určite je padding výplň? nie je to obtekanie alebo rozostup viackrát
 # IM: je to to isté ako toto: http://www.w3.org/TR/CSS2/images/boxdim.png
-#: ../plugins/gtk+/gtk+.xml.in.h:906
+#: ../plugins/gtk+/gtk+.xml.in.h:905
 msgid "Horizontal Padding"
 msgstr "Vodorovná výplň"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:907
+#: ../plugins/gtk+/gtk+.xml.in.h:906
 msgid "Horizontal Padding column"
 msgstr "Stĺpec Vodorovná výplň"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:908
+#: ../plugins/gtk+/gtk+.xml.in.h:907
 msgid "Vertical Padding"
 msgstr "Zvislá výplň"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:909
+#: ../plugins/gtk+/gtk+.xml.in.h:908
 msgid "Vertical Padding column"
 msgstr "Stĺpec Zvislá výplň"
 
 # value (tree view grid lines)
-#: ../plugins/gtk+/gtk+.xml.in.h:910
+#: ../plugins/gtk+/gtk+.xml.in.h:909
 msgid "Horizontal Alignment"
 msgstr "Vodorovné zarovnanie"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:911
+#: ../plugins/gtk+/gtk+.xml.in.h:910
 msgid "Horizontal Alignment column"
 msgstr "Stĺpec Vodorovné zarovnanie"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:912
+#: ../plugins/gtk+/gtk+.xml.in.h:911
 msgid "Vertical Alignment"
 msgstr "Zvislé zarovnanie"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:913
+#: ../plugins/gtk+/gtk+.xml.in.h:912
 msgid "Vertical Alignment column"
 msgstr "Stĺpec Zvislé zarovnanie"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:914
+#: ../plugins/gtk+/gtk+.xml.in.h:913
 msgid "Sensitive column"
 msgstr "Stĺpec Citlivý"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:916
+#: ../plugins/gtk+/gtk+.xml.in.h:915
 msgid "Visible column"
 msgstr "Stĺpec Viditeľný"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:917
+#: ../plugins/gtk+/gtk+.xml.in.h:916
 msgid "The column in the model to load the value from"
 msgstr "Stĺpec v modeli, z ktorého sa načítajú hodnoty"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:918
+#: ../plugins/gtk+/gtk+.xml.in.h:917
 msgid "Text Renderer"
 msgstr "Vykresľovač textu"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:919
+#: ../plugins/gtk+/gtk+.xml.in.h:918
 msgid "Alignment column"
 msgstr "Stĺpec Zarovnanie"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:920
+#: ../plugins/gtk+/gtk+.xml.in.h:919
 msgid "Attributes column"
 msgstr "Stĺpec Atribúty"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:921
+#: ../plugins/gtk+/gtk+.xml.in.h:920
 msgid "Background Color Name column"
 msgstr "Stĺpec Názov farby pozadia"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:922
+#: ../plugins/gtk+/gtk+.xml.in.h:921
 msgid "Background Color column"
 msgstr "Stĺpec Farba pozadia"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:923
+#: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Editable column"
 msgstr "Upraviteľný stĺpec"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:924
+#: ../plugins/gtk+/gtk+.xml.in.h:923
 msgid "Ellipsize column"
 msgstr "Vypustenie stĺpca"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:925
+#: ../plugins/gtk+/gtk+.xml.in.h:924
 msgid "Family column"
 msgstr "Stĺpec Rodina"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:926
+#: ../plugins/gtk+/gtk+.xml.in.h:925
 msgid "Font column"
 msgstr "Stĺpec Písmo"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:927
+#: ../plugins/gtk+/gtk+.xml.in.h:926
 msgid "Font Description column"
 msgstr "Stĺpec Popis písma"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:928
+#: ../plugins/gtk+/gtk+.xml.in.h:927
 msgid "Foreground Color Name column"
 msgstr "Stĺpec Názov farby popredia"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:929
+#: ../plugins/gtk+/gtk+.xml.in.h:928
 msgid "Foreground Color column"
 msgstr "Stĺpec Farba popredia"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:930
+#: ../plugins/gtk+/gtk+.xml.in.h:929
 msgid "Language column"
 msgstr "Stĺpec Jazyk"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:931
+#: ../plugins/gtk+/gtk+.xml.in.h:930
 msgid "Markup column"
 msgstr "Stĺpec Značkovanie"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:932
+#: ../plugins/gtk+/gtk+.xml.in.h:931
 msgid "Rise column"
 msgstr "Zdvihnúť stĺpec"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:933
+#: ../plugins/gtk+/gtk+.xml.in.h:932
 msgid "Scale column"
 msgstr "Mierka stĺpca"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:934
+#: ../plugins/gtk+/gtk+.xml.in.h:933
 msgid "Single Paragraph Mode column"
 msgstr "Stĺpec Režim jediného odstavca"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:935
+#: ../plugins/gtk+/gtk+.xml.in.h:934
 msgid "Size column"
 msgstr "Stĺpec Veľkosť"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:936
+#: ../plugins/gtk+/gtk+.xml.in.h:935
 msgid "Data column"
 msgstr "Stĺpec Dáta"
 
 # value (pango stretch)
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:938
+#: ../plugins/gtk+/gtk+.xml.in.h:937
 msgid "Ultra Condensed"
 msgstr "Ultra zhustené"
 
 # value (pango stretch)
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:940
+#: ../plugins/gtk+/gtk+.xml.in.h:939
 msgid "Extra Condensed"
 msgstr "Extra zhustené"
 
 # value (pango stretch)
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:942
+#: ../plugins/gtk+/gtk+.xml.in.h:941
 msgid "Condensed"
 msgstr "Zhustené"
 
 # value (pango stretch)
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:944
+#: ../plugins/gtk+/gtk+.xml.in.h:943
 msgid "Semi Condensed"
 msgstr "Čiastočne zhustené"
 
 # value (pango stretch)
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:946
+#: ../plugins/gtk+/gtk+.xml.in.h:945
 msgid "Semi Expanded"
 msgstr "Čiastočne rozbalené"
 
 # value (pango stretch)
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:948
+#: ../plugins/gtk+/gtk+.xml.in.h:947
 msgid "Expanded"
 msgstr "Rozbalené"
 
 # value (pango stretch)
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:950
+#: ../plugins/gtk+/gtk+.xml.in.h:949
 msgid "Extra Expanded"
 msgstr "Extra rozbalené"
 
 # value (pango stretch)
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:952
+#: ../plugins/gtk+/gtk+.xml.in.h:951
 msgid "Ultra Expanded"
 msgstr "Ultra rozšírené"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:953
+#: ../plugins/gtk+/gtk+.xml.in.h:952
 msgid "Stretch column"
 msgstr "Stĺpec Roztiahnuť"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:954
+#: ../plugins/gtk+/gtk+.xml.in.h:953
 msgid "Strikethrough column"
 msgstr "Stĺpec Preškrtnúť"
 
 # value (pango style)
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:956
+#: ../plugins/gtk+/gtk+.xml.in.h:955
 msgid "Oblique"
 msgstr "Šikmé"
 
 # value (pango style)
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:958
+#: ../plugins/gtk+/gtk+.xml.in.h:957
 msgid "Italic"
 msgstr "Kurzíva"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:959
+#: ../plugins/gtk+/gtk+.xml.in.h:958
 msgid "Style column"
 msgstr "Stĺpec Štýl"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:960
+#: ../plugins/gtk+/gtk+.xml.in.h:959
 msgid "Text column"
 msgstr "Stĺpec Text"
 
 # value (underline)
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:962
+#: ../plugins/gtk+/gtk+.xml.in.h:961
 msgid "Double"
 msgstr "Dvojité"
 
 # value (underline)
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:964
+#: ../plugins/gtk+/gtk+.xml.in.h:963
 msgid "Low"
 msgstr "Nízko"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:965
+#: ../plugins/gtk+/gtk+.xml.in.h:964
 msgid "Underline column"
 msgstr "Stĺpec Podčiarknuť"
 
 # value (pango variant)
 #. PangoVariant enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:967
+#: ../plugins/gtk+/gtk+.xml.in.h:966
 msgid "Small Capitals"
 msgstr "Malé kapitálky"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:968
+#: ../plugins/gtk+/gtk+.xml.in.h:967
 msgid "Variant column"
 msgstr "Stĺpec Variant"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:969
+#: ../plugins/gtk+/gtk+.xml.in.h:968
 msgid "Weight column"
 msgstr "Stĺpec Váha"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:970
+#: ../plugins/gtk+/gtk+.xml.in.h:969
 msgid "Width in Characters column"
 msgstr "Stĺpec Šírka v znakoch"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:971
+#: ../plugins/gtk+/gtk+.xml.in.h:970
 msgid "Wrap Mode column"
 msgstr "Stĺpec Režim zalamovania"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:972
+#: ../plugins/gtk+/gtk+.xml.in.h:971
 msgid "Wrap Width column"
 msgstr "Stĺpec Šírka zalamovania"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:973
+#: ../plugins/gtk+/gtk+.xml.in.h:972
 msgid "Background RGBA column"
 msgstr "Stĺpec RGBA pozadia"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:974
+#: ../plugins/gtk+/gtk+.xml.in.h:973
 msgid "Foreground RGBA column"
 msgstr "Stĺpec RGBA popredia"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:975
+#: ../plugins/gtk+/gtk+.xml.in.h:974
 msgid "Maximum width in characters"
 msgstr "Maximálna šírka v znakoch"
 
 # command
-#: ../plugins/gtk+/gtk+.xml.in.h:976
-#, fuzzy
-#| msgid "Insert placeholder to %s"
+#: ../plugins/gtk+/gtk+.xml.in.h:975
 msgid "Placeholder text"
-msgstr "Vloženie vyhradeného miesta do %s"
+msgstr "Text vyhradenia"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:977
+#: ../plugins/gtk+/gtk+.xml.in.h:976
 msgid "Accelerator Renderer"
 msgstr "Vykresľovač akcelerátora"
 
 # value (cell render accel mode)
 #. GtkCellRendererAccelMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:979
+#: ../plugins/gtk+/gtk+.xml.in.h:978
 msgid "Gtk"
 msgstr "Gtk"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:980
+#: ../plugins/gtk+/gtk+.xml.in.h:979
 msgid "Accelerator Mode column"
 msgstr "Stĺpec Režim akcelerátora"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:982
+#: ../plugins/gtk+/gtk+.xml.in.h:981
 msgid "Shift Key"
 msgstr "Kláves Shift"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:984
+#: ../plugins/gtk+/gtk+.xml.in.h:983
 msgid "Lock Key"
 msgstr "Kláves Zamknúť"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:986
+#: ../plugins/gtk+/gtk+.xml.in.h:985
 msgid "Control Key"
 msgstr "Kláves Ctrl"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:988
+#: ../plugins/gtk+/gtk+.xml.in.h:987
 msgid "Alt Key"
 msgstr "Kláves Alt"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:990
+#: ../plugins/gtk+/gtk+.xml.in.h:989
 msgid "Fifth Key"
 msgstr "Piaty kláves"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:992
+#: ../plugins/gtk+/gtk+.xml.in.h:991
 msgid "Sixth Key"
 msgstr "Šiesty kláves"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:994
+#: ../plugins/gtk+/gtk+.xml.in.h:993
 msgid "Seventh Key"
 msgstr "Siedmy kláves"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:996
+#: ../plugins/gtk+/gtk+.xml.in.h:995
 msgid "Eighth Key"
 msgstr "Ôsmy kláves"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:998
+#: ../plugins/gtk+/gtk+.xml.in.h:997
 msgid "First Mouse Button"
 msgstr "Prvé tlačidlo myši"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1000
+#: ../plugins/gtk+/gtk+.xml.in.h:999
 msgid "Second Mouse Button"
 msgstr "Druhé tlačidlo myši"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1002
+#: ../plugins/gtk+/gtk+.xml.in.h:1001
 msgid "Third Mouse Button"
 msgstr "Tretie tlačidlo myši"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1004
-#, fuzzy
-#| msgid "Forth Mouse Button"
+#: ../plugins/gtk+/gtk+.xml.in.h:1003
 msgid "Fourth Mouse Button"
 msgstr "Štvrté tlačidlo myši"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1006
+#: ../plugins/gtk+/gtk+.xml.in.h:1005
 msgid "Fifth Mouse Button"
 msgstr "Piate tlačidlo myši"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1008
+#: ../plugins/gtk+/gtk+.xml.in.h:1007
 msgid "Super Modifier"
 msgstr "Modifikátor Super"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1010
+#: ../plugins/gtk+/gtk+.xml.in.h:1009
 msgid "Hyper Modifier"
 msgstr "Modifikátor Hyper"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1012
+#: ../plugins/gtk+/gtk+.xml.in.h:1011
 msgid "Meta Modifier"
 msgstr "Modifikátor Meta"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1014
+#: ../plugins/gtk+/gtk+.xml.in.h:1013
 msgid "Release Modifier"
 msgstr "Modifikátor uvoľnenia"
 
 # value (accel-mods)
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1016
+#: ../plugins/gtk+/gtk+.xml.in.h:1015
 msgid "All Modifiers"
 msgstr "Všetky modifikátory"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1017
+#: ../plugins/gtk+/gtk+.xml.in.h:1016
 msgid "Accelerator Modifiers column"
 msgstr "Stĺpec Modifikátory akcelerátora"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1018
+#: ../plugins/gtk+/gtk+.xml.in.h:1017
 msgid "Keycode column"
 msgstr "Stĺpec Kód klávesu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1019
+#: ../plugins/gtk+/gtk+.xml.in.h:1018
 msgid "Combo Renderer"
 msgstr "Vykresľovač roletového zoznamu"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1020
+#: ../plugins/gtk+/gtk+.xml.in.h:1019
 msgid "Has Entry column"
 msgstr "Má stĺpec Záznam"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1021
+#: ../plugins/gtk+/gtk+.xml.in.h:1020
 msgid "Model column"
 msgstr "Stĺpec Model"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1022
+#: ../plugins/gtk+/gtk+.xml.in.h:1021
 msgid "Text Column column"
 msgstr "Stĺpec Stĺpec textu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1023
+#: ../plugins/gtk+/gtk+.xml.in.h:1022
 msgid "Spin Renderer"
 msgstr "Vykresľovač Rolovacieho tlačidla"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1024
+#: ../plugins/gtk+/gtk+.xml.in.h:1023
 msgid "Adjustment column"
 msgstr "Stĺpec Prispôsobenie"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1025
+#: ../plugins/gtk+/gtk+.xml.in.h:1024
 msgid "Climb Rate column"
 msgstr "Stĺpec Rýchlosť rastu"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1026
+#: ../plugins/gtk+/gtk+.xml.in.h:1025
 msgid "Digits column"
 msgstr "Stĺpec Číslice"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1027
+#: ../plugins/gtk+/gtk+.xml.in.h:1026
 msgid "Pixbuf Renderer"
 msgstr "Vykresľovač pixbuf"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1028
+#: ../plugins/gtk+/gtk+.xml.in.h:1027
 msgid "Follow State column"
 msgstr "Stĺpec Sledovať stav"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1029
+#: ../plugins/gtk+/gtk+.xml.in.h:1028
 msgid "Icon Name column"
 msgstr "Stĺpec Názov ikony"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1030
+#: ../plugins/gtk+/gtk+.xml.in.h:1029
 msgid "Pixbuf column"
 msgstr "Stĺpec pixbuf"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1031
-#, fuzzy
-#| msgid "Icon Name column"
+#: ../plugins/gtk+/gtk+.xml.in.h:1030
 msgid "GIcon column"
-msgstr "Stĺpec Názov ikony"
+msgstr "Stĺpec GIcon"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1032
+#: ../plugins/gtk+/gtk+.xml.in.h:1031
 msgid "Pixbuf Expander Closed column"
 msgstr "Stĺpec Rozbaľovač pixbuf zatvorený"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1033
+#: ../plugins/gtk+/gtk+.xml.in.h:1032
 msgid "Pixbuf Expander Open column"
 msgstr "Stĺpec Rozbaľovač pixbuf otvorený"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1034
+#: ../plugins/gtk+/gtk+.xml.in.h:1033
 msgid "Stock Detail column"
 msgstr "Stĺpec Podrobnosti z palety"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1035
+#: ../plugins/gtk+/gtk+.xml.in.h:1034
 msgid "Stock column"
 msgstr "Stĺpec Z palety"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1036
+#: ../plugins/gtk+/gtk+.xml.in.h:1035
 msgid "Stock Size column"
 msgstr "Stĺpec Veľkosť z palety"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1037
+#: ../plugins/gtk+/gtk+.xml.in.h:1036
 msgid "Progress Renderer"
 msgstr "Vykresľovač priebehu"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1038
+#: ../plugins/gtk+/gtk+.xml.in.h:1037
 msgid "Orientation column"
 msgstr "Stĺpec Orientácia"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1039
+#: ../plugins/gtk+/gtk+.xml.in.h:1038
 msgid "Pulse column"
 msgstr "Stĺpec pulz"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1040
+#: ../plugins/gtk+/gtk+.xml.in.h:1039
 msgid "Text Horizontal Alignment column"
 msgstr "Stĺpec Vodorovné zarovnanie textu"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1041
+#: ../plugins/gtk+/gtk+.xml.in.h:1040
 msgid "Text Vertical Alignment column"
 msgstr "Stĺpec Zvislé zarovnanie textu"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1042
+#: ../plugins/gtk+/gtk+.xml.in.h:1041
 msgid "Value column"
 msgstr "Stĺpec Hodnota"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1043
+#: ../plugins/gtk+/gtk+.xml.in.h:1042
 msgid "Inverted column"
 msgstr "Stĺpec Invertovaný"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1044
+#: ../plugins/gtk+/gtk+.xml.in.h:1043
 msgid "Spinner Renderer"
 msgstr "Vykresľovač Rotujúceho indikátora"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1045
+#: ../plugins/gtk+/gtk+.xml.in.h:1044
 msgid "Active column"
 msgstr "Aktívny stĺpec"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1046
+#: ../plugins/gtk+/gtk+.xml.in.h:1045
 msgid "Toggle Renderer"
 msgstr "Vykresľovač prepínača"
 
 # property with tooltip "The column in the model to load the value from"
-#: ../plugins/gtk+/gtk+.xml.in.h:1047
+#: ../plugins/gtk+/gtk+.xml.in.h:1046
 msgid "Activatable column"
 msgstr "Aktivovateľný stĺpec"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1048
+#: ../plugins/gtk+/gtk+.xml.in.h:1047
 msgid "Inconsistent column"
 msgstr "Nekonzistentný stĺpec"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1049
+#: ../plugins/gtk+/gtk+.xml.in.h:1048
 msgid "Indicator Size column"
 msgstr "Stĺpec Veľkosť indikátora"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1050
+#: ../plugins/gtk+/gtk+.xml.in.h:1049
 msgid "Radio column"
 msgstr "Stĺpec Pole výberu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1051
+#: ../plugins/gtk+/gtk+.xml.in.h:1050
 msgid "Status Icon"
 msgstr "Stavová ikona"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1052
+#: ../plugins/gtk+/gtk+.xml.in.h:1051
 msgid "Text Buffer"
 msgstr "Schránka textu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1053
+#: ../plugins/gtk+/gtk+.xml.in.h:1052
 msgid "Entry Buffer"
 msgstr "Schránka vstupu"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1054
+#: ../plugins/gtk+/gtk+.xml.in.h:1053
 msgid "Text Tag"
 msgstr "Textová značka"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1055
+#: ../plugins/gtk+/gtk+.xml.in.h:1054
 msgid "Text Tag Table"
 msgstr "Tabuľka textových značiek"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1056
+#: ../plugins/gtk+/gtk+.xml.in.h:1055
 msgid "File Filter"
 msgstr "Filter súborov"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1057
+#: ../plugins/gtk+/gtk+.xml.in.h:1056
 msgid "Mime Types"
 msgstr "Typy MIME"
 
 # property
-#: ../plugins/gtk+/gtk+.xml.in.h:1058
+#: ../plugins/gtk+/gtk+.xml.in.h:1057
 msgid "Patterns"
 msgstr "Vzory"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:1059
+#: ../plugins/gtk+/gtk+.xml.in.h:1058
 msgid "The list of mime types to add to the filter"
 msgstr "Zoznam typov MIME, ktoré sa pridajú do filtra"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:1060
+#: ../plugins/gtk+/gtk+.xml.in.h:1059
 msgid "The list of file name patterns to add to the filter"
 msgstr "Zoznam vzorov názvov súborov, ktoré sa pridajú do filtra"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1061
+#: ../plugins/gtk+/gtk+.xml.in.h:1060
 msgid "Recent Filter"
 msgstr "Filter nedávnych"
 
 # tooltip
-#: ../plugins/gtk+/gtk+.xml.in.h:1063
+#: ../plugins/gtk+/gtk+.xml.in.h:1062
 msgid "The list of application names to add to the filter"
 msgstr "Zoznam názvov aplikácií, ktoré sa pridajú do filtra"
 
 # widget class
-#: ../plugins/gtk+/gtk+.xml.in.h:1064
+#: ../plugins/gtk+/gtk+.xml.in.h:1063
 msgid "Recent Manager"
 msgstr "Správca nedávnych"
 
 # dialog title
-#: ../plugins/gtk+/gtk+.xml.in.h:1065
-#, fuzzy
-#| msgid "Select Named Icon"
+#: ../plugins/gtk+/gtk+.xml.in.h:1064
 msgid "Themed Icon"
-msgstr "Výber pomenovanej ikony"
+msgstr "Ikona témy"
 
 # widget group
-#: ../plugins/gtk+/gtk+.xml.in.h:1066
+#: ../plugins/gtk+/gtk+.xml.in.h:1065
 msgid "Toplevels"
 msgstr "Prvky najvyššej úrovne"
 
 # widget group
-#: ../plugins/gtk+/gtk+.xml.in.h:1067
+#: ../plugins/gtk+/gtk+.xml.in.h:1066
 msgid "Containers"
 msgstr "Kontajnery"
 
 # widget group
-#: ../plugins/gtk+/gtk+.xml.in.h:1068
+#: ../plugins/gtk+/gtk+.xml.in.h:1067
 msgid "Control and Display"
 msgstr "Ovládanie a zobrazenie"
 
 # widget group
-#: ../plugins/gtk+/gtk+.xml.in.h:1069
+#: ../plugins/gtk+/gtk+.xml.in.h:1068
 msgid "Composite Widgets"
 msgstr "Zložené ovládacie prvky"
 
 # widget group
-#: ../plugins/gtk+/gtk+.xml.in.h:1070
+#: ../plugins/gtk+/gtk+.xml.in.h:1069
 msgid "Miscellaneous"
 msgstr "Rôzne"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1071
+#: ../plugins/gtk+/gtk+.xml.in.h:1070
 msgid "Deprecated"
-msgstr ""
+msgstr "Príznaky okna"
 
 # label
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:1
@@ -9178,44 +8968,33 @@ msgstr "Zásluhy"
 # property
 #: ../plugins/gtk+/glade-action-bar-editor.ui.h:1
 #: ../plugins/gtk+/glade-box-editor.ui.h:1
-#, fuzzy
-#| msgid "Attributes"
 msgid "Box Attributes"
-msgstr "Atribúty"
+msgstr "Atribúty boxu"
 
 # popup menu item; %s - class name
 #: ../plugins/gtk+/glade-action-bar-editor.ui.h:2
 #: ../plugins/gtk+/glade-box-editor.ui.h:3
-#, fuzzy
-#| msgid "Add child %s"
 msgid "Add center child"
-msgstr "Pridanie podradeného prvku %s"
+msgstr "Pridať vycentrovaných potomkov"
 
 # command
 #: ../plugins/gtk+/glade-action-bar-editor.ui.h:3
-#, fuzzy
-#| msgid "Setting %s to use a custom label widget"
 msgid "Whether this action bar should include a centered child."
-msgstr "Nastavenie, aby %s používal vlastný ovládací prvok označenia"
+msgstr "Či má tento panel akcií obsahovať vycentrovaných potomkov."
 
 # property
 #: ../plugins/gtk+/glade-action-editor.ui.h:1
 msgid "Action Attributes"
 msgstr "Atribúty akcie"
 
-# value (window type hint)
 #: ../plugins/gtk+/glade-action-editor.ui.h:2
-#, fuzzy
-#| msgid "Toolbar"
 msgid "Toolbar Proxies"
-msgstr "Panel nástrojov"
+msgstr "Sprostredkovatelia panela nástrojov"
 
 # widget class
 #: ../plugins/gtk+/glade-action-editor.ui.h:3
-#, fuzzy
-#| msgid "Toggle Action"
 msgid "Toggle and Radio"
-msgstr "Prepínacia akcia"
+msgstr "Prepínacie a rádio akcie"
 
 # tree view column
 #: ../plugins/gtk+/glade-action-editor.ui.h:4
@@ -9224,46 +9003,36 @@ msgstr "Identifikátor hodnoty:"
 
 # GType menu item
 #: ../plugins/gtk+/glade-action-editor.ui.h:5
-#, fuzzy
-#| msgid "Radio item"
 msgid "Radio proxies"
-msgstr "Položka Výberové pole"
+msgstr "Sprotredkovatelia rádio akcií"
 
 # property with tooltip "The column in the model to load the value from"
 #: ../plugins/gtk+/glade-activatable-editor.ui.h:1
-#, fuzzy
-#| msgid "Activatable column"
 msgid "Activatable / Actionable"
-msgstr "Aktivovateľný stĺpec"
+msgstr "Aktivovateľný / akciovateľný"
 
 # widget class
 #: ../plugins/gtk+/glade-app-chooser-button-editor.ui.h:1
-#, fuzzy
-#| msgid "Application Chooser Button"
 msgid "App Chooser Button Attributes"
-msgstr "Tlačidlo výberu aplikácie"
+msgstr "Atribúty tlačidla výberu aplikácie"
 
 # widget class
 #: ../plugins/gtk+/glade-app-chooser-widget-editor.ui.h:1
-#, fuzzy
-#| msgid "Application Chooser Widget"
 msgid "App Chooser Widget Attributes"
-msgstr "Ovládací prvok výberu aplikácie"
+msgstr "Atribúty prvku výberu aplikácie"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:2
 msgid "Baseline:"
-msgstr ""
+msgstr "Základná čiara:"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:4
 msgid "Whether this box should include a centered child."
-msgstr ""
+msgstr "Či má tento box obsahovať vycentrovaných potomkov."
 
 # tooltip
 #: ../plugins/gtk+/glade-button-editor.ui.h:1
-#, fuzzy
-#| msgid "Edit widget alignment"
 msgid "Child alignments:"
-msgstr "Upraví zarovnanie ovládacieho prvku"
+msgstr "Zarovnanie potomkov:"
 
 # value (size group mode, orientation, tree view grid lines)
 # PM: neviem či to netreba aj tu rozdeliť aj pri vertical
@@ -9316,10 +9085,8 @@ msgstr "Poloha:"
 
 # property
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:1
-#, fuzzy
-#| msgid "Attributes"
 msgid "Combo Box Attributes"
-msgstr "Atribúty"
+msgstr "Atribúty kombinovaného poľa"
 
 # widget class
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:2
@@ -9329,23 +9096,21 @@ msgstr "Stromový model:"
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:3
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:3
 msgid "Draw frame around entry"
-msgstr ""
+msgstr "Nakresliť rám okolo vstupu"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:4
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:4
 msgid "Tearoff menus"
-msgstr ""
+msgstr "Odpojiteľné ponuky"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:5
 msgid "Tabular Menus"
-msgstr ""
+msgstr "Tabuľkové ponuky"
 
 # widget class
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:1
-#, fuzzy
-#| msgid "Combo Box Text"
 msgid "Combo Box Text Attributes"
-msgstr "Text kombinovaného poľa"
+msgstr "Atribúty textu kombinovaného poľa"
 
 # property
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:2
@@ -9355,7 +9120,7 @@ msgstr "Zoznam položiek:"
 #: ../plugins/gtk+/glade-entry-editor.ui.h:2
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:2
 msgid "Input Hints:"
-msgstr ""
+msgstr "Doladenie vstupu:"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:5
 msgid "Primary Icon"
@@ -9370,13 +9135,15 @@ msgstr "Bublinový popis:"
 #: ../plugins/gtk+/glade-entry-editor.ui.h:7
 #: ../plugins/gtk+/glade-widget-editor.ui.h:4
 msgid "Use markup"
-msgstr ""
+msgstr "Použiť značky"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:8
 msgid ""
 "Whether to use markup in the\n"
 "primary icon's tooltip\n"
 msgstr ""
+"Či sa majú použiť značky v bublinovom \n"
+"popise primárnej ikony\n"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:11
 msgid "Secondary Icon"
@@ -9387,6 +9154,8 @@ msgid ""
 "Whether to use markup in the\n"
 "secondary icon's tooltip"
 msgstr ""
+"Či sa majú použiť značky v bublinovom \n"
+"popise sekundárnej ikony"
 
 # value (tree view grid lines)
 #: ../plugins/gtk+/glade-entry-editor.ui.h:14
@@ -9417,11 +9186,9 @@ msgstr "Atribúty mriežky"
 msgid "Spacing:"
 msgstr "Rozostupy:"
 
-# MČ: nebolo by vhodnejšie „rovnomerné“?
 #: ../plugins/gtk+/glade-grid-editor.ui.h:5
-#, fuzzy
 msgid "Homogeneous"
-msgstr "Homogénne"
+msgstr "Rovnomerné"
 
 #: ../plugins/gtk+/glade-grid-editor.ui.h:6
 msgid "Count:"
@@ -9524,29 +9291,25 @@ msgstr "Automaticky zalomiť"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:8
 msgid "Lines"
-msgstr ""
+msgstr "Riadky"
 
 # label
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:1
-#, fuzzy
-#| msgid "Properties and Attributes"
 msgid "Level Bar Attributes"
-msgstr "Vlastnosti a atribúty"
+msgstr "Atribúty indikátora úrovne"
 
 # property
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:2
-#, fuzzy
-#| msgid "Indicator Size column"
 msgid "Indicator Mode:"
-msgstr "Stĺpec Veľkosť indikátora"
+msgstr "Režim indikátora:"
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:3
 msgid "Minimum:"
-msgstr ""
+msgstr "Minimum:"
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:4
 msgid "Maximum:"
-msgstr ""
+msgstr "Maximum:"
 
 # tree view column
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:5
@@ -9569,9 +9332,8 @@ msgstr "Vedľajší text:"
 #  PK: skor by som dal vnutorny okraj
 # GtkRadioAction
 #: ../plugins/gtk+/glade-misc-editor.ui.h:1
-#, fuzzy
 msgid "Alignment and Padding"
-msgstr "Zarovnanie a výplň"
+msgstr "Zarovnanie a vnútorný okraj"
 
 # property
 #: ../plugins/gtk+/glade-misc-editor.ui.h:5
@@ -9580,10 +9342,8 @@ msgstr "Výplň"
 
 # property
 #: ../plugins/gtk+/glade-model-button-editor.ui.h:1
-#, fuzzy
-#| msgid "Button Attributes"
 msgid "Model Button Attributes"
-msgstr "Atribúty tlačidla"
+msgstr "Atribúty modelového tlačidla"
 
 # property
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:1
@@ -9593,10 +9353,8 @@ msgstr "Atribúty zápisníka"
 # label
 #. Property used to choose which page of the notebook to edit
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:3
-#, fuzzy
-#| msgid "Edit Image"
 msgid "Edit page:"
-msgstr "Upraviť obrázok"
+msgstr "Upraviť stránku:"
 
 # property
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:4
@@ -9605,98 +9363,74 @@ msgstr "Atribúty karty"
 
 # property
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:5
-#, fuzzy
-#| msgid "Related Action"
 msgid "Start Action:"
-msgstr "Súvisiaca akcia"
+msgstr "Úvodná akcia:"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:6
-#, fuzzy
-#| msgid "Action"
 msgid "End Action:"
-msgstr "Akcia"
+msgstr "Koncová akcia:"
 
 # label
 #: ../plugins/gtk+/glade-popover-editor.ui.h:1
-#, fuzzy
-#| msgid "Program Attributes"
 msgid "Popover Attributes"
-msgstr "Atribúty programu"
+msgstr "Atribúty bublinového okna"
 
 # property
 #: ../plugins/gtk+/glade-popover-menu-editor.ui.h:1
-#, fuzzy
-#| msgid "Attributes"
 msgid "Menu Attributes"
-msgstr "Atribúty"
+msgstr "Atribúty ponuky"
 
 # label
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:1
-#, fuzzy
-#| msgid "Properties and Attributes"
 msgid "Progress Bar Attributes"
-msgstr "Vlastnosti a atribúty"
+msgstr "Atribúty ukazovateľa priebehu"
 
 # property
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:2
-#, fuzzy
-#| msgid "Ellipsize column"
 msgid "Ellipsize Text:"
-msgstr "Vypustenie stĺpca"
+msgstr "Skrátený text:"
 
 # dialog title
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:1
-#, fuzzy
-#| msgid "Setup Text Attributes"
 msgid "Tree View Attributes"
-msgstr "Nastavenia atribútov textu"
+msgstr "Atribúty stromového zobrazenia"
 
 # property
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:2
 #, fuzzy
-#| msgid "Stretch column"
 msgid "Search Column:"
 msgstr "Stĺpec Roztiahnuť"
 
 # Action
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:3
 #, fuzzy
-#| msgid "Insert Column"
 msgid "Expander Column:"
 msgstr "Vložiť stĺpec"
 
 # label
 #: ../plugins/gtk+/glade-recent-chooser-editor.ui.h:1
-#, fuzzy
-#| msgid "Recent Chooser Menu"
 msgid "Recent Chooser Attributes"
-msgstr "Ponuka výberu nedávneho"
+msgstr "Atribúty výberu nedávneho"
 
 # widget class
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:1
-#, fuzzy
-#| msgid "Scale Button"
 msgid "Scale Button Attributes"
-msgstr "Tlačidlo mierky"
+msgstr "Atribúty tlačidla mierky"
 
 # widget class
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:2
-#, fuzzy
-#| msgid "Scale Button"
 msgid "Scale orientation:"
-msgstr "Tlačidlo mierky"
+msgstr "Orientácia škály:"
 
 # property
 #: ../plugins/gtk+/glade-scale-editor.ui.h:1
-#, fuzzy
-#| msgid "Attributes"
 msgid "Scale Attributes"
-msgstr "Atribúty"
+msgstr "Atribúty škály"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:2
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:2
 msgid "Stepper Sensitivity"
-msgstr ""
+msgstr "Citlivosť krokovača"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:3
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:3
@@ -9714,39 +9448,31 @@ msgstr ""
 
 # label
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:1
-#, fuzzy
-#| msgid "Properties and Attributes"
 msgid "Scrolling Attributes"
-msgstr "Vlastnosti a atribúty"
+msgstr "Atribúty rolovania"
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:4
 msgid "Policy:"
-msgstr ""
+msgstr "Správanie:"
 
 # property
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:1
-#, fuzzy
-#| msgid "Attributes"
 msgid "Scrollbar Attributes"
-msgstr "Atribúty"
+msgstr "Atribúty posuvníka"
 
 # widget class, action
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:1
-#, fuzzy
-#| msgid "Scrolled Window"
 msgid "Scrolled Window Attributes"
-msgstr "Rolujúce okno"
+msgstr "Atribúty rolujúceho okna"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:2
 msgid "Window Placement:"
-msgstr ""
+msgstr "Umiestnenie okna:"
 
 # widget class
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:5
-#, fuzzy
-#| msgid "Scrollbar"
 msgid "Scrollbar Policy:"
-msgstr "Posuvník"
+msgstr "Správanie posuvníka:"
 
 # widget class
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:6
@@ -9755,10 +9481,8 @@ msgstr "Prispôsobenie:"
 
 # dialog title
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:1
-#, fuzzy
-#| msgid "Setup Text Attributes"
 msgid "Spin Button Attributes"
-msgstr "Nastavenia atribútov textu"
+msgstr "Atribúty rolovacieho tlačidla"
 
 # value (events)
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:2
@@ -9767,30 +9491,24 @@ msgstr "Orientácia tlačidla:"
 
 # property
 #: ../plugins/gtk+/glade-stack-editor.ui.h:1
-#, fuzzy
-#| msgid "Attributes"
 msgid "Stack Attributes"
-msgstr "Atribúty"
+msgstr "Atribúty stohu"
 
 # MČ: nebolo by vhodnejšie „rovnomerné“?
+# PM: či majú mať potomkovia všetci rovnakú veľkosť
 #: ../plugins/gtk+/glade-stack-editor.ui.h:2
-#, fuzzy
 msgid "Homogeneous:"
-msgstr "Homogénne"
+msgstr "Rovnorodé:"
 
 # property
 #: ../plugins/gtk+/glade-stack-switcher-editor.ui.h:1
-#, fuzzy
-#| msgid "Attributes"
 msgid "Stack Switcher Attributes"
-msgstr "Atribúty"
+msgstr "Atribúty prepínača stohu"
 
 # dialog title
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:1
-#, fuzzy
-#| msgid "Setup Text Attributes"
 msgid "Text View Attributes"
-msgstr "Nastavenia atribútov textu"
+msgstr "Atribúty textového zobrazenia"
 
 #. Name for populate-all property
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:4
@@ -9868,14 +9586,12 @@ msgstr "Atribúty prvku"
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:3
 msgid "Whether to use markup in the tooltip"
-msgstr ""
+msgstr "Určuje, či sa má použiť bublinový tip so značkami"
 
 # property
 #: ../plugins/gtk+/glade-widget-editor.ui.h:5
-#, fuzzy
-#| msgid "Widgets"
 msgid "Widget Flags"
-msgstr "Ovládacie prvky"
+msgstr "Príznaky prvku"
 
 # editor property
 #: ../plugins/gtk+/glade-widget-editor.ui.h:6
@@ -9895,11 +9611,11 @@ msgstr "Atribúty okna"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:2
 msgid "Transient For:"
-msgstr ""
+msgstr "Prechodný pre:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:3
 msgid "Attached To:"
-msgstr ""
+msgstr "Pripojené do:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:5
 msgid "Icon File"
@@ -9907,14 +9623,12 @@ msgstr "Súbor ikony"
 
 # widget class
 #: ../plugins/gtk+/glade-window-editor.ui.h:7
-#, fuzzy
-#| msgid "Window"
 msgid "Window Flags"
-msgstr "Okno"
+msgstr "Príznaky okna"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:9
 msgid "Hint:"
-msgstr "Rada:"
+msgstr "Náznak:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:11
 msgid "Gravity:"
@@ -9933,8 +9647,11 @@ msgid "Whether this window should include a custom titlebar."
 msgstr "Či by malo okno obsahovať vlastný panel pre titulok."
 
 # 1.window title
+#~ msgid "Glade Previewer log"
+#~ msgstr "Záznam náhľadu"
+
+# 1.window title
 #, fuzzy
-#~| msgid "Preview"
 #~ msgid "Previewing %s"
 #~ msgstr "Náhľad"
 
@@ -9945,3 +9662,26 @@ msgstr "Či by malo okno obsahovať vlastný panel pre titulok."
 # tooltip EditMenu
 #~ msgid "Project properties:"
 #~ msgstr "Vlastnosti projektu:"
+
+#~ msgid "Reject"
+#~ msgstr "Odmietnuť"
+
+#~ msgid "Accept"
+#~ msgstr "Prijať"
+
+#~ msgid "Delete Event"
+#~ msgstr "Odstrániť udalosť"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Apply"
+#~ msgstr "Použiť"
+
+# GtkMenuItem label
+#~ msgid "Help"
+#~ msgstr "Pomocník"
+
+# widget class
+#~ msgid "OpenGL Area"
+#~ msgstr "Oblasť OpenGL"
