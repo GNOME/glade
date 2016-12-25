@@ -1538,9 +1538,8 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeBaseEditorClass, change_type),
-                    _glade_boolean_handled_accumulator, NULL,
-                    _glade_marshal_BOOLEAN__OBJECT_UINT,
-                    G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_UINT);
+                    _glade_boolean_handled_accumulator, NULL, NULL,
+                    G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_GTYPE);
 
   /**
    * GladeBaseEditor::get-display-name:
