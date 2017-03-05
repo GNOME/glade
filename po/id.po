@@ -6,11 +6,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-07-17 15:32+0000\n"
-"PO-Revision-Date: 2016-08-15 11:45+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"POT-Creation-Date: 2017-02-22 12:44+0000\n"
+"PO-Revision-Date: 2017-02-25 19:25+0700\n"
+"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
 #: ../src/main.c:42
@@ -218,13 +218,13 @@ msgstr "Tutup _tanpa Menyimpan"
 
 #: ../src/glade-window.c:1480 ../src/glade-window.c:2656
 #: ../gladeui/glade-editor.c:765 ../gladeui/glade-editor.c:1121
-#: ../gladeui/glade-editor-property.c:1723
-#: ../gladeui/glade-editor-property.c:2030
-#: ../gladeui/glade-editor-property.c:2229
-#: ../gladeui/glade-editor-property.c:3170
-#: ../gladeui/glade-editor-property.c:3282
-#: ../gladeui/glade-editor-property.c:3299
-#: ../gladeui/glade-editor-property.c:3619 ../gladeui/glade-utils.c:483
+#: ../gladeui/glade-editor-property.c:1690
+#: ../gladeui/glade-editor-property.c:1997
+#: ../gladeui/glade-editor-property.c:2196
+#: ../gladeui/glade-editor-property.c:3137
+#: ../gladeui/glade-editor-property.c:3249
+#: ../gladeui/glade-editor-property.c:3266
+#: ../gladeui/glade-editor-property.c:3586 ../gladeui/glade-utils.c:483
 #: ../plugins/gtk+/glade-accels.c:525 ../plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Batal"
@@ -413,7 +413,9 @@ msgstr ""
 
 #: ../src/glade.glade.h:20
 msgid "translator-credits"
-msgstr "Andika Triwidada <andika@gmail.com>, 2010-2014"
+msgstr ""
+"Andika Triwidada <andika@gmail.com>, 2010-2014.\n"
+"Kukuh Syafaat <syafaatkukuh@gmail.com>, 2017."
 
 #: ../src/glade.glade.h:21
 msgid "Select"
@@ -448,7 +450,7 @@ msgid "Edit widget alignment"
 msgstr "Sunting perataan widget"
 
 #. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:29 ../plugins/gtk+/gtk+.xml.in.h:608
+#: ../src/glade.glade.h:29 ../plugins/gtk+/gtk+.xml.in.h:628
 msgid "Save"
 msgstr "Simpan"
 
@@ -469,7 +471,7 @@ msgid "Edit project properties"
 msgstr "Sunting properti projek"
 
 #. GtkButtonsType enumeration value
-#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:818
+#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:601
 msgid "Close"
 msgstr "Tutup"
 
@@ -638,7 +640,7 @@ msgid "Create a new project"
 msgstr "Buat projek baru"
 
 #. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:77 ../plugins/gtk+/gtk+.xml.in.h:610
+#: ../src/glade.glade.h:77 ../plugins/gtk+/gtk+.xml.in.h:630
 msgid "Open"
 msgstr "Buka"
 
@@ -946,7 +948,7 @@ msgid "Glade Registration & User Survey"
 msgstr "Pendaftaran Glade & Survey Pengguna"
 
 #. GtkButtonsType enumeration value
-#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:820
+#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:599
 msgid "Cancel"
 msgstr "Batal"
 
@@ -1103,7 +1105,7 @@ msgstr "Perl"
 #. GtkCellRendererAccelMode enumeration value
 #: ../src/glade-registration.glade.h:41
 #: ../gladeui/glade-project-properties.ui.h:19
-#: ../plugins/gtk+/gtk+.xml.in.h:766
+#: ../plugins/gtk+/gtk+.xml.in.h:787
 msgid "Other"
 msgstr "Lainnya"
 
@@ -1280,7 +1282,7 @@ msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
 #. GtkLicense enumeration value
-#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:796
+#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:817
 msgid "BSD"
 msgstr "BSD"
 
@@ -1435,11 +1437,13 @@ msgstr "Kurangnya rilis biner resmi bagi OS lain (Windows, Mac OS X)"
 msgid "Have you ever encountered a bug?"
 msgstr "Apakah Anda pernah menemui suatu kutu?"
 
-#: ../src/glade-registration.glade.h:122
+#. GtkResponseType enumeration value
+#: ../src/glade-registration.glade.h:122 ../plugins/gtk+/gtk+.xml.in.h:603
 msgid "Yes"
 msgstr "Ya"
 
-#: ../src/glade-registration.glade.h:123
+#. GtkResponseType enumeration value
+#: ../src/glade-registration.glade.h:123 ../plugins/gtk+/gtk+.xml.in.h:605
 msgid "No"
 msgstr "Tidak"
 
@@ -1567,40 +1571,42 @@ msgid "The container object this editor is currently editing"
 msgstr "Objek wadah yang kini sedang disunting"
 
 #. translators: refers to a tab name used to group all the relevant widget's properties
-#: ../gladeui/glade-base-editor.c:1735 ../gladeui/glade-editor.c:919
+#: ../gladeui/glade-base-editor.c:1734 ../gladeui/glade-editor.c:919
 msgid "General"
 msgstr "Umum"
 
 #. translators: refers to a tab name used to show the widget hierarchy
-#: ../gladeui/glade-base-editor.c:1744
+#: ../gladeui/glade-base-editor.c:1743
 msgid "Hierarchy"
 msgstr "Hirarki"
 
 #. AtkRole enumeration value
-#: ../gladeui/glade-base-editor.c:1782 ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../gladeui/glade-base-editor.c:1781 ../plugins/gtk+/gtk+.xml.in.h:144
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:9
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:2
 msgid "Label"
 msgstr "Label"
 
-#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1446
+#: ../gladeui/glade-base-editor.c:1796 ../gladeui/glade-widget-adaptor.c:1446
+#: ../plugins/gtk+/glade-eprop-enum-int.c:70
+#: ../plugins/gtk+/glade-eprop-enum-int.c:71
 msgid "Type"
 msgstr "Jenis"
 
 #. Name
 #. translators: The unique identifier of an object in the project
-#: ../gladeui/glade-base-editor.c:2034 ../gladeui/glade-editor-table.c:305
+#: ../gladeui/glade-base-editor.c:2033 ../gladeui/glade-editor-table.c:305
 #: ../gladeui/glade-editor-table.c:578
 msgid "ID:"
 msgstr "ID:"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:2054
+#: ../gladeui/glade-base-editor.c:2053
 #: ../plugins/gtk+/glade-window-editor.ui.h:8
 msgid "Type:"
 msgstr "Jenis:"
 
-#: ../gladeui/glade-base-editor.c:2274
+#: ../gladeui/glade-base-editor.c:2273
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1715,12 +1721,12 @@ msgstr "Mematikan properti %s pada widget %s"
 msgid "Setting multiple properties"
 msgstr "Menata beberapa properti"
 
-#: ../gladeui/glade-command.c:813 ../gladeui/glade-editor-property.c:3685
+#: ../gladeui/glade-command.c:813 ../gladeui/glade-editor-property.c:3652
 #, c-format
 msgid "Setting %s of %s"
 msgstr "Menata %s dari %s"
 
-#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3390
+#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3357
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Menata %s dari %s ke %s"
@@ -1957,12 +1963,12 @@ msgstr "Pilih properti yang ingin Anda reset ke nilai bawaannya"
 msgid "Reset Widget Properties"
 msgstr "Reset Properti Widget"
 
-#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1724
-#: ../gladeui/glade-editor-property.c:2031
-#: ../gladeui/glade-editor-property.c:3172
-#: ../gladeui/glade-editor-property.c:3285
-#: ../gladeui/glade-editor-property.c:3301
-#: ../gladeui/glade-editor-property.c:3620 ../plugins/gtk+/glade-accels.c:526
+#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1691
+#: ../gladeui/glade-editor-property.c:1998
+#: ../gladeui/glade-editor-property.c:3139
+#: ../gladeui/glade-editor-property.c:3252
+#: ../gladeui/glade-editor-property.c:3268
+#: ../gladeui/glade-editor-property.c:3587 ../plugins/gtk+/glade-accels.c:526
 #: ../plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_OK"
@@ -1991,78 +1997,78 @@ msgstr "_Deskripsi Properti:"
 msgid "%s - %s Properties"
 msgstr "%s - Properti %s"
 
-#: ../gladeui/glade-editor-property.c:724
+#: ../gladeui/glade-editor-property.c:725
 msgid "Property Class"
 msgstr "Kelas Properti"
 
-#: ../gladeui/glade-editor-property.c:725
+#: ../gladeui/glade-editor-property.c:726
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr "GladeEditorProperty ini dibuat untuk GladePropertyClass mana"
 
-#: ../gladeui/glade-editor-property.c:731 ../gladeui/glade-property-shell.c:125
+#: ../gladeui/glade-editor-property.c:732 ../gladeui/glade-property-shell.c:125
 msgid "Use Command"
 msgstr "Pakai Perintah"
 
-#: ../gladeui/glade-editor-property.c:732
+#: ../gladeui/glade-editor-property.c:733
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Apakah kita mesti memakai API perintah bagi stack undo/redo"
 
-#: ../gladeui/glade-editor-property.c:738 ../gladeui/glade-property-shell.c:143
+#: ../gladeui/glade-editor-property.c:739 ../gladeui/glade-property-shell.c:143
 msgid "Disable Check"
 msgstr "Matikan Pemeriksaan"
 
-#: ../gladeui/glade-editor-property.c:739 ../gladeui/glade-property-shell.c:144
+#: ../gladeui/glade-editor-property.c:740 ../gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
 msgstr "Apakah secara eksplisit mematikan tombol contreng"
 
-#: ../gladeui/glade-editor-property.c:745 ../gladeui/glade-property-label.c:152
+#: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-label.c:152
 #: ../gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "Teks Gubahan"
 
-#: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-shell.c:138
+#: ../gladeui/glade-editor-property.c:747 ../gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
 msgstr "Teks Gubahan untuk ditampilkan dalam label properti"
 
-#: ../gladeui/glade-editor-property.c:1353
+#: ../gladeui/glade-editor-property.c:1320
 msgid "Select Fields"
 msgstr "Pilih Ruas"
 
-#: ../gladeui/glade-editor-property.c:1356
+#: ../gladeui/glade-editor-property.c:1323
 msgid "_Close"
 msgstr "_Tutup"
 
-#: ../gladeui/glade-editor-property.c:1369
+#: ../gladeui/glade-editor-property.c:1336
 msgid "_Select individual fields:"
 msgstr "Pilih rua_s individual:"
 
-#: ../gladeui/glade-editor-property.c:1719
+#: ../gladeui/glade-editor-property.c:1686
 msgid "Select Named Icon"
 msgstr "Pilih Ikon Bernama"
 
-#: ../gladeui/glade-editor-property.c:2025
+#: ../gladeui/glade-editor-property.c:1992
 msgid "Edit Text"
 msgstr "Sunting Teks"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:2048
+#: ../gladeui/glade-editor-property.c:2015
 msgid "_Text:"
 msgstr "_Teks:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:2084
+#: ../gladeui/glade-editor-property.c:2051
 msgid "T_ranslatable"
 msgstr "Dapat dite_rjemahkan"
 
-#: ../gladeui/glade-editor-property.c:2090 ../gladeui/glade-property.c:680
+#: ../gladeui/glade-editor-property.c:2057 ../gladeui/glade-property.c:680
 msgid "Whether this property is translatable"
 msgstr "Apakah properti ini dapat diterjemahkan"
 
-#: ../gladeui/glade-editor-property.c:2098
+#: ../gladeui/glade-editor-property.c:2065
 msgid "Conte_xt for translation:"
 msgstr "Konte_ks penerjemahan:"
 
-#: ../gladeui/glade-editor-property.c:2104
+#: ../gladeui/glade-editor-property.c:2071
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -2071,75 +2077,75 @@ msgstr ""
 "Untuk kalimat pendek dan ambigu: tik satu kata disini untuk membedakan arti "
 "kalimat ini dari arti keberadaan lain dari kalimat yang sama"
 
-#: ../gladeui/glade-editor-property.c:2136
+#: ../gladeui/glade-editor-property.c:2103
 msgid "Co_mments for translators:"
 msgstr "Ko_mentar bagi penerjemah:"
 
-#: ../gladeui/glade-editor-property.c:2225
+#: ../gladeui/glade-editor-property.c:2192
 msgid "Select a file from the project resource directory"
 msgstr "Pilih suatu berkas dari direktori sumber daya projek"
 
-#: ../gladeui/glade-editor-property.c:2230 ../gladeui/glade-utils.c:486
+#: ../gladeui/glade-editor-property.c:2197 ../gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Buka"
 
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:3090
+#: ../gladeui/glade-editor-property.c:3057
 #: ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Name"
 msgstr "Nama"
 
-#: ../gladeui/glade-editor-property.c:3099 ../gladeui/glade-property.c:647
+#: ../gladeui/glade-editor-property.c:3066 ../gladeui/glade-property.c:647
 msgid "Class"
 msgstr "Kelas"
 
-#: ../gladeui/glade-editor-property.c:3119
+#: ../gladeui/glade-editor-property.c:3086
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Pilih objek bertipe %s tanpa induk di projek ini"
 
-#: ../gladeui/glade-editor-property.c:3121
+#: ../gladeui/glade-editor-property.c:3088
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Pilih objek bertipe %s di projek ini"
 
-#: ../gladeui/glade-editor-property.c:3141
+#: ../gladeui/glade-editor-property.c:3108
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Pilih suatu %s tanpa induk di projek ini"
 
-#: ../gladeui/glade-editor-property.c:3143
+#: ../gladeui/glade-editor-property.c:3110
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Pilih suatu %s di projek ini"
 
-#: ../gladeui/glade-editor-property.c:3171
-#: ../gladeui/glade-editor-property.c:3283
-#: ../gladeui/glade-editor-property.c:3300
-#: ../gladeui/glade-editor-property.c:3618 ../plugins/gtk+/glade-accels.c:524
+#: ../gladeui/glade-editor-property.c:3138
+#: ../gladeui/glade-editor-property.c:3250
+#: ../gladeui/glade-editor-property.c:3267
+#: ../gladeui/glade-editor-property.c:3585 ../plugins/gtk+/glade-accels.c:524
 #: ../plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "Bersi_hkan"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3193
-#: ../gladeui/glade-editor-property.c:3323
+#: ../gladeui/glade-editor-property.c:3160
+#: ../gladeui/glade-editor-property.c:3290
 msgid "O_bjects:"
 msgstr "O_bjek:"
 
-#: ../gladeui/glade-editor-property.c:3284
+#: ../gladeui/glade-editor-property.c:3251
 msgid "_New"
 msgstr "Bar_u"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3433
+#: ../gladeui/glade-editor-property.c:3400
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Membuat %s bagi %s dari %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3636
+#: ../gladeui/glade-editor-property.c:3603
 msgid "Objects:"
 msgstr "Objek:"
 
@@ -2288,7 +2294,7 @@ msgstr "Ditukar"
 
 #. translators: GConnectFlags value
 #: ../gladeui/glade-previewer.c:759 ../gladeui/glade-signal.c:207
-#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:649
+#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:669
 msgid "After"
 msgstr "Setelah"
 
@@ -2971,7 +2977,7 @@ msgid "Whether this action is sensitive"
 msgstr "Apakah aksi ini sensitif"
 
 #: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1430
-#: ../plugins/gtk+/gtk+.xml.in.h:914
+#: ../plugins/gtk+/gtk+.xml.in.h:931
 msgid "Visible"
 msgstr "Tampak"
 
@@ -3013,7 +3019,7 @@ msgstr "Nama Generik"
 msgid "Used to generate names of new widgets"
 msgstr "Dipakai untuk menjangkitkan nama dari widget baru"
 
-#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:641
+#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:661
 #: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "Nama Ikon"
@@ -3204,7 +3210,7 @@ msgstr "Beberapa sinyal mengalami masalah pemversian:"
 msgid "Actions"
 msgstr "Aksi"
 
-#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1061
+#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1078
 msgid "Applications"
 msgstr "Aplikasi"
 
@@ -3696,7 +3702,7 @@ msgstr "Apakah wadah ini mendukung pengubahan ukuran dari widget anak"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:180
 #: ../plugins/gtk+/glade-gtk-action-group.c:219
-#: ../plugins/gtk+/gtk+.xml.in.h:868
+#: ../plugins/gtk+/gtk+.xml.in.h:885
 msgid "Action"
 msgstr "Aksi"
 
@@ -3744,12 +3750,12 @@ msgid "Ordering children of %s"
 msgstr "Mengurutkan anak %s"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:891
+#: ../plugins/gtk+/gtk+.xml.in.h:908
 msgid "Tree View Column"
 msgstr "Kolom Tilikan Tree"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:899
+#: ../plugins/gtk+/gtk+.xml.in.h:916
 msgid "Cell Renderer"
 msgstr "Perender Sel"
 
@@ -3770,7 +3776,7 @@ msgstr "Teks"
 
 #. Accelerator
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:413
-#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:870
+#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:887
 msgid "Accelerator"
 msgstr "Akselerator"
 
@@ -3792,7 +3798,7 @@ msgstr "Pixbuf"
 
 #. GtkAssistantPageType enumeration value
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:417
-#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:843
+#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:860
 #: ../plugins/gtk+/glade-entry-editor.ui.h:4
 msgid "Progress"
 msgstr "Kemajuan"
@@ -4012,7 +4018,7 @@ msgstr "Butir Alat"
 msgid "Tool Item Group"
 msgstr "Kelompok Butir Alat"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:731
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:751
 msgid "Recent Chooser Menu"
 msgstr "Menu Pemilih Terkini"
 
@@ -4073,7 +4079,7 @@ msgstr "Menu"
 #. GtkRecentSortType enumeration value
 #: ../plugins/gtk+/glade-gtk-toolbar.c:239
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:186
-#: ../plugins/gtk+/gtk+.xml.in.h:786 ../plugins/gtk+/glade-widget-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:807 ../plugins/gtk+/glade-widget-editor.ui.h:7
 msgid "Custom"
 msgstr "Gubahan"
 
@@ -4268,7 +4274,7 @@ msgstr ""
 msgid "Set the state for this source of '%s'"
 msgstr "Tata keadaan bagi sumber ini dari '%s'"
 
-#: ../plugins/gtk+/glade-icon-sources.c:848 ../plugins/gtk+/gtk+.xml.in.h:642
+#: ../plugins/gtk+/glade-icon-sources.c:848 ../plugins/gtk+/gtk+.xml.in.h:662
 msgid "File Name"
 msgstr "Nama Berkas"
 
@@ -4484,7 +4490,7 @@ msgstr "Collate"
 msgid "Reverse"
 msgstr "Reverse"
 
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:726
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:746
 msgid "Scale"
 msgstr "Scale"
 
@@ -6123,78 +6129,108 @@ msgstr "Tampilan teks"
 msgid "Search Bar"
 msgstr "Bilah Pencarian"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:590 ../plugins/gtk+/glade-button-editor.ui.h:7
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:591
+msgid "Reject"
+msgstr "Tolak"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:593
+msgid "Accept"
+msgstr "Terima"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:595
+msgid "Delete Event"
+msgstr "Hapus Kejadian"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:597
+msgid "OK"
+msgstr "OK"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:607
+msgid "Apply"
+msgstr "Terapkan"
+
+#. GtkResponseType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:609
+msgid "Help"
+msgstr "Bantuan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:610 ../plugins/gtk+/glade-button-editor.ui.h:7
 msgid "Stock Button"
 msgstr "Tombol Stok"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:591
+#: ../plugins/gtk+/gtk+.xml.in.h:611
 msgid "Response ID"
 msgstr "ID respon"
 
 #. Atk press property
-#: ../plugins/gtk+/gtk+.xml.in.h:593
+#: ../plugins/gtk+/gtk+.xml.in.h:613
 msgid "Press"
 msgstr "Tekan"
 
 #. Atk release property
-#: ../plugins/gtk+/gtk+.xml.in.h:595
+#: ../plugins/gtk+/gtk+.xml.in.h:615
 msgid "Release"
 msgstr "Rilis"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:596
+#: ../plugins/gtk+/gtk+.xml.in.h:616
 msgid "The stock item for this button"
 msgstr "Butir stok bagi tombol ini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:597
+#: ../plugins/gtk+/gtk+.xml.in.h:617
 msgid "The response ID of this button in a dialog"
 msgstr "ID respon dari tombol ini dalam suatu dialog"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:598
+#: ../plugins/gtk+/gtk+.xml.in.h:618
 msgid "Set the description of the Press atk action"
 msgstr "Tata deskripsi dari aksi atk Tekan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:599
+#: ../plugins/gtk+/gtk+.xml.in.h:619
 msgid "Set the description of the Release atk action"
 msgstr "Tata deskripsi dari aksi atk Rilis"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:600
+#: ../plugins/gtk+/gtk+.xml.in.h:620
 msgid "Check Button"
 msgstr "Tombol Centang"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:602
+#: ../plugins/gtk+/gtk+.xml.in.h:622
 msgid "Always"
 msgstr "Selalu"
 
 #. GtkSpinButtonUpdatePolicy enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:604
+#: ../plugins/gtk+/gtk+.xml.in.h:624
 msgid "If Valid"
 msgstr "Bila Valid"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:605
+#: ../plugins/gtk+/gtk+.xml.in.h:625
 msgid "Switch"
 msgstr "Tukar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:606
+#: ../plugins/gtk+/gtk+.xml.in.h:626
 #: ../plugins/gtk+/glade-file-chooser-button-editor.ui.h:1
 msgid "File Chooser Button"
 msgstr "Tombol Pemilih Berkas"
 
 #. GtkFileChooserAction enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:612
+#: ../plugins/gtk+/gtk+.xml.in.h:632
 msgid "Select Folder"
 msgstr "Pilih Folder"
 
 #. GtkFileChooserAction enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:614
+#: ../plugins/gtk+/gtk+.xml.in.h:634
 msgid "Create Folder"
 msgstr "Buat Folder"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:615
+#: ../plugins/gtk+/gtk+.xml.in.h:635
 msgid "Scale Button"
 msgstr "Tombol Skala"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:616
+#: ../plugins/gtk+/gtk+.xml.in.h:636
 msgid ""
 "The names of the icons to be used by the scale button. The first item in the "
 "array will be used in the button when the current value is the lowest value, "
@@ -6206,522 +6242,526 @@ msgstr ""
 "nilai tertinggi. Semua ikon selanjutnya akan dipakai untuk semua nilai lain, "
 "disebar secara merata sepanjang rentang nilai"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:617
+#: ../plugins/gtk+/gtk+.xml.in.h:637
 msgid "Volume Button"
 msgstr "Tombol Volume"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:618
+#: ../plugins/gtk+/gtk+.xml.in.h:638
 msgid "File Chooser Widget"
 msgstr "Widget Pemilih Berkas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:619
+#: ../plugins/gtk+/gtk+.xml.in.h:639
 msgid "Application Chooser Widget"
 msgstr "Widget Pemilih Aplikasi"
 
 #. GtkPlacesOpenFlags enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:621
+#: ../plugins/gtk+/gtk+.xml.in.h:641
 msgid "New Tab"
 msgstr "Tab Baru"
 
 #. GtkPlacesOpenFlags enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:623
+#: ../plugins/gtk+/gtk+.xml.in.h:643
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:624
+#: ../plugins/gtk+/gtk+.xml.in.h:644
 msgid "Color Button"
 msgstr "Tombol Warna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:625
+#: ../plugins/gtk+/gtk+.xml.in.h:645
 msgid "Font Button"
 msgstr "Tombol Fonta"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:627
+#: ../plugins/gtk+/gtk+.xml.in.h:647
 msgid "Automatic"
 msgstr "Otomatis"
 
 #. GtkSensitivityType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:629
+#: ../plugins/gtk+/gtk+.xml.in.h:649
 msgid "On"
 msgstr "Nyala"
 
 #. GtkSensitivityType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:631
+#: ../plugins/gtk+/gtk+.xml.in.h:651
 msgid "Off"
 msgstr "Mati"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:632
+#: ../plugins/gtk+/gtk+.xml.in.h:652
 msgid "Combo Box Text"
 msgstr "Teks Kotak Kombo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:633
+#: ../plugins/gtk+/gtk+.xml.in.h:653
 msgid "Items"
 msgstr "Butir"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:634
+#: ../plugins/gtk+/gtk+.xml.in.h:654
 msgid "The list of items to show in the combo box"
 msgstr "Daftar butir untuk ditampilkan pada kotak kombo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:635
+#: ../plugins/gtk+/gtk+.xml.in.h:655
 msgid "Application Chooser Button"
 msgstr "Tombol Pemilih Aplikasi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:636
+#: ../plugins/gtk+/gtk+.xml.in.h:656
 msgid "Progress Bar"
 msgstr "Bilah Kemajuan"
 
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:638
+#: ../plugins/gtk+/gtk+.xml.in.h:658
 msgid "Continuous"
 msgstr "Berkelanjutan"
 
 #. GtkLevelBarMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:640
+#: ../plugins/gtk+/gtk+.xml.in.h:660
 msgid "Discrete"
 msgstr "Diskret"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:643
+#: ../plugins/gtk+/gtk+.xml.in.h:663
 msgid "Resource Name"
 msgstr "Nama Sumber Daya"
 
 #. We have to save/load icon-size as int, and fake the enum
-#: ../plugins/gtk+/gtk+.xml.in.h:645
+#: ../plugins/gtk+/gtk+.xml.in.h:665
 msgid "Icon Size"
 msgstr "Ukuran Ikon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:646
+#: ../plugins/gtk+/gtk+.xml.in.h:666
 msgid "Dialog Box"
 msgstr "Kotak Dialog"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:647
+#: ../plugins/gtk+/gtk+.xml.in.h:667
 msgid "Insert Row"
 msgstr "Sisipkan Baris"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:648
+#: ../plugins/gtk+/gtk+.xml.in.h:668
 msgid "Before"
 msgstr "Sebelum"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:650
+#: ../plugins/gtk+/gtk+.xml.in.h:670
 msgid "Insert Column"
 msgstr "Sisipkan Kolom"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:651
+#: ../plugins/gtk+/gtk+.xml.in.h:671
 msgid "Remove Row"
 msgstr "Hapus Baris"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:652
+#: ../plugins/gtk+/gtk+.xml.in.h:672
 msgid "Remove Column"
 msgstr "Hapus Kolom"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:654
+#: ../plugins/gtk+/gtk+.xml.in.h:674
 #: ../plugins/gtk+/glade-widget-editor.ui.h:10
 msgid "Expand"
 msgstr "Ekspansi"
 
 #. GtkAttachOptions enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:656
+#: ../plugins/gtk+/gtk+.xml.in.h:676
 msgid "Shrink"
 msgstr "Dikecilkan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:657 ../plugins/gtk+/glade-grid-editor.ui.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:677 ../plugins/gtk+/glade-grid-editor.ui.h:2
 msgid "Rows"
 msgstr "Baris"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:658 ../plugins/gtk+/glade-grid-editor.ui.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:678 ../plugins/gtk+/glade-grid-editor.ui.h:3
 msgid "Columns"
 msgstr "Kolom"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:659
+#: ../plugins/gtk+/gtk+.xml.in.h:679
 msgid "The number of rows for this grid"
 msgstr "Cacah baris bagi kisi ini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:660
+#: ../plugins/gtk+/gtk+.xml.in.h:680
 msgid "The number of columns for this grid"
 msgstr "Cacah kolom bagi kisi ini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:661
+#: ../plugins/gtk+/gtk+.xml.in.h:681
 msgid "Horizontal Panes"
 msgstr "Panel Horizontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:662
+#: ../plugins/gtk+/gtk+.xml.in.h:682
 msgid "Vertical Panes"
 msgstr "Panel Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:663
+#: ../plugins/gtk+/gtk+.xml.in.h:683
 msgid "Notebook"
 msgstr "Notebook"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:664
+#: ../plugins/gtk+/gtk+.xml.in.h:684
 msgid "Insert Page Before"
 msgstr "Sisipkan Halaman Sebelum"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:665
+#: ../plugins/gtk+/gtk+.xml.in.h:685
 msgid "Insert Page After"
 msgstr "Sisipkan Halaman Setelah"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:666
+#: ../plugins/gtk+/gtk+.xml.in.h:686
 msgid "Remove Page"
 msgstr "Hapus Halaman"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:667
+#: ../plugins/gtk+/gtk+.xml.in.h:687
 msgid "Number of pages"
 msgstr "Cacah halaman"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:668
+#: ../plugins/gtk+/gtk+.xml.in.h:688
 msgid "Start Action"
 msgstr "Aksi Awal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:669
+#: ../plugins/gtk+/gtk+.xml.in.h:689
 msgid "End Action"
 msgstr "Aksi Akhir"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:670
+#: ../plugins/gtk+/gtk+.xml.in.h:690
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
 "Mentata halaman yang sedang aktif untuk disunting, properti ini tak akan "
 "disimpan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:671
+#: ../plugins/gtk+/gtk+.xml.in.h:691
 msgid "The number of pages in the notebook"
 msgstr "Cacah halaman di notebook"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:672
+#: ../plugins/gtk+/gtk+.xml.in.h:692
 msgid "HeaderBar"
 msgstr "BilahKepala"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:673
+#: ../plugins/gtk+/gtk+.xml.in.h:693
 msgid "Reserve space for subtitle"
 msgstr "Cadangkan ruang untuk subjudul"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:674
+#: ../plugins/gtk+/gtk+.xml.in.h:694
 msgid "Custom Title"
 msgstr "Judul Gubahan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:675
+#: ../plugins/gtk+/gtk+.xml.in.h:695
 msgid "Add Slot"
 msgstr "Tambah Slot"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:676
+#: ../plugins/gtk+/gtk+.xml.in.h:696
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr ""
 "Jaga tinggi bilah kepala tetap sama ketika subjudul berubah secara dinamis."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:677
+#: ../plugins/gtk+/gtk+.xml.in.h:697
 msgid "The number of items in the header bar"
 msgstr "Cacah butir di dalam bilah kepala"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:678
+#: ../plugins/gtk+/gtk+.xml.in.h:698
 msgid "Edit page"
 msgstr "Sunting halaman"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:679
+#: ../plugins/gtk+/gtk+.xml.in.h:699
 msgid "Visible child"
 msgstr "Anak nampak"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:681
+#: ../plugins/gtk+/gtk+.xml.in.h:701
 msgid "Crossfade"
 msgstr "Redup Silang"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:683
+#: ../plugins/gtk+/gtk+.xml.in.h:703
 msgid "Slide Right"
 msgstr "Meluncur Ke Kanan"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:685
+#: ../plugins/gtk+/gtk+.xml.in.h:705
 msgid "Slide Left"
 msgstr "Meluncur Ke Kiri"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:687
+#: ../plugins/gtk+/gtk+.xml.in.h:707
 msgid "Slide Up"
 msgstr "Meluncur Naik"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:689
+#: ../plugins/gtk+/gtk+.xml.in.h:709
 msgid "Slide Down"
 msgstr "Meluncur Turun"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:690
+#: ../plugins/gtk+/gtk+.xml.in.h:710
 msgid "Slide Left-Right"
 msgstr "Meluncur Kiri-Kanan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:691
+#: ../plugins/gtk+/gtk+.xml.in.h:711
 msgid "Slide Up-Down"
 msgstr "Meluncur Naik-Turun"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:692
+#: ../plugins/gtk+/gtk+.xml.in.h:712
 msgid "Move Over Up"
 msgstr "Geser Lewat Atas Naik"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:693
+#: ../plugins/gtk+/gtk+.xml.in.h:713
 msgid "Move Over Down"
 msgstr "Geser Lewat Atas Turun"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:694
+#: ../plugins/gtk+/gtk+.xml.in.h:714
 msgid "Move Over Left"
 msgstr "Geser Lewat Atas Ke Kiri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:695
+#: ../plugins/gtk+/gtk+.xml.in.h:715
 msgid "Move Over Right"
 msgstr "Geser Lewat Atas Ke Kanan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:696
+#: ../plugins/gtk+/gtk+.xml.in.h:716
 msgid "Move Over Up-Down"
 msgstr "Geser Lewat Atas Naik-Turun"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:697
+#: ../plugins/gtk+/gtk+.xml.in.h:717
 msgid "Move Over Down-Up"
 msgstr "Geser Lewat Atas Turun-Naik"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:698
+#: ../plugins/gtk+/gtk+.xml.in.h:718
 msgid "Move Over Left-Right"
 msgstr "Geser Lewat Atas Kiri-Kanan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:699
+#: ../plugins/gtk+/gtk+.xml.in.h:719
 msgid "Move Over Right-Left"
 msgstr "Geser Lewat Atas Kanan-Kiri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:700
+#: ../plugins/gtk+/gtk+.xml.in.h:720
 msgid "Move Under Up"
 msgstr "Geser Lewat Bawah Naik"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:701
+#: ../plugins/gtk+/gtk+.xml.in.h:721
 msgid "Move Under Down"
 msgstr "Geser Lewat Bawah Turun"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:702
+#: ../plugins/gtk+/gtk+.xml.in.h:722
 msgid "Move Under Left"
 msgstr "Geser Lewat Bawah Ke Kiri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:703
+#: ../plugins/gtk+/gtk+.xml.in.h:723
 msgid "Move Under Right"
 msgstr "Geser Lewat Bawah Ke Kanan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:704
+#: ../plugins/gtk+/gtk+.xml.in.h:724
 msgid "The number of pages in the stack"
 msgstr "Cacah halaman dalam tumpukan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:705
+#: ../plugins/gtk+/gtk+.xml.in.h:725
 msgid "Stack Switcher"
 msgstr "Pengalih Tumpukan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:706
+#: ../plugins/gtk+/gtk+.xml.in.h:726
 msgid "Stack Sidebar"
 msgstr "Tumpuk Bilah Sisi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:707
+#: ../plugins/gtk+/gtk+.xml.in.h:727
 msgid "Revealer"
 msgstr "Pengungkap"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:708
+#: ../plugins/gtk+/gtk+.xml.in.h:728
 msgid "Add Row"
 msgstr "Tambah Baris"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:710
+#: ../plugins/gtk+/gtk+.xml.in.h:730
 msgid "Single"
 msgstr "Tunggal"
 
 #. GtkSelectionMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:712
+#: ../plugins/gtk+/gtk+.xml.in.h:732
 msgid "Browse"
 msgstr "Ramban"
 
 #. GtkSelectionMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:714
+#: ../plugins/gtk+/gtk+.xml.in.h:734
 msgid "Multiple"
 msgstr "Berganda"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:715
+#: ../plugins/gtk+/gtk+.xml.in.h:735
 msgid "The position of the row item in the listbox"
 msgstr "Posisi butir baris pada kotak daftar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:716
+#: ../plugins/gtk+/gtk+.xml.in.h:736
 msgid "List Box Row"
 msgstr "Baris Kotak Daftar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:717
+#: ../plugins/gtk+/gtk+.xml.in.h:737
 msgid "Flow Box"
 msgstr "Kotak Alir"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:718
+#: ../plugins/gtk+/gtk+.xml.in.h:738
 msgid "Add Child"
 msgstr "Tambah Anak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:719
+#: ../plugins/gtk+/gtk+.xml.in.h:739
 msgid "The position of the child in the flowbox"
 msgstr "Posisi anak dalam kotak alir"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:720
+#: ../plugins/gtk+/gtk+.xml.in.h:740
 msgid "Flow Box Child"
 msgstr "Anak Kotak Alir"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:721
+#: ../plugins/gtk+/gtk+.xml.in.h:741
 msgid "Range"
 msgstr "Cakupan"
 
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:723
+#: ../plugins/gtk+/gtk+.xml.in.h:743
 msgid "Discontinuous"
 msgstr "Terputus-putus"
 
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:725
+#: ../plugins/gtk+/gtk+.xml.in.h:745
 msgid "Delayed"
 msgstr "Tertunda"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:727
+#: ../plugins/gtk+/gtk+.xml.in.h:747
 msgid "The number of digits to round the value to when the value changes"
 msgstr "Banyaknya dijit untuk membulatkan nilai ketika nilai berubah"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:728
+#: ../plugins/gtk+/gtk+.xml.in.h:748
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr "Apakah menyorot area lorong dari dasar atau kiri sampai dengan tombol"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:729
+#: ../plugins/gtk+/gtk+.xml.in.h:749
 msgid "Horizontal Scale"
 msgstr "Skala Horisontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:730
+#: ../plugins/gtk+/gtk+.xml.in.h:750
 msgid "Vertical Scale"
 msgstr "Skala Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:732
+#: ../plugins/gtk+/gtk+.xml.in.h:752
 msgid "Scrollbar"
 msgstr "Bilah Gulung"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:733
+#: ../plugins/gtk+/gtk+.xml.in.h:753
 msgid "Horizontal Scrollbar"
 msgstr "Penggulung Horisontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:734
+#: ../plugins/gtk+/gtk+.xml.in.h:754
 msgid "Vertical Scrollbar"
 msgstr "Bilah Gulung Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:735
+#: ../plugins/gtk+/gtk+.xml.in.h:755
 msgid "Button Box"
 msgstr "Kotak Tombol"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:737
+#: ../plugins/gtk+/gtk+.xml.in.h:757
 msgid "Default"
 msgstr "Bawaan"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:739
+#: ../plugins/gtk+/gtk+.xml.in.h:759
 msgid "Spread"
 msgstr "Sebar"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:741
+#: ../plugins/gtk+/gtk+.xml.in.h:761
 msgid "Edge"
 msgstr "Tepi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:742
+#: ../plugins/gtk+/gtk+.xml.in.h:762
 msgid "Horizontal Button Box"
 msgstr "Kotak Tombol Horisontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:743
+#: ../plugins/gtk+/gtk+.xml.in.h:763
 msgid "Vertical Button Box"
 msgstr "Kotak Tombol Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:744
+#: ../plugins/gtk+/gtk+.xml.in.h:764
 msgid "Horizontal Separator"
 msgstr "Pemisah Horisontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:745
+#: ../plugins/gtk+/gtk+.xml.in.h:765
 msgid "Vertical Separator"
 msgstr "Pemisah Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:746
+#: ../plugins/gtk+/gtk+.xml.in.h:766
 msgid "Accel Label"
 msgstr "Label Aksel"
 
 #. GtkArrowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:748
+#: ../plugins/gtk+/gtk+.xml.in.h:768
 msgid "Up"
 msgstr "Naik"
 
 #. GtkArrowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:750
+#: ../plugins/gtk+/gtk+.xml.in.h:770
 msgid "Down"
 msgstr "Turun"
 
 #. Declare menu button here because the arrow-type values already exist
-#: ../plugins/gtk+/gtk+.xml.in.h:752
+#: ../plugins/gtk+/gtk+.xml.in.h:772
 msgid "Menu Button"
 msgstr "Tombol Menu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:753
+#: ../plugins/gtk+/gtk+.xml.in.h:773
 msgid "Lock Button"
 msgstr "Tombol Kunci"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:754
+#: ../plugins/gtk+/gtk+.xml.in.h:774
 msgid "Layout"
 msgstr "Tata Letak"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:756
+#: ../plugins/gtk+/gtk+.xml.in.h:776
 msgid "Fixed"
 msgstr "Tetap"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:777
+msgid "OpenGL Area"
+msgstr "Daerah OpenGL"
+
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:758
+#: ../plugins/gtk+/gtk+.xml.in.h:779
 msgid "Info"
 msgstr "Info"
 
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:760
+#: ../plugins/gtk+/gtk+.xml.in.h:781
 msgid "Warning"
 msgstr "Peringatan"
 
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:762
+#: ../plugins/gtk+/gtk+.xml.in.h:783
 msgid "Question"
 msgstr "Pertanyaan"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:764
+#: ../plugins/gtk+/gtk+.xml.in.h:785
 msgid "Error"
 msgstr "Galat"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:768
+#: ../plugins/gtk+/gtk+.xml.in.h:789
 msgid "Never"
 msgstr "Tak pernah"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:770
+#: ../plugins/gtk+/gtk+.xml.in.h:791
 msgid "External"
 msgstr "Eksternal"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:772
+#: ../plugins/gtk+/gtk+.xml.in.h:793
 msgid "Top Left"
 msgstr "Kiri Atas"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:774
+#: ../plugins/gtk+/gtk+.xml.in.h:795
 msgid "Bottom Left"
 msgstr "Kiri Bawah"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:776
+#: ../plugins/gtk+/gtk+.xml.in.h:797
 msgid "Top Right"
 msgstr "Kanan Atas"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:778
+#: ../plugins/gtk+/gtk+.xml.in.h:799
 msgid "Bottom Right"
 msgstr "Kanan Bawah"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:779
+#: ../plugins/gtk+/gtk+.xml.in.h:800
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
@@ -6733,61 +6773,61 @@ msgstr ""
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
 #. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../plugins/gtk+/gtk+.xml.in.h:784
+#: ../plugins/gtk+/gtk+.xml.in.h:805
 msgid "About Dialog"
 msgstr "Dialog Ihwal"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:788
+#: ../plugins/gtk+/gtk+.xml.in.h:809
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:790
+#: ../plugins/gtk+/gtk+.xml.in.h:811
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:792
+#: ../plugins/gtk+/gtk+.xml.in.h:813
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:794
+#: ../plugins/gtk+/gtk+.xml.in.h:815
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:798
+#: ../plugins/gtk+/gtk+.xml.in.h:819
 msgid "MIT X11"
 msgstr "MIT X11"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:800
+#: ../plugins/gtk+/gtk+.xml.in.h:821
 msgid "Artistic"
 msgstr "Artistik"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:802
+#: ../plugins/gtk+/gtk+.xml.in.h:823
 msgid "GPL 2.0 Only"
 msgstr "Hanya GPL 2.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:804
+#: ../plugins/gtk+/gtk+.xml.in.h:825
 msgid "GPL 3.0 Only"
 msgstr "Hanya GPL 3.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:806
+#: ../plugins/gtk+/gtk+.xml.in.h:827
 msgid "LGPL 2.1 Only"
 msgstr "Hanya LGPL 2.1"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:808
+#: ../plugins/gtk+/gtk+.xml.in.h:829
 msgid "LGPL 3.0 Only"
 msgstr "Hanya LGPL 3.0"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:809
+#: ../plugins/gtk+/gtk+.xml.in.h:830
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -6798,102 +6838,102 @@ msgstr ""
 "bila tidak Anda mesti mendaftar semua penerjemah dan tidak menandai string "
 "ini untuk penerjemahan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:810
+#: ../plugins/gtk+/gtk+.xml.in.h:831
 msgid "Color Selection Dialog"
 msgstr "Dialog Pemilihan Warna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:811
+#: ../plugins/gtk+/gtk+.xml.in.h:832
 msgid "File Chooser Dialog"
 msgstr "Dialog Pemilih Berkas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:812
+#: ../plugins/gtk+/gtk+.xml.in.h:833
 msgid "Font Selection Dialog"
 msgstr "Dialog Pemilihan Fonta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:813
+#: ../plugins/gtk+/gtk+.xml.in.h:834
 msgid "Application Chooser Dialog"
 msgstr "Dialog Pemilih Aplikasi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:814
+#: ../plugins/gtk+/gtk+.xml.in.h:835
 msgid "Message Dialog"
 msgstr "Dialog Pesan"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:816
+#: ../plugins/gtk+/gtk+.xml.in.h:837
 msgid "Ok"
 msgstr "Ok"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:822
+#: ../plugins/gtk+/gtk+.xml.in.h:839
 msgid "Yes, No"
 msgstr "Ya, Tidak"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:824
+#: ../plugins/gtk+/gtk+.xml.in.h:841
 msgid "Ok, Cancel"
 msgstr "Ok, Batal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:825
+#: ../plugins/gtk+/gtk+.xml.in.h:842
 msgid "Color Selection"
 msgstr "Pemilihan Warna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:826
+#: ../plugins/gtk+/gtk+.xml.in.h:843
 msgid "Color Chooser Widget"
 msgstr "Widget Pemilih Warna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:827
+#: ../plugins/gtk+/gtk+.xml.in.h:844
 msgid "Color Chooser Dialog"
 msgstr "Dialog Pemilih Warna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:828
+#: ../plugins/gtk+/gtk+.xml.in.h:845
 msgid "Font Chooser Widget"
 msgstr "Widget Pemilih Fonta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:829
+#: ../plugins/gtk+/gtk+.xml.in.h:846
 msgid "Font Chooser Dialog"
 msgstr "Dialog Pemilih Fonta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:830
+#: ../plugins/gtk+/gtk+.xml.in.h:847
 msgid "Font Selection"
 msgstr "Pilihan Fonta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:831
+#: ../plugins/gtk+/gtk+.xml.in.h:848
 msgid "Assistant"
 msgstr "Asisten"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:832
+#: ../plugins/gtk+/gtk+.xml.in.h:849
 msgid "Number of Pages"
 msgstr "Cacah Halaman"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:833
+#: ../plugins/gtk+/gtk+.xml.in.h:850
 msgid "Initially Complete"
 msgstr "Lengkap Dari Awal"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:835
+#: ../plugins/gtk+/gtk+.xml.in.h:852
 msgid "Content"
 msgstr "Isi"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:837
+#: ../plugins/gtk+/gtk+.xml.in.h:854
 msgid "Intro"
 msgstr "Perkenalan"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:839
+#: ../plugins/gtk+/gtk+.xml.in.h:856
 msgid "Confirm"
 msgstr "Konfirmasi"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:841
+#: ../plugins/gtk+/gtk+.xml.in.h:858
 msgid "Summary"
 msgstr "Ringkasan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:844
+#: ../plugins/gtk+/gtk+.xml.in.h:861
 msgid "Number of pages in this assistant"
 msgstr "Cacah halaman di asisten ini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:845
+#: ../plugins/gtk+/gtk+.xml.in.h:862
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
@@ -6901,761 +6941,761 @@ msgstr ""
 "Apakah halaman ini akan dari awal ditandai sebagai lengkap tanpa peduli "
 "masukan pengguna."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:846
+#: ../plugins/gtk+/gtk+.xml.in.h:863
 msgid "The page position in the Assistant"
 msgstr "Posisi halaman di Asisten"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:847
+#: ../plugins/gtk+/gtk+.xml.in.h:864
 msgid "Popover"
 msgstr "Popover"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:848
+#: ../plugins/gtk+/gtk+.xml.in.h:865
 msgid "Popover Menu"
 msgstr "Menu Popover"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:849
+#: ../plugins/gtk+/gtk+.xml.in.h:866
 msgid "Number of submenus"
 msgstr "Cacah sub menu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:850
+#: ../plugins/gtk+/gtk+.xml.in.h:867
 msgid "Edit menu"
 msgstr "Menu sunting"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:851
+#: ../plugins/gtk+/gtk+.xml.in.h:868
 msgid "The number of submenus in the popover menu"
 msgstr "Banyaknya submenu dalam menu popover"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:852
+#: ../plugins/gtk+/gtk+.xml.in.h:869
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
 "Mentata submenu yang sedang aktif untuk disunting, properti ini tak akan "
 "disimpan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:853
+#: ../plugins/gtk+/gtk+.xml.in.h:870
 msgid "Model Button"
 msgstr "Tombol Model"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:854
+#: ../plugins/gtk+/gtk+.xml.in.h:871
 msgid "Link Button"
 msgstr "Tombol Taut"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:855
+#: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "Recent Chooser"
 msgstr "Pemilihan Terkini"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:857
+#: ../plugins/gtk+/gtk+.xml.in.h:874
 msgid "Most Recently Used first"
 msgstr "Yang Dipakai Terkini pertama"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:859
+#: ../plugins/gtk+/gtk+.xml.in.h:876
 msgid "Least Recently Used first"
 msgstr "Yang Dipakai Terdahulu pertama"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:860
+#: ../plugins/gtk+/gtk+.xml.in.h:877
 msgid "Recent Chooser Dialog"
 msgstr "Dialog Pemilih Terkini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:861
+#: ../plugins/gtk+/gtk+.xml.in.h:878
 msgid "Size Group"
 msgstr "Grup Ukuran"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:862
+#: ../plugins/gtk+/gtk+.xml.in.h:879
 msgid "Widgets"
 msgstr "Widget"
 
 #. GtkSizeGroupMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:864
+#: ../plugins/gtk+/gtk+.xml.in.h:881
 msgid "Both"
 msgstr "Keduanya"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:865
+#: ../plugins/gtk+/gtk+.xml.in.h:882
 msgid "List of widgets in this group"
 msgstr "Daftar widget dalam grup ini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:866
+#: ../plugins/gtk+/gtk+.xml.in.h:883
 msgid "Window Group"
 msgstr "Grup Jendela"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:867
+#: ../plugins/gtk+/gtk+.xml.in.h:884
 msgid "Adjustment"
 msgstr "Penyesuaian"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:871
+#: ../plugins/gtk+/gtk+.xml.in.h:888
 msgid "An accelerator key for this action"
 msgstr "Tombol akselerator bagi aksi ini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:872
+#: ../plugins/gtk+/gtk+.xml.in.h:889
 msgid "Toggle Action"
 msgstr "Aksi Jungkit"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:873
+#: ../plugins/gtk+/gtk+.xml.in.h:890
 msgid "Radio Action"
 msgstr "Aksi Rerintah"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:874
+#: ../plugins/gtk+/gtk+.xml.in.h:891
 msgid "Recent Action"
 msgstr "Aksi Terkini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:875
+#: ../plugins/gtk+/gtk+.xml.in.h:892
 msgid "Action Group"
 msgstr "Grup Aksi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:876
+#: ../plugins/gtk+/gtk+.xml.in.h:893
 msgid "Entry Completion"
 msgstr "Pelengkapan Entri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:877
+#: ../plugins/gtk+/gtk+.xml.in.h:894
 msgid "Icon Factory"
 msgstr "Pabrik Ikon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:878
+#: ../plugins/gtk+/gtk+.xml.in.h:895
 msgid "Icon Sources"
 msgstr "Sumber Ikon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:879
+#: ../plugins/gtk+/gtk+.xml.in.h:896
 msgid "A list of sources for this icon factory"
 msgstr "Daftar sumber bagi pabrik ikon ini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:880
+#: ../plugins/gtk+/gtk+.xml.in.h:897
 msgid "List Store"
 msgstr "Penyimpanan Daftar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:881
+#: ../plugins/gtk+/gtk+.xml.in.h:898
 msgid "Data"
 msgstr "Data"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:882
+#: ../plugins/gtk+/gtk+.xml.in.h:899
 msgid "Enter a list of column types for this data store"
 msgstr "Masukkan daftar tipe kolom bagi penyimpanan data ini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:883
+#: ../plugins/gtk+/gtk+.xml.in.h:900
 msgid "Enter a list of values to be applied on each row"
 msgstr "Masukkan daftar nilai untuk diterapkan pada setiap baris"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:884
+#: ../plugins/gtk+/gtk+.xml.in.h:901
 msgid "Tree Store"
 msgstr "Penyimpanan Pohon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:885
+#: ../plugins/gtk+/gtk+.xml.in.h:902
 msgid "Tree Model Filter"
 msgstr "Filter Model Pohon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:886
+#: ../plugins/gtk+/gtk+.xml.in.h:903
 msgid "Tree Model Sort"
 msgstr "Urut Model Pohon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:887
+#: ../plugins/gtk+/gtk+.xml.in.h:904
 msgid "Tree Selection"
 msgstr "Pilihan Pohon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:888
+#: ../plugins/gtk+/gtk+.xml.in.h:905
 msgid "Tree View"
 msgstr "Tilikan Pohon"
 
 #. GtkTreeViewGridLines enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:890
+#: ../plugins/gtk+/gtk+.xml.in.h:907
 msgid "Horizontal and Vertical"
 msgstr "Horisontal dan Vertikal"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:893
+#: ../plugins/gtk+/gtk+.xml.in.h:910
 msgid "Ascending"
 msgstr "Naik"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:895
+#: ../plugins/gtk+/gtk+.xml.in.h:912
 msgid "Descending"
 msgstr "Turun"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:897
+#: ../plugins/gtk+/gtk+.xml.in.h:914
 msgid "Grow Only"
 msgstr "Hanya Berkembang"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:898
+#: ../plugins/gtk+/gtk+.xml.in.h:915
 msgid "Icon View"
 msgstr "Tampilan Ikon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:900
+#: ../plugins/gtk+/gtk+.xml.in.h:917
 msgid "Cell Background Color name column"
 msgstr "Kolom Nama Warna Latar Sel"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:901
+#: ../plugins/gtk+/gtk+.xml.in.h:918
 msgid "Cell Background Color column"
 msgstr "Kolom Warna Latar Sel"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:902
+#: ../plugins/gtk+/gtk+.xml.in.h:919
 msgid "Cell Background RGBA column"
 msgstr "Kolom RGBA Latar Sel"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:903
+#: ../plugins/gtk+/gtk+.xml.in.h:920
 msgid "Width column"
 msgstr "Kolom lebar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:904
+#: ../plugins/gtk+/gtk+.xml.in.h:921
 msgid "Height column"
 msgstr "Kolom tinggi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:905
+#: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Horizontal Padding"
 msgstr "Pengganjal Horisontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:906
+#: ../plugins/gtk+/gtk+.xml.in.h:923
 msgid "Horizontal Padding column"
 msgstr "Kolom Ganjal Horisontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:907
+#: ../plugins/gtk+/gtk+.xml.in.h:924
 msgid "Vertical Padding"
 msgstr "Ganjal Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:908
+#: ../plugins/gtk+/gtk+.xml.in.h:925
 msgid "Vertical Padding column"
 msgstr "Kolom Ganjal Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:909
+#: ../plugins/gtk+/gtk+.xml.in.h:926
 msgid "Horizontal Alignment"
 msgstr "Perataan Horisontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:910
+#: ../plugins/gtk+/gtk+.xml.in.h:927
 msgid "Horizontal Alignment column"
 msgstr "Kolom Perataan Horisontal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:911
+#: ../plugins/gtk+/gtk+.xml.in.h:928
 msgid "Vertical Alignment"
 msgstr "Perataan Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:912
+#: ../plugins/gtk+/gtk+.xml.in.h:929
 msgid "Vertical Alignment column"
 msgstr "Kolom Perataan Vertikal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:913
+#: ../plugins/gtk+/gtk+.xml.in.h:930
 msgid "Sensitive column"
 msgstr "Kolom sensitif"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:915
+#: ../plugins/gtk+/gtk+.xml.in.h:932
 msgid "Visible column"
 msgstr "Kolom nampak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:916
+#: ../plugins/gtk+/gtk+.xml.in.h:933
 msgid "The column in the model to load the value from"
 msgstr "Kolom pada model tempat mengambil nilai"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:917
+#: ../plugins/gtk+/gtk+.xml.in.h:934
 msgid "Text Renderer"
 msgstr "Perender Teks"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:918
+#: ../plugins/gtk+/gtk+.xml.in.h:935
 msgid "Alignment column"
 msgstr "Kolom perataan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:919
+#: ../plugins/gtk+/gtk+.xml.in.h:936
 msgid "Attributes column"
 msgstr "Kolom Atribut"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:920
+#: ../plugins/gtk+/gtk+.xml.in.h:937
 msgid "Background Color Name column"
 msgstr "Kolom Nama Warna Latar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:921
+#: ../plugins/gtk+/gtk+.xml.in.h:938
 msgid "Background Color column"
 msgstr "Kolom Warna Latar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:922
+#: ../plugins/gtk+/gtk+.xml.in.h:939
 msgid "Editable column"
 msgstr "Kolom yang dapat disunting"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:923
+#: ../plugins/gtk+/gtk+.xml.in.h:940
 msgid "Ellipsize column"
 msgstr "Pendekkan kolom"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:924
+#: ../plugins/gtk+/gtk+.xml.in.h:941
 msgid "Family column"
 msgstr "Kolom famili"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:925
+#: ../plugins/gtk+/gtk+.xml.in.h:942
 msgid "Font column"
 msgstr "Kolom fonta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:926
+#: ../plugins/gtk+/gtk+.xml.in.h:943
 msgid "Font Description column"
 msgstr "Kolom Keterangan Fonta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:927
+#: ../plugins/gtk+/gtk+.xml.in.h:944
 msgid "Foreground Color Name column"
 msgstr "Kolom Nama Warna Depan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:928
+#: ../plugins/gtk+/gtk+.xml.in.h:945
 msgid "Foreground Color column"
 msgstr "Kolom Warna Depan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:929
+#: ../plugins/gtk+/gtk+.xml.in.h:946
 msgid "Language column"
 msgstr "Kolom bahasa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:930
+#: ../plugins/gtk+/gtk+.xml.in.h:947
 msgid "Markup column"
 msgstr "Kolom markup"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:931
+#: ../plugins/gtk+/gtk+.xml.in.h:948
 msgid "Rise column"
 msgstr "Kolom angkat"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:932
+#: ../plugins/gtk+/gtk+.xml.in.h:949
 msgid "Scale column"
 msgstr "Kolom skala"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:933
+#: ../plugins/gtk+/gtk+.xml.in.h:950
 msgid "Single Paragraph Mode column"
 msgstr "Kolom Mode Paragraf Tunggal"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:934
+#: ../plugins/gtk+/gtk+.xml.in.h:951
 msgid "Size column"
 msgstr "Kolom ukuran"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:935
+#: ../plugins/gtk+/gtk+.xml.in.h:952
 msgid "Data column"
 msgstr "Kolom data"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:937
+#: ../plugins/gtk+/gtk+.xml.in.h:954
 msgid "Ultra Condensed"
 msgstr "Termampat Ultra"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:939
+#: ../plugins/gtk+/gtk+.xml.in.h:956
 msgid "Extra Condensed"
 msgstr "Ekstra Dimampatkan"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:941
+#: ../plugins/gtk+/gtk+.xml.in.h:958
 msgid "Condensed"
 msgstr "Dimampatkan"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:943
+#: ../plugins/gtk+/gtk+.xml.in.h:960
 msgid "Semi Condensed"
 msgstr "Agak Dimampatkan"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:945
+#: ../plugins/gtk+/gtk+.xml.in.h:962
 msgid "Semi Expanded"
 msgstr "Agak Terkembang"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:947
+#: ../plugins/gtk+/gtk+.xml.in.h:964
 msgid "Expanded"
 msgstr "Diperluas"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:949
+#: ../plugins/gtk+/gtk+.xml.in.h:966
 msgid "Extra Expanded"
 msgstr "Terkembang Ekstra"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:951
+#: ../plugins/gtk+/gtk+.xml.in.h:968
 msgid "Ultra Expanded"
 msgstr "Terkembang Ultra"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:952
+#: ../plugins/gtk+/gtk+.xml.in.h:969
 msgid "Stretch column"
 msgstr "Kolom regang"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:953
+#: ../plugins/gtk+/gtk+.xml.in.h:970
 msgid "Strikethrough column"
 msgstr "Kolom coret"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:955
+#: ../plugins/gtk+/gtk+.xml.in.h:972
 msgid "Oblique"
 msgstr "Miring"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:957
+#: ../plugins/gtk+/gtk+.xml.in.h:974
 msgid "Italic"
 msgstr "Miring"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:958
+#: ../plugins/gtk+/gtk+.xml.in.h:975
 msgid "Style column"
 msgstr "Kolom gaya"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:959
+#: ../plugins/gtk+/gtk+.xml.in.h:976
 msgid "Text column"
 msgstr "Kolom teks"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:961
+#: ../plugins/gtk+/gtk+.xml.in.h:978
 msgid "Double"
 msgstr "Ganda"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:963
+#: ../plugins/gtk+/gtk+.xml.in.h:980
 msgid "Low"
 msgstr "Rendah"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:964
+#: ../plugins/gtk+/gtk+.xml.in.h:981
 msgid "Underline column"
 msgstr "Kolom garis bawah"
 
 #. PangoVariant enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:966
+#: ../plugins/gtk+/gtk+.xml.in.h:983
 msgid "Small Capitals"
 msgstr "Kapital Kecil"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:967
+#: ../plugins/gtk+/gtk+.xml.in.h:984
 msgid "Variant column"
 msgstr "Kolom varian"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:968
+#: ../plugins/gtk+/gtk+.xml.in.h:985
 msgid "Weight column"
 msgstr "Kolom bobot"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:969
+#: ../plugins/gtk+/gtk+.xml.in.h:986
 msgid "Width in Characters column"
 msgstr "Kolom Lebar dalam Karakter"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:970
+#: ../plugins/gtk+/gtk+.xml.in.h:987
 msgid "Wrap Mode column"
 msgstr "Kolom Mode Lipat"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:971
+#: ../plugins/gtk+/gtk+.xml.in.h:988
 msgid "Wrap Width column"
 msgstr "Kolom Lebar Lipat"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:972
+#: ../plugins/gtk+/gtk+.xml.in.h:989
 msgid "Background RGBA column"
 msgstr "Kolom RGBA Latar"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:973
+#: ../plugins/gtk+/gtk+.xml.in.h:990
 msgid "Foreground RGBA column"
 msgstr "Kolom RGBA depan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:974
+#: ../plugins/gtk+/gtk+.xml.in.h:991
 msgid "Maximum width in characters"
 msgstr "Lebar maksimum dalam karakter"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:975
+#: ../plugins/gtk+/gtk+.xml.in.h:992
 msgid "Placeholder text"
 msgstr "Teks placeholder"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:976
+#: ../plugins/gtk+/gtk+.xml.in.h:993
 msgid "Accelerator Renderer"
 msgstr "Perender Akselerator"
 
 #. GtkCellRendererAccelMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:978
+#: ../plugins/gtk+/gtk+.xml.in.h:995
 msgid "Gtk"
 msgstr "Gtk"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:979
+#: ../plugins/gtk+/gtk+.xml.in.h:996
 msgid "Accelerator Mode column"
 msgstr "Kolom Mode Akselerator"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:981
+#: ../plugins/gtk+/gtk+.xml.in.h:998
 msgid "Shift Key"
 msgstr "Tombol Shift"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:983
+#: ../plugins/gtk+/gtk+.xml.in.h:1000
 msgid "Lock Key"
 msgstr "Tombol Kunci"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:985
+#: ../plugins/gtk+/gtk+.xml.in.h:1002
 msgid "Control Key"
 msgstr "Kunci Kendali"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:987
+#: ../plugins/gtk+/gtk+.xml.in.h:1004
 msgid "Alt Key"
 msgstr "Tombol Alt"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:989
+#: ../plugins/gtk+/gtk+.xml.in.h:1006
 msgid "Fifth Key"
 msgstr "Kunci Ke Lima"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:991
+#: ../plugins/gtk+/gtk+.xml.in.h:1008
 msgid "Sixth Key"
 msgstr "Kunci Ke Enam"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:993
+#: ../plugins/gtk+/gtk+.xml.in.h:1010
 msgid "Seventh Key"
 msgstr "Kunci Ke Tujuh"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:995
+#: ../plugins/gtk+/gtk+.xml.in.h:1012
 msgid "Eighth Key"
 msgstr "Kunci Ke Delapan"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:997
+#: ../plugins/gtk+/gtk+.xml.in.h:1014
 msgid "First Mouse Button"
 msgstr "Tombol Mouse Pertama"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:999
+#: ../plugins/gtk+/gtk+.xml.in.h:1016
 msgid "Second Mouse Button"
 msgstr "Tombol Mouse Kedua"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1001
+#: ../plugins/gtk+/gtk+.xml.in.h:1018
 msgid "Third Mouse Button"
 msgstr "Tombol Mouse Ke Tiga"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1003
+#: ../plugins/gtk+/gtk+.xml.in.h:1020
 msgid "Fourth Mouse Button"
 msgstr "Tombol Tetikus Ke-Empat"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1005
+#: ../plugins/gtk+/gtk+.xml.in.h:1022
 msgid "Fifth Mouse Button"
 msgstr "Tombol Mouse Ke Lima"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1007
+#: ../plugins/gtk+/gtk+.xml.in.h:1024
 msgid "Super Modifier"
 msgstr "Perubah Super"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1009
+#: ../plugins/gtk+/gtk+.xml.in.h:1026
 msgid "Hyper Modifier"
 msgstr "Perubah Hiper"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1011
+#: ../plugins/gtk+/gtk+.xml.in.h:1028
 msgid "Meta Modifier"
 msgstr "Perubah Meta"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1013
+#: ../plugins/gtk+/gtk+.xml.in.h:1030
 msgid "Release Modifier"
 msgstr "Perubah Rilis"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1015
+#: ../plugins/gtk+/gtk+.xml.in.h:1032
 msgid "All Modifiers"
 msgstr "Semua Perubah"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1016
+#: ../plugins/gtk+/gtk+.xml.in.h:1033
 msgid "Accelerator Modifiers column"
 msgstr "Kolom Perubah Akselerator"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1017
+#: ../plugins/gtk+/gtk+.xml.in.h:1034
 msgid "Keycode column"
 msgstr "Kolom kode tombol"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1018
+#: ../plugins/gtk+/gtk+.xml.in.h:1035
 msgid "Combo Renderer"
 msgstr "Perender Kombo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1019
+#: ../plugins/gtk+/gtk+.xml.in.h:1036
 msgid "Has Entry column"
 msgstr "Kolom Punya Entri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1020
+#: ../plugins/gtk+/gtk+.xml.in.h:1037
 msgid "Model column"
 msgstr "Kolom model"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1021
+#: ../plugins/gtk+/gtk+.xml.in.h:1038
 msgid "Text Column column"
 msgstr "Kolom Kolom Teks"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1022
+#: ../plugins/gtk+/gtk+.xml.in.h:1039
 msgid "Spin Renderer"
 msgstr "Perender Spin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1023
+#: ../plugins/gtk+/gtk+.xml.in.h:1040
 msgid "Adjustment column"
 msgstr "Kolom penyesuaian"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1024
+#: ../plugins/gtk+/gtk+.xml.in.h:1041
 msgid "Climb Rate column"
 msgstr "Kolom Laju Menanjak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1025
+#: ../plugins/gtk+/gtk+.xml.in.h:1042
 msgid "Digits column"
 msgstr "Kolom digit"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1026
+#: ../plugins/gtk+/gtk+.xml.in.h:1043
 msgid "Pixbuf Renderer"
 msgstr "Perender Pixbuf"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1027
+#: ../plugins/gtk+/gtk+.xml.in.h:1044
 msgid "Follow State column"
 msgstr "Kolom Ikuti Keadaan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1028
+#: ../plugins/gtk+/gtk+.xml.in.h:1045
 msgid "Icon Name column"
 msgstr "Kolom Nama Ikon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1029
+#: ../plugins/gtk+/gtk+.xml.in.h:1046
 msgid "Pixbuf column"
 msgstr "Kolom pixbuf"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1030
+#: ../plugins/gtk+/gtk+.xml.in.h:1047
 msgid "GIcon column"
 msgstr "Kolom GIcon"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1031
+#: ../plugins/gtk+/gtk+.xml.in.h:1048
 msgid "Pixbuf Expander Closed column"
 msgstr "Kolom Pengembang Pixbux Ditutup"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1032
+#: ../plugins/gtk+/gtk+.xml.in.h:1049
 msgid "Pixbuf Expander Open column"
 msgstr "Kolom Pengembang Pixbuf Dibuka"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1033
+#: ../plugins/gtk+/gtk+.xml.in.h:1050
 msgid "Stock Detail column"
 msgstr "Kolom Rincian Stok"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1034
+#: ../plugins/gtk+/gtk+.xml.in.h:1051
 msgid "Stock column"
 msgstr "Kolom stok"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1035
+#: ../plugins/gtk+/gtk+.xml.in.h:1052
 msgid "Stock Size column"
 msgstr "Kolom Ukuran Stok"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1036
+#: ../plugins/gtk+/gtk+.xml.in.h:1053
 msgid "Progress Renderer"
 msgstr "Perender Kemajuan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1037
+#: ../plugins/gtk+/gtk+.xml.in.h:1054
 msgid "Orientation column"
 msgstr "Kolom orientasi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1038
+#: ../plugins/gtk+/gtk+.xml.in.h:1055
 msgid "Pulse column"
 msgstr "Kolom pulsa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1039
+#: ../plugins/gtk+/gtk+.xml.in.h:1056
 msgid "Text Horizontal Alignment column"
 msgstr "Kolom Perataan Horisontal Teks"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1040
+#: ../plugins/gtk+/gtk+.xml.in.h:1057
 msgid "Text Vertical Alignment column"
 msgstr "Kolom Perataan Vertikal Teks"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1041
+#: ../plugins/gtk+/gtk+.xml.in.h:1058
 msgid "Value column"
 msgstr "Kolom nilai"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1042
+#: ../plugins/gtk+/gtk+.xml.in.h:1059
 msgid "Inverted column"
 msgstr "Kolom yang dibalik"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1043
+#: ../plugins/gtk+/gtk+.xml.in.h:1060
 msgid "Spinner Renderer"
 msgstr "Perender Spinner"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1044
+#: ../plugins/gtk+/gtk+.xml.in.h:1061
 msgid "Active column"
 msgstr "Kolom aktif"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1045
+#: ../plugins/gtk+/gtk+.xml.in.h:1062
 msgid "Toggle Renderer"
 msgstr "Perender Jungkit"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1046
+#: ../plugins/gtk+/gtk+.xml.in.h:1063
 msgid "Activatable column"
 msgstr "Kolom yang dapat diaktifkan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1047
+#: ../plugins/gtk+/gtk+.xml.in.h:1064
 msgid "Inconsistent column"
 msgstr "Kolom tak konsisten"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1048
+#: ../plugins/gtk+/gtk+.xml.in.h:1065
 msgid "Indicator Size column"
 msgstr "Kolom Ukuran Indikator"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1049
+#: ../plugins/gtk+/gtk+.xml.in.h:1066
 msgid "Radio column"
 msgstr "Kolom radio"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1050
+#: ../plugins/gtk+/gtk+.xml.in.h:1067
 msgid "Status Icon"
 msgstr "Ikon Status"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1051
+#: ../plugins/gtk+/gtk+.xml.in.h:1068
 msgid "Text Buffer"
 msgstr "Penyangga Teks"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1052
+#: ../plugins/gtk+/gtk+.xml.in.h:1069
 msgid "Entry Buffer"
 msgstr "Penyangga Entri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1053
+#: ../plugins/gtk+/gtk+.xml.in.h:1070
 msgid "Text Tag"
 msgstr "Tag Teks"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1054
+#: ../plugins/gtk+/gtk+.xml.in.h:1071
 msgid "Text Tag Table"
 msgstr "Tabel Tag Teks"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1055
+#: ../plugins/gtk+/gtk+.xml.in.h:1072
 msgid "File Filter"
 msgstr "Filter Berkas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1056
+#: ../plugins/gtk+/gtk+.xml.in.h:1073
 msgid "Mime Types"
 msgstr "Tipe MIME"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1057
+#: ../plugins/gtk+/gtk+.xml.in.h:1074
 msgid "Patterns"
 msgstr "Pola"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1058
+#: ../plugins/gtk+/gtk+.xml.in.h:1075
 msgid "The list of mime types to add to the filter"
 msgstr "Daftar tipe mime untuk ditambahkan ke penyaring"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1059
+#: ../plugins/gtk+/gtk+.xml.in.h:1076
 msgid "The list of file name patterns to add to the filter"
 msgstr "Daftar pola nama berkas untuk ditambahkan ke penyaring"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1060
+#: ../plugins/gtk+/gtk+.xml.in.h:1077
 msgid "Recent Filter"
 msgstr "Tapis Terkini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1062
+#: ../plugins/gtk+/gtk+.xml.in.h:1079
 msgid "The list of application names to add to the filter"
 msgstr "Daftar nama aplikasi untuk ditambahkan ke penyaring"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1063
+#: ../plugins/gtk+/gtk+.xml.in.h:1080
 msgid "Recent Manager"
 msgstr "Manajer Terkini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1064
+#: ../plugins/gtk+/gtk+.xml.in.h:1081
 msgid "Themed Icon"
 msgstr "Ikon Bertema"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1065
+#: ../plugins/gtk+/gtk+.xml.in.h:1082
 msgid "Toplevels"
 msgstr "Aras Puncak"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1066
+#: ../plugins/gtk+/gtk+.xml.in.h:1083
 msgid "Containers"
 msgstr "Wadah"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1067
+#: ../plugins/gtk+/gtk+.xml.in.h:1084
 msgid "Control and Display"
 msgstr "Kendali dan Tampilan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1068
+#: ../plugins/gtk+/gtk+.xml.in.h:1085
 msgid "Composite Widgets"
 msgstr "Widget Komposit"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1069
+#: ../plugins/gtk+/gtk+.xml.in.h:1086
 msgid "Miscellaneous"
 msgstr "Serba neka"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1070
+#: ../plugins/gtk+/gtk+.xml.in.h:1087
 msgid "Deprecated"
 msgstr "Tak berlaku lagi"
 
