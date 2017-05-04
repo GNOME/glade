@@ -64,18 +64,6 @@ G_DEFINE_TYPE_WITH_CODE (GladeSignalModel, glade_signal_model, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_DRAG_SOURCE,
                                                 gtk_tree_drag_source_iface_init))
 
-static gint
-g_ptr_array_find (GPtrArray *array, gpointer data)
-{
-  gint i;
-  for (i = 0; i < array->len; i++)
-    {
-      if (array->pdata[i] == data)
-	return i;
-    }
-  return -1;
-}
-
 static void
 glade_signal_model_init (GladeSignalModel *object)
 {
@@ -524,13 +512,11 @@ glade_signal_model_get_path (GtkTreeModel *model, GtkTreeIter *iter)
 	    {
 	      if (handlers)
 		{
-		  gint handler_index = g_ptr_array_find (handlers, handler);
-		  if (handler_index == -1) /* dummy handler */
-		    {
-		      index1 += handlers->len;
-		    }
-		  else
+		  guint handler_index;
+		  if (g_ptr_array_find (handlers, handler, &handler_index))
 		    index1 += handler_index;
+		  else
+		    index1 += handlers->len;
 		}
 	      break;
 	    }
@@ -582,7 +568,8 @@ glade_signal_model_get_value (GtkTreeModel *model,
         {
           GPtrArray *handlers = g_hash_table_lookup (sig_model->priv->signals,
                                                      glade_signal_get_name (signal));
-          if (!handlers || !handlers->len || g_ptr_array_find (handlers, signal) == 0)
+          guint index;
+          if (!handlers || !handlers->len || (g_ptr_array_find (handlers, signal, &index) && index == 0))
             g_value_set_boolean (value, TRUE);
           else
             g_value_set_boolean (value, FALSE);
@@ -718,7 +705,10 @@ glade_signal_model_iter_next (GtkTreeModel *model, GtkTreeIter *iter)
 	}
       else if (handlers)
 	{
-	  gint new_index = g_ptr_array_find (handlers, handler) + 1;
+	  guint new_index = 0;
+	  if (g_ptr_array_find (handlers, handler, &new_index))
+	    new_index++;
+
 	  if (new_index < handlers->len)
 	    {
 	      glade_signal_model_create_signal_iter (sig_model, widget,

@@ -146,8 +146,10 @@ dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
 GTK_REQUIRED=3.20.0
+GLIB_REQUIRED=2.53.2
 PKG_CHECK_MODULES([GTK],[
   gtk+-3.0 >= $GTK_REQUIRED
+  glib-2.0 >= $GLIB_REQUIRED
   gmodule-2.0
   libxml-2.0 >= 2.4.0
 ])
