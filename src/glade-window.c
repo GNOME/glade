@@ -132,7 +132,6 @@ struct _GladeWindowPrivate
 
   GtkWidget *center_paned;
   GtkWidget *left_paned;
-  GtkWidget *right_paned;
 
   GtkWidget *registration;      /* Registration and user survey dialog */
   
@@ -2620,7 +2619,6 @@ glade_window_config_save (GladeWindow * window)
   /* Save main window paned positions */
   save_paned_position (config, window->priv->center_paned, "center_pane");
   save_paned_position (config, window->priv->left_paned, "left_pane");
-  save_paned_position (config, window->priv->right_paned, "right_pane");
 
   glade_preferences_save (window->priv->preferences, config);
 
@@ -2698,7 +2696,6 @@ fix_paned_positions_idle (GladeWindow *window)
 
   load_paned_position (config, window->priv->left_paned, "left_pane", 200);
   load_paned_position (config, window->priv->center_paned, "center_pane", 400);
-  load_paned_position (config, window->priv->right_paned, "right_pane", 220);
 
   return FALSE;
 }
@@ -2806,7 +2803,6 @@ glade_window_config_load (GladeWindow *window)
   /* Paned positions */
   load_paned_position (config, window->priv->left_paned, "left_pane", 200);
   load_paned_position (config, window->priv->center_paned, "center_pane", 400);
-  load_paned_position (config, window->priv->right_paned, "right_pane", 220);
 }
 
 static void
@@ -3025,7 +3021,6 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, about_dialog);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, center_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, left_paned);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, right_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, notebook);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, notebook_frame);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, inspectors_notebook);
