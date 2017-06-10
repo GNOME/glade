@@ -64,7 +64,6 @@
 #define CONFIG_KEY_Y                "y"
 #define CONFIG_KEY_WIDTH            "width"
 #define CONFIG_KEY_HEIGHT           "height"
-#define CONFIG_KEY_DETACHED         "detached"
 #define CONFIG_KEY_MAXIMIZED        "maximized"
 #define CONFIG_KEY_SHOW_TOOLBAR     "show-toolbar"
 #define CONFIG_KEY_SHOW_TABS        "show-tabs"
@@ -77,26 +76,6 @@
 #define CONFIG_KEY_BACKUP           "backup"
 #define CONFIG_KEY_AUTOSAVE         "autosave"
 #define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
-
-enum
-{
-  DOCK_PALETTE,
-  DOCK_INSPECTOR,
-  DOCK_EDITOR,
-  N_DOCKS
-};
-
-typedef struct
-{
-  GtkWidget *widget;            /* the widget with scrollbars */
-  GtkWidget *paned;             /* GtkPaned in the main window containing which part */
-  gboolean first_child;         /* whether this widget is packed with gtk_paned_pack1() */
-  gboolean detached;            /* whether this widget should be floating */
-  gboolean maximized;           /* whether this widget should be maximized */
-  char *title;                  /* window title, untranslated */
-  char *id;                     /* id to use in config file */
-  GdkRectangle window_pos;      /* x and y == G_MININT means unset */
-} ToolDock;
 
 struct _GladeWindowPrivate
 {
@@ -129,7 +108,6 @@ struct _GladeWindowPrivate
   GtkAction *use_small_icons_action, *icons_and_labels_radioaction;
   GtkAction *toolbar_visible_action, *project_tabs_visible_action, *statusbar_visible_action, *editor_header_visible_action;
   GtkAction *selector_radioaction;
-  GtkAction *dock_palette_action, *dock_inspector_action, *dock_editor_action;
 
   GtkActionGroup *project_actiongroup;      /* All the project actions */
   GtkActionGroup *pointer_mode_actiongroup;
@@ -157,14 +135,12 @@ struct _GladeWindowPrivate
   gint actions_start;           /* start of action items */
 
   GtkWidget *center_paned;
-  /* paned windows that tools get docked into/out of */
   GtkWidget *left_paned;
   GtkWidget *right_paned;
 
   GtkWidget *registration;      /* Registration and user survey dialog */
   
   GdkRectangle position;
-  ToolDock docks[N_DOCKS];
 };
 
 static void check_reload_project (GladeWindow *window, GladeProject *project);
@@ -1998,140 +1974,6 @@ on_use_small_icons_action_toggled (GtkAction *action, GladeWindow *window)
   g_list_free (children);
 }
 
-static gboolean
-on_dock_deleted (GtkWidget *widget, GdkEvent *event, GtkAction *dock_action)
-{
-  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (dock_action), TRUE);
-  return TRUE;
-}
-
-static gboolean
-on_dock_resized (GtkWidget *window, GdkEventConfigure *event, ToolDock *dock)
-{
-  GdkWindow *gdk_window =
-      gtk_widget_get_window (GTK_WIDGET
-                             (gtk_widget_get_toplevel (dock->widget)));
-  dock->maximized =
-      gdk_window_get_state (gdk_window) & GDK_WINDOW_STATE_MAXIMIZED;
-
-  if (!dock->maximized)
-    {
-      dock->window_pos.width = event->width;
-      dock->window_pos.height = event->height;
-
-      gtk_window_get_position (GTK_WINDOW (window),
-                               &dock->window_pos.x, &dock->window_pos.y);
-    }
-
-  return FALSE;
-}
-
-static void
-properties_dock_update_title_from_editor (GtkWidget *toplevel, GladeEditor *editor)
-{
-  GladeWidgetAdaptor *adaptor;
-  GladeWidget *gwidget;
-  gchar *class_field;
-
-  g_object_get (editor,
-                "class-field", &class_field,
-                "widget", &gwidget,
-                NULL);
-
-  if (gwidget == NULL)
-    return;
-
-  gtk_window_set_title (GTK_WINDOW (toplevel), class_field);
-
-  if ((adaptor = glade_widget_get_adaptor (gwidget)))
-    gtk_window_set_icon_name (GTK_WINDOW (toplevel),
-                              glade_widget_adaptor_get_icon_name (adaptor));
-
-  g_free (class_field);
-}
-
-static void
-on_dock_action_toggled (GtkAction *action, GladeWindow *window)
-{
-  GladeWindowPrivate *priv = window->priv;
-  GtkWidget *toplevel, *alignment;
-  ToolDock *dock;
-  guint dock_type;
-
-  dock_type =
-      GPOINTER_TO_UINT (g_object_get_data
-                        (G_OBJECT (action), "glade-dock-type"));
-  g_return_if_fail (dock_type < N_DOCKS);
-
-  dock = &priv->docks[dock_type];
-
-  if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-    {
-      toplevel = gtk_widget_get_toplevel (dock->widget);
-
-      g_object_ref (dock->widget);
-      gtk_container_remove (GTK_CONTAINER
-                            (gtk_bin_get_child (GTK_BIN (toplevel))),
-                            dock->widget);
-
-      if (dock->first_child)
-        gtk_paned_pack1 (GTK_PANED (dock->paned), dock->widget, FALSE, FALSE);
-      else
-        gtk_paned_pack2 (GTK_PANED (dock->paned), dock->widget, FALSE, FALSE);
-      g_object_unref (dock->widget);
-
-      gtk_widget_show (dock->paned);
-      dock->detached = FALSE;
-
-      gtk_widget_destroy (toplevel);
-    }
-  else
-    {
-      toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-
-      /* Add a little padding on top to match the bottom */
-      alignment = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
-      gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 4, 0, 0, 0);
-      gtk_container_add (GTK_CONTAINER (toplevel), alignment);
-      gtk_widget_show (alignment);
-
-      gtk_window_set_default_size (GTK_WINDOW (toplevel),
-                                   dock->window_pos.width,
-                                   dock->window_pos.height);
-
-      if (dock->window_pos.x > G_MININT && dock->window_pos.y > G_MININT)
-        gtk_window_move (GTK_WINDOW (toplevel),
-                         dock->window_pos.x, dock->window_pos.y);
-
-      gtk_window_set_title (GTK_WINDOW (toplevel), dock->title);
-      g_object_ref (dock->widget);
-      gtk_container_remove (GTK_CONTAINER (dock->paned), dock->widget);
-      gtk_container_add (GTK_CONTAINER (alignment), dock->widget);
-      g_object_unref (dock->widget);
-
-      g_signal_connect (G_OBJECT (toplevel), "delete-event",
-                        G_CALLBACK (on_dock_deleted), action);
-      g_signal_connect (G_OBJECT (toplevel), "configure-event",
-                        G_CALLBACK (on_dock_resized), dock);
-
-      if (!gtk_paned_get_child1 (GTK_PANED (dock->paned)) &&
-          !gtk_paned_get_child2 (GTK_PANED (dock->paned)))
-        gtk_widget_hide (dock->paned);
-
-      gtk_window_add_accel_group (GTK_WINDOW (toplevel), priv->accelgroup);
-
-      g_signal_connect (G_OBJECT (toplevel), "key-press-event",
-                        G_CALLBACK (glade_utils_hijack_key_press), window);
-
-      dock->detached = TRUE;
-
-      if (dock_type == DOCK_EDITOR)
-        properties_dock_update_title_from_editor (toplevel, priv->editor);
-
-      gtk_window_present (GTK_WINDOW (toplevel));
-    }
-}
-
 static void
 on_toolbar_visible_action_toggled (GtkAction *action, GladeWindow *window)
 {
@@ -2726,16 +2568,7 @@ glade_window_dispose (GObject *object)
 static void
 glade_window_finalize (GObject *object)
 {
-  guint i;
-
   g_free (GLADE_WINDOW (object)->priv->default_path);
-
-  for (i = 0; i < N_DOCKS; i++)
-    {
-      ToolDock *dock = &GLADE_WINDOW (object)->priv->docks[i];
-      g_free (dock->title);
-      g_free (dock->id);
-    }
 
   G_OBJECT_CLASS (glade_window_parent_class)->finalize (object);
 }
@@ -2775,21 +2608,16 @@ static void
 key_file_set_window_position (GKeyFile *config,
                               GdkRectangle *position,
                               const char *id,
-                              gboolean detached,
-                              gboolean save_detached,
                               gboolean maximized)
 {
-  char *key_x, *key_y, *key_width, *key_height, *key_detached, *key_maximized;
+  char *key_x, *key_y, *key_width, *key_height, *key_maximized;
 
   key_x = g_strdup_printf ("%s-" CONFIG_KEY_X, id);
   key_y = g_strdup_printf ("%s-" CONFIG_KEY_Y, id);
   key_width = g_strdup_printf ("%s-" CONFIG_KEY_WIDTH, id);
   key_height = g_strdup_printf ("%s-" CONFIG_KEY_HEIGHT, id);
-  key_detached = g_strdup_printf ("%s-" CONFIG_KEY_DETACHED, id);
   key_maximized = g_strdup_printf ("%s-" CONFIG_KEY_MAXIMIZED, id);
 
-  /* we do not want to save position of docks which
-   * were never detached */
   if (position->x > G_MININT)
     g_key_file_set_integer (config, CONFIG_GROUP_WINDOWS, key_x, position->x);
   if (position->y > G_MININT)
@@ -2800,16 +2628,11 @@ key_file_set_window_position (GKeyFile *config,
   g_key_file_set_integer (config, CONFIG_GROUP_WINDOWS,
                           key_height, position->height);
 
-  if (save_detached)
-    g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS,
-                            key_detached, detached);
-
   g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS,
                           key_maximized, maximized);
 
 
   g_free (key_maximized);
-  g_free (key_detached);
   g_free (key_height);
   g_free (key_width);
   g_free (key_y);
@@ -2820,22 +2643,13 @@ static void
 save_windows_config (GladeWindow *window, GKeyFile *config)
 {
   GladeWindowPrivate *priv = window->priv;
-  guint i;
   GdkWindow *gdk_window;
   gboolean maximized;
-
-  for (i = 0; i < N_DOCKS; ++i)
-    {
-      ToolDock *dock = &window->priv->docks[i];
-      key_file_set_window_position (config, &dock->window_pos, dock->id,
-                                    dock->detached, TRUE, dock->maximized);
-    }
 
   gdk_window = gtk_widget_get_window (GTK_WIDGET (window));
   maximized = gdk_window_get_state (gdk_window) & GDK_WINDOW_STATE_MAXIMIZED;
 
-  key_file_set_window_position (config, &priv->position,
-                                "main", FALSE, FALSE, maximized);
+  key_file_set_window_position (config, &priv->position, "main", maximized);
 
   g_key_file_set_boolean (config,
                           CONFIG_GROUP_WINDOWS,
@@ -2900,16 +2714,14 @@ static void
 key_file_get_window_position (GKeyFile *config,
                               const char *id,
                               GdkRectangle *pos,
-                              gboolean *detached,
                               gboolean *maximized)
 {
-  char *key_x, *key_y, *key_width, *key_height, *key_detached, *key_maximized;
+  char *key_x, *key_y, *key_width, *key_height, *key_maximized;
 
   key_x = g_strdup_printf ("%s-" CONFIG_KEY_X, id);
   key_y = g_strdup_printf ("%s-" CONFIG_KEY_Y, id);
   key_width = g_strdup_printf ("%s-" CONFIG_KEY_WIDTH, id);
   key_height = g_strdup_printf ("%s-" CONFIG_KEY_HEIGHT, id);
-  key_detached = g_strdup_printf ("%s-" CONFIG_KEY_DETACHED, id);
   key_maximized = g_strdup_printf ("%s-" CONFIG_KEY_MAXIMIZED, id);
 
   pos->x = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_x, pos->x);
@@ -2918,16 +2730,6 @@ key_file_get_window_position (GKeyFile *config,
       key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_width, pos->width);
   pos->height =
       key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_height, pos->height);
-
-  if (detached)
-    {
-      if (g_key_file_has_key (config, CONFIG_GROUP_WINDOWS, key_detached, NULL))
-        *detached =
-            g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, key_detached,
-                                    NULL);
-      else
-        *detached = FALSE;
-    }
 
   if (maximized)
     {
@@ -2944,7 +2746,6 @@ key_file_get_window_position (GKeyFile *config,
   g_free (key_y);
   g_free (key_width);
   g_free (key_height);
-  g_free (key_detached);
   g_free (key_maximized);
 }
 
@@ -2982,7 +2783,7 @@ glade_window_set_initial_size (GladeWindow *window, GKeyFile *config)
 
   gboolean maximized;
 
-  key_file_get_window_position (config, "main", &position, NULL, &maximized);
+  key_file_get_window_position (config, "main", &position, &maximized);
   if (maximized)
     {
       gtk_window_maximize (GTK_WINDOW (window));
@@ -3103,52 +2904,6 @@ glade_window_config_load (GladeWindow *window)
 }
 
 static void
-show_dock_first_time (GladeWindow *window, guint dock_type, GtkAction *action)
-{
-  GKeyFile *config;
-  int detached = -1;
-  gboolean maximized;
-  ToolDock *dock;
-
-  g_object_set_data (G_OBJECT (action), "glade-dock-type",
-                     GUINT_TO_POINTER (dock_type));
-
-  dock = &window->priv->docks[dock_type];
-  config = glade_app_get_config ();
-
-  key_file_get_window_position (config, dock->id, &dock->window_pos, &detached,
-                                &maximized);
-
-  if (detached)
-    gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
-
-  if (maximized)
-    gtk_window_maximize (GTK_WINDOW (gtk_widget_get_toplevel (dock->widget)));
-}
-
-static void
-setup_dock (ToolDock *dock,
-            GtkWidget *dock_widget,
-            guint default_width,
-            guint default_height,
-            const char *window_title,
-            const char *id,
-            GtkWidget *paned,
-            gboolean first_child)
-{
-  dock->widget = dock_widget;
-  dock->window_pos.x = dock->window_pos.y = G_MININT;
-  dock->window_pos.width = default_width;
-  dock->window_pos.height = default_height;
-  dock->title = g_strdup (window_title);
-  dock->id = g_strdup (id);
-  dock->paned = paned;
-  dock->first_child = first_child;
-  dock->detached = FALSE;
-  dock->maximized = FALSE;
-}
-
-static void
 on_quit_action_activate (GtkAction *action, GladeWindow *window)
 {
   GList *list, *projects;
@@ -3212,19 +2967,6 @@ glade_window_init (GladeWindow *window)
 }
 
 static void
-on_editor_class_field_notify (GObject     *gobject,
-                              GParamSpec  *pspec,
-                              GladeWindow *window)
-{
-  GladeWindowPrivate *priv = window->priv;
-  ToolDock *editor = &priv->docks[DOCK_EDITOR];
-  
-  if (editor->detached)
-    properties_dock_update_title_from_editor (gtk_widget_get_toplevel (editor->widget),
-                                              GLADE_EDITOR (gobject));
-}
-
-static void
 glade_window_constructed (GObject *object)
 {
   GladeWindow *window = GLADE_WINDOW (object);
@@ -3243,14 +2985,6 @@ glade_window_constructed (GObject *object)
   action_group_setup_callbacks (priv->pointer_mode_actiongroup, priv->accelgroup, window);
   action_group_setup_callbacks (priv->static_actiongroup, priv->accelgroup, window);
   action_group_setup_callbacks (priv->view_actiongroup, priv->accelgroup, window);
-
-  /* Setup Docks */
-  setup_dock (&priv->docks[DOCK_PALETTE], GTK_WIDGET (priv->palettes_notebook), 200, 540,
-              _("Palette"), "palette", priv->left_paned, TRUE);
-  setup_dock (&priv->docks[DOCK_INSPECTOR], GTK_WIDGET (priv->inspectors_notebook), 300, 540,
-              _("Inspector"), "inspector", priv->right_paned, TRUE);
-  setup_dock (&priv->docks[DOCK_EDITOR], GTK_WIDGET (priv->editor), 500, 700,
-              _("Properties"), "properties", priv->right_paned, FALSE);
 
   /* status bar */
   priv->statusbar_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar), "general");
@@ -3272,9 +3006,6 @@ glade_window_constructed (GObject *object)
   /* GtkWindow events */
   g_signal_connect (G_OBJECT (window), "key-press-event",
                     G_CALLBACK (glade_utils_hijack_key_press), window);
-
-  g_signal_connect (priv->editor, "notify::class-field",
-                    G_CALLBACK (on_editor_class_field_notify), window);
 
   /* Load configuration, we need the list of extra catalog paths before creating
    * the GladeApp
@@ -3318,10 +3049,6 @@ glade_window_constructed (GObject *object)
     gtkosx_application_ready (theApp);
   }
 #endif
-
-  show_dock_first_time (window, DOCK_PALETTE, priv->dock_palette_action);
-  show_dock_first_time (window, DOCK_INSPECTOR, priv->dock_inspector_action);
-  show_dock_first_time (window, DOCK_EDITOR, priv->dock_editor_action);
 }
 
 static void
@@ -3432,9 +3159,6 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, statusbar_visible_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, editor_header_visible_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, selector_radioaction);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, dock_palette_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, dock_inspector_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, dock_editor_action);
 
   /* Callbacks */
   gtk_widget_class_bind_template_callback (widget_class, on_open_action_activate);
@@ -3456,7 +3180,6 @@ glade_window_class_init (GladeWindowClass *klass)
 
   gtk_widget_class_bind_template_callback (widget_class, on_open_recent_action_item_activated);
   gtk_widget_class_bind_template_callback (widget_class, on_use_small_icons_action_toggled);
-  gtk_widget_class_bind_template_callback (widget_class, on_dock_action_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_toolbar_visible_action_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_statusbar_visible_action_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_project_tabs_visible_action_toggled);

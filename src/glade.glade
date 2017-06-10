@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.19.0 
+<!-- Generated with glade 3.20.0 
 
 Glade - A user interface designer for GTK+ and GNOME.
 Copyright (C) 2012-2014 Juan Pablo Ugarte
@@ -85,6 +85,9 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
           </packing>
         </child>
       </object>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </object>
   <object class="GtkAccelGroup" id="accelgroup"/>
@@ -266,30 +269,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="label" translatable="yes">_Use Small Icons</property>
         <property name="tooltip" translatable="yes">Show items using small icons</property>
         <signal name="toggled" handler="on_use_small_icons_action_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="dock_palette_action">
-        <property name="label" translatable="yes">Dock _Palette</property>
-        <property name="tooltip" translatable="yes">Dock the palette into the main window</property>
-        <property name="active">True</property>
-        <signal name="toggled" handler="on_dock_action_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="dock_inspector_action">
-        <property name="label" translatable="yes">Dock _Inspector</property>
-        <property name="tooltip" translatable="yes">Dock the inspector into the main window</property>
-        <property name="active">True</property>
-        <signal name="toggled" handler="on_dock_action_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="dock_editor_action">
-        <property name="label" translatable="yes">Dock Prop_erties</property>
-        <property name="tooltip" translatable="yes">Dock the editor into the main window</property>
-        <property name="active">True</property>
-        <signal name="toggled" handler="on_dock_action_toggled" swapped="no"/>
       </object>
     </child>
     <child>
@@ -766,39 +745,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                         </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="imagemenuitem24">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="dock_palette_menuitem">
-                        <property name="use_action_appearance">True</property>
-                        <property name="related_action">dock_palette_action</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="dock_inspector_menuitem">
-                        <property name="use_action_appearance">True</property>
-                        <property name="related_action">dock_inspector_action</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="dock_editor_menuitem">
-                        <property name="use_action_appearance">True</property>
-                        <property name="related_action">dock_editor_action</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
                   </object>
                 </child>
               </object>
@@ -1222,6 +1168,9 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
           </packing>
         </child>
       </object>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </template>
 </interface>
