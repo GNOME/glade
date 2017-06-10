@@ -41,9 +41,10 @@ typedef struct _GladeAdaptorChooserPrivate _GladeAdaptorChooserPrivate;
 
 typedef enum
 {
-  GLADE_ADAPTOR_CHOOSER_WIDGET        = 1 << 0,
-  GLADE_ADAPTOR_CHOOSER_TOPLEVEL      = 1 << 1,
-  GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL = 1 << 2
+  GLADE_ADAPTOR_CHOOSER_WIDGET          = 1 << 0,
+  GLADE_ADAPTOR_CHOOSER_TOPLEVEL        = 1 << 1,
+  GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL   = 1 << 2,
+  GLADE_ADAPTOR_CHOOSER_SKIP_DEPRECATED = 1 << 3
 } _GladeAdaptorChooserFlags;
 
 struct _GladeAdaptorChooserClass

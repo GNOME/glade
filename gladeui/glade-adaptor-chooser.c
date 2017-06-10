@@ -186,7 +186,7 @@ store_populate (GtkListStore            *store,
               GType type = glade_widget_adaptor_get_object_type (adaptor);
 
               /* Skip deprecated adaptors and according to flags */
-              if (GWA_DEPRECATED (adaptor) ||
+              if ((flags & GLADE_ADAPTOR_CHOOSER_SKIP_DEPRECATED && GWA_DEPRECATED (adaptor)) ||
                   (flags & GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL && GWA_IS_TOPLEVEL (adaptor)) ||
                   !((flags & GLADE_ADAPTOR_CHOOSER_WIDGET && g_type_is_a (type, GTK_TYPE_WIDGET)) ||
                     (flags & GLADE_ADAPTOR_CHOOSER_TOPLEVEL && GWA_IS_TOPLEVEL (adaptor))))
@@ -377,6 +377,7 @@ _glade_adaptor_chooser_flags_get_type (void)
             { GLADE_ADAPTOR_CHOOSER_WIDGET, "GLADE_ADAPTOR_CHOOSER_WIDGET", "widget" },
             { GLADE_ADAPTOR_CHOOSER_TOPLEVEL, "GLADE_ADAPTOR_CHOOSER_TOPLEVEL", "toplevel" },
             { GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL, "GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL", "skip-toplevel" },
+            { GLADE_ADAPTOR_CHOOSER_SKIP_DEPRECATED, "GLADE_ADAPTOR_CHOOSER_SKIP_DEPRECATED", "skip-deprecated" },
             { 0, NULL, NULL }
         };
         etype = g_flags_register_static (g_intern_static_string ("_GladeAdaptorChooserFlag"), values);
