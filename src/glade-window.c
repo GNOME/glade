@@ -69,8 +69,6 @@
 #define CONFIG_KEY_SHOW_TABS        "show-tabs"
 #define CONFIG_KEY_SHOW_STATUS      "show-statusbar"
 #define CONFIG_KEY_EDITOR_HEADER    "show-editor-header"
-#define CONFIG_KEY_PALETTE          "palette-appearance"
-#define CONFIG_KEY_PALETTE_SMALL    "palette-small-icons"
 
 #define CONFIG_GROUP_LOAD_SAVE      "Load and Save"
 #define CONFIG_KEY_BACKUP           "backup"
@@ -105,7 +103,6 @@ struct _GladeWindowPrivate
   GtkAction *save_action, *quit_action;
   GtkAction *undo_action, *redo_action, *cut_action, *copy_action, *paste_action, *delete_action;
   GtkAction *previous_project_action, *next_project_action;
-  GtkAction *use_small_icons_action, *icons_and_labels_radioaction;
   GtkAction *toolbar_visible_action, *project_tabs_visible_action, *statusbar_visible_action, *editor_header_visible_action;
   GtkAction *selector_radioaction;
 
@@ -1793,7 +1790,6 @@ on_notebook_tab_added (GtkNotebook *notebook,
                        guint page_num,
                        GladeWindow *window)
 {
-  GladeWindowPrivate *priv = window->priv;
   GladeProject *project;
   GtkWidget *inspector, *palette;
 
@@ -1831,12 +1827,6 @@ on_notebook_tab_added (GtkNotebook *notebook,
   gtk_widget_show (palette);
   glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
   glade_palette_set_project (GLADE_PALETTE (palette), project);
-
-  glade_palette_set_use_small_item_icons (GLADE_PALETTE (palette),
-					  gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->use_small_icons_action)));
-
-  glade_palette_set_item_appearance (GLADE_PALETTE (palette),
-				     gtk_radio_action_get_current_value (GTK_RADIO_ACTION (priv->icons_and_labels_radioaction)));
 
   gtk_notebook_append_page (window->priv->palettes_notebook, palette, NULL);
   
@@ -1937,41 +1927,6 @@ on_open_recent_action_item_activated (GtkRecentChooser *chooser,
 
   g_free (uri);
   g_free (path);
-}
-
-static void
-on_palette_appearance_radioaction_changed (GtkRadioAction *action,
-                                           GtkRadioAction *current,
-                                           GladeWindow    *window)
-{
-  GList *children, *l;
-  gint value;
-
-  value = gtk_radio_action_get_current_value (current);
-
-  children = gtk_container_get_children (GTK_CONTAINER (window->priv->palettes_notebook));
-  for (l = children; l; l = l->next)
-    {
-      if (GLADE_IS_PALETTE (l->data))
-        glade_palette_set_item_appearance (GLADE_PALETTE (l->data), value);
-    }
-  g_list_free (children);
-}
-
-static void
-on_use_small_icons_action_toggled (GtkAction *action, GladeWindow *window)
-{
-  GList *children, *l;
-
-  children = gtk_container_get_children (GTK_CONTAINER (window->priv->palettes_notebook));
-  for (l = children; l; l = l->next)
-    {
-      if (GLADE_IS_PALETTE (l->data))
-	glade_palette_set_use_small_item_icons (GLADE_PALETTE (l->data),
-						gtk_toggle_action_get_active
-						(GTK_TOGGLE_ACTION (action)));
-    }
-  g_list_free (children);
 }
 
 static void
@@ -2666,12 +2621,6 @@ save_windows_config (GladeWindow *window, GKeyFile *config)
 
   g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_EDITOR_HEADER,
                           gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->editor_header_visible_action)));
-
-  g_key_file_set_integer (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_PALETTE,
-                          gtk_radio_action_get_current_value (GTK_RADIO_ACTION (priv->icons_and_labels_radioaction)));
-
-  g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_PALETTE_SMALL,
-                          gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->use_small_icons_action)));
 }
 
 static void
@@ -2807,8 +2756,7 @@ static void
 glade_window_config_load (GladeWindow *window)
 {
   GKeyFile *config = glade_app_get_config ();
-  gboolean show_toolbar, show_tabs, show_status, show_header, small_icons;
-  gint palette_appearance;
+  gboolean show_toolbar, show_tabs, show_status, show_header;
   GladeWindowPrivate *priv = window->priv;
   GError *error = NULL;
 
@@ -2852,24 +2800,6 @@ glade_window_config_load (GladeWindow *window)
       error = (g_error_free (error), NULL);
     }
 
-  if ((palette_appearance =
-       g_key_file_get_integer (config, CONFIG_GROUP_WINDOWS,
-                               CONFIG_KEY_PALETTE, &error)) == 0 &&
-      error != NULL)
-    {
-      palette_appearance = 1; /* Default to icons */
-      error = (g_error_free (error), NULL);
-    }
-
-  if ((small_icons =
-       g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS,
-                               CONFIG_KEY_PALETTE_SMALL, &error)) == FALSE &&
-      error != NULL)
-    {
-      small_icons = FALSE;
-      error = (g_error_free (error), NULL);
-    }
-
   if (show_toolbar)
     gtk_widget_show (priv->toolbar);
   else
@@ -2892,10 +2822,6 @@ glade_window_config_load (GladeWindow *window)
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->statusbar_visible_action), show_status);
 
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->editor_header_visible_action), show_header);
-
-  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->use_small_icons_action), small_icons);
-
-  gtk_radio_action_set_current_value (GTK_RADIO_ACTION (priv->icons_and_labels_radioaction), palette_appearance);
 
   /* Paned positions */
   load_paned_position (config, window->priv->left_paned, "left_pane", 200);
@@ -3152,8 +3078,6 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, delete_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, previous_project_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, next_project_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, use_small_icons_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, icons_and_labels_radioaction);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, toolbar_visible_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, project_tabs_visible_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, statusbar_visible_action);
@@ -3179,12 +3103,10 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_registration_action_activate);
 
   gtk_widget_class_bind_template_callback (widget_class, on_open_recent_action_item_activated);
-  gtk_widget_class_bind_template_callback (widget_class, on_use_small_icons_action_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_toolbar_visible_action_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_statusbar_visible_action_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_project_tabs_visible_action_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_editor_header_visible_action_toggled);
-  gtk_widget_class_bind_template_callback (widget_class, on_palette_appearance_radioaction_changed);
   gtk_widget_class_bind_template_callback (widget_class, on_selector_radioaction_changed);
   gtk_widget_class_bind_template_callback (widget_class, on_actiongroup_connect_proxy);
   gtk_widget_class_bind_template_callback (widget_class, on_actiongroup_disconnect_proxy);

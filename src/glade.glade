@@ -265,13 +265,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
     <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
     <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
     <child>
-      <object class="GtkToggleAction" id="use_small_icons_action">
-        <property name="label" translatable="yes">_Use Small Icons</property>
-        <property name="tooltip" translatable="yes">Show items using small icons</property>
-        <signal name="toggled" handler="on_use_small_icons_action_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
       <object class="GtkToggleAction" id="statusbar_visible_action">
         <property name="label" translatable="yes">_Statusbar</property>
         <property name="tooltip" translatable="yes">Show the statusbar</property>
@@ -293,33 +286,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="tooltip" translatable="yes">Show notebook tabs for loaded projects</property>
         <property name="active">True</property>
         <signal name="toggled" handler="on_project_tabs_visible_action_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioAction" id="icons_and_labels_radioaction">
-        <property name="label" translatable="yes">Text _beside icons</property>
-        <property name="tooltip" translatable="yes">Display items as text beside icons</property>
-        <property name="draw_as_radio">True</property>
-        <property name="group">icons_only_radioaction</property>
-        <signal name="changed" handler="on_palette_appearance_radioaction_changed" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioAction" id="icons_only_radioaction">
-        <property name="label" translatable="yes">_Icons only</property>
-        <property name="tooltip" translatable="yes">Display items as icons only</property>
-        <property name="draw_as_radio">True</property>
-        <property name="active">True</property>
-        <property name="value">1</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioAction" id="labels_only_radioaction">
-        <property name="label" translatable="yes">_Text only</property>
-        <property name="tooltip" translatable="yes">Display items as text only</property>
-        <property name="draw_as_radio">True</property>
-        <property name="value">2</property>
-        <property name="group">icons_only_radioaction</property>
       </object>
     </child>
     <child>
@@ -690,59 +656,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                         <property name="related_action">editor_header_visible_action</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="imagemenuitem23">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Palette _Appearance</property>
-                        <property name="use_underline">True</property>
-                        <child type="submenu">
-                          <object class="GtkMenu" id="menu6">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="icons_and_labels_checkmenuitem">
-                                <property name="use_action_appearance">True</property>
-                                <property name="related_action">icons_and_labels_radioaction</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="icons_only_checkmenuitem">
-                                <property name="use_action_appearance">True</property>
-                                <property name="related_action">icons_only_radioaction</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="labels_only_checkmenuitem">
-                                <property name="use_action_appearance">True</property>
-                                <property name="related_action">labels_only_radioaction</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkSeparatorMenuItem" id="separatormenuitem7">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="use_small_icons_menuitem">
-                                <property name="use_action_appearance">True</property>
-                                <property name="related_action">use_small_icons_action</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="use_underline">True</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
                       </object>
                     </child>
                   </object>
@@ -1169,7 +1082,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
       </object>
     </child>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
   </template>
