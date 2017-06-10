@@ -351,7 +351,8 @@ glade_design_view_viewport_button_press (GtkWidget       *widget,
   gtk_popover_set_pointing_to (GTK_POPOVER (pop), &rect);
   gtk_popover_set_position (GTK_POPOVER (pop), GTK_POS_BOTTOM);
   
-  chooser = _glade_adaptor_chooser_new (GLADE_ADAPTOR_CHOOSER_TOPLEVEL,
+  chooser = _glade_adaptor_chooser_new (GLADE_ADAPTOR_CHOOSER_TOPLEVEL |
+                                        GLADE_ADAPTOR_CHOOSER_WIDGET,
                                         priv->project);
   g_signal_connect (chooser, "adaptor-selected",
                     G_CALLBACK (on_chooser_adaptor_selected),
