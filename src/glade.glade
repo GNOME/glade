@@ -1004,16 +1004,37 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">in</property>
                     <child>
-                      <object class="GtkNotebook" id="notebook">
-                        <property name="width_request">256</property>
+                      <object class="GtkOverlay">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="show_tabs">False</property>
-                        <property name="show_border">False</property>
-                        <property name="scrollable">True</property>
-                        <signal name="page-added" handler="on_notebook_tab_added" swapped="no"/>
-                        <signal name="page-removed" handler="on_notebook_tab_removed" swapped="no"/>
-                        <signal name="switch-page" handler="on_notebook_switch_page" swapped="no"/>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkNotebook" id="notebook">
+                            <property name="width_request">256</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="show_tabs">False</property>
+                            <property name="show_border">False</property>
+                            <property name="scrollable">True</property>
+                            <signal name="page-added" handler="on_notebook_tab_added" swapped="no"/>
+                            <signal name="page-removed" handler="on_notebook_tab_removed" swapped="no"/>
+                            <signal name="switch-page" handler="on_notebook_switch_page" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="index">-1</property>
+                          </packing>
+                        </child>
+                        <child type="overlay">
+                          <object class="GtkStatusbar" id="statusbar">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="valign">end</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">2</property>
+                          </object>
+                          <packing>
+                            <property name="pass_through">True</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -1044,19 +1065,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkStatusbar" id="statusbar">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <property name="spacing">2</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
           </packing>
         </child>
       </object>
