@@ -259,44 +259,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
     </child>
   </object>
-  <object class="GtkActionGroup" id="view_actiongroup">
-    <property name="name">view_actiongroup</property>
-    <property name="accel_group">accelgroup</property>
-    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
-    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
-    <child>
-      <object class="GtkToggleAction" id="statusbar_visible_action">
-        <property name="label" translatable="yes">_Statusbar</property>
-        <property name="tooltip" translatable="yes">Show the statusbar</property>
-        <property name="active">True</property>
-        <signal name="toggled" handler="on_statusbar_visible_action_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="toolbar_visible_action">
-        <property name="label" translatable="yes">Tool_bar</property>
-        <property name="tooltip" translatable="yes">Show the toolbar</property>
-        <property name="active">True</property>
-        <signal name="toggled" handler="on_toolbar_visible_action_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="project_tabs_visible_action">
-        <property name="label" translatable="yes">Project _Tabs</property>
-        <property name="tooltip" translatable="yes">Show notebook tabs for loaded projects</property>
-        <property name="active">True</property>
-        <signal name="toggled" handler="on_project_tabs_visible_action_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="editor_header_visible_action">
-        <property name="label" translatable="yes">_Editor Header</property>
-        <property name="tooltip" translatable="yes">Show the header in the property editor</property>
-        <property name="active">True</property>
-        <signal name="toggled" handler="on_editor_header_visible_action_toggled" swapped="no"/>
-      </object>
-    </child>
-  </object>
   <object class="GtkRecentFilter" id="recentfilter">
     <mime-types>
       <mime-type>application/x-glade</mime-type>

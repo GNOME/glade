@@ -65,10 +65,6 @@
 #define CONFIG_KEY_WIDTH            "width"
 #define CONFIG_KEY_HEIGHT           "height"
 #define CONFIG_KEY_MAXIMIZED        "maximized"
-#define CONFIG_KEY_SHOW_TOOLBAR     "show-toolbar"
-#define CONFIG_KEY_SHOW_TABS        "show-tabs"
-#define CONFIG_KEY_SHOW_STATUS      "show-statusbar"
-#define CONFIG_KEY_EDITOR_HEADER    "show-editor-header"
 
 #define CONFIG_GROUP_LOAD_SAVE      "Load and Save"
 #define CONFIG_KEY_BACKUP           "backup"
@@ -101,13 +97,11 @@ struct _GladeWindowPrivate
   GtkAction *save_action, *quit_action;
   GtkAction *undo_action, *redo_action, *cut_action, *copy_action, *paste_action, *delete_action;
   GtkAction *previous_project_action, *next_project_action;
-  GtkAction *toolbar_visible_action, *project_tabs_visible_action, *statusbar_visible_action, *editor_header_visible_action;
   GtkAction *selector_radioaction;
 
   GtkActionGroup *project_actiongroup;      /* All the project actions */
   GtkActionGroup *pointer_mode_actiongroup;
   GtkActionGroup *static_actiongroup;
-  GtkActionGroup *view_actiongroup;
   
   GtkRecentManager *recent_manager;
   GtkWidget *recent_menu;
@@ -1431,22 +1425,12 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
 }
 
 static void
-glade_window_notebook_set_show_tabs (GladeWindow *window, gboolean show)
-{
-  GladeWindowPrivate *priv = window->priv;
-  GList *projects = glade_app_get_projects ();
-    
-  if (projects == NULL || g_list_next (projects) == NULL)
-    show = FALSE;
-
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->notebook), show);
-}
-
-static void
 glade_window_notebook_tabs_update (GladeWindow *window)
 {
-  GtkToggleAction *tabs = GTK_TOGGLE_ACTION (window->priv->project_tabs_visible_action);
-  glade_window_notebook_set_show_tabs (window, gtk_toggle_action_get_active (tabs));
+  GList *projects = glade_app_get_projects ();
+
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (window->priv->notebook),
+                              !(projects == NULL || g_list_next (projects) == NULL));
 }
 
 static void
@@ -1784,42 +1768,6 @@ on_open_recent_action_item_activated (GtkRecentChooser *chooser,
 
   g_free (uri);
   g_free (path);
-}
-
-static void
-on_toolbar_visible_action_toggled (GtkAction *action, GladeWindow *window)
-{
-  if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-    gtk_widget_show (window->priv->toolbar);
-  else
-    gtk_widget_hide (window->priv->toolbar);
-}
-
-static void
-on_statusbar_visible_action_toggled (GtkAction *action, GladeWindow *window)
-{
-  if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-    gtk_widget_show (window->priv->statusbar);
-  else
-    gtk_widget_hide (window->priv->statusbar);
-}
-
-static void
-on_project_tabs_visible_action_toggled (GtkAction *action, GladeWindow *window)
-{
-  if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-    glade_window_notebook_set_show_tabs (window, TRUE);
-  else
-    glade_window_notebook_set_show_tabs (window, FALSE);
-}
-
-static void
-on_editor_header_visible_action_toggled (GtkAction *action, GladeWindow *window)
-{
-  if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-    glade_editor_show_class_field (window->priv->editor);
-  else
-    glade_editor_hide_class_field (window->priv->editor);
 }
 
 static void
@@ -2462,22 +2410,6 @@ save_windows_config (GladeWindow *window, GKeyFile *config)
   maximized = gdk_window_get_state (gdk_window) & GDK_WINDOW_STATE_MAXIMIZED;
 
   key_file_set_window_position (config, &priv->position, "main", maximized);
-
-  g_key_file_set_boolean (config,
-                          CONFIG_GROUP_WINDOWS,
-                          CONFIG_KEY_SHOW_TOOLBAR,
-                          gtk_widget_get_visible (priv->toolbar));
-
-  g_key_file_set_boolean (config,
-                          CONFIG_GROUP_WINDOWS,
-                          CONFIG_KEY_SHOW_STATUS,
-                          gtk_widget_get_visible (priv->statusbar));
-
-  g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_SHOW_TABS,
-                          gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->project_tabs_visible_action)));
-
-  g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_EDITOR_HEADER,
-                          gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->editor_header_visible_action)));
 }
 
 static void
@@ -2611,72 +2543,9 @@ static void
 glade_window_config_load (GladeWindow *window)
 {
   GKeyFile *config = glade_app_get_config ();
-  gboolean show_toolbar, show_tabs, show_status, show_header;
-  GladeWindowPrivate *priv = window->priv;
-  GError *error = NULL;
 
   /* Initial main dimensions */
   glade_window_set_initial_size (window, config);
-
-  /* toolbar and tabs */
-  if ((show_toolbar =
-       g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS,
-                               CONFIG_KEY_SHOW_TOOLBAR, &error)) == FALSE &&
-      error != NULL)
-    {
-      show_toolbar = TRUE;
-      error = (g_error_free (error), NULL);
-    }
-
-  if ((show_tabs =
-       g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS,
-                               CONFIG_KEY_SHOW_TABS, &error)) == FALSE &&
-      error != NULL)
-    {
-      show_tabs = TRUE;
-      error = (g_error_free (error), NULL);
-    }
-
-  if ((show_status =
-       g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS,
-                               CONFIG_KEY_SHOW_STATUS, &error)) == FALSE &&
-      error != NULL)
-    {
-      show_status = TRUE;
-      error = (g_error_free (error), NULL);
-    }
-
-  if ((show_header =
-       g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS,
-                               CONFIG_KEY_EDITOR_HEADER, &error)) == FALSE &&
-      error != NULL)
-    {
-      show_header = TRUE;
-      error = (g_error_free (error), NULL);
-    }
-
-  if (show_toolbar)
-    gtk_widget_show (priv->toolbar);
-  else
-    gtk_widget_hide (priv->toolbar);
-
-  if (show_status)
-    gtk_widget_show (priv->statusbar);
-  else
-    gtk_widget_hide (priv->statusbar);
-
-  if (show_header)
-    glade_editor_show_class_field (priv->editor);
-  else
-    glade_editor_hide_class_field (priv->editor);
-
-  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->toolbar_visible_action), show_toolbar);
-
-  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->project_tabs_visible_action), show_tabs);
-
-  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->statusbar_visible_action), show_status);
-
-  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->editor_header_visible_action), show_header);
 
   /* Paned positions */
   load_paned_position (config, window->priv->left_paned, "left_pane", 200);
@@ -2766,7 +2635,6 @@ glade_window_constructed (GObject *object)
   action_group_setup_callbacks (priv->project_actiongroup, priv->accelgroup, window);
   action_group_setup_callbacks (priv->pointer_mode_actiongroup, priv->accelgroup, window);
   action_group_setup_callbacks (priv->static_actiongroup, priv->accelgroup, window);
-  action_group_setup_callbacks (priv->view_actiongroup, priv->accelgroup, window);
 
   /* status bar */
   priv->statusbar_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar), "general");
@@ -2909,7 +2777,6 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, project_actiongroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, pointer_mode_actiongroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, static_actiongroup);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, view_actiongroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, quit_menuitem);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, properties_menuitem);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, about_menuitem);
@@ -2925,10 +2792,6 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, delete_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, previous_project_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, next_project_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, toolbar_visible_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, project_tabs_visible_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, statusbar_visible_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, editor_header_visible_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, selector_radioaction);
 
   /* Callbacks */
@@ -2950,10 +2813,6 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_registration_action_activate);
 
   gtk_widget_class_bind_template_callback (widget_class, on_open_recent_action_item_activated);
-  gtk_widget_class_bind_template_callback (widget_class, on_toolbar_visible_action_toggled);
-  gtk_widget_class_bind_template_callback (widget_class, on_statusbar_visible_action_toggled);
-  gtk_widget_class_bind_template_callback (widget_class, on_project_tabs_visible_action_toggled);
-  gtk_widget_class_bind_template_callback (widget_class, on_editor_header_visible_action_toggled);
   gtk_widget_class_bind_template_callback (widget_class, on_selector_radioaction_changed);
   gtk_widget_class_bind_template_callback (widget_class, on_actiongroup_connect_proxy);
   gtk_widget_class_bind_template_callback (widget_class, on_actiongroup_disconnect_proxy);
