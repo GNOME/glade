@@ -64,6 +64,7 @@ enum
   PROP_WIDGET,
   PROP_SHOW_CLASS_FIELD,
   PROP_CLASS_FIELD,
+  PROP_SHOW_BORDER,
   N_PROPERTIES
 };
 
@@ -163,6 +164,10 @@ glade_editor_set_property (GObject      *object,
         else
           glade_editor_hide_class_field (editor);
         break;
+      case PROP_SHOW_BORDER:
+        gtk_notebook_set_show_border (GTK_NOTEBOOK (editor->priv->notebook),
+                                      g_value_get_boolean (value));
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -190,6 +195,9 @@ glade_editor_get_property (GObject    *object,
         break;
       case PROP_CLASS_FIELD:
         g_value_set_static_string (value, gtk_label_get_label (GTK_LABEL (editor->priv->class_label)));
+        break;
+      case PROP_SHOW_BORDER:
+        g_value_set_boolean (value, gtk_notebook_get_show_border (GTK_NOTEBOOK (editor->priv->notebook)));
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -251,6 +259,12 @@ glade_editor_class_init (GladeEditorClass *klass)
                          _("The class field string"),
                          NULL,
                          G_PARAM_READABLE);
+  properties[PROP_SHOW_BORDER] =
+    g_param_spec_boolean ("show-boder",
+                          _("Show Border"),
+                          _("Whether the border should be shown"),
+                          TRUE,
+                          G_PARAM_READWRITE);
   
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
@@ -1308,7 +1322,7 @@ glade_editor_dialog_for_widget (GladeWidget *widget)
   gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_UTILITY);
 
   /* Keep the title up to date */
-  editor_widget_name_changed (widget, NULL, window);
+  editor_widget_name_changed (widget, NULL, GTK_WINDOW (window));
   g_signal_connect_object (G_OBJECT (widget), "notify::name",
 			   G_CALLBACK (editor_widget_name_changed), window, 0);
 
