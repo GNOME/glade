@@ -1451,9 +1451,11 @@
           </property>
           <property id="track-visited-links" since="2.18" custom-layout="True"/>
           
+	  <!-- These properties have been deprecated in GtkMisc in 3.14, and appeared in GtkLabel in 3.16 -->
+          <property id="xalign" custom-layout="True" optional="True" optional-default="False"/>
+          <property id="yalign" custom-layout="True" optional="True" optional-default="False"/>
+          
           <!-- GtkMisc properties -->
-          <property id="xalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
-          <property id="yalign" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
           <property id="xpad" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
           <property id="ypad" custom-layout="True" optional="True" optional-default="False" deprecated="True"/>
         </properties>
