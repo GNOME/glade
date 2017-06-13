@@ -1033,13 +1033,13 @@ draw_frame (GtkWidget *widget, cairo_t *cr, gboolean selected,
   if (priv->widget_name)
     {
       GdkRectangle *rect = &priv->south_east;
-
+      gtk_style_context_save (context);
       gtk_style_context_add_class (context, "handle");
       gtk_render_background (context, cr, rect->x, rect->y, rect->width, rect->height);
       gtk_render_frame (context, cr, rect->x, rect->y, rect->width, rect->height);
       gtk_render_layout (context, cr, rect->x + OUTLINE_WIDTH, rect->y + OUTLINE_WIDTH,
                          priv->widget_name);
-      gtk_style_context_remove_class (context, "handle");
+      gtk_style_context_restore (context);
     }
 }
 
@@ -1084,6 +1084,7 @@ draw_selection (cairo_t *cr,
   if (alloc.x < 0 || alloc.y < 0) return;
 
   context = gtk_widget_get_style_context (parent);
+  gtk_style_context_save (context);
   gtk_style_context_add_class (context, "selection");
   r = color->red; g = color->green; b = color->blue;
   gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
@@ -1122,7 +1123,7 @@ draw_selection (cairo_t *cr,
 
   /* Draw Selection box */
   gtk_render_frame (context, cr, x - left, y - top, w + left + right, h + top + bottom);
-  gtk_style_context_remove_class (context, "selection");
+  gtk_style_context_restore (context);
 }
 
 #define DIMENSION_OFFSET 9
