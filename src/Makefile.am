@@ -24,7 +24,6 @@ BUILT_SOURCES = glade-resources.c glade-resources.h
 
 glade_SOURCES = \
 	glade-window.c \
-	glade-close-button.c \
 	glade-resources.c \
 	glade-preferences.c \
 	glade-http.c \
@@ -33,7 +32,6 @@ glade_SOURCES = \
 
 noinst_HEADERS = \
 	glade-window.h \
-	glade-close-button.h \
 	glade-resources.h \
 	glade-preferences.h \
 	glade-logo.h \
