@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2001 Ximian, Inc.
  * Copyright (C) 2007 Vincent Geddes.
- * Copyright (C) 2012 Juan Pablo Ugarte.
+ * Copyright (C) 2012-2017 Juan Pablo Ugarte.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -27,7 +27,6 @@
 #include <config.h>
 
 #include "glade-window.h"
-#include "glade-close-button.h"
 #include "glade-resources.h"
 #include "glade-preferences.h"
 #include "glade-registration.h"
@@ -71,19 +70,23 @@
 #define CONFIG_KEY_AUTOSAVE         "autosave"
 #define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
+#define GLADE_WINDOW_ACTIVE_VIEW(w) ((GladeDesignView *) gtk_stack_get_visible_child (w->priv->stack))
+
 struct _GladeWindowPrivate
 {
   GladeApp *app;
 
-  GtkWidget *notebook;
-  GladeDesignView *active_view;
-  gint num_tabs;
+  GtkStack *stack;
 
   GtkHeaderBar *headerbar;
   GtkWindow *about_dialog;
   GladePreferences *preferences;
 
-  GtkNotebook *inspectors_notebook;       /* Cached per project inspectors */
+  GtkLabel *title;
+  GtkLabel *subtitle;
+  GtkWidget *project_button;
+
+  GtkStack *inspectors_stack;           /* Cached per project inspectors */
 
   GladeEditor  *editor;                 /* The editor */
 
@@ -96,7 +99,6 @@ struct _GladeWindowPrivate
 
   GtkAction *save_action, *quit_action;
   GtkAction *undo_action, *redo_action, *cut_action, *copy_action, *paste_action, *delete_action;
-  GtkAction *previous_project_action, *next_project_action;
   GtkAction *selector_radioaction;
 
   GtkActionGroup *project_actiongroup;      /* All the project actions */
@@ -108,7 +110,6 @@ struct _GladeWindowPrivate
 
   GtkWidget *quit_menuitem;
   GtkWidget *about_menuitem;
-  GtkWidget *properties_menuitem;
 
   gchar *default_path;          /* the default path for open/save operations */
 
@@ -264,7 +265,6 @@ get_formatted_project_name_for_display (GladeProject *project,
   return pass3;
 }
 
-
 static void
 refresh_title (GladeWindow *window)
 {
@@ -272,9 +272,9 @@ refresh_title (GladeWindow *window)
   gchar *title, *name = NULL;
   const gchar *path;
 
-  if (window->priv->active_view)
+  if (GLADE_WINDOW_ACTIVE_VIEW (window))
     {
-      project = glade_design_view_get_project (window->priv->active_view);
+      project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
 
       name = get_formatted_project_name_for_display (project,
                                                      FORMAT_NAME_MARK_UNSAVED |
@@ -288,11 +288,9 @@ refresh_title (GladeWindow *window)
       g_free (name);
     }
   else
-    {
-      title = g_strdup (_("User Interface Designer"));
-    }
+    title = g_strdup (_("User Interface Designer"));
 
-  gtk_window_set_title (GTK_WINDOW (window), title);
+  gtk_label_set_label (window->priv->title, title);
 
   /* Show path */
   if (project && (path = glade_project_get_path (project)))
@@ -304,15 +302,23 @@ refresh_title (GladeWindow *window)
         {
           char *subtitle = &dirname[g_utf8_strlen (home, -1) - 1];
           subtitle[0] = '~';
-          gtk_header_bar_set_subtitle (window->priv->headerbar, subtitle);
+          gtk_label_set_label (window->priv->subtitle, subtitle);
         }
       else
-        gtk_header_bar_set_subtitle (window->priv->headerbar, dirname);
+        gtk_label_set_label (window->priv->subtitle, dirname);
 
+      gtk_style_context_add_class (gtk_widget_get_style_context (window->priv->project_button),
+                                   "glade-tight-fit");
+      gtk_widget_show (GTK_WIDGET (window->priv->subtitle));
       g_free (dirname);
     }
   else
-    gtk_header_bar_set_subtitle (window->priv->headerbar, NULL);
+    {
+      gtk_style_context_remove_class (gtk_widget_get_style_context (window->priv->project_button),
+                                     "glade-tight-fit");
+      gtk_label_set_label (window->priv->subtitle, NULL);
+      gtk_widget_hide (GTK_WIDGET (window->priv->subtitle));
+    }
 
   g_free (title);
 }
@@ -444,8 +450,8 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
 static GladeProject *
 get_active_project (GladeWindow *window)
 {
-  if (window->priv->active_view)
-    return glade_design_view_get_project (window->priv->active_view);
+  if (GLADE_WINDOW_ACTIVE_VIEW (window))
+    return glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
 
   return NULL;
 }
@@ -486,14 +492,6 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
   glade_editor_load_widget (window->priv->editor, glade_widget);
 }
 
-static GladeDesignView *
-get_active_view (GladeWindow *window)
-{
-  g_return_val_if_fail (GLADE_IS_WINDOW (window), NULL);
-
-  return window->priv->active_view;
-}
-
 static gchar *
 format_project_list_item_tooltip (GladeProject *project)
 {
@@ -532,55 +530,22 @@ format_project_list_item_tooltip (GladeProject *project)
 }
 
 static void
-refresh_notebook_tab_for_project (GladeWindow *window, GladeProject *project)
+refresh_stack_title_for_project (GladeWindow *window, GladeProject *project)
 {
-  GtkWidget *tab_label, *label, *view, *eventbox;
   GList *children, *l;
-  gchar *str;
 
-  children =
-      gtk_container_get_children (GTK_CONTAINER (window->priv->notebook));
+  children = gtk_container_get_children (GTK_CONTAINER (window->priv->stack));
   for (l = children; l; l = l->next)
     {
-      view = l->data;
+      GtkWidget *view = l->data;
 
       if (project == glade_design_view_get_project (GLADE_DESIGN_VIEW (view)))
         {
-          gchar *path, *deps;
-
-          tab_label =
-              gtk_notebook_get_tab_label (GTK_NOTEBOOK (window->priv->notebook),
-                                          view);
-          label = g_object_get_data (G_OBJECT (tab_label), "tab-label");
-          eventbox = g_object_get_data (G_OBJECT (tab_label), "tab-event-box");
-
-          str = get_formatted_project_name_for_display (project,
-                                                        FORMAT_NAME_MARK_UNSAVED |
-                                                        FORMAT_NAME_MIDDLE_TRUNCATE);
-          gtk_label_set_text (GTK_LABEL (label), str);
-          g_free (str);
-
-          if (glade_project_get_path (project))
-            path =
-                glade_utils_replace_home_dir_with_tilde (glade_project_get_path
-                                                         (project));
-          else
-            path = glade_project_get_name (project);
-
-
-          deps = glade_project_display_dependencies (project);
-          str = g_markup_printf_escaped (" <b>%s</b> %s \n"
-                                         " %s \n"
-                                         " <b>%s</b> %s ",
-                                         _("Name:"), path,
-                                         glade_project_get_readonly (project) ?
-                                         READONLY_INDICATOR : "",
-                                         _("Requires:"), deps);
-
-          gtk_widget_set_tooltip_markup (eventbox, str);
-
-          g_free (path);
-          g_free (deps);
+          gchar *str = get_formatted_project_name_for_display (project,
+                                                               FORMAT_NAME_MARK_UNSAVED |
+                                                               FORMAT_NAME_MIDDLE_TRUNCATE);
+          gtk_container_child_set (GTK_CONTAINER (window->priv->stack), view,
+                                   "title", str, NULL);
           g_free (str);
 
           break;
@@ -592,7 +557,7 @@ refresh_notebook_tab_for_project (GladeWindow *window, GladeProject *project)
 static void
 project_targets_changed_cb (GladeProject *project, GladeWindow *window)
 {
-  refresh_notebook_tab_for_project (window, project);
+  refresh_stack_title_for_project (window, project);
 }
 
 static void
@@ -764,32 +729,6 @@ refresh_projects_list_item (GladeWindow *window, GladeProject *project)
 }
 
 static void
-refresh_next_prev_project_sensitivity (GladeWindow *window)
-{
-  GladeDesignView *view = get_active_view (window);
-  GladeWindowPrivate *priv = window->priv;
-
-  if (view != NULL)
-    {
-      gint view_number = gtk_notebook_page_num (GTK_NOTEBOOK (priv->notebook),
-                                                GTK_WIDGET (view));
-      g_return_if_fail (view_number >= 0);
-
-      gtk_action_set_sensitive (priv->previous_project_action, view_number != 0);
-
-      gtk_action_set_sensitive (priv->next_project_action,
-                                view_number <
-                                gtk_notebook_get_n_pages (GTK_NOTEBOOK
-                                                          (priv->notebook)) - 1);
-    }
-  else
-    {
-      gtk_action_set_sensitive (priv->previous_project_action, FALSE);
-      gtk_action_set_sensitive (priv->next_project_action, FALSE);
-    }
-}
-
-static void
 project_notify_handler_cb (GladeProject *project,
                            GParamSpec *spec,
                            GladeWindow *window)
@@ -800,21 +739,21 @@ project_notify_handler_cb (GladeProject *project,
   if (strcmp (spec->name, "path") == 0)
     {
       refresh_title (window);
-      refresh_notebook_tab_for_project (window, project);
+      refresh_stack_title_for_project (window, project);
     }
   else if (strcmp (spec->name, "format") == 0)
     {
-      refresh_notebook_tab_for_project (window, project);
+      refresh_stack_title_for_project (window, project);
     }
   else if (strcmp (spec->name, "modified") == 0)
     {
       refresh_title (window);
       refresh_projects_list_item (window, project);
-      refresh_notebook_tab_for_project (window, project);
+      refresh_stack_title_for_project (window, project);
     }
   else if (strcmp (spec->name, "read-only") == 0)
     {
-      refresh_notebook_tab_for_project (window, project);
+      refresh_stack_title_for_project (window, project);
 
       gtk_action_set_sensitive (priv->save_action, !glade_project_get_readonly (project));
     }
@@ -883,8 +822,6 @@ set_sensitivity_according_to_project (GladeWindow  *window,
                             (glade_app_get_clipboard ()));
 
   gtk_action_set_sensitive (priv->delete_action, glade_project_get_has_selection (project));
-
-  refresh_next_prev_project_sensitivity (window);
 }
 
 static gchar *
@@ -959,26 +896,11 @@ static void
 switch_to_project (GladeWindow *window, GladeProject *project)
 {
   GladeWindowPrivate *priv = window->priv;
-  guint i, n = gtk_notebook_get_n_pages (GTK_NOTEBOOK (priv->notebook));
+  GtkWidget *view;
 
-  /* increase project popularity */
-  recent_add (window, glade_project_get_path (project));
-  update_default_path (window, glade_project_get_path (project));
+  view = GTK_WIDGET (glade_design_view_get_from_project (project));
+  gtk_stack_set_visible_child (priv->stack, view);
 
-  for (i = 0; i < n; i++)
-    {
-      GladeProject *project_i;
-      GtkWidget *view;
-
-      view = gtk_notebook_get_nth_page (GTK_NOTEBOOK (priv->notebook), i);
-      project_i = glade_design_view_get_project (GLADE_DESIGN_VIEW (view));
-
-      if (project == project_i)
-        {
-          gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->notebook), i);
-          break;
-        }
-    }
   check_reload_project (window, project);
 }
 
@@ -1149,7 +1071,7 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
   /* refresh names */
   refresh_title (window);
   refresh_projects_list_item (window, project);
-  refresh_notebook_tab_for_project (window, project);
+  refresh_stack_title_for_project (window, project);
 
   glade_util_flash_message (window->priv->statusbar,
                             window->priv->statusbar_actions_context_id,
@@ -1176,7 +1098,7 @@ save_as (GladeWindow *window)
   gchar *path = NULL;
   gchar *project_name;
 
-  project = glade_design_view_get_project (window->priv->active_view);
+  project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
 
   if (project == NULL)
     return;
@@ -1293,7 +1215,7 @@ on_save_action_activate (GtkAction *action, GladeWindow *window)
 {
   GladeProject *project;
 
-  project = glade_design_view_get_project (window->priv->active_view);
+  project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
 
   if (project == NULL)
     {
@@ -1425,22 +1347,10 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
 }
 
 static void
-glade_window_notebook_tabs_update (GladeWindow *window)
+close_project (GladeWindow *window, GladeProject *project)
 {
-  GList *projects = glade_app_get_projects ();
-
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (window->priv->notebook),
-                              !(projects == NULL || g_list_next (projects) == NULL));
-}
-
-static void
-do_close (GladeWindow *window, GladeProject *project)
-{
+  GladeDesignView *view = glade_design_view_get_from_project (project);
   GladeWindowPrivate *priv = window->priv;
-  GladeDesignView *view;
-  gint n;
-
-  view = glade_design_view_get_from_project (project);
 
   /* Cancel any queued autosave activity */
   project_cancel_autosave (project);
@@ -1451,19 +1361,42 @@ do_close (GladeWindow *window, GladeProject *project)
       return;
     }
 
-  n = gtk_notebook_page_num (GTK_NOTEBOOK (priv->notebook),
-                             GTK_WIDGET (view));
+  g_signal_handlers_disconnect_by_func (project, project_notify_handler_cb, window);
+  g_signal_handlers_disconnect_by_func (project, project_selection_changed_cb, window);
+  g_signal_handlers_disconnect_by_func (project, project_targets_changed_cb, window);
+  g_signal_handlers_disconnect_by_func (project, project_changed_cb, window);
+  g_signal_handlers_disconnect_by_func (project, on_pointer_mode_changed, window);
 
-  g_object_ref (view);
+  /* remove inspector first */
+  gtk_container_remove (GTK_CONTAINER (priv->inspectors_stack),
+                        g_object_get_data (G_OBJECT (view), "glade-window-view-inspector"));
 
-  gtk_notebook_remove_page (GTK_NOTEBOOK (priv->notebook), n);
+  /* then the main view */
+  gtk_container_remove (GTK_CONTAINER (priv->stack), GTK_WIDGET (view));
 
-  g_object_unref (view);
+  clean_actions (window);
 
-  glade_window_notebook_tabs_update (window);
+  /* Refresh the editor and some of the actions */
+  project_selection_changed_cb (project, window);
+
+  on_pointer_mode_changed (project, NULL, window);
+
+  glade_app_remove_project (project);
+
+  refresh_title (window);
+
+  if (GLADE_WINDOW_ACTIVE_VIEW (window))
+    set_sensitivity_according_to_project (window,
+                                          glade_design_view_get_project
+                                          (GLADE_WINDOW_ACTIVE_VIEW (window)));
+  else
+    gtk_action_group_set_sensitive (priv->project_actiongroup, FALSE);
 
   if (!glade_app_get_projects ())
     gtk_widget_hide (priv->center_paned);
+
+  if (GLADE_WINDOW_ACTIVE_VIEW (window) == NULL)
+    gtk_widget_hide (GTK_WIDGET (priv->editor));
 }
 
 static void
@@ -1473,7 +1406,7 @@ on_close_action_activate (GtkAction *action, GladeWindow *window)
   GladeProject *project;
   gboolean close;
 
-  view = window->priv->active_view;
+  view = GLADE_WINDOW_ACTIVE_VIEW (window);
 
   project = glade_design_view_get_project (view);
 
@@ -1486,7 +1419,7 @@ on_close_action_activate (GtkAction *action, GladeWindow *window)
       if (!close)
         return;
     }
-  do_close (window, project);
+  close_project (window, project);
 }
 
 static void
@@ -1494,10 +1427,10 @@ on_copy_action_activate (GtkAction *action, GladeWindow *window)
 {
   GladeProject *project;
 
-  if (!window->priv->active_view)
+  if (!GLADE_WINDOW_ACTIVE_VIEW (window))
     return;
 
-  project = glade_design_view_get_project (window->priv->active_view);
+  project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
 
   glade_project_copy_selection (project);
 }
@@ -1507,10 +1440,10 @@ on_cut_action_activate (GtkAction *action, GladeWindow *window)
 {
   GladeProject *project;
 
-  if (!window->priv->active_view)
+  if (!GLADE_WINDOW_ACTIVE_VIEW (window))
     return;
 
-  project = glade_design_view_get_project (window->priv->active_view);
+  project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
 
   glade_project_command_cut (project);
 }
@@ -1521,10 +1454,10 @@ on_paste_action_activate (GtkAction *action, GladeWindow *window)
   GtkWidget *placeholder;
   GladeProject *project;
 
-  if (!window->priv->active_view)
+  if (!GLADE_WINDOW_ACTIVE_VIEW (window))
     return;
 
-  project = glade_design_view_get_project (window->priv->active_view);
+  project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
   placeholder = glade_util_get_placeholder_from_pointer (GTK_CONTAINER (window));
 
   /* If this action is activated with a key binging (ctrl-v) the widget will be 
@@ -1538,12 +1471,43 @@ on_delete_action_activate (GtkAction *action, GladeWindow *window)
 {
   GladeProject *project;
 
-  if (!window->priv->active_view)
+  if (!GLADE_WINDOW_ACTIVE_VIEW (window))
     return;
 
-  project = glade_design_view_get_project (window->priv->active_view);
+  project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
 
   glade_project_command_delete (project);
+}
+
+static void
+stack_visible_child_next_prev (GladeWindow *window, gboolean next)
+{
+  GladeDesignView *view;
+  GList *children, *node;
+
+  if (!(view = GLADE_WINDOW_ACTIVE_VIEW (window)))
+    return;
+
+  children = gtk_container_get_children (GTK_CONTAINER (window->priv->stack));
+
+  if ((node = g_list_find (children, view)) && 
+      ((next && node->next) || (!next && node->prev)))
+    gtk_stack_set_visible_child (window->priv->stack, 
+                                 (next) ? node->next->data : node->prev->data);
+
+  g_list_free (children);
+}
+
+static void
+on_previous_project_action_activate (GtkAction *action, GladeWindow *window)
+{
+  stack_visible_child_next_prev (window, FALSE);
+}
+
+static void
+on_next_project_action_activate (GtkAction *action, GladeWindow *window)
+{
+  stack_visible_child_next_prev (window, TRUE);
 }
 
 static void
@@ -1551,10 +1515,10 @@ on_properties_action_activate (GtkAction *action, GladeWindow *window)
 {
   GladeProject *project;
 
-  if (!window->priv->active_view)
+  if (!GLADE_WINDOW_ACTIVE_VIEW (window))
     return;
 
-  project = glade_design_view_get_project (window->priv->active_view);
+  project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
 
   glade_project_properties (project);
 }
@@ -1598,152 +1562,32 @@ doc_search_cb (GladeEditor *editor,
 }
 
 static void
-on_notebook_switch_page (GtkNotebook *notebook,
-                         GtkWidget *page,
-                         guint page_num,
-                         GladeWindow *window)
+on_stack_visible_child_notify (GObject    *gobject,
+                               GParamSpec *pspec,
+                               GladeWindow *window)
 {
+  GladeDesignView *view = GLADE_WINDOW_ACTIVE_VIEW (window);
   GladeWindowPrivate *priv = window->priv;
-  GladeDesignView *view;
-  GladeProject *project;
 
-  view = GLADE_DESIGN_VIEW (gtk_notebook_get_nth_page (notebook, page_num));
-
-  /* CHECK: I don't know why but it seems notebook_switch_page is called
-     two times every time the user change the active tab */
-  if (view == priv->active_view)
-    return;
-
-  window->priv->active_view = view;
-
-  project = glade_design_view_get_project (view);
-
-  refresh_title (window);
-
-  set_sensitivity_according_to_project (window, project);
-
-  /* switch to the project's inspector */
-  gtk_notebook_set_current_page (priv->inspectors_notebook, page_num);
-
-  refresh_undo_redo (window, project);
-
-  /* Refresh the editor and some of the actions */
-  project_selection_changed_cb (project, window);
-
-  on_pointer_mode_changed (project, NULL, window);
-}
-
-static void
-project_parse_finished_cb (GladeProject *project, GtkWidget *inspector)
-{
-  gtk_widget_set_sensitive (inspector, TRUE);
-
-  glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
-}
-
-static void
-on_notebook_tab_added (GtkNotebook *notebook,
-                       GladeDesignView *view,
-                       guint page_num,
-                       GladeWindow *window)
-{
-  GladeProject *project;
-  GtkWidget *inspector;
-
-  ++window->priv->num_tabs;
-
-  project = glade_design_view_get_project (view);
-
-  g_signal_connect (G_OBJECT (project), "notify::modified",
-                    G_CALLBACK (project_notify_handler_cb), window);
-  g_signal_connect (G_OBJECT (project), "notify::path",
-                    G_CALLBACK (project_notify_handler_cb), window);
-  g_signal_connect (G_OBJECT (project), "notify::format",
-                    G_CALLBACK (project_notify_handler_cb), window);
-  g_signal_connect (G_OBJECT (project), "notify::has-selection",
-                    G_CALLBACK (project_notify_handler_cb), window);
-  g_signal_connect (G_OBJECT (project), "notify::read-only",
-                    G_CALLBACK (project_notify_handler_cb), window);
-  g_signal_connect (G_OBJECT (project), "notify::pointer-mode",
-                    G_CALLBACK (on_pointer_mode_changed), window);
-  g_signal_connect (G_OBJECT (project), "selection-changed",
-                    G_CALLBACK (project_selection_changed_cb), window);
-  g_signal_connect (G_OBJECT (project), "targets-changed",
-                    G_CALLBACK (project_targets_changed_cb), window);
-  g_signal_connect (G_OBJECT (project), "changed",
-                    G_CALLBACK (project_changed_cb), window);
-
-  /* create inspector */
-  inspector = glade_inspector_new ();
-  gtk_widget_show (inspector);
-  gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->inspectors_notebook),
-                            inspector, NULL);
-  
-  if (GPOINTER_TO_INT
-      (g_object_get_data (G_OBJECT (view), "view-added-while-loading")))
+  if (view)
     {
-      gtk_widget_set_sensitive (inspector, FALSE);
-      g_signal_connect (project, "parse-finished",
-                        G_CALLBACK (project_parse_finished_cb), inspector);
-    }
-  else
-    glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
+      GladeProject *project = glade_design_view_get_project (view);
 
-  set_sensitivity_according_to_project (window, project);
+      /* switch to the project's inspector */
+      gtk_stack_set_visible_child (priv->inspectors_stack,
+                                   g_object_get_data (G_OBJECT (view), "glade-window-view-inspector"));
 
-  refresh_title (window);
+      set_sensitivity_according_to_project (window, project);
 
-  if (window->priv->num_tabs > 0)
-    gtk_action_group_set_sensitive (window->priv->project_actiongroup, TRUE);
+      refresh_undo_redo (window, project);
 
-}
+      /* Refresh the editor and some of the actions */
+      project_selection_changed_cb (project, window);
 
-static void
-on_notebook_tab_removed (GtkNotebook     *notebook,
-                         GladeDesignView *view,
-                         guint            page_num, 
-                         GladeWindow     *window)
-{
-  GladeWindowPrivate *priv = window->priv;
-  GladeProject *project;
-
-  --priv->num_tabs;
-
-  if (priv->num_tabs == 0)
-    {
-      gtk_widget_hide (GTK_WIDGET (priv->editor));
-      priv->active_view = NULL;
+      on_pointer_mode_changed (project, NULL, window);
     }
 
-  project = glade_design_view_get_project (view);
-
-  g_signal_handlers_disconnect_by_func (project, project_notify_handler_cb, window);
-  g_signal_handlers_disconnect_by_func (project, project_selection_changed_cb, window);
-  g_signal_handlers_disconnect_by_func (project, project_targets_changed_cb, window);
-  g_signal_handlers_disconnect_by_func (project, project_changed_cb, window);
-  g_signal_handlers_disconnect_by_func (project, on_pointer_mode_changed, window);
-
-  gtk_notebook_remove_page (priv->inspectors_notebook, page_num);
-
-  clean_actions (window);
-
-  /* Refresh the editor and some of the actions */
-  project_selection_changed_cb (project, window);
-
-  on_pointer_mode_changed (project, NULL, window);
-
-  /* FIXME: this function needs to be preferably called somewhere else */
-  glade_app_remove_project (project);
-
   refresh_title (window);
-
-  if (priv->active_view)
-    set_sensitivity_according_to_project (window,
-                                          glade_design_view_get_project
-                                          (priv->active_view));
-  else
-    gtk_action_group_set_sensitive (priv->project_actiongroup, FALSE);
-
 }
 
 static void
@@ -2007,148 +1851,61 @@ on_selector_radioaction_changed (GtkRadioAction *action,
 }
 
 static void
-tab_close_button_clicked_cb (GtkWidget *close_button, GladeProject *project)
-{
-  GladeWindow *window = GLADE_WINDOW (glade_app_get_window ());
-  gboolean close;
-
-  if (glade_project_get_modified (project))
-    {
-      close = confirm_close_project (window, project);
-      if (!close)
-        return;
-    }
-  do_close (window, project);
-}
-
-static void
-project_load_progress_cb (GladeProject *project,
-                          gint total, gint step,
-                          GtkProgressBar *progress)
-{
-  gint fraction = (step * 1.0 / total) * 100;
-  gchar *str, *name;
-
-  if (fraction/100.0 == gtk_progress_bar_get_fraction (progress))
-    return;
-  
-  name = glade_project_get_name (project);
-  str = g_strdup_printf ("%s (%d%%)", name, fraction);
-
-  gtk_progress_bar_set_text (progress, str);
-  g_free (name);
-  g_free (str);
-
-  gtk_progress_bar_set_fraction (progress, fraction/100.0);
-
-  while (gtk_events_pending ()) gtk_main_iteration ();
-}
-
-static void
-project_load_finished_cb (GladeProject *project, GtkWidget *tab_label)
-{
-  GtkWidget *progress, *label;
-
-  progress = g_object_get_data (G_OBJECT (tab_label), "tab-progress");
-  label = g_object_get_data (G_OBJECT (tab_label), "tab-label");
-
-  gtk_widget_hide (progress);
-  gtk_widget_show (label);
-}
-
-static GtkWidget *
-create_notebook_tab (GladeWindow *window,
-                     GladeProject *project,
-                     gboolean for_file)
-{
-  GtkWidget *tab_label, *ebox, *hbox, *close_button, *label, *dummy_label;
-  GtkWidget *progress;
-
-  tab_label = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-
-  ebox = gtk_event_box_new ();
-  gtk_event_box_set_visible_window (GTK_EVENT_BOX (ebox), FALSE);
-  gtk_box_pack_start (GTK_BOX (tab_label), ebox, TRUE, TRUE, 0);
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-  gtk_container_add (GTK_CONTAINER (ebox), hbox);
-
-  close_button = glade_close_button_new ();
-  gtk_widget_set_tooltip_text (close_button, _("Close document"));
-  gtk_box_pack_start (GTK_BOX (tab_label), close_button, FALSE, FALSE, 0);
-
-  g_signal_connect (close_button,
-                    "clicked",
-                    G_CALLBACK (tab_close_button_clicked_cb), project);
-
-  label = gtk_label_new ("");
-  gtk_widget_set_halign (label, GTK_ALIGN_START);
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-
-  progress = gtk_progress_bar_new ();
-  gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (progress), TRUE);
-  gtk_widget_add_events (progress,
-                         GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
-  gtk_widget_set_name (progress, "glade-tab-label-progress");
-  gtk_box_pack_start (GTK_BOX (hbox), progress, FALSE, FALSE, 0);
-  g_signal_connect (project, "load-progress",
-                    G_CALLBACK (project_load_progress_cb), progress);
-
-  dummy_label = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (hbox), dummy_label, TRUE, TRUE, 0);
-
-  gtk_widget_show (ebox);
-  gtk_widget_show (hbox);
-  gtk_widget_show (close_button);
-  gtk_widget_show (dummy_label);
-
-  if (for_file)
-    {
-      gtk_widget_show (progress);
-
-      g_signal_connect (project, "parse-finished",
-                        G_CALLBACK (project_load_finished_cb), tab_label);
-    }
-  else
-    gtk_widget_show (label);
-
-  g_object_set_data (G_OBJECT (tab_label), "tab-progress", progress);
-  g_object_set_data (G_OBJECT (tab_label), "tab-event-box", ebox);
-  g_object_set_data (G_OBJECT (tab_label), "tab-label", label);
-
-  return tab_label;
-}
-
-static void
 add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
 {
   GladeWindowPrivate *priv = window->priv;
-  GtkWidget *view, *label;
+  GtkWidget *view, *inspector;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
+  /* Create a new view for project */
   view = glade_design_view_new (project);
-  gtk_widget_show (view);
 
-  g_object_set_data (G_OBJECT (view), "view-added-while-loading",
-                     GINT_TO_POINTER (for_file));
+  gtk_widget_show (priv->center_paned);
+  gtk_widget_show (GTK_WIDGET (priv->editor));
+
+  g_signal_connect (G_OBJECT (project), "notify::modified",
+                    G_CALLBACK (project_notify_handler_cb), window);
+  g_signal_connect (G_OBJECT (project), "notify::path",
+                    G_CALLBACK (project_notify_handler_cb), window);
+  g_signal_connect (G_OBJECT (project), "notify::format",
+                    G_CALLBACK (project_notify_handler_cb), window);
+  g_signal_connect (G_OBJECT (project), "notify::has-selection",
+                    G_CALLBACK (project_notify_handler_cb), window);
+  g_signal_connect (G_OBJECT (project), "notify::read-only",
+                    G_CALLBACK (project_notify_handler_cb), window);
+  g_signal_connect (G_OBJECT (project), "notify::pointer-mode",
+                    G_CALLBACK (on_pointer_mode_changed), window);
+  g_signal_connect (G_OBJECT (project), "selection-changed",
+                    G_CALLBACK (project_selection_changed_cb), window);
+  g_signal_connect (G_OBJECT (project), "targets-changed",
+                    G_CALLBACK (project_targets_changed_cb), window);
+  g_signal_connect (G_OBJECT (project), "changed",
+                    G_CALLBACK (project_changed_cb), window);
+
+  /* create inspector */
+  inspector = glade_inspector_new ();
+  g_object_set_data (G_OBJECT (view), "glade-window-view-inspector", inspector);
+  glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
+  gtk_container_add (GTK_CONTAINER (priv->inspectors_stack), inspector);
+  gtk_widget_show (inspector);
+
+  set_sensitivity_according_to_project (window, project);
+  refresh_title (window);
+
+  gtk_action_group_set_sensitive (priv->project_actiongroup, TRUE);
 
   /* Pass ownership of the project to the app */
   glade_app_add_project (project);
   g_object_unref (project);
 
-  /* Custom notebook tab label (will be refreshed later) */
-  label = create_notebook_tab (window, project, for_file);
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (priv->notebook), GTK_WIDGET (view), label);
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->notebook), -1);
+  /* Add view to stack */
+  gtk_container_add (GTK_CONTAINER (priv->stack), view);
+  gtk_widget_show (view);
+  gtk_stack_set_visible_child (priv->stack, view);
 
-  refresh_notebook_tab_for_project (window, project);
-
-  glade_window_notebook_tabs_update (window);
-
-  gtk_widget_show (priv->center_paned);
-  gtk_widget_show (GTK_WIDGET (priv->editor));
+  refresh_stack_title_for_project (window, project);
 }
 
 static void
@@ -2188,7 +1945,7 @@ open_project (GladeWindow *window, const gchar *path)
 
   if (!glade_project_load_from_file (project, path))
     {
-      do_close (window, project);
+      close_project (window, project);
 
       recent_remove (window, path);
       return FALSE;
@@ -2277,7 +2034,7 @@ check_reload_project (GladeWindow *window, GladeProject *project)
   /* Reopen */
   path = g_strdup (glade_project_get_path (project));
 
-  do_close (window, project);
+  close_project (window, project);
   open_project (window, path);
   g_free (path);
 }
@@ -2577,7 +2334,7 @@ on_quit_action_activate (GtkAction *action, GladeWindow *window)
   for (list = projects; list; list = list->next)
     {
       GladeProject *project = GLADE_PROJECT (glade_app_get_projects ()->data);
-      do_close (window, project);
+      close_project (window, project);
     }
 
   glade_window_config_save (window);
@@ -2683,11 +2440,9 @@ glade_window_constructed (GObject *object)
     g_object_ref(sep);
     gtkosx_application_insert_app_menu_item (theApp, sep, 1);
 
-    gtkosx_application_insert_app_menu_item (theApp, priv->properties_menuitem,
-                                             2);
     sep = gtk_separator_menu_item_new();
     g_object_ref(sep);
-    gtkosx_application_insert_app_menu_item (theApp, sep, 3);
+    gtkosx_application_insert_app_menu_item (theApp, sep, 2);
 
     g_signal_connect(theApp, "NSApplicationWillTerminate",
                      G_CALLBACK(on_quit_action_activate), window);
@@ -2746,12 +2501,10 @@ glade_window_class_init (GladeWindowClass *klass)
                                    "GladeDesignView * {\n"
                                    "  -gtk-key-bindings: DisableBindings;\n"
                                    "}\n"
-                                   "GtkProgressBar#glade-tab-label-progress {\n"
-                                   "   -GtkProgressBar-min-horizontal-bar-width : 1;\n"
-                                   "   -GtkProgressBar-min-horizontal-bar-height : 1;\n"
-                                   "   -GtkProgressBar-xspacing : 4;\n"
-                                   "   -GtkProgressBar-yspacing : 0;\n"
-                                   "   padding : 0;\n" " }", -1, NULL);
+                                   ".glade-tight-fit {\n"
+                                   "  margin: 0;\n"
+                                   "  padding: 0;\n"
+                                   "}", -1, NULL);
 
   gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
                                              GTK_STYLE_PROVIDER (provider),
@@ -2762,12 +2515,15 @@ glade_window_class_init (GladeWindowClass *klass)
 
   /* Internal children */
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, headerbar);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, title);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, subtitle);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, project_button);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, about_dialog);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, center_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, left_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, open_button_box);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, notebook);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, inspectors_notebook);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, stack);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, inspectors_stack);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, statusbar);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, toolbar);
@@ -2778,7 +2534,6 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, pointer_mode_actiongroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, static_actiongroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, quit_menuitem);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, properties_menuitem);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, about_menuitem);
 
   /* Actions */
@@ -2790,8 +2545,6 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, copy_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, paste_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, delete_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, previous_project_action);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, next_project_action);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, selector_radioaction);
 
   /* Callbacks */
@@ -2803,6 +2556,8 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_cut_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_paste_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_delete_action_activate);
+  gtk_widget_class_bind_template_callback (widget_class, on_previous_project_action_activate);
+  gtk_widget_class_bind_template_callback (widget_class, on_next_project_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_properties_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_undo_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_redo_action_activate);
@@ -2816,9 +2571,7 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_selector_radioaction_changed);
   gtk_widget_class_bind_template_callback (widget_class, on_actiongroup_connect_proxy);
   gtk_widget_class_bind_template_callback (widget_class, on_actiongroup_disconnect_proxy);
-  gtk_widget_class_bind_template_callback (widget_class, on_notebook_switch_page);
-  gtk_widget_class_bind_template_callback (widget_class, on_notebook_tab_added);
-  gtk_widget_class_bind_template_callback (widget_class, on_notebook_tab_removed);
+  gtk_widget_class_bind_template_callback (widget_class, on_stack_visible_child_notify);
   gtk_widget_class_bind_template_callback (widget_class, on_recent_menu_insert);
   gtk_widget_class_bind_template_callback (widget_class, on_recent_menu_remove);
 }
