@@ -100,6 +100,7 @@ struct _GladeWidgetAdaptorPrivate
 				       * are special children (like notebook tab 
 				       * widgets for example).
 				       */
+  gboolean     query;                 /* Do we have to query the user, see glade_widget_adaptor_query() */
 };
 
 struct _GladeChildPacking
@@ -133,7 +134,8 @@ enum
   PROP_CATALOG,
   PROP_BOOK,
   PROP_SPECIAL_TYPE,
-  PROP_CURSOR
+  PROP_CURSOR,
+  PROP_QUERY
 };
 
 typedef struct _GladeChildPacking GladeChildPacking;
@@ -836,6 +838,9 @@ glade_widget_adaptor_real_set_property (GObject      *object,
 	g_free (adaptor->priv->special_child_type);
 	adaptor->priv->special_child_type = g_value_dup_string (value);
         break;
+      case PROP_QUERY:
+        adaptor->priv->query = g_value_get_boolean (value);
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -881,6 +886,9 @@ glade_widget_adaptor_real_get_property (GObject    *object,
         break;
       case PROP_CURSOR:
         g_value_set_pointer (value, adaptor->priv->cursor);
+        break;
+      case PROP_QUERY:
+        g_value_set_boolean (value, adaptor->priv->query);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1495,6 +1503,11 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
        g_param_spec_pointer
        ("cursor", _("Cursor"),
         _("A cursor for inserting widgets in the UI"), G_PARAM_READABLE));
+  g_object_class_install_property
+      (object_class, PROP_QUERY,
+       g_param_spec_boolean
+       ("query", _("Query"),
+        _("Whether the adaptor should query the use or not"), FALSE, G_PARAM_READWRITE));
 }
 
 /*******************************************************************************
@@ -3728,6 +3741,9 @@ glade_widget_adaptor_query (GladeWidgetAdaptor *adaptor)
   GList *l;
 
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
+
+  if (!adaptor->priv->query)
+    return FALSE;
 
   for (l = adaptor->priv->properties; l; l = l->next)
     {
