@@ -61,6 +61,7 @@ UI_FILES = 				\
 	glade-editor.ui			\
 	glade-project-properties.ui	\
 	glade-adaptor-chooser-widget.ui	\
+	glade-adaptor-chooser.ui	\
 	glade-property-label.ui
 
 GRAPHICS_FILES = \
@@ -86,6 +87,7 @@ libgladeui_2_la_SOURCES = \
 	glade-app.c \
 	glade-base-editor.c \
 	glade-adaptor-chooser-widget.c \
+	glade-adaptor-chooser.c \
 	glade-builtins.c \
 	glade-catalog.c \
 	glade-cell-renderer-icon.c \
@@ -152,6 +154,7 @@ libgladeuiincludedir=$(includedir)/libgladeui-2.0/gladeui
 libgladeuiinclude_HEADERS = \
 	glade.h \
 	glade-app.h \
+	glade-adaptor-chooser.h \
 	glade-base-editor.h \
 	glade-builtins.h \
 	glade-catalog.h \
