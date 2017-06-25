@@ -1,7 +1,7 @@
 /*
  * glade-adaptor-chooser.c
  *
- * Copyright (C) 2014 Juan Pablo Ugarte
+ * Copyright (C) 2014-2017 Juan Pablo Ugarte
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -72,12 +72,11 @@ static guint adaptor_chooser_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (_GladeAdaptorChooser, _glade_adaptor_chooser, GTK_TYPE_BOX);
 
+#define GET_PRIVATE(d) ((_GladeAdaptorChooserPrivate *) _glade_adaptor_chooser_get_instance_private((_GladeAdaptorChooser*)d))
+
 static void
 _glade_adaptor_chooser_init (_GladeAdaptorChooser *chooser)
 {
-  chooser->priv = _glade_adaptor_chooser_get_instance_private (chooser);
-
-  chooser->priv->flags = GLADE_ADAPTOR_CHOOSER_WIDGET;
   gtk_widget_init_template (GTK_WIDGET (chooser));
 }
 
@@ -89,15 +88,15 @@ _glade_adaptor_chooser_finalize (GObject *object)
 
 static void
 _glade_adaptor_chooser_set_property (GObject      *object, 
-                                    guint         prop_id, 
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
 { 
   _GladeAdaptorChooserPrivate *priv;
   
   g_return_if_fail (GLADE_IS_ADAPTOR_CHOOSER (object));
 
-  priv = GLADE_ADAPTOR_CHOOSER (object)->priv;
+  priv = GET_PRIVATE (object);
 
   switch (prop_id)
     {
@@ -105,7 +104,8 @@ _glade_adaptor_chooser_set_property (GObject      *object,
         priv->flags = g_value_get_flags (value);
       break;
       case PROP_PROJECT:
-        priv->project = g_value_get_object (value);
+        _glade_adaptor_chooser_set_project (GLADE_ADAPTOR_CHOOSER (object),
+                                            g_value_get_object (value));
       break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -115,15 +115,15 @@ _glade_adaptor_chooser_set_property (GObject      *object,
 
 static void
 _glade_adaptor_chooser_get_property (GObject    *object,
-                                    guint       prop_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
+                                     guint       prop_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
 {
   _GladeAdaptorChooserPrivate *priv;
 
   g_return_if_fail (GLADE_IS_ADAPTOR_CHOOSER (object));
 
-  priv = GLADE_ADAPTOR_CHOOSER (object)->priv;
+  priv = GET_PRIVATE (object);
 
   switch (prop_id)
     {
@@ -161,57 +161,6 @@ store_append_adaptor (GtkListStore *store, GladeWidgetAdaptor *adaptor)
   g_free (normalized_name);
 }
 
-static inline void
-store_populate (GtkListStore            *store,
-                GladeProject            *project,
-                _GladeAdaptorChooserFlags flags)
-{
-  const gchar *catalog = NULL;
-  gint major, minor;
-  GList *l;
-
-  for (l = glade_app_get_catalogs (); l; l = g_list_next (l))
-    {
-      GList *groups = glade_catalog_get_widget_groups (GLADE_CATALOG (l->data));
-
-      for (; groups; groups = g_list_next (groups))
-        {
-          GladeWidgetGroup *group = GLADE_WIDGET_GROUP (groups->data);
-          const GList *adaptors;
-
-          for (adaptors = glade_widget_group_get_adaptors (group); adaptors;
-               adaptors = g_list_next (adaptors))
-            {
-              GladeWidgetAdaptor *adaptor = adaptors->data;
-              GType type = glade_widget_adaptor_get_object_type (adaptor);
-
-              /* Skip deprecated adaptors and according to flags */
-              if ((flags & GLADE_ADAPTOR_CHOOSER_SKIP_DEPRECATED && GWA_DEPRECATED (adaptor)) ||
-                  (flags & GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL && GWA_IS_TOPLEVEL (adaptor)) ||
-                  !((flags & GLADE_ADAPTOR_CHOOSER_WIDGET && g_type_is_a (type, GTK_TYPE_WIDGET)) ||
-                    (flags & GLADE_ADAPTOR_CHOOSER_TOPLEVEL && GWA_IS_TOPLEVEL (adaptor))))
-                continue;
-
-              /* Skip classes not available in project target version */
-              if (project)
-                {
-                  const gchar *new_catalog = glade_widget_adaptor_get_catalog (adaptor);
-
-                  if (g_strcmp0 (catalog, new_catalog))
-                    {
-                      catalog = new_catalog;
-                      glade_project_get_target_version (project, catalog, &major, &minor);
-                    }
-
-                  if (!GWA_VERSION_CHECK (adaptor, major, minor))
-                    continue;
-                }
-              store_append_adaptor (store, adaptor);
-            }     
-        }
-    }
-}
-
 static void
 on_treeview_row_activated (GtkTreeView         *tree_view,
                            GtkTreePath         *path,
@@ -237,13 +186,14 @@ on_treeview_row_activated (GtkTreeView         *tree_view,
 static void
 on_searchentry_activate (GtkEntry *entry, _GladeAdaptorChooser *chooser)
 {
+  _GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
   const gchar *text = gtk_entry_get_text (entry);
   GladeWidgetAdaptor *adaptor;
 
   /* try to find an adaptor by name */
   if (!(adaptor = glade_widget_adaptor_get_by_name (text)))
     {
-      GtkTreeModel *model = GTK_TREE_MODEL (chooser->priv->treemodelfilter);
+      GtkTreeModel *model = GTK_TREE_MODEL (priv->treemodelfilter);
       gchar *normalized_name = normalize_name (text);
       GtkTreeIter iter;
       gboolean valid;
@@ -308,10 +258,49 @@ chooser_match_func (_GladeAdaptorChooser *chooser,
 static gboolean
 treemodelfilter_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
 {
-  _GladeAdaptorChooserPrivate *priv = GLADE_ADAPTOR_CHOOSER (data)->priv;
-  gchar *key = normalize_name (gtk_entry_get_text (GTK_ENTRY (priv->searchentry)));
-  gboolean visible = chooser_match_func (data, model, key, iter);
-  g_free (key);
+  _GladeAdaptorChooserPrivate *priv = GET_PRIVATE (data);
+  GladeWidgetAdaptor *adaptor = NULL;
+  gboolean visible = TRUE;
+
+  gtk_tree_model_get (model, iter, COLUMN_ADAPTOR, &adaptor, -1);
+
+  /* Skip classes not available in project target version */
+  if (adaptor && priv->project)
+    {
+      const gchar *catalog = NULL;
+      gint major, minor;
+
+      catalog = glade_widget_adaptor_get_catalog (adaptor);
+      glade_project_get_target_version (priv->project, catalog, &major, &minor);
+
+      visible = GWA_VERSION_CHECK (adaptor, major, minor);
+    }
+
+  if (visible && adaptor && priv->flags)
+    {
+      GType type = glade_widget_adaptor_get_object_type (adaptor);
+      _GladeAdaptorChooserFlags flags = priv->flags;
+
+       /* Skip adaptors according to flags */
+       if (flags & GLADE_ADAPTOR_CHOOSER_SKIP_DEPRECATED && GWA_DEPRECATED (adaptor))
+         visible = FALSE;
+       else if (flags & GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL && GWA_IS_TOPLEVEL (adaptor))
+         visible = FALSE;
+       else if (flags & GLADE_ADAPTOR_CHOOSER_WIDGET && !g_type_is_a (type, GTK_TYPE_WIDGET))
+         visible = FALSE;
+       else if (flags & GLADE_ADAPTOR_CHOOSER_TOPLEVEL && !GWA_IS_TOPLEVEL (adaptor))
+         visible = FALSE;
+    }
+
+  if (visible)
+    {
+      gchar *key = normalize_name (gtk_entry_get_text (GTK_ENTRY (priv->searchentry)));
+      visible = chooser_match_func (data, model, key, iter);
+      g_free (key);
+    }
+
+  g_object_unref (adaptor);
+
   return visible;
 }
 
@@ -343,9 +332,7 @@ static void
 _glade_adaptor_chooser_constructed (GObject *object)
 {
   _GladeAdaptorChooser *chooser = GLADE_ADAPTOR_CHOOSER (object);
-  _GladeAdaptorChooserPrivate *priv = chooser->priv;
-
-  store_populate (priv->store, priv->project, priv->flags);
+  _GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
 
   /* Set cell data function: this save us from alocating name and icon name for each adaptor. */
   gtk_tree_view_column_set_cell_data_func (priv->column_icon,
@@ -402,7 +389,7 @@ _glade_adaptor_chooser_class_init (_GladeAdaptorChooserClass *klass)
                                                        "Show flags",
                                                        "Widget adaptors show flags",
                                                        _glade_adaptor_chooser_flags_get_type (),
-                                                       GLADE_ADAPTOR_CHOOSER_WIDGET,
+                                                       0,
                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (object_class,
                                    PROP_PROJECT,
@@ -410,7 +397,7 @@ _glade_adaptor_chooser_class_init (_GladeAdaptorChooserClass *klass)
                                                         "Glade Project",
                                                         "If set, use project target version to skip unsupported classes",
                                                         GLADE_TYPE_PROJECT,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_READWRITE));
 
   adaptor_chooser_signals[ADAPTOR_SELECTED] =
     g_signal_new ("adaptor-selected", G_OBJECT_CLASS_TYPE (klass), 0, 0,
@@ -438,4 +425,58 @@ _glade_adaptor_chooser_new (_GladeAdaptorChooserFlags flags, GladeProject *proje
                                    "show-flags", flags,
                                    "project", project,
                                    NULL));
+}
+
+void
+_glade_adaptor_chooser_set_project (_GladeAdaptorChooser *chooser,
+                                    GladeProject        *project)
+{
+  _GladeAdaptorChooserPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_ADAPTOR_CHOOSER (chooser));
+  priv = GET_PRIVATE (chooser);
+
+  g_clear_object (&priv->project);
+
+  if (project)
+    priv->project = g_object_ref (project);
+
+  gtk_tree_model_filter_refilter (priv->treemodelfilter);
+}
+
+void
+_glade_adaptor_chooser_populate (_GladeAdaptorChooser *chooser)
+{
+  GList *l;
+
+  for (l = glade_app_get_catalogs (); l; l = g_list_next (l))
+    _glade_adaptor_chooser_add_catalog (chooser, l->data);
+}
+
+void
+_glade_adaptor_chooser_add_catalog (_GladeAdaptorChooser *chooser,
+                                    GladeCatalog         *catalog)
+{
+  GList *groups;
+
+  g_return_if_fail (GLADE_IS_ADAPTOR_CHOOSER (chooser));
+
+  for (groups = glade_catalog_get_widget_groups (catalog); groups;
+       groups = g_list_next (groups))
+    _glade_adaptor_chooser_add_group (chooser, groups->data);
+}
+
+void
+_glade_adaptor_chooser_add_group (_GladeAdaptorChooser *chooser,
+                                  GladeWidgetGroup     *group)
+{
+  _GladeAdaptorChooserPrivate *priv;
+  const GList *adaptors;
+
+  g_return_if_fail (GLADE_IS_ADAPTOR_CHOOSER (chooser));
+  priv = GET_PRIVATE (chooser);
+
+  for (adaptors = glade_widget_group_get_adaptors (group); adaptors;
+       adaptors = g_list_next (adaptors))
+    store_append_adaptor (priv->store, adaptors->data);
 }

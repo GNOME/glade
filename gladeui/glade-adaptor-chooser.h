@@ -1,7 +1,7 @@
 /*
  * glade-adaptor-chooser.h
  *
- * Copyright (C) 2014 Juan Pablo Ugarte
+ * Copyright (C) 2014-2017 Juan Pablo Ugarte
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -69,6 +69,17 @@ GType _glade_adaptor_chooser_get_type (void) G_GNUC_CONST;
 
 GtkWidget *_glade_adaptor_chooser_new (_GladeAdaptorChooserFlags  flags,
                                        GladeProject             *project);
+
+void      _glade_adaptor_chooser_set_project (_GladeAdaptorChooser *chooser,
+                                              GladeProject         *project);
+
+void      _glade_adaptor_chooser_populate    (_GladeAdaptorChooser *chooser);
+
+void      _glade_adaptor_chooser_add_catalog (_GladeAdaptorChooser *chooser,
+                                              GladeCatalog         *catalog);
+
+void      _glade_adaptor_chooser_add_group   (_GladeAdaptorChooser *chooser,
+                                              GladeWidgetGroup     *group);
 
 G_END_DECLS
 
