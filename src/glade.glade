@@ -246,7 +246,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="previous_project_action">
         <property name="label" translatable="yes">_Previous Project</property>
         <property name="tooltip" translatable="yes">Activate previous project</property>
-        <signal name="activate" handler="on_previous_project_action_activate"/>
+        <signal name="activate" handler="on_previous_project_action_activate" swapped="no"/>
       </object>
       <accelerator key="Page_Up" modifiers="GDK_CONTROL_MASK"/>
     </child>
@@ -254,7 +254,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       <object class="GtkAction" id="next_project_action">
         <property name="label" translatable="yes">_Next Project</property>
         <property name="tooltip" translatable="yes">Activate next project</property>
-        <signal name="activate" handler="on_next_project_action_activate"/>
+        <signal name="activate" handler="on_next_project_action_activate" swapped="no"/>
       </object>
       <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
     </child>
@@ -532,14 +532,50 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkStack" id="stack">
+                  <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="transition_duration">128</property>
-                    <property name="transition_type">crossfade</property>
-                    <signal name="notify::visible-child" handler="on_stack_visible_child_notify" swapped="no"/>
+                    <property name="orientation">vertical</property>
                     <child>
-                      <placeholder/>
+                      <object class="GladeAdaptorChooser" id="adaptor_chooser">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="border_width">2</property>
+                        <property name="spacing">4</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="stack">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="transition_duration">128</property>
+                        <property name="transition_type">crossfade</property>
+                        <signal name="notify::visible-child" handler="on_stack_visible_child_notify" swapped="no"/>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
                     </child>
                   </object>
                   <packing>

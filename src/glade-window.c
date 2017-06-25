@@ -34,6 +34,7 @@
 #include <gladeui/glade.h>
 #include <gladeui/glade-popup.h>
 #include <gladeui/glade-inspector.h>
+#include <gladeui/glade-adaptor-chooser.h>
 
 #include <gladeui/glade-project.h>
 
@@ -86,6 +87,7 @@ struct _GladeWindowPrivate
   GtkLabel *subtitle;
   GtkWidget *project_button;
 
+  GladeAdaptorChooser *adaptor_chooser;
   GtkStack *inspectors_stack;           /* Cached per project inspectors */
 
   GladeEditor  *editor;                 /* The editor */
@@ -1577,6 +1579,8 @@ on_stack_visible_child_notify (GObject    *gobject,
       gtk_stack_set_visible_child (priv->inspectors_stack,
                                    g_object_get_data (G_OBJECT (view), "glade-window-view-inspector"));
 
+      glade_adaptor_chooser_set_project (priv->adaptor_chooser, project);
+
       set_sensitivity_according_to_project (window, project);
 
       refresh_undo_redo (window, project);
@@ -2344,7 +2348,6 @@ on_quit_action_activate (GtkAction *action, GladeWindow *window)
   gtk_main_quit ();
 }
 
-
 static void
 glade_window_init (GladeWindow *window)
 {
@@ -2514,6 +2517,7 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/glade/glade.glade");
 
   /* Internal children */
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, adaptor_chooser);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, headerbar);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, title);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, subtitle);
