@@ -434,39 +434,43 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
   if (!gtk_widget_has_focus (widget))
     gtk_widget_grab_focus (widget);
 
-  if (event->button == 1)
+  if ((event->button == 1 || event->button == 2) &&
+       event->type == GDK_BUTTON_PRESS && adaptor != NULL)
     {
-      if (event->type == GDK_BUTTON_PRESS && adaptor != NULL)
+      GladeWidget *parent = glade_placeholder_get_parent (placeholder);
+
+      /* A widget type is selected in the palette.
+       * Add a new widget of that type.
+       */
+      glade_command_create (adaptor, parent, placeholder, project);
+
+      /* Let the user use the middle button to create more than one widget */
+      if (event->button != 2)
         {
-          GladeWidget *parent = glade_placeholder_get_parent (placeholder);
-
-          /* A widget type is selected in the palette.
-           * Add a new widget of that type.
-           */
-          glade_command_create (adaptor, parent, placeholder, project);
-
           glade_project_set_add_item (project, NULL);
-
           /* reset the cursor */
-          glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
-          handled = TRUE;
+          glade_project_set_pointer_mode (project, GLADE_POINTER_SELECT);
         }
-      else if (event->type == GDK_2BUTTON_PRESS && adaptor == NULL)
-        {
-          GtkWidget *event_widget = gtk_get_event_widget ((GdkEvent*) event);
-          GladeWidget *toplevel = glade_widget_get_toplevel (glade_placeholder_get_parent (placeholder));
-          GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (glade_widget_get_object (toplevel)));
-          GtkWidget *pop = glade_placeholder_popover_new (placeholder, parent);
-          GdkRectangle rect = {0, 0, 8, 8};
 
-          gtk_widget_translate_coordinates (event_widget, parent,
-                                            event->x, event->y,
-                                            &rect.x, &rect.y);
-          gtk_popover_set_pointing_to (GTK_POPOVER (pop), &rect);
-          gtk_widget_show (pop);
-          handled = TRUE;
-        }
+      handled = TRUE;
     }
+  else if (event->button == 1 &&
+           event->type == GDK_2BUTTON_PRESS &&
+           adaptor == NULL)
+    {
+      GtkWidget *event_widget = gtk_get_event_widget ((GdkEvent*) event);
+      GladeWidget *toplevel = glade_widget_get_toplevel (glade_placeholder_get_parent (placeholder));
+      GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (glade_widget_get_object (toplevel)));
+      GtkWidget *pop = glade_placeholder_popover_new (placeholder, parent);
+      GdkRectangle rect = {0, 0, 8, 8};
+
+      gtk_widget_translate_coordinates (event_widget, parent,
+                                        event->x, event->y,
+                                        &rect.x, &rect.y);
+      gtk_popover_set_pointing_to (GTK_POPOVER (pop), &rect);
+      gtk_widget_show (pop);
+      handled = TRUE;
+   }
 
   if (!handled && glade_popup_is_popup_event (event))
     {
