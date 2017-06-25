@@ -60,7 +60,7 @@ UI_FILES = 				\
 	glade-design-layout.css		\
 	glade-editor.ui			\
 	glade-project-properties.ui	\
-	glade-adaptor-chooser.ui	\
+	glade-adaptor-chooser-widget.ui	\
 	glade-property-label.ui
 
 GRAPHICS_FILES = \
@@ -85,7 +85,7 @@ libgladeui_2_la_SOURCES = \
 	glade-accumulators.c \
 	glade-app.c \
 	glade-base-editor.c \
-	glade-adaptor-chooser.c \
+	glade-adaptor-chooser-widget.c \
 	glade-builtins.c \
 	glade-catalog.c \
 	glade-cell-renderer-icon.c \
@@ -188,7 +188,7 @@ libgladeuiinclude_HEADERS = \
 
 noinst_HEADERS = \
 	glade-accumulators.h \
-	glade-adaptor-chooser.h \
+	glade-adaptor-chooser-widget.h \
 	glade-design-layout.h \
 	glade-design-private.h \
 	glade-marshallers.h \

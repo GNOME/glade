@@ -45,7 +45,7 @@
 #include "glade-cursor.h"
 #include "glade-widget.h"
 #include "glade-app.h"
-#include "glade-adaptor-chooser.h"
+#include "glade-adaptor-chooser-widget.h"
 #include <math.h>
 
 #include "glade-dnd.h"
@@ -386,9 +386,9 @@ glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 }
 
 static void
-on_chooser_adaptor_selected (_GladeAdaptorChooser *chooser,
-                             GladeWidgetAdaptor  *adaptor,
-                             GladePlaceholder    *placeholder)
+on_chooser_adaptor_widget_selected (_GladeAdaptorChooserWidget *chooser,
+                                    GladeWidgetAdaptor         *adaptor,
+                                    GladePlaceholder           *placeholder)
 
 {
   glade_command_create (adaptor, glade_placeholder_get_parent (placeholder),
@@ -402,12 +402,13 @@ glade_placeholder_popover_new (GladePlaceholder *placeholder, GtkWidget *relativ
   GtkWidget *pop = gtk_popover_new (relative_to);
   GtkWidget *chooser;
 
-  chooser = _glade_adaptor_chooser_new (GLADE_ADAPTOR_CHOOSER_WIDGET |
-                                        GLADE_ADAPTOR_CHOOSER_SKIP_TOPLEVEL,
-                                        glade_placeholder_get_project (placeholder));
-
+  chooser = _glade_adaptor_chooser_widget_new (GLADE_ADAPTOR_CHOOSER_WIDGET_WIDGET |
+                                               GLADE_ADAPTOR_CHOOSER_WIDGET_SKIP_TOPLEVEL |
+                                               GLADE_ADAPTOR_CHOOSER_WIDGET_SKIP_DEPRECATED,
+                                               glade_placeholder_get_project (placeholder));
+  _glade_adaptor_chooser_widget_populate (GLADE_ADAPTOR_CHOOSER_WIDGET (chooser));
   g_signal_connect (chooser, "adaptor-selected",
-                    G_CALLBACK (on_chooser_adaptor_selected),
+                    G_CALLBACK (on_chooser_adaptor_widget_selected),
                     placeholder);
   gtk_popover_set_position (GTK_POPOVER (pop), GTK_POS_BOTTOM);
   gtk_container_add (GTK_CONTAINER (pop), chooser);

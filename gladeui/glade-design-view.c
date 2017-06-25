@@ -41,7 +41,7 @@
 #include "glade-design-layout.h"
 #include "glade-design-private.h"
 #include "glade-path.h"
-#include "glade-adaptor-chooser.h"
+#include "glade-adaptor-chooser-widget.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -326,9 +326,9 @@ logo_draw (GtkWidget *widget, cairo_t *cr, GdkRGBA *c)
 }
 
 static void
-on_chooser_adaptor_selected (_GladeAdaptorChooser *chooser,
-                             GladeWidgetAdaptor   *adaptor,
-                             GladeProject         *project)
+on_chooser_adaptor_widget_selected (_GladeAdaptorChooserWidget *chooser,
+                                    GladeWidgetAdaptor         *adaptor,
+                                    GladeProject               *project)
 
 {
   glade_command_create (adaptor, NULL, NULL, project);
@@ -351,11 +351,13 @@ glade_design_view_viewport_button_press (GtkWidget       *widget,
   gtk_popover_set_pointing_to (GTK_POPOVER (pop), &rect);
   gtk_popover_set_position (GTK_POPOVER (pop), GTK_POS_BOTTOM);
   
-  chooser = _glade_adaptor_chooser_new (GLADE_ADAPTOR_CHOOSER_TOPLEVEL |
-                                        GLADE_ADAPTOR_CHOOSER_WIDGET,
-                                        priv->project);
+  chooser = _glade_adaptor_chooser_widget_new (GLADE_ADAPTOR_CHOOSER_WIDGET_TOPLEVEL |
+                                               GLADE_ADAPTOR_CHOOSER_WIDGET_WIDGET |
+                                               GLADE_ADAPTOR_CHOOSER_WIDGET_SKIP_DEPRECATED,
+                                               priv->project);
+  _glade_adaptor_chooser_widget_populate (GLADE_ADAPTOR_CHOOSER_WIDGET (chooser));
   g_signal_connect (chooser, "adaptor-selected",
-                    G_CALLBACK (on_chooser_adaptor_selected),
+                    G_CALLBACK (on_chooser_adaptor_widget_selected),
                     priv->project);
 
   gtk_container_add (GTK_CONTAINER (pop), chooser);
