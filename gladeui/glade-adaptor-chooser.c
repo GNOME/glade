@@ -152,10 +152,13 @@ glade_adaptor_chooser_button_add_chooser (GtkWidget *button, GtkWidget *chooser)
 }
 
 static GtkWidget *
-glade_adaptor_chooser_add_chooser (GladeAdaptorChooser *chooser)
+glade_adaptor_chooser_add_chooser (GladeAdaptorChooser *chooser,
+                                   gboolean             show_group_title)
 {
   GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
-  GtkWidget *chooser_widget = _glade_adaptor_chooser_widget_new (0, NULL);
+  GtkWidget *chooser_widget = g_object_new (GLADE_TYPE_ADAPTOR_CHOOSER_WIDGET,
+                                            "show-group-title", show_group_title,
+                                            NULL);
 
   priv->choosers = g_list_prepend (priv->choosers, chooser_widget);
   g_signal_connect (chooser_widget, "adaptor-selected",
@@ -187,7 +190,7 @@ button_box_populate_from_catalog (GladeAdaptorChooser *chooser,
         {
           GtkWidget *button, *chooser_widget;
           
-          chooser_widget = glade_adaptor_chooser_add_chooser (chooser);
+          chooser_widget = glade_adaptor_chooser_add_chooser (chooser, FALSE);
           button = gtk_menu_button_new ();
           gtk_button_set_label (GTK_BUTTON (button), glade_widget_group_get_title (group));
           glade_adaptor_chooser_button_add_chooser (button, chooser_widget);
@@ -199,7 +202,7 @@ button_box_populate_from_catalog (GladeAdaptorChooser *chooser,
         {
           if (!extra_chooser)
             {
-              extra_chooser = glade_adaptor_chooser_add_chooser (chooser);
+              extra_chooser = glade_adaptor_chooser_add_chooser (chooser, TRUE);
               glade_adaptor_chooser_button_add_chooser (priv->extra_button, extra_chooser);
               gtk_widget_show (priv->extra_button);
             }
@@ -222,8 +225,8 @@ glade_adaptor_chooser_constructed (GObject *object)
   gtk_catalog = glade_app_get_catalog ("gtk+");
   button_box_populate_from_catalog (chooser, gtk_catalog);
 
-  others_chooser = glade_adaptor_chooser_add_chooser (chooser);
-  all_chooser = glade_adaptor_chooser_add_chooser (chooser);
+  others_chooser = glade_adaptor_chooser_add_chooser (chooser, TRUE);
+  all_chooser = glade_adaptor_chooser_add_chooser (chooser, TRUE);
   glade_adaptor_chooser_button_add_chooser (priv->others_button, others_chooser);
   glade_adaptor_chooser_button_add_chooser (priv->all_button, all_chooser);
 
