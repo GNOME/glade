@@ -6,6 +6,8 @@
     <columns>
       <!-- column-name adaptor -->
       <column type="GObject"/>
+      <!-- column-name group -->
+      <column type="gchararray"/>
       <!-- column-name normalized-name -->
       <column type="gchararray"/>
       <!-- column-name normalized-name-len -->
@@ -38,7 +40,7 @@
         <property name="completion">entrycompletion</property>
         <property name="input_hints">GTK_INPUT_HINT_WORD_COMPLETION | GTK_INPUT_HINT_NONE</property>
         <signal name="activate" handler="on_searchentry_activate" swapped="no"/>
-        <signal name="search-changed" handler="gtk_tree_model_filter_refilter" object="treemodelfilter" swapped="yes"/>
+        <signal name="search-changed" handler="on_searchentry_search_changed" swapped="no"/>
       </object>
       <packing>
         <property name="expand">False</property>
