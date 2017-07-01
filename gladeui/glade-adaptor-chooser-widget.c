@@ -43,6 +43,7 @@ struct _GladeAdaptorChooserWidgetPrivate
   GtkTreeModelFilter *treemodelfilter;
   GtkSearchEntry     *searchentry;
   GtkEntryCompletion *entrycompletion;
+  GtkScrolledWindow  *scrolledwindow;
 
   /* Needed for gtk_tree_view_column_set_cell_data_func() */
   GtkTreeViewColumn *column_icon;
@@ -419,6 +420,25 @@ _glade_adaptor_chooser_widget_constructed (GObject *object)
                                        chooser, NULL);
 }
 
+static void
+_glade_adaptor_chooser_widget_map (GtkWidget *widget)
+{
+  GtkWidget *toplevel = gtk_widget_get_toplevel (widget);
+
+  if (toplevel)
+    {
+      _GladeAdaptorChooserWidgetPrivate *priv = GET_PRIVATE (widget);
+      gint height = gtk_widget_get_allocated_height (toplevel) - 100;
+
+      if (height > 512)
+        height = height * 0.75;
+
+      gtk_scrolled_window_set_max_content_height (priv->scrolledwindow, height);
+    }
+
+  GTK_WIDGET_CLASS (_glade_adaptor_chooser_widget_parent_class)->map (widget);
+}
+
 static GType
 _glade_adaptor_chooser_widget_flags_get_type (void)
 {
@@ -446,6 +466,8 @@ _glade_adaptor_chooser_widget_class_init (_GladeAdaptorChooserWidgetClass *klass
   object_class->set_property = _glade_adaptor_chooser_widget_set_property;
   object_class->get_property = _glade_adaptor_chooser_widget_get_property;
   object_class->constructed = _glade_adaptor_chooser_widget_constructed;
+
+  widget_class->map = _glade_adaptor_chooser_widget_map;
 
   g_object_class_install_property (object_class,
                                    PROP_SHOW_FLAGS,
@@ -486,6 +508,7 @@ _glade_adaptor_chooser_widget_class_init (_GladeAdaptorChooserWidgetClass *klass
   gtk_widget_class_bind_template_child_private (widget_class, _GladeAdaptorChooserWidget, icon_cell);
   gtk_widget_class_bind_template_child_private (widget_class, _GladeAdaptorChooserWidget, column_adaptor);
   gtk_widget_class_bind_template_child_private (widget_class, _GladeAdaptorChooserWidget, adaptor_cell);
+  gtk_widget_class_bind_template_child_private (widget_class, _GladeAdaptorChooserWidget, scrolledwindow);
   gtk_widget_class_bind_template_callback (widget_class, on_treeview_row_activated);
   gtk_widget_class_bind_template_callback (widget_class, on_searchentry_search_changed);
   gtk_widget_class_bind_template_callback (widget_class, on_searchentry_activate);
