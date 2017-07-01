@@ -468,7 +468,7 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
                                         event->x, event->y,
                                         &rect.x, &rect.y);
       gtk_popover_set_pointing_to (GTK_POPOVER (pop), &rect);
-      gtk_widget_show (pop);
+      gtk_popover_popup (GTK_POPOVER (pop));
       handled = TRUE;
    }
 

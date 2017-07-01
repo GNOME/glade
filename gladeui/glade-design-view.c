@@ -362,7 +362,7 @@ glade_design_view_viewport_button_press (GtkWidget       *widget,
 
   gtk_container_add (GTK_CONTAINER (pop), chooser);
   gtk_widget_show (chooser);
-  gtk_widget_show (pop);
+  gtk_popover_popup (GTK_POPOVER (pop));
 
   return TRUE;
 }
