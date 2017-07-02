@@ -1,0 +1,62 @@
+/*
+ * glade-intro.css
+ *
+ * Copyright (C) 2017 Juan Pablo Ugarte
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * 
+ * Author: Juan Pablo Ugarte <juanpablougarte@gmail.com>
+ * 
+ */
+
+/* GladeWindow */
+
+@binding-set DisableBindings {
+  unbind "<Control>s";
+  unbind "<Control>p";
+  unbind "<Control>w";
+  unbind "<Control>z";
+  unbind "<Control><shift>z";
+  unbind "<Control>x";
+  unbind "<Control>c";
+  unbind "<Control>v";
+  unbind "Delete";
+  unbind "<Control>Page_Up";
+  unbind "<Control>Page_Down";
+  unbind "<Control>Next";
+  unbind "<Control>n";
+  unbind "<Control>o";
+  unbind "<Control>q";
+  unbind "F1";
+  unbind "<Alt>0";
+  unbind "<Alt>1";
+  unbind "<Alt>2";
+  unbind "<Alt>3";
+  unbind "<Alt>4";
+  unbind "<Alt>5";
+  unbind "<Alt>6";
+  unbind "<Alt>7";
+  unbind "<Alt>8";
+  unbind "<Alt>9";
+}
+
+GladeDesignView * {
+  -gtk-key-bindings: DisableBindings;
+}
+
+.glade-tight-fit {
+  margin: 0;
+  padding: 0;
+}

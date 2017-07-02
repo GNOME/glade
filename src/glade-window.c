@@ -2366,7 +2366,7 @@ glade_window_init (GladeWindow *window)
    */
   priv->preferences = (GladePreferences *)glade_preferences_new ();
   glade_preferences_load (window->priv->preferences, glade_app_get_config ());
-  
+
   /* We need this for the icons to be available */
   glade_init ();
 
@@ -2472,43 +2472,7 @@ glade_window_class_init (GladeWindowClass *klass)
   widget_class->configure_event = glade_window_configure_event;
 
   provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_data (provider,
-                                   "@binding-set DisableBindings {\n"
-                                   "  unbind \"<Control>s\";\n"
-                                   "  unbind \"<Control>p\";\n"
-                                   "  unbind \"<Control>w\";\n"
-                                   "  unbind \"<Control>z\";\n"
-                                   "  unbind \"<Control><shift>z\";\n"
-                                   "  unbind \"<Control>x\";\n"
-                                   "  unbind \"<Control>c\";\n"
-                                   "  unbind \"<Control>v\";\n"
-                                   "  unbind \"Delete\";\n"
-                                   "  unbind \"<Control>Page_Up\";\n"
-                                   "  unbind \"<Control>Page_Down\";\n"
-                                   "  unbind \"<Control>Next\";\n"
-                                   "  unbind \"<Control>n\";\n"
-                                   "  unbind \"<Control>o\";\n"
-                                   "  unbind \"<Control>q\";\n"
-                                   "  unbind \"F1\";\n"
-                                   "  unbind \"<Alt>0\";\n"
-                                   "  unbind \"<Alt>1\";\n"
-                                   "  unbind \"<Alt>2\";\n"
-                                   "  unbind \"<Alt>3\";\n"
-                                   "  unbind \"<Alt>4\";\n"
-                                   "  unbind \"<Alt>5\";\n"
-                                   "  unbind \"<Alt>6\";\n"
-                                   "  unbind \"<Alt>7\";\n"
-                                   "  unbind \"<Alt>8\";\n"
-                                   "  unbind \"<Alt>9\";\n"
-                                   "}\n"
-                                   "GladeDesignView * {\n"
-                                   "  -gtk-key-bindings: DisableBindings;\n"
-                                   "}\n"
-                                   ".glade-tight-fit {\n"
-                                   "  margin: 0;\n"
-                                   "  padding: 0;\n"
-                                   "}", -1, NULL);
-
+  gtk_css_provider_load_from_resource (provider, "/org/gnome/glade/glade-window.css");
   gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
                                              GTK_STYLE_PROVIDER (provider),
                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);

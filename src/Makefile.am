@@ -59,6 +59,10 @@ endif
 glade-win32-res.o: glade.rc
 	$(WINDRES) $< $@
 
-UI_FILES = glade.glade glade-preferences.glade glade-registration.glade glade-registration.css
+UI_FILES = glade.glade \
+	glade-preferences.glade \
+	glade-registration.glade \
+	glade-window.css \
+	glade-registration.css
 
 EXTRA_DIST = glade.rc.in glade-resources.gresource.xml $(UI_FILES)
