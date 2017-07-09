@@ -60,3 +60,31 @@ GladeDesignView * {
   margin: 0;
   padding: 0;
 }
+
+@keyframes brand-highlight {
+  from { -gtk-icon-shadow: 2px -1px 4px alpha(@warning_color, 0); }
+  to   { -gtk-icon-shadow: 2px -1px 4px alpha(@warning_color, 0.8); }
+}
+
+#glade-brand-image {
+  padding-top: 40px;
+  animation: brand-highlight 2s infinite alternate;
+}
+
+#glade-brand-image:backdrop {
+  animation: none;
+}
+
+#glade-label {
+  font-size: 64px;
+  font-weight: bold;
+  text-shadow: 2px 2px 2px gray;
+}
+
+#version-label {
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px gray;
+  padding-bottom: 120px;
+}
+

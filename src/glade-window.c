@@ -71,13 +71,14 @@
 #define CONFIG_KEY_AUTOSAVE         "autosave"
 #define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
-#define GLADE_WINDOW_ACTIVE_VIEW(w) ((GladeDesignView *) gtk_stack_get_visible_child (w->priv->stack))
+#define GLADE_WINDOW_ACTIVE_VIEW(w) ((GladeDesignView *) gtk_stack_get_visible_child (w->priv->view_stack))
 
 struct _GladeWindowPrivate
 {
   GladeApp *app;
 
   GtkStack *stack;
+  GtkStack *view_stack;
 
   GtkHeaderBar *headerbar;
   GtkWindow *about_dialog;
@@ -86,6 +87,9 @@ struct _GladeWindowPrivate
   GtkLabel *title;
   GtkLabel *subtitle;
   GtkWidget *project_button;
+
+  GtkWidget *start_page;
+  GtkLabel  *version_label;
 
   GladeAdaptorChooser *adaptor_chooser;
   GtkStack *inspectors_stack;           /* Cached per project inspectors */
@@ -536,7 +540,7 @@ refresh_stack_title_for_project (GladeWindow *window, GladeProject *project)
 {
   GList *children, *l;
 
-  children = gtk_container_get_children (GTK_CONTAINER (window->priv->stack));
+  children = gtk_container_get_children (GTK_CONTAINER (window->priv->view_stack));
   for (l = children; l; l = l->next)
     {
       GtkWidget *view = l->data;
@@ -546,7 +550,7 @@ refresh_stack_title_for_project (GladeWindow *window, GladeProject *project)
           gchar *str = get_formatted_project_name_for_display (project,
                                                                FORMAT_NAME_MARK_UNSAVED |
                                                                FORMAT_NAME_MIDDLE_TRUNCATE);
-          gtk_container_child_set (GTK_CONTAINER (window->priv->stack), view,
+          gtk_container_child_set (GTK_CONTAINER (window->priv->view_stack), view,
                                    "title", str, NULL);
           g_free (str);
 
@@ -901,7 +905,7 @@ switch_to_project (GladeWindow *window, GladeProject *project)
   GtkWidget *view;
 
   view = GTK_WIDGET (glade_design_view_get_from_project (project));
-  gtk_stack_set_visible_child (priv->stack, view);
+  gtk_stack_set_visible_child (priv->view_stack, view);
 
   check_reload_project (window, project);
 }
@@ -1374,7 +1378,7 @@ close_project (GladeWindow *window, GladeProject *project)
                         g_object_get_data (G_OBJECT (view), "glade-window-view-inspector"));
 
   /* then the main view */
-  gtk_container_remove (GTK_CONTAINER (priv->stack), GTK_WIDGET (view));
+  gtk_container_remove (GTK_CONTAINER (priv->view_stack), GTK_WIDGET (view));
 
   clean_actions (window);
 
@@ -1395,7 +1399,7 @@ close_project (GladeWindow *window, GladeProject *project)
     gtk_action_group_set_sensitive (priv->project_actiongroup, FALSE);
 
   if (!glade_app_get_projects ())
-    gtk_widget_hide (priv->center_paned);
+    gtk_stack_set_visible_child (priv->stack, priv->start_page);
 
   if (GLADE_WINDOW_ACTIVE_VIEW (window) == NULL)
     gtk_widget_hide (GTK_WIDGET (priv->editor));
@@ -1490,11 +1494,11 @@ stack_visible_child_next_prev (GladeWindow *window, gboolean next)
   if (!(view = GLADE_WINDOW_ACTIVE_VIEW (window)))
     return;
 
-  children = gtk_container_get_children (GTK_CONTAINER (window->priv->stack));
+  children = gtk_container_get_children (GTK_CONTAINER (window->priv->view_stack));
 
   if ((node = g_list_find (children, view)) && 
       ((next && node->next) || (!next && node->prev)))
-    gtk_stack_set_visible_child (window->priv->stack, 
+    gtk_stack_set_visible_child (window->priv->view_stack,
                                  (next) ? node->next->data : node->prev->data);
 
   g_list_free (children);
@@ -1865,7 +1869,7 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
   /* Create a new view for project */
   view = glade_design_view_new (project);
 
-  gtk_widget_show (priv->center_paned);
+  gtk_stack_set_visible_child (priv->stack, priv->center_paned);
   gtk_widget_show (GTK_WIDGET (priv->editor));
 
   g_signal_connect (G_OBJECT (project), "notify::modified",
@@ -1905,9 +1909,9 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
 
 
   /* Add view to stack */
-  gtk_container_add (GTK_CONTAINER (priv->stack), view);
+  gtk_container_add (GTK_CONTAINER (priv->view_stack), view);
   gtk_widget_show (view);
-  gtk_stack_set_visible_child (priv->stack, view);
+  gtk_stack_set_visible_child (priv->view_stack, view);
 
   refresh_stack_title_for_project (window, project);
 }
@@ -2382,9 +2386,15 @@ glade_window_constructed (GObject *object)
 {
   GladeWindow *window = GLADE_WINDOW (object);
   GladeWindowPrivate *priv = window->priv;
+  gchar *version;
 
   /* Chain up... */
   G_OBJECT_CLASS (glade_window_parent_class)->constructed (object);
+
+  /* Init Glade version */
+  version = g_strdup_printf ("%d.%d.%d", GLADE_MAJOR_VERSION, GLADE_MINOR_VERSION, GLADE_MICRO_VERSION);
+  gtk_label_set_text (priv->version_label, version);
+  g_free (version);
 
   /* recent files */
   priv->recent_manager = gtk_recent_manager_get_default ();
@@ -2487,10 +2497,13 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, subtitle);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, project_button);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, about_dialog);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, start_page);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, version_label);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, center_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, left_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, open_button_box);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, stack);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, view_stack);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, inspectors_stack);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, statusbar);
