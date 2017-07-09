@@ -74,7 +74,6 @@ main (int argc, char *argv[])
   GOptionContext *option_context;
   GOptionGroup *option_group;
   GError *error = NULL;
-  gboolean opened_project = FALSE;
   GTimer *timer = NULL;
 
 #ifdef ENABLE_NLS
@@ -175,10 +174,7 @@ main (int argc, char *argv[])
           if (verbose) g_timer_start (timer);
           
           if (g_file_test (files[i], G_FILE_TEST_EXISTS) != FALSE)
-	    {
-	      if (glade_window_open_project (window, files[i]))
-		opened_project = TRUE;
-	    }
+	    glade_window_open_project (window, files[i]);
           else
             g_warning (_("Unable to open '%s', the file does not exist.\n"),
                        files[i]);
@@ -194,9 +190,6 @@ main (int argc, char *argv[])
     }
 
   if (verbose) g_timer_destroy (timer);
-  
-  if (!opened_project)
-    glade_window_new_project (window);
 
   glade_window_registration_notify_user (window);
   
