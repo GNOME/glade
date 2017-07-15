@@ -498,43 +498,6 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
   glade_editor_load_widget (window->priv->editor, glade_widget);
 }
 
-static gchar *
-format_project_list_item_tooltip (GladeProject *project)
-{
-  gchar *tooltip, *path, *name;
-
-  if (glade_project_get_path (project))
-    {
-      path =
-          glade_utils_replace_home_dir_with_tilde (glade_project_get_path
-                                                   (project));
-
-      if (glade_project_get_readonly (project))
-        {
-          /* translators: referring to the action of activating a file named '%s'.
-           *              we also indicate to users that the file may be read-only with
-           *              the second '%s' */
-          tooltip = g_strdup_printf (_("Activate '%s' %s"),
-                                     path, READONLY_INDICATOR);
-        }
-      else
-        {
-          /* translators: referring to the action of activating a file named '%s' */
-          tooltip = g_strdup_printf (_("Activate '%s'"), path);
-        }
-      g_free (path);
-    }
-  else
-    {
-      name = glade_project_get_name (project);
-      /* FIXME add hint for translators */
-      tooltip = g_strdup_printf (_("Activate '%s'"), name);
-      g_free (name);
-    }
-
-  return tooltip;
-}
-
 static void
 refresh_stack_title_for_project (GladeWindow *window, GladeProject *project)
 {
@@ -705,36 +668,6 @@ project_changed_cb (GladeProject *project,
 }
 
 static void
-refresh_projects_list_item (GladeWindow *window, GladeProject *project)
-{
-  GtkAction *action;
-  gchar *project_name;
-  gchar *tooltip;
-
-  /* Get associated action */
-  action =
-      GTK_ACTION (g_object_get_data
-                  (G_OBJECT (project), "project-list-action"));
-
-  /* Set action label */
-  project_name = get_formatted_project_name_for_display (project,
-                                                         FORMAT_NAME_MARK_UNSAVED
-                                                         |
-                                                         FORMAT_NAME_ESCAPE_UNDERSCORES
-                                                         |
-                                                         FORMAT_NAME_MIDDLE_TRUNCATE);
-
-  g_object_set (action, "label", project_name, NULL);
-
-  /* Set action tooltip */
-  tooltip = format_project_list_item_tooltip (project);
-  g_object_set (action, "tooltip", tooltip, NULL);
-
-  g_free (tooltip);
-  g_free (project_name);
-}
-
-static void
 project_notify_handler_cb (GladeProject *project,
                            GParamSpec *spec,
                            GladeWindow *window)
@@ -754,7 +687,6 @@ project_notify_handler_cb (GladeProject *project,
   else if (strcmp (spec->name, "modified") == 0)
     {
       refresh_title (window);
-      refresh_projects_list_item (window, project);
       refresh_stack_title_for_project (window, project);
     }
   else if (strcmp (spec->name, "read-only") == 0)
@@ -1076,7 +1008,6 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
 
   /* refresh names */
   refresh_title (window);
-  refresh_projects_list_item (window, project);
   refresh_stack_title_for_project (window, project);
 
   glade_util_flash_message (window->priv->statusbar,
@@ -1400,9 +1331,6 @@ close_project (GladeWindow *window, GladeProject *project)
 
   if (!glade_app_get_projects ())
     gtk_stack_set_visible_child (priv->stack, priv->start_page);
-
-  if (GLADE_WINDOW_ACTIVE_VIEW (window) == NULL)
-    gtk_widget_hide (GTK_WIDGET (priv->editor));
 }
 
 static void
@@ -1870,7 +1798,6 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
   view = glade_design_view_new (project);
 
   gtk_stack_set_visible_child (priv->stack, priv->center_paned);
-  gtk_widget_show (GTK_WIDGET (priv->editor));
 
   g_signal_connect (G_OBJECT (project), "notify::modified",
                     G_CALLBACK (project_notify_handler_cb), window);
@@ -2463,6 +2390,8 @@ glade_window_constructed (GObject *object)
     gtkosx_application_ready (theApp);
   }
 #endif
+
+  refresh_title (window);
 }
 
 static void
