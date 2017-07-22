@@ -80,7 +80,7 @@ AM_CONDITIONAL(GLADE_UNSTABLE, test "x$GLADE_UNSTABLE" = "xyes")
 
 GNOME_COMMON_INIT
 GNOME_DEBUG_CHECK
-GNOME_COMPILE_WARNINGS([maximum])
+GNOME_COMPILE_WARNINGS([maximum], [-Wno-format-nonliteral])
 GNOME_MAINTAINER_MODE_DEFINES
 
 # For the plugins, we don't use the warning flags defined by GNOME_COMPILE_WARNINGS.
