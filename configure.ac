@@ -189,10 +189,10 @@ fi
 AM_CONDITIONAL(BUILD_PYTHON, test x"$have_python" = "xyes")
 
 # ==================================================================
-# Glade User Manual (requires gnome-doc-utils)
+# Glade User Manual (requires yelp-tools)
 # ==================================================================
 
-GNOME_DOC_INIT([0.9.0],[],[:])
+YELP_HELP_INIT
 
 dnl ================================================================
 dnl Check for windows

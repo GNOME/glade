@@ -1,8 +1,4 @@
-SUBDIRS = po data gladeui src plugins doc
-
-if HAVE_GNOME_DOC_UTILS
-SUBDIRS += help
-endif
+SUBDIRS = po data gladeui src plugins doc help
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -13,11 +9,11 @@ EXTRA_DIST = \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
-	gnome-doc-utils.make
+	$(NULL)
 
 DISTCLEANFILES = intltool-extract \
                  intltool-merge \
                  intltool-update \
-                 gnome-doc-utils.make
+                 $(NULL)
 
-DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper --enable-gtk-doc
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
