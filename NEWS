@@ -1,4 +1,15 @@
 ===========
+Glade 3.8.6
+===========
+
+	- Added -Wno-format-nonliteral flag to make it build on modern compilers
+	- Use new documentation infrastructure
+	- GladeWidgetAdaptor: use a direct hash for the adaptor hash table by stuffing the GType into a pointer with GSIZE_TO_POINTER()
+	- Bug 589306 - Clicking in ... swap order of accelerators (Roberto Guido)
+	- Add displayable values for properties bug 749796 (Ingo Brückl)
+	- Fix bug 704600 "Cannot add items to menu hierarchy - assertion `GLADE_IS_WIDGET_ADAPTOR (adaptor)' failed"
+
+===========
 Glade 3.8.5
 ===========
 

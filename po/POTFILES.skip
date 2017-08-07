@@ -1,1 +1,4 @@
 data/glade-3.desktop.in
+# distcheck will fail if we do not explicitly skip this because a bug in intltool
+# https://bugs.launchpad.net/intltool/+bug/1117944
+sub/data/glade-3.desktop.in
