@@ -81,12 +81,9 @@ struct _GladeWindowPrivate
   GtkStack *view_stack;
 
   GtkHeaderBar *headerbar;
+  GtkWidget *project_switcher ;
   GtkWindow *about_dialog;
   GladePreferences *preferences;
-
-  GtkLabel *title;
-  GtkLabel *subtitle;
-  GtkWidget *project_button;
 
   GtkWidget *start_page;
   GtkLabel  *version_label;
@@ -119,8 +116,8 @@ struct _GladeWindowPrivate
 
   gchar *default_path;          /* the default path for open/save operations */
 
-  GtkMenuButton *undo_menu_button; /* customized buttons for undo/redo with history */
-  GtkMenuButton *redo_menu_button;
+  GtkMenuButton *undo_button;   /* undo/redo button, right click for history */
+  GtkMenuButton *redo_button;
 
   GtkWidget *toolbar;           /* Actions are added to the toolbar */
   gint actions_start;           /* start of action items */
@@ -128,6 +125,7 @@ struct _GladeWindowPrivate
   GtkWidget *center_paned;
   GtkWidget *left_paned;
   GtkWidget *open_button_box;   /* gtk_button_box_set_layout() set homogeneous to TRUE, and we do not want that in this case  */
+  GtkWidget *save_button_box;
 
   GtkWidget *registration;      /* Registration and user survey dialog */
   
@@ -137,56 +135,6 @@ struct _GladeWindowPrivate
 static void check_reload_project (GladeWindow *window, GladeProject *project);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
-
-/* the following functions are taken from gedit-utils.c */
-static gchar *
-str_middle_truncate (const gchar *string, guint truncate_length)
-{
-  GString *truncated;
-  guint length;
-  guint n_chars;
-  guint num_left_chars;
-  guint right_offset;
-  guint delimiter_length;
-  const gchar *delimiter = "\342\200\246";
-
-  g_return_val_if_fail (string != NULL, NULL);
-
-  length = strlen (string);
-
-  g_return_val_if_fail (g_utf8_validate (string, length, NULL), NULL);
-
-  /* It doesnt make sense to truncate strings to less than
-   * the size of the delimiter plus 2 characters (one on each
-   * side)
-   */
-  delimiter_length = g_utf8_strlen (delimiter, -1);
-  if (truncate_length < (delimiter_length + 2))
-    {
-      return g_strdup (string);
-    }
-
-  n_chars = g_utf8_strlen (string, length);
-
-  /* Make sure the string is not already small enough. */
-  if (n_chars <= truncate_length)
-    {
-      return g_strdup (string);
-    }
-
-  /* Find the 'middle' where the truncation will occur. */
-  num_left_chars = (truncate_length - delimiter_length) / 2;
-  right_offset = n_chars - truncate_length + num_left_chars + delimiter_length;
-
-  truncated = g_string_new_len (string,
-                                g_utf8_offset_to_pointer (string,
-                                                          num_left_chars) -
-                                string);
-  g_string_append (truncated, delimiter);
-  g_string_append (truncated, g_utf8_offset_to_pointer (string, right_offset));
-
-  return g_string_free (truncated, FALSE);
-}
 
 /*
  * Doubles underscore to avoid spurious menu accels - taken from gedit-utils.c
@@ -229,104 +177,66 @@ escape_underscores (const gchar *text, gssize length)
   return g_string_free (str, FALSE);
 }
 
-typedef enum
-{
-  FORMAT_NAME_MARK_UNSAVED = 1 << 0,
-  FORMAT_NAME_ESCAPE_UNDERSCORES = 1 << 1,
-  FORMAT_NAME_MIDDLE_TRUNCATE = 1 << 2
-} FormatNameFlags;
-
-#define MAX_TITLE_LENGTH 100
-
-static gchar *
-get_formatted_project_name_for_display (GladeProject *project,
-                                        FormatNameFlags format_flags)
-{
-  gchar *name, *pass1, *pass2, *pass3;
-
-  g_return_val_if_fail (project != NULL, NULL);
-
-  name = glade_project_get_name (project);
-
-  if ((format_flags & FORMAT_NAME_MARK_UNSAVED)
-      && glade_project_get_modified (project))
-    pass1 = g_strdup_printf ("*%s", name);
-  else
-    pass1 = g_strdup (name);
-
-  if (format_flags & FORMAT_NAME_ESCAPE_UNDERSCORES)
-    pass2 = escape_underscores (pass1, -1);
-  else
-    pass2 = g_strdup (pass1);
-
-  if (format_flags & FORMAT_NAME_MIDDLE_TRUNCATE)
-    pass3 = str_middle_truncate (pass2, MAX_TITLE_LENGTH);
-  else
-    pass3 = g_strdup (pass2);
-
-  g_free (name);
-  g_free (pass1);
-  g_free (pass2);
-
-  return pass3;
-}
-
 static void
 refresh_title (GladeWindow *window)
 {
-  GladeProject *project = NULL;
-  gchar *title, *name = NULL;
-  const gchar *path;
-
   if (GLADE_WINDOW_ACTIVE_VIEW (window))
     {
-      project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
+      GladeProject *project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
+      gchar *title, *name = NULL;
+      GList *p;
 
-      name = get_formatted_project_name_for_display (project,
-                                                     FORMAT_NAME_MARK_UNSAVED |
-                                                     FORMAT_NAME_MIDDLE_TRUNCATE);
+      gtk_header_bar_set_custom_title (window->priv->headerbar, NULL);
+
+      name = glade_project_get_name (project);
+
+      if (glade_project_get_modified (project))
+        name = g_strdup_printf ("*%s", name);
+      else
+        name = g_strdup (name);
 
       if (glade_project_get_readonly (project) != FALSE)
         title = g_strdup_printf ("%s %s", name, READONLY_INDICATOR);
       else
         title = g_strdup_printf ("%s", name);
 
+      gtk_header_bar_set_title (window->priv->headerbar, title);
+      g_free (title);
       g_free (name);
-    }
-  else
-    title = g_strdup (_("User Interface Designer"));
 
-  gtk_label_set_label (window->priv->title, title);
-
-  /* Show path */
-  if (project && (path = glade_project_get_path (project)))
-    {
-      gchar *dirname = g_path_get_dirname (path);
-      const gchar *home = g_get_home_dir ();
-
-      if (g_str_has_prefix (dirname, home))
-        {
-          char *subtitle = &dirname[g_utf8_strlen (home, -1) - 1];
-          subtitle[0] = '~';
-          gtk_label_set_label (window->priv->subtitle, subtitle);
-        }
+      if ((p = glade_app_get_projects ()) && g_list_next (p))
+        gtk_header_bar_set_custom_title (window->priv->headerbar, window->priv->project_switcher);
       else
-        gtk_label_set_label (window->priv->subtitle, dirname);
+        {
+          const gchar *path;
 
-      gtk_style_context_add_class (gtk_widget_get_style_context (window->priv->project_button),
-                                   "glade-tight-fit");
-      gtk_widget_show (GTK_WIDGET (window->priv->subtitle));
-      g_free (dirname);
+          /* Show path */
+          if (project && (path = glade_project_get_path (project)))
+            {
+              gchar *dirname = g_path_get_dirname (path);
+              const gchar *home = g_get_home_dir ();
+
+              if (g_str_has_prefix (dirname, home))
+                {
+                  char *subtitle = &dirname[g_utf8_strlen (home, -1) - 1];
+                  subtitle[0] = '~';
+                  gtk_header_bar_set_subtitle (window->priv->headerbar, subtitle);
+                }
+              else
+                gtk_header_bar_set_subtitle (window->priv->headerbar, dirname);
+
+              g_free (dirname);
+            }
+          else
+            gtk_header_bar_set_subtitle (window->priv->headerbar, NULL);
+        }
     }
   else
     {
-      gtk_style_context_remove_class (gtk_widget_get_style_context (window->priv->project_button),
-                                     "glade-tight-fit");
-      gtk_label_set_label (window->priv->subtitle, NULL);
-      gtk_widget_hide (GTK_WIDGET (window->priv->subtitle));
+      gtk_header_bar_set_custom_title (window->priv->headerbar, NULL);
+      gtk_header_bar_set_title (window->priv->headerbar, _("User Interface Designer"));
+      gtk_header_bar_set_subtitle (window->priv->headerbar, NULL);
     }
-
-  g_free (title);
 }
 
 static const gchar *
@@ -510,11 +420,21 @@ refresh_stack_title_for_project (GladeWindow *window, GladeProject *project)
 
       if (project == glade_design_view_get_project (GLADE_DESIGN_VIEW (view)))
         {
-          gchar *str = get_formatted_project_name_for_display (project,
-                                                               FORMAT_NAME_MARK_UNSAVED |
-                                                               FORMAT_NAME_MIDDLE_TRUNCATE);
+          gchar *name = glade_project_get_name (project);
+          gchar *str;
+
+          /* remove extension */
+          if ((str = g_utf8_strrchr (name, -1, '.')))
+            *str = '\0';
+
+          if (glade_project_get_modified (project))
+            str = g_strdup_printf ("*%s", name);
+          else
+            str = g_strdup (name);
+
           gtk_container_child_set (GTK_CONTAINER (window->priv->view_stack), view,
                                    "title", str, NULL);
+          g_free (name);
           g_free (str);
 
           break;
@@ -586,12 +506,6 @@ refresh_undo_redo (GladeWindow *window, GladeProject *project)
                              redo ? glade_command_description (redo) : _("the last action"));
   g_object_set (priv->redo_action, "tooltip", tooltip, NULL);
   g_free (tooltip);
-
-  /* Refresh menus */
-  gtk_menu_button_set_popup (priv->undo_menu_button,
-                             glade_project_undo_items (project));
-  gtk_menu_button_set_popup (priv->redo_menu_button,
-                             glade_project_redo_items (project));
 }
 
 static void
@@ -1522,8 +1436,6 @@ on_stack_visible_child_notify (GObject    *gobject,
 
       on_pointer_mode_changed (project, NULL, window);
     }
-
-  refresh_title (window);
 }
 
 static void
@@ -1826,7 +1738,6 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
   gtk_widget_show (inspector);
 
   set_sensitivity_according_to_project (window, project);
-  refresh_title (window);
 
   gtk_action_group_set_sensitive (priv->project_actiongroup, TRUE);
 
@@ -1834,13 +1745,13 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
   glade_app_add_project (project);
   g_object_unref (project);
 
-
   /* Add view to stack */
   gtk_container_add (GTK_CONTAINER (priv->view_stack), view);
   gtk_widget_show (view);
   gtk_stack_set_visible_child (priv->view_stack, view);
 
   refresh_stack_title_for_project (window, project);
+  refresh_title (window);
 }
 
 static void
@@ -1848,6 +1759,38 @@ on_registration_action_activate (GtkAction   *action,
                                  GladeWindow *window)
 {
   gtk_window_present (GTK_WINDOW (window->priv->registration));
+}
+
+static gboolean
+on_undo_button_button_press_event (GtkWidget   *widget,
+                                   GdkEvent    *event,
+                                   GladeWindow *window)
+{
+  GladeProject *project = get_active_project (window);
+
+  if (project && event->button.button == 3)
+    gtk_menu_popup_at_widget (GTK_MENU (glade_project_undo_items (project)),
+                              widget, 
+                              GDK_GRAVITY_NORTH_WEST,
+                              GDK_GRAVITY_SOUTH_WEST,
+                              event);
+  return FALSE;
+}
+
+static gboolean
+on_redo_button_button_press_event (GtkWidget   *widget,
+                                   GdkEvent    *event,
+                                   GladeWindow *window)
+{
+  GladeProject *project = get_active_project (window);
+
+  if (project && event->button.button == 3)
+    gtk_menu_popup_at_widget (GTK_MENU (glade_project_redo_items (project)),
+                              widget, 
+                              GDK_GRAVITY_NORTH_WEST,
+                              GDK_GRAVITY_SOUTH_WEST,
+                              event);
+  return FALSE;
 }
 
 void
@@ -2304,6 +2247,7 @@ glade_window_init (GladeWindow *window)
   gtk_widget_init_template (GTK_WIDGET (window));
 
   gtk_box_set_homogeneous (GTK_BOX (priv->open_button_box), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX (priv->save_button_box), FALSE);
 
   priv->registration = glade_registration_new ();
 }
@@ -2422,23 +2366,22 @@ glade_window_class_init (GladeWindowClass *klass)
   /* Internal children */
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, adaptor_chooser);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, headerbar);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, title);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, subtitle);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, project_button);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, project_switcher);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, about_dialog);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, start_page);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, version_label);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, center_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, left_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, open_button_box);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, save_button_box);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, stack);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, view_stack);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, inspectors_stack);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, statusbar);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, toolbar);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, undo_menu_button);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, redo_menu_button);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, undo_button);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, redo_button);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, accelgroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, project_actiongroup);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, pointer_mode_actiongroup);
@@ -2476,6 +2419,8 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_reference_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_preferences_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_registration_action_activate);
+  gtk_widget_class_bind_template_callback (widget_class, on_undo_button_button_press_event);
+  gtk_widget_class_bind_template_callback (widget_class, on_redo_button_button_press_event);
 
   gtk_widget_class_bind_template_callback (widget_class, on_open_recent_action_item_activated);
   gtk_widget_class_bind_template_callback (widget_class, on_selector_radioaction_changed);
