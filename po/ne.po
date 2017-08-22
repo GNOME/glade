@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Gnome Nepali Translation Project\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=glade&keywords=I18N"
-"+L10N&component=general\n"
-"POT-Creation-Date: 2017-06-28 17:33+0000\n"
-"PO-Revision-Date: 2017-07-28 07:37+0545\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=glade&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-07-28 01:53+0000\n"
+"PO-Revision-Date: 2017-08-22 13:12+0545\n"
 "Last-Translator: Pawan Chitrakar <chautari@gmail.com>\n"
 "Language-Team: Nepali Translation Team <chautari@gmail.com>\n"
 "Language: ne\n"
@@ -22,7 +21,7 @@ msgstr ""
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1 ../src/main.c:42
 #, fuzzy
 msgid "Glade"
-msgstr "ग्लेड परियोजना '%s' बचत गरियो"
+msgstr "ग्लेड वेब साइट हेर्नुहोस्"
 
 #: ../data/glade.desktop.in.in.h:2
 #, fuzzy
@@ -45,23 +44,22 @@ msgstr ""
 #. To translators: AppData description first paragraph
 #: ../data/glade.appdata.xml.in.h:4
 msgid ""
-"Glade is a RAD tool to enable quick &amp; easy development of user interfaces for the GTK+ 3 "
-"toolkit and the GNOME desktop environment."
+"Glade is a RAD tool to enable quick &amp; easy development of user interfaces for the GTK+ 3 toolkit and the GNOME "
+"desktop environment."
 msgstr ""
 
 #. To translators: AppData description second paragraph
 #: ../data/glade.appdata.xml.in.h:6
 msgid ""
-"The user interfaces designed in Glade are saved as XML and these can be loaded by "
-"applications dynamically as needed by using GtkBuilder or used directly to define a new "
-"GtkWidget derived object class using GTK+ new template feature."
+"The user interfaces designed in Glade are saved as XML and these can be loaded by applications dynamically as needed "
+"by using GtkBuilder or used directly to define a new GtkWidget derived object class using GTK+ new template feature."
 msgstr ""
 
 #. To translators: AppData description third paragraph
 #: ../data/glade.appdata.xml.in.h:8
 msgid ""
-"By using GtkBuilder, Glade XML files can be used in numerous programming languages including "
-"C, C++, C#, Vala, Java, Perl, Python, and others."
+"By using GtkBuilder, Glade XML files can be used in numerous programming languages including C, C++, C#, Vala, Java, "
+"Perl, Python, and others."
 msgstr ""
 
 #: ../src/glade-window.c:56
@@ -79,7 +77,7 @@ msgstr "ग्लेड इन्टरफेस डिजाइनर"
 #: ../src/glade-window.c:532
 #, fuzzy, c-format
 msgid "Activate '%s' %s"
-msgstr "'%s' सक्रिय पार्न असफल"
+msgstr "%s फाइल सक्रिय पार्नुहोस्"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
@@ -88,8 +86,8 @@ msgstr "'%s' सक्रिय पार्न असफल"
 msgid "Activate '%s'"
 msgstr "'%s' सक्रिय पार्न असफल"
 
-#: ../src/glade-window.c:594 ../src/glade-registration.glade.h:7
-#: ../gladeui/glade-project-properties.ui.h:12 ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
+#: ../src/glade-window.c:594 ../src/glade-registration.glade.h:7 ../gladeui/glade-project-properties.ui.h:12
+#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
 msgid "Name:"
 msgstr "नाम: "
 
@@ -128,7 +126,9 @@ msgstr "स्वत: बचत '%s'"
 #: ../src/glade-window.c:707
 #, fuzzy, c-format
 msgid "Error autosaving '%s'"
-msgstr "'%s': %s लेख्दा त्रुटि"
+msgstr ""
+"स्वत: बचत गर्दा त्रुटि:\n"
+"%s"
 
 #: ../src/glade-window.c:1126
 msgid "Open…"
@@ -155,14 +155,12 @@ msgstr ""
 
 #: ../src/glade-window.c:1244
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr ""
-"यदि तपाईँले यसलाई बचत गर्नुभएमा, सबै बाह्य परिवर्तनहरू नष्ट हुन सक्नेछ । जे भए पनि यसलाई बचत गर्नुहुन्छ?"
+msgstr "यदि तपाईँले यसलाई बचत गर्नुभएमा, सबै बाह्य परिवर्तनहरू नष्ट हुन सक्नेछ । जे भए पनि यसलाई बचत गर्नुहुन्छ?"
 
 #: ../src/glade-window.c:1249
 #, fuzzy
 msgid "_Save Anyway"
-msgstr ""
-"यदि तपाईँले यसलाई बचत गर्नुभएमा, सबै बाह्य परिवर्तनहरू नष्ट हुन सक्नेछ । जे भए पनि यसलाई बचत गर्नुहुन्छ?"
+msgstr "तपाईँले खोलेको समय देखि परियोजना '%s' प्रयोगकर्ता '%s'द्वारा परिवर्तन गरिएको छ। के तपाईँ जसरी पनि यस्लाई बचत गर्न चाहनुहुन्छ?"
 
 #: ../src/glade-window.c:1257
 msgid "_Don't Save"
@@ -209,12 +207,11 @@ msgstr "यदि तपाईँले बचत गर्नुभएन भ�
 msgid "Close _without Saving"
 msgstr "बचत नगरी बन्द गर्नुहोस्"
 
-#: ../src/glade-window.c:1480 ../src/glade-window.c:2656 ../gladeui/glade-editor.c:765
-#: ../gladeui/glade-editor.c:1121 ../gladeui/glade-editor-property.c:1690
-#: ../gladeui/glade-editor-property.c:1997 ../gladeui/glade-editor-property.c:2196
-#: ../gladeui/glade-editor-property.c:3137 ../gladeui/glade-editor-property.c:3249
-#: ../gladeui/glade-editor-property.c:3266 ../gladeui/glade-editor-property.c:3586
-#: ../gladeui/glade-utils.c:483 ../plugins/gtk+/glade-accels.c:525
+#: ../src/glade-window.c:1480 ../src/glade-window.c:2656 ../gladeui/glade-editor.c:765 ../gladeui/glade-editor.c:1121
+#: ../gladeui/glade-editor-property.c:1690 ../gladeui/glade-editor-property.c:1997
+#: ../gladeui/glade-editor-property.c:2196 ../gladeui/glade-editor-property.c:3137
+#: ../gladeui/glade-editor-property.c:3249 ../gladeui/glade-editor-property.c:3266
+#: ../gladeui/glade-editor-property.c:3586 ../gladeui/glade-utils.c:483 ../plugins/gtk+/glade-accels.c:525
 #: ../plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_रद्द"
@@ -239,7 +236,7 @@ msgstr "नयाँ ग्लेड परियोजान सिर्जन
 #: ../src/glade-window.c:2624
 #, fuzzy, c-format
 msgid "The project %s has unsaved changes"
-msgstr "%s कागजाता बचत नगरिएको परिवर्तनहरू उल्टाउनुहुन्छ?"
+msgstr "बचत नगरिएको स्टोरिवोर्ड '%s' परिवर्तन गर्दछ"
 
 #: ../src/glade-window.c:2629
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
@@ -267,12 +264,11 @@ msgstr "रङदानी"
 msgid "Inspector"
 msgstr ""
 
-#: ../src/glade-window.c:3253 ../src/glade.glade.h:33 ../gladeui/glade-editor.c:335
-#: ../gladeui/glade-widget.c:1377 ../gladeui/glade-project-properties.ui.h:11
-#: ../plugins/gtk+/glade-gtk-action-group.c:184 ../plugins/gtk+/glade-gtk-cell-layout.c:361
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:518 ../plugins/gtk+/glade-gtk-menu-shell.c:545
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:564 ../plugins/gtk+/glade-gtk-menu-shell.c:605
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:126
+#: ../src/glade-window.c:3253 ../src/glade.glade.h:33 ../gladeui/glade-editor.c:335 ../gladeui/glade-widget.c:1377
+#: ../gladeui/glade-project-properties.ui.h:11 ../plugins/gtk+/glade-gtk-action-group.c:184
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:361 ../plugins/gtk+/glade-gtk-menu-shell.c:518
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:545 ../plugins/gtk+/glade-gtk-menu-shell.c:564
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:605 ../plugins/gtk+/glade-gtk-text-tag-table.c:126
 msgid "Properties"
 msgstr "गुण: "
 
@@ -291,7 +287,7 @@ msgstr ""
 #: ../src/glade-window.c:3521
 #, fuzzy
 msgid "_Do not show this dialog again"
-msgstr "नदेखाउनुहोस्"
+msgstr "यो संवाद फेरि नदेखाउनुहोस्"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
 #: ../src/glade-window.c:3542
@@ -305,7 +301,7 @@ msgstr "संस्करण सूचना देखाउनुहोस् 
 #: ../src/main.c:54
 #, fuzzy
 msgid "Disable Devhelp integration"
-msgstr "प्रणाली एकीकरण"
+msgstr "मण्डला एकीकरण"
 
 #: ../src/main.c:57
 msgid "[FILE...]"
@@ -327,12 +323,12 @@ msgstr "ग्लेड विकल्पहरु"
 #: ../src/main.c:102
 #, fuzzy
 msgid "Glade debug options"
-msgstr "ग्लेड प्रोजेक्ट"
+msgstr "ग्लेड विकल्पहरु"
 
 #: ../src/main.c:103
 #, fuzzy
 msgid "Show Glade debug options"
-msgstr "स्थापना विकल्पहरू देखाउनुहोस्"
+msgstr "ग्लेड विकल्पहरु"
 
 #: ../src/main.c:146
 msgid "gmodule support not found. gmodule support is required for glade to work"
@@ -394,8 +390,9 @@ msgid "Drag Resize"
 msgstr " रिसाइज गर्न तान्नुहोस्"
 
 #: ../src/glade.glade.h:24
+#, fuzzy
 msgid "Drag and resize widgets in the workspace"
-msgstr ""
+msgstr " रिसाइज गर्न तान्नुहोस्"
 
 #: ../src/glade.glade.h:25
 #, fuzzy
@@ -405,7 +402,7 @@ msgstr "सीमान्त"
 #: ../src/glade.glade.h:26
 #, fuzzy
 msgid "Edit widget margins"
-msgstr "औजार"
+msgstr "सीमान्तहरू"
 
 #: ../src/glade.glade.h:27
 #, fuzzy
@@ -437,7 +434,7 @@ msgstr "हालको परियोजनालाई एउटा भिन
 #: ../src/glade.glade.h:34
 #, fuzzy
 msgid "Edit project properties"
-msgstr "परियोजना गुण"
+msgstr "परियोजनाको गुण सम्पादन गर्नुहोस्"
 
 #. GtkButtonsType enumeration value
 #: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:601
@@ -524,12 +521,12 @@ msgstr ""
 #: ../src/glade.glade.h:55
 #, fuzzy
 msgid "Dock _Palette"
-msgstr "रङदानी"
+msgstr "रङदानी:"
 
 #: ../src/glade.glade.h:56
 #, fuzzy
 msgid "Dock the palette into the main window"
-msgstr "मुख्य सञ्झ्यालको उचाइ पिक्सेलमा"
+msgstr "मुख्य सञ्झ्यालको चौडाइ पिक्सेलमा ।."
 
 #: ../src/glade.glade.h:57
 #, fuzzy
@@ -539,7 +536,7 @@ msgstr "डक"
 #: ../src/glade.glade.h:58
 #, fuzzy
 msgid "Dock the inspector into the main window"
-msgstr "मुख्य सञ्झ्यालको उचाइ पिक्सेलमा"
+msgstr "मुख्य सञ्झ्यालको चौडाइ पिक्सेलमा ।."
 
 #: ../src/glade.glade.h:59
 #, fuzzy
@@ -549,7 +546,7 @@ msgstr "डक"
 #: ../src/glade.glade.h:60
 #, fuzzy
 msgid "Dock the editor into the main window"
-msgstr "मुख्य सञ्झ्यालको उचाइ पिक्सेलमा"
+msgstr "मुख्य सञ्झ्यालको चौडाइ पिक्सेलमा ।."
 
 #: ../src/glade.glade.h:61
 msgid "_Statusbar"
@@ -558,7 +555,7 @@ msgstr "स्थितिपट्टी"
 #: ../src/glade.glade.h:62
 #, fuzzy
 msgid "Show the statusbar"
-msgstr "स्थितिपट्टी देखाउनुहोस्/लुकाउनुहोस् ।"
+msgstr "स्थितिपट्टि देखाउनुहोस्"
 
 #: ../src/glade.glade.h:63
 msgid "Tool_bar"
@@ -611,7 +608,7 @@ msgstr "ईडिएफ् फाईल हेडर सम्पादक"
 #: ../src/glade.glade.h:74
 #, fuzzy
 msgid "Show the header in the property editor"
-msgstr "हेडर गुण"
+msgstr "सम्पादक देखाउनुहोस्"
 
 #: ../src/glade.glade.h:75
 msgid "New"
@@ -692,7 +689,7 @@ msgstr "दृश्य"
 #: ../src/glade.glade.h:93
 #, fuzzy
 msgid "Palette _Appearance"
-msgstr "मोहडा"
+msgstr "देखावट:"
 
 #: ../src/glade.glade.h:94
 msgid "_Projects"
@@ -705,12 +702,12 @@ msgstr "_सहयोग"
 #: ../src/glade-preferences.glade.h:1
 #, fuzzy
 msgid "Glade Preferences"
-msgstr "ग्लेड प्रोजेक्ट"
+msgstr "_प्राथमिकताहरू"
 
 #: ../src/glade-preferences.glade.h:2
 #, fuzzy
 msgid "Create backups"
-msgstr "सिर्जना गर्नुहोस्"
+msgstr "सिर्जना गर्ने"
 
 #: ../src/glade-preferences.glade.h:3
 msgid "Create a backup of the last version of the project every time the project is saved"
@@ -729,7 +726,7 @@ msgstr "सेकेण्ड"
 #: ../src/glade-preferences.glade.h:7
 #, fuzzy
 msgid "Automatically save project after"
-msgstr "प्रत्येक स्वचालित तरिकाले बचत गर्नुहोस्"
+msgstr "हालको परियोजना बचत गर्नुहोस्"
 
 #: ../src/glade-preferences.glade.h:8
 msgid "Load and Save"
@@ -789,18 +786,18 @@ msgstr "यस खोजीमा नयाँ मापदण्ड थप्�
 #: ../src/glade-preferences.glade.h:22
 #, fuzzy
 msgid "Extra catalog paths"
-msgstr "अतिरिक्त "
+msgstr "बाटोहरू"
 
 #: ../src/glade-preferences.glade.h:23
 #, fuzzy
 msgid "Select a catalog search path"
-msgstr "फर्काउनका लागि <b>बाटो(हरू)</b> चयन गर्नुहोस् ।"
+msgstr "मेनु बाटोद्वारा खोजी गर्नुहोस्"
 
 #. translators: Email subject sent to the user after completing the survey
 #: ../src/glade-registration.c:32 ../src/glade-registration.glade.h:26
 #, fuzzy
 msgid "Glade User Survey"
-msgstr "ग्लेड प्रोजेक्ट"
+msgstr "ग्लेड विकल्पहरु"
 
 #. translators: Email body sent to the user after completing the survey
 #: ../src/glade-registration.c:34
@@ -809,8 +806,7 @@ msgid ""
 "\n"
 "To validate this email address open the folowing link\n"
 "\n"
-"https://people.gnome.org/~jpu/glade/registration.php?email=$email&validation_token="
-"$new_validation_token\n"
+"https://people.gnome.org/~jpu/glade/registration.php?email=$email&validation_token=$new_validation_token\n"
 "\n"
 "In case you want to change or update the survey, your current update token is:\n"
 "$new_token\n"
@@ -852,7 +848,7 @@ msgstr "%s डेटा पठाउदै"
 #: ../src/glade-registration.c:312
 #, fuzzy, c-format
 msgid "Waiting for %s"
-msgstr "प्रतिक्षा गर्दैछ..."
+msgstr "ताल्चा प्राप्त गर्न सकिएन %s\n"
 
 #: ../src/glade-registration.c:315
 #, fuzzy, c-format
@@ -925,7 +921,7 @@ msgstr "%s को लागि प्रयोगकर्ता सूचना
 #: ../src/glade-registration.glade.h:6
 #, fuzzy
 msgid "<Your name or nickname is required>"
-msgstr "तपाईँको tty नाम निर्धारण गर्न सकिएन।"
+msgstr "तपाईँको IRC उपनाम के हो ?"
 
 #: ../src/glade-registration.glade.h:8
 msgid "Email:"
@@ -984,15 +980,13 @@ msgid "We care about privacy!"
 msgstr ""
 
 #: ../src/glade-registration.glade.h:23
-msgid ""
-"All the data will be stored in a private location and will not be shared with the public or "
-"any third party."
+msgid "All the data will be stored in a private location and will not be shared with the public or any third party."
 msgstr ""
 
 #: ../src/glade-registration.glade.h:24
 #, fuzzy
 msgid "Update Info"
-msgstr "अद्यावधिक (_U)"
+msgstr "अद्यावधिक गर्नुहोस्"
 
 #: ../src/glade-registration.glade.h:25
 msgid "<Insert update token, if you want to update previously sent data>"
@@ -1056,8 +1050,7 @@ msgid "Perl"
 msgstr "पर्ल"
 
 #. GtkCellRendererAccelMode enumeration value
-#: ../src/glade-registration.glade.h:41 ../gladeui/glade-project-properties.ui.h:19
-#: ../plugins/gtk+/gtk+.xml.in.h:787
+#: ../src/glade-registration.glade.h:41 ../gladeui/glade-project-properties.ui.h:19 ../plugins/gtk+/gtk+.xml.in.h:787
 msgid "Other"
 msgstr "अन्य"
 
@@ -1087,9 +1080,8 @@ msgid "3.8 for GTK+ 2"
 msgstr "3.8 for GTK+ 2"
 
 #: ../src/glade-registration.glade.h:48
-#, fuzzy
 msgid "Master"
-msgstr "%s: '%s' यो ग्राहकको लागि NIS मास्टर हो ।\n"
+msgstr "मास्टर"
 
 #: ../src/glade-registration.glade.h:49
 #, fuzzy
@@ -1110,19 +1102,19 @@ msgstr "डेबियन"
 
 #: ../src/glade-registration.glade.h:53
 msgid "openSUSE"
-msgstr ""
+msgstr "ओपनसुसि"
 
 #: ../src/glade-registration.glade.h:54
 msgid "Fedora"
-msgstr ""
+msgstr "फेडोरा"
 
 #: ../src/glade-registration.glade.h:55
 msgid "Gentoo"
-msgstr ""
+msgstr "गेन्टु"
 
 #: ../src/glade-registration.glade.h:56
 msgid "Mandriva"
-msgstr ""
+msgstr "मान्द्रिभा"
 
 #: ../src/glade-registration.glade.h:57
 msgid "Red Hat"
@@ -1130,7 +1122,7 @@ msgstr "रेड ह्यट"
 
 #: ../src/glade-registration.glade.h:58
 msgid "Turbolinux"
-msgstr ""
+msgstr "टर्वोलिन्क्स"
 
 #: ../src/glade-registration.glade.h:59
 msgid "Ubuntu"
@@ -1138,7 +1130,7 @@ msgstr "उबुन्टु"
 
 #: ../src/glade-registration.glade.h:60
 msgid "Xandros"
-msgstr ""
+msgstr "जान्ड्रोस्"
 
 #: ../src/glade-registration.glade.h:61
 msgid "Oracle"
@@ -1154,11 +1146,11 @@ msgstr ""
 
 #: ../src/glade-registration.glade.h:64
 msgid "OpenBSD"
-msgstr ""
+msgstr "ओपनबियसडि"
 
 #: ../src/glade-registration.glade.h:65
 msgid "NetBSD"
-msgstr ""
+msgstr "नेटबियसडि"
 
 #: ../src/glade-registration.glade.h:66
 msgid "Oracle Solaris"
@@ -1166,7 +1158,7 @@ msgstr "ओर्याकल सोलारिस"
 
 #: ../src/glade-registration.glade.h:67
 msgid "OpenSolaris"
-msgstr ""
+msgstr "ओपनसोलारिस"
 
 #: ../src/glade-registration.glade.h:68
 msgid "illumos"
@@ -1182,7 +1174,7 @@ msgstr "२०००"
 
 #: ../src/glade-registration.glade.h:71
 msgid "XP"
-msgstr ""
+msgstr "एक्सपि"
 
 #: ../src/glade-registration.glade.h:72
 msgid "2003"
@@ -1210,29 +1202,29 @@ msgstr "२०१२"
 
 #: ../src/glade-registration.glade.h:78
 msgid "Tiger"
-msgstr ""
+msgstr "बाघ"
 
 #: ../src/glade-registration.glade.h:79
 msgid "Leopard"
-msgstr ""
+msgstr "चितुवा"
 
 #: ../src/glade-registration.glade.h:80
 #, fuzzy
 msgid "Snow Leopard"
-msgstr "बरफी"
+msgstr "चितुवा"
 
 #: ../src/glade-registration.glade.h:81
 msgid "Lion"
-msgstr ""
+msgstr "सिंह"
 
 #: ../src/glade-registration.glade.h:82
 #, fuzzy
 msgid "Mountain Lion"
-msgstr "आइरन माउन्टेन"
+msgstr "सिंह"
 
 #: ../src/glade-registration.glade.h:83
 msgid "Mavericks"
-msgstr ""
+msgstr "माभेरिक्स"
 
 #: ../src/glade-registration.glade.h:84
 msgid "GNU/Linux"
@@ -1267,7 +1259,7 @@ msgstr "प्रत्येकदिन"
 #: ../src/glade-registration.glade.h:91
 #, fuzzy
 msgid "Few days a week"
-msgstr "दिन"
+msgstr "हप्ता"
 
 #: ../src/glade-registration.glade.h:92
 msgid "Every week"
@@ -1276,7 +1268,7 @@ msgstr "हरेक हप्ता"
 #: ../src/glade-registration.glade.h:93
 #, fuzzy
 msgid "A few times a month"
-msgstr "times"
+msgstr "समय"
 
 #: ../src/glade-registration.glade.h:94
 msgid "Once a month"
@@ -1285,11 +1277,11 @@ msgstr "महिना एक पटक"
 #: ../src/glade-registration.glade.h:95
 #, fuzzy
 msgid "A few times a year"
-msgstr "बर्ष:"
+msgstr "_वर्ष"
 
 #: ../src/glade-registration.glade.h:96
 msgid "What level of Glade user would you say you are?"
-msgstr ""
+msgstr "टर्वोलिन्क्स"
 
 #: ../src/glade-registration.glade.h:97
 msgid "Beginner"
@@ -1298,7 +1290,7 @@ msgstr "प्रारम्भकर्ता"
 #: ../src/glade-registration.glade.h:98
 #, fuzzy
 msgid "Intermediate"
-msgstr "अन्तर माध्यामिक फ्रेमहरू"
+msgstr "मध्यवर्ती घटना"
 
 #: ../src/glade-registration.glade.h:99
 msgid "Advanced"
@@ -1311,10 +1303,7 @@ msgstr ""
 #: ../src/glade-registration.glade.h:101
 #, fuzzy
 msgid "Free software"
-msgstr ""
-"इभाइन्स स्वतन्त्र सफ्टवेयर हो, तपाईँले यसलाई स्वतन्त्र सफ्टवेयर संस्थाद्वारा प्रकाशित जिएनयु सामान्य सार्वजनिक "
-"ईजाजतपत्रको शर्त भित्र रहेर;वा ईजाजतपत्रको संस्करण २, वा (तपाईको विकल्प )मा पछिका कुनै संस्करणबाट "
-"पुनर्वितरण गर्न र/वा परिमार्जन गर्न सक्नुहुन्छ ।\n"
+msgstr "न्स्वतन्त्र सफ्टवेयर"
 
 #: ../src/glade-registration.glade.h:102
 #, fuzzy
@@ -1324,12 +1313,12 @@ msgstr "सफ्टवेयर प्याकेज खोल्नुहो�
 #: ../src/glade-registration.glade.h:103
 #, fuzzy
 msgid "Commercial/Closed software"
-msgstr "सफ्टवेयर"
+msgstr "सफ्टवेर"
 
 #: ../src/glade-registration.glade.h:104
 #, fuzzy
 msgid "None - distributed internally"
-msgstr "(केही पनि छैन)"
+msgstr "वितरण गरिएको"
 
 #: ../src/glade-registration.glade.h:105
 msgid "In what field(s) is the software you used Glade to create generally used?"
@@ -1352,10 +1341,10 @@ msgstr "लेखा"
 #, fuzzy
 msgid "Desktop applications"
 msgstr ""
-"यो सेटिङले आफ्नो डेस्कटप र एप्लिकेसन​​मा प्रदर्शित भाषालाई मात्र​ असर गर्छ। येसले मुद्रा वा मिति ढाँचा सेटिङहरू "
-"जस्ता सिस्टम वातावरण सेट गर्दैन​। त्यसका लागि रिजनल फर्म्याट ट्याबमा भ​एको सेटिङ प्रयोग गर्नुहोस्। \n"
-"यहाँ प्रदर्शित मान को क्रमले आफ्नो डेस्कटपका लागि कुन​ अनुवाद प्रयोग गर्ने निर्णय गर्छ​। पहिलो भाषा लागि "
-"अनुवाद उपलब्ध छैन भने, यो सूचीमा भ​एको अर्को प्रयास गरिनेछ। यो सूची अन्तिम प्रविष्टि सधैं \"अंग्रेजी\" छ।\n"
+"यो सेटिङले आफ्नो डेस्कटप र एप्लिकेसन​​मा प्रदर्शित भाषालाई मात्र​ असर गर्छ। येसले मुद्रा वा मिति ढाँचा सेटिङहरू जस्ता सिस्टम वातावरण सेट गर्दैन​"
+"। त्यसका लागि रिजनल फर्म्याट ट्याबमा भ​एको सेटिङ प्रयोग गर्नुहोस्। \n"
+"यहाँ प्रदर्शित मान को क्रमले आफ्नो डेस्कटपका लागि कुन​ अनुवाद प्रयोग गर्ने निर्णय गर्छ​। पहिलो भाषा लागि अनुवाद उपलब्ध छैन भने, यो सूचीमा भ​"
+"एको अर्को प्रयास गरिनेछ। यो सूची अन्तिम प्रविष्टि सधैं \"अंग्रेजी\" छ।\n"
 "\"अंग्रेजी\" तल हरेक प्रविष्टि उपेक्षा गरिनेछ।"
 
 #: ../src/glade-registration.glade.h:110
@@ -1369,7 +1358,7 @@ msgstr "मेडिकल"
 #: ../src/glade-registration.glade.h:112
 #, fuzzy
 msgid "Industrial applications"
-msgstr "अनुप्रयोग"
+msgstr "औधोगिक विश्वसनीय"
 
 #: ../src/glade-registration.glade.h:113
 msgid "Scientific"
@@ -1391,7 +1380,7 @@ msgstr "अभिलेखीकरण"
 #: ../src/glade-registration.glade.h:117
 #, fuzzy
 msgid "Lack of professional support"
-msgstr "कालो बाहिर तान्ने (%):"
+msgstr "समर्थन गर्नुहोस्"
 
 #: ../src/glade-registration.glade.h:118
 #, fuzzy
@@ -1432,26 +1421,25 @@ msgstr ""
 #: ../src/glade-registration.glade.h:126
 #, fuzzy
 msgid "Why not?"
-msgstr "प्याकेजहरू किन विच्छेदन भएको स्वचालित देखाउनुहोस्"
+msgstr "तपाईँ नामलाई #NAME भनेर किन परिभाषित गर्न चाहनुहुन्छ ?"
 
 #: ../src/glade-registration.glade.h:127
-#, fuzzy
 msgid "Comments:"
-msgstr "टिप्पणीहरू"
+msgstr "टिप्पणीहरू:"
 
 #: ../src/glade-registration.glade.h:128
 #, fuzzy
 msgid "Privacy Note:"
-msgstr "द्रष्टव्य"
+msgstr "गोपनीयता"
 
 #: ../src/glade-registration.glade.h:129
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
-"Your email address will be used to uniquely identify you as a Glade user and send you back a "
-"modification token in case you want to modify something or add extra comments.\n"
+"Your email address will be used to uniquely identify you as a Glade user and send you back a modification token in "
+"case you want to modify something or add extra comments.\n"
 "Only statistics compiled from the whole dataset will be shared publicly.\n"
-"Individual data will be stored in a private database and it will not be shared with the "
-"public or any other third party."
+"Individual data will be stored in a private database and it will not be shared with the public or any other third "
+"party."
 msgstr ""
 
 #: ../gladeui/glade-app.c:535
@@ -1492,7 +1480,7 @@ msgstr ""
 #: ../gladeui/glade-base-editor.c:568
 #, fuzzy, c-format
 msgid "Setting object type on %s to %s"
-msgstr "%s: %s देखि %sमा सेट गर्दा त्रुटि"
+msgstr "समर्थन नगर्ने वस्तु प्रकार '%s'"
 
 #: ../gladeui/glade-base-editor.c:730
 #, fuzzy, c-format
@@ -1507,7 +1495,7 @@ msgstr "‍%s थप्नुहोस्"
 #: ../gladeui/glade-base-editor.c:854
 #, fuzzy, c-format
 msgid "Add child %s"
-msgstr "शाखाबाट पढ्दा त्रुटि: %s."
+msgstr "‍%s थप्नुहोस्"
 
 #: ../gladeui/glade-base-editor.c:943
 #, fuzzy, c-format
@@ -1522,7 +1510,7 @@ msgstr "नोडहरू फेरि क्रमबद्ध गर्न �
 #: ../gladeui/glade-base-editor.c:1501 ../plugins/gtk+/gtk+.xml.in.h:363
 #, fuzzy
 msgid "Container"
-msgstr "html भाँडो"
+msgstr "कन्टेनर"
 
 #: ../gladeui/glade-base-editor.c:1502
 msgid "The container object this editor is currently editing"
@@ -1541,20 +1529,18 @@ msgstr "फोल्डर सोपानक्रम:"
 
 #. AtkRole enumeration value
 #: ../gladeui/glade-base-editor.c:1781 ../plugins/gtk+/gtk+.xml.in.h:144
-#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:9
-#: ../plugins/gtk+/glade-tool-button-editor.ui.h:2
+#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:9 ../plugins/gtk+/glade-tool-button-editor.ui.h:2
 msgid "Label"
 msgstr "निसानी"
 
-#: ../gladeui/glade-base-editor.c:1796 ../gladeui/glade-widget-adaptor.c:1446
-#: ../plugins/gtk+/glade-eprop-enum-int.c:70 ../plugins/gtk+/glade-eprop-enum-int.c:71
+#: ../gladeui/glade-base-editor.c:1796 ../gladeui/glade-widget-adaptor.c:1446 ../plugins/gtk+/glade-eprop-enum-int.c:70
+#: ../plugins/gtk+/glade-eprop-enum-int.c:71
 msgid "Type"
 msgstr "वर्ग"
 
 #. Name
 #. translators: The unique identifier of an object in the project
-#: ../gladeui/glade-base-editor.c:2033 ../gladeui/glade-editor-table.c:305
-#: ../gladeui/glade-editor-table.c:578
+#: ../gladeui/glade-base-editor.c:2033 ../gladeui/glade-editor-table.c:305 ../gladeui/glade-editor-table.c:578
 msgid "ID:"
 msgstr "आइ डि:"
 
@@ -1674,7 +1660,7 @@ msgstr "'%s' च्यानल सक्षम गर्न  विफल"
 #: ../gladeui/glade-command.c:460 ../gladeui/glade-command.c:516
 #, fuzzy, c-format
 msgid "Disabling property %s on widget %s"
-msgstr "अज्ञात गुण %s"
+msgstr "'%s' गुण लेख्न योग्य छैन:%s\n"
 
 #: ../gladeui/glade-command.c:801
 #, fuzzy, c-format
@@ -1696,9 +1682,8 @@ msgstr "%s: %s देखि %sमा सेट गर्दा त्रुट�
 msgid "Renaming %s to %s"
 msgstr "\"%s\"बाट\"%s\" मा फाइलको नाम फेर्दा त्रुटि: %s"
 
-#: ../gladeui/glade-command.c:1241 ../gladeui/glade-command.c:1849
-#: ../gladeui/glade-command.c:1875 ../gladeui/glade-command.c:1977
-#: ../gladeui/glade-command.c:2019
+#: ../gladeui/glade-command.c:1241 ../gladeui/glade-command.c:1849 ../gladeui/glade-command.c:1875
+#: ../gladeui/glade-command.c:1977 ../gladeui/glade-command.c:2019
 msgid "multiple"
 msgstr "धेरैवटा"
 
@@ -1714,12 +1699,12 @@ msgstr "“%s” कागजात ताल्‍‌चा लगाइएक�
 #: ../gladeui/glade-command.c:1408
 #, fuzzy, c-format
 msgid "Remove %s"
-msgstr "यन्त्रहरू को सूचीबाट '%s' हटाउने हो?"
+msgstr "`%s' हटाउन सक्दैन"
 
 #: ../gladeui/glade-command.c:1411
 #, fuzzy
 msgid "Remove multiple"
-msgstr "बहुउद्देश्यिय छनौट"
+msgstr "धेरैवटा"
 
 #: ../gladeui/glade-command.c:1821
 #, c-format
@@ -1739,7 +1724,7 @@ msgstr "%s काट्नुहोस्"
 #: ../gladeui/glade-command.c:1975
 #, fuzzy, c-format
 msgid "Paste %s"
-msgstr "यसभित्र टाँस्नुहोस्"
+msgstr "%s मा टाँस्नुहोस्"
 
 #: ../gladeui/glade-command.c:2017
 #, fuzzy, c-format
@@ -1788,17 +1773,17 @@ msgstr ""
 #: ../gladeui/glade-command.c:2839
 #, fuzzy, c-format
 msgid "Setting project's %s property"
-msgstr "अज्ञात गुण %s"
+msgstr "गुण '%s' सेट गर्दा अज्ञात त्रुटि:%s"
 
 #: ../gladeui/glade-command.c:2942
 #, fuzzy, c-format
 msgid "Setting resource path to '%s'"
-msgstr "सेटिङ् गर्दै %s (%s) ...\n"
+msgstr "संसाधन मार्ग"
 
 #: ../gladeui/glade-command.c:2973
 #, fuzzy, c-format
 msgid "Setting translation domain to '%s'"
-msgstr "'%s' लाई सेट गर्न सकिएन"
+msgstr "तपाईँ %s डोमेन %s पहुँच गर्न लगइन हुनुपर्दछ"
 
 #: ../gladeui/glade-command.c:3008
 #, fuzzy, c-format
@@ -1808,12 +1793,12 @@ msgstr "`%s' सेटबाट हटाउँदा  त्रुटि: %s\n"
 #: ../gladeui/glade-command.c:3011
 #, fuzzy, c-format
 msgid "Setting widget '%s' as template"
-msgstr "'%s' मा <template> निर्दिष्ट गरिएको छैन"
+msgstr "सेटिङ् गर्दै %s (%s) ...\n"
 
 #: ../gladeui/glade-command.c:3014
 #, fuzzy
 msgid "Unsetting template"
-msgstr "टेम्प्लेट:"
+msgstr "`%s' सेटिङबाट हटाउँदा त्रुटि: %s"
 
 #: ../gladeui/glade-cursor.c:186
 #, fuzzy, c-format
@@ -1825,17 +1810,17 @@ msgstr ""
 #: ../gladeui/glade-design-layout.c:663
 #, fuzzy, c-format
 msgid "Editing alignments of %s"
-msgstr "%s सम्पादन हुदैछ।"
+msgstr "प्रयोगकर्ता सम्पादन गर्दै: %s"
 
 #: ../gladeui/glade-design-layout.c:735
 #, fuzzy, c-format
 msgid "Editing margins of %s"
-msgstr "%s सम्पादन हुदैछ।"
+msgstr "सीमान्तहरू"
 
 #: ../gladeui/glade-design-layout.c:2042
 #, fuzzy
 msgid "Design View"
-msgstr "डिजाइन चार्ज:"
+msgstr "डिजाइन मेटनुहोस्"
 
 #: ../gladeui/glade-design-layout.c:2043
 #, fuzzy
@@ -1863,7 +1848,7 @@ msgstr "सम्पादक लोड गर्न सकिएन ।"
 #: ../gladeui/glade-editor.c:243
 #, fuzzy
 msgid "Show Class Field"
-msgstr "CLASS"
+msgstr "वर्ग"
 
 #: ../gladeui/glade-editor.c:244
 #, fuzzy
@@ -1873,12 +1858,12 @@ msgstr "घटना/बैठक सम्पादकमा टाइमजो
 #: ../gladeui/glade-editor.c:250
 #, fuzzy
 msgid "Class Field"
-msgstr "CLASS"
+msgstr "फाँट"
 
 #: ../gladeui/glade-editor.c:251
 #, fuzzy
 msgid "The class field string"
-msgstr "STRING"
+msgstr "फाँट"
 
 #. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
 #. * example: Window Properties - GtkWindow [window1]
@@ -1899,7 +1884,7 @@ msgstr "%s - %s गुण"
 #: ../gladeui/glade-editor.c:761
 #, fuzzy, c-format
 msgid "Create a %s"
-msgstr "फोल्डर सिर्जना गर्न सकिँदैन: %s: %s"
+msgstr "%s;%s लगडाइरेक्टरी सिर्जना गर्न असफल भयो"
 
 #: ../gladeui/glade-editor.c:769
 msgid "Crea_te"
@@ -1908,7 +1893,7 @@ msgstr "सिर्जना गर्नुहोस्"
 #: ../gladeui/glade-editor.c:877
 #, fuzzy
 msgid "Reset"
-msgstr "_पुनः मिलाउ"
+msgstr "रिसेट गर्नुहोस्"
 
 #: ../gladeui/glade-editor.c:888 ../gladeui/glade-property-label.c:119
 msgid "Property"
@@ -1934,12 +1919,11 @@ msgstr "के तपाईँ सबै प्राथमिकता वा�
 #: ../gladeui/glade-editor.c:1117
 #, fuzzy
 msgid "Reset Widget Properties"
-msgstr "गुण"
+msgstr "गुणहरू"
 
-#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1691
-#: ../gladeui/glade-editor-property.c:1998 ../gladeui/glade-editor-property.c:3139
-#: ../gladeui/glade-editor-property.c:3252 ../gladeui/glade-editor-property.c:3268
-#: ../gladeui/glade-editor-property.c:3587 ../plugins/gtk+/glade-accels.c:526
+#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1691 ../gladeui/glade-editor-property.c:1998
+#: ../gladeui/glade-editor-property.c:3139 ../gladeui/glade-editor-property.c:3252
+#: ../gladeui/glade-editor-property.c:3268 ../gladeui/glade-editor-property.c:3587 ../plugins/gtk+/glade-accels.c:526
 #: ../plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_हो"
@@ -1948,7 +1932,7 @@ msgstr "_हो"
 #: ../gladeui/glade-editor.c:1134
 #, fuzzy
 msgid "_Properties:"
-msgstr "गुण"
+msgstr "गुण: "
 
 #: ../gladeui/glade-editor.c:1163
 msgid "_Select All"
@@ -1962,7 +1946,7 @@ msgstr "सबै चयन हटाउनुहोस्"
 #: ../gladeui/glade-editor.c:1181
 #, fuzzy
 msgid "Property _Description:"
-msgstr "वर्णन:"
+msgstr "वर्णन: "
 
 #. Translators: first %s is the project name, second is a widget name
 #: ../gladeui/glade-editor.c:1283
@@ -1973,12 +1957,12 @@ msgstr "%s - %s गुण"
 #: ../gladeui/glade-editor-property.c:725
 #, fuzzy
 msgid "Property Class"
-msgstr "CLASS"
+msgstr " वर्ग/गुण"
 
 #: ../gladeui/glade-editor-property.c:726
 #, fuzzy
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr "यसमा सिर्जित "
+msgstr "यसमा सिर्जित"
 
 #: ../gladeui/glade-editor-property.c:732 ../gladeui/glade-property-shell.c:125
 msgid "Use Command"
@@ -1997,8 +1981,7 @@ msgstr "जाँच गर्नुहोस्"
 msgid "Whether to explicitly disable the check button"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-label.c:152
-#: ../gladeui/glade-property-shell.c:137
+#: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-label.c:152 ../gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "अनुकूलन पाठ"
 
@@ -2009,7 +1992,7 @@ msgstr ""
 #: ../gladeui/glade-editor-property.c:1320
 #, fuzzy
 msgid "Select Fields"
-msgstr "फारम क्षेत्र"
+msgstr "फाँटहरू..."
 
 #: ../gladeui/glade-editor-property.c:1323
 msgid "_Close"
@@ -2018,7 +2001,7 @@ msgstr "बन्द गर्नुहोस्"
 #: ../gladeui/glade-editor-property.c:1336
 #, fuzzy
 msgid "_Select individual fields:"
-msgstr "व्यक्तिगत"
+msgstr "फाँटहरू"
 
 #: ../gladeui/glade-editor-property.c:1686
 msgid "Select Named Icon"
@@ -2032,7 +2015,7 @@ msgstr "पाठ सम्पादन गर्नुहोस्"
 #: ../gladeui/glade-editor-property.c:2015
 #, fuzzy
 msgid "_Text:"
-msgstr "पाठ"
+msgstr "पाठ:"
 
 #. Translatable
 #: ../gladeui/glade-editor-property.c:2051
@@ -2043,7 +2026,7 @@ msgstr "मा:"
 #: ../gladeui/glade-editor-property.c:2057 ../gladeui/glade-property.c:680
 #, fuzzy
 msgid "Whether this property is translatable"
-msgstr "विशेषता"
+msgstr "अनुवाद योग्य"
 
 #: ../gladeui/glade-editor-property.c:2065
 #, fuzzy
@@ -2052,14 +2035,14 @@ msgstr "अनुवाद"
 
 #: ../gladeui/glade-editor-property.c:2071
 msgid ""
-"For short and ambiguous strings: type a word here to differentiate the meaning of this "
-"string from the meaning of other occurrences of the same string"
+"For short and ambiguous strings: type a word here to differentiate the meaning of this string from the meaning of "
+"other occurrences of the same string"
 msgstr ""
 
 #: ../gladeui/glade-editor-property.c:2103
 #, fuzzy
 msgid "Co_mments for translators:"
-msgstr "अनुवादकहरू"
+msgstr "टिप्पणी:"
 
 #: ../gladeui/glade-editor-property.c:2192
 msgid "Select a file from the project resource directory"
@@ -2070,8 +2053,8 @@ msgid "_Open"
 msgstr "खोल्नुहोस्"
 
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:3057 ../gladeui/glade-widget-adaptor.c:1439
-#: ../gladeui/glade-widget.c:1341 ../plugins/gtk+/gtk+.xml.in.h:545
+#: ../gladeui/glade-editor-property.c:3057 ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
+#: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Name"
 msgstr "नाम"
 
@@ -2092,16 +2075,16 @@ msgstr ""
 #: ../gladeui/glade-editor-property.c:3108
 #, fuzzy, c-format
 msgid "Choose a parentless %s in this project"
-msgstr "ग्लेड परियोजना '%s' बचत गरियो"
+msgstr "कृपया रोज्नुहोस् (%s): "
 
 #: ../gladeui/glade-editor-property.c:3110
 #, fuzzy, c-format
 msgid "Choose a %s in this project"
-msgstr "ग्लेड परियोजना '%s' बचत गरियो"
+msgstr "कृपया रोज्नुहोस् (%s): "
 
 #: ../gladeui/glade-editor-property.c:3138 ../gladeui/glade-editor-property.c:3250
-#: ../gladeui/glade-editor-property.c:3267 ../gladeui/glade-editor-property.c:3585
-#: ../plugins/gtk+/glade-accels.c:524 ../plugins/gtk+/glade-attributes.c:1061
+#: ../gladeui/glade-editor-property.c:3267 ../gladeui/glade-editor-property.c:3585 ../plugins/gtk+/glade-accels.c:524
+#: ../plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "खाली गर्नुहोस्"
 
@@ -2130,7 +2113,7 @@ msgstr "वस्तुहरू"
 #: ../gladeui/glade-editor-table.c:121
 #, fuzzy
 msgid "Page Type"
-msgstr "_प्रकार:"
+msgstr "पृष्ठ प्रकार"
 
 #: ../gladeui/glade-editor-table.c:122
 msgid "The editor page type to create this GladeEditorTable for"
@@ -2143,27 +2126,26 @@ msgstr "वर्ग नाम:"
 #: ../gladeui/glade-editor-table.c:575
 #, fuzzy
 msgid "The object's unique identifier"
-msgstr "पहिचायक"
+msgstr "डक वस्तुलाई छुट्याउनका लागि अनौंठो नाम"
 
 #: ../gladeui/glade-editor-table.c:587 ../gladeui/glade-widget.c:1435
 #, fuzzy
 msgid "Composite"
-msgstr "संमिश्रित शाखा"
+msgstr "संयुक्त अडियो फाइल लेखन"
 
 #: ../gladeui/glade-editor-table.c:589
 #, fuzzy
 msgid "Whether this widget is a composite template"
 msgstr "जहाँ औजार एउटा संमिश्रित औजारको भाग हुन्छ"
 
-#: ../gladeui/glade-inspector.c:196 ../gladeui/glade-project-properties.c:168
-#: ../gladeui/glade-widget.c:1370
+#: ../gladeui/glade-inspector.c:196 ../gladeui/glade-project-properties.c:168 ../gladeui/glade-widget.c:1370
 msgid "Project"
 msgstr "परियोजना"
 
 #: ../gladeui/glade-inspector.c:197
 #, fuzzy
 msgid "The project being inspected"
-msgstr "परियोजना"
+msgstr "डेटा अझै अनुक्रमणित भएको छ"
 
 #: ../gladeui/glade-inspector.c:578
 #, fuzzy
@@ -2173,7 +2155,7 @@ msgstr "विजेट"
 #: ../gladeui/glade-inspector.c:617
 #, fuzzy
 msgid "Expand all"
-msgstr "सबै सन्देश थ्रेडहरू विस्तार गर्नुहोस्"
+msgstr "/सबै श्रोतहरू बढाउनुहोस्"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:482
 msgid "All Contexts"
@@ -2182,7 +2164,7 @@ msgstr "सबै प्रसँग"
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1369
 #, fuzzy
 msgid "Named Icon Chooser"
-msgstr "नाम दिइएको प्रतिमाका लागि प्रयोग गर्ने पिक्सेल आकार"
+msgstr "नाम दिइएको प्रतिमाका चयन गर्नुहोस्"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1397
 #, fuzzy
@@ -2197,17 +2179,17 @@ msgstr "C/C++ स्रोत फाइल"
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1464
 #, fuzzy
 msgid "Icon Na_mes:"
-msgstr "निर्माणाधिन योजना:"
+msgstr "कार्यस्थान नाम:"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1488
 #, fuzzy
 msgid "_List standard icons only"
-msgstr "प्रतिमाहरूमा सम्भाव्य क्याप्सनहरूको सूची"
+msgstr "प्रतिमा मात्र देखाउनुहोस्"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1688
 #, fuzzy, c-format
 msgid "Could not create directory: %s"
-msgstr "%s मा अस्थायी डाइरेक्टरी सिर्जना गर्न सकेन।"
+msgstr "डाइरेक्टरी '%s' सिर्जना गर्न सकिएन"
 
 #: ../gladeui/glade-object-stub.c:101
 msgid "Delete All"
@@ -2221,7 +2203,7 @@ msgstr "चयनकर्ता"
 #: ../gladeui/glade-popup.c:381
 #, fuzzy
 msgid "_Add widget here"
-msgstr "एउटा सहभागी थप्नका लागि यहाँ क्लिक गर्नुहोस्"
+msgstr "यहाँ आकारहरू थप्नुहोस्"
 
 #: ../gladeui/glade-popup.c:386 ../gladeui/glade-popup.c:545
 msgid "Add widget as _toplevel"
@@ -2260,7 +2242,7 @@ msgstr "चेतावनी: स्किमाका लागि तपा�
 #: ../gladeui/glade-preview.c:245
 #, fuzzy, c-format
 msgid "Error launching previewer: %s\n"
-msgstr "आदेश थालनी गर्दा त्रुटि"
+msgstr "कुञ्जीपाटी प्राथमिकता सम्वाद सुरू गर्दा त्रुटि थियो: %s"
 
 #: ../gladeui/glade-preview.c:248
 #, fuzzy, c-format
@@ -2270,7 +2252,7 @@ msgstr "%s सुरु गर्न असफल"
 #: ../gladeui/glade-previewer.c:202
 #, fuzzy
 msgid "Glade Previewer log"
-msgstr "जिनोम कागजात दर्शक"
+msgstr "ग्लेड विकल्पहरु"
 
 #: ../gladeui/glade-previewer.c:739 ../gladeui/glade-previewer.c:749
 msgid "user_data"
@@ -2286,12 +2268,11 @@ msgstr "पछि छ"
 #: ../gladeui/glade-previewer.c:756 ../gladeui/glade-signal.c:213
 #, fuzzy
 msgid "Swapped"
-msgstr ""
-"यदि तपाईँले यस विकल्पलाई सक्षम पार्नु भयो भने उच्च रङ मानहरू तल्लो चाहिंसँग साटिनेछ र विपरित क्रमको हुन्छ।"
+msgstr "यदि तपाईँले यस विकल्पलाई सक्षम पार्नु भयो भने उच्च रङ मानहरू तल्लो चाहिंसँग साटिनेछ र विपरित क्रमको हुन्छ।"
 
 #. translators: GConnectFlags value
-#: ../gladeui/glade-previewer.c:759 ../gladeui/glade-signal.c:207
-#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:669
+#: ../gladeui/glade-previewer.c:759 ../gladeui/glade-signal.c:207 ../gladeui/glade-signal-editor.c:1391
+#: ../plugins/gtk+/gtk+.xml.in.h:669
 msgid "After"
 msgstr "पछि"
 
@@ -2299,7 +2280,7 @@ msgstr "पछि"
 #: ../gladeui/glade-previewer.c:782
 #, fuzzy, c-format
 msgid "%s::%s emitted one time"
-msgstr "\"%s\" ले एउटा तर्कको अपेक्षा गर्दछ"
+msgstr "समय: %s %s"
 
 #. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
 #: ../gladeui/glade-previewer.c:786
@@ -2325,9 +2306,9 @@ msgid "UI definition has no previewable widgets.\n"
 msgstr ""
 
 #: ../gladeui/glade-previewer-main.c:79
-#, c-format
+#, fuzzy, c-format
 msgid "Object %s not found in UI definition.\n"
-msgstr ""
+msgstr "वस्तु “%s” फेला परेन"
 
 #: ../gladeui/glade-previewer-main.c:85
 #, fuzzy, c-format
@@ -2366,7 +2347,7 @@ msgstr "फाइल नाम पूर्वावलोकन"
 #: ../gladeui/glade-previewer-main.c:302
 #, fuzzy
 msgid "File name to save a screenshot"
-msgstr "हालको फाइललाई एउटा भिन्न नाममा बचत गर्नुहोस्"
+msgstr "यो फाइल अरू नामले संग्रह गर्नुस"
 
 #: ../gladeui/glade-previewer-main.c:303
 #, fuzzy
@@ -2389,7 +2370,7 @@ msgstr ""
 #: ../gladeui/glade-previewer-main.c:307
 #, fuzzy
 msgid "Display previewer version"
-msgstr "संस्करण प्रदर्शन गर्नुहोस् र निस्कनुहोस्"
+msgstr "जिन्युमेरिकको संस्करण देखाउनुहोस्"
 
 #: ../gladeui/glade-previewer-main.c:326
 #, fuzzy
@@ -2431,7 +2412,7 @@ msgstr "पाथ"
 #: ../gladeui/glade-project.c:972
 #, fuzzy
 msgid "The filesystem path of the project"
-msgstr "परियोजना"
+msgstr "फाइल प्रणाली"
 
 #: ../gladeui/glade-project.c:978
 #, fuzzy
@@ -2441,7 +2422,7 @@ msgstr "पढ्न मात्रै मिल्ने "
 #: ../gladeui/glade-project.c:979
 #, fuzzy
 msgid "Whether project is read-only"
-msgstr "विशेषता पढ्नका लागि मात्र हो"
+msgstr "गन्तव्य पढ्न मात्र हो"
 
 #: ../gladeui/glade-project.c:985
 msgid "Add Item"
@@ -2450,7 +2431,7 @@ msgstr "सामाग्री थप्नुहोस्"
 #: ../gladeui/glade-project.c:986
 #, fuzzy
 msgid "The current item to add to the project"
-msgstr "वर्तमान सामाग्रीमा चुच्चो ले जान्छ ।"
+msgstr "हालको परियोजना बचत गर्नुहोस्"
 
 #: ../gladeui/glade-project.c:992
 #, fuzzy
@@ -2470,7 +2451,7 @@ msgstr "अनुवाद"
 #: ../gladeui/glade-project.c:1001
 #, fuzzy
 msgid "The project translation domain"
-msgstr "अनुवाद"
+msgstr "डोमेन:"
 
 #: ../gladeui/glade-project.c:1007 ../gladeui/glade-widget.c:1393
 msgid "Template"
@@ -2509,7 +2490,7 @@ msgstr ""
 #: ../gladeui/glade-project.c:1126
 #, fuzzy, c-format
 msgid "(internal %s)"
-msgstr "%(1)s मा  आन्तरिक त्रुटि ।"
+msgstr "आन्तरिक त्रुटि: %s"
 
 #: ../gladeui/glade-project.c:1131
 #, fuzzy, c-format
@@ -2538,7 +2519,7 @@ msgstr ""
 #: ../gladeui/glade-project.c:1873
 #, fuzzy, c-format
 msgid "%s targets Gtk+ %d.%d"
-msgstr "चार्ज हुन %d %s %d %s"
+msgstr "%d %s %d %s (%d%%) बाँकी"
 
 #: ../gladeui/glade-project.c:1912
 msgid "Specially because there is an object that can not be build with type "
@@ -2596,7 +2577,7 @@ msgstr ""
 #: ../gladeui/glade-project.c:2919
 #, fuzzy
 msgid "This widget is deprecated"
-msgstr "फलब्याक विन्डो म्यानेजर (हटाइएको)"
+msgstr "औजार:"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2922
@@ -2680,18 +2661,17 @@ msgstr ""
 #: ../gladeui/glade-project.c:3307
 #, fuzzy, c-format
 msgid "Object %s has unrecognized type %s\n"
-msgstr "नोडसँग अज्ञात \"type\" को `%s' विशेषता छ, उपेक्षा गर्दै"
+msgstr "अवैध वा अज्ञात कुञ्जी प्रकार: %s"
 
 #: ../gladeui/glade-project.c:4777
 #, fuzzy, c-format
 msgid "Unsaved %i"
-msgstr "I"
+msgstr "बचत नगरिएको परिवर्तनहरू"
 
-#: ../gladeui/glade-project.c:5076 ../gladeui/glade-project.c:5127
-#: ../gladeui/glade-project.c:5284
+#: ../gladeui/glade-project.c:5076 ../gladeui/glade-project.c:5127 ../gladeui/glade-project.c:5284
 #, fuzzy
 msgid "No widget selected."
-msgstr "जहाँ औजार एउटा पूर्वनिर्धारित औजार हुन्छ"
+msgstr "चयन गरियो"
 
 #: ../gladeui/glade-project.c:5092
 msgid "Unable to copy unrecognized widget type."
@@ -2704,17 +2684,17 @@ msgstr ""
 #: ../gladeui/glade-project.c:5176
 #, fuzzy
 msgid "Unable to paste to the selected parent"
-msgstr "चयन गरिएको भोल्युमलाई अनमाउन्ट गर्न अक्षम ।"
+msgstr "चयनमा टाँस्न असमर्थ"
 
 #: ../gladeui/glade-project.c:5187
 #, fuzzy
 msgid "Unable to paste to multiple widgets"
-msgstr "टाँस्न्न असमर्थ"
+msgstr "चयनमा टाँस्न असमर्थ"
 
 #: ../gladeui/glade-project.c:5197
 #, fuzzy
 msgid "No widget on the clipboard"
-msgstr "औजार"
+msgstr "औजार:"
 
 #: ../gladeui/glade-project.c:5242
 msgid "Only one widget can be pasted at a time to this container"
@@ -2727,7 +2707,7 @@ msgstr ""
 #: ../gladeui/glade-project-properties.c:169
 #, fuzzy
 msgid "The project this properties dialog was created for"
-msgstr "परियोजना गुण"
+msgstr "परियोजनाको गुण सम्पादन गर्नुहोस्"
 
 #: ../gladeui/glade-project-properties.c:620
 #, c-format
@@ -2832,7 +2812,7 @@ msgstr "अक्षरबाट सुरु गर्न आवश्यक �
 #: ../gladeui/glade-property-label.c:158
 #, fuzzy
 msgid "Custom Tooltip"
-msgstr "औजारटिप"
+msgstr "औजारटिप:"
 
 #: ../gladeui/glade-property-label.c:159
 msgid "Custom tooltip to override the property description"
@@ -2867,7 +2847,7 @@ msgstr "वर्णन"
 #: ../gladeui/glade-signal.c:184
 #, fuzzy
 msgid "The detail for this signal"
-msgstr "सङ्केत:"
+msgstr "सङ्केत"
 
 #: ../gladeui/glade-signal.c:189 ../gladeui/glade-signal-editor.c:1321
 msgid "Handler"
@@ -2876,7 +2856,7 @@ msgstr "ह्यान्डलर"
 #: ../gladeui/glade-signal.c:190
 #, fuzzy
 msgid "The handler for this signal"
-msgstr "सङ्केत:"
+msgstr "ह्यान्डलर"
 
 #: ../gladeui/glade-signal.c:195
 msgid "User Data"
@@ -2908,7 +2888,7 @@ msgstr ""
 #: ../gladeui/glade-signal-editor.c:514
 #, fuzzy
 msgid "Select an object to pass to the handler"
-msgstr "वस्तु चयन गर्नुहोस्"
+msgstr "फाइल ब्राउजरद्वारा पास लगफाइल चयन गर्नुहोस्"
 
 #: ../gladeui/glade-signal-editor.c:1299 ../plugins/gtk+/glade-accels.c:451
 msgid "Signal"
@@ -2925,7 +2905,7 @@ msgstr "स्वाप"
 #: ../gladeui/glade-signal-editor.c:1536
 #, fuzzy
 msgid "Glade Widget"
-msgstr "ग्लेड प्रोजेक्ट"
+msgstr "ग्लेड विकल्पहरु"
 
 #: ../gladeui/glade-signal-editor.c:1537
 msgid "The glade widget to edit signals"
@@ -2934,12 +2914,12 @@ msgstr ""
 #: ../gladeui/glade-utils.c:136 ../gladeui/glade-utils.c:168
 #, fuzzy, c-format
 msgid "We could not find the symbol \"%s\""
-msgstr "`%s' मा प्रतीक Bonobo_Plugin_info फेला पार्न सकिँदैन"
+msgstr "प्याकेज '%s' फेला पार्न सकिएन​ !"
 
 #: ../gladeui/glade-utils.c:144
 #, fuzzy, c-format
 msgid "Could not get the type from \"%s\""
-msgstr "सूचीबाट सक्रिय प्रोटोकल भेटिएन"
+msgstr "ताल्चा प्राप्त गर्न सकिएन %s"
 
 #: ../gladeui/glade-utils.c:310
 #, c-format
@@ -2955,12 +2935,12 @@ msgstr "सबै फाइल"
 #: ../gladeui/glade-utils.c:496
 #, fuzzy
 msgid "Libglade Files"
-msgstr "फाइलहरू:"
+msgstr "कुनै फाइलहरू छैन"
 
 #: ../gladeui/glade-utils.c:501
 #, fuzzy
 msgid "GtkBuilder Files"
-msgstr "फाइलहरू:"
+msgstr "कुनै फाइलहरू छैन"
 
 #: ../gladeui/glade-utils.c:507
 #, fuzzy
@@ -2974,11 +2954,9 @@ msgstr "लिङ्क खोल्न सकेन"
 
 #. Reset the column
 #. GtkTextDirection enumeration value
-#: ../gladeui/glade-utils.c:1639 ../plugins/gtk+/glade-attributes.c:827
-#: ../plugins/gtk+/gtk+.xml.in.h:429
-#, fuzzy
+#: ../gladeui/glade-utils.c:1639 ../plugins/gtk+/glade-attributes.c:827 ../plugins/gtk+/gtk+.xml.in.h:429
 msgid "None"
-msgstr "कुनै पनि होइन"
+msgstr "कोही पनि होइन"
 
 #: ../gladeui/glade-widget-action.c:184
 msgid "class"
@@ -2994,8 +2972,7 @@ msgstr "सूचक"
 msgid "Whether this action is sensitive"
 msgstr "सम्वेदनशील"
 
-#: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1430
-#: ../plugins/gtk+/gtk+.xml.in.h:931
+#: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1430 ../plugins/gtk+/gtk+.xml.in.h:931
 msgid "Visible"
 msgstr "दृश्यात्मक"
 
@@ -3022,7 +2999,7 @@ msgstr "वर्ग नाम:"
 #: ../gladeui/glade-widget-adaptor.c:1447
 #, fuzzy
 msgid "GType of the class"
-msgstr "CLASS"
+msgstr "वर्ग"
 
 #: ../gladeui/glade-widget-adaptor.c:1453
 msgid "Title"
@@ -3040,8 +3017,7 @@ msgstr "सामान्य नाम"
 msgid "Used to generate names of new widgets"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:661
-#: ../plugins/gtk+/glade-window-editor.ui.h:6
+#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:661 ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "प्रतिमाको नाम"
 
@@ -3052,7 +3028,7 @@ msgstr "प्रतिमाको नाम"
 #: ../gladeui/glade-widget-adaptor.c:1474
 #, fuzzy
 msgid "Catalog"
-msgstr "सूची फाइल '%s' अवस्थित छैन।"
+msgstr "सूचीबाट स्थापित गरिदै    : %s"
 
 #: ../gladeui/glade-widget-adaptor.c:1475
 msgid "The name of the widget catalog this class was declared by"
@@ -3069,11 +3045,10 @@ msgstr ""
 #: ../gladeui/glade-widget-adaptor.c:1488
 #, fuzzy
 msgid "Special Child Type"
-msgstr "बिषेश फोल्डर"
+msgstr "विशेष प्रकार्य"
 
 #: ../gladeui/glade-widget-adaptor.c:1489
-msgid ""
-"Holds the name of the packing property to depict special children for this container class"
+msgid "Holds the name of the packing property to depict special children for this container class"
 msgstr ""
 
 #: ../gladeui/glade-widget-adaptor.c:1496
@@ -3110,8 +3085,9 @@ msgid "Object"
 msgstr "वस्तुObject"
 
 #: ../gladeui/glade-widget.c:1359
+#, fuzzy
 msgid "The object associated"
-msgstr ""
+msgstr "सहायक"
 
 #: ../gladeui/glade-widget.c:1364
 msgid "Adaptor"
@@ -3164,12 +3140,12 @@ msgstr ""
 #: ../gladeui/glade-widget.c:1405
 #, fuzzy
 msgid "Reason"
-msgstr "कारण:"
+msgstr "कारण"
 
 #: ../gladeui/glade-widget.c:1406
 #, fuzzy
 msgid "A GladeCreateReason for this creation"
-msgstr "अस्थायी फाइल सिर्जना गर्दा असफल भयो ।"
+msgstr "तालिका सिर्जना गर्ने विकल्पहरू"
 
 #: ../gladeui/glade-widget.c:1413
 msgid "Toplevel Width"
@@ -3183,7 +3159,7 @@ msgstr "यो प्लेसहोल्डरमा संलग्न हु
 #: ../gladeui/glade-widget.c:1419
 #, fuzzy
 msgid "Toplevel Height"
-msgstr "उच्च तहमा संकेन्द्रित"
+msgstr "उच्च तह चौडाइ"
 
 #: ../gladeui/glade-widget.c:1420
 #, fuzzy
@@ -3204,8 +3180,7 @@ msgstr "जहा औजार दृश्यात्मक हुन्छ"
 msgid "Whether this widget is the template for a composite widget"
 msgstr "जहाँ औजार एउटा संमिश्रित औजारको भाग हुन्छ"
 
-#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1018
-#: ../plugins/gtk+/glade-gtk-widget.c:1081
+#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1018 ../plugins/gtk+/glade-gtk-widget.c:1081
 #, fuzzy
 #| msgid "Column name"
 msgid "(unnamed)"
@@ -3219,7 +3194,7 @@ msgstr ""
 #: ../gladeui/glade-widget.c:4812
 #, fuzzy, c-format
 msgid "Object has unrecognized type %s"
-msgstr "नोडसँग अज्ञात \"type\" को `%s' विशेषता छ, उपेक्षा गर्दै"
+msgstr "अवैध वा अज्ञात कुञ्जी प्रकार: %s"
 
 #: ../gladeui/glade-widget.c:4878
 #, fuzzy
@@ -3264,14 +3239,13 @@ msgid "Emoticons"
 msgstr "ईमोटिकनहरू"
 
 #: ../gladeui/icon-naming-spec.c:50
-#, fuzzy
 msgid "International"
-msgstr "अन्तराष्ट्रिय फल्स"
+msgstr "अन्तर्राष्ट्रिय"
 
 #: ../gladeui/icon-naming-spec.c:52
 #, fuzzy
 msgid "MIME Types"
-msgstr "छवि प्रकार:"
+msgstr "रिड गर्न सक्षम ssindex प्रकारहरू MIME सूचीकृत गर्नुहोस्"
 
 #: ../gladeui/icon-naming-spec.c:54
 msgid "Places"
@@ -3339,7 +3313,7 @@ msgstr ""
 #: ../gladeui/glade-project-properties.ui.h:9
 #, fuzzy
 msgid "Image resources are loaded locally:"
-msgstr "छवि लोड गरिएको छैन ।"
+msgstr "तस्विर खोलिएको छैन"
 
 #: ../gladeui/glade-project-properties.ui.h:10
 #, fuzzy
@@ -3353,7 +3327,7 @@ msgstr "प्रतिलिपि अधिकार:"
 #: ../gladeui/glade-project-properties.ui.h:14
 #, fuzzy
 msgid "program or library name"
-msgstr "कार्यक्रमको नाम"
+msgstr "लाइब्रेरी"
 
 #: ../gladeui/glade-project-properties.ui.h:15
 msgid "Author(s):"
@@ -3370,19 +3344,22 @@ msgstr "वर्णन:"
 #: ../gladeui/glade-project-properties.ui.h:18
 #, fuzzy
 msgid "program or library short description"
-msgstr "स्किमाको लागि छोटो वर्णनमा अवैद UTF-8"
+msgstr "टेम्प्लेटको एउटा सानो वर्णन"
 
 #: ../gladeui/glade-project-properties.ui.h:20
+#, fuzzy
 msgid "GNU GPL version 2"
-msgstr ""
+msgstr "यो कार्यक्रम जीएनयू जीपीएल अन्तर्गत रहेर प्रतिलिपिआधिकार गरिएको हो"
 
 #: ../gladeui/glade-project-properties.ui.h:21
+#, fuzzy
 msgid "GNU GPL version 3"
-msgstr ""
+msgstr "यो कार्यक्रम जीएनयू जीपीएल अन्तर्गत रहेर प्रतिलिपिआधिकार गरिएको हो"
 
 #: ../gladeui/glade-project-properties.ui.h:22
+#, fuzzy
 msgid "GNU LGPL version 2.1"
-msgstr ""
+msgstr "कम्ति साधारण सार्वजनिक इजाजतपत्र (GPL) २.१ मात्र"
 
 #: ../gladeui/glade-project-properties.ui.h:23
 msgid "GNU LGPL version 3"
@@ -3391,17 +3368,17 @@ msgstr ""
 #: ../gladeui/glade-project-properties.ui.h:24
 #, fuzzy
 msgid "BSD 2-clause"
-msgstr "BSD भोल्युम"
+msgstr "BSD"
 
 #: ../gladeui/glade-project-properties.ui.h:25
 #, fuzzy
 msgid "BSD 3-clause"
-msgstr "BSD भोल्युम"
+msgstr "BSD"
 
 #: ../gladeui/glade-project-properties.ui.h:26
 #, fuzzy
 msgid "Apache 2"
-msgstr "-२"
+msgstr "खण्ड २, २:८"
 
 #: ../gladeui/glade-project-properties.ui.h:27
 msgid "MIT"
@@ -3426,7 +3403,7 @@ msgstr "'%s' लाई सेट गर्न सकिएन"
 #: ../plugins/gtk+/glade-about-dialog-editor.c:176
 #, fuzzy, c-format
 msgid "Setting %s to use logo file"
-msgstr "'%s' सेटिङ्ग गर्दा खराब passthrough ('passthrough' वा 'nopassthrough' प्रयोग गर्नुहोस्)"
+msgstr "  %s अडियो आगतको रूपमा फाइल प्रयोग गर्न सकिँदैन।"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.c:177
 #, fuzzy, c-format
@@ -3446,7 +3423,7 @@ msgstr "यो लेवलका लागि एम्नेमोनिक �
 #: ../plugins/gtk+/glade-accels.c:520
 #, fuzzy
 msgid "Choose accelerator keys..."
-msgstr "गतिवर्धक लेबुल"
+msgstr "कुञ्जीहरू"
 
 #: ../plugins/gtk+/glade-action-bar-editor.c:128 ../plugins/gtk+/glade-box-editor.c:133
 #, fuzzy, c-format
@@ -3461,7 +3438,7 @@ msgstr "'%s' सेटिङ्ग गर्दा खराब passthrough ('pa
 #: ../plugins/gtk+/glade-attributes.c:224
 msgctxt "textattr"
 msgid "Style"
-msgstr "शैली:"
+msgstr "शैली"
 
 #: ../plugins/gtk+/glade-attributes.c:228
 msgctxt "textattr"
@@ -3480,10 +3457,9 @@ msgid "Stretch"
 msgstr "खुर्कनुहोस्"
 
 #: ../plugins/gtk+/glade-attributes.c:240
-#, fuzzy
 msgctxt "textattr"
 msgid "Underline"
-msgstr "अधोरेखाङ्कित"
+msgstr "कच"
 
 #: ../plugins/gtk+/glade-attributes.c:244
 msgctxt "textattr"
@@ -3499,7 +3475,7 @@ msgstr "गुरुत्व"
 #, fuzzy
 msgctxt "textattr"
 msgid "Gravity Hint"
-msgstr "गुरुत्व"
+msgstr "गुरुत्व:"
 
 #: ../plugins/gtk+/glade-attributes.c:263
 msgctxt "textattr"
@@ -3510,7 +3486,7 @@ msgstr "परिमाण"
 #, fuzzy
 msgctxt "textattr"
 msgid "Absolute Size"
-msgstr "ट्याबलेट()"
+msgstr "निश्चित मान"
 
 #: ../plugins/gtk+/glade-attributes.c:274
 msgctxt "textattr"
@@ -3520,7 +3496,7 @@ msgstr "अग्रभूमि रङ्ग"
 #: ../plugins/gtk+/glade-attributes.c:278
 msgctxt "textattr"
 msgid "Background Color"
-msgstr "पृष्ठभूमि रङ:"
+msgstr "पृष्ठभूमि रङ्ग"
 
 #: ../plugins/gtk+/glade-attributes.c:282
 msgctxt "textattr"
@@ -3542,12 +3518,11 @@ msgctxt "textattr"
 msgid "Font Description"
 msgstr "फन्ट वर्णन"
 
-#: ../plugins/gtk+/glade-attributes.c:328 ../plugins/gtk+/glade-attributes.c:364
-#: ../plugins/gtk+/glade-attributes.c:372 ../plugins/gtk+/glade-attributes.c:378
-#: ../plugins/gtk+/glade-attributes.c:830
+#: ../plugins/gtk+/glade-attributes.c:328 ../plugins/gtk+/glade-attributes.c:364 ../plugins/gtk+/glade-attributes.c:372
+#: ../plugins/gtk+/glade-attributes.c:378 ../plugins/gtk+/glade-attributes.c:830
 #, fuzzy
 msgid "<Enter Value>"
-msgstr "enter"
+msgstr "Enter"
 
 #: ../plugins/gtk+/glade-attributes.c:363
 msgid "Unset"
@@ -3572,7 +3547,7 @@ msgstr "मान"
 #: ../plugins/gtk+/glade-attributes.c:1057
 #, fuzzy
 msgid "Setup Text Attributes"
-msgstr "पाठको गुण"
+msgstr "पाठ विशेषताहरू"
 
 #: ../plugins/gtk+/glade-attributes.c:1149
 msgid "Edit Attributes"
@@ -3601,12 +3576,12 @@ msgstr "'%s' सेटिङ्ग गर्दा खराब passthrough ('pa
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:191
 #, fuzzy, c-format
 msgid "Setting %s to use the %s property as an attribute"
-msgstr "'%s' सेटिङ्ग गर्दा खराब passthrough ('passthrough' वा 'nopassthrough' प्रयोग गर्नुहोस्)"
+msgstr "गुण '%s' सेट गर्दा अज्ञात त्रुटि:%s"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:212
 #, fuzzy, c-format
 msgid "Setting %s to use the %s property directly"
-msgstr "'%s' सेटिङ्ग गर्दा खराब passthrough ('passthrough' वा 'nopassthrough' प्रयोग गर्नुहोस्)"
+msgstr "गुण '%s' सेट गर्दा अज्ञात त्रुटि:%s"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:356
 #, fuzzy, c-format
@@ -3627,7 +3602,7 @@ msgstr "नमूना:"
 #: ../plugins/gtk+/glade-column-types.c:475 ../plugins/gtk+/glade-column-types.c:696
 #, fuzzy, c-format
 msgid "Setting columns on %s"
-msgstr "%s दृश्यात्मक स्तम्भहरू"
+msgstr "%s स्तम्भको चौडाइ पूर्वनिर्धारितमा सेट गर्दैछ"
 
 #: ../plugins/gtk+/glade-column-types.c:503
 #, fuzzy
@@ -3715,7 +3690,7 @@ msgstr "%s भित्रपटि (%s) अनुमति दिएको छ�
 #: ../plugins/gtk+/glade-fixed.c:1137
 #, fuzzy
 msgid "X position property"
-msgstr "\"स्थिति\"विशेषताका लागि संभावित न्यूनतम मान "
+msgstr "स्थिति विशेषता प्रयोग गरियोभने ठीक"
 
 #: ../plugins/gtk+/glade-fixed.c:1138
 msgid "The property used to set the X position of a child object"
@@ -3724,7 +3699,7 @@ msgstr ""
 #: ../plugins/gtk+/glade-fixed.c:1144
 #, fuzzy
 msgid "Y position property"
-msgstr "\"स्थिति\"विशेषताका लागि संभावित न्यूनतम मान "
+msgstr "स्थिति विशेषता प्रयोग गरियोभने ठीक"
 
 #: ../plugins/gtk+/glade-fixed.c:1145
 msgid "The property used to set the Y position of a child object"
@@ -3792,22 +3767,22 @@ msgstr "परिचय"
 #: ../plugins/gtk+/glade-gtk-assistant.c:199
 #, fuzzy
 msgid "Content page"
-msgstr "हालको दृश्य"
+msgstr "सामग्री"
 
 #: ../plugins/gtk+/glade-gtk-assistant.c:203
 #, fuzzy
 msgid "Confirmation page"
-msgstr "जाबास्क्रिप्ट निश्चित"
+msgstr "यकिन"
 
 #: ../plugins/gtk+/glade-gtk-box.c:821
 #, fuzzy, c-format
 msgid "Ordering children of %s"
-msgstr "शाखाहरुको बीचको ठाँउको मूल्य"
+msgstr "शाखाहरु"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356 ../plugins/gtk+/gtk+.xml.in.h:908
 #, fuzzy
 msgid "Tree View Column"
-msgstr "ट्रि दृश्यसँग खोल्नुहोस्"
+msgstr "ट्रि दृश्य विशेषताहरू"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356 ../plugins/gtk+/gtk+.xml.in.h:916
 #, fuzzy
@@ -3842,9 +3817,8 @@ msgid "Combo"
 msgstr "कम्बो"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:415 ../plugins/gtk+/glade-gtk-tree-view.c:94
-#, fuzzy
 msgid "Spin"
-msgstr "spin"
+msgstr "घुमाउनुहोस्"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:416 ../plugins/gtk+/glade-gtk-tree-view.c:95
 msgid "Pixbuf"
@@ -3873,17 +3847,17 @@ msgstr "कम्बो सम्पादक"
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:462
 #, fuzzy
 msgid "Entry Completion Editor"
-msgstr "प्रविष्टि"
+msgstr "सम्पादक"
 
 #: ../plugins/gtk+/glade-gtk-cell-renderer.c:128
 #, fuzzy, c-format
 msgid "%s is set to load %s from the model"
-msgstr "'%s' बाट आईसीसी प्रोफाइल लोड गर्न सकेन"
+msgstr "%s बाट खेल लोड गर्न सकिएन"
 
 #: ../plugins/gtk+/glade-gtk-cell-renderer.c:130
 #, fuzzy, c-format
 msgid "%s is set to manipulate %s directly"
-msgstr "सेट गर्नुपर्ने विषय: %s"
+msgstr "`%s' मा मोड सेट गर्न असफल: %s"
 
 #: ../plugins/gtk+/glade-gtk-combo-box.c:31
 msgid "This combo box is not configured to have an entry"
@@ -3928,30 +3902,27 @@ msgstr ""
 #: ../plugins/gtk+/glade-gtk-flow-box.c:204
 #, fuzzy, c-format
 msgid "Insert Child on %s"
-msgstr "शाखाबाट पढ्दा त्रुटि: %s."
+msgstr "%s विशेष क्यारेक्टर घुसाउनुहोस्"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:507 ../plugins/gtk+/glade-gtk-list-box.c:207
-#: ../plugins/gtk+/glade-gtk-table.c:538
+#: ../plugins/gtk+/glade-gtk-grid.c:507 ../plugins/gtk+/glade-gtk-list-box.c:207 ../plugins/gtk+/glade-gtk-table.c:538
 #, fuzzy, c-format
 msgid "Insert Row on %s"
-msgstr "insert"
+msgstr "पङ्क्ति(हरू) घुसाउनुहोस्"
 
 #: ../plugins/gtk+/glade-gtk-grid.c:510 ../plugins/gtk+/glade-gtk-table.c:541
 #, fuzzy, c-format
 msgid "Insert Column on %s"
-msgstr "स्तम्भहरू ढाँचाबद्ध गर्नुहोस्..."
+msgstr "स्तम्भ(हरू) घुसाउनुहोस्"
 
 #: ../plugins/gtk+/glade-gtk-grid.c:513 ../plugins/gtk+/glade-gtk-table.c:544
 #, fuzzy, c-format
 msgid "Remove Column on %s"
-msgstr "यो स्तम्भ हटाउनुहोस्"
+msgstr "म्याट्रिक्स बाट स्तम्भ(हरू) र पङ्क्ति(हरू) हटाउनुहोस्"
 
 #: ../plugins/gtk+/glade-gtk-grid.c:516 ../plugins/gtk+/glade-gtk-table.c:547
 #, fuzzy, c-format
 msgid "Remove Row on %s"
-msgstr ""
-"'%s' हटाउन असफल:\n"
-"%s"
+msgstr "पङ्क्ति %s"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
@@ -3961,7 +3932,7 @@ msgstr ""
 #: ../plugins/gtk+/glade-gtk-stack.c:160
 #, fuzzy, c-format
 msgid "Insert placeholder to %s"
-msgstr "insert"
+msgstr "%s विशेष क्यारेक्टर घुसाउनुहोस्"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:137 ../plugins/gtk+/glade-gtk-notebook.c:990
 #: ../plugins/gtk+/glade-gtk-stack.c:197
@@ -3988,12 +3959,20 @@ msgstr ""
 #: ../plugins/gtk+/glade-gtk-menu-item.c:53 ../plugins/gtk+/glade-gtk-menu-shell.c:173
 #, fuzzy
 msgid "Edit Menu Bar"
-msgstr "मेनु पट्टि"
+msgstr "मेनु बारमा"
 
 #: ../plugins/gtk+/glade-gtk-menu-item.c:55 ../plugins/gtk+/glade-gtk-menu-shell.c:175
 #, fuzzy
 msgid "Edit Menu"
-msgstr "सम्पादन..."
+msgstr ""
+"तपाईँले बचत गरेर राखेको पुरानो संस्करणको योजनाकारको कार्य दृश्य खोल्नुभयो।\n"
+"\n"
+"पुरानो फाइलहरू लोड गर्ने बेलामा, सबै कार्यहरूले अवरोधक प्रयोग गर्ने छन् 'खुलालाई जसरी पनि सुरु गर्नुहोस्', किनकी पुरानो संस्करणले पूर्ण सहयोग "
+"गरेन स्वचालित पुनर्तालिकीकरण, लिनको लागि यस नयाँ सुविधाको फाईदा, तपाईँले पूर्वाधिकारी को सम्बन्ध कार्यसँग जोड्नु पर्दछ जुन एक अर्कामा "
+"भर परेका हुन्छन्.\n"
+"तपाईँले पूर्वाधिकारी सम्बन्ध क्लिक गरी उत्तराधिकारीमा तानेर जोड्नसक्नुहुन्छ.\n"
+"\n"
+"यो गरी सकेपछि, तपाईँले सबै अवरोधकहरूलाई मेनुबाट छानेर हटाउन सक्नुहुन्छ सम्पादन मेनुबाट सबै अवरोधकहरूलाई हटाउनुहोस्"
 
 #: ../plugins/gtk+/glade-gtk-menu-item.c:142
 #, c-format
@@ -4003,17 +3982,17 @@ msgstr ""
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:193
 #, fuzzy
 msgid "<separator>"
-msgstr "विभाजक"
+msgstr "विभाजक:"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:207
 #, fuzzy
 msgid "<custom>"
-msgstr "अनुकूलन गर्नुहोस्"
+msgstr "अनुकुलन"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:245
 #, fuzzy
 msgid "Children cannot be added to a separator."
-msgstr "स्वतः प्रोफाइल हटाउन सकिँदैन !"
+msgstr "वस्तुमा शाखाहरू ब्राउज गर्न सक्दैन"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:253
 msgid "Children cannot be added to a Recent Chooser Menu."
@@ -4032,7 +4011,7 @@ msgstr "एउटा <%s> तत्व पहिल्यै नै निर्
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:468 ../plugins/gtk+/glade-gtk-menu-shell.c:476
 #, fuzzy
 msgid "Normal item"
-msgstr "साधारण"
+msgstr "सामान्य"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:469 ../plugins/gtk+/glade-gtk-menu-shell.c:477
 #, fuzzy
@@ -4051,7 +4030,7 @@ msgstr "रेडियो मेनु वस्तु"
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:472 ../plugins/gtk+/glade-gtk-menu-shell.c:480
 #, fuzzy
 msgid "Separator item"
-msgstr "विभाजक"
+msgstr "विभाजक:"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:481 ../plugins/gtk+/glade-gtk-toolbar.c:258
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:196 ../plugins/gtk+/glade-gtk-tool-palette.c:205
@@ -4067,12 +4046,12 @@ msgstr "सामाग्री"
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:541 ../plugins/gtk+/gtk+.xml.in.h:496
 #, fuzzy
 msgid "Tool Item Group"
-msgstr "उपकरण"
+msgstr "द्धारा समूह..."
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:751
 #, fuzzy
 msgid "Recent Chooser Menu"
-msgstr "रङ चयनकर्ता"
+msgstr "हाल चयनकर्ता विशेषताहरू"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:598 ../plugins/gtk+/gtk+.xml.in.h:156
@@ -4087,12 +4066,12 @@ msgstr "समूहबाट हटाउने “%s”"
 #: ../plugins/gtk+/glade-gtk-notebook.c:985
 #, fuzzy, c-format
 msgid "Insert page on %s"
-msgstr "insert"
+msgstr "\"%s\" घुसाउनुहोस्"
 
 #: ../plugins/gtk+/glade-gtk-progress-bar.c:30
 #, fuzzy
 msgid "This progressbar does not show text"
-msgstr "पाठ प्रविष्टका विकल्पहरू देखाउनुहोस्"
+msgstr "आइटम देखाउनला लागि पाठ"
 
 #: ../plugins/gtk+/glade-gtk-scale.c:30
 #, fuzzy
@@ -4102,15 +4081,14 @@ msgstr "यसद्वारा मान मापन गर्नुहोस
 #: ../plugins/gtk+/glade-gtk-scrolled-window.c:56
 #, fuzzy
 msgid "This property is disabled"
-msgstr "असक्षम"
+msgstr "विशेषता"
 
 #: ../plugins/gtk+/glade-gtk-searchbar.c:72
 #, fuzzy
 msgid "Search bar is already full"
-msgstr "खोजपट्टी देखाउनुहोस्"
+msgstr "पूरा पाठ खोज्नुहोस्"
 
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:122
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:152
+#: ../plugins/gtk+/glade-gtk-text-tag-table.c:122 ../plugins/gtk+/glade-gtk-text-tag-table.c:152
 msgid "Tag"
 msgstr "ट्याग"
 
@@ -4149,9 +4127,8 @@ msgstr "विभाजक"
 #: ../plugins/gtk+/glade-gtk-toolbar.c:245 ../plugins/gtk+/glade-gtk-toolbar.c:253
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:191 ../plugins/gtk+/glade-gtk-tool-palette.c:200
 #: ../plugins/gtk+/gtk+.xml.in.h:403
-#, fuzzy
 msgid "Normal"
-msgstr "normal"
+msgstr "साधारण"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/glade-gtk-toolbar.c:246 ../plugins/gtk+/glade-gtk-toolbar.c:254
@@ -4191,7 +4168,7 @@ msgstr "स्तम्भ"
 #: ../plugins/gtk+/glade-gtk-tree-view.c:111
 #, fuzzy
 msgid "Tree View Editor"
-msgstr "ट्रि दृश्यसँग खोल्नुहोस्"
+msgstr "ट्रि दृश्य विशेषताहरू"
 
 #. XXX FIXME: We should hide the actual "fixed-height-mode" setting from
 #. * treeview editors and provide a custom control that sets all its columns
@@ -4240,7 +4217,7 @@ msgstr "समूह %s मा प्रयोगकर्ता %s थप ग�
 #: ../plugins/gtk+/glade-gtk-widget.c:1101
 #, fuzzy
 msgid "New Size Group"
-msgstr "नयाँ आकार (MiB):"
+msgstr "तस्वीर साइजको समूह"
 
 #: ../plugins/gtk+/glade-gtk-window.c:39
 msgid "This property does not apply to client-side decorated windows"
@@ -4274,16 +4251,14 @@ msgstr "नाम दिइएको प्रतिमाका लागि �
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-icon-factory-editor.c:160
-msgid ""
-"First add a stock name in the entry below, then add and define sources for that icon in the "
-"treeview."
+msgid "First add a stock name in the entry below, then add and define sources for that icon in the treeview."
 msgstr ""
 
 #: ../plugins/gtk+/glade-icon-sources.c:757
 #, c-format
 msgid ""
-"Enter a filename or a relative or full path for this source of '%s' (Glade will only ever "
-"load them in the runtime from your project directory)."
+"Enter a filename or a relative or full path for this source of '%s' (Glade will only ever load them in the runtime "
+"from your project directory)."
 msgstr ""
 
 #: ../plugins/gtk+/glade-icon-sources.c:765
@@ -4304,7 +4279,7 @@ msgstr ""
 #: ../plugins/gtk+/glade-icon-sources.c:785
 #, fuzzy, c-format
 msgid "Set the icon size for this source of '%s'"
-msgstr "नयाँ क्लोन स्रोत सेट गर्न %s"
+msgstr "प्रतिमाको मौलिक साइज पूर्वावस्थामा ल्याउनुहोस्"
 
 #: ../plugins/gtk+/glade-icon-sources.c:791
 #, c-format
@@ -4360,7 +4335,7 @@ msgstr "छविचित्र /लेबल सीमाना"
 #: ../plugins/gtk+/glade-image-item-editor.c:343
 #, fuzzy
 msgid "Edit Label"
-msgstr "सम्पादन गर्नुहोस्..."
+msgstr "गुण लेबुल सम्पादन गर्नुहोस्"
 
 #. Internal Image area...
 #: ../plugins/gtk+/glade-image-item-editor.c:379
@@ -4426,15 +4401,14 @@ msgstr "नाम दिइएको प्रतिमाका लागि �
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:155
 msgid ""
-"Define columns for your liststore; giving them meaningful names will help you to retrieve "
-"them when setting cell renderer attributes (press the Delete key to remove the selected "
-"column)"
+"Define columns for your liststore; giving them meaningful names will help you to retrieve them when setting cell "
+"renderer attributes (press the Delete key to remove the selected column)"
 msgstr ""
 
 #: ../plugins/gtk+/glade-store-editor.c:190
 msgid ""
-"Add remove and edit rows of data (you can optionally use Ctrl+N to add new rows and the "
-"Delete key to remove the selected row)"
+"Add remove and edit rows of data (you can optionally use Ctrl+N to add new rows and the Delete key to remove the "
+"selected row)"
 msgstr ""
 
 #: ../plugins/gtk+/glade-string-list.c:334 ../plugins/gtk+/glade-string-list.c:379
@@ -4445,16 +4419,14 @@ msgstr "यहाँ ल्याउनुहोस्"
 #: ../plugins/gtk+/glade-string-list.c:597
 #, fuzzy
 msgid "<Enter ID>"
-msgstr "enter"
+msgstr "आईडी"
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:165
-#: ../plugins/gtk+/glade-tool-item-group-editor.c:152
+#: ../plugins/gtk+/glade-tool-button-editor.c:165 ../plugins/gtk+/glade-tool-item-group-editor.c:152
 #, c-format
 msgid "Setting %s to use standard label text"
 msgstr ""
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:201
-#: ../plugins/gtk+/glade-tool-item-group-editor.c:188
+#: ../plugins/gtk+/glade-tool-button-editor.c:201 ../plugins/gtk+/glade-tool-item-group-editor.c:188
 #, c-format
 msgid "Setting %s to use a custom label widget"
 msgstr ""
@@ -4462,7 +4434,7 @@ msgstr ""
 #: ../plugins/gtk+/glade-tool-item-group-editor.c:232
 #, fuzzy
 msgid "Group Header"
-msgstr "हेडर"
+msgstr "द्धारा समूह..."
 
 #: ../plugins/gtk+/glade-treeview-editor.c:207
 msgid ""
@@ -4493,7 +4465,7 @@ msgstr "नाम दिइएको प्रतिमाका लागि �
 #: ../plugins/gtk+/glade-window-editor.c:179
 #, fuzzy, c-format
 msgid "Setting %s to use an icon file"
-msgstr "'%s' सेटिङ्ग गर्दा खराब passthrough ('passthrough' वा 'nopassthrough' प्रयोग गर्नुहोस्)"
+msgstr "  %s अडियो आगतको रूपमा फाइल प्रयोग गर्न सकिँदैन।"
 
 #: ../plugins/gtk+/glade-window-editor.c:225
 #, fuzzy, c-format
@@ -4508,12 +4480,14 @@ msgstr "नाम दिइएको प्रतिमाका लागि �
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 #, fuzzy
 msgid "Page Setup Dialog"
-msgstr "पृष्ठ सेटअप"
+msgstr "नयाँ कागजातका लागि पूर्वनिर्धारित पृष्ठ हेडर जसलाई पृष्ठ सेटअप संवाद प्रयोग गरेर परिमार्जन गर्न सकिन्छ।"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:2
 #, fuzzy
 msgid "Print Dialog"
-msgstr "मुद्रण गर्नुहोस्..."
+msgstr ""
+"यो मानले मुद्रण खाली तर ढाँचा कक्षको मुद्रण सेटअप संवाद पूर्वनिर्धारित सेटिङ निर्धारण गर्छ। कृपया यो मान सम्पादन गर्दा मुद्रण सेटअप संवाद "
+"प्रयोग गर्नुहोस्।"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:3
 #, fuzzy
@@ -4533,7 +4507,6 @@ msgid "Reverse"
 msgstr "उल्टाउनुहोस्"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:746
-#, fuzzy
 msgid "Scale"
 msgstr "नाप"
 
@@ -4554,12 +4527,12 @@ msgstr "पुर्वावलोकन"
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:11
 #, fuzzy
 msgid "Number Up"
-msgstr "NUMBER"
+msgstr "हालको नम्बरमा सुरु भएको %d देखि यो नम्बर (सम्मिलित) सम्म फ्रेमहरू मेट्नुहोस्"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:12
 #, fuzzy
 msgid "Number Up Layout"
-msgstr "लेआउट छैन"
+msgstr "ढाँचा"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:13
 msgid "GTK+ Unix Print Toplevels"
@@ -4573,7 +4546,7 @@ msgstr "स्न्यापसट"
 #: ../plugins/gtk+/gtk+.xml.in.h:3
 #, fuzzy
 msgid "Edit Separately"
-msgstr "सम्पादन"
+msgstr "साइज टाँस्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:4
 #, fuzzy
@@ -4584,8 +4557,7 @@ msgstr "प्यारेन्ट ड्राइभ सुरक्षित 
 msgid "Add Parent"
 msgstr "प्रमूल थप्नुहोस्"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:6 ../plugins/gtk+/glade-misc-editor.ui.h:4
-#: ../plugins/gtk+/glade-widget-editor.ui.h:13
+#: ../plugins/gtk+/gtk+.xml.in.h:6 ../plugins/gtk+/glade-misc-editor.ui.h:4 ../plugins/gtk+/glade-widget-editor.ui.h:13
 msgid "Alignment"
 msgstr "अवस्था"
 
@@ -4607,7 +4579,7 @@ msgstr "फ्रेम"
 #: ../plugins/gtk+/gtk+.xml.in.h:12
 #, fuzzy
 msgid "Aspect Frame"
-msgstr "फ्रेम"
+msgstr "अभिमुखता:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:13
 #, fuzzy
@@ -4630,7 +4602,7 @@ msgstr "बाकस"
 #: ../plugins/gtk+/gtk+.xml.in.h:17
 #, fuzzy
 msgid "Paned"
-msgstr "पिक्सेलहरूमा प्यान विभाजकको स्थिति (० को अर्थ सधैँभरि बायाँ/माथि हुन्छ)"
+msgstr "सही छभने प्यान औजारसँगै उपशाखाको वृद्धि र संकुचन हुन्छ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:18
 msgid "Stack"
@@ -4639,12 +4611,12 @@ msgstr "थाक"
 #: ../plugins/gtk+/gtk+.xml.in.h:19
 #, fuzzy
 msgid "Add to Size Group"
-msgstr "समूह थप्नुहोस्"
+msgstr "पोर्ट समूह थप्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:20
 #, fuzzy
 msgid "Clear properties"
-msgstr "गुण: "
+msgstr "गुण"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:21
 #, fuzzy
@@ -4652,9 +4624,8 @@ msgid "Read documentation"
 msgstr "अभिलेखीकरण"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:22
-#, fuzzy
 msgid "Style Classes"
-msgstr "शैली"
+msgstr "शैली वर्गहरू"
 
 #. GtkAttachOptions enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:24
@@ -4697,13 +4668,13 @@ msgstr "सूचक"
 #: ../plugins/gtk+/gtk+.xml.in.h:38
 #, fuzzy
 msgid "Pointer Motion Hint"
-msgstr "सङ्केत"
+msgstr "सूचक"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:40
 #, fuzzy
 msgid "Button Motion"
-msgstr "चाल अस्पष्ट..."
+msgstr "बटन १"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:42
@@ -4740,13 +4711,13 @@ msgstr "झार्नका लागि कुञ्जी थिच्नु
 #: ../plugins/gtk+/gtk+.xml.in.h:54
 #, fuzzy
 msgid "Key Release"
-msgstr "निष्काशन"
+msgstr "निष्कासन"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:56
 #, fuzzy
 msgid "Enter Notify"
-msgstr "enter"
+msgstr "Enter"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:58
@@ -4758,13 +4729,12 @@ msgstr "खुल्ला छोड्नुहोस्"
 #: ../plugins/gtk+/gtk+.xml.in.h:60
 #, fuzzy
 msgid "Focus Change"
-msgstr "केन्द्रित छैन"
+msgstr "यसमा परिवर्तन गर्नुहोस्"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:62
-#, fuzzy
 msgid "Structure"
-msgstr "द्वि-आयामिक रासायानिक संरचना"
+msgstr "संरचना"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:64
@@ -4776,7 +4746,7 @@ msgstr "स्टेशन गुण परिवर्तन गर्न अ�
 #: ../plugins/gtk+/gtk+.xml.in.h:66
 #, fuzzy
 msgid "Visibility Notify"
-msgstr "दृश्यात्मक"
+msgstr "दृश्यात्मकता:"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:68
@@ -4787,7 +4757,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:70
 #, fuzzy
 msgid "Proximity  Out"
-msgstr "जूम बढाउनुहोस् वा घटाउनुहोस्"
+msgstr "भित्र र बाहिर"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:72
@@ -4801,9 +4771,8 @@ msgstr "Scroll"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:76
-#, fuzzy
 msgid "Touch"
-msgstr "सानो टच आधारित ग्र्याब ह्यान्डल विन्डोलाई सार्छ र रिसाइज गर्छ"
+msgstr "स्पर्श"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:78
@@ -4907,7 +4876,7 @@ msgstr "कम्बो बाकस"
 #: ../plugins/gtk+/gtk+.xml.in.h:114
 #, fuzzy
 msgid "Date Editor"
-msgstr "मिति"
+msgstr "मिति:"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:116
@@ -5411,8 +5380,11 @@ msgstr "अन्तिम परिभाषित"
 
 #. Atk relationset properties
 #: ../plugins/gtk+/gtk+.xml.in.h:328
+#, fuzzy
 msgid "Controlled By"
 msgstr ""
+"ठीक भएमा, \"अनुप्रयोग चलाउनुहोस्\" संवादको \"परिचित अनुप्रयोग\" सूची उपलब्ध हुन्छ । देखिएको संवादलाई कार्यक्रम सूची देखाउने कुञ्जीद्वारा "
+"नियन्त्रण गरिएको बेलामा सूची विस्तार हुन्छ या हुँदैन ।"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:329
 #, fuzzy
@@ -5446,7 +5418,7 @@ msgstr "ठाडो प्रवाहहरू स्वचालित तर
 #: ../plugins/gtk+/gtk+.xml.in.h:335
 #, fuzzy
 msgid "Flows From"
-msgstr "बाट:"
+msgstr "ठाडो प्रवाहहरू स्वचालित तरिकाले खैरो बनाउनुहोस्:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:336
 msgid "Subwindow Of"
@@ -5469,7 +5441,7 @@ msgstr "सूची पपअप गर्नुहोस्"
 #: ../plugins/gtk+/gtk+.xml.in.h:340
 #, fuzzy
 msgid "Parent Window Of"
-msgstr "जवाफ वा प्रमूल छैन"
+msgstr "प्रमूल"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:341
 #, fuzzy
@@ -5479,7 +5451,7 @@ msgstr "XML फाइलमा वर्णन गरिएको मानह�
 #: ../plugins/gtk+/gtk+.xml.in.h:342
 #, fuzzy
 msgid "Description For"
-msgstr "  वर्णन: "
+msgstr "वर्णन छैन"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:343
 msgid "A list of style class names to apply to this widget"
@@ -5524,38 +5496,35 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:353
 msgid ""
-"Indicates an object is a cell in a treetable which is displayed because a cell in the same "
-"column is expanded and identifies that cell"
+"Indicates an object is a cell in a treetable which is displayed because a cell in the same column is expanded and "
+"identifies that cell"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:354
 msgid ""
-"Indicates that the object has content that flows logically to another AtkObject in a "
-"sequential way, (for instance text-flow)"
+"Indicates that the object has content that flows logically to another AtkObject in a sequential way, (for instance "
+"text-flow)"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:355
 msgid ""
-"Indicates that the object has content that flows logically from another AtkObject in a "
-"sequential way, (for instance text-flow)"
+"Indicates that the object has content that flows logically from another AtkObject in a sequential way, (for instance "
+"text-flow)"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:356
 msgid ""
-"Indicates a subwindow attached to a component but otherwise has no connection in the UI "
-"hierarchy to that component"
+"Indicates a subwindow attached to a component but otherwise has no connection in the UI hierarchy to that component"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:357
 msgid ""
-"Indicates that the object visually embeds another object's content, i.e. this object's "
-"content flows around another's content"
+"Indicates that the object visually embeds another object's content, i.e. this object's content flows around "
+"another's content"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:358
-msgid ""
-"Inverse of 'Embeds', indicates that this object's content is visually embedded in another "
-"object"
+msgid "Inverse of 'Embeds', indicates that this object's content is visually embedded in another object"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:359
@@ -5568,14 +5537,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:361
 msgid ""
-"Indicates that another object provides descriptive information about this object; more "
-"verbose than 'Labelled By'"
+"Indicates that another object provides descriptive information about this object; more verbose than 'Labelled By'"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:362
-msgid ""
-"Indicates that an object provides descriptive information about another object; more verbose "
-"than 'Label For'"
+msgid "Indicates that an object provides descriptive information about another object; more verbose than 'Label For'"
 msgstr ""
 
 #. GtkResizeMode enumeration value
@@ -5596,7 +5562,7 @@ msgstr "पहिले"
 #: ../plugins/gtk+/gtk+.xml.in.h:371
 #, fuzzy
 msgid "Insert After"
-msgstr "पछि"
+msgstr "पछि:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:372
 #, fuzzy
@@ -5606,7 +5572,7 @@ msgstr "एउटा खाली स्लट"
 #: ../plugins/gtk+/gtk+.xml.in.h:373
 #, fuzzy
 msgid "Number of items"
-msgstr "फोल्डरमा वस्तुहरूको सङ्ख्या कहिले देखाउनु पर्दछ"
+msgstr "पूर्वावस्थामा फर्काउने/रिडु सूचीमा भएका वस्तुको अधिकतम सङ्ख्या निर्धारण गर्छ।"
 
 #. GtkPositionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:375
@@ -5622,7 +5588,7 @@ msgstr "तल:"
 #, fuzzy
 #| msgid "Center"
 msgid "Center Child"
-msgstr "शाखा"
+msgstr "केन्द्र"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:379
 #, fuzzy
@@ -5644,7 +5610,7 @@ msgstr "कार्य पट्टि"
 #: ../plugins/gtk+/gtk+.xml.in.h:383
 #, fuzzy
 msgid "The number of items in the action bar"
-msgstr "फोल्डरमा वस्तुहरूको सङ्ख्या कहिले देखाउनु पर्दछ"
+msgstr "पूर्वस्थितिमा फर्काउने वस्तुको सङ्ख्या"
 
 #. GdkGravity enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:385
@@ -5788,7 +5754,7 @@ msgstr "स्थिति"
 #: ../plugins/gtk+/gtk+.xml.in.h:442
 #, fuzzy
 msgid "The position of the menu item in the menu shell"
-msgstr "मेनु वस्तु जाँच्नुहोस्"
+msgstr "मेनु वस्तु छुट्याउनुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:443
 #, fuzzy
@@ -5804,12 +5770,12 @@ msgstr "कच प्रयोग गर"
 #: ../plugins/gtk+/gtk+.xml.in.h:446
 #, fuzzy
 msgid "Related Action"
-msgstr "सम्बन्धित सङ्केतनहरू"
+msgstr "_कार्य:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:447
 #, fuzzy
 msgid "Use Action Appearance"
-msgstr "मोहडा"
+msgstr "देखावट:"
 
 #. GtkActionable
 #: ../plugins/gtk+/gtk+.xml.in.h:449
@@ -5828,7 +5794,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:453
 #, fuzzy
 msgid "Image Menu Item"
-msgstr "मेनु वस्तु जाँच्नुहोस्"
+msgstr "जहाँ सूची आइटम जाँचिएको छ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:454
 #, fuzzy
@@ -5848,31 +5814,27 @@ msgstr "आइटममा देखिएको संग्रहित छव
 #: ../plugins/gtk+/gtk+.xml.in.h:457
 #, fuzzy
 msgid "Separator Menu Item"
-msgstr "मेनु वस्तु जाँच्नुहोस्"
+msgstr "जहाँ सूची आइटम जाँचिएको छ"
 
 #. GtkTextDirection enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:459
-#, fuzzy
 msgid "Left to Right"
-msgstr "कर्सर दायँ वा बायाँ"
+msgstr "बायाँ बाट दायाँ"
 
 #. GtkTextDirection enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:461
-#, fuzzy
 msgid "Right to Left"
-msgstr "RLE दायाँ-बाट-बायाँ सम्मिलित"
+msgstr "दायाँ देखि बायाँ"
 
 #. GtkPackDirection enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:463
-#, fuzzy
 msgid "Top to Bottom"
-msgstr "सूचीको माथि र तल पट्टी अतिरिक्त ठाँउ"
+msgstr "माथिदेखि तल"
 
 #. GtkPackDirection enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:465
-#, fuzzy
 msgid "Bottom to Top"
-msgstr "भर्नुहोस् (तल देखि माथिसम्म)"
+msgstr "तल देखि माथिसम्म"
 
 #. GtkTreeViewGridLines enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:467 ../plugins/gtk+/glade-misc-editor.ui.h:2
@@ -5928,12 +5890,12 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:487
 #, fuzzy
 msgid "The position of the tool item in the toolbar"
-msgstr "चयन गरिएको वस्तु उपकरणपट्टीमा सार्नुहोस्"
+msgstr "मानक उपकरणपट्टी स्थिति"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:488
 #, fuzzy
 msgid "Tool Palette"
-msgstr "रङदानी:"
+msgstr "उपकरण"
 
 #. GtkScrollablePolicy enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:490
@@ -5970,16 +5932,15 @@ msgstr "आधा"
 #: ../plugins/gtk+/gtk+.xml.in.h:501
 #, fuzzy
 msgid "Separator Tool Item"
-msgstr "विभाजक"
+msgstr "विभाजक:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:502 ../plugins/gtk+/glade-tool-button-editor.ui.h:1
 #, fuzzy
 msgid "Tool Button"
-msgstr "टाँक"
+msgstr "उपकरण"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:503
-msgid ""
-"The stock icon displayed on the item (choose an item from GTK+ stock or from an icon factory)"
+msgid "The stock icon displayed on the item (choose an item from GTK+ stock or from an icon factory)"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:504
@@ -5995,7 +5956,7 @@ msgstr "रेडियो टाँक"
 #: ../plugins/gtk+/gtk+.xml.in.h:506
 #, fuzzy
 msgid "Menu Tool Button"
-msgstr "उपकरण"
+msgstr "उपकरण मेनु चयनमा शून्य उपकरणडेटा"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:507
 #, fuzzy
@@ -6031,7 +5992,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:519
 #, fuzzy
 msgid "Etched Out"
-msgstr "चरण बाहिर"
+msgstr "भित्र र बाहिर"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:521
 msgid "Attributes"
@@ -6056,7 +6017,7 @@ msgstr "शब्द"
 #: ../plugins/gtk+/gtk+.xml.in.h:528
 #, fuzzy
 msgid "The pango attributes for this label"
-msgstr "विशेषताहरू"
+msgstr "बिषेषताहरु"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:529
 msgid "Text Entry"
@@ -6122,7 +6083,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:555
 #, fuzzy
 msgid "Word Completion"
-msgstr "पूरा हुने मिति"
+msgstr "प्रणालीगत निचोड"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:557
@@ -6133,7 +6094,7 @@ msgstr "सानोवर्ण"
 #: ../plugins/gtk+/gtk+.xml.in.h:559
 #, fuzzy
 msgid "Uppercase Chars"
-msgstr "माथिल्लो स्वरूप"
+msgstr "ठूलो वर्ण"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:561
@@ -6145,7 +6106,7 @@ msgstr "शब्दहरू"
 #: ../plugins/gtk+/gtk+.xml.in.h:563
 #, fuzzy
 msgid "Uppercase Sentences"
-msgstr "माथिल्लो स्वरूप"
+msgstr "ठूलो वर्ण"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:565
@@ -6157,7 +6118,7 @@ msgstr "स्क्रिनमा किबोर्ड"
 #: ../plugins/gtk+/gtk+.xml.in.h:567
 #, fuzzy
 msgid "Vertical Writing"
-msgstr "ठाडो:"
+msgstr "लेख्ने हात"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:568
 #, fuzzy
@@ -6172,12 +6133,12 @@ msgstr "रेन्डरलाई संग्रहित छविचित�
 #: ../plugins/gtk+/gtk+.xml.in.h:570
 #, fuzzy
 msgid "Primary Icon Pixbuf"
-msgstr "पिक्सबफ"
+msgstr "प्राइमेरी"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:571
 #, fuzzy
 msgid "Secondary Icon Pixbuf"
-msgstr "पिक्सबफ"
+msgstr "द्धितीयक"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:572
 #, fuzzy
@@ -6202,7 +6163,7 @@ msgstr "सक्रिय भएको अवस्था"
 #: ../plugins/gtk+/gtk+.xml.in.h:576
 #, fuzzy
 msgid "Primary Icon Sensitive"
-msgstr "मुख्य"
+msgstr "प्राइमेरी"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:577
 #, fuzzy
@@ -6222,12 +6183,12 @@ msgstr "स्पन्दनको तह"
 #: ../plugins/gtk+/gtk+.xml.in.h:580
 #, fuzzy
 msgid "Primary Icon Tooltip Text"
-msgstr "पाठ र प्रतिमा"
+msgstr "मुख्य पाठ:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:581
 #, fuzzy
 msgid "Secondary Icon Tooltip Text"
-msgstr "पाठ र प्रतिमा"
+msgstr "द्धितीयक पाठ:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:582
 msgid "Primary Icon Tooltip Markup"
@@ -6260,9 +6221,8 @@ msgstr "खोजपट्टी"
 
 #. GtkResponseType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:591
-#, fuzzy
 msgid "Reject"
-msgstr "वस्तु हो"
+msgstr "अस्वीकार गर्नुहोस्"
 
 #. GtkResponseType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:593
@@ -6297,7 +6257,7 @@ msgstr "बाँकी मौज्दात:"
 #: ../plugins/gtk+/gtk+.xml.in.h:611
 #, fuzzy
 msgid "Response ID"
-msgstr "प्रमाणिकरण प्रतिक्रिया "
+msgstr "पेस्टबिन प्रतिक्रया"
 
 #. Atk press property
 #: ../plugins/gtk+/gtk+.xml.in.h:613
@@ -6329,7 +6289,9 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:620
 #, fuzzy
 msgid "Check Button"
-msgstr "टाँक"
+msgstr ""
+"प्लगइन निष्क्रिय हुन सक्दैन किनभने यो प्रयोगमा छ। तैपनि यदि तपाईँले तलको जाँच बटन प्रयोग गर्नुभयो भने जिन्युमेरिक पुन: सुरु भएपछि प्लगइन "
+"क्रियाशील हुँदैन (अर्को प्लगइनलाई आवश्यक नहुंदासम्म)।"
 
 #. GtkPolicyType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:622
@@ -6340,7 +6302,7 @@ msgstr "सधैँ"
 #: ../plugins/gtk+/gtk+.xml.in.h:624
 #, fuzzy
 msgid "If Valid"
-msgstr "'%s' वैध BMP फाइल होइन।"
+msgstr "हस्ताक्षर वैध छ तर मिति नाघिसकेको छ।"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:625
 msgid "Switch"
@@ -6365,20 +6327,19 @@ msgstr "फोल्डर सिर्जना गर्नुहोस्"
 #: ../plugins/gtk+/gtk+.xml.in.h:635
 #, fuzzy
 msgid "Scale Button"
-msgstr "मापन:"
+msgstr "मापन बटन  विशेषताहरू"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:636
 msgid ""
-"The names of the icons to be used by the scale button. The first item in the array will be "
-"used in the button when the current value is the lowest value, the second item for the "
-"highest value. All the subsequent icons will be used for all the other values, spread evenly "
-"over the range of values"
+"The names of the icons to be used by the scale button. The first item in the array will be used in the button when "
+"the current value is the lowest value, the second item for the highest value. All the subsequent icons will be used "
+"for all the other values, spread evenly over the range of values"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:637
 #, fuzzy
 msgid "Volume Button"
-msgstr "टाँक"
+msgstr "बटन"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:638
 #, fuzzy
@@ -6407,7 +6368,7 @@ msgstr "रङ्ग बटन"
 #: ../plugins/gtk+/gtk+.xml.in.h:645
 #, fuzzy
 msgid "Font Button"
-msgstr "टाँक"
+msgstr "फन्टबटन  विशेषताहरू"
 
 #. GtkTreeViewColumnSizing enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:647
@@ -6439,7 +6400,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:655
 #, fuzzy
 msgid "Application Chooser Button"
-msgstr "टाँक"
+msgstr "फन्ट चयनकर्ता"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:656
 msgid "Progress Bar"
@@ -6452,9 +6413,8 @@ msgstr "निरन्तरता"
 
 #. GtkLevelBarMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:660
-#, fuzzy
 msgid "Discrete"
-msgstr "खण्डहरू अलग गर्नुस्"
+msgstr "डिस्क्रिट"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:663
 msgid "Resource Name"
@@ -6472,7 +6432,7 @@ msgstr "संवाद बाकस"
 #: ../plugins/gtk+/gtk+.xml.in.h:667
 #, fuzzy
 msgid "Insert Row"
-msgstr "insert"
+msgstr "पङ्क्ति(हरू) घुसाउनुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:668
 msgid "Before"
@@ -6481,12 +6441,12 @@ msgstr "अगाडि छ"
 #: ../plugins/gtk+/gtk+.xml.in.h:670
 #, fuzzy
 msgid "Insert Column"
-msgstr "insert"
+msgstr "स्तम्भ(हरू) घुसाउनुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:671
 #, fuzzy
 msgid "Remove Row"
-msgstr " तेर्सो पंक्ति एउटा वृद्धि कारक  पंक्ति हो,र यो बढाइएको छ"
+msgstr "पङ्क्ति:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:672
 msgid "Remove Column"
@@ -6513,27 +6473,26 @@ msgstr "स्तम्भ"
 #: ../plugins/gtk+/gtk+.xml.in.h:679
 #, fuzzy
 msgid "The number of rows for this grid"
-msgstr "भर्नुपर्ने पङ्‌क्तिको सङ्ख्या"
+msgstr "टेवलमा पंक्तिहरुको संख्या"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:680
 #, fuzzy
 msgid "The number of columns for this grid"
-msgstr "टेवलभित्र स्तम्भहरुको संख्या"
+msgstr "देखाउनलाई स्तम्भहरूको संख्या"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:681
 #, fuzzy
 msgid "Horizontal Panes"
-msgstr "तेर्सो:"
+msgstr "फलकहरू अचल बनाउनुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:682
 #, fuzzy
 msgid "Vertical Panes"
-msgstr "ठाडो:"
+msgstr "फलकहरू अचल बनाउनुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:683
-#, fuzzy
 msgid "Notebook"
-msgstr "अभ्यास पुस्तिकाको कुन छेउले ट्याबहरु समात्छ"
+msgstr "नोटबुक"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:684
 #, fuzzy
@@ -6543,12 +6502,12 @@ msgstr "पहिले"
 #: ../plugins/gtk+/gtk+.xml.in.h:685
 #, fuzzy
 msgid "Insert Page After"
-msgstr "पछि"
+msgstr "पछि:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:686
 #, fuzzy
 msgid "Remove Page"
-msgstr "_हटाउनुहोस्"
+msgstr "हटाउने"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:687
 msgid "Number of pages"
@@ -6563,7 +6522,7 @@ msgstr "कुनै कार्य छैन"
 #, fuzzy
 #| msgid "Action"
 msgid "End Action"
-msgstr "समाप्त:"
+msgstr "कार्य"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:690
 msgid "Set the currently active page to edit, this property will not be saved"
@@ -6577,22 +6536,21 @@ msgstr "कागजातमा पृष्ठहरूको जम्मा 
 #: ../plugins/gtk+/gtk+.xml.in.h:692
 #, fuzzy
 msgid "HeaderBar"
-msgstr "हेडर"
+msgstr "शिर्षपट्टि विशेषताहरू"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:693
 #, fuzzy
 msgid "Reserve space for subtitle"
-msgstr "उपशीर्षक फन्ट"
+msgstr "जगेडा राख्नुहोस्:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:694
-#, fuzzy
 msgid "Custom Title"
-msgstr "अनुकूल पार्नुहोस्"
+msgstr "अनुकूल शीर्षक"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:695
 #, fuzzy
 msgid "Add Slot"
-msgstr "प्राप्ताङ्क स्लट रोज्नुहोस् ।"
+msgstr "स्लटआईडी"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:696
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
@@ -6601,7 +6559,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:697
 #, fuzzy
 msgid "The number of items in the header bar"
-msgstr "फोल्डरमा वस्तुहरूको सङ्ख्या कहिले देखाउनु पर्दछ"
+msgstr "पूर्वस्थितिमा फर्काउने वस्तुको सङ्ख्या"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:698
 #, fuzzy
@@ -6611,7 +6569,7 @@ msgstr "सम्पादन..."
 #: ../plugins/gtk+/gtk+.xml.in.h:699
 #, fuzzy
 msgid "Visible child"
-msgstr "दृश्यात्मक"
+msgstr "शाखा"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:701
@@ -6645,7 +6603,7 @@ msgstr "स्लाईड..."
 #: ../plugins/gtk+/gtk+.xml.in.h:710
 #, fuzzy
 msgid "Slide Left-Right"
-msgstr "LRM _बायाँ-बाट-दायाँ चिनो"
+msgstr "स्लाइड"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:711
 #, fuzzy
@@ -6655,7 +6613,7 @@ msgstr "स्लाईड..."
 #: ../plugins/gtk+/gtk+.xml.in.h:712
 #, fuzzy
 msgid "Move Over Up"
-msgstr "आगत स्रोतलाई माथि सार्नुहोस्"
+msgstr "चयन गरिएको फिल्टर माथि सार्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:713
 #, fuzzy
@@ -6675,32 +6633,32 @@ msgstr "दाँया सार्नुहोस्"
 #: ../plugins/gtk+/gtk+.xml.in.h:716
 #, fuzzy
 msgid "Move Over Up-Down"
-msgstr "माथि सार्नुहोस्"
+msgstr "माथि सार्नु"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:717
 #, fuzzy
 msgid "Move Over Down-Up"
-msgstr "माथि सार्नुहोस्"
+msgstr "माथि सार्नु"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:718
 #, fuzzy
 msgid "Move Over Left-Right"
-msgstr "बाँया सार्नुहोस्"
+msgstr "दाँया सार्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:719
 #, fuzzy
 msgid "Move Over Right-Left"
-msgstr "बाँया सार्नुहोस्"
+msgstr "दाँया सार्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:720
 #, fuzzy
 msgid "Move Under Up"
-msgstr "आगत स्रोतलाई माथि सार्नुहोस्"
+msgstr "चयन गरिएको फिल्टर माथि सार्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:721
 #, fuzzy
 msgid "Move Under Down"
-msgstr "तल सार्नलाई कुञ्जी थिच्नुहोस् ।"
+msgstr "कार्यस्थानलाई तल सार्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:722
 #, fuzzy
@@ -6710,7 +6668,7 @@ msgstr "टर्मिनल बायाँ सार्नुहोस्"
 #: ../plugins/gtk+/gtk+.xml.in.h:723
 #, fuzzy
 msgid "Move Under Right"
-msgstr "ट्याब दायाँतिर सार्नुहोस्"
+msgstr "टर्मिनल दायाँ सार्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:724
 #, fuzzy
@@ -6725,7 +6683,7 @@ msgstr "स्विचर"
 #: ../plugins/gtk+/gtk+.xml.in.h:726
 #, fuzzy
 msgid "Stack Sidebar"
-msgstr "छेउपट्टी"
+msgstr "थाक"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:727
 msgid "Revealer"
@@ -6734,7 +6692,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:728
 #, fuzzy
 msgid "Add Row"
-msgstr "पङ्‌क्ति ~a को अनुक्रममा थप्नुहोस् ।"
+msgstr "पङ्क्ति थप्न सकिंदैन: फाइलनाम हराइरहेको छ"
 
 #. PangoUnderline enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:730
@@ -6763,12 +6721,12 @@ msgstr "सुची बाकस पङ्क्ति"
 #: ../plugins/gtk+/gtk+.xml.in.h:737
 #, fuzzy
 msgid "Flow Box"
-msgstr "चरण %d प्रवाह"
+msgstr "प्रवाह"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:738
 #, fuzzy
 msgid "Add Child"
-msgstr "शाखा"
+msgstr "ट्याबहरू थप्नलाई नोटबुकमा शाखा समूहहरू थप्नुहोस्।"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:739
 #, fuzzy
@@ -6778,12 +6736,12 @@ msgstr "उप शाखासँग सम्वन्धित उझिण्
 #: ../plugins/gtk+/gtk+.xml.in.h:740
 #, fuzzy
 msgid "Flow Box Child"
-msgstr "नियमबद्ध प्रवाह"
+msgstr "प्रवाह"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:741
 #, fuzzy
 msgid "Range"
-msgstr "रङहरूको दायरा एक अर्कासँग बदल्नुहोस्"
+msgstr "दायरा:"
 
 #. GtkUpdateType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:743
@@ -6800,8 +6758,7 @@ msgid "The number of digits to round the value to when the value changes"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:748
-msgid ""
-"Whether to highlight the area of the trough from the bottom or left leading up to the knob"
+msgid "Whether to highlight the area of the trough from the bottom or left leading up to the knob"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:749
@@ -6880,12 +6837,16 @@ msgstr "तल"
 #: ../plugins/gtk+/gtk+.xml.in.h:772
 #, fuzzy
 msgid "Menu Button"
-msgstr "सूची"
+msgstr ""
+"प्यानलको अभिमुखिकरण । सम्भावित मान \"माति\", \"तल\", \"बायाँ\", \"दायाँ\" हुन् । विस्तारित मोडमा कुञ्जीले प्यानलको कुन पर्दा "
+"किनारा खुला छ निर्दिष्ट गर्दछ । विस्तार नगरिएको मोडमा \"माथि\" र \"तल\" बीचमा भिन्नता हुदैन - दुवैले यो तेर्सो प्यानल भएको सङ्केत "
+"गर्दछ - तै पनि केही प्यानलले कसरी व्यवहार गर्नुपर्दछ उपयोगी सङ्केत दिनुहोस् । उदाहरणका लागि, \"माथि\" प्यानलमा मेनु बटनले प्यानल तल "
+"यसको मेनुलाई पपअप गर्छ, जबकि \"तल\" प्यानलमा मेनु प्यानलको माथि पपअप हुन्छ ।"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:773
 #, fuzzy
 msgid "Lock Button"
-msgstr "टाँक"
+msgstr "ताल्चा लगाउनुहोस्:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:774
 msgid "Layout"
@@ -6951,12 +6912,10 @@ msgstr "माथि-दायाँ"
 #. GtkCornerType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:799
 msgid "Bottom Right"
-msgstr "दाया तल:"
+msgstr "दाया तल"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:800
-msgid ""
-"If overlay scrolling is enabled, scrollbars are only added as traditional widgets when a "
-"mouse is present"
+msgid "If overlay scrolling is enabled, scrollbars are only added as traditional widgets when a mouse is present"
 msgstr ""
 
 #. NOT AVAILABLES ON WIN32
@@ -6966,7 +6925,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:805
 #, fuzzy
 msgid "About Dialog"
-msgstr "संवाद"
+msgstr "बारेमा"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:809
@@ -6980,8 +6939,9 @@ msgstr "साधारण सार्वजनिक इजाजतपत्�
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:813
+#, fuzzy
 msgid "LGPL 2.1"
-msgstr ""
+msgstr "कम्ति साधारण सार्वजनिक इजाजतपत्र (GPL) २.१ मात्र"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:815
@@ -6998,7 +6958,7 @@ msgstr "X11 को लागि 3D चेस"
 #: ../plugins/gtk+/gtk+.xml.in.h:821
 #, fuzzy
 msgid "Artistic"
-msgstr "विभिन्न कलात्मक सञ्चालनहरू कार्यसम्पादन गर्दछ"
+msgstr "कलात्मक"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:823
@@ -7022,9 +6982,8 @@ msgstr "कम्ति साधारण सार्वजनिक इजा
 
 #: ../plugins/gtk+/gtk+.xml.in.h:830
 msgid ""
-"You can mark this as translatable and set one name/address if you want to show a translation "
-"specific translator, otherwise you should list all translators and unmark this string for "
-"translation"
+"You can mark this as translatable and set one name/address if you want to show a translation specific translator, "
+"otherwise you should list all translators and unmark this string for translation"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:831
@@ -7049,7 +7008,7 @@ msgstr "फाइल छनोटकर्ता बार्तालाप प
 #: ../plugins/gtk+/gtk+.xml.in.h:835
 #, fuzzy
 msgid "Message Dialog"
-msgstr "खबर स‍ंवादभित्र लेवल र तस्विरको वरिपरि सीमारेखाको चौडाइ"
+msgstr "सन्देश संवाद विशेषताहरू"
 
 #. GtkButtonsType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:837
@@ -7083,7 +7042,7 @@ msgstr "रङ चयनकर्ता सम्बाद"
 #: ../plugins/gtk+/gtk+.xml.in.h:845
 #, fuzzy
 msgid "Font Chooser Widget"
-msgstr "रङ चयनकर्ता"
+msgstr "फन्ट चयनकर्ता"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:846
 #, fuzzy
@@ -7096,12 +7055,12 @@ msgstr "फन्ट चयन"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:848
 msgid "Assistant"
-msgstr "सहायक:"
+msgstr "सहायक"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:849
 #, fuzzy
 msgid "Number of Pages"
-msgstr "पृष्ठ म्सङ्ख्या :"
+msgstr "पृष्ठ म्सङ्ख्या"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:850
 #, fuzzy
@@ -7110,9 +7069,8 @@ msgstr "% पूरा"
 
 #. GtkAssistantPageType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:852
-#, fuzzy
 msgid "Content"
-msgstr "वेब सामाग्री"
+msgstr "सामग्री"
 
 #. GtkAssistantPageType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:854
@@ -7141,7 +7099,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:863
 #, fuzzy
 msgid "The page position in the Assistant"
-msgstr "कर्सरको स्थानसम्म पृष्ठ चय नित ।"
+msgstr "कर्सर स्थितिमा पृष्ठ चयन गरियो"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:864
 msgid "Popover"
@@ -7160,7 +7118,15 @@ msgstr "सहायक सूचीहरु आउनु अघि ढील�
 #: ../plugins/gtk+/gtk+.xml.in.h:867
 #, fuzzy
 msgid "Edit menu"
-msgstr "सम्पादन..."
+msgstr ""
+"तपाईँले बचत गरेर राखेको पुरानो संस्करणको योजनाकारको कार्य दृश्य खोल्नुभयो।\n"
+"\n"
+"पुरानो फाइलहरू लोड गर्ने बेलामा, सबै कार्यहरूले अवरोधक प्रयोग गर्ने छन् 'खुलालाई जसरी पनि सुरु गर्नुहोस्', किनकी पुरानो संस्करणले पूर्ण सहयोग "
+"गरेन स्वचालित पुनर्तालिकीकरण, लिनको लागि यस नयाँ सुविधाको फाईदा, तपाईँले पूर्वाधिकारी को सम्बन्ध कार्यसँग जोड्नु पर्दछ जुन एक अर्कामा "
+"भर परेका हुन्छन्.\n"
+"तपाईँले पूर्वाधिकारी सम्बन्ध क्लिक गरी उत्तराधिकारीमा तानेर जोड्नसक्नुहुन्छ.\n"
+"\n"
+"यो गरी सकेपछि, तपाईँले सबै अवरोधकहरूलाई मेनुबाट छानेर हटाउन सक्नुहुन्छ सम्पादन मेनुबाट सबै अवरोधकहरूलाई हटाउनुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:868
 #, fuzzy
@@ -7174,17 +7140,27 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:870
 #, fuzzy
 msgid "Model Button"
-msgstr "नमूना:"
+msgstr "नमुना बटन विशेषताहरू"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:871
 #, fuzzy
 msgid "Link Button"
-msgstr "टाँक"
+msgstr ""
+"<note-content>टोमव्वायमा लिङ्कहरू प्रयोग गरेर\n"
+"\n"
+"हालको द्रष्टव्यमा पाठ हाइलाइट गरेर र माथिका उपकरणपट्टीमा <bold>लिङ्क</bold> बटन क्लिक गरेर टोमव्वायमा भएका द्रष्टव्यहरू सँगै लिङ्क "
+"गर्न सकिन्छ ।  त्यसो गर्नाले  एउटा नयाँ द्रष्टव्य सिर्जना गर्नेछ र हालको द्रष्टव्यमा द्रष्टव्यहरूको शिर्षकलाई पनि अधोरेखा गर्नेछ ।\n"
+"\n"
+"द्रष्टव्यको शिर्षक परिवर्तन गर्नाले अन्य द्रष्टव्यहरूमा प्रस्तुत लिङ्कहरूलाई अद्यावधिक गर्नेछ ।  यसले द्रष्टव्य पुन: नामाकरण गर्दा विच्छेदन भएका "
+"लिङ्कहरू देखा पर्नबाट रोक्दछ ।\n"
+"\n"
+"तथा, यदि तपाईँले हालको द्रष्टव्यमा अर्को द्रष्टव्यको नाम टाइप गर्नु भएमा, यो तपाईँका लागि स्वाचालित रूपले लिङ्क गरिनेछ ।</note-"
+"content>"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:872
 #, fuzzy
 msgid "Recent Chooser"
-msgstr "हालसालै"
+msgstr "हाल चयनकर्ता विशेषताहरू"
 
 #. GtkRecentSortType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:874
@@ -7196,12 +7172,12 @@ msgstr "धेरै प्रयोग भएको"
 #: ../plugins/gtk+/gtk+.xml.in.h:876
 #, fuzzy
 msgid "Least Recently Used first"
-msgstr "हालै प्रयोग गरिएको"
+msgstr "हालै प्रयोग गरिएको प्रकार्यको सूची"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:877
 #, fuzzy
 msgid "Recent Chooser Dialog"
-msgstr "रङ चयनकर्ता सम्बाद"
+msgstr "हाल चयनकर्ता विशेषताहरू"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:878
 #, fuzzy
@@ -7220,12 +7196,12 @@ msgstr "दुवै"
 #: ../plugins/gtk+/gtk+.xml.in.h:882
 #, fuzzy
 msgid "List of widgets in this group"
-msgstr "विजेट"
+msgstr "अवैध समुह सुची"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:883
 #, fuzzy
 msgid "Window Group"
-msgstr "द्धारा समूह..."
+msgstr "समूह:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:884
 msgid "Adjustment"
@@ -7263,12 +7239,12 @@ msgstr "प्रणालीगत निचोड"
 #: ../plugins/gtk+/gtk+.xml.in.h:894
 #, fuzzy
 msgid "Icon Factory"
-msgstr "कोर्बा कारखाना"
+msgstr "कारखाना"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:895
 #, fuzzy
 msgid "Icon Sources"
-msgstr "स्रोत"
+msgstr "स्रोतहरू"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:896
 #, fuzzy
@@ -7283,7 +7259,7 @@ msgstr "भण्डार गर्नुहोस्"
 #: ../plugins/gtk+/gtk+.xml.in.h:898
 #, fuzzy
 msgid "Data"
-msgstr "डेटा प्रकार"
+msgstr "डेटा"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:899
 msgid "Enter a list of column types for this data store"
@@ -7361,12 +7337,12 @@ msgstr "कोठाको पृष्ठभूमिको रङ्गको 
 #: ../plugins/gtk+/gtk+.xml.in.h:920
 #, fuzzy
 msgid "Width column"
-msgstr "स्तम्भको चौडाई नाम"
+msgstr "पूर्वनिर्धारितमा स्तम्भ %s को चौडाइ सेट गर्दैछ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:921
 #, fuzzy
 msgid "Height column"
-msgstr "उचाई:"
+msgstr "उच्चाइ:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:922
 #, fuzzy
@@ -7385,7 +7361,7 @@ msgstr "उर्ध्व गद्दा"
 #: ../plugins/gtk+/gtk+.xml.in.h:925
 #, fuzzy
 msgid "Vertical Padding column"
-msgstr "उर्ध्वतलीय गद्दा"
+msgstr "उर्ध्व गद्दा"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:926
 msgid "Horizontal Alignment"
@@ -7413,7 +7389,7 @@ msgstr "सम्वेदनशील"
 #: ../plugins/gtk+/gtk+.xml.in.h:932
 #, fuzzy
 msgid "Visible column"
-msgstr "स्तम्भ"
+msgstr "स्तम्भ:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:933
 #, fuzzy
@@ -7446,7 +7422,7 @@ msgstr "पृष्ठभूमि रङ:"
 #: ../plugins/gtk+/gtk+.xml.in.h:939
 #, fuzzy
 msgid "Editable column"
-msgstr "सम्पादन योग्य"
+msgstr "संपादनगर्न योग्य"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:940
 #, fuzzy
@@ -7461,7 +7437,7 @@ msgstr "परिवार:"
 #: ../plugins/gtk+/gtk+.xml.in.h:942
 #, fuzzy
 msgid "Font column"
-msgstr "स्तम्भ"
+msgstr "फन्ट"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:943
 #, fuzzy
@@ -7481,7 +7457,7 @@ msgstr "अग्रभूमि रङ:"
 #: ../plugins/gtk+/gtk+.xml.in.h:946
 #, fuzzy
 msgid "Language column"
-msgstr "भाषा"
+msgstr "भाषाः"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:947
 msgid "Markup column"
@@ -7490,7 +7466,7 @@ msgstr "मार्कअप स्तम्भ"
 #: ../plugins/gtk+/gtk+.xml.in.h:948
 #, fuzzy
 msgid "Rise column"
-msgstr "उँचो"
+msgstr "उदाउनु"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:949
 #, fuzzy
@@ -7505,7 +7481,7 @@ msgstr "एक्लो परिच्छेद शैली"
 #: ../plugins/gtk+/gtk+.xml.in.h:951
 #, fuzzy
 msgid "Size column"
-msgstr "साइज:"
+msgstr "आकार"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:952
 #, fuzzy
@@ -7561,7 +7537,7 @@ msgstr "अति नै फैलिएको"
 #: ../plugins/gtk+/gtk+.xml.in.h:969
 #, fuzzy
 msgid "Stretch column"
-msgstr "तन्किएको"
+msgstr "खुर्कनुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:970
 #, fuzzy
@@ -7601,13 +7577,13 @@ msgstr "कम"
 #: ../plugins/gtk+/gtk+.xml.in.h:981
 #, fuzzy
 msgid "Underline column"
-msgstr "कचहरु"
+msgstr "कच"
 
 #. PangoVariant enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:983
 #, fuzzy
 msgid "Small Capitals"
-msgstr "सानो"
+msgstr "प्रारम्भिक ठुला वर्णहरू"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:984
 #, fuzzy
@@ -7617,7 +7593,7 @@ msgstr "आयाम"
 #: ../plugins/gtk+/gtk+.xml.in.h:985
 #, fuzzy
 msgid "Weight column"
-msgstr "भार"
+msgstr "तौल"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:986
 #, fuzzy
@@ -7650,9 +7626,8 @@ msgid "Maximum width in characters"
 msgstr "क्यारेक्टरहरू भित्र अधिकक चौडाइ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:992
-#, fuzzy
 msgid "Placeholder text"
-msgstr "पाठ"
+msgstr "प्लेसहोल्डर पाठ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:993
 #, fuzzy
@@ -7674,9 +7649,7 @@ msgstr "स्तम्भको पुनराकृतिक मोड"
 #: ../plugins/gtk+/gtk+.xml.in.h:998
 #, fuzzy
 msgid "Shift Key"
-msgstr ""
-"तपाईले भर्खरै २ बटा बटन एकैपटक थिच्नुभयो वा सिफ्ट बटन ५ पटक भन्दा बढी लगातार थिच्नुभयो । यस कार्यले "
-"च्यापच्यापे बटन व्यवस्थालाई बन्द गर्यो, जसकारण तपाईको किबोर्डले गर्ने काममा असर गर्ने छ ।"
+msgstr "तपाईले ८ सेकेण्ड सम्म सिफ्ट बटन थिच्नुभयो। यस्तो कार्य सुस्तेबटनको विशेषताद्वारा किबोर्डले काम गर्ने शैलीलाई प्रभाव पार्दछ।"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1000
@@ -7688,7 +7661,7 @@ msgstr "तपाईँले Caps Lock कुञ्जी खुला रा�
 #: ../plugins/gtk+/gtk+.xml.in.h:1002
 #, fuzzy
 msgid "Control Key"
-msgstr "Control"
+msgstr "नियन्त्रण"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1004
@@ -7772,23 +7745,23 @@ msgstr "Meta"
 #: ../plugins/gtk+/gtk+.xml.in.h:1030
 #, fuzzy
 msgid "Release Modifier"
-msgstr "निष्काशन"
+msgstr "अक्षर, परिमार्जक"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1032
 #, fuzzy
 msgid "All Modifiers"
-msgstr "सबैमा होइन"
+msgstr "सबैमा"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1033
 #, fuzzy
 msgid "Accelerator Modifiers column"
-msgstr "स्तम्भ"
+msgstr "द्रुतसञ्चालकलाई बन्दगर्ने"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1034
 #, fuzzy
 msgid "Keycode column"
-msgstr "स्तम्भ"
+msgstr "स्तम्भ:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1035
 #, fuzzy
@@ -7808,7 +7781,7 @@ msgstr "यदि पाङ्गो चिन्ह दिन प्रयो�
 #: ../plugins/gtk+/gtk+.xml.in.h:1038
 #, fuzzy
 msgid "Text Column column"
-msgstr "पाठ स्तम्भ"
+msgstr "पाठ्य स्तम्भ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1039
 #, fuzzy
@@ -7852,7 +7825,7 @@ msgstr "पिक्सबफ स्तम्भ"
 #: ../plugins/gtk+/gtk+.xml.in.h:1047
 #, fuzzy
 msgid "GIcon column"
-msgstr "स्तम्भ"
+msgstr "स्तम्भ:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1048
 #, fuzzy
@@ -7867,7 +7840,7 @@ msgstr "खुला  वृद्धिकारकको लागि पि�
 #: ../plugins/gtk+/gtk+.xml.in.h:1050
 #, fuzzy
 msgid "Stock Detail column"
-msgstr "विवरण:"
+msgstr "विवरण छैन"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1051
 #, fuzzy
@@ -7882,12 +7855,12 @@ msgstr "छविचित्र संग्रह"
 #: ../plugins/gtk+/gtk+.xml.in.h:1053
 #, fuzzy
 msgid "Progress Renderer"
-msgstr "प्रगति"
+msgstr "रेण्डरकर्ताका लागि जिडिके स्क्रिन"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1054
 #, fuzzy
 msgid "Orientation column"
-msgstr "अभिमुखिकरण:"
+msgstr "अभिमूखीकरण:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1055
 #, fuzzy
@@ -7902,12 +7875,12 @@ msgstr "क्षितिजीय पंक्तिबद्ध/"
 #: ../plugins/gtk+/gtk+.xml.in.h:1057
 #, fuzzy
 msgid "Text Vertical Alignment column"
-msgstr "उर्ध्वतलीय पंक्तिबद्ध"
+msgstr "ठाडो पाठ पङ्क्तिबद्धता"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1058
 #, fuzzy
 msgid "Value column"
-msgstr "VALUE"
+msgstr "स्तम्भ:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1059
 #, fuzzy
@@ -7917,7 +7890,7 @@ msgstr "उल्टाइयो"
 #: ../plugins/gtk+/gtk+.xml.in.h:1060
 #, fuzzy
 msgid "Spinner Renderer"
-msgstr "रेण्डरकर्ताका लागि जिडिके स्क्रिन"
+msgstr "कोगल पाङ्गो रेन्डरर ट्रेस गर्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1061
 #, fuzzy
@@ -7957,12 +7930,12 @@ msgstr "वस्तुस्थिति प्रतिक देखाउन�
 #: ../plugins/gtk+/gtk+.xml.in.h:1068
 #, fuzzy
 msgid "Text Buffer"
-msgstr "प्रतिरोधकका हालका पाठहरु"
+msgstr "मुद्रणका लागि पाठको अस्थायी स्मृति प्राप्त गर्न अक्षम"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1069
 #, fuzzy
 msgid "Entry Buffer"
-msgstr "अस्थायी स्मृति"
+msgstr "बफर:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1070
 #, fuzzy
@@ -7981,7 +7954,7 @@ msgstr "फाइल ब्राउजर फिल्टर मोड"
 #: ../plugins/gtk+/gtk+.xml.in.h:1073
 #, fuzzy
 msgid "Mime Types"
-msgstr "छवि प्रकार:"
+msgstr "रिड गर्न सक्षम ssindex प्रकारहरू MIME सूचीकृत गर्नुहोस्"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1074
 msgid "Patterns"
@@ -8006,9 +7979,8 @@ msgid "The list of application names to add to the filter"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1080
-#, fuzzy
 msgid "Recent Manager"
-msgstr "हालसालै"
+msgstr "हालको प्रबन्धक"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1081
 #, fuzzy
@@ -8016,8 +7988,11 @@ msgid "Themed Icon"
 msgstr "वस्तुमा प्रदर्शन भएको विषयवस्तु प्रतिमाको नाम"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1082
+#, fuzzy
 msgid "Toplevels"
 msgstr ""
+"प्यानल आईडीको एउटा सूची । प्रत्येक आईडीले व्यक्तिगत माथिल्लो स्तरको प्यानल पहिचान गर्छ । यी प्रत्येक च्यानलको सेटिङ /apps/panel/"
+"toplevels/$(id) मा भण्डारण गरिन्छन् ।"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1083
 #, fuzzy
@@ -8032,7 +8007,7 @@ msgstr "नियन्त्रण"
 #: ../plugins/gtk+/gtk+.xml.in.h:1085
 #, fuzzy
 msgid "Composite Widgets"
-msgstr "संमिश्रित शाखा"
+msgstr "विजेट"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1086
 msgid "Miscellaneous"
@@ -8127,7 +8102,7 @@ msgstr "रेडियो"
 #: ../plugins/gtk+/glade-action-editor.ui.h:4
 #, fuzzy
 msgid "Value ID:"
-msgstr "ID:"
+msgstr "आई डी-छैन"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:5
 #, fuzzy
@@ -8145,12 +8120,13 @@ msgid "App Chooser Button Attributes"
 msgstr "बटन  विशेषताहरू"
 
 #: ../plugins/gtk+/glade-app-chooser-widget-editor.ui.h:1
+#, fuzzy
 msgid "App Chooser Widget Attributes"
-msgstr ""
+msgstr "औजार विशेषताहरू"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:2
 msgid "Baseline:"
-msgstr "आधार पङ्ति"
+msgstr "आधार पङ्ति:"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:4
 msgid "Whether this box should include a centered child."
@@ -8182,7 +8158,7 @@ msgstr "बटन सामग्री"
 #: ../plugins/gtk+/glade-button-editor.ui.h:6
 #, fuzzy
 msgid "Add custom content"
-msgstr "उत्पन्न गरिएका सामाग्री"
+msgstr "अनुकूल पार्नुहोस्"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:9
 #, fuzzy
@@ -8206,14 +8182,12 @@ msgstr "कम्बो बाकस बिशेष्ताहरू"
 msgid "Tree model:"
 msgstr "उर्ध्व दृश्यका लागि ढाँचा"
 
-#: ../plugins/gtk+/glade-combo-box-editor.ui.h:3
-#: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:3
+#: ../plugins/gtk+/glade-combo-box-editor.ui.h:3 ../plugins/gtk+/glade-combo-box-text-editor.ui.h:3
 #, fuzzy
 msgid "Draw frame around entry"
-msgstr "छविको वरिपरि स्पाईकहरूको किनार रेखाङ्कन गर्नुहोस्"
+msgstr "फ्रेम टुक्राका लागि रेखाङ्कन विकल्प उपलब्ध छैन"
 
-#: ../plugins/gtk+/glade-combo-box-editor.ui.h:4
-#: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:4
+#: ../plugins/gtk+/glade-combo-box-editor.ui.h:4 ../plugins/gtk+/glade-combo-box-text-editor.ui.h:4
 #, fuzzy
 msgid "Tearoff menus"
 msgstr "मेनुहरूमा टियरअफ छ"
@@ -8235,12 +8209,12 @@ msgstr "जब आइटमको सूची हँदै तीर की ज
 #: ../plugins/gtk+/glade-entry-editor.ui.h:2 ../plugins/gtk+/glade-text-view-editor.ui.h:2
 #, fuzzy
 msgid "Input Hints:"
-msgstr "आगत"
+msgstr "चाल सङ्केत"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:5
 #, fuzzy
 msgid "Primary Icon"
-msgstr "मुख्य"
+msgstr "प्राइमेरी"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:6 ../plugins/gtk+/glade-widget-editor.ui.h:2
 msgid "Tooltip:"
@@ -8307,7 +8281,7 @@ msgstr "शिर्षपट्टि विशेषताहरू"
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:2
 #, fuzzy
 msgid "Custom title"
-msgstr "अनुकूल पार्नुहोस्"
+msgstr "अनुकूल शीर्षक"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:3
 #, fuzzy
@@ -8317,7 +8291,7 @@ msgstr "जहाँ औजार एउटा संमिश्रित औ�
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:4
 #, fuzzy
 msgid "Show window controls"
-msgstr "नियन्त्रण"
+msgstr "नियन्त्रणहरू"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:5
 #, fuzzy
@@ -8328,15 +8302,14 @@ msgstr "घटना/बैठक सम्पादकमा कोटि फ�
 msgid "Icon View Attributes"
 msgstr "प्रतिमा दृष्य विशेषताहरू"
 
-#: ../plugins/gtk+/glade-icon-view-editor.ui.h:2
-#: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:4
+#: ../plugins/gtk+/glade-icon-view-editor.ui.h:2 ../plugins/gtk+/glade-real-tree-view-editor.ui.h:4
 #, fuzzy
 msgid "Single Click Activate"
 msgstr "होभर क्लिक सक्रिय गर्नुहोस्"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:3
 msgid "Columns:"
-msgstr "स्तम्भ"
+msgstr "स्तम्भ:"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:4
 #, fuzzy
@@ -8366,19 +8339,18 @@ msgid "Appearance"
 msgstr "मोहडा"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:2
-#, fuzzy
 msgid "Formatting"
-msgstr "डेटा ढाँचा"
+msgstr "ढाँचाबद्धता"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:3
 #, fuzzy
 msgid "Label behaviour"
-msgstr "फाइल खोल्ने तरिका:"
+msgstr "त्रुटि व्यवहार"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:4
 #, fuzzy
 msgid "Wrap only on new line"
-msgstr "रेखा लपेट"
+msgstr "लाइन बेराई हेर्नुहोस्"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:5
 #, fuzzy
@@ -8406,7 +8378,7 @@ msgstr " निसानी पट्टी विशेषताहरू"
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:2
 #, fuzzy
 msgid "Indicator Mode:"
-msgstr "सूचकको आकार"
+msgstr "मोड"
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:3
 msgid "Minimum:"
@@ -8435,7 +8407,7 @@ msgstr "द्धितीयक पाठ:"
 #: ../plugins/gtk+/glade-misc-editor.ui.h:1
 #, fuzzy
 msgid "Alignment and Padding"
-msgstr "गद्दा"
+msgstr "अवस्था"
 
 #: ../plugins/gtk+/glade-misc-editor.ui.h:5
 msgid "Padding"
@@ -8462,13 +8434,13 @@ msgstr "ट्याब विशेषताहरू"
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:5
 #, fuzzy
 msgid "Start Action:"
-msgstr "सुरू"
+msgstr "कुनै कार्य छैन"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:6
 #, fuzzy
 #| msgid "Action"
 msgid "End Action:"
-msgstr "समाप्त:"
+msgstr "कार्य"
 
 #: ../plugins/gtk+/glade-popover-editor.ui.h:1
 #, fuzzy
@@ -8513,7 +8485,7 @@ msgstr "मापन बटन  विशेषताहरू"
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:2
 #, fuzzy
 msgid "Scale orientation:"
-msgstr "स्केल"
+msgstr "अभिमूखीकरण:"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:1
 msgid "Scale Attributes"
@@ -8522,12 +8494,12 @@ msgstr "मापन विशेषताहरू"
 #: ../plugins/gtk+/glade-scale-editor.ui.h:2 ../plugins/gtk+/glade-scrollbar-editor.ui.h:2
 #, fuzzy
 msgid "Stepper Sensitivity"
-msgstr "संवेदनशीलता"
+msgstr "सम्वेदनशीलता"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:3 ../plugins/gtk+/glade-scrollbar-editor.ui.h:3
 #, fuzzy
 msgid "Lower:"
-msgstr "निम्न"
+msgstr "भन्दा न्यून ।"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:4 ../plugins/gtk+/glade-scrollbar-editor.ui.h:4
 #, fuzzy
@@ -8537,7 +8509,7 @@ msgstr "माथिल्लो"
 #: ../plugins/gtk+/glade-scale-editor.ui.h:5
 #, fuzzy
 msgid "Highlight Origin"
-msgstr "हाइलाइट"
+msgstr "उत्पत्ति X:"
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:1
 msgid "Scrolling Attributes"
@@ -8555,7 +8527,7 @@ msgstr " स्क्रोलबार विशेषताहरू"
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:1
 #, fuzzy
 msgid "Scrolled Window Attributes"
-msgstr "विशेषताहरू"
+msgstr "सञ्झ्याल विशेषताहरू"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:2
 #, fuzzy
@@ -8592,7 +8564,7 @@ msgstr "उस्तै प्रकारको"
 #: ../plugins/gtk+/glade-stack-switcher-editor.ui.h:1
 #, fuzzy
 msgid "Stack Switcher Attributes"
-msgstr "स्विचर"
+msgstr "थाक विशेषताहरू"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:1
 msgid "Text View Attributes"
@@ -8600,13 +8572,14 @@ msgstr "पाठको दृश्य विशेषताहरू"
 
 #. Name for populate-all property
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:4
+#, fuzzy
 msgid "Populate for touch"
-msgstr ""
+msgstr "स्पर्श"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:5
 #, fuzzy
 msgid "Text Formatting"
-msgstr "डेटा ढाँचा"
+msgstr "ढाँचाबद्धता"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:6
 #, fuzzy
@@ -8622,9 +8595,8 @@ msgid "Right:"
 msgstr "दायाँ:"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:9 ../plugins/gtk+/glade-widget-editor.ui.h:14
-#, fuzzy
 msgid "Margins"
-msgstr "मुद्रकबाट सिमान्तहरू..."
+msgstr "सीमान्तहरू"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:10
 msgid "Spacing"
@@ -8643,7 +8615,7 @@ msgstr "लाइनको तल राखिने पिक्सेलको
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:13
 #, fuzzy
 msgid "Inside Wrap:"
-msgstr "बिटो भित्रको pixels "
+msgstr "लपेटभित्र पिक्सलहरु"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:14 ../plugins/gtk+/glade-widget-editor.ui.h:15
 msgid "Top:"
@@ -8677,7 +8649,7 @@ msgstr "औजार झण्डा"
 #: ../plugins/gtk+/glade-widget-editor.ui.h:6
 #, fuzzy
 msgid "Widget Spacing"
-msgstr "औजार"
+msgstr "दूरी (अन्तराल):"
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:8
 msgid ""
@@ -8695,7 +8667,7 @@ msgstr "अस्थायी: %lu"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:3
 msgid "Attached To:"
-msgstr "संलग्न गरिएको"
+msgstr "संलग्न गरिएको:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:5
 #, fuzzy
