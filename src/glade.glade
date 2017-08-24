@@ -29,319 +29,6 @@ Author: Juan Pablo Ugarte
   <!-- interface-description A user interface designer for GTK+ and GNOME. -->
   <!-- interface-copyright 2012-2017 Juan Pablo Ugarte -->
   <!-- interface-authors Juan Pablo Ugarte -->
-  <object class="GtkAboutDialog" id="about_dialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="resizable">False</property>
-    <property name="type_hint">dialog</property>
-    <property name="copyright" translatable="yes">Copyright © 2001-2006 Ximian, Inc.
-Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
-Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al.</property>
-    <property name="comments" translatable="yes">A user interface designer for GTK+ and GNOME.</property>
-    <property name="website">http://glade.gnome.org</property>
-    <property name="website_label" translatable="yes">Visit Glade web site</property>
-    <property name="license" translatable="yes">Glade is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as 
-published by the Free Software Foundation; either version 2 of the 
-License, or (at your option) any later version.
-
-Glade is distributed in the hope that it will be useful
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License 
-along with Glade; if not, write to the Free Software 
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
-MA 02110-1301, USA.</property>
-    <property name="authors">Chema Celorio &lt;chema@ximian.com&gt;
-Joaquin Cuenca Abela &lt;e98cuenc@yahoo.com&gt;
-Paolo Borelli &lt;pborelli@katamail.com&gt;
-Archit Baweja &lt;bighead@users.sourceforge.net&gt;
-Shane Butler &lt;shane_b@operamail.com&gt;
-Tristan Van Berkom &lt;tvb@gnome.org&gt;
-Ivan Wong &lt;email@ivanwong.info&gt;
-Juan Pablo Ugarte &lt;juanpablougarte@gmail.com&gt;
-Vincent Geddes &lt;vincent.geddes@gmail.com&gt;</property>
-    <property name="documenters">GNOME Documentation Team &lt;gnome-doc-list@gnome.org&gt;
-Sun GNOME Documentation Team &lt;gdocteam@sun.com&gt;</property>
-    <property name="translator_credits" translatable="yes">translator-credits</property>
-    <property name="artists">Vincent Geddes &lt;vgeddes@gnome.org&gt;
-Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
-    <property name="logo_icon_name">glade</property>
-    <signal name="delete-event" handler="gtk_true" swapped="no"/>
-    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
-    <signal name="response" handler="gtk_widget_hide" swapped="no"/>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="aboutdialog-vbox1">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="aboutdialog-action_area1">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-  </object>
-  <object class="GtkAccelGroup" id="accelgroup"/>
-  <object class="GtkActionGroup" id="pointer_mode_actiongroup">
-    <property name="sensitive">False</property>
-    <property name="accel_group">accelgroup</property>
-    <child>
-      <object class="GtkRadioAction" id="selector_radioaction">
-        <property name="label" translatable="yes">Select</property>
-        <property name="short_label" translatable="yes">Select</property>
-        <property name="tooltip" translatable="yes">Select widgets in the workspace</property>
-        <property name="icon_name">glade-selector</property>
-        <property name="draw_as_radio">True</property>
-        <signal name="changed" handler="on_selector_radioaction_changed" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioAction" id="drag_resize_radioaction">
-        <property name="label" translatable="yes">Drag Resize</property>
-        <property name="short_label" translatable="yes">Drag Resize</property>
-        <property name="tooltip" translatable="yes">Drag and resize widgets in the workspace</property>
-        <property name="icon_name">glade-drag-resize</property>
-        <property name="draw_as_radio">True</property>
-        <property name="value">2</property>
-        <property name="group">selector_radioaction</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioAction" id="margin_edit_radioaction">
-        <property name="label" translatable="yes">Margin Edit</property>
-        <property name="short_label" translatable="yes">Margin Edit</property>
-        <property name="tooltip" translatable="yes">Edit widget margins</property>
-        <property name="icon_name">glade-margin-edit</property>
-        <property name="draw_as_radio">True</property>
-        <property name="value">3</property>
-        <property name="group">selector_radioaction</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioAction" id="align_edit_radioaction">
-        <property name="label" translatable="yes">Alignment Edit</property>
-        <property name="short_label" translatable="yes">Alignment Edit</property>
-        <property name="tooltip" translatable="yes">Edit widget alignment</property>
-        <property name="icon_name">glade-align-edit</property>
-        <property name="draw_as_radio">True</property>
-        <property name="value">4</property>
-        <property name="group">selector_radioaction</property>
-      </object>
-    </child>
-  </object>
-  <object class="GtkActionGroup" id="project_actiongroup">
-    <property name="name">project_actiongroup</property>
-    <property name="sensitive">False</property>
-    <property name="accel_group">accelgroup</property>
-    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
-    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
-    <child>
-      <object class="GtkAction" id="save_action">
-        <property name="label" translatable="yes">Save</property>
-        <property name="tooltip" translatable="yes">Save the current project</property>
-        <property name="icon_name">document-save</property>
-        <signal name="activate" handler="on_save_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="s" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="save_as_action">
-        <property name="label" translatable="yes">Save _As</property>
-        <property name="tooltip" translatable="yes">Save the current project with a different name</property>
-        <property name="icon_name">document-save-as</property>
-        <signal name="activate" handler="on_save_as_action_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkAction" id="properties_action">
-        <property name="label" translatable="yes">Edit properties</property>
-        <property name="tooltip" translatable="yes">Edit project properties</property>
-        <property name="icon_name">document-properties</property>
-        <signal name="activate" handler="on_properties_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="p" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="close_action">
-        <property name="label" translatable="yes">Close project</property>
-        <property name="tooltip" translatable="yes">Close the current project</property>
-        <property name="icon_name">window-close</property>
-        <signal name="activate" handler="on_close_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="w" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="undo_action">
-        <property name="label" translatable="yes">Undo</property>
-        <property name="short_label" translatable="yes">Undo</property>
-        <property name="tooltip" translatable="yes">Undo the last action</property>
-        <property name="icon_name">edit-undo</property>
-        <signal name="activate" handler="on_undo_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="z" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="redo_action">
-        <property name="label" translatable="yes">Redo</property>
-        <property name="short_label" translatable="yes">Redo</property>
-        <property name="tooltip" translatable="yes">Redo the last action</property>
-        <property name="icon_name">edit-redo</property>
-        <signal name="activate" handler="on_redo_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="z" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="cut_action">
-        <property name="label" translatable="yes">Cut</property>
-        <property name="short_label" translatable="yes">Cut</property>
-        <property name="tooltip" translatable="yes">Cut the selection</property>
-        <property name="icon_name">edit-cut</property>
-        <signal name="activate" handler="on_cut_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="x" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="copy_action">
-        <property name="label" translatable="yes">Copy</property>
-        <property name="short_label" translatable="yes">Copy</property>
-        <property name="tooltip" translatable="yes">Copy the selection</property>
-        <property name="icon_name">edit-copy</property>
-        <signal name="activate" handler="on_copy_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="c" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="paste_action">
-        <property name="label" translatable="yes">Paste</property>
-        <property name="short_label" translatable="yes">Paste</property>
-        <property name="tooltip" translatable="yes">Paste the clipboard</property>
-        <property name="icon_name">edit-paste</property>
-        <signal name="activate" handler="on_paste_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="v" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="delete_action">
-        <property name="label" translatable="yes">Delete</property>
-        <property name="short_label" translatable="yes">Delete</property>
-        <property name="tooltip" translatable="yes">Delete the selection</property>
-        <property name="icon_name">edit-delete</property>
-        <signal name="activate" handler="on_delete_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="Delete"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="previous_project_action">
-        <property name="label" translatable="yes">_Previous Project</property>
-        <property name="tooltip" translatable="yes">Activate previous project</property>
-        <signal name="activate" handler="on_previous_project_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="Page_Up" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="next_project_action">
-        <property name="label" translatable="yes">_Next Project</property>
-        <property name="tooltip" translatable="yes">Activate next project</property>
-        <signal name="activate" handler="on_next_project_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-  </object>
-  <object class="GtkRecentFilter" id="recentfilter">
-    <mime-types>
-      <mime-type>application/x-glade</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkActionGroup" id="static_actiongroup">
-    <property name="name">static_actiongroup</property>
-    <property name="accel_group">accelgroup</property>
-    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
-    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
-    <child>
-      <object class="GtkAction" id="new_action">
-        <property name="label" translatable="yes">New</property>
-        <property name="tooltip" translatable="yes">Create a new project</property>
-        <property name="icon_name">document-new</property>
-        <signal name="activate" handler="glade_window_new_project" swapped="yes"/>
-      </object>
-      <accelerator key="n" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="open_action">
-        <property name="label" translatable="yes">Open</property>
-        <property name="tooltip" translatable="yes">Open a project</property>
-        <property name="icon_name">document-open</property>
-        <signal name="activate" handler="on_open_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="o" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="quit_action">
-        <property name="label" translatable="yes">Quit</property>
-        <property name="tooltip" translatable="yes">Quit the program</property>
-        <property name="icon_name">application-exit</property>
-        <signal name="activate" handler="on_quit_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="q" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="about_action">
-        <property name="label" translatable="yes">About</property>
-        <property name="tooltip" translatable="yes">About this application</property>
-        <property name="icon_name">help-about</property>
-        <signal name="activate" handler="on_about_action_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkAction" id="reference_action">
-        <property name="label" translatable="yes">_Developer Reference</property>
-        <property name="tooltip" translatable="yes">Display the developer reference manual</property>
-        <property name="icon_name">help-contents</property>
-        <signal name="activate" handler="on_reference_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="F1"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="preferences_action">
-        <property name="label" translatable="yes">Preferences</property>
-        <property name="tooltip" translatable="yes">Edit Glade preferences</property>
-        <property name="stock_id">gtk-preferences</property>
-        <property name="icon_name">document-properties</property>
-        <signal name="activate" handler="on_preferences_action_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRecentAction" id="open_recent_action">
-        <property name="label" translatable="yes">Open _Recent</property>
-        <property name="filter">recentfilter</property>
-        <property name="limit">10</property>
-        <property name="sort_type">mru</property>
-        <property name="show_numbers">True</property>
-        <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkAction" id="registration_action">
-        <property name="label" translatable="yes">Registration &amp; User Survey</property>
-        <property name="tooltip" translatable="yes">Help us improve Glade by registering and completing the user survey!</property>
-        <signal name="activate" handler="on_registration_action_activate" swapped="no"/>
-      </object>
-    </child>
-  </object>
   <object class="GtkPopoverMenu" id="main_menu">
     <property name="can_focus">False</property>
     <child>
@@ -350,13 +37,14 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="can_focus">False</property>
         <property name="border_width">4</property>
         <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
         <child>
           <object class="GtkModelButton">
-            <property name="use_action_appearance">True</property>
-            <property name="related_action">close_action</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="action_name">app.close</property>
+            <property name="text" translatable="yes">Close Project</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -377,11 +65,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkModelButton">
-            <property name="use_action_appearance">True</property>
-            <property name="related_action">registration_action</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="action_name">app.registration</property>
+            <property name="text" translatable="yes">Registration &amp; User Survey</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -391,11 +79,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkModelButton">
-            <property name="use_action_appearance">True</property>
-            <property name="related_action">reference_action</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="action_name">app.reference</property>
+            <property name="text" translatable="yes">_Developer Reference</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -405,11 +93,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkModelButton">
-            <property name="use_action_appearance">True</property>
-            <property name="related_action">preferences_action</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="action_name">app.preferences</property>
+            <property name="text" translatable="yes">Preferences</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -430,30 +118,16 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkModelButton">
-            <property name="use_action_appearance">True</property>
-            <property name="related_action">about_action</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="action_name">app.about</property>
+            <property name="text" translatable="yes">About</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">6</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkModelButton">
-            <property name="use_action_appearance">True</property>
-            <property name="related_action">quit_action</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">7</property>
           </packing>
         </child>
       </object>
@@ -463,17 +137,20 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       </packing>
     </child>
   </object>
+  <object class="GtkRecentFilter" id="recentfilter">
+    <mime-types>
+      <mime-type>application/x-glade</mime-type>
+    </mime-types>
+  </object>
   <object class="GtkRecentChooserMenu" id="recent_menu">
-    <property name="use_action_appearance">True</property>
-    <property name="related_action">open_recent_action</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="filter">recentfilter</property>
     <property name="limit">10</property>
     <property name="show_not_found">False</property>
     <property name="sort_type">mru</property>
     <property name="show_numbers">True</property>
-    <signal name="insert" handler="on_recent_menu_insert" swapped="no"/>
-    <signal name="remove" handler="on_recent_menu_remove" swapped="no"/>
+    <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
   </object>
   <template class="GladeWindow" parent="GtkWindow">
     <property name="can_focus">False</property>
@@ -577,14 +254,12 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkToggleToolButton" id="selector_button">
-                            <property name="use_action_appearance">True</property>
-                            <property name="related_action">selector_radioaction</property>
+                          <object class="GtkToolButton" id="selector_button">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label">radiotoolbutton1</property>
+                            <property name="action_name">app.select</property>
                             <property name="use_underline">True</property>
-                            <property name="active">True</property>
+                            <property name="icon_name">glade-selector</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -592,13 +267,12 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToggleToolButton" id="drag_resize_button">
-                            <property name="use_action_appearance">True</property>
-                            <property name="related_action">drag_resize_radioaction</property>
+                          <object class="GtkToolButton" id="drag_resize_button">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label">radiotoolbutton2</property>
+                            <property name="action_name">app.drag_resize</property>
                             <property name="use_underline">True</property>
+                            <property name="icon_name">glade-drag-resize</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -606,13 +280,12 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToggleToolButton" id="margin_edit_button">
-                            <property name="use_action_appearance">True</property>
-                            <property name="related_action">margin_edit_radioaction</property>
+                          <object class="GtkToolButton" id="margin_edit_button">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label">radiotoolbutton3</property>
+                            <property name="action_name">app.margin_edit</property>
                             <property name="use_underline">True</property>
+                            <property name="icon_name">glade-margin-edit</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -620,13 +293,12 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToggleToolButton" id="align_edit_button">
-                            <property name="use_action_appearance">True</property>
-                            <property name="related_action">align_edit_radioaction</property>
+                          <object class="GtkToolButton" id="align_edit_button">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label">radiotoolbutton4</property>
+                            <property name="action_name">app.align_edit</property>
                             <property name="use_underline">True</property>
+                            <property name="icon_name">glade-align-edit</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -763,12 +435,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">Open</property>
-                <property name="use_action_appearance">True</property>
-                <property name="related_action">open_action</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Open a project</property>
+                <property name="action_name">app.open</property>
                 <property name="use_underline">True</property>
               </object>
               <packing>
@@ -807,12 +478,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkButton">
-            <property name="use_action_appearance">False</property>
-            <property name="related_action">new_action</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Create a new project</property>
+            <property name="action_name">app.new</property>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
@@ -841,11 +511,10 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="layout_style">expand</property>
             <child>
               <object class="GtkButton" id="undo_button">
-                <property name="use_action_appearance">False</property>
-                <property name="related_action">undo_action</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="action_name">app.undo</property>
                 <signal name="button-press-event" handler="on_undo_button_button_press_event" swapped="no"/>
                 <child>
                   <object class="GtkImage">
@@ -863,11 +532,10 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             </child>
             <child>
               <object class="GtkButton" id="redo_button">
-                <property name="use_action_appearance">False</property>
-                <property name="related_action">redo_action</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="action_name">app.redo</property>
                 <property name="use_underline">True</property>
                 <signal name="button-press-event" handler="on_redo_button_button_press_event" swapped="no"/>
                 <child>
@@ -917,12 +585,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkButton">
-            <property name="use_action_appearance">False</property>
-            <property name="related_action">properties_action</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Edit project properties</property>
+            <property name="action_name">app.properties</property>
             <property name="use_underline">True</property>
             <child>
               <object class="GtkImage">
@@ -945,12 +612,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">Save</property>
-                <property name="use_action_appearance">True</property>
-                <property name="related_action">save_action</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Save the current project</property>
+                <property name="action_name">app.save</property>
                 <property name="use_underline">True</property>
               </object>
               <packing>
@@ -961,12 +627,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             </child>
             <child>
               <object class="GtkButton">
-                <property name="use_action_appearance">False</property>
-                <property name="related_action">save_as_action</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Save the current project with a different name</property>
+                <property name="action_name">app.save_as</property>
                 <property name="use_underline">True</property>
                 <child>
                   <object class="GtkImage">
@@ -991,4 +656,71 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       </object>
     </child>
   </template>
+  <object class="GtkAboutDialog" id="about_dialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">GladeWindow</property>
+    <property name="copyright" translatable="yes">Copyright © 2001-2006 Ximian, Inc.
+Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
+Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al.</property>
+    <property name="comments" translatable="yes">A user interface designer for GTK+ and GNOME.</property>
+    <property name="website">http://glade.gnome.org</property>
+    <property name="website_label" translatable="yes">Visit Glade web site</property>
+    <property name="license" translatable="yes">Glade is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as 
+published by the Free Software Foundation; either version 2 of the 
+License, or (at your option) any later version.
+
+Glade is distributed in the hope that it will be useful
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License 
+along with Glade; if not, write to the Free Software 
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+MA 02110-1301, USA.</property>
+    <property name="authors">Chema Celorio &lt;chema@ximian.com&gt;
+Joaquin Cuenca Abela &lt;e98cuenc@yahoo.com&gt;
+Paolo Borelli &lt;pborelli@katamail.com&gt;
+Archit Baweja &lt;bighead@users.sourceforge.net&gt;
+Shane Butler &lt;shane_b@operamail.com&gt;
+Tristan Van Berkom &lt;tvb@gnome.org&gt;
+Ivan Wong &lt;email@ivanwong.info&gt;
+Juan Pablo Ugarte &lt;juanpablougarte@gmail.com&gt;
+Vincent Geddes &lt;vincent.geddes@gmail.com&gt;</property>
+    <property name="documenters">GNOME Documentation Team &lt;gnome-doc-list@gnome.org&gt;
+Sun GNOME Documentation Team &lt;gdocteam@sun.com&gt;</property>
+    <property name="translator_credits" translatable="yes">translator-credits</property>
+    <property name="artists">Vincent Geddes &lt;vgeddes@gnome.org&gt;
+Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
+    <property name="logo_icon_name">glade</property>
+    <signal name="delete-event" handler="gtk_true" swapped="no"/>
+    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
+    <signal name="response" handler="gtk_widget_hide" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="aboutdialog-vbox1">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="aboutdialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
 </interface>

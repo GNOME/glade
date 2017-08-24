@@ -22,38 +22,36 @@
  */
 
 /* GladeWindow */
-
-@binding-set DisableBindings {
-  unbind "<Control>s";
-  unbind "<Control>p";
-  unbind "<Control>w";
-  unbind "<Control>z";
-  unbind "<Control><shift>z";
-  unbind "<Control>x";
-  unbind "<Control>c";
-  unbind "<Control>v";
-  unbind "Delete";
-  unbind "<Control>Page_Up";
-  unbind "<Control>Page_Down";
-  unbind "<Control>Next";
-  unbind "<Control>n";
-  unbind "<Control>o";
-  unbind "<Control>q";
-  unbind "F1";
-  unbind "<Alt>0";
-  unbind "<Alt>1";
-  unbind "<Alt>2";
-  unbind "<Alt>3";
-  unbind "<Alt>4";
-  unbind "<Alt>5";
-  unbind "<Alt>6";
-  unbind "<Alt>7";
-  unbind "<Alt>8";
-  unbind "<Alt>9";
+@binding-set WindowBindings {
+  bind "<Control>s"         { "glade-action" ("save") };
+  bind "<Control>p" 	    { "glade-action" ("preferences") };
+  bind "<Control>w" 	    { "glade-action" ("close") };
+  bind "<Control>z" 	    { "glade-action" ("undo") };
+  bind "<Control><shift>z"  { "glade-action" ("redo") };
+  bind "<Control>x" 	    { "glade-action" ("cut") };
+  bind "<Control>c" 	    { "glade-action" ("copy") };
+  bind "<Control>v" 	    { "glade-action" ("paste") };
+  bind "Delete" 	    { "glade-action" ("delete") };
+  bind "<Control>Page_Up"   { "glade-action" ("previous") };
+  bind "<Control>Page_Down" { "glade-action" ("next") };
+  bind "<Control>n"         { "glade-action" ("new") };
+  bind "<Control>o"         { "glade-action" ("open") };
+  bind "<Control>q"         { "glade-action" ("quit") };
+  bind "F1"                 { "glade-action" ("reference") };
+  bind "<Alt>1"             { "glade-switch" (0) };
+  bind "<Alt>2"             { "glade-switch" (1) };
+  bind "<Alt>3"             { "glade-switch" (2) };
+  bind "<Alt>4"             { "glade-switch" (3) };
+  bind "<Alt>5"             { "glade-switch" (4) };
+  bind "<Alt>6"             { "glade-switch" (5) };
+  bind "<Alt>7"             { "glade-switch" (6) };
+  bind "<Alt>8"             { "glade-switch" (7) };
+  bind "<Alt>9"             { "glade-switch" (8) };
+  bind "<Alt>0"             { "glade-switch" (9) };
 }
 
-GladeDesignView * {
-  -gtk-key-bindings: DisableBindings;
+GladeWindow {
+  -gtk-key-bindings: WindowBindings;
 }
 
 .glade-tight-fit {
