@@ -2938,7 +2938,7 @@ glade_project_writing_preview (GladeProject       *project)
 #define PROP_DEPRECATED_MSG            _("This property is deprecated")
 
 /* translators: refers to a property '%s' of widget '[%s]' */
-#define PROP_DEPRECATED_FMT            _("[%s] Property '%s' of object class '%s' is deprecated")
+#define PROP_DEPRECATED_FMT            _("[%s] Property '%s' of object class '%s' is deprecated\n")
 
 /* translators: refers to a signal in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
@@ -2952,7 +2952,7 @@ glade_project_writing_preview (GladeProject       *project)
 #define SIGNAL_DEPRECATED_MSG          _("This signal is deprecated")
 
 /* translators: refers to a signal '%s' of widget '[%s]' */
-#define SIGNAL_DEPRECATED_FMT          _("[%s] Signal '%s' of object class '%s' is deprecated")
+#define SIGNAL_DEPRECATED_FMT          _("[%s] Signal '%s' of object class '%s' is deprecated\n")
 
 
 static void
@@ -3251,6 +3251,7 @@ glade_project_verify_dialog (GladeProject *project,
   expander = gtk_expander_new (_("Details"));
 
   gtk_text_buffer_set_text (buffer, string->str, -1);
+  gtk_widget_set_vexpand (swindow, TRUE);
 
   gtk_container_add (GTK_CONTAINER (swindow), textview);
   gtk_container_add (GTK_CONTAINER (expander), swindow);
