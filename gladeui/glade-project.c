@@ -2914,12 +2914,12 @@ glade_project_writing_preview (GladeProject       *project)
                                          "while project targets %s %d.%d")
 
 /* translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
-#define WIDGET_VERSION_CONFLICT_FMT    _("[%s] Object class '%s' was introduced in %s %d.%d\n")
+#define WIDGET_VERSION_CONFLICT_FMT    _("[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n")
 
 #define WIDGET_DEPRECATED_MSG          _("This widget is deprecated")
 
 /* translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
-#define WIDGET_DEPRECATED_FMT          _("[%s] Object class '%s' from %s %d.%d is deprecated\n")
+#define WIDGET_DEPRECATED_FMT          _("[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n")
 
 
 /* translators: refers to a property in toolkit version '%s %d.%d' 
@@ -2928,17 +2928,17 @@ glade_project_writing_preview (GladeProject       *project)
                                          "while project targets %s %d.%d")
 
 /* translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define PROP_VERSION_CONFLICT_FMT      _("[%s] Property '%s' of object class '%s' " \
+#define PROP_VERSION_CONFLICT_FMT      _("[%s] Property '<b>%s</b>' of object class '<b>%s</b>' " \
                                          "was introduced in %s %d.%d\n")
 
 /* translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define PACK_PROP_VERSION_CONFLICT_FMT _("[%s] Packing property '%s' of object class '%s' " \
+#define PACK_PROP_VERSION_CONFLICT_FMT _("[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' " \
                                          "was introduced in %s %d.%d\n")
 
 #define PROP_DEPRECATED_MSG            _("This property is deprecated")
 
 /* translators: refers to a property '%s' of widget '[%s]' */
-#define PROP_DEPRECATED_FMT            _("[%s] Property '%s' of object class '%s' is deprecated\n")
+#define PROP_DEPRECATED_FMT            _("[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n")
 
 /* translators: refers to a signal in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
@@ -2946,13 +2946,13 @@ glade_project_writing_preview (GladeProject       *project)
                                          "while project targets %s %d.%d")
 
 /* translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define SIGNAL_VERSION_CONFLICT_FMT    _("[%s] Signal '%s' of object class '%s' " \
+#define SIGNAL_VERSION_CONFLICT_FMT    _("[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' " \
                                          "was introduced in %s %d.%d\n")
 
 #define SIGNAL_DEPRECATED_MSG          _("This signal is deprecated")
 
 /* translators: refers to a signal '%s' of widget '[%s]' */
-#define SIGNAL_DEPRECATED_FMT          _("[%s] Signal '%s' of object class '%s' is deprecated\n")
+#define SIGNAL_DEPRECATED_FMT          _("[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n")
 
 
 static void
@@ -3242,6 +3242,7 @@ glade_project_verify_dialog (GladeProject *project,
   GtkWidget *textview;
   GtkWidget *expander;
   GtkTextBuffer *buffer;
+  GtkTextIter iter;
   gchar *name;
   gboolean ret;
 
@@ -3250,7 +3251,8 @@ glade_project_verify_dialog (GladeProject *project,
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview));
   expander = gtk_expander_new (_("Details"));
 
-  gtk_text_buffer_set_text (buffer, string->str, -1);
+  gtk_text_buffer_get_start_iter (buffer, &iter);
+  gtk_text_buffer_insert_markup (buffer, &iter, string->str, -1);
   gtk_widget_set_vexpand (swindow, TRUE);
 
   gtk_container_add (GTK_CONTAINER (swindow), textview);
