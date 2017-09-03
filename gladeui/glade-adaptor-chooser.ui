@@ -8,6 +8,7 @@
     <property name="spacing">4</property>
     <child>
       <object class="GtkMenuButton" id="all_button">
+        <property name="name">adaptor-search-button</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
@@ -53,6 +54,7 @@
     </child>
     <child>
       <object class="GtkMenuButton" id="others_button">
+        <property name="name">adaptor-others-button</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
@@ -74,11 +76,13 @@
     </child>
     <child>
       <object class="GtkButtonBox" id="gtk_button_box">
+        <property name="name">adaptor-gtk-buttonbox</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="layout_style">expand</property>
         <child>
           <object class="GtkMenuButton" id="extra_button">
+            <property name="name">adaptor-extra-button</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Extra gtk objects</property>

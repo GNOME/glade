@@ -24,14 +24,14 @@
 /* GladeWindow */
 @binding-set WindowBindings {
   bind "<Control>s"         { "glade-action" ("save") };
-  bind "<Control>p" 	    { "glade-action" ("preferences") };
-  bind "<Control>w" 	    { "glade-action" ("close") };
-  bind "<Control>z" 	    { "glade-action" ("undo") };
+  bind "<Control>p"         { "glade-action" ("preferences") };
+  bind "<Control>w"         { "glade-action" ("close") };
+  bind "<Control>z"         { "glade-action" ("undo") };
   bind "<Control><shift>z"  { "glade-action" ("redo") };
-  bind "<Control>x" 	    { "glade-action" ("cut") };
-  bind "<Control>c" 	    { "glade-action" ("copy") };
-  bind "<Control>v" 	    { "glade-action" ("paste") };
-  bind "Delete" 	    { "glade-action" ("delete") };
+  bind "<Control>x"         { "glade-action" ("cut") };
+  bind "<Control>c"         { "glade-action" ("copy") };
+  bind "<Control>v"         { "glade-action" ("paste") };
+  bind "Delete"             { "glade-action" ("delete") };
   bind "<Control>Page_Up"   { "glade-action" ("previous") };
   bind "<Control>Page_Down" { "glade-action" ("next") };
   bind "<Control>n"         { "glade-action" ("new") };
@@ -65,7 +65,6 @@ GladeWindow {
 }
 
 #glade-brand-image {
-  padding-top: 40px;
   animation: brand-highlight 2s infinite alternate;
 }
 
@@ -84,5 +83,30 @@ GladeWindow {
   font-weight: bold;
   text-shadow: 1px 1px 2px gray;
   padding-bottom: 120px;
+}
+
+/* GladeIntro */
+
+popover.glade-intro {
+  padding: 1em;
+}
+
+popover.glade-intro label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+@keyframes widget-highlight {
+  from { box-shadow: 0px 0px 10px @theme_selected_bg_color, inset 0px 0px 4px  @theme_selected_bg_color; }
+  to   { box-shadow: 0px 0px 4px  @theme_selected_bg_color, inset 0px 0px 10px @theme_selected_bg_color; }
+}
+
+button.glade-intro-highlight,
+buttonbox.glade-intro-highlight > button,
+stackswitcher.glade-intro-highlight > button,
+#adaptor-chooser.glade-intro-highlight button,
+#inspector.glade-intro-highlight > box > scrolledwindow > treeview,
+#editor.glade-intro-highlight > notebook > stack > scrolledwindow {
+  animation: widget-highlight 1s infinite alternate;
 }
 

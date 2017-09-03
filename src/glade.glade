@@ -170,6 +170,7 @@ Author: Juan Pablo Ugarte
                 <property name="name">glade-brand-image</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_top">64</property>
                 <property name="pixel_size">250</property>
                 <property name="icon_name">glade-brand-symbolic</property>
               </object>
@@ -232,6 +233,7 @@ Author: Juan Pablo Ugarte
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkStack" id="inspectors_stack">
+                        <property name="name">inspector</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_left">3</property>
@@ -329,6 +331,7 @@ Author: Juan Pablo Ugarte
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GladeAdaptorChooser" id="adaptor_chooser">
+                            <property name="name">adaptor-chooser</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="border_width">2</property>
@@ -353,6 +356,7 @@ Author: Juan Pablo Ugarte
                         </child>
                         <child>
                           <object class="GtkStack" id="view_stack">
+                            <property name="name">workspace</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="transition_duration">128</property>
@@ -399,6 +403,7 @@ Author: Juan Pablo Ugarte
             </child>
             <child>
               <object class="GladeEditor" id="editor">
+                <property name="name">editor</property>
                 <property name="width_request">256</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -424,6 +429,7 @@ Author: Juan Pablo Ugarte
     </child>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="headerbar">
+        <property name="name">headerbar</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="show_close_button">True</property>
@@ -435,6 +441,7 @@ Author: Juan Pablo Ugarte
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">Open</property>
+                <property name="name">open-button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -451,6 +458,7 @@ Author: Juan Pablo Ugarte
             </child>
             <child>
               <object class="GtkMenuButton" id="recent_menu_button">
+                <property name="name">recent-button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -478,6 +486,7 @@ Author: Juan Pablo Ugarte
         </child>
         <child>
           <object class="GtkButton">
+            <property name="name">new-button</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -511,6 +520,7 @@ Author: Juan Pablo Ugarte
             <property name="layout_style">expand</property>
             <child>
               <object class="GtkButton" id="undo_button">
+                <property name="name">undo-button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -532,6 +542,7 @@ Author: Juan Pablo Ugarte
             </child>
             <child>
               <object class="GtkButton" id="redo_button">
+                <property name="name">redo-button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -559,6 +570,7 @@ Author: Juan Pablo Ugarte
         </child>
         <child type="title">
           <object class="GtkStackSwitcher" id="project_switcher">
+            <property name="name">project-switcher</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="stack">view_stack</property>
@@ -566,6 +578,7 @@ Author: Juan Pablo Ugarte
         </child>
         <child>
           <object class="GtkMenuButton">
+            <property name="name">menu-button</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -585,6 +598,7 @@ Author: Juan Pablo Ugarte
         </child>
         <child>
           <object class="GtkButton">
+            <property name="name">properties-button</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -612,6 +626,7 @@ Author: Juan Pablo Ugarte
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">Save</property>
+                <property name="name">save-button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -627,6 +642,7 @@ Author: Juan Pablo Ugarte
             </child>
             <child>
               <object class="GtkButton">
+                <property name="name">save-as-button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -651,6 +667,34 @@ Author: Juan Pablo Ugarte
           <packing>
             <property name="pack_type">end</property>
             <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="intro_button">
+            <property name="name">intro-button</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Start/resume interactive UI introduction</property>
+            <property name="action_name">app.intro</property>
+            <property name="relief">none</property>
+            <property name="use_underline">True</property>
+            <child>
+              <object class="GtkImage">
+                <property name="name">glade-brand-image</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">glade-brand-symbolic</property>
+                <property name="icon_size">3</property>
+                <style>
+                  <class name="glade-tight-fit"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">7</property>
           </packing>
         </child>
       </object>

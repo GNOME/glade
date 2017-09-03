@@ -30,6 +30,7 @@
 #include "glade-resources.h"
 #include "glade-preferences.h"
 #include "glade-registration.h"
+#include "glade-intro.h"
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-popup.h>
@@ -117,6 +118,9 @@ struct _GladeWindowPrivate
   GtkWidget *save_button_box;
 
   GtkWidget *registration;      /* Registration and user survey dialog */
+
+  GladeIntro *intro;
+  GType new_type;
 
   GdkRectangle position;
 };
@@ -2097,6 +2101,13 @@ on_pointer_margin_edit_action_activate (GSimpleAction *action, GVariant *p, gpoi
 }
 
 static void
+on_intro_action_activate (GSimpleAction *action, GVariant *p, gpointer data)
+{
+  GladeWindow *window = data;
+  glade_intro_play (window->priv->intro);
+}
+
+static void
 glade_window_init (GladeWindow *window)
 {
   GladeWindowPrivate *priv;
@@ -2155,6 +2166,170 @@ glade_window_switch_handler (GladeWindow *window, gint index)
                          switch_foreach, GINT_TO_POINTER (index));
 }
 
+static gboolean
+intro_continue (gpointer intro)
+{
+  glade_intro_play (intro);
+  return G_SOURCE_REMOVE;
+}
+
+static void
+on_intro_project_add_widget (GladeProject *project,
+                             GladeWidget  *widget,
+                             GladeWindow  *window)
+{
+  GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
+
+  if (glade_widget_adaptor_get_object_type (adaptor) == window->priv->new_type)
+    {
+      g_idle_add (intro_continue, window->priv->intro);
+
+      if (window->priv->new_type == GTK_TYPE_BUTTON)
+        g_signal_handlers_disconnect_by_func (project, on_intro_project_add_widget, window);
+    }
+}
+
+static void
+on_user_new_action_activate (GSimpleAction *simple,
+                             GVariant      *parameter,
+                             GladeWindow   *window)
+{
+  g_signal_connect (get_active_project (window), "add-widget",
+                    G_CALLBACK (on_intro_project_add_widget),
+                    window);
+
+  glade_intro_play (window->priv->intro);
+
+  g_signal_handlers_disconnect_by_func (simple, on_user_new_action_activate, window);
+}
+
+static void
+on_intro_show_node (GladeIntro  *intro,
+                    const gchar *node,
+                    GtkWidget   *widget,
+                    GladeWindow *window)
+{
+  GladeWindowPrivate *priv = window->priv;
+  if (!g_strcmp0 (node, "new-project"))
+    {
+      /* Create two new project to make the project switcher visible */
+      g_action_group_activate_action (window->priv->actions, "new", NULL);
+      g_action_group_activate_action (window->priv->actions, "new", NULL);
+    }
+  else if (!g_strcmp0 (node, "add-project"))
+    {
+      GAction *new_action = g_action_map_lookup_action (G_ACTION_MAP (priv->actions), "new");
+
+      g_signal_connect (new_action, "activate",
+                        G_CALLBACK (on_user_new_action_activate),
+                        window);
+    }
+  else if (!g_strcmp0 (node, "add-window"))
+    {
+      window->priv->new_type = GTK_TYPE_WINDOW;
+    }
+  else if (!g_strcmp0 (node, "add-grid"))
+    {
+      window->priv->new_type = GTK_TYPE_GRID;
+    }
+  else if (!g_strcmp0 (node, "add-button"))
+    {
+      window->priv->new_type = GTK_TYPE_BUTTON;
+    }
+  else if (!g_strcmp0 (node, "search") ||
+           !g_strcmp0 (node, "others"))
+    {
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), TRUE);
+    }
+  else if (!g_strcmp0 (node, "gtk"))
+    {
+      GList *children;
+
+      if ((children = gtk_container_get_children (GTK_CONTAINER (widget))))
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (children->data), TRUE);
+
+      g_list_free (children);
+    }
+}
+
+static void
+on_intro_hide_node (GladeIntro  *intro,
+                    const gchar *node,
+                    GtkWidget   *widget,
+                    GladeWindow *window)
+{
+  if (!g_strcmp0 (node, "search") ||
+      !g_strcmp0 (node, "others"))
+    {
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), FALSE);
+    }
+  else if (!g_strcmp0 (node, "gtk"))
+    {
+      GList *children;
+
+      if ((children = gtk_container_get_children (GTK_CONTAINER (widget))))
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (children->data), FALSE);
+
+      g_list_free (children);
+    }
+  else if (!g_strcmp0 (node, "add-project") ||
+           !g_strcmp0 (node, "add-window") ||
+           !g_strcmp0 (node, "add-grid") ||
+           !g_strcmp0 (node, "add-button"))
+    glade_intro_pause (window->priv->intro);
+}
+
+#define ADD_NODE(n,w,P,d,t) glade_intro_script_add (window->priv->intro, n, w, t, GLADE_INTRO_##P, d)
+
+static void
+glade_window_populate_intro (GladeWindow *window)
+{
+  ADD_NODE (NULL, "intro-button",  BOTTOM, 5, _("Hello, I will show you what's new in Glade"));
+  ADD_NODE (NULL, "headerbar",     BOTTOM, 6, _("The menubar and toolbar where merged in the headerbar"));
+
+  ADD_NODE (NULL, "open-button",   BOTTOM, 3, _("You can open a project"));
+  ADD_NODE (NULL, "recent-button", BOTTOM, 2, _("find recently used"));
+  ADD_NODE (NULL, "new-button",    BOTTOM, 2, _("or create a new one"));
+
+  ADD_NODE ("new-project", NULL,       NONE, .75, NULL);
+
+  ADD_NODE (NULL, "undo-button",       BOTTOM, 2, _("Undo"));
+  ADD_NODE (NULL, "redo-button",       BOTTOM, 2, _("Redo"));
+  ADD_NODE (NULL, "project-switcher",  BOTTOM, 3, _("Project switcher"));
+
+  ADD_NODE (NULL, "save-button",       BOTTOM, 4, _("and Save button are directly accesible in the headerbar"));
+  ADD_NODE (NULL, "save-as-button",    BOTTOM, 2, _("just like Save As"));
+  ADD_NODE (NULL, "properties-button", BOTTOM, 2, _("project properties"));
+  ADD_NODE (NULL, "menu-button",       BOTTOM, 3, _("and less commonly used actions"));
+
+  ADD_NODE (NULL, "inspector", CENTER, 3, _("The object inspector took the palette place"));
+  ADD_NODE (NULL, "editor",    CENTER, 3, _("To free up space for the property editor"));
+
+  ADD_NODE (NULL,      "adaptor-chooser",       BOTTOM, 4, _("The palette was replaced with a new object chooser"));
+  ADD_NODE ("search",  "adaptor-search-button", RIGHT,  3, _("Where you can search all supported classes"));
+  ADD_NODE ("gtk",     "adaptor-gtk-buttonbox", BOTTOM, 2.5, _("investigate Gtk object groups"));
+  ADD_NODE ("others",  "adaptor-others-button", RIGHT,  4, _("and find classes introduced by other libraries"));
+
+  ADD_NODE (NULL, "intro-button", BOTTOM, 6, _("OK, now  we are done with the overview let start with the new workflow"));
+
+  ADD_NODE ("add-project", "intro-button", BOTTOM, 4, _("First of all, create a new project"));
+  ADD_NODE ("add-window",  "intro-button", BOTTOM, 6, _("Ok, now add a GtkWindow using the new widget chooser or by double clicking on the workspace"));
+  ADD_NODE (NULL,          "intro-button", BOTTOM, 2, _("Excelent!"));
+  ADD_NODE (NULL,          "intro-button", BOTTOM, 5, _("BTW Did you know you can double click on any placeholder to create widgets?"));
+  ADD_NODE ("add-grid",    "intro-button", BOTTOM, 3, _("Try adding a grid"));
+  ADD_NODE ("add-button",  "intro-button", BOTTOM, 3, _("and a button"));
+
+  ADD_NODE (NULL, "intro-button",  BOTTOM, 3, _("Quite easy! isn't it?"));
+  ADD_NODE (NULL, "intro-button",  BOTTOM, 2, _("Enjoy!"));
+
+  g_signal_connect (window->priv->intro, "show-node",
+                    G_CALLBACK (on_intro_show_node),
+                    window);
+  g_signal_connect (window->priv->intro, "hide-node",
+                    G_CALLBACK (on_intro_hide_node),
+                    window);
+}
+
 static void
 glade_window_constructed (GObject *object)
 {
@@ -2162,6 +2337,7 @@ glade_window_constructed (GObject *object)
     { "open",         on_open_action_activate, NULL, NULL, NULL },
     { "new",          on_new_action_activate, NULL, NULL, NULL },
     { "registration", on_registration_action_activate, NULL, NULL, NULL },
+    { "intro",        on_intro_action_activate, NULL, NULL, NULL },
     { "reference",    on_reference_action_activate, NULL, NULL, NULL },
     { "preferences",  on_preferences_action_activate, NULL, NULL, NULL },
     { "about",        on_about_action_activate, NULL, NULL, NULL },
@@ -2239,6 +2415,9 @@ glade_window_constructed (GObject *object)
   g_signal_connect (G_OBJECT (glade_app_get_clipboard ()),
                     "notify::has-selection",
                     G_CALLBACK (clipboard_notify_handler_cb), window);
+
+  priv->intro = glade_intro_new (GTK_WINDOW (window));
+  glade_window_populate_intro (window);
 
   refresh_title (window);
   project_actions_set_enabled (window, FALSE);
