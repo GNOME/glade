@@ -1,4 +1,3 @@
-[encoding: UTF-8]
 # List of source files containing translatable strings.
 
 # Main application
@@ -6,10 +5,10 @@ data/glade.desktop.in.in
 data/glade.appdata.xml.in
 src/glade-window.c
 src/main.c
-[type: gettext/glade]src/glade.glade
-[type: gettext/glade]src/glade-preferences.glade
+src/glade.glade
+src/glade-preferences.glade
 src/glade-registration.c
-[type: gettext/glade]src/glade-registration.glade
+src/glade-registration.glade
 
 # libgladeui shared core library
 gladeui/glade-app.c
@@ -50,10 +49,10 @@ gladeui/glade-widget-adaptor.c
 gladeui/glade-widget.c
 gladeui/glade-xml-utils.c
 gladeui/icon-naming-spec.c
-[type: gettext/glade]gladeui/glade-adaptor-chooser.ui
-[type: gettext/glade]gladeui/glade-editor.ui
-[type: gettext/glade]gladeui/glade-project-properties.ui
-[type: gettext/glade]gladeui/glade-property-label.ui
+gladeui/glade-adaptor-chooser.ui
+gladeui/glade-editor.ui
+gladeui/glade-project-properties.ui
+gladeui/glade-property-label.ui
 
 # gtk plugin backend
 plugins/gtk+/glade-about-dialog-editor.c
@@ -192,56 +191,57 @@ plugins/gtk+/glade-widget-editor.c
 plugins/gtk+/glade-window-editor.c
 plugins/gtk+/gtkunixprint.xml.in
 plugins/gtk+/gtk+.xml.in
-[type: gettext/glade]plugins/gtk+/glade-about-dialog-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-action-bar-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-action-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-activatable-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-app-chooser-button-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-app-chooser-widget-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-arrow-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-box-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-button-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-combo-box-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-combo-box-text-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-entry-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-file-chooser-button-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-file-chooser-dialog-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-file-chooser-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-file-chooser-widget-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-font-button-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-font-chooser-dialog-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-font-chooser-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-grid-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-header-bar-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-icon-view-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-image-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-label-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-layout-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-level-bar-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-message-dialog-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-misc-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-model-button-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-notebook-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-popover-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-popover-menu-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-progress-bar-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-real-tree-view-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-recent-action-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-recent-chooser-dialog-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-recent-chooser-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-recent-chooser-menu-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-recent-chooser-widget-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-scale-button-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-scale-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-scrollable-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-scrollbar-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-scrolled-window-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-spin-button-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-stack-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-stack-switcher-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-text-view-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-tool-button-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-tool-palette-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-viewport-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-widget-editor.ui
-[type: gettext/glade]plugins/gtk+/glade-window-editor.ui
+plugins/gtk+/glade-about-dialog-editor.ui
+plugins/gtk+/glade-action-bar-editor.ui
+plugins/gtk+/glade-action-editor.ui
+plugins/gtk+/glade-activatable-editor.ui
+plugins/gtk+/glade-app-chooser-button-editor.ui
+plugins/gtk+/glade-app-chooser-widget-editor.ui
+plugins/gtk+/glade-arrow-editor.ui
+plugins/gtk+/glade-box-editor.ui
+plugins/gtk+/glade-button-editor.ui
+plugins/gtk+/glade-combo-box-editor.ui
+plugins/gtk+/glade-combo-box-text-editor.ui
+plugins/gtk+/glade-entry-editor.ui
+plugins/gtk+/glade-file-chooser-button-editor.ui
+plugins/gtk+/glade-file-chooser-dialog-editor.ui
+plugins/gtk+/glade-file-chooser-editor.ui
+plugins/gtk+/glade-file-chooser-widget-editor.ui
+plugins/gtk+/glade-font-button-editor.ui
+plugins/gtk+/glade-font-chooser-dialog-editor.ui
+plugins/gtk+/glade-font-chooser-editor.ui
+plugins/gtk+/glade-grid-editor.ui
+plugins/gtk+/glade-header-bar-editor.ui
+plugins/gtk+/glade-icon-view-editor.ui
+plugins/gtk+/glade-image-editor.ui
+plugins/gtk+/glade-label-editor.ui
+plugins/gtk+/glade-layout-editor.ui
+plugins/gtk+/glade-level-bar-editor.ui
+plugins/gtk+/glade-message-dialog-editor.ui
+plugins/gtk+/glade-misc-editor.ui
+plugins/gtk+/glade-model-button-editor.ui
+plugins/gtk+/glade-notebook-editor.ui
+plugins/gtk+/glade-popover-editor.ui
+plugins/gtk+/glade-popover-menu-editor.ui
+plugins/gtk+/glade-progress-bar-editor.ui
+plugins/gtk+/glade-real-tree-view-editor.ui
+plugins/gtk+/glade-recent-action-editor.ui
+plugins/gtk+/glade-recent-chooser-dialog-editor.ui
+plugins/gtk+/glade-recent-chooser-editor.ui
+plugins/gtk+/glade-recent-chooser-menu-editor.ui
+plugins/gtk+/glade-recent-chooser-widget-editor.ui
+plugins/gtk+/glade-scale-button-editor.ui
+plugins/gtk+/glade-scale-editor.ui
+plugins/gtk+/glade-scrollable-editor.ui
+plugins/gtk+/glade-scrollbar-editor.ui
+plugins/gtk+/glade-scrolled-window-editor.ui
+plugins/gtk+/glade-spin-button-editor.ui
+plugins/gtk+/glade-stack-editor.ui
+plugins/gtk+/glade-stack-switcher-editor.ui
+plugins/gtk+/glade-text-view-editor.ui
+plugins/gtk+/glade-tool-button-editor.ui
+plugins/gtk+/glade-tool-palette-editor.ui
+plugins/gtk+/glade-viewport-editor.ui
+plugins/gtk+/glade-widget-editor.ui
+plugins/gtk+/glade-window-editor.ui
+plugins/webkit2gtk/webkit2gtk.xml.in

@@ -1,6 +1,4 @@
+# List of source files to skip.
+
+# Main application
 data/glade.desktop.in
-# distcheck will fail if we do not explicitly skip this because a bug in intltool
-# https://bugs.launchpad.net/intltool/+bug/1117944
-sub/data/glade.desktop.in
-tests/toplevel_order_test5.glade
-tests/toplevel_order_test6.glade

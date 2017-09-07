@@ -111,7 +111,8 @@ AC_SUBST(GLADE_DEBUG_FLAGS)
 dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================
-IT_PROG_INTLTOOL([0.41.0])
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.19.8])
 
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
@@ -351,6 +352,8 @@ data/icons/hicolor/256x256/Makefile
 data/icons/hicolor/256x256/apps/Makefile
 data/icons/hicolor/scalable/Makefile
 data/icons/hicolor/scalable/apps/Makefile
+data/gettext/Makefile
+data/gettext/its/Makefile
 gladeui/Makefile
 gladeui/gladeui.rc
 gladeui/glade-previewer.rc
@@ -361,9 +364,12 @@ plugins/gtk+/Makefile
 plugins/gtk+/icons/Makefile
 plugins/gtk+/icons/16x16/Makefile
 plugins/gtk+/icons/22x22/Makefile
+plugins/gtk+/gtk+.xml
+plugins/gtk+/gtkunixprint.xml
 plugins/python/Makefile
 plugins/gladeui/Makefile
 plugins/webkit2gtk/Makefile
+plugins/webkit2gtk/webkit2gtk.xml
 po/Makefile.in
 doc/Makefile
 doc/version.xml

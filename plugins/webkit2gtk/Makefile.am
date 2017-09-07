@@ -31,10 +31,10 @@ endif
 # catalog data
 catalogsdir = $(pkgdatadir)/catalogs
 
-catalogs_DATA = webkit2gtk.xml
+catalogs_in_files = webkit2gtk.xml.in
 
-@INTLTOOL_XML_NOMERGE_RULE@
+catalogs_DATA = $(catalogs_in_files:.xml.in=.xml)
 
-EXTRA_DIST = webkit2gtk.xml webkit2gtk.xml.in
+EXTRA_DIST =  $(catalogs_in_files) $(catalog_DATA)
 
-CLEANFILES = webkit2gtk.xml
+CLEANFILES = $(catalog_DATA)
