@@ -9,14 +9,9 @@ DIST_SUBDIRS = po data gladeui src plugins tests doc help man
 EXTRA_DIST = \
 	autogen.sh \
 	COPYING.GPL \
-	COPYING.LGPL \
-	intltool-extract.in \
-	intltool-merge.in \
-	intltool-update.in
+	COPYING.LGPL
 
-DISTCLEANFILES = intltool-extract \
-                 intltool-merge \
-                 intltool-update
+DISTCLEANFILES =
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-introspection --enable-man-pages
 
