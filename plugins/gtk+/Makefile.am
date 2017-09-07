@@ -261,13 +261,15 @@ endif
 # catalog data
 catalogsdir = $(pkgdatadir)/catalogs
 
-catalogs_DATA = gtk+.xml
+catalogs_in_files = gtk+.xml.in
 
 if HAVE_GTK_UNIX_PRINT
-catalogs_DATA += gtkunixprint.xml
+catalogs_in_files += gtkunixprint.xml.in
 endif
 
-@INTLTOOL_XML_NOMERGE_RULE@
+catalogs_XML = $(catalogs_in_files:.xml.in=.xml)
+$(catalogs_XML): $(catalogs_in_files)
+	$(AM_V_GEN) $(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
 
 BUILT_SOURCES = 		\
 	glade-gtk-marshallers.c \

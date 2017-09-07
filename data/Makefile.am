@@ -1,19 +1,21 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = icons
+SUBDIRS = icons gettext
 
 desktopdir = $(datadir)/applications
 desktop_in_files = glade.desktop.in.in
 desktop_DATA = $(desktop_in_files:.desktop.in.in=.desktop)
-@INTLTOOL_DESKTOP_RULE@
+$(desktop_DATA): $(desktop_in_files)
+	$(AM_V_GEN) $(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = gladeui-2.0.pc
 
-@INTLTOOL_XML_RULE@
 appdatadir = $(datadir)/metainfo
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 appdata_in_files = glade.appdata.xml.in
+$(appdata_DATA): $(appdata_in_files)
+	$(AM_V_GEN) $(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
 
 EXTRA_DIST = 				\
 	$(appdata_in_files)		\

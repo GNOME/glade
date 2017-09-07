@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<its:rules xmlns:its="http://www.w3.org/2005/11/its"
+           version="2.0">
+  <its:translateRule selector="/glade-catalog" translate="no"/>
+  <its:translateRule selector="/glade-catalog//property/tooltip" translate="yes"/>
+  <its:translateRule selector="/glade-catalog//*[@title]" translate="yes"/>
+
+  <!-- Can't use wildcard for the name attribute -->
+  <its:translateRule selector="/glade-catalog//displayable-values/value[@name] |
+                               /glade-catalog//action[@name] |
+                               /glade-catalog//property[@name]"
+                     translate="yes"/>
+</its:rules>
