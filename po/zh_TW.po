@@ -16,16 +16,16 @@ msgstr ""
 "Project-Id-Version: glade3 3.10.0\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-22 12:44+0000\n"
-"PO-Revision-Date: 2017-02-27 10:59+0800\n"
-"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
+"POT-Creation-Date: 2017-08-20 21:18+0000\n"
+"PO-Revision-Date: 2017-09-13 00:50+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
 #: ../src/main.c:42
@@ -678,7 +678,7 @@ msgstr "編輯 Glade 偏好設定"
 
 #: ../src/glade.glade.h:87
 msgid "Open _Recent"
-msgstr "開啟最近使用檔案(_R)"
+msgstr "開啟最近(_R)"
 
 #: ../src/glade.glade.h:88
 msgid "Registration & User Survey"
@@ -1845,11 +1845,11 @@ msgstr "編輯 %s 的對齊"
 msgid "Editing margins of %s"
 msgstr "編輯 %s 的邊界"
 
-#: ../gladeui/glade-design-layout.c:2041
+#: ../gladeui/glade-design-layout.c:2042
 msgid "Design View"
 msgstr "設計檢視"
 
-#: ../gladeui/glade-design-layout.c:2042
+#: ../gladeui/glade-design-layout.c:2043
 msgid "The GladeDesignView that contains this layout"
 msgstr "包含這個配置的 GladeDesignView"
 
@@ -2767,7 +2767,7 @@ msgstr "加入冒號"
 
 #: ../gladeui/glade-property-label.c:136
 msgid "Whether to append a colon ':' to the property name"
-msgstr "是否在屬性名稱中加入冒號 ':'"
+msgstr "是否在屬性名稱中加入冒號「:」"
 
 #: ../gladeui/glade-property-label.c:141 ../gladeui/glade-property-shell.c:119
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:528
@@ -3471,7 +3471,7 @@ msgstr "選擇一個字型"
 
 #: ../plugins/gtk+/glade-attributes.c:894
 msgid "Attribute"
-msgstr "屬性"
+msgstr "特性"
 
 #: ../plugins/gtk+/glade-attributes.c:902
 msgid "Value"
@@ -3479,11 +3479,11 @@ msgstr "數值"
 
 #: ../plugins/gtk+/glade-attributes.c:1057
 msgid "Setup Text Attributes"
-msgstr "設定文字屬性"
+msgstr "設定文字特性"
 
 #: ../plugins/gtk+/glade-attributes.c:1149
 msgid "Edit Attributes"
-msgstr "編輯屬性"
+msgstr "編輯特性"
 
 #: ../plugins/gtk+/glade-button-editor.c:241
 #, c-format
@@ -3509,7 +3509,7 @@ msgstr "設定 %s 以使用標籤和影像"
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:191
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
-msgstr "設定 %s 使用 %s 內容做為屬性"
+msgstr "設定 %s 使用 %s 屬性做為特性"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:212
 #, c-format
@@ -3685,7 +3685,7 @@ msgstr "單選"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:222
 msgid "Recent"
-msgstr "最近開啟"
+msgstr "最近"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:230
 msgid "Action Group Editor"
@@ -3720,11 +3720,11 @@ msgstr "儲存格繪圖器"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:362
 msgid "Properties and Attributes"
-msgstr "內容與屬性"
+msgstr "屬性與特性"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:368
 msgid "Common Properties and Attributes"
-msgstr "一般內容與屬性"
+msgstr "一般屬性與特性"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:412
@@ -3923,7 +3923,7 @@ msgstr "子項無法加入到分隔線。"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:253
 msgid "Children cannot be added to a Recent Chooser Menu."
-msgstr "子項無法加入到最近使用項目選擇器選單。"
+msgstr "子項無法加入到「最近選擇器選單」。"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:262
 #, c-format
@@ -3965,7 +3965,7 @@ msgstr "分隔線項目"
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:196
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:205
 msgid "Recent Menu"
-msgstr "最近使用項目選單"
+msgstr "最近選單"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:514
 msgid "Tool Item"
@@ -3977,7 +3977,7 @@ msgstr "工具項目群組"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:751
 msgid "Recent Chooser Menu"
-msgstr "最近使用項目選擇器選單"
+msgstr "最近選擇器選單"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:598 ../plugins/gtk+/gtk+.xml.in.h:156
@@ -4277,7 +4277,7 @@ msgstr "編輯影像"
 #: ../plugins/gtk+/glade-label-editor.c:214
 #, c-format
 msgid "Setting %s to use an attribute list"
-msgstr "設定 %s 使用屬性清單"
+msgstr "設定 %s 使用特性清單"
 
 #: ../plugins/gtk+/glade-label-editor.c:248
 #, c-format
@@ -4335,8 +4335,8 @@ msgid ""
 "you to retrieve them when setting cell renderer attributes (press the Delete "
 "key to remove the selected column)"
 msgstr ""
-"定義您的 liststore 欄位；給予它們有意義的名稱會讓您在設定儲存格繪製屬性時更容"
-"易取得它們（按下 Delete 鍵可以移除選取的欄位）"
+"定義您的 liststore 欄位；給予它們有意義的名稱會讓您在設定儲存格繪圖器特性時更"
+"容易取得它們（按下 Delete 鍵可以移除選取的欄位）"
 
 #: ../plugins/gtk+/glade-store-editor.c:190
 msgid ""
@@ -5862,7 +5862,7 @@ msgstr "向外蝕刻"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:521
 msgid "Attributes"
-msgstr "屬性"
+msgstr "特性"
 
 #. GtkWrapMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:523
@@ -5881,7 +5881,7 @@ msgstr "字元"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:528
 msgid "The pango attributes for this label"
-msgstr "這個標籤的 pango 屬性"
+msgstr "這個標籤的 pango 特性"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:529
 msgid "Text Entry"
@@ -6421,43 +6421,43 @@ msgstr "由上向下滑動"
 #: ../plugins/gtk+/gtk+.xml.in.h:712
 #, fuzzy
 msgid "Move Over Up"
-msgstr "由上向下滑動"
+msgstr "向上移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:713
 #, fuzzy
 msgid "Move Over Down"
-msgstr "由下向上滑動"
+msgstr "向下移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:714
 #, fuzzy
 msgid "Move Over Left"
-msgstr "由左向右滑動"
+msgstr "向左移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:715
 #, fuzzy
 msgid "Move Over Right"
-msgstr "由右向左滑動"
+msgstr "向右移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:716
 msgid "Move Over Up-Down"
-msgstr "由上向下滑動"
+msgstr "由上向下移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:717
 msgid "Move Over Down-Up"
-msgstr "由下向上滑動"
+msgstr "由下向上移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:718
 msgid "Move Over Left-Right"
-msgstr "由左向右滑動"
+msgstr "由左向右移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:719
 msgid "Move Over Right-Left"
-msgstr "由右向左滑動"
+msgstr "由右向左移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:720
 #, fuzzy
 msgid "Move Under Up"
-msgstr "將輸入來源往上移"
+msgstr "向下移動"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:721
 #, fuzzy
@@ -6911,7 +6911,7 @@ msgstr "鏈結按鈕"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "Recent Chooser"
-msgstr "最近使用項目選擇器"
+msgstr "最近選擇器"
 
 #. GtkRecentSortType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:874
@@ -6925,7 +6925,7 @@ msgstr "最近較少使用的優先"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:877
 msgid "Recent Chooser Dialog"
-msgstr "最近使用項目選擇器對話框"
+msgstr "最近選擇器對話框"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:878
 msgid "Size Group"
@@ -6966,7 +6966,7 @@ msgstr "單選動作"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:891
 msgid "Recent Action"
-msgstr "剛進行的動作"
+msgstr "最近動作"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:892
 msgid "Action Group"
@@ -7070,7 +7070,7 @@ msgstr "高度欄"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Horizontal Padding"
-msgstr "水平留空 "
+msgstr "水平留空"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:923
 msgid "Horizontal Padding column"
@@ -7122,7 +7122,7 @@ msgstr "對齊欄"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:936
 msgid "Attributes column"
-msgstr "屬性欄"
+msgstr "特性欄"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:937
 msgid "Background Color Name column"
@@ -7591,7 +7591,7 @@ msgstr "要加入過濾條件的檔案名稱樣式清單"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1077
 msgid "Recent Filter"
-msgstr "最近使用項目過濾條件"
+msgstr "最近過濾條件"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1079
 msgid "The list of application names to add to the filter"
@@ -7599,7 +7599,7 @@ msgstr "加入至過濾條件的應用程式清單"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1080
 msgid "Recent Manager"
-msgstr "最近使用項目管理員"
+msgstr "最近管理員"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1081
 msgid "Themed Icon"
@@ -7631,7 +7631,7 @@ msgstr "已廢棄"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:1
 msgid "Program Attributes"
-msgstr "程式屬性"
+msgstr "程式特性"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:4
 msgid "License Text"
@@ -7684,7 +7684,7 @@ msgstr "Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>, 2013"
 #: ../plugins/gtk+/glade-action-bar-editor.ui.h:1
 #: ../plugins/gtk+/glade-box-editor.ui.h:1
 msgid "Box Attributes"
-msgstr "方塊屬性"
+msgstr "方塊特性"
 
 #: ../plugins/gtk+/glade-action-bar-editor.ui.h:2
 #: ../plugins/gtk+/glade-box-editor.ui.h:3
@@ -7697,7 +7697,7 @@ msgstr "這個動作列是否應包含置中的子項。"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:1
 msgid "Action Attributes"
-msgstr "動作屬性"
+msgstr "動作特性"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:2
 msgid "Toolbar Proxies"
@@ -7721,11 +7721,11 @@ msgstr "可使用/可動作"
 
 #: ../plugins/gtk+/glade-app-chooser-button-editor.ui.h:1
 msgid "App Chooser Button Attributes"
-msgstr "程式選擇按鈕屬性"
+msgstr "程式選擇器按鈕特性"
 
 #: ../plugins/gtk+/glade-app-chooser-widget-editor.ui.h:1
 msgid "App Chooser Widget Attributes"
-msgstr "程式選擇元件屬性"
+msgstr "程式選擇器元件特性"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:2
 msgid "Baseline:"
@@ -7737,7 +7737,7 @@ msgstr "這個方塊是否應包含置中的子項。"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:1
 msgid "Child alignments:"
-msgstr "子項對齊"
+msgstr "子項對齊："
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:2
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:2
@@ -7753,7 +7753,7 @@ msgstr "垂直："
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:4
 msgid "Button Attributes"
-msgstr "按鈕屬性"
+msgstr "按鈕特性"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:5
 msgid "Button Content"
@@ -7778,7 +7778,7 @@ msgstr "位置："
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:1
 msgid "Combo Box Attributes"
-msgstr "組合方塊屬性"
+msgstr "組合方塊特性"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:2
 msgid "Tree model:"
@@ -7800,7 +7800,7 @@ msgstr "表格選單"
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:1
 msgid "Combo Box Text Attributes"
-msgstr "組合方塊文字屬性"
+msgstr "組合方塊文字特性"
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:2
 msgid "List of items:"
@@ -7847,23 +7847,23 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:14
 msgid "Horizontal Alignment:"
-msgstr "水平對齊"
+msgstr "水平對齊："
 
 #: ../plugins/gtk+/glade-file-chooser-editor.ui.h:1
 msgid "File Chooser Attributes"
-msgstr "檔案選擇器屬性"
+msgstr "檔案選擇器特性"
 
 #: ../plugins/gtk+/glade-font-button-editor.ui.h:1
 msgid "Font Button Attributes"
-msgstr "字型按鈕屬性"
+msgstr "字型按鈕特性"
 
 #: ../plugins/gtk+/glade-font-chooser-editor.ui.h:1
 msgid "Font Chooser Attributes"
-msgstr "字型選擇器屬性"
+msgstr "字型選擇器特性"
 
 #: ../plugins/gtk+/glade-grid-editor.ui.h:1
 msgid "Grid Attributes"
-msgstr "格線屬性"
+msgstr "格線特性"
 
 #: ../plugins/gtk+/glade-grid-editor.ui.h:4
 msgid "Spacing:"
@@ -7879,7 +7879,7 @@ msgstr "計數："
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:1
 msgid "Headerbar Attributes"
-msgstr "標頭列屬性"
+msgstr "標頭列特性"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:2
 msgid "Custom title"
@@ -7887,7 +7887,7 @@ msgstr "自訂標題"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:3
 msgid "Whether the headerbar should use a custom title widget."
-msgstr "標頭列是否使用自訂標題元件"
+msgstr "標頭列是否使用自訂標題元件。"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:4
 msgid "Show window controls"
@@ -7899,7 +7899,7 @@ msgstr "是否顯示視窗控制元，例如關閉按鈕。"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:1
 msgid "Icon View Attributes"
-msgstr "圖示檢視屬性"
+msgstr "圖示檢視特性"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:2
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:4
@@ -7965,7 +7965,7 @@ msgstr "列數"
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:1
 msgid "Level Bar Attributes"
-msgstr "等級列屬性"
+msgstr "等級列特性"
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:2
 msgid "Indicator Mode:"
@@ -7985,7 +7985,7 @@ msgstr "數值："
 
 #: ../plugins/gtk+/glade-message-dialog-editor.ui.h:1
 msgid "Message Dialog Attributes"
-msgstr "訊息對話盒屬性"
+msgstr "訊息對話特性"
 
 #: ../plugins/gtk+/glade-message-dialog-editor.ui.h:2
 msgid "Primary Text:"
@@ -8005,11 +8005,11 @@ msgstr "留空"
 
 #: ../plugins/gtk+/glade-model-button-editor.ui.h:1
 msgid "Model Button Attributes"
-msgstr "模型按鈕屬性"
+msgstr "模型按鈕特性"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:1
 msgid "Notebook Attributes"
-msgstr "筆記本屬性"
+msgstr "筆記本特性"
 
 #. Property used to choose which page of the notebook to edit
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:3
@@ -8018,7 +8018,7 @@ msgstr "編輯頁面："
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:4
 msgid "Tab Attributes"
-msgstr "分頁屬性"
+msgstr "分頁特性"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:5
 msgid "Start Action:"
@@ -8030,15 +8030,15 @@ msgstr "結束動作："
 
 #: ../plugins/gtk+/glade-popover-editor.ui.h:1
 msgid "Popover Attributes"
-msgstr "氣泡視窗屬性"
+msgstr "氣泡視窗特性"
 
 #: ../plugins/gtk+/glade-popover-menu-editor.ui.h:1
 msgid "Menu Attributes"
-msgstr "選單屬性"
+msgstr "選單特性"
 
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:1
 msgid "Progress Bar Attributes"
-msgstr "進度列屬性"
+msgstr "進度列特性"
 
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:2
 msgid "Ellipsize Text:"
@@ -8046,7 +8046,7 @@ msgstr "簡化文字："
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:1
 msgid "Tree View Attributes"
-msgstr "樹狀檢視屬性"
+msgstr "樹狀檢視特性"
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:2
 msgid "Search Column:"
@@ -8058,11 +8058,11 @@ msgstr "擴展器欄："
 
 #: ../plugins/gtk+/glade-recent-chooser-editor.ui.h:1
 msgid "Recent Chooser Attributes"
-msgstr "最近使用項目選擇器屬性"
+msgstr "最近選擇器特性"
 
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:1
 msgid "Scale Button Attributes"
-msgstr "尺規按鈕屬性"
+msgstr "尺規按鈕特性"
 
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:2
 msgid "Scale orientation:"
@@ -8070,7 +8070,7 @@ msgstr "尺規方向："
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:1
 msgid "Scale Attributes"
-msgstr "尺規屬性"
+msgstr "尺規特性"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:2
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:2
@@ -8093,7 +8093,7 @@ msgstr "突顯原始"
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:1
 msgid "Scrolling Attributes"
-msgstr "捲動屬性"
+msgstr "捲動特性"
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:4
 msgid "Policy:"
@@ -8101,11 +8101,11 @@ msgstr "原則："
 
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:1
 msgid "Scrollbar Attributes"
-msgstr "捲動軸屬性"
+msgstr "捲動軸特性"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:1
 msgid "Scrolled Window Attributes"
-msgstr "捲動列視窗屬性"
+msgstr "捲動列視窗特性"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:2
 msgid "Window Placement:"
@@ -8121,7 +8121,7 @@ msgstr "調整："
 
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:1
 msgid "Spin Button Attributes"
-msgstr "微調按鈕屬性"
+msgstr "微調按鈕特性"
 
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:2
 msgid "Button Orientation:"
@@ -8129,7 +8129,7 @@ msgstr "按鈕方向："
 
 #: ../plugins/gtk+/glade-stack-editor.ui.h:1
 msgid "Stack Attributes"
-msgstr "堆疊屬性"
+msgstr "堆疊特性"
 
 #: ../plugins/gtk+/glade-stack-editor.ui.h:2
 msgid "Homogeneous:"
@@ -8137,11 +8137,11 @@ msgstr "一致性："
 
 #: ../plugins/gtk+/glade-stack-switcher-editor.ui.h:1
 msgid "Stack Switcher Attributes"
-msgstr "堆疊切換器屬性"
+msgstr "堆疊切換器特性"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:1
 msgid "Text View Attributes"
-msgstr "文字檢視屬性"
+msgstr "文字檢視特性"
 
 #. Name for populate-all property
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:4
@@ -8207,7 +8207,7 @@ msgstr "元件："
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:1
 msgid "Widget Attributes"
-msgstr "元件屬性"
+msgstr "元件特性"
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:3
 msgid "Whether to use markup in the tooltip"
@@ -8231,7 +8231,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:1
 msgid "Window Attributes"
-msgstr "視窗屬性"
+msgstr "視窗特性"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:2
 msgid "Transient For:"
