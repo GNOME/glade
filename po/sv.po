@@ -10,10 +10,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-14 12:18+0000\n"
-"PO-Revision-Date: 2016-05-14 16:15+0200\n"
+"POT-Creation-Date: 2017-09-19 06:33+0000\n"
+"PO-Revision-Date: 2017-09-24 15:58+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se.>\n"
 "Language: sv\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.0.3\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
@@ -1575,40 +1575,40 @@ msgid "The container object this editor is currently editing"
 msgstr "Behållarobjektet som denna redigerare för närvarande redigerar"
 
 #. translators: refers to a tab name used to group all the relevant widget's properties
-#: ../gladeui/glade-base-editor.c:1735 ../gladeui/glade-editor.c:919
+#: ../gladeui/glade-base-editor.c:1734 ../gladeui/glade-editor.c:919
 msgid "General"
 msgstr "Allmänt"
 
 #. translators: refers to a tab name used to show the widget hierarchy
-#: ../gladeui/glade-base-editor.c:1744
+#: ../gladeui/glade-base-editor.c:1743
 msgid "Hierarchy"
 msgstr "Hierarki"
 
 #. AtkRole enumeration value
-#: ../gladeui/glade-base-editor.c:1782 ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../gladeui/glade-base-editor.c:1781 ../plugins/gtk+/gtk+.xml.in.h:144
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:9
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:2
 msgid "Label"
 msgstr "Etikett"
 
-#: ../gladeui/glade-base-editor.c:1797 ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-base-editor.c:1796 ../gladeui/glade-widget-adaptor.c:1460
 msgid "Type"
 msgstr "Typ"
 
 #. Name
 #. translators: The unique identifier of an object in the project
-#: ../gladeui/glade-base-editor.c:2034 ../gladeui/glade-editor-table.c:305
+#: ../gladeui/glade-base-editor.c:2033 ../gladeui/glade-editor-table.c:305
 #: ../gladeui/glade-editor-table.c:578
 msgid "ID:"
 msgstr "ID:"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:2054
+#: ../gladeui/glade-base-editor.c:2053
 #: ../plugins/gtk+/glade-window-editor.ui.h:8
 msgid "Type:"
 msgstr "Typ:"
 
-#: ../gladeui/glade-base-editor.c:2274
+#: ../gladeui/glade-base-editor.c:2273
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -2274,10 +2274,6 @@ msgstr "Fel vid start av förhandsvisare: %s\n"
 #, c-format
 msgid "Failed to launch preview: %s.\n"
 msgstr "Misslyckades med att starta förhandsvisning: %s.\n"
-
-#: ../gladeui/glade-previewer.c:202
-msgid "Glade Previewer log"
-msgstr "Logg för Glades förhandsvisare"
 
 #: ../gladeui/glade-previewer.c:739 ../gladeui/glade-previewer.c:749
 msgid "user_data"
@@ -3663,7 +3659,7 @@ msgstr "Ställer in primärikon för %s att inte använda markup för inforuta"
 msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr "Ställer inte sekundärikon för %s att inte använda markup för inforuta"
 
-#: ../plugins/gtk+/glade-fixed.c:623 ../plugins/gtk+/glade-gtk-grid.c:994
+#: ../plugins/gtk+/glade-fixed.c:623 ../plugins/gtk+/glade-gtk-grid.c:1018
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Placerar %s inuti %s"
@@ -3897,32 +3893,29 @@ msgstr ""
 "Denna egenskap är endast tillgänglig\n"
 "om inmatningstecknen är osynliga"
 
-#: ../plugins/gtk+/glade-gtk-flow-box.c:249
-#: ../plugins/gtk+/glade-gtk-flow-box.c:255
+#: ../plugins/gtk+/glade-gtk-flow-box.c:204
 #, c-format
 msgid "Insert Child on %s"
 msgstr "Infoga barn på %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:597 ../plugins/gtk+/glade-gtk-grid.c:604
-#: ../plugins/gtk+/glade-gtk-list-box.c:252
-#: ../plugins/gtk+/glade-gtk-list-box.c:258
-#: ../plugins/gtk+/glade-gtk-table.c:643 ../plugins/gtk+/glade-gtk-table.c:650
+#: ../plugins/gtk+/glade-gtk-grid.c:507
+#: ../plugins/gtk+/glade-gtk-list-box.c:207
+#: ../plugins/gtk+/glade-gtk-table.c:538
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Infoga rad på %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:612 ../plugins/gtk+/glade-gtk-grid.c:619
-#: ../plugins/gtk+/glade-gtk-table.c:658 ../plugins/gtk+/glade-gtk-table.c:665
+#: ../plugins/gtk+/glade-gtk-grid.c:510 ../plugins/gtk+/glade-gtk-table.c:541
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Infoga kolumn på %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:626 ../plugins/gtk+/glade-gtk-table.c:672
+#: ../plugins/gtk+/glade-gtk-grid.c:513 ../plugins/gtk+/glade-gtk-table.c:544
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Ta bort kolumn på %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:633 ../plugins/gtk+/glade-gtk-table.c:679
+#: ../plugins/gtk+/glade-gtk-grid.c:516 ../plugins/gtk+/glade-gtk-table.c:547
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Ta bort rad på %s"
@@ -6410,7 +6403,7 @@ msgstr "Antal sidor i flikhäftet"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:672
 msgid "HeaderBar"
-msgstr "Huvudpanel"
+msgstr "Rubrikrad"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:673
 msgid "Reserve space for subtitle"
@@ -6426,7 +6419,7 @@ msgstr "Lägg till plats"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:676
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
-msgstr "Bevara huvudpanelens höjd eftersom undertexten ändras dynamiskt."
+msgstr "Bevara rubrikradens höjd eftersom undertexten ändras dynamiskt."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:677
 msgid "The number of items in the header bar"
@@ -7931,7 +7924,7 @@ msgstr "Antal:"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:1
 msgid "Headerbar Attributes"
-msgstr "Attribut för huvudpanel"
+msgstr "Attribut för rubrikrad"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:2
 msgid "Custom title"
@@ -7939,7 +7932,7 @@ msgstr "Anpassat namn"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:3
 msgid "Whether the headerbar should use a custom title widget."
-msgstr "Huruvida huvudpanelen ska använda en anpassad namnkomponent."
+msgstr "Huruvida rubrikraden ska använda en anpassad namnkomponent."
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:4
 msgid "Show window controls"
@@ -8320,6 +8313,9 @@ msgstr "Fönsterdekoration för klient"
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
 msgstr "Huruvida detta fönster ska ha en anpassad namnlist."
+
+#~ msgid "Glade Previewer log"
+#~ msgstr "Logg för Glades förhandsvisare"
 
 #~ msgid "See Privacy Note"
 #~ msgstr "Se sekretessmeddelande"
