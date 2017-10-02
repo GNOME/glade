@@ -371,8 +371,22 @@ glade_app_init (GladeApp *app)
 
   if (!initialized)
     {
-      gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
-                                         pixmaps_dir);
+      GtkIconTheme *default_icon_theme = gtk_icon_theme_get_default ();
+      const gchar *path;
+
+      gtk_icon_theme_append_search_path (default_icon_theme, pixmaps_dir);
+
+      /* Handle extra icon theme paths. Needed for tests to work */
+      if ((path = g_getenv (GLADE_ENV_ICON_THEME_PATH)))
+        {
+          gchar **tokens = g_strsplit (path, ":", -1);
+          gint i;
+
+          for (i = 0; tokens[i]; i++)
+            gtk_icon_theme_append_search_path (default_icon_theme, tokens[i]);
+
+          g_strfreev (tokens);
+        }
 
       glade_cursor_init ();
 
