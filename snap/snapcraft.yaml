@@ -1,0 +1,65 @@
+name: glade
+version: git
+summary: Create or open user interface designs for GTK+ applications
+description: |
+
+  Glade is a RAD tool to enable quick & easy development of user interfaces
+  for the GTK+ 3 toolkit and the GNOME desktop environment.
+
+  The user interfaces designed in Glade are saved as XML and these can be
+  loaded by applications dynamically as needed by using GtkBuilder or used
+  directly to define a new GtkWidget derived object class using
+  GTK+ new template feature.
+
+  By using GtkBuilder, Glade XML files can be used in numerous programming
+  languages including C, C++, C#, Vala, Java, Perl, Python, and others.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict
+
+plugs:
+    gnome-3-26-1604:
+      interface: content
+      target: $SNAP/gnome-platform
+      default-provider: gnome-3-26-1604:gnome-3-26-1604
+
+apps:
+  glade:
+    command: desktop-launch glade
+    plugs:
+      - desktop
+      - desktop-legacy
+      - home
+      - gsettings
+      - network
+      - unity7
+      - wayland
+    desktop: usr/share/applications/glade.desktop
+
+parts:
+  glade:
+    build-attributes: [no-system-libraries]
+    after: [desktop-gnome-platform]
+    source: .
+    source-type: git
+    plugin: autotools
+    configflags: [--disable-maintainer-mode, --prefix=/snap/glade/current/usr]
+    prepare:
+      sed -i.bak -e 's|=glade$|=${SNAP}/meta/gui/glade.png|g' data/glade.desktop.in.in
+    install: |
+      mkdir -p $SNAPCRAFT_PART_INSTALL/meta/gui/
+      cp ../src/data/icons/hicolor/256x256/apps/glade.png $SNAPCRAFT_PART_INSTALL/meta/gui/
+    organize:
+      snap/glade/current/usr: usr
+    build-packages:
+      - gnome-common
+      - libxml2-dev
+      - libglib2.0-dev
+      - libgtk-3-dev
+      - python-gi-dev
+      - python2.7-dev
+      - gtk-doc-tools
+      - yelp-tools
+      - intltool
+      - gobject-introspection
+      - libgirepository1.0-dev
