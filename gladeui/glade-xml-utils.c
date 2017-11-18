@@ -41,6 +41,7 @@
 
 #include "glade-xml-utils.h"
 #include "glade-catalog.h"
+#include "glade-utils.h"
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -307,12 +308,6 @@ glade_xml_set_property (xmlNodePtr   node,
     xmlSetProp (node, BAD_CAST (name), BAD_CAST (value));
 }
 
-#define GLADE_TAG_TRUE   "True"
-#define GLADE_TAG_FALSE  "False"
-#define GLADE_TAG_TRUE2  "TRUE"
-#define GLADE_TAG_FALSE2 "FALSE"
-#define GLADE_TAG_TRUE3  "yes"
-#define GLADE_TAG_FALSE3 "no"
 /*
  * Get a String value for a node either carried as an attibute or as
  * the content of a child.
@@ -330,21 +325,8 @@ glade_xml_get_boolean (GladeXmlNode *node_in,
   if (value == NULL)
     return _default;
 
-  if (strcmp (value, GLADE_TAG_FALSE) == 0)
-    ret = FALSE;
-  else if (strcmp (value, GLADE_TAG_FALSE2) == 0)
-    ret = FALSE;
-  else if (strcmp (value, GLADE_TAG_FALSE3) == 0)
-    ret = FALSE;
-  else if (strcmp (value, GLADE_TAG_TRUE) == 0)
-    ret = TRUE;
-  else if (strcmp (value, GLADE_TAG_TRUE2) == 0)
-    ret = TRUE;
-  else if (strcmp (value, GLADE_TAG_TRUE3) == 0)
-    ret = TRUE;
-  else
+  if (glade_utils_boolean_from_string (value, &ret))
     g_warning ("Boolean tag unrecognized *%s*\n", value);
-
   g_free (value);
 
   return ret;
@@ -367,21 +349,8 @@ glade_xml_get_property_boolean (GladeXmlNode *node_in,
   if (value == NULL)
     return _default;
 
-  if (strcmp (value, GLADE_TAG_FALSE) == 0)
-    ret = FALSE;
-  else if (strcmp (value, GLADE_TAG_FALSE2) == 0)
-    ret = FALSE;
-  else if (strcmp (value, GLADE_TAG_FALSE3) == 0)
-    ret = FALSE;
-  else if (strcmp (value, GLADE_TAG_TRUE) == 0)
-    ret = TRUE;
-  else if (strcmp (value, GLADE_TAG_TRUE2) == 0)
-    ret = TRUE;
-  else if (strcmp (value, GLADE_TAG_TRUE3) == 0)
-    ret = TRUE;
-  else
+  if (glade_utils_boolean_from_string (value, &ret))
     g_warning ("Boolean tag unrecognized *%s*\n", value);
-
   g_free (value);
 
   return ret;
@@ -442,17 +411,10 @@ glade_xml_node_set_property_boolean (GladeXmlNode *node_in,
   xmlNodePtr node = (xmlNodePtr) node_in;
 
   if (value)
-    glade_xml_set_property (node, name, GLADE_TAG_TRUE);
+    glade_xml_set_property (node, name, "True");
   else
-    glade_xml_set_property (node, name, GLADE_TAG_FALSE);
+    glade_xml_set_property (node, name, "False");
 }
-
-#undef GLADE_TAG_TRUE
-#undef GLADE_TAG_FALSE
-#undef GLADE_TAG_TRUE2
-#undef GLADE_TAG_FALSE2
-#undef GLADE_TAG_TRUE3
-#undef GLADE_TAG_FALSE3
 
 gchar *
 glade_xml_get_value_string_required (GladeXmlNode *node_in,
