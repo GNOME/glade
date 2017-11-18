@@ -11,7 +11,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = gladeui-2.0.pc
 
 @INTLTOOL_XML_RULE@
-appdatadir = $(datadir)/appdata
+appdatadir = $(datadir)/metainfo
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 appdata_in_files = glade.appdata.xml.in
 
