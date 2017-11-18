@@ -67,6 +67,8 @@ GValue           *glade_utils_value_from_string   (GType               type,
 						   const gchar        *string,
 						   GladeProject       *project);
 gchar            *glade_utils_string_from_value   (const GValue       *value);
+gboolean          glade_utils_boolean_from_string (const gchar *string,
+						   gboolean *value);
 
 /* Devhelp */
 gboolean          glade_util_have_devhelp          (void);

@@ -1587,6 +1587,53 @@ glade_utils_value_from_string (GType type,
   return NULL;
 }
 
+/**
+ * glade_utils_boolean_from_string:
+ * @string: the string to convert
+ * @value: return location
+ *
+ * Parse a boolean value
+ *
+ * Returns: True if there was an error on the conversion.
+ */
+gboolean
+glade_utils_boolean_from_string (const gchar *string, gboolean *value)
+{
+  if (string)
+    {
+      const gchar *c = string;
+
+      /* Skip white spaces */
+      while (g_ascii_isspace (*c))
+        c++;
+
+      /* We only need the first char */
+      switch (*c)
+        {
+          case '1':
+          case 't':
+          case 'T':
+          case 'y':
+          case 'Y':
+            if (value)
+              *value = TRUE;
+            return FALSE;
+          break;
+
+          case '0':
+          case 'f':
+          case 'F':
+          case 'n':
+          case 'N':
+            if (value)
+              *value = FALSE;
+            return FALSE;
+          break;
+        }
+    }
+
+  return TRUE;
+}
 
 /**
  * glade_utils_string_from_value:
