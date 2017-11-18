@@ -867,10 +867,12 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
     g_value_set_uint (value, g_utf8_get_char (string));
   else if (G_IS_PARAM_SPEC_BOOLEAN (property_class->pspec))
     {
-      if (strcmp (string, GLADE_TAG_TRUE) == 0)
-        g_value_set_boolean (value, TRUE);
-      else
+      gboolean val;
+      if (glade_utils_boolean_from_string (string, &val))
         g_value_set_boolean (value, FALSE);
+      else
+        g_value_set_boolean (value, val);
+
     }
   else if (G_IS_PARAM_SPEC_OBJECT (property_class->pspec))
     {
