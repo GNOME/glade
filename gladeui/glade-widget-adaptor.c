@@ -1895,7 +1895,7 @@ glade_widget_adaptor_register (GladeWidgetAdaptor *adaptor)
     adaptor_hash = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                           NULL, g_object_unref);
 
-  g_hash_table_insert (adaptor_hash, GSIZE_TO_POINTER (adaptor->priv->type), adaptor);
+  g_hash_table_insert (adaptor_hash, GSIZE_TO_POINTER (adaptor->priv->real_type), adaptor);
 
   g_signal_emit_by_name (glade_app_get (), "widget-adaptor-registered", adaptor, NULL);
 }
