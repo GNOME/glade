@@ -784,7 +784,7 @@ glade_base_editor_add_item_activate (GtkMenuItem     *menuitem,
                                      GladeBaseEditor *e)
 {
   GObject *item = G_OBJECT (menuitem);
-  GType type = GPOINTER_TO_INT (g_object_get_data (item, "object_type"));
+  GType type = GPOINTER_TO_SIZE (g_object_get_data (item, "object_type"));
   GladeBaseEditorAddMode add_mode =
       GPOINTER_TO_INT (g_object_get_data (item, "object_add_mode"));
 
@@ -825,7 +825,7 @@ glade_base_editor_popup (GladeBaseEditor *editor, GladeWidget *widget)
         gtk_widget_show (item);
 
         g_object_set_data (G_OBJECT (item), "object_type",
-                           GINT_TO_POINTER (iter_type));
+                           GSIZE_TO_POINTER (iter_type));
 
         g_object_set_data (G_OBJECT (item), "object_add_mode",
                            GINT_TO_POINTER (ADD_SIBLING));
@@ -857,7 +857,7 @@ glade_base_editor_popup (GladeBaseEditor *editor, GladeWidget *widget)
         gtk_widget_show (item);
 
         g_object_set_data (G_OBJECT (item), "object_type",
-                           GINT_TO_POINTER (iter_type));
+                           GSIZE_TO_POINTER (iter_type));
 
         g_object_set_data (G_OBJECT (item), "object_add_mode",
                            GINT_TO_POINTER (ADD_CHILD));
