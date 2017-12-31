@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.21.0 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gladeui" version="0.0"/>
+  <template class="GladeBaseEditor" parent="GtkBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="events"/>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <signal name="realize" handler="glade_base_editor_realize_callback" swapped="no"/>
+    <child>
+      <object class="GtkPaned" id="paned">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="events"/>
+        <property name="orientation">vertical</property>
+        <property name="wide_handle">True</property>
+        <child>
+          <object class="GtkPaned">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="wide_handle">True</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="events"/>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="events"/>
+                    <property name="hscrollbar_policy">never</property>
+                    <property name="vscrollbar_policy">always</property>
+                    <child>
+                      <object class="GtkTreeView" id="treeview">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="events">GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_TOUCH_MASK</property>
+                        <property name="reorderable">True</property>
+                        <property name="rules_hint">True</property>
+                        <property name="search_column">2</property>
+                        <signal name="button-press-event" handler="glade_base_editor_popup_handler" swapped="no"/>
+                        <signal name="cursor-changed" handler="glade_base_editor_treeview_cursor_changed" swapped="no"/>
+                        <signal name="key-press-event" handler="glade_base_editor_treeview_key_press_event" swapped="no"/>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection"/>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="border_width">4</property>
+                    <child>
+                      <object class="GtkButtonBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="layout_style">expand</property>
+                        <child>
+                          <object class="GtkButton" id="help_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="icon_name">help-browser</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButtonBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="layout_style">expand</property>
+                        <child>
+                          <object class="GtkButton" id="add_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="events"/>
+                            <signal name="clicked" handler="glade_base_editor_add_activate" swapped="no"/>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="icon_name">list-add</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="delete_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="events"/>
+                            <signal name="clicked" handler="glade_base_editor_delete_activate" swapped="no"/>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="icon_name">list-remove</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">True</property>
+                <property name="shrink">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="tip_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">4</property>
+                    <property name="margin_right">4</property>
+                    <property name="use_markup">True</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="events"/>
+                    <property name="hscrollbar_policy">never</property>
+                    <child>
+                      <object class="GtkViewport">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="events"/>
+                        <child>
+                          <object class="GtkGrid" id="table">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="events"/>
+                            <property name="margin_left">4</property>
+                            <property name="margin_right">4</property>
+                            <property name="orientation">vertical</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">4</property>
+                            <child>
+                              <object class="GtkLabel" id="message_label">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">True</property>
+                <property name="shrink">False</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="resize">True</property>
+            <property name="shrink">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladeSignalEditor" id="signal_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="events"/>
+          </object>
+          <packing>
+            <property name="resize">True</property>
+            <property name="shrink">False</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </template>
+</interface>

@@ -62,6 +62,7 @@ UI_FILES = 				\
 	glade-project-properties.ui	\
 	glade-adaptor-chooser-widget.ui	\
 	glade-adaptor-chooser.ui	\
+	glade-base-editor.ui		\
 	glade-property-label.ui
 
 GRAPHICS_FILES = \
