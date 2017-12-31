@@ -198,9 +198,7 @@ static void
 glade_gtk_action_launch_editor (GObject  *action)
 {
   GladeWidget        *widget  = glade_widget_get_from_gobject (action);
-  GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
   GladeBaseEditor    *editor;
-  GladeEditable      *action_editor;
   GtkWidget          *window;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GType type_action = GTK_TYPE_ACTION;
@@ -212,10 +210,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   /* Make sure we get the group here */
   widget = glade_widget_get_toplevel (widget);
 
-  action_editor = glade_widget_adaptor_create_editable (adaptor, GLADE_PAGE_GENERAL);
-
   /* Editor */
-  editor = glade_base_editor_new (glade_widget_get_object (widget), action_editor,
+  editor = glade_base_editor_new (glade_widget_get_object (widget), NULL,
 				  _("Action"), type_action,
 				  _("Toggle"), type_toggle_action,
 				  _("Radio"),  type_radio_action,

@@ -140,15 +140,11 @@ static void
 glade_gtk_text_tag_table_launch_editor (GObject  *table)
 {
   GladeWidget        *widget  = glade_widget_get_from_gobject (table);
-  GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
   GladeBaseEditor    *editor;
-  GladeEditable      *action_editor;
   GtkWidget          *window;
 
-  action_editor = glade_widget_adaptor_create_editable (adaptor, GLADE_PAGE_GENERAL);
-
   /* Editor */
-  editor = glade_base_editor_new (glade_widget_get_object (widget), action_editor,
+  editor = glade_base_editor_new (glade_widget_get_object (widget), NULL,
 				  _("Tag"), GTK_TYPE_TEXT_TAG,
 				  NULL);
 

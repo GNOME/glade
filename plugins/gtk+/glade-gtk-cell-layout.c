@@ -398,17 +398,11 @@ glade_gtk_cell_layout_move_child (GladeBaseEditor * editor,
 static void
 glade_gtk_cell_layout_launch_editor (GObject *layout, gchar *window_name)
 {
-  GladeWidget        *widget  = glade_widget_get_from_gobject (layout);
-  GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
   GladeBaseEditor    *editor;
-  GladeEditable      *layout_editor;
   GtkWidget          *window;
 
-  layout_editor = glade_widget_adaptor_create_editable (adaptor, GLADE_PAGE_GENERAL);
-  layout_editor = (GladeEditable *) glade_tree_view_editor_new (adaptor, layout_editor);
-
   /* Editor */
-  editor = glade_base_editor_new (layout, layout_editor,
+  editor = glade_base_editor_new (layout, NULL,
                                   _("Text"), GTK_TYPE_CELL_RENDERER_TEXT,
                                   _("Accelerator"), GTK_TYPE_CELL_RENDERER_ACCEL,
                                   _("Combo"), GTK_TYPE_CELL_RENDERER_COMBO,

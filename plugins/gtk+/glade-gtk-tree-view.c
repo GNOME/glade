@@ -72,19 +72,13 @@ glade_gtk_treeview_add_verify (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_treeview_launch_editor (GObject * treeview)
+glade_gtk_treeview_launch_editor (GObject *treeview)
 {
-  GladeWidget        *widget  = glade_widget_get_from_gobject (treeview);
-  GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
   GladeBaseEditor    *editor;
-  GladeEditable      *treeview_editor;
   GtkWidget          *window;
 
-  treeview_editor = glade_widget_adaptor_create_editable (adaptor, GLADE_PAGE_GENERAL);
-  treeview_editor = (GladeEditable *) glade_tree_view_editor_new (adaptor, treeview_editor);
-
   /* Editor */
-  editor = glade_base_editor_new (treeview, treeview_editor,
+  editor = glade_base_editor_new (treeview, NULL,
                                   _("Column"), GTK_TYPE_TREE_VIEW_COLUMN, NULL);
 
   glade_base_editor_append_types (editor, GTK_TYPE_TREE_VIEW_COLUMN,
