@@ -2297,29 +2297,29 @@ glade_window_populate_intro (GladeWindow *window)
   ADD_NODE (NULL, "redo-button",       BOTTOM, 2, _("Redo"));
   ADD_NODE (NULL, "project-switcher",  BOTTOM, 3, _("Project switcher"));
 
-  ADD_NODE (NULL, "save-button",       BOTTOM, 4, _("and Save button are directly accesible in the headerbar"));
+  ADD_NODE (NULL, "save-button",       BOTTOM, 4, _("and Save button are directly accessible in the headerbar"));
   ADD_NODE (NULL, "save-as-button",    BOTTOM, 2, _("just like Save As"));
   ADD_NODE (NULL, "properties-button", BOTTOM, 2, _("project properties"));
   ADD_NODE (NULL, "menu-button",       BOTTOM, 3, _("and less commonly used actions"));
 
-  ADD_NODE (NULL, "inspector", CENTER, 3, _("The object inspector took the palette place"));
+  ADD_NODE (NULL, "inspector", CENTER, 3, _("The object inspector took the palette's place"));
   ADD_NODE (NULL, "editor",    CENTER, 3, _("To free up space for the property editor"));
 
   ADD_NODE (NULL,      "adaptor-chooser",       BOTTOM, 4, _("The palette was replaced with a new object chooser"));
   ADD_NODE ("search",  "adaptor-search-button", RIGHT,  3, _("Where you can search all supported classes"));
-  ADD_NODE ("gtk",     "adaptor-gtk-buttonbox", BOTTOM, 2.5, _("investigate Gtk object groups"));
+  ADD_NODE ("gtk",     "adaptor-gtk-buttonbox", BOTTOM, 2.5, _("investigate GTK+ object groups"));
   ADD_NODE ("others",  "adaptor-others-button", RIGHT,  4, _("and find classes introduced by other libraries"));
 
-  ADD_NODE (NULL, "intro-button", BOTTOM, 6, _("OK, now  we are done with the overview let start with the new workflow"));
+  ADD_NODE (NULL, "intro-button", BOTTOM, 6, _("OK, now that we are done with the overview, let's start with the new workflow"));
 
   ADD_NODE ("add-project", "intro-button", BOTTOM, 4, _("First of all, create a new project"));
-  ADD_NODE ("add-window",  "intro-button", BOTTOM, 6, _("Ok, now add a GtkWindow using the new widget chooser or by double clicking on the workspace"));
-  ADD_NODE (NULL,          "intro-button", BOTTOM, 2, _("Excelent!"));
-  ADD_NODE (NULL,          "intro-button", BOTTOM, 5, _("BTW Did you know you can double click on any placeholder to create widgets?"));
+  ADD_NODE ("add-window",  "intro-button", BOTTOM, 6, _("OK, now add a GtkWindow using the new widget chooser or by double clicking on the workspace"));
+  ADD_NODE (NULL,          "intro-button", BOTTOM, 2, _("Excellent!"));
+  ADD_NODE (NULL,          "intro-button", BOTTOM, 5, _("BTW, did you know you can double click on any placeholder to create widgets?"));
   ADD_NODE ("add-grid",    "intro-button", BOTTOM, 3, _("Try adding a grid"));
   ADD_NODE ("add-button",  "intro-button", BOTTOM, 3, _("and a button"));
 
-  ADD_NODE (NULL, "intro-button",  BOTTOM, 3, _("Quite easy! isn't it?"));
+  ADD_NODE (NULL, "intro-button",  BOTTOM, 3, _("Quite easy! Isn't it?"));
   ADD_NODE (NULL, "intro-button",  BOTTOM, 2, _("Enjoy!"));
 
   g_signal_connect (window->priv->intro, "show-node",
