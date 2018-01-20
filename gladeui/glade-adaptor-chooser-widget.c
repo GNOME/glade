@@ -24,6 +24,7 @@
 #include "glade-app.h"
 #include "gladeui-enum-types.h"
 #include "glade-adaptor-chooser-widget.h"
+#include "glade-dnd.h"
 
 #include <string.h>
 
@@ -396,6 +397,45 @@ adaptor_text_cell_data_func (GtkTreeViewColumn *tree_column,
 }
 
 static void
+glade_adaptor_chooser_widget_drag_begin (GtkWidget      *widget,
+                                         GdkDragContext *context,
+                                         gpointer        data)
+{
+  GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter))
+    {
+      GladeWidgetAdaptor *adaptor;
+      gtk_tree_model_get (model, &iter, COLUMN_ADAPTOR, &adaptor, -1);
+      _glade_dnd_set_icon_widget (context,
+                                  glade_widget_adaptor_get_icon_name (adaptor),
+                                  glade_widget_adaptor_get_name (adaptor));
+    }
+}
+
+static void
+glade_adaptor_chooser_widget_drag_data_get (GtkWidget          *widget,
+                                            GdkDragContext     *context,
+                                            GtkSelectionData   *data,
+                                            guint               info,
+                                            guint               time,
+                                            gpointer            userdata)
+{
+  GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter))
+    {
+      GladeWidgetAdaptor *adaptor;
+      gtk_tree_model_get (model, &iter, COLUMN_ADAPTOR, &adaptor, -1);
+      _glade_dnd_set_data (data, G_OBJECT (adaptor));
+    }
+}
+
+static void
 _glade_adaptor_chooser_widget_constructed (GObject *object)
 {
   _GladeAdaptorChooserWidget *chooser = GLADE_ADAPTOR_CHOOSER_WIDGET (object);
@@ -418,6 +458,15 @@ _glade_adaptor_chooser_widget_constructed (GObject *object)
   gtk_entry_completion_set_match_func (priv->entrycompletion,
                                        entrycompletion_match_func,
                                        chooser, NULL);
+  /* Enable Drag & Drop */
+  gtk_tree_view_enable_model_drag_source (priv->treeview, GDK_BUTTON1_MASK,
+                                          _glade_dnd_get_target (), 1, 0);
+  g_signal_connect_after (priv->treeview, "drag-begin",
+                          G_CALLBACK (glade_adaptor_chooser_widget_drag_begin),
+                          NULL);
+  g_signal_connect (priv->treeview, "drag-data-get",
+                    G_CALLBACK (glade_adaptor_chooser_widget_drag_data_get),
+                    NULL);
 }
 
 static void
