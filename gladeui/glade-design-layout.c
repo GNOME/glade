@@ -703,9 +703,7 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
       (!glade_project_is_toplevel_active (priv->project, child) ||
       ev->type == GDK_2BUTTON_PRESS))
     {
-      _glade_design_view_freeze (priv->view);
       glade_project_selection_set (priv->project, G_OBJECT (child), TRUE);
-      _glade_design_view_thaw (priv->view);
     }
 
   return (activity != ACTIVITY_NONE);
@@ -2512,8 +2510,6 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
    */
   gdl_drag_source_check (layout, mode, event, gwidget, x, y);
 
-  _glade_design_view_freeze (priv->view);
-  
   /* Try the placeholder first */
   if (placeholder && gtk_widget_event (placeholder, event)) 
     retval = TRUE;
@@ -2521,8 +2517,6 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
     retval = glade_widget_event (gwidget, event);
   else
     retval = FALSE;
-
-  _glade_design_view_thaw (priv->view);
 
   return retval;
 }

@@ -23,12 +23,21 @@
 
 glade-design-layout {
   background: none;
-  border: 4px solid @theme_selected_bg_color;
+  border: 4px solid @borders;
   color: @theme_selected_fg_color;
   border-radius: 4px 4px 0px 4px;
 }
 
+glade-design-layout:selected {
+  border: 4px solid @theme_selected_bg_color;
+}
+
 glade-design-layout.handle {
+  background-color: @borders;
+  border-radius: 0px 0px 4px 4px;
+}
+
+glade-design-layout:selected.handle {
   background-color: @theme_selected_bg_color;
   border-radius: 0px 0px 4px 4px;
 }

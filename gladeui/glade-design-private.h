@@ -31,9 +31,6 @@
 
 G_BEGIN_DECLS
 
-void _glade_design_view_freeze (GladeDesignView *view);
-void _glade_design_view_thaw   (GladeDesignView *view);
-
 void _glade_design_layout_get_colors (GdkRGBA *c1, GdkRGBA *c2,
                                       GdkRGBA *c3, GdkRGBA *c4);
 
