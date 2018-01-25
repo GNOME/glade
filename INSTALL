@@ -13,36 +13,36 @@ Basic Installation
 These are generic installation instructions.
 
    The `configure' shell script attempts to guess correct values for
-various system-dependent variables used during compilation.  It uses
+various system-dependent variables used during compilation. It uses
 those values to create a `Makefile' in each directory of the package.
 It may also create one or more `.h' files containing system-dependent
-definitions.  Finally, it creates a shell script `config.status' that
-you can run in the future to recreate the current configuration, and a
+definitions. Finally, it creates a shell script `config.status' that
+you can run in the future to recreate the current configuration and a
 file `config.log' containing compiler output (useful mainly for
 debugging `configure').
 
    It can also use an optional file (typically called `config.cache'
 and enabled with `--cache-file=config.cache' or simply `-C') that saves
-the results of its tests to speed up reconfiguring.  (Caching is
+the results of its tests to speed up reconfiguring. (Caching is
 disabled by default to prevent problems with accidental use of stale
 cache files.)
 
    If you need to do unusual things to compile the package, please try
-to figure out how `configure' could check whether to do them, and mail
+to figure out how `configure' could check whether to do them and mail
 diffs or instructions to the address given in the `README' so they can
-be considered for the next release.  If you are using the cache, and at
+be considered for the next release. If you are using the cache and at
 some point `config.cache' contains results you don't want to keep, you
 may remove or edit it.
 
    The file `configure.ac' (or `configure.in') is used to create
-`configure' by a program called `autoconf'.  You only need
+`configure' by a program called `autoconf'. You only need
 `configure.ac' if you want to change it or regenerate `configure' using
 a newer version of `autoconf'.
 
 The simplest way to compile this package is:
 
   1. `cd' to the directory containing the package's source code and type
-     `./configure' to configure the package for your system.  If you're
+     `./configure' to configure the package for your system. If you're
      using `csh' on an old version of System V, you might need to type
      `sh ./configure' instead to prevent `csh' from trying to execute
      `configure' itself.
@@ -59,23 +59,23 @@ The simplest way to compile this package is:
      documentation.
 
   5. You can remove the program binaries and object files from the
-     source code directory by typing `make clean'.  To also remove the
+     source code directory by typing `make clean'. To also remove the
      files that `configure' created (so you can compile the package for
-     a different kind of computer), type `make distclean'.  There is
+     a different kind of computer), type `make distclean'. There is
      also a `make maintainer-clean' target, but that is intended mainly
-     for the package's developers.  If you use it, you may have to get
+     for the package's developers. If you use it, you may have to get
      all sorts of other programs in order to regenerate files that came
      with the distribution.
 
 Compilers and Options
 =====================
 
-Some systems require unusual options for compilation or linking that the
-`configure' script does not know about.  Run `./configure --help' for
+   Some systems require unusual options for compilation or linking that the
+`configure' script does not know about. Run `./configure --help' for
 details on some of the pertinent environment variables.
 
    You can give `configure' initial values for configuration parameters
-by setting variables in the command line or in the environment.  Here
+by setting variables in the command line or in the environment. Here  
 is an example:
 
      ./configure CC=c89 CFLAGS=-O2 LIBS=-lposix
@@ -85,17 +85,17 @@ is an example:
 Compiling For Multiple Architectures
 ====================================
 
-You can compile the package for more than one kind of computer at the
+   You can compile the package for more than one kind of computer at the
 same time, by placing the object files for each architecture in their
-own directory.  To do this, you must use a version of `make' that
-supports the `VPATH' variable, such as GNU `make'.  `cd' to the
+own directory. To do this, you must use a version of `make' that
+supports the `VPATH' variable, such as GNU `make'. `cd' to the
 directory where you want the object files and executables to go and run
-the `configure' script.  `configure' automatically checks for the
+the `configure' script. `configure' automatically checks for the
 source code in the directory that `configure' is in and in `..'.
 
    If you have to use a `make' that does not support the `VPATH'
 variable, you have to compile the package for one architecture at a
-time in the source code directory.  After you have installed the
+time in the source code directory. After you have installed the
 package for one architecture, use `make distclean' before reconfiguring
 for another architecture.
 
@@ -103,19 +103,19 @@ Installation Names
 ==================
 
 By default, `make install' installs the package's commands under
-`/usr/local/bin', include files under `/usr/local/include', etc.  You
+`/usr/local/bin', include files under `/usr/local/include', etc. You
 can specify an installation prefix other than `/usr/local' by giving
 `configure' the option `--prefix=PREFIX'.
 
    You can specify separate installation prefixes for
-architecture-specific files and architecture-independent files.  If you
+architecture-specific files and architecture-independent files. If you
 pass the option `--exec-prefix=PREFIX' to `configure', the package uses
 PREFIX as the prefix for installing programs and libraries.
 Documentation and other data files still use the regular prefix.
 
    In addition, if you use an unusual directory layout you can give
 options like `--bindir=DIR' to specify different values for particular
-kinds of files.  Run `configure --help' for a list of the directories
+kinds of files. Run `configure --help' for a list of the directories
 you can set and what kinds of files go in them.
 
    If the package supports it, you can cause programs to be installed
@@ -128,7 +128,7 @@ Optional Features
 Some packages pay attention to `--enable-FEATURE' options to
 `configure', where FEATURE indicates an optional part of the package.
 They may also pay attention to `--with-PACKAGE' options, where PACKAGE
-is something like `gnu-as' or `x' (for the X Window System).  The
+is something like `gnu-as' or `x' (for the X Window System). The
 `README' should mention any `--enable-' and `--with-' options that the
 package recognizes.
 
@@ -141,11 +141,11 @@ Specifying the System Type
 ==========================
 
 There may be some features `configure' cannot figure out automatically,
-but needs to determine by the type of machine the package will run on.
+but needs to determine the type of machine the package will run on.
 Usually, assuming the package is built to be run on the _same_
 architectures, `configure' can figure that out, but if it prints a
 message saying it cannot guess the machine type, give it the
-`--build=TYPE' option.  TYPE can either be a short name for the system
+`--build=TYPE' option. TYPE can either be a short name for the system
 type, such as `sun4', or a canonical name which has the form:
 
      CPU-COMPANY-SYSTEM
@@ -154,7 +154,7 @@ where SYSTEM can have one of these forms:
 
      OS KERNEL-OS
 
-   See the file `config.sub' for the possible values of each field.  If
+   See the file `config.sub' for the possible values of each field. If
 `config.sub' isn't included in this package, then this package doesn't
 need to know the machine type.
 
@@ -162,7 +162,7 @@ need to know the machine type.
 use the option `--target=TYPE' to select the type of system they will
 produce code for.
 
-   If you want to _use_ a cross compiler, that generates code for a
+   If you want to _use_ a cross-compiler, that generates code for a
 platform different from the build platform, you should specify the
 "host" platform (i.e., that on which the generated programs will
 eventually be run) with `--host=TYPE'.
@@ -182,15 +182,15 @@ Defining Variables
 ==================
 
 Variables not defined in a site shell script can be set in the
-environment passed to `configure'.  However, some packages may run
+environment passed to `configure'. However, some packages may run
 configure again during the build, and the customized values of these
-variables may be lost.  In order to avoid this problem, you should set
-them in the `configure' command line, using `VAR=value'.  For example:
+variables may be lost. In order to avoid this problem, you should set
+them in the `configure' command line, using `VAR=value'. For example:
 
      ./configure CC=/usr/local2/bin/gcc
 
 causes the specified `gcc' to be used as the C compiler (unless it is
-overridden in the site shell script).  Here is a another example:
+overridden in the site shell script). Here is another example:
 
      /bin/bash ./configure CONFIG_SHELL=/bin/bash
 
@@ -223,14 +223,14 @@ configuration-related scripts to be executed by `/bin/bash'.
 `--quiet'
 `--silent'
 `-q'
-     Do not print messages saying which checks are being made.  To
+     Do not print messages saying which checks are being made. To
      suppress all normal output, redirect it to `/dev/null' (any error
      messages will still be shown).
 
 `--srcdir=DIR'
-     Look for the package's source code in directory DIR.  Usually
+     Look for the package's source code in directory DIR. Usually
      `configure' can determine that directory automatically.
 
-`configure' also accepts some other, not widely useful, options.  Run
+`configure' also accepts some other, not widely useful, options. Run
 `configure --help' for more details.
 
