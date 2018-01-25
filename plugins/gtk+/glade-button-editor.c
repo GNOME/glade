@@ -142,7 +142,6 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
       gboolean modify_content = TRUE;
 
       if (GTK_IS_MENU_BUTTON (button) ||
-	  GTK_IS_LINK_BUTTON (button) ||
 	  GTK_IS_SCALE_BUTTON (button))
 	modify_content = FALSE;
 
