@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-10-27 12:03+0000\n"
-"PO-Revision-Date: 2017-11-03 11:30+0700\n"
+"POT-Creation-Date: 2018-01-08 15:10+0000\n"
+"PO-Revision-Date: 2018-01-18 15:07+0700\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
@@ -18,10 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.5\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
-#: ../src/main.c:42
+#: ../src/main.c:42 ../src/glade.glade.h:6
 msgid "Glade"
 msgstr "Glade"
 
@@ -74,150 +74,117 @@ msgstr ""
 "bahasa pemrograman termasuk C, C++, C#, Vala, Java, Perl, Python, dan "
 "lainnya."
 
-#: ../src/glade-window.c:56
+#: ../src/glade-window.c:57
 msgid "[Read Only]"
 msgstr "[Hanya Baca]"
 
-#: ../src/glade-window.c:331
+#: ../src/glade-window.c:189
 msgid "User Interface Designer"
 msgstr "Perancang Antar Muka Pengguna"
 
-#. translators: referring to the action of activating a file named '%s'.
-#. *              we also indicate to users that the file may be read-only with
-#. *              the second '%s'
-#: ../src/glade-window.c:532
-#, c-format
-msgid "Activate '%s' %s"
-msgstr "Aktifkan '%s' %s"
+#: ../src/glade-window.c:452 ../src/glade-window.c:459
+msgid "the last action"
+msgstr "aksi terakhir"
 
-#. translators: referring to the action of activating a file named '%s'
-#. FIXME add hint for translators
-#: ../src/glade-window.c:538 ../src/glade-window.c:546
-#, c-format
-msgid "Activate '%s'"
-msgstr "Aktifkan '%s'"
-
-#: ../src/glade-window.c:594 ../src/glade-registration.glade.h:7
-#: ../gladeui/glade-project-properties.ui.h:12
-#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
-msgid "Name:"
-msgstr "Nama:"
-
-#: ../src/glade-window.c:597
-msgid "Requires:"
-msgstr "Memerlukan:"
-
-#: ../src/glade-window.c:656
-msgid "_Undo"
-msgstr "_Batalkan"
-
-#: ../src/glade-window.c:659
+#: ../src/glade-window.c:453
 #, c-format
 msgid "Undo: %s"
 msgstr "Batalkan: %s"
 
-#: ../src/glade-window.c:660 ../src/glade-window.c:671
-msgid "the last action"
-msgstr "aksi terakhir"
-
-#: ../src/glade-window.c:667
-msgid "_Redo"
-msgstr "_Jadi Lagi"
-
-#: ../src/glade-window.c:670
+#: ../src/glade-window.c:460
 #, c-format
 msgid "Redo: %s"
 msgstr "Jadi Lagi: %s"
 
-#: ../src/glade-window.c:702
+#: ../src/glade-window.c:485
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Simpan otomatis '%s'"
 
-#: ../src/glade-window.c:707
+#: ../src/glade-window.c:490
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Galat saat menyimpan otomatis '%s'"
 
-#: ../src/glade-window.c:1126
+#: ../src/glade-window.c:713
 msgid "Open…"
 msgstr "Buka…"
 
-#: ../src/glade-window.c:1160
+#: ../src/glade-window.c:747
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Projek '%s' masih sedang dimuat."
 
-#: ../src/glade-window.c:1179
+#: ../src/glade-window.c:766
 msgid "Failed to backup existing file, continue saving?"
 msgstr "Gagal membuat cadangan berkas yang ada, lanjutkan menyimpan?"
 
-#: ../src/glade-window.c:1201
+#: ../src/glade-window.c:788
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Gagal menyimpan %s: %s"
 
-#: ../src/glade-window.c:1240
+#: ../src/glade-window.c:827
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Berkas %s telah diubah semenjak terakhir dibaca"
 
-#: ../src/glade-window.c:1244
+#: ../src/glade-window.c:831
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Jika Anda menyimpannya, seluruh perubahan dari luar akan hilang. Simpan saja?"
 
-#: ../src/glade-window.c:1249
+#: ../src/glade-window.c:836
 msgid "_Save Anyway"
 msgstr "_Simpan Saja"
 
-#: ../src/glade-window.c:1257
+#: ../src/glade-window.c:844
 msgid "_Don't Save"
 msgstr "_Jangan Simpan"
 
-#: ../src/glade-window.c:1291
+#: ../src/glade-window.c:877
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Projek '%s' telah disimpan"
 
-#: ../src/glade-window.c:1322
+#: ../src/glade-window.c:908
 msgid "Save As…"
 msgstr "Simpan Sebagai…"
 
-#: ../src/glade-window.c:1386
+#: ../src/glade-window.c:972
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Tak bisa menyimpan berkas %s"
 
-#: ../src/glade-window.c:1390
+#: ../src/glade-window.c:976
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Anda tidak memiliki izin yang dibutuhkan untuk menyimpan berkas."
 
-#: ../src/glade-window.c:1412
+#: ../src/glade-window.c:998
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "Tak bisa menyimpan berkas %s. Projek lain dengan path tersebut sedang dibuka."
 
-#: ../src/glade-window.c:1437
+#: ../src/glade-window.c:1026
 msgid "No open projects to save"
 msgstr "Tak ada projek terbuka untuk disimpan"
 
-#: ../src/glade-window.c:1467
+#: ../src/glade-window.c:1059
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Simpan perubahan ke projek \"%s\" sebelum ditutup?"
 
-#: ../src/glade-window.c:1475
+#: ../src/glade-window.c:1067
 msgid "Your changes will be lost if you don't save them."
 msgstr "Perubahan yang Anda buat akan hilang bila tidak Anda simpan."
 
-#: ../src/glade-window.c:1479
+#: ../src/glade-window.c:1071
 msgid "Close _without Saving"
 msgstr "Tutup _tanpa Menyimpan"
 
-#: ../src/glade-window.c:1480 ../src/glade-window.c:2656
-#: ../gladeui/glade-editor.c:765 ../gladeui/glade-editor.c:1121
+#: ../src/glade-window.c:1072 ../src/glade-window.c:1748
+#: ../gladeui/glade-editor.c:779 ../gladeui/glade-editor.c:1135
 #: ../gladeui/glade-editor-property.c:1690
 #: ../gladeui/glade-editor-property.c:1997
 #: ../gladeui/glade-editor-property.c:2196
@@ -229,69 +196,162 @@ msgstr "Tutup _tanpa Menyimpan"
 msgid "_Cancel"
 msgstr "_Batal"
 
-#: ../src/glade-window.c:1481 ../gladeui/glade-utils.c:486
+#: ../src/glade-window.c:1073 ../gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Simpan"
 
-#: ../src/glade-window.c:1509
+#: ../src/glade-window.c:1104
 msgid "Save…"
 msgstr "Simpan…"
 
-#: ../src/glade-window.c:2475
-msgid "Close document"
-msgstr "Tutup dokumen"
-
-#: ../src/glade-window.c:2571
+#: ../src/glade-window.c:1655
 msgid "Could not create a new project."
 msgstr "Tak dapat membuat projek baru."
 
-#: ../src/glade-window.c:2624
+#: ../src/glade-window.c:1716
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Projek %s memiliki perubahan yang belum disimpan"
 
-#: ../src/glade-window.c:2629
+#: ../src/glade-window.c:1721
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Bila Anda memuat ulang, semua perubahan yang belum tersimpan akan hilang. "
 "Muat ulang saja?"
 
-#: ../src/glade-window.c:2639
+#: ../src/glade-window.c:1731
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Berkas %s dari projek telah diubah dari luar"
 
-#: ../src/glade-window.c:2644
+#: ../src/glade-window.c:1736
 msgid "Do you want to reload the project?"
 msgstr "Anda ingin memuat ulang projek?"
 
-#: ../src/glade-window.c:2650
+#: ../src/glade-window.c:1742
 msgid "_Reload"
 msgstr "_Muat Ulang"
 
-#: ../src/glade-window.c:3249
-msgid "Palette"
-msgstr "Palet"
+#: ../src/glade-window.c:2287
+msgid "Hello, I will show you what's new in Glade"
+msgstr "Halo, saya akan menunjukkan apa yang baru di Glade"
 
-#: ../src/glade-window.c:3251
-msgid "Inspector"
-msgstr "Pemeriksa"
+#: ../src/glade-window.c:2288
+msgid "The menubar and toolbar where merged in the headerbar"
+msgstr "Bilah menu dan bilah alat yang mana digabung pada bilah header"
 
-#: ../src/glade-window.c:3253 ../src/glade.glade.h:33
-#: ../gladeui/glade-editor.c:335 ../gladeui/glade-widget.c:1377
-#: ../gladeui/glade-project-properties.ui.h:11
-#: ../plugins/gtk+/glade-gtk-action-group.c:184
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:361
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:518
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:545
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:564
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:605
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:126
-msgid "Properties"
-msgstr "Properti"
+#: ../src/glade-window.c:2290
+msgid "You can open a project"
+msgstr "Anda bisa membuka sebuah proyek"
+
+#: ../src/glade-window.c:2291
+msgid "find recently used"
+msgstr "temukan yang baru-baru ini digunakan"
+
+#: ../src/glade-window.c:2292
+msgid "or create a new one"
+msgstr "atau buat yang baru"
+
+#: ../src/glade-window.c:2296
+msgid "Undo"
+msgstr "Batalkan"
+
+#: ../src/glade-window.c:2297
+msgid "Redo"
+msgstr "Jadi Lagi"
+
+#: ../src/glade-window.c:2298
+msgid "Project switcher"
+msgstr "Pengalih proyek"
+
+#: ../src/glade-window.c:2300
+msgid "and Save button are directly accessible in the headerbar"
+msgstr "dan tombol Simpan dapat langsung diakses di bilah header"
+
+#: ../src/glade-window.c:2301
+msgid "just like Save As"
+msgstr "seperti Simpan Sebagai"
+
+#: ../src/glade-window.c:2302
+msgid "project properties"
+msgstr "properti proyek"
+
+#: ../src/glade-window.c:2303
+msgid "and less commonly used actions"
+msgstr "dan aksi yang kurang umum digunakan"
+
+#: ../src/glade-window.c:2305
+msgid "The object inspector took the palette's place"
+msgstr "Inspektor objek mengambil tempat palet itu"
+
+#: ../src/glade-window.c:2306
+msgid "To free up space for the property editor"
+msgstr "Untuk membebaskan ruang penyunting properti"
+
+#: ../src/glade-window.c:2308
+msgid "The palette was replaced with a new object chooser"
+msgstr "Palet diganti dengan pemilih objek baru"
+
+#: ../src/glade-window.c:2309
+msgid "Where you can search all supported classes"
+msgstr "Di mana Anda bisa mencari semua kelas yang didukung"
+
+#: ../src/glade-window.c:2310
+msgid "investigate GTK+ object groups"
+msgstr "menyelidiki kelompok objek GTK+"
+
+#: ../src/glade-window.c:2311
+msgid "and find classes introduced by other libraries"
+msgstr "dan temukan kelas yang diperkenalkan oleh pustaka lain"
+
+#: ../src/glade-window.c:2313
+msgid ""
+"OK, now that we are done with the overview, let's start with the new workflow"
+msgstr ""
+"OK, sekarang kita sudah selesai dengan ikhtisar, mari kita mulai dengan alur "
+"kerja baru"
+
+#: ../src/glade-window.c:2315
+msgid "First of all, create a new project"
+msgstr "Pertama-tama, buat proyek baru"
+
+#: ../src/glade-window.c:2316
+msgid ""
+"OK, now add a GtkWindow using the new widget chooser or by double clicking "
+"on the workspace"
+msgstr ""
+"OK, sekarang tambahkan GtkWindow menggunakan pemilih widget baru atau dengan "
+"mengklik ganda pada ruang kerja"
+
+#: ../src/glade-window.c:2317
+msgid "Excellent!"
+msgstr "Bagus sekali"
+
+#: ../src/glade-window.c:2318
+msgid ""
+"BTW, did you know you can double click on any placeholder to create widgets?"
+msgstr ""
+"Omong-omong, apakah Anda tahu Anda bisa klik dua kali pada placeholder "
+"manapun untuk membuat widget?"
+
+#: ../src/glade-window.c:2319
+msgid "Try adding a grid"
+msgstr "Coba tambahkan grid"
+
+#: ../src/glade-window.c:2320
+msgid "and a button"
+msgstr "dan sebuah tombol"
+
+#: ../src/glade-window.c:2322
+msgid "Quite easy! Isn't it?"
+msgstr "Cukup mudah bukan?"
+
+#: ../src/glade-window.c:2323
+msgid "Enjoy!"
+msgstr "Nikmati!"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:3515
+#: ../src/glade-window.c:2531
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -300,16 +360,16 @@ msgstr ""
 "apakah Anda ingin mengikutinya sekarang?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:3519
+#: ../src/glade-window.c:2535
 msgid "If not, you can always find it in the Help menu."
 msgstr "Bila tidak, Anda selalu dapat menemukannya dalam menu Bantuan."
 
-#: ../src/glade-window.c:3521
+#: ../src/glade-window.c:2537
 msgid "_Do not show this dialog again"
 msgstr "Jangan tampilkan _dialog ini lagi"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: ../src/glade-window.c:3542
+#: ../src/glade-window.c:2558
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
 "Pergilah ke Bantuan -> Pendaftaran & Survey Pengguna dan lengkapi survey "
@@ -331,55 +391,117 @@ msgstr "[FILE...]"
 msgid "be verbose"
 msgstr "uraikanlah"
 
-#: ../src/main.c:91
+#: ../src/main.c:90
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
 "Buat atau sunting rancangan antar muka pengguna bagi aplikasi GTK+ atau "
 "GNOME."
 
-#: ../src/main.c:95 ../src/main.c:96
+#: ../src/main.c:94 ../src/main.c:95
 msgid "Glade options"
 msgstr "Opsi glade"
 
-#: ../src/main.c:102
+#: ../src/main.c:101
 msgid "Glade debug options"
 msgstr "Opsi debug Glade"
 
-#: ../src/main.c:103
+#: ../src/main.c:102
 msgid "Show Glade debug options"
 msgstr "Tampilkan opsi debug Glade"
 
-#: ../src/main.c:146
+#: ../src/main.c:145
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "Dukungan gmodule tak ditemukan. Dukungan gmodule diperlukan agar glade "
 "bekerja"
 
-#: ../src/main.c:183
+#: ../src/main.c:179
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Tak bisa membuka '%s', berkas tak ada.\n"
 
 #: ../src/glade.glade.h:1
+msgid "Close Project"
+msgstr "Tutup proyek"
+
+#: ../src/glade.glade.h:2
+msgid "Registration & User Survey"
+msgstr "Pendaftaran & Survey Pengguna"
+
+#: ../src/glade.glade.h:3
+msgid "_Developer Reference"
+msgstr "_Acuan Pengembang"
+
+#: ../src/glade.glade.h:4
+msgid "Preferences"
+msgstr "Preferensi"
+
+#: ../src/glade.glade.h:5
+msgid "About"
+msgstr "Tentang"
+
+#: ../src/glade.glade.h:7
+msgid "page0"
+msgstr "halaman0"
+
+#: ../src/glade.glade.h:8
+msgid "page1"
+msgstr "halaman1"
+
+#. GtkFileChooserAction enumeration value
+#: ../src/glade.glade.h:9 ../plugins/gtk+/gtk+.xml.in.h:632
+msgid "Open"
+msgstr "Buka"
+
+#: ../src/glade.glade.h:10
+msgid "Open a project"
+msgstr "Buka projek"
+
+#: ../src/glade.glade.h:11
+msgid "Create a new project"
+msgstr "Buat projek baru"
+
+#: ../src/glade.glade.h:12
+msgid "Edit project properties"
+msgstr "Sunting properti projek"
+
+#. GtkFileChooserAction enumeration value
+#: ../src/glade.glade.h:13 ../plugins/gtk+/gtk+.xml.in.h:630
+msgid "Save"
+msgstr "Simpan"
+
+#: ../src/glade.glade.h:14
+msgid "Save the current project"
+msgstr "Simpan projek sekarang"
+
+#: ../src/glade.glade.h:15
+msgid "Save the current project with a different name"
+msgstr "Simpan projek kini dengan nama yang berbeda"
+
+#: ../src/glade.glade.h:16
+msgid "Start/resume interactive UI introduction"
+msgstr "Memulai/melanjutkan pengenalan antar muka interaktif"
+
+#: ../src/glade.glade.h:17
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2015 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+"Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgstr ""
 "Hak Cipta © 2001-2006 Ximian, Inc.\n"
 "Hak Cipta © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, dkk.\n"
-"Hak Cipta © 2001-2015 Tristan Van Berkom, Juan Pablo Ugarte, dkk."
+"Hak Cipta © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, dkk."
 
-#: ../src/glade.glade.h:4
+#: ../src/glade.glade.h:20
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Perancang antar muka pengguna bagi GTK+ dan GNOME."
 
-#: ../src/glade.glade.h:5
+#: ../src/glade.glade.h:21
 msgid "Visit Glade web site"
 msgstr "Kunjungi situs web Glade"
 
-#: ../src/glade.glade.h:6
+#: ../src/glade.glade.h:22
 msgid ""
 "Glade is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as \n"
@@ -411,311 +533,11 @@ msgstr ""
 "Free Software Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston,\n"
 "MA 02110-1301, USA."
 
-#: ../src/glade.glade.h:20
+#: ../src/glade.glade.h:36
 msgid "translator-credits"
 msgstr ""
 "Andika Triwidada <andika@gmail.com>, 2010-2014.\n"
 "Kukuh Syafaat <syafaatkukuh@gmail.com>, 2017."
-
-#: ../src/glade.glade.h:21
-msgid "Select"
-msgstr "Pilih"
-
-#: ../src/glade.glade.h:22
-msgid "Select widgets in the workspace"
-msgstr "Pilih widget di ruang kerja"
-
-#: ../src/glade.glade.h:23
-msgid "Drag Resize"
-msgstr "Seret Ubah Ukuran"
-
-#: ../src/glade.glade.h:24
-msgid "Drag and resize widgets in the workspace"
-msgstr "Seret dan ubah ukuran widget di ruang kerja"
-
-#: ../src/glade.glade.h:25
-msgid "Margin Edit"
-msgstr "Sunting Tepi"
-
-#: ../src/glade.glade.h:26
-msgid "Edit widget margins"
-msgstr "Sunting tepi widget"
-
-#: ../src/glade.glade.h:27
-msgid "Alignment Edit"
-msgstr "Sunting Perataan"
-
-#: ../src/glade.glade.h:28
-msgid "Edit widget alignment"
-msgstr "Sunting perataan widget"
-
-#. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:29 ../plugins/gtk+/gtk+.xml.in.h:630
-msgid "Save"
-msgstr "Simpan"
-
-#: ../src/glade.glade.h:30
-msgid "Save the current project"
-msgstr "Simpan projek sekarang"
-
-#: ../src/glade.glade.h:31
-msgid "Save _As"
-msgstr "Simp_an Sebagai"
-
-#: ../src/glade.glade.h:32
-msgid "Save the current project with a different name"
-msgstr "Simpan projek kini dengan nama yang berbeda"
-
-#: ../src/glade.glade.h:34
-msgid "Edit project properties"
-msgstr "Sunting properti projek"
-
-#. GtkButtonsType enumeration value
-#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:603
-msgid "Close"
-msgstr "Tutup"
-
-#: ../src/glade.glade.h:36
-msgid "Close the current project"
-msgstr "Tutup projek kini"
-
-#: ../src/glade.glade.h:37
-msgid "Undo"
-msgstr "Batalkan"
-
-#: ../src/glade.glade.h:38
-msgid "Undo the last action"
-msgstr "Batalkan aksi terakhir"
-
-#: ../src/glade.glade.h:39
-msgid "Redo"
-msgstr "Jadi Lagi"
-
-#: ../src/glade.glade.h:40
-msgid "Redo the last action"
-msgstr "Ulangi langkah terakhir"
-
-#: ../src/glade.glade.h:41
-msgid "Cut"
-msgstr "Potong"
-
-#: ../src/glade.glade.h:42
-msgid "Cut the selection"
-msgstr "Potong bagian yang dipilih"
-
-#: ../src/glade.glade.h:43
-msgid "Copy"
-msgstr "Salin"
-
-#: ../src/glade.glade.h:44
-msgid "Copy the selection"
-msgstr "Salin bagian yang dipilih"
-
-#: ../src/glade.glade.h:45
-msgid "Paste"
-msgstr "Tempel"
-
-#: ../src/glade.glade.h:46
-msgid "Paste the clipboard"
-msgstr "Tempel isi clipboard"
-
-#: ../src/glade.glade.h:47 ../gladeui/glade-object-stub.c:99
-msgid "Delete"
-msgstr "Hapus"
-
-#: ../src/glade.glade.h:48
-msgid "Delete the selection"
-msgstr "Hapus bagian yang dipilih"
-
-#: ../src/glade.glade.h:49
-msgid "_Previous Project"
-msgstr "_Projek Sebelumnya:"
-
-#: ../src/glade.glade.h:50
-msgid "Activate previous project"
-msgstr "Aktifkan projek sebelumnya"
-
-#: ../src/glade.glade.h:51
-msgid "_Next Project"
-msgstr "Projek Sela_njutnya"
-
-#: ../src/glade.glade.h:52
-msgid "Activate next project"
-msgstr "Aktifkan projek selanjutnya"
-
-#: ../src/glade.glade.h:53
-msgid "_Use Small Icons"
-msgstr "G_unakan Ikon Kecil"
-
-#: ../src/glade.glade.h:54
-msgid "Show items using small icons"
-msgstr "Tampilkan butir-butir memakai ikon kecil"
-
-#: ../src/glade.glade.h:55
-msgid "Dock _Palette"
-msgstr "Dok _Palet"
-
-#: ../src/glade.glade.h:56
-msgid "Dock the palette into the main window"
-msgstr "Sandarkan palet ke jendela utama"
-
-#: ../src/glade.glade.h:57
-msgid "Dock _Inspector"
-msgstr "Dok Pemer_iksa"
-
-#: ../src/glade.glade.h:58
-msgid "Dock the inspector into the main window"
-msgstr "Sandarkan pemeriksa ke jendela utama"
-
-#: ../src/glade.glade.h:59
-msgid "Dock Prop_erties"
-msgstr "Dok Prop_erti"
-
-#: ../src/glade.glade.h:60
-msgid "Dock the editor into the main window"
-msgstr "Sandarkan penyunting ke jendela utama"
-
-#: ../src/glade.glade.h:61
-msgid "_Statusbar"
-msgstr "Bilah _Status"
-
-#: ../src/glade.glade.h:62
-msgid "Show the statusbar"
-msgstr "Tampilkan bilah status"
-
-#: ../src/glade.glade.h:63
-msgid "Tool_bar"
-msgstr "_Bilah Alat"
-
-#: ../src/glade.glade.h:64
-msgid "Show the toolbar"
-msgstr "Tampilkan bilah alat"
-
-#: ../src/glade.glade.h:65
-msgid "Project _Tabs"
-msgstr "_Tab Projek"
-
-#: ../src/glade.glade.h:66
-msgid "Show notebook tabs for loaded projects"
-msgstr "Tampilkan tab notebook bagi projek yang dimuat"
-
-#: ../src/glade.glade.h:67
-msgid "Text _beside icons"
-msgstr "Teks di se_belah ikon"
-
-#: ../src/glade.glade.h:68
-msgid "Display items as text beside icons"
-msgstr "Tampilkan butir sebagai teks di samping ikon"
-
-#: ../src/glade.glade.h:69
-msgid "_Icons only"
-msgstr "_Ikon saja"
-
-#: ../src/glade.glade.h:70
-msgid "Display items as icons only"
-msgstr "Tampilkan butir hanya sebagai ikon"
-
-#: ../src/glade.glade.h:71
-msgid "_Text only"
-msgstr "_Teks saja"
-
-#: ../src/glade.glade.h:72
-msgid "Display items as text only"
-msgstr "Tampilkan butir hanya sebagai teks"
-
-#: ../src/glade.glade.h:73
-msgid "_Editor Header"
-msgstr "Tajuk P_enyunting:"
-
-#: ../src/glade.glade.h:74
-msgid "Show the header in the property editor"
-msgstr "Tunjukkan header dalam penyunting properti"
-
-#: ../src/glade.glade.h:75
-msgid "New"
-msgstr "Baru"
-
-#: ../src/glade.glade.h:76
-msgid "Create a new project"
-msgstr "Buat projek baru"
-
-#. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:77 ../plugins/gtk+/gtk+.xml.in.h:632
-msgid "Open"
-msgstr "Buka"
-
-#: ../src/glade.glade.h:78
-msgid "Open a project"
-msgstr "Buka projek"
-
-#: ../src/glade.glade.h:79
-msgid "Quit"
-msgstr "Keluar"
-
-#: ../src/glade.glade.h:80
-msgid "Quit the program"
-msgstr "Keluar dari program"
-
-#: ../src/glade.glade.h:81
-msgid "About"
-msgstr "Tentang"
-
-#: ../src/glade.glade.h:82
-msgid "About this application"
-msgstr "Tentang aplikasi ini"
-
-#: ../src/glade.glade.h:83
-msgid "_Developer Reference"
-msgstr "_Acuan Pengembang"
-
-#: ../src/glade.glade.h:84
-msgid "Display the developer reference manual"
-msgstr "Tampilkan manual acuan pengembang"
-
-#: ../src/glade.glade.h:85
-msgid "Preferences"
-msgstr "Preferensi"
-
-#: ../src/glade.glade.h:86
-msgid "Edit Glade preferences"
-msgstr "Sunting preferensi Glade"
-
-#: ../src/glade.glade.h:87
-msgid "Open _Recent"
-msgstr "Buka Te_rkini"
-
-#: ../src/glade.glade.h:88
-msgid "Registration & User Survey"
-msgstr "Pendaftaran & Survey Pengguna"
-
-#: ../src/glade.glade.h:89
-msgid "Help us improve Glade by registering and completing the user survey!"
-msgstr ""
-"Bantu kami memperbaiki Glade dengan mendaftar dan melengkapi survei pengguna!"
-
-#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:115
-msgid "_File"
-msgstr "_Berkas"
-
-#: ../src/glade.glade.h:91 ../plugins/gtk+/glade-gtk-menu-bar.c:126
-msgid "_Edit"
-msgstr "_Sunting"
-
-#: ../src/glade.glade.h:92 ../plugins/gtk+/glade-gtk-menu-bar.c:135
-msgid "_View"
-msgstr "_Tilik"
-
-#: ../src/glade.glade.h:93
-msgid "Palette _Appearance"
-msgstr "Penampilan P_alet"
-
-#: ../src/glade.glade.h:94
-msgid "_Projects"
-msgstr "_Projek"
-
-#: ../src/glade.glade.h:95 ../plugins/gtk+/glade-gtk-menu-bar.c:139
-msgid "_Help"
-msgstr "Ba_ntuan"
 
 #: ../src/glade-preferences.glade.h:1
 msgid "Glade Preferences"
@@ -967,6 +789,12 @@ msgstr "Informasi Pengguna"
 #: ../src/glade-registration.glade.h:6
 msgid "<Your name or nickname is required>"
 msgstr "<Nama atau nama panggilan Anda diperlukan>"
+
+#: ../src/glade-registration.glade.h:7
+#: ../gladeui/glade-project-properties.ui.h:12
+#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
+msgid "Name:"
+msgstr "Nama:"
 
 #: ../src/glade-registration.glade.h:8
 msgid "Email:"
@@ -1487,7 +1315,7 @@ msgstr ""
 "Data individu akan disimpan dalam suatu basis data pribadi dan tidak akan "
 "dibagikan ke publik atau pihak ketiga manapun."
 
-#: ../gladeui/glade-app.c:535
+#: ../gladeui/glade-app.c:549
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -1496,7 +1324,7 @@ msgstr ""
 "Mencoba menyimpan data privat ke direktori %s tapi itu adalah berkas biasa.\n"
 "Tak ada data privat yang akan disimpan pada sesi ini"
 
-#: ../gladeui/glade-app.c:547
+#: ../gladeui/glade-app.c:561
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -1505,7 +1333,7 @@ msgstr ""
 "Gagal membuat direktori %s untuk menyimpan data privat.\n"
 "Tak ada data privat yang akan disimpan sesi ini"
 
-#: ../gladeui/glade-app.c:575
+#: ../gladeui/glade-app.c:589
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -1514,7 +1342,7 @@ msgstr ""
 "Kesalahan menulis data privat ke %s (%s).\n"
 "Tak ada data privat yang akan disimpan sesi ini"
 
-#: ../gladeui/glade-app.c:587
+#: ../gladeui/glade-app.c:601
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -1523,7 +1351,7 @@ msgstr ""
 "Kesalahan menserialisasi data konfigurasi untuk disimpan (%s).\n"
 "Tak ada data privat yang akan disimpan sesi ini"
 
-#: ../gladeui/glade-app.c:600
+#: ../gladeui/glade-app.c:614
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -1552,61 +1380,51 @@ msgstr "Menambah %s"
 msgid "Add child %s"
 msgstr "Menambah %s anak"
 
-#: ../gladeui/glade-base-editor.c:943
+#: ../gladeui/glade-base-editor.c:942
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "Menghapus anak %s dari %s"
 
-#: ../gladeui/glade-base-editor.c:1069
+#: ../gladeui/glade-base-editor.c:1068
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Mengurut ulang anak %s"
 
-#: ../gladeui/glade-base-editor.c:1501 ../plugins/gtk+/gtk+.xml.in.h:363
-msgid "Container"
-msgstr "Kontainer"
-
-#: ../gladeui/glade-base-editor.c:1502
-msgid "The container object this editor is currently editing"
-msgstr "Objek wadah yang kini sedang disunting"
-
-#. translators: refers to a tab name used to group all the relevant widget's properties
-#: ../gladeui/glade-base-editor.c:1734 ../gladeui/glade-editor.c:919
-msgid "General"
-msgstr "Umum"
-
-#. translators: refers to a tab name used to show the widget hierarchy
-#: ../gladeui/glade-base-editor.c:1743
-msgid "Hierarchy"
-msgstr "Hirarki"
-
 #. AtkRole enumeration value
-#: ../gladeui/glade-base-editor.c:1781 ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../gladeui/glade-base-editor.c:1547 ../plugins/gtk+/gtk+.xml.in.h:144
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:9
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:2
 msgid "Label"
 msgstr "Label"
 
-#: ../gladeui/glade-base-editor.c:1796 ../gladeui/glade-widget-adaptor.c:1446
+#: ../gladeui/glade-base-editor.c:1562 ../gladeui/glade-widget-adaptor.c:1454
 #: ../plugins/gtk+/glade-eprop-enum-int.c:70
 #: ../plugins/gtk+/glade-eprop-enum-int.c:71
 msgid "Type"
 msgstr "Jenis"
 
+#: ../gladeui/glade-base-editor.c:1592 ../plugins/gtk+/gtk+.xml.in.h:363
+msgid "Container"
+msgstr "Kontainer"
+
+#: ../gladeui/glade-base-editor.c:1593
+msgid "The container object this editor is currently editing"
+msgstr "Objek wadah yang kini sedang disunting"
+
 #. Name
 #. translators: The unique identifier of an object in the project
-#: ../gladeui/glade-base-editor.c:2033 ../gladeui/glade-editor-table.c:305
+#: ../gladeui/glade-base-editor.c:1878 ../gladeui/glade-editor-table.c:305
 #: ../gladeui/glade-editor-table.c:578
 msgid "ID:"
 msgstr "ID:"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:2053
+#: ../gladeui/glade-base-editor.c:1898
 #: ../plugins/gtk+/glade-window-editor.ui.h:8
 msgid "Type:"
 msgstr "Jenis:"
 
-#: ../gladeui/glade-base-editor.c:2273
+#: ../gladeui/glade-base-editor.c:2111
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1870,50 +1688,58 @@ msgstr "Menyunting perataan %s"
 msgid "Editing margins of %s"
 msgstr "Menyunting tepi %s"
 
-#: ../gladeui/glade-design-layout.c:2042
+#: ../gladeui/glade-design-layout.c:2045
 msgid "Design View"
 msgstr "Tilikan Rancangan"
 
-#: ../gladeui/glade-design-layout.c:2043
+#: ../gladeui/glade-design-layout.c:2046
 msgid "The GladeDesignView that contains this layout"
 msgstr "GladeDesignView yang memuat tata letak ini"
 
-#: ../gladeui/glade-editor.c:228
+#: ../gladeui/glade-editor.c:236
 msgid "Show info"
 msgstr "Tampilkan info"
 
-#: ../gladeui/glade-editor.c:229
+#: ../gladeui/glade-editor.c:237
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "Apakah menampilkan suatu tombol informasi bagi widget yang dimuat"
 
-#: ../gladeui/glade-editor.c:236 ../plugins/gtk+/gtk+.xml.in.h:1
+#: ../gladeui/glade-editor.c:244 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "Widget"
 msgstr "Widget"
 
-#: ../gladeui/glade-editor.c:237
+#: ../gladeui/glade-editor.c:245
 msgid "The currently loaded widget in this editor"
 msgstr "Widget yang sedang dimuat di penyunting ini"
 
-#: ../gladeui/glade-editor.c:243
+#: ../gladeui/glade-editor.c:251
 msgid "Show Class Field"
 msgstr "Tampilkan Ruas Kelas"
 
-#: ../gladeui/glade-editor.c:244
+#: ../gladeui/glade-editor.c:252
 msgid "Whether to show the class field at the top"
 msgstr "Apakah menampilkan ruas kelas di atas"
 
-#: ../gladeui/glade-editor.c:250
+#: ../gladeui/glade-editor.c:258
 msgid "Class Field"
 msgstr "Ruas Kelas"
 
-#: ../gladeui/glade-editor.c:251
+#: ../gladeui/glade-editor.c:259
 msgid "The class field string"
 msgstr "Kalimat ruas kelas"
+
+#: ../gladeui/glade-editor.c:264
+msgid "Show Border"
+msgstr "Tampilkan Batas"
+
+#: ../gladeui/glade-editor.c:265
+msgid "Whether the border should be shown"
+msgstr "Apakah pembatas harus ditunjukkan"
 
 #. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
 #. * example: Window Properties - GtkWindow [window1]
 #.
-#: ../gladeui/glade-editor.c:311
+#: ../gladeui/glade-editor.c:325
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "Properti %s - %s [%s]"
@@ -1921,49 +1747,65 @@ msgstr "Properti %s - %s [%s]"
 #. translators: %s(Class Title) Properties - %s (ClassName)
 #. * example: Window Properties - GtkWindow
 #.
-#: ../gladeui/glade-editor.c:321
+#: ../gladeui/glade-editor.c:335
 #, c-format
 msgid "%s Properties - %s"
 msgstr "Properti %s - %s"
 
-#: ../gladeui/glade-editor.c:761
+#: ../gladeui/glade-editor.c:349 ../gladeui/glade-widget.c:1377
+#: ../gladeui/glade-project-properties.ui.h:11
+#: ../plugins/gtk+/glade-gtk-action-group.c:184
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:361
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:518
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:545
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:564
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:605
+#: ../plugins/gtk+/glade-gtk-text-tag-table.c:126
+msgid "Properties"
+msgstr "Properti"
+
+#: ../gladeui/glade-editor.c:775
 #, c-format
 msgid "Create a %s"
 msgstr "Buat suatu %s"
 
-#: ../gladeui/glade-editor.c:769
+#: ../gladeui/glade-editor.c:783
 msgid "Crea_te"
 msgstr "Bua_t"
 
-#: ../gladeui/glade-editor.c:877
+#: ../gladeui/glade-editor.c:891
 msgid "Reset"
 msgstr "Reset"
 
-#: ../gladeui/glade-editor.c:888 ../gladeui/glade-property-label.c:119
+#: ../gladeui/glade-editor.c:902 ../gladeui/glade-property-label.c:119
 msgid "Property"
 msgstr "Properti"
 
-#: ../gladeui/glade-editor.c:927
+#: ../gladeui/glade-editor.c:933
+msgid "General"
+msgstr "Umum"
+
+#: ../gladeui/glade-editor.c:941
 msgid "Common"
 msgstr "Biasa"
 
-#: ../gladeui/glade-editor.c:935 ../gladeui/glade-editor.ui.h:5
+#: ../gladeui/glade-editor.c:949 ../gladeui/glade-editor.ui.h:5
 msgid "Accessibility"
 msgstr "Aksesibilitas"
 
-#: ../gladeui/glade-editor.c:968
+#: ../gladeui/glade-editor.c:982
 msgid "(default)"
 msgstr "(bawaan)"
 
-#: ../gladeui/glade-editor.c:983
+#: ../gladeui/glade-editor.c:997
 msgid "Select the properties that you want to reset to their default values"
 msgstr "Pilih properti yang ingin Anda reset ke nilai bawaannya"
 
-#: ../gladeui/glade-editor.c:1117
+#: ../gladeui/glade-editor.c:1131
 msgid "Reset Widget Properties"
 msgstr "Reset Properti Widget"
 
-#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1691
+#: ../gladeui/glade-editor.c:1136 ../gladeui/glade-editor-property.c:1691
 #: ../gladeui/glade-editor-property.c:1998
 #: ../gladeui/glade-editor-property.c:3139
 #: ../gladeui/glade-editor-property.c:3252
@@ -1974,25 +1816,25 @@ msgid "_OK"
 msgstr "_OK"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1134
+#: ../gladeui/glade-editor.c:1148
 msgid "_Properties:"
 msgstr "_Properti:"
 
-#: ../gladeui/glade-editor.c:1163
+#: ../gladeui/glade-editor.c:1177
 msgid "_Select All"
 msgstr "Pilih _Semua"
 
-#: ../gladeui/glade-editor.c:1171
+#: ../gladeui/glade-editor.c:1185
 msgid "_Unselect All"
 msgstr "Pilih Tak Sat_upun"
 
 #. Description
-#: ../gladeui/glade-editor.c:1181
+#: ../gladeui/glade-editor.c:1195
 msgid "Property _Description:"
 msgstr "_Deskripsi Properti:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1283
+#: ../gladeui/glade-editor.c:1297
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - Properti %s"
@@ -2091,7 +1933,7 @@ msgstr "_Buka"
 
 #. GtkInputPurpose enumeration value
 #: ../gladeui/glade-editor-property.c:3057
-#: ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
+#: ../gladeui/glade-widget-adaptor.c:1447 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:547
 msgid "Name"
 msgstr "Nama"
@@ -2218,6 +2060,10 @@ msgstr "Tampi_lkan daftar ikon standar saja"
 #, c-format
 msgid "Could not create directory: %s"
 msgstr "Tak dapat membuat direktori: %s"
+
+#: ../gladeui/glade-object-stub.c:99
+msgid "Delete"
+msgstr "Hapus"
 
 #: ../gladeui/glade-object-stub.c:101
 msgid "Delete All"
@@ -2589,8 +2435,8 @@ msgstr "Widget diperkenalkan di %s %d.%d sedangkan projek menarget %s %d.%d"
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2917
 #, c-format
-msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
-msgstr "[%s] Kelas objek '%s' diperkenalkan di %s %d.%d\n"
+msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
+msgstr "[%s] Kelas obyek '<b>%s</b>' diperkenalkan di %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:2919
 msgid "This widget is deprecated"
@@ -2599,8 +2445,8 @@ msgstr "Widget ini tak dipakai lagi"
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2922
 #, c-format
-msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
-msgstr "[%s] Kelas objek '%s' dari %s %d.%d tak dipakai lagi\n"
+msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
+msgstr "[%s] Kelas objek '<b>%s</b>' dari %s %d.%d tak dipakai lagi\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
@@ -2613,16 +2459,22 @@ msgstr ""
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2931
 #, c-format
-msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr "[%s] Properti '%s' dari kelas objek '%s' diperkenalkan di %s %d.%d\n"
+msgid ""
+"[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
+"%d.%d\n"
+msgstr ""
+"[%s] Properti '<b>%s</b>' dari kelas objek '<b>%s</b>' diperkenalkan di %s "
+"%d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2935
 #, c-format
 msgid ""
-"[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
+"[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was introduced "
+"in %s %d.%d\n"
 msgstr ""
-"[%s] Properti '%s' packing dari kelas objek '%s' diperkenalkan di %s %d.%d\n"
+"[%s] Properti '<b>%s</b>' packing dari kelas objek '<b>%s</b>' diperkenalkan "
+"di %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:2938
 msgid "This property is deprecated"
@@ -2631,8 +2483,9 @@ msgstr "Properti ini tak dipakai lagi"
 #. translators: refers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:2941
 #, c-format
-msgid "[%s] Property '%s' of object class '%s' is deprecated"
-msgstr "[%s] Properti '%s' dari kelas objek '%s' tak berlaku lagi"
+msgid "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
+msgstr ""
+"[%s] Properti '<b>%s</b>' dari kelas objek '<b>%s</b>' tak berlaku lagi\n"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
@@ -2645,8 +2498,12 @@ msgstr ""
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2949
 #, c-format
-msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr "[%s] Sinyal '%s' dari kelas objek '%s' diperkenalkan di %s %d.%d\n"
+msgid ""
+"[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
+"%d\n"
+msgstr ""
+"[%s] Sinyal '<b>%s</b>' dari kelas objek '<b>%s</b>' diperkenalkan di %s %d."
+"%d\n"
 
 #: ../gladeui/glade-project.c:2952
 msgid "This signal is deprecated"
@@ -2655,71 +2512,72 @@ msgstr "Sinyal ini tak dipakai lagi"
 #. translators: refers to a signal '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:2955
 #, c-format
-msgid "[%s] Signal '%s' of object class '%s' is deprecated"
-msgstr "[%s] Sinyal '%s' dari kelas objek '%s' tak berlaku lagi"
+msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
+msgstr ""
+"[%s] Sinyal '<b>%s</b>' dari kelas objek '<b>%s</b>' tak berlaku lagi\n"
 
-#: ../gladeui/glade-project.c:3251
+#: ../gladeui/glade-project.c:3252
 msgid "Details"
 msgstr "Rincian"
 
-#: ../gladeui/glade-project.c:3266
+#: ../gladeui/glade-project.c:3269
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "Projek \"%s\" punya kesalahan. Simpan saja?"
 
-#: ../gladeui/glade-project.c:3267
+#: ../gladeui/glade-project.c:3270
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 "Projek \"%s\" memiliki widget yang tak berlaku lagi dan/atau ketidakcocokan "
 "versi."
 
-#: ../gladeui/glade-project.c:3292
+#: ../gladeui/glade-project.c:3295
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr ""
 "Objek %s adalah suatu templat kelas tapi ini tak didukung dalam gtk+ %d.%d"
 
-#: ../gladeui/glade-project.c:3307
+#: ../gladeui/glade-project.c:3310
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Objek %s memiliki tipe %s yang tak dikenal\n"
 
-#: ../gladeui/glade-project.c:4777
+#: ../gladeui/glade-project.c:4780
 #, c-format
 msgid "Unsaved %i"
 msgstr "Belum disimpan %i"
 
-#: ../gladeui/glade-project.c:5076 ../gladeui/glade-project.c:5127
-#: ../gladeui/glade-project.c:5284
+#: ../gladeui/glade-project.c:5079 ../gladeui/glade-project.c:5130
+#: ../gladeui/glade-project.c:5287
 msgid "No widget selected."
 msgstr "Tak ada widget yang dipilih."
 
-#: ../gladeui/glade-project.c:5092
+#: ../gladeui/glade-project.c:5095
 msgid "Unable to copy unrecognized widget type."
 msgstr "Tak bisa menyalin tipe widget yang tak dikenal."
 
-#: ../gladeui/glade-project.c:5124
+#: ../gladeui/glade-project.c:5127
 msgid "Unable to cut unrecognized widget type"
 msgstr "Tak bisa memotong widget yang tipenya tak dikenal"
 
-#: ../gladeui/glade-project.c:5176
+#: ../gladeui/glade-project.c:5179
 msgid "Unable to paste to the selected parent"
 msgstr "Tak bisa menempel ke induk yang dipilih"
 
-#: ../gladeui/glade-project.c:5187
+#: ../gladeui/glade-project.c:5190
 msgid "Unable to paste to multiple widgets"
 msgstr "Tak bisa menempel ke widget berganda"
 
-#: ../gladeui/glade-project.c:5197
+#: ../gladeui/glade-project.c:5200
 msgid "No widget on the clipboard"
 msgstr "Tak ada widget pada papan klip"
 
-#: ../gladeui/glade-project.c:5242
+#: ../gladeui/glade-project.c:5245
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Hanya satu widget dapat ditempelkan pada suatu saat ke wadah ini"
 
-#: ../gladeui/glade-project.c:5254
+#: ../gladeui/glade-project.c:5257
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Cacah placeholder tak mencukupi pada wadah target"
 
@@ -2959,7 +2817,7 @@ msgstr "Tak dapat menampilkan taut:"
 
 #. Reset the column
 #. GtkTextDirection enumeration value
-#: ../gladeui/glade-utils.c:1639 ../plugins/gtk+/glade-attributes.c:827
+#: ../gladeui/glade-utils.c:1686 ../plugins/gtk+/glade-attributes.c:827
 #: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "None"
 msgstr "Tak Ada"
@@ -2985,70 +2843,70 @@ msgstr "Tampak"
 msgid "Whether this action is visible"
 msgstr "Apakah aksi ini nampak"
 
-#: ../gladeui/glade-widget-adaptor.c:241
+#: ../gladeui/glade-widget-adaptor.c:243
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Sebuah adaptor (%s) yang diturunkan dari %s telah ada!"
 
-#: ../gladeui/glade-widget-adaptor.c:943
+#: ../gladeui/glade-widget-adaptor.c:951
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s tak mendukung penambahan anak apapun."
 
-#: ../gladeui/glade-widget-adaptor.c:1440
+#: ../gladeui/glade-widget-adaptor.c:1448
 msgid "Name of the class"
 msgstr "Nama kelas"
 
-#: ../gladeui/glade-widget-adaptor.c:1447
+#: ../gladeui/glade-widget-adaptor.c:1455
 msgid "GType of the class"
 msgstr "GType dari kelas"
 
-#: ../gladeui/glade-widget-adaptor.c:1453
+#: ../gladeui/glade-widget-adaptor.c:1461
 msgid "Title"
 msgstr "Judul"
 
-#: ../gladeui/glade-widget-adaptor.c:1454
+#: ../gladeui/glade-widget-adaptor.c:1462
 msgid "Translated title for the class used in the glade UI"
 msgstr "Judul terjemahan bagi kelas yang dipakai dalam UI glade"
 
-#: ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-widget-adaptor.c:1468
 msgid "Generic Name"
 msgstr "Nama Generik"
 
-#: ../gladeui/glade-widget-adaptor.c:1461
+#: ../gladeui/glade-widget-adaptor.c:1469
 msgid "Used to generate names of new widgets"
 msgstr "Dipakai untuk menjangkitkan nama dari widget baru"
 
-#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:663
+#: ../gladeui/glade-widget-adaptor.c:1475 ../plugins/gtk+/gtk+.xml.in.h:663
 #: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "Nama Ikon"
 
-#: ../gladeui/glade-widget-adaptor.c:1468
+#: ../gladeui/glade-widget-adaptor.c:1476
 msgid "The icon name"
 msgstr "Nama ikon"
 
-#: ../gladeui/glade-widget-adaptor.c:1474
+#: ../gladeui/glade-widget-adaptor.c:1482
 msgid "Catalog"
 msgstr "Katalog"
 
-#: ../gladeui/glade-widget-adaptor.c:1475
+#: ../gladeui/glade-widget-adaptor.c:1483
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Nama dari katalog widget yang dideklarasikan untuk kelas ini"
 
-#: ../gladeui/glade-widget-adaptor.c:1481
+#: ../gladeui/glade-widget-adaptor.c:1489
 msgid "Book"
 msgstr "Buku"
 
-#: ../gladeui/glade-widget-adaptor.c:1482
+#: ../gladeui/glade-widget-adaptor.c:1490
 msgid "DevHelp search namespace for this widget class"
 msgstr "Namespace pencarian DevHelp bagi kelas widget ini"
 
-#: ../gladeui/glade-widget-adaptor.c:1488
+#: ../gladeui/glade-widget-adaptor.c:1496
 msgid "Special Child Type"
 msgstr "Tipe Anak Khusus"
 
-#: ../gladeui/glade-widget-adaptor.c:1489
+#: ../gladeui/glade-widget-adaptor.c:1497
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -3056,13 +2914,21 @@ msgstr ""
 "Memuat nama dari properti kemasan untuk menggambarkan anak khusus bagi kelas "
 "wadah ini"
 
-#: ../gladeui/glade-widget-adaptor.c:1496
+#: ../gladeui/glade-widget-adaptor.c:1504
 msgid "Cursor"
 msgstr "Kursor"
 
-#: ../gladeui/glade-widget-adaptor.c:1497
+#: ../gladeui/glade-widget-adaptor.c:1505
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Suatu kursor untuk menyisipkan widget ke dalam UI"
+
+#: ../gladeui/glade-widget-adaptor.c:1509
+msgid "Query"
+msgstr "Kueri"
+
+#: ../gladeui/glade-widget-adaptor.c:1510
+msgid "Whether the adaptor should query the use or not"
+msgstr "Apakah adaptor harus kueri penggunaan atau tidak"
 
 #: ../gladeui/glade-widget.c:1342
 msgid "The name of the widget"
@@ -3245,6 +3111,26 @@ msgstr "Tempat"
 #: ../gladeui/icon-naming-spec.c:56
 msgid "Status"
 msgstr "Status"
+
+#: ../gladeui/glade-adaptor-chooser.ui.h:1
+msgid "All available widgets and objects"
+msgstr "Semua widget dan objek yang tersedia"
+
+#: ../gladeui/glade-adaptor-chooser.ui.h:2
+msgid ""
+"Click on a placeholder to create this class\n"
+"(use middle button to create more than one)"
+msgstr ""
+"Klik pada placeholder untuk membuat kelas ini\n"
+"(gunakan tombol tengah untuk membuat lebih dari satu)"
+
+#: ../gladeui/glade-adaptor-chooser.ui.h:4
+msgid "Non-GTK+ widgets and objects"
+msgstr "Widget dan objek non-GTK+"
+
+#: ../gladeui/glade-adaptor-chooser.ui.h:5
+msgid "Extra GTK+ objects"
+msgstr "Objek Ekstra GTK+"
 
 #: ../gladeui/glade-editor.ui.h:1
 msgid "_General"
@@ -3701,20 +3587,20 @@ msgid "Whether this container supports resizes of child widgets"
 msgstr "Apakah wadah ini mendukung pengubahan ukuran dari widget anak"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:180
-#: ../plugins/gtk+/glade-gtk-action-group.c:219
+#: ../plugins/gtk+/glade-gtk-action-group.c:215
 #: ../plugins/gtk+/gtk+.xml.in.h:887
 msgid "Action"
 msgstr "Aksi"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:220
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:418
+#: ../plugins/gtk+/glade-gtk-action-group.c:216
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:412
 #: ../plugins/gtk+/glade-gtk-toolbar.c:236
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:183
-#: ../plugins/gtk+/glade-gtk-tree-view.c:97
+#: ../plugins/gtk+/glade-gtk-tree-view.c:91
 msgid "Toggle"
 msgstr "Jungkit"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:221
+#: ../plugins/gtk+/glade-gtk-action-group.c:217
 #: ../plugins/gtk+/glade-gtk-toolbar.c:237
 #: ../plugins/gtk+/glade-gtk-toolbar.c:248
 #: ../plugins/gtk+/glade-gtk-toolbar.c:256
@@ -3724,11 +3610,11 @@ msgstr "Jungkit"
 msgid "Radio"
 msgstr "Radio"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:222
+#: ../plugins/gtk+/glade-gtk-action-group.c:218
 msgid "Recent"
 msgstr "Terkini"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:230
+#: ../plugins/gtk+/glade-gtk-action-group.c:226
 msgid "Action Group Editor"
 msgstr "Penyunting Grup Aksi"
 
@@ -3768,55 +3654,55 @@ msgid "Common Properties and Attributes"
 msgstr "Properti dan Atribut Bersama"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:412
-#: ../plugins/gtk+/glade-gtk-tree-view.c:91 ../plugins/gtk+/gtk+.xml.in.h:204
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:406
+#: ../plugins/gtk+/glade-gtk-tree-view.c:85 ../plugins/gtk+/gtk+.xml.in.h:204
 #: ../plugins/gtk+/glade-entry-editor.ui.h:3
 msgid "Text"
 msgstr "Teks"
 
 #. Accelerator
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:413
-#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:889
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:407
+#: ../plugins/gtk+/glade-gtk-tree-view.c:86 ../plugins/gtk+/gtk+.xml.in.h:889
 msgid "Accelerator"
 msgstr "Akselerator"
 
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:414
-#: ../plugins/gtk+/glade-gtk-tree-view.c:93 ../plugins/gtk+/gtk+.xml.in.h:421
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:408
+#: ../plugins/gtk+/glade-gtk-tree-view.c:87 ../plugins/gtk+/gtk+.xml.in.h:421
 msgid "Combo"
 msgstr "Kombo"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:415
-#: ../plugins/gtk+/glade-gtk-tree-view.c:94
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:409
+#: ../plugins/gtk+/glade-gtk-tree-view.c:88
 msgid "Spin"
 msgstr "Spin"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:416
-#: ../plugins/gtk+/glade-gtk-tree-view.c:95
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:410
+#: ../plugins/gtk+/glade-gtk-tree-view.c:89
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:417
-#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:862
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:411
+#: ../plugins/gtk+/glade-gtk-tree-view.c:90 ../plugins/gtk+/gtk+.xml.in.h:862
 #: ../plugins/gtk+/glade-entry-editor.ui.h:4
 msgid "Progress"
 msgstr "Kemajuan"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:419
-#: ../plugins/gtk+/glade-gtk-tree-view.c:98 ../plugins/gtk+/gtk+.xml.in.h:522
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:413
+#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:522
 msgid "Spinner"
 msgstr "Spinner"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:452
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:446
 msgid "Icon View Editor"
 msgstr "Penyunting Tilikan Ikon"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:457
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:451
 msgid "Combo Editor"
 msgstr "Penyunting Kombo"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:462
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:456
 msgid "Entry Completion Editor"
 msgstr "Penyunting Pelengkapan Entri"
 
@@ -3937,6 +3823,22 @@ msgstr "Properti ini hanya berlaku bagi ikon bernama"
 msgid "This property only applies if ellipsize and wrapping are enabled"
 msgstr "Properti ini hanya berlaku bila penyingkatan dan pelipatan difungsikan"
 
+#: ../plugins/gtk+/glade-gtk-menu-bar.c:115
+msgid "_File"
+msgstr "_Berkas"
+
+#: ../plugins/gtk+/glade-gtk-menu-bar.c:126
+msgid "_Edit"
+msgstr "_Sunting"
+
+#: ../plugins/gtk+/glade-gtk-menu-bar.c:135
+msgid "_View"
+msgstr "_Tilik"
+
+#: ../plugins/gtk+/glade-gtk-menu-bar.c:139
+msgid "_Help"
+msgstr "Ba_ntuan"
+
 #: ../plugins/gtk+/glade-gtk-menu-item.c:53
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:173
 msgid "Edit Menu Bar"
@@ -4054,11 +3956,11 @@ msgid "Search bar is already full"
 msgstr "Bilah pencarian telah penuh"
 
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:122
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:152
+#: ../plugins/gtk+/glade-gtk-text-tag-table.c:148
 msgid "Tag"
 msgstr "Tag"
 
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:160
+#: ../plugins/gtk+/glade-gtk-text-tag-table.c:156
 msgid "Text Tag Table Editor"
 msgstr "Penyunting Tabel Tag Teks"
 
@@ -4136,11 +4038,11 @@ msgstr "Grup"
 msgid "Tool Palette Editor"
 msgstr "Penyunting Palet Alat"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:88
+#: ../plugins/gtk+/glade-gtk-tree-view.c:82
 msgid "Column"
 msgstr "Kolom"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:111
+#: ../plugins/gtk+/glade-gtk-tree-view.c:105
 msgid "Tree View Editor"
 msgstr "Penyunting Tilikan Tree"
 
@@ -4148,22 +4050,22 @@ msgstr "Penyunting Tilikan Tree"
 #. * treeview editors and provide a custom control that sets all its columns
 #. * to fixed size and then control the column's sensitivity accordingly.
 #.
-#: ../plugins/gtk+/glade-gtk-tree-view.c:204
+#: ../plugins/gtk+/glade-gtk-tree-view.c:198
 msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
 "Kolom mesti memiliki ukuran tetap di dalam tilikan pohon yang ditata dengan "
 "mode tinggi tetap"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:294
+#: ../plugins/gtk+/glade-gtk-tree-view.c:288
 msgid "Search is disabled"
 msgstr "Pencarian dimatikan"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:301
+#: ../plugins/gtk+/glade-gtk-tree-view.c:295
 msgid "Headers are invisible"
 msgstr "Tajuk tak nampak"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:308
+#: ../plugins/gtk+/glade-gtk-tree-view.c:302
 msgid "Expanders are not shown"
 msgstr "Peregang tak ditampilkan"
 
@@ -6154,6 +6056,11 @@ msgstr "Hapus Kejadian"
 msgid "OK"
 msgstr "OK"
 
+#. GtkButtonsType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:603
+msgid "Close"
+msgstr "Tutup"
+
 #. GtkResponseType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:609
 msgid "Apply"
@@ -7689,18 +7596,22 @@ msgid "Containers"
 msgstr "Wadah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1086
-msgid "Control and Display"
-msgstr "Kendali dan Tampilan"
+msgid "Control"
+msgstr "Kendali"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1087
+msgid "Display"
+msgstr "Tampilan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:1088
 msgid "Composite Widgets"
 msgstr "Widget Komposit"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1088
+#: ../plugins/gtk+/gtk+.xml.in.h:1089
 msgid "Miscellaneous"
 msgstr "Serba neka"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1089
+#: ../plugins/gtk+/gtk+.xml.in.h:1090
 msgid "Deprecated"
 msgstr "Tak berlaku lagi"
 
@@ -8343,3 +8254,194 @@ msgstr "Dekorasi jendela sisi klien"
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
 msgstr "Apakah jendela ini mesti menyertakan suatu bilah judul gubahan."
+
+#~ msgid "Activate '%s' %s"
+#~ msgstr "Aktifkan '%s' %s"
+
+#~ msgid "Activate '%s'"
+#~ msgstr "Aktifkan '%s'"
+
+#~ msgid "Requires:"
+#~ msgstr "Memerlukan:"
+
+#~ msgid "_Undo"
+#~ msgstr "_Batalkan"
+
+#~ msgid "_Redo"
+#~ msgstr "_Jadi Lagi"
+
+#~ msgid "Close document"
+#~ msgstr "Tutup dokumen"
+
+#~ msgid "Palette"
+#~ msgstr "Palet"
+
+#~ msgid "Inspector"
+#~ msgstr "Pemeriksa"
+
+#~ msgid "Select"
+#~ msgstr "Pilih"
+
+#~ msgid "Select widgets in the workspace"
+#~ msgstr "Pilih widget di ruang kerja"
+
+#~ msgid "Drag Resize"
+#~ msgstr "Seret Ubah Ukuran"
+
+#~ msgid "Drag and resize widgets in the workspace"
+#~ msgstr "Seret dan ubah ukuran widget di ruang kerja"
+
+#~ msgid "Margin Edit"
+#~ msgstr "Sunting Tepi"
+
+#~ msgid "Edit widget margins"
+#~ msgstr "Sunting tepi widget"
+
+#~ msgid "Alignment Edit"
+#~ msgstr "Sunting Perataan"
+
+#~ msgid "Edit widget alignment"
+#~ msgstr "Sunting perataan widget"
+
+#~ msgid "Save _As"
+#~ msgstr "Simp_an Sebagai"
+
+#~ msgid "Close the current project"
+#~ msgstr "Tutup projek kini"
+
+#~ msgid "Undo the last action"
+#~ msgstr "Batalkan aksi terakhir"
+
+#~ msgid "Redo the last action"
+#~ msgstr "Ulangi langkah terakhir"
+
+#~ msgid "Cut"
+#~ msgstr "Potong"
+
+#~ msgid "Cut the selection"
+#~ msgstr "Potong bagian yang dipilih"
+
+#~ msgid "Copy"
+#~ msgstr "Salin"
+
+#~ msgid "Copy the selection"
+#~ msgstr "Salin bagian yang dipilih"
+
+#~ msgid "Paste"
+#~ msgstr "Tempel"
+
+#~ msgid "Paste the clipboard"
+#~ msgstr "Tempel isi clipboard"
+
+#~ msgid "Delete the selection"
+#~ msgstr "Hapus bagian yang dipilih"
+
+#~ msgid "_Previous Project"
+#~ msgstr "_Projek Sebelumnya:"
+
+#~ msgid "Activate previous project"
+#~ msgstr "Aktifkan projek sebelumnya"
+
+#~ msgid "_Next Project"
+#~ msgstr "Projek Sela_njutnya"
+
+#~ msgid "Activate next project"
+#~ msgstr "Aktifkan projek selanjutnya"
+
+#~ msgid "_Use Small Icons"
+#~ msgstr "G_unakan Ikon Kecil"
+
+#~ msgid "Show items using small icons"
+#~ msgstr "Tampilkan butir-butir memakai ikon kecil"
+
+#~ msgid "Dock _Palette"
+#~ msgstr "Dok _Palet"
+
+#~ msgid "Dock the palette into the main window"
+#~ msgstr "Sandarkan palet ke jendela utama"
+
+#~ msgid "Dock _Inspector"
+#~ msgstr "Dok Pemer_iksa"
+
+#~ msgid "Dock the inspector into the main window"
+#~ msgstr "Sandarkan pemeriksa ke jendela utama"
+
+#~ msgid "Dock Prop_erties"
+#~ msgstr "Dok Prop_erti"
+
+#~ msgid "Dock the editor into the main window"
+#~ msgstr "Sandarkan penyunting ke jendela utama"
+
+#~ msgid "_Statusbar"
+#~ msgstr "Bilah _Status"
+
+#~ msgid "Show the statusbar"
+#~ msgstr "Tampilkan bilah status"
+
+#~ msgid "Tool_bar"
+#~ msgstr "_Bilah Alat"
+
+#~ msgid "Show the toolbar"
+#~ msgstr "Tampilkan bilah alat"
+
+#~ msgid "Project _Tabs"
+#~ msgstr "_Tab Projek"
+
+#~ msgid "Show notebook tabs for loaded projects"
+#~ msgstr "Tampilkan tab notebook bagi projek yang dimuat"
+
+#~ msgid "Text _beside icons"
+#~ msgstr "Teks di se_belah ikon"
+
+#~ msgid "Display items as text beside icons"
+#~ msgstr "Tampilkan butir sebagai teks di samping ikon"
+
+#~ msgid "_Icons only"
+#~ msgstr "_Ikon saja"
+
+#~ msgid "Display items as icons only"
+#~ msgstr "Tampilkan butir hanya sebagai ikon"
+
+#~ msgid "_Text only"
+#~ msgstr "_Teks saja"
+
+#~ msgid "Display items as text only"
+#~ msgstr "Tampilkan butir hanya sebagai teks"
+
+#~ msgid "_Editor Header"
+#~ msgstr "Tajuk P_enyunting:"
+
+#~ msgid "New"
+#~ msgstr "Baru"
+
+#~ msgid "Quit"
+#~ msgstr "Keluar"
+
+#~ msgid "Quit the program"
+#~ msgstr "Keluar dari program"
+
+#~ msgid "About this application"
+#~ msgstr "Tentang aplikasi ini"
+
+#~ msgid "Display the developer reference manual"
+#~ msgstr "Tampilkan manual acuan pengembang"
+
+#~ msgid "Edit Glade preferences"
+#~ msgstr "Sunting preferensi Glade"
+
+#~ msgid "Open _Recent"
+#~ msgstr "Buka Te_rkini"
+
+#~ msgid "Help us improve Glade by registering and completing the user survey!"
+#~ msgstr ""
+#~ "Bantu kami memperbaiki Glade dengan mendaftar dan melengkapi survei "
+#~ "pengguna!"
+
+#~ msgid "Palette _Appearance"
+#~ msgstr "Penampilan P_alet"
+
+#~ msgid "Hierarchy"
+#~ msgstr "Hirarki"
+
+#~ msgid "Control and Display"
+#~ msgstr "Kendali dan Tampilan"
