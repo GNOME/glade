@@ -185,6 +185,7 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_TAG_ICON_NAME                       "icon-name"
 #define GLADE_TAG_IMPORTANT                       "important"
 #define GLADE_TAG_CREATE_TYPE                     "create-type"
+#define GLADE_TAG_TEMPLATE_PREFIX                 "template-prefix"
 
 
 /* search child */

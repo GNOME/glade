@@ -2694,7 +2694,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
 {
   GladeWidgetAdaptor *adaptor = NULL;
   gchar *name, *generic_name, *icon_name, *adaptor_icon_name, *adaptor_name,
-      *func_name;
+      *func_name, *template;
   gchar *title, *translated_title, *parent_name;
   GType object_type, adaptor_type, parent_type;
   gchar *missing_icon = NULL;
@@ -2716,6 +2716,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
    * - Autosubclassing a specified parent type (a fake widget class)
    * - parsing the _get_type() function directly from the catalog
    * - deriving foo_bar_get_type() from the name FooBar and loading that.
+   * - setting a template ui definition
    */
   if ((parent_name =
        glade_xml_get_property_string (class_node, GLADE_TAG_PARENT)) != NULL)
@@ -2738,6 +2739,13 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
     {
       object_type = glade_util_get_type_from_name (func_name, TRUE);
       g_free (func_name);
+    }
+  else if ((template =
+            glade_xml_get_property_string (class_node,
+                                           GLADE_XML_TAG_TEMPLATE)) != NULL)
+    {
+      object_type = _glade_template_generate_type_from_file (catalog, name, template);
+      g_free (template);
     }
   else
     {

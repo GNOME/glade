@@ -45,6 +45,8 @@ struct _GladeCatalog
 
   gchar *name;                  /* Symbolic catalog name             */
 
+  gchar *prefix;                /* Catalog path prefix               */
+   
   gchar *dep_catalog;           /* Symbolic name of the catalog that
                                  * this catalog depends on           */
 
@@ -108,6 +110,7 @@ catalog_allocate (void)
 
   catalog->library = NULL;
   catalog->name = NULL;
+  catalog->prefix = NULL;
   catalog->dep_catalog = NULL;
   catalog->domain = NULL;
   catalog->book = NULL;
@@ -201,6 +204,7 @@ catalog_open (const gchar *filename)
   catalog = catalog_allocate ();
   catalog->context = context;
   catalog->name = name;
+  catalog->prefix = g_path_get_dirname (filename);
 
   glade_xml_get_property_version (root, GLADE_TAG_VERSION,
                                   &catalog->major_version,
@@ -724,6 +728,20 @@ glade_catalog_get_name (GladeCatalog *catalog)
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
 
   return catalog->name;
+}
+
+/**
+ * glade_catalog_get_prefix:
+ * @catalog: a catalog object
+ * 
+ * Returns: The catalog path prefix.
+ */
+G_CONST_RETURN gchar *
+glade_catalog_get_prefix (GladeCatalog *catalog)
+{
+  g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
+
+  return catalog->prefix;
 }
 
 /**

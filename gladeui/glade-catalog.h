@@ -59,6 +59,7 @@ const GList  *glade_catalog_get_extra_paths         (void);
 const GList  *glade_catalog_load_all                (void);
 
 G_CONST_RETURN gchar  *glade_catalog_get_name       (GladeCatalog     *catalog);
+G_CONST_RETURN gchar  *glade_catalog_get_prefix     (GladeCatalog     *catalog);
 G_CONST_RETURN gchar  *glade_catalog_get_icon_prefix(GladeCatalog     *catalog);
 G_CONST_RETURN gchar  *glade_catalog_get_domain     (GladeCatalog     *catalog);
 G_CONST_RETURN gchar  *glade_catalog_get_book       (GladeCatalog     *catalog);

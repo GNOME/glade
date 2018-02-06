@@ -168,6 +168,13 @@ AC_CHECK_FUNCS(gtk_print_unix_dialog_new,[have_unix_print=yes]; break,[have_unix
 AM_CONDITIONAL(HAVE_GTK_UNIX_PRINT, test x"$have_unix_print" = "xyes")
 
 dnl ================================================================
+dnl Check for _gtk_widget_class_template_unset_only_for_glade() in gtk+
+dnl ================================================================
+LIBS=$GTK_LIBS
+AC_CHECK_FUNCS(_gtk_widget_class_template_unset_only_for_glade,[have_template_unset=yes]; break,[have_template_unset=no])
+AM_CONDITIONAL(HAVE_GTK_TEMPLATE_UNSET, test x"$have_template_unset" = "xyes")
+
+dnl ================================================================
 dnl Python for optional python dev libs
 dnl ================================================================
 PYGOBJECT_REQUIRED_MAJOR=3

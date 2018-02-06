@@ -94,6 +94,11 @@ gchar *_glade_util_file_get_relative_path (GFile *target,
 void    _glade_xml_error_reset_last       (void);
 gchar  *_glade_xml_error_get_last_message (void);
 
+/* glade-template.c */
+GType _glade_template_generate_type_from_file (GladeCatalog *catalog,
+                                               const gchar  *parent,
+                                               const gchar  *filename);
+
 G_END_DECLS
 
 #endif /* __GLADE_PRIVATE_H__ */

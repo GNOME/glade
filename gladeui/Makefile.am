@@ -125,6 +125,7 @@ libgladeui_2_la_SOURCES = \
 	glade-signal-class.c \
 	glade-signal-editor.c \
 	glade-signal-model.c \
+	glade-template.c \
 	glade-tsort.c \
 	glade-utils.c \
 	glade-widget.c \
