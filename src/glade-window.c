@@ -2285,7 +2285,7 @@ static void
 glade_window_populate_intro (GladeWindow *window)
 {
   ADD_NODE (NULL, "intro-button",  BOTTOM, 5, _("Hello, I will show you what's new in Glade"));
-  ADD_NODE (NULL, "headerbar",     BOTTOM, 6, _("The menubar and toolbar where merged in the headerbar"));
+  ADD_NODE (NULL, "headerbar",     BOTTOM, 6, _("The menubar and toolbar were merged in the headerbar"));
 
   ADD_NODE (NULL, "open-button",   BOTTOM, 3, _("You can open a project"));
   ADD_NODE (NULL, "recent-button", BOTTOM, 2, _("find recently used"));
