@@ -67,11 +67,11 @@ glade_gtk_action_widgets_read_responses (GladeWidget *widget,
       widget_name = glade_xml_get_content (node);
 
       if ((action_widget = glade_widget_find_child (action_area, widget_name)))
-	{
-	  glade_widget_property_set_enabled (action_widget, "response-id", TRUE);
+        {
+          glade_widget_property_set_enabled (action_widget, "response-id", TRUE);
           glade_widget_property_set (action_widget, "response-id",
-                                     g_ascii_strtoll (response, NULL, 10));
-	}
+                                     (gint)g_ascii_strtoll (response, NULL, 10));
+        }
 
       g_free (response);
       g_free (widget_name);
