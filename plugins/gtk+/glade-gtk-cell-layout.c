@@ -33,23 +33,23 @@
 
 gboolean
 glade_gtk_cell_layout_add_verify (GladeWidgetAdaptor *adaptor,
-				  GtkWidget          *container,
-				  GtkWidget          *child,
-				  gboolean            user_feedback)
+                                  GtkWidget          *container,
+                                  GtkWidget          *child,
+                                  gboolean            user_feedback)
 {
   if (!GTK_IS_CELL_RENDERER (child))
     {
       if (user_feedback)
-	{
-	  GladeWidgetAdaptor *cell_adaptor = 
-	    glade_widget_adaptor_get_by_type (GTK_TYPE_CELL_RENDERER);
+        {
+          GladeWidgetAdaptor *cell_adaptor =
+          glade_widget_adaptor_get_by_type (GTK_TYPE_CELL_RENDERER);
 
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 ONLY_THIS_GOES_IN_THAT_MSG,
-				 glade_widget_adaptor_get_title (cell_adaptor),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 ONLY_THIS_GOES_IN_THAT_MSG,
+                                 glade_widget_adaptor_get_title (cell_adaptor),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }
@@ -58,8 +58,9 @@ glade_gtk_cell_layout_add_verify (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_cell_layout_add_child (GladeWidgetAdaptor * adaptor,
-                                 GObject * container, GObject * child)
+glade_gtk_cell_layout_add_child (GladeWidgetAdaptor *adaptor,
+                                 GObject            *container,
+                                 GObject            *child)
 {
   GladeWidget *gmodel = NULL;
   GladeWidget *grenderer = glade_widget_get_from_gobject (child);
@@ -79,8 +80,9 @@ glade_gtk_cell_layout_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_cell_layout_remove_child (GladeWidgetAdaptor * adaptor,
-                                    GObject * container, GObject * child)
+glade_gtk_cell_layout_remove_child (GladeWidgetAdaptor *adaptor,
+                                    GObject            *container,
+                                    GObject            *child)
 {
   GtkCellLayout *layout = GTK_CELL_LAYOUT (container);
   GList *l, *children = gtk_cell_layout_get_cells (layout);
@@ -111,19 +113,19 @@ glade_gtk_cell_layout_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 GList *
-glade_gtk_cell_layout_get_children (GladeWidgetAdaptor * adaptor,
-                                    GObject * container)
+glade_gtk_cell_layout_get_children (GladeWidgetAdaptor *adaptor,
+                                    GObject            *container)
 {
   return gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (container));
 }
 
 
 void
-glade_gtk_cell_layout_get_child_property (GladeWidgetAdaptor * adaptor,
-                                          GObject * container,
-                                          GObject * child,
-                                          const gchar * property_name,
-                                          GValue * value)
+glade_gtk_cell_layout_get_child_property (GladeWidgetAdaptor *adaptor,
+                                          GObject            *container,
+                                          GObject            *child,
+                                          const gchar        *property_name,
+                                          GValue             *value)
 {
   if (strcmp (property_name, "position") == 0)
     {
@@ -143,11 +145,11 @@ glade_gtk_cell_layout_get_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_cell_layout_set_child_property (GladeWidgetAdaptor * adaptor,
-                                          GObject * container,
-                                          GObject * child,
-                                          const gchar * property_name,
-                                          const GValue * value)
+glade_gtk_cell_layout_set_child_property (GladeWidgetAdaptor *adaptor,
+                                          GObject            *container,
+                                          GObject            *child,
+                                          const gchar        *property_name,
+                                          const GValue       *value)
 {
   if (strcmp (property_name, "position") == 0)
     {
@@ -165,8 +167,8 @@ glade_gtk_cell_layout_set_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_cell_renderer_read_attributes (GladeWidget * widget,
-                                         GladeXmlNode * node)
+glade_gtk_cell_renderer_read_attributes (GladeWidget  *widget,
+                                         GladeXmlNode *node)
 {
   GladeXmlNode *attrs_node;
   GladeProperty *attr_prop, *use_attr_prop;
@@ -212,8 +214,9 @@ glade_gtk_cell_renderer_read_attributes (GladeWidget * widget,
 }
 
 void
-glade_gtk_cell_layout_read_child (GladeWidgetAdaptor * adaptor,
-                                  GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_cell_layout_read_child (GladeWidgetAdaptor *adaptor,
+                                  GladeWidget        *widget,
+                                  GladeXmlNode       *node)
 {
   GladeXmlNode *widget_node;
   GladeWidget *child_widget;
@@ -254,9 +257,9 @@ glade_gtk_cell_layout_read_child (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_cell_renderer_write_attributes (GladeWidget * widget,
-                                          GladeXmlContext * context,
-                                          GladeXmlNode * node)
+glade_gtk_cell_renderer_write_attributes (GladeWidget     *widget,
+                                          GladeXmlContext *context,
+                                          GladeXmlNode    *node)
 {
   GladeProperty *property;
   GladePropertyClass *pclass;
@@ -308,10 +311,10 @@ glade_gtk_cell_renderer_write_attributes (GladeWidget * widget,
 }
 
 void
-glade_gtk_cell_layout_write_child (GladeWidgetAdaptor * adaptor,
-                                   GladeWidget * widget,
-                                   GladeXmlContext * context,
-                                   GladeXmlNode * node)
+glade_gtk_cell_layout_write_child (GladeWidgetAdaptor *adaptor,
+                                   GladeWidget        *widget,
+                                   GladeXmlContext    *context,
+                                   GladeXmlNode       *node)
 {
   GladeXmlNode *child_node;
 
@@ -331,9 +334,9 @@ glade_gtk_cell_layout_write_child (GladeWidgetAdaptor * adaptor,
 }
 
 gchar *
-glade_gtk_cell_layout_get_display_name (GladeBaseEditor * editor,
-                                        GladeWidget * gchild,
-                                        gpointer user_data)
+glade_gtk_cell_layout_get_display_name (GladeBaseEditor *editor,
+                                        GladeWidget     *gchild,
+                                        gpointer         user_data)
 {
   GObject *child = glade_widget_get_object (gchild);
   gchar *name;
@@ -347,8 +350,9 @@ glade_gtk_cell_layout_get_display_name (GladeBaseEditor * editor,
 }
 
 void
-glade_gtk_cell_layout_child_selected (GladeBaseEditor * editor,
-                                      GladeWidget * gchild, gpointer data)
+glade_gtk_cell_layout_child_selected (GladeBaseEditor *editor,
+                                      GladeWidget     *gchild,
+                                      gpointer         data)
 {
   GObject *child = glade_widget_get_object (gchild);
 
@@ -371,9 +375,10 @@ glade_gtk_cell_layout_child_selected (GladeBaseEditor * editor,
 }
 
 gboolean
-glade_gtk_cell_layout_move_child (GladeBaseEditor * editor,
-                                  GladeWidget * gparent,
-                                  GladeWidget * gchild, gpointer data)
+glade_gtk_cell_layout_move_child (GladeBaseEditor *editor,
+                                  GladeWidget     *gparent,
+                                  GladeWidget     *gchild,
+                                  gpointer         data)
 {
   GObject *parent = glade_widget_get_object (gparent);
   GObject *child = glade_widget_get_object (gchild);
@@ -434,7 +439,7 @@ glade_gtk_cell_layout_launch_editor (GObject *layout, gchar *window_name)
 
 
 static void
-glade_gtk_cell_layout_launch_editor_action (GObject * object)
+glade_gtk_cell_layout_launch_editor_action (GObject *object)
 {
   GladeWidget *w = glade_widget_get_from_gobject (object);
 
@@ -467,9 +472,9 @@ glade_gtk_cell_layout_launch_editor_action (GObject * object)
 }
 
 void
-glade_gtk_cell_layout_action_activate (GladeWidgetAdaptor * adaptor,
-                                       GObject * object,
-                                       const gchar * action_path)
+glade_gtk_cell_layout_action_activate (GladeWidgetAdaptor *adaptor,
+                                       GObject            *object,
+                                       const gchar        *action_path)
 {
   if (strcmp (action_path, "launch_editor") == 0)
     glade_gtk_cell_layout_launch_editor_action (object);
@@ -479,9 +484,9 @@ glade_gtk_cell_layout_action_activate (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor * adaptor,
-                                                 GObject * object,
-                                                 const gchar * action_path)
+glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor *adaptor,
+                                                 GObject            *object,
+                                                 const gchar        *action_path)
 {
   if (strcmp (action_path, "launch_editor") == 0)
     glade_gtk_cell_layout_launch_editor_action (object);
@@ -491,7 +496,7 @@ glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor * adaptor,
 }
 
 gboolean
-glade_gtk_cell_layout_sync_attributes (GObject * layout)
+glade_gtk_cell_layout_sync_attributes (GObject *layout)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (layout);
   GObject *cell;

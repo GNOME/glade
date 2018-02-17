@@ -40,9 +40,9 @@ glade_gtk_action_widgets_get_area (GladeWidget *widget, gchar *action_area)
 }
 
 static void
-glade_gtk_action_widgets_read_responses (GladeWidget *widget,
+glade_gtk_action_widgets_read_responses (GladeWidget  *widget,
                                          GladeXmlNode *widgets_node,
-                                         gchar *action_container)
+                                         gchar        *action_container)
 {
   GladeWidget *action_widget, *action_area;
   GladeXmlNode *node;
@@ -79,9 +79,9 @@ glade_gtk_action_widgets_read_responses (GladeWidget *widget,
 }
 
 void
-glade_gtk_action_widgets_read_child (GladeWidget *widget,
+glade_gtk_action_widgets_read_child (GladeWidget  *widget,
                                      GladeXmlNode *node,
-                                     gchar *action_container)
+                                     gchar        *action_container)
 {
   GladeXmlNode *widgets_node;
 
@@ -91,10 +91,10 @@ glade_gtk_action_widgets_read_child (GladeWidget *widget,
 }
 
 static void
-glade_gtk_action_widgets_write_responses (GladeWidget *widget,
+glade_gtk_action_widgets_write_responses (GladeWidget     *widget,
                                           GladeXmlContext *context,
-                                          GladeXmlNode *node,
-                                          gchar *action_container)
+                                          GladeXmlNode    *node,
+                                          gchar           *action_container)
 {
   GladeXmlNode *widget_node;
   GList *l, *action_widgets;
@@ -122,7 +122,7 @@ glade_gtk_action_widgets_write_responses (GladeWidget *widget,
         continue;
 
       if (!glade_property_get_enabled (property))
-	continue;
+        continue;
 
       widget_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGET);
       glade_xml_node_append_child (node, widget_node);
@@ -141,7 +141,8 @@ glade_gtk_action_widgets_write_responses (GladeWidget *widget,
 }
 
 void
-glade_gtk_action_widgets_ensure_names (GladeWidget *widget, gchar *action_container)
+glade_gtk_action_widgets_ensure_names (GladeWidget *widget,
+                                       gchar       *action_container)
 {
   GList *l, *action_widgets;
   GladeWidget *action_area;
@@ -167,7 +168,7 @@ glade_gtk_action_widgets_ensure_names (GladeWidget *widget, gchar *action_contai
         continue;
 
       if (!glade_property_get_enabled (property))
-	continue;
+        continue;
 
       glade_widget_ensure_name (action_widget, glade_widget_get_project (action_widget), FALSE);
     }
@@ -176,10 +177,10 @@ glade_gtk_action_widgets_ensure_names (GladeWidget *widget, gchar *action_contai
 }
 
 void
-glade_gtk_action_widgets_write_child (GladeWidget *widget,
+glade_gtk_action_widgets_write_child (GladeWidget     *widget,
                                       GladeXmlContext *context,
-                                      GladeXmlNode *node,
-                                      gchar *action_container)
+                                      GladeXmlNode    *node,
+                                      gchar           *action_container)
 {
   GladeXmlNode *widgets_node;
 
