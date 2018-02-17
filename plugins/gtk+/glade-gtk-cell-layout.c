@@ -200,7 +200,7 @@ glade_gtk_cell_renderer_read_attributes (GladeWidget * widget,
 
           if (use_attribute)
             glade_property_set (attr_prop,
-                                g_ascii_strtoll (column_str, NULL, 10));
+                                (gint)g_ascii_strtoll (column_str, NULL, 10));
         }
 
       g_free (name);
