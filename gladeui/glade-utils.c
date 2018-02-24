@@ -2104,3 +2104,44 @@ glade_util_remove_scroll_events (GtkWidget *widget)
   g_signal_connect (G_OBJECT (widget), "scroll-event",
 		    G_CALLBACK (abort_scroll_events), NULL);
 }
+
+/**
+ * _glade_util_file_get_relative_path:
+ * @target: input GFile
+ * @source: input GFile
+ *
+ * Gets the path for @source relative to @target even if @source is not a
+ * descendant of @target.
+ *
+ */
+gchar *
+_glade_util_file_get_relative_path (GFile *target, GFile *source)
+{
+  gchar *relative_path;
+
+  if ((relative_path = g_file_get_relative_path (target, source)) == NULL)
+    {
+      GString *relpath = g_string_new ("");
+
+      g_object_ref (target);
+
+      while (relative_path == NULL)
+        {
+          GFile *old_target = target;
+          target = g_file_get_parent (target);
+
+          relative_path = g_file_get_relative_path (target, source);
+
+          g_string_append (relpath, "..");
+          g_string_append_c (relpath, G_DIR_SEPARATOR);
+
+          g_object_unref (old_target);
+        }
+
+      g_string_append (relpath, relative_path);
+      g_free (relative_path);
+      relative_path = g_string_free (relpath, FALSE);
+    }
+
+  return relative_path;
+}
