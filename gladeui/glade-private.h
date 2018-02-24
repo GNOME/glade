@@ -68,6 +68,9 @@ gchar *_glade_util_strreplace (gchar *str,
                                const gchar *key,
                                const gchar *replacement);
 
+gchar *_glade_util_file_get_relative_path (GFile *target,
+                                           GFile *source);
+
 /* glade-xml-utils.c */
 
 /* GladeXml Error handling */
