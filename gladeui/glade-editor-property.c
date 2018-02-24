@@ -2214,11 +2214,13 @@ glade_editor_property_show_resource_dialog (GladeProject *project,
                                             GtkWidget    *parent,
                                             gchar      **filename)
 {
-
+  GFile *resource_folder;
   GtkWidget *dialog;
   gchar *folder;
 
   g_return_val_if_fail (filename != NULL, FALSE);
+
+  *filename = NULL;
 
   dialog =
       gtk_file_chooser_dialog_new (_
@@ -2237,26 +2239,22 @@ glade_editor_property_show_resource_dialog (GladeProject *project,
 
   _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
 
-  folder = glade_project_resource_fullpath (project, ".");
+  folder = glade_project_resource_fullpath (project, "");
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), folder);
+  resource_folder = g_file_new_for_path (folder);
   g_free (folder);
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_OK)
     {
-      gchar *name;
-
-      name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-
-      *filename = name ? g_path_get_basename (name) : NULL;
-
-      g_free (name);
-      gtk_widget_destroy (dialog);
-      return TRUE;
+      GFile *file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
+      *filename = _glade_util_file_get_relative_path (resource_folder, file);
+      g_object_unref (file);
     }
 
   gtk_widget_destroy (dialog);
+  g_object_unref (resource_folder);
 
-  return FALSE;
+  return *filename != NULL;
 }
 
 static void
