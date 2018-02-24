@@ -2731,6 +2731,90 @@ glade_project_autosave (GladeProject *project, GError **error)
   return ret > 0;
 }
 
+static inline void
+update_project_resource_path (GladeProject *project, gchar *path)
+{
+  GFile *new_resource_path;
+  GList *l;
+
+  new_resource_path = g_file_new_for_path (path);
+
+  for (l = project->priv->objects; l; l = l->next)
+    {
+      GladeWidget *widget = glade_widget_get_from_gobject (l->data);
+      GList *list;
+
+      for (list = glade_widget_get_properties (widget); list; list = list->next)
+        {
+          GladeProperty      *property = list->data;
+          GladePropertyClass *klass = glade_property_get_class (property);
+          GParamSpec         *pspec = glade_property_class_get_pspec (klass);
+
+          if (pspec->value_type == GDK_TYPE_PIXBUF)
+            {
+              gchar *fullpath, *relpath;
+              const gchar *filename;
+              GFile *fullpath_file;
+              GObject *pixbuf;
+
+              glade_property_get (property, &pixbuf);
+              if (pixbuf == NULL)
+                continue;
+
+              filename = g_object_get_data (pixbuf, "GladeFileName");
+              fullpath = glade_project_resource_fullpath (project, filename);
+              fullpath_file = g_file_new_for_path (fullpath);
+              relpath = _glade_util_file_get_relative_path (new_resource_path,
+                                                            fullpath_file);
+              g_object_set_data_full (pixbuf, "GladeFileName", relpath, g_free);
+
+              g_object_unref (fullpath_file);
+              g_free (fullpath);
+            }
+        }
+    }
+
+  g_object_unref (new_resource_path);
+}
+
+static inline void
+sync_project_resource_path (GladeProject *project)
+{
+  GList *l;
+
+  for (l = glade_project_selection_get (project); l; l = l->next)
+    {
+      GladeWidget *widget = glade_widget_get_from_gobject (l->data);
+      GList *list;
+
+      for (list = glade_widget_get_properties (widget); list; list = list->next)
+        {
+          GladeProperty      *property = list->data;
+          GladePropertyClass *klass = glade_property_get_class (property);
+          GParamSpec         *pspec = glade_property_class_get_pspec (klass);
+
+          if (pspec->value_type == GDK_TYPE_PIXBUF)
+            {
+              const gchar *filename;
+              GObject *pixbuf;
+              GValue *value;
+
+              glade_property_get (property, &pixbuf);
+              if (pixbuf == NULL)
+                continue;
+
+              filename = g_object_get_data (pixbuf, "GladeFileName");
+              value = glade_property_class_make_gvalue_from_string (klass,
+                                                                    filename,
+                                                                    project);
+              glade_property_set_value (property, value);
+              g_value_unset (value);
+              g_free (value);
+            }
+        }
+    }
+}
+
 /**
  * glade_project_save:
  * @project: a #GladeProject
@@ -2770,6 +2854,16 @@ glade_project_save_verify (GladeProject      *project,
       g_free (autosave_path);
     }
 
+  if (!project->priv->resource_path)
+    {
+      /* Fix pixbuf paths: Since there is no resource_path, images are relative
+       * to path or CWD so they need to be updated to be relative to @path
+       */
+      gchar *dirname = g_path_get_dirname (path);
+      update_project_resource_path (project, dirname);
+      g_free (dirname);
+    }
+
   /* Save the project */
   context = glade_project_write (project);
   doc = glade_xml_context_get_doc (context);
@@ -2787,6 +2881,9 @@ glade_project_save_verify (GladeProject      *project,
       g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_PATH]);
 
       glade_project_update_properties_title (project);
+
+      /* Sync selected objects pixbuf properties */
+      sync_project_resource_path (project);
     }
 
   glade_project_set_readonly (project,
@@ -4697,21 +4794,18 @@ glade_project_reset_path (GladeProject *project)
  * @project: The #GladeProject.
  * @resource: The resource basename
  *
- * Project resource strings may be relative or fullpaths, but glade
- * always expects a copy in the glade file directory, this function
- * is used to make a local path to the file.
+ * Project resource strings are always relative, this function tranforms a
+ * path relative to project to a full path.
  *
- * Returns: A newly allocated string holding the 
- *          local path the the project resource.
+ * Returns: A newly allocated string holding the
+ *          full path to the resource.
  */
 gchar *
 glade_project_resource_fullpath (GladeProject *project, const gchar *resource)
 {
-  gchar *fullpath, *project_dir = NULL, *basename;
+  gchar *fullpath, *project_dir = NULL;
 
   g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-
-  basename = g_path_get_basename (resource);
 
   if (project->priv->path == NULL)
     project_dir = g_get_current_dir ();
@@ -4722,18 +4816,16 @@ glade_project_resource_fullpath (GladeProject *project, const gchar *resource)
     {
       if (g_path_is_absolute (project->priv->resource_path))
         fullpath =
-            g_build_filename (project->priv->resource_path, basename, NULL);
+            g_build_filename (project->priv->resource_path, resource, NULL);
       else
         fullpath =
             g_build_filename (project_dir, project->priv->resource_path,
-                              basename, NULL);
+                              resource, NULL);
     }
   else
-    fullpath = g_build_filename (project_dir, basename, NULL);
+    fullpath = g_build_filename (project_dir, resource, NULL);
 
   g_free (project_dir);
-  g_free (basename);
-
   return fullpath;
 }
 
