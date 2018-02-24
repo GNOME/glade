@@ -712,8 +712,11 @@ glade_property_class_make_object_from_string (GladePropertyClass *
 
       if ((pixbuf = gdk_pixbuf_new_from_file (fullpath, NULL)) == NULL)
         {
-          pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
-                                             "image-missing", 22, 0, NULL);
+          GdkPixbuf *icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                                      "image-missing", 22, 0, NULL);
+          /* Use a copy, since gtk_icon_theme_load_icon() returns the same pixbuf */
+          pixbuf = gdk_pixbuf_copy (icon);
+          g_object_unref (icon);
         }
 
       if (pixbuf)
