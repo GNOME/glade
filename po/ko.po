@@ -1,7 +1,7 @@
 # Glade Korean messages
 # This file is distributed under the same license as the glade package.
 #
-# Changwoo Ryu <cwryu@debian.org>, 2006-2017.
+# Changwoo Ryu <cwryu@debian.org>, 2006-2018.
 #
 # 새로 번역하시는 분은 아래 translator-credits에 추가하세요.
 #
@@ -22,8 +22,8 @@ msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-22 12:44+0000\n"
-"PO-Revision-Date: 2017-03-04 04:03+0900\n"
+"POT-Creation-Date: 2018-02-25 00:54+0000\n"
+"PO-Revision-Date: 2018-02-25 10:31+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
-#: ../src/main.c:42
+#: ../src/main.c:42 ../src/glade.glade.h:6
 msgid "Glade"
 msgstr "글레이드"
 
@@ -84,225 +84,279 @@ msgstr ""
 "GtkBuilder를 사용해 글레이드 XML 파일을 C, C++, C#, 발라, 자바, 펄, 파이썬 "
 "등 여러가지 프로그래밍 언어에서 사용할 수 있습니다."
 
-#: ../src/glade-window.c:56
+#: ../src/glade-window.c:57
 msgid "[Read Only]"
 msgstr "[읽기 전용]"
 
-#: ../src/glade-window.c:331
+#: ../src/glade-window.c:189
 msgid "User Interface Designer"
 msgstr "사용자 인터페이스 디자인 프로그램"
 
-#. translators: referring to the action of activating a file named '%s'.
-#. *              we also indicate to users that the file may be read-only with
-#. *              the second '%s'
-#: ../src/glade-window.c:532
-#, c-format
-msgid "Activate '%s' %s"
-msgstr "'%s' %s 활성화"
+#: ../src/glade-window.c:452 ../src/glade-window.c:459
+msgid "the last action"
+msgstr "마지막 동작"
 
-#. translators: referring to the action of activating a file named '%s'
-#. FIXME add hint for translators
-#: ../src/glade-window.c:538 ../src/glade-window.c:546
-#, c-format
-msgid "Activate '%s'"
-msgstr "'%s' 활성화"
-
-#: ../src/glade-window.c:594 ../src/glade-registration.glade.h:7
-#: ../gladeui/glade-project-properties.ui.h:12
-#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
-msgid "Name:"
-msgstr "이름:"
-
-#: ../src/glade-window.c:597
-msgid "Requires:"
-msgstr "필요:"
-
-#: ../src/glade-window.c:656
-msgid "_Undo"
-msgstr "실행 취소(_U)"
-
-#: ../src/glade-window.c:659
+#: ../src/glade-window.c:453
 #, c-format
 msgid "Undo: %s"
 msgstr "실행 취소: %s"
 
-#: ../src/glade-window.c:660 ../src/glade-window.c:671
-msgid "the last action"
-msgstr "마지막 동작"
-
-#: ../src/glade-window.c:667
-msgid "_Redo"
-msgstr "다시 실행(_R)"
-
-#: ../src/glade-window.c:670
+#: ../src/glade-window.c:460
 #, c-format
 msgid "Redo: %s"
 msgstr "다시 실행: %s"
 
-#: ../src/glade-window.c:702
+#: ../src/glade-window.c:485
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "자동 저장: '%s'"
 
-#: ../src/glade-window.c:707
+#: ../src/glade-window.c:490
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "자동 저장에 오류: '%s'"
 
-#: ../src/glade-window.c:1126
+#: ../src/glade-window.c:713
 msgid "Open…"
 msgstr "열기…"
 
-#: ../src/glade-window.c:1160
+#: ../src/glade-window.c:747
 #, c-format
 msgid "Project %s is still loading."
 msgstr "아직 %s 프로젝트를 읽어들이는 중입니다."
 
-#: ../src/glade-window.c:1179
+#: ../src/glade-window.c:766
 msgid "Failed to backup existing file, continue saving?"
 msgstr "기존 파일 백업에 실패했습니다. 계속 저장하시겠습니까?"
 
-#: ../src/glade-window.c:1201
+#: ../src/glade-window.c:788
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "%s 파일을 저장하는데 실패했습니다: %s"
 
-#: ../src/glade-window.c:1240
+#: ../src/glade-window.c:827
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "%s 파일의 내용이 읽어들인 뒤에 바뀌었습니다"
 
-#: ../src/glade-window.c:1244
+#: ../src/glade-window.c:831
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "저장하면 외부에서 바뀐 내용을 전부 잃어버리게 됩니다. 그래도 저장하시겠습니"
 "까?"
 
-#: ../src/glade-window.c:1249
+#: ../src/glade-window.c:836
 msgid "_Save Anyway"
 msgstr "그래도 저장(_S)"
 
-#: ../src/glade-window.c:1257
+#: ../src/glade-window.c:844
 msgid "_Don't Save"
 msgstr "저장하지 않기(_D)"
 
-#: ../src/glade-window.c:1291
+#: ../src/glade-window.c:877
 #, c-format
 msgid "Project '%s' saved"
 msgstr "`%s' 프로젝트를 저장했습니다"
 
-#: ../src/glade-window.c:1322
+#: ../src/glade-window.c:908
 msgid "Save As…"
 msgstr "다른 이름으로 저장…"
 
-#: ../src/glade-window.c:1386
+#: ../src/glade-window.c:972
 #, c-format
 msgid "Could not save the file %s"
 msgstr "%s 파일을 저장할 수 없습니다"
 
-#: ../src/glade-window.c:1390
+#: ../src/glade-window.c:976
 msgid "You do not have the permissions necessary to save the file."
 msgstr "파일을 저장하는데 필요한 권한이 없습니다."
 
-#: ../src/glade-window.c:1412
+#: ../src/glade-window.c:998
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "%s 파일을 저장할 수 없습니다. 해당 경로로 다른 프로젝트가 열려 있습니다."
 
-#: ../src/glade-window.c:1437
+#: ../src/glade-window.c:1026
 msgid "No open projects to save"
 msgstr "저장할 열린 프로젝트가 하나도 없습니다"
 
-#: ../src/glade-window.c:1467
+#: ../src/glade-window.c:1059
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "닫기 전에 \"%s\" 프로젝트에 저장하시겠습니까?"
 
-#: ../src/glade-window.c:1475
+#: ../src/glade-window.c:1067
 msgid "Your changes will be lost if you don't save them."
 msgstr "저장하지 않으면 바뀐 사항을 잃어버리게 됩니다."
 
-#: ../src/glade-window.c:1479
+#: ../src/glade-window.c:1071
 msgid "Close _without Saving"
 msgstr "저장하지 않고 닫기(_W)"
 
-#: ../src/glade-window.c:1480 ../src/glade-window.c:2656
-#: ../gladeui/glade-editor.c:765 ../gladeui/glade-editor.c:1121
+#: ../src/glade-window.c:1072 ../src/glade-window.c:1748
+#: ../gladeui/glade-editor.c:779 ../gladeui/glade-editor.c:1135
 #: ../gladeui/glade-editor-property.c:1690
 #: ../gladeui/glade-editor-property.c:1997
-#: ../gladeui/glade-editor-property.c:2196
-#: ../gladeui/glade-editor-property.c:3137
-#: ../gladeui/glade-editor-property.c:3249
-#: ../gladeui/glade-editor-property.c:3266
-#: ../gladeui/glade-editor-property.c:3586 ../gladeui/glade-utils.c:483
+#: ../gladeui/glade-editor-property.c:2198
+#: ../gladeui/glade-editor-property.c:3135
+#: ../gladeui/glade-editor-property.c:3247
+#: ../gladeui/glade-editor-property.c:3264
+#: ../gladeui/glade-editor-property.c:3584 ../gladeui/glade-utils.c:483
 #: ../plugins/gtk+/glade-accels.c:525 ../plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "취소(_C)"
 
-#: ../src/glade-window.c:1481 ../gladeui/glade-utils.c:486
+#: ../src/glade-window.c:1073 ../gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "저장(_S)"
 
-#: ../src/glade-window.c:1509
+#: ../src/glade-window.c:1104
 msgid "Save…"
 msgstr "저장…"
 
-#: ../src/glade-window.c:2475
-msgid "Close document"
-msgstr "문서 닫기"
-
-#: ../src/glade-window.c:2571
+#: ../src/glade-window.c:1655
 msgid "Could not create a new project."
 msgstr "새 프로젝트를 만들 수 없습니다."
 
-#: ../src/glade-window.c:2624
+#: ../src/glade-window.c:1716
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "%s 프로젝트에 저장하지 않은 바뀐 사항이 있습니다"
 
-#: ../src/glade-window.c:2629
+#: ../src/glade-window.c:1721
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "다시 읽어들이면, 저장하지 않은 내용을 잃어버리게 됩니다. 그래도 다시 읽어들이"
 "겠습니까?"
 
-#: ../src/glade-window.c:2639
+#: ../src/glade-window.c:1731
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "%s 프로젝트 파일이 외부에서 바뀌었습니다"
 
-#: ../src/glade-window.c:2644
+#: ../src/glade-window.c:1736
 msgid "Do you want to reload the project?"
 msgstr "프로젝트를 다시 읽으시겠습니까?"
 
-#: ../src/glade-window.c:2650
+#: ../src/glade-window.c:1742
 msgid "_Reload"
 msgstr "다시 읽기(_R)"
 
-#: ../src/glade-window.c:3249
-msgid "Palette"
-msgstr "팔레트"
+#: ../src/glade-window.c:2287
+msgid "Hello, I will show you what's new in Glade"
+msgstr "안녕하세요. 글레이드의 새로운 기능을 소개합니다"
 
-#: ../src/glade-window.c:3251
-msgid "Inspector"
-msgstr "검사"
+#: ../src/glade-window.c:2288
+msgid "The menubar and toolbar were merged in the headerbar"
+msgstr "메뉴 모음과 도구 모음이 헤더 모음에 통합"
 
-#: ../src/glade-window.c:3253 ../src/glade.glade.h:33
-#: ../gladeui/glade-editor.c:335 ../gladeui/glade-widget.c:1377
-#: ../gladeui/glade-project-properties.ui.h:11
-#: ../plugins/gtk+/glade-gtk-action-group.c:184
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:361
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:518
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:545
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:564
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:605
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:126
-msgid "Properties"
-msgstr "속성"
+#: ../src/glade-window.c:2290
+msgid "You can open a project"
+msgstr "프로젝트를 열 수 있습니다"
+
+#: ../src/glade-window.c:2291
+msgid "find recently used"
+msgstr "최근에 사용된 내용을 찾기"
+
+#: ../src/glade-window.c:2292
+msgid "or create a new one"
+msgstr "아니면 새로 만들기"
+
+#: ../src/glade-window.c:2296
+msgid "Undo"
+msgstr "실행 취소"
+
+#: ../src/glade-window.c:2297
+msgid "Redo"
+msgstr "다시 실행"
+
+#: ../src/glade-window.c:2298
+msgid "Project switcher"
+msgstr "프로젝트 전환"
+
+#: ../src/glade-window.c:2300
+msgid "and Save button are directly accessible in the headerbar"
+msgstr "저장 단추를 헤더 모음에서 직접 접근할 수 있습니다"
+
+#: ../src/glade-window.c:2301
+msgid "just like Save As"
+msgstr "다른 이름으로 저장 단추와 마찬가지로"
+
+#: ../src/glade-window.c:2302
+msgid "project properties"
+msgstr "프로젝트 속성"
+
+#: ../src/glade-window.c:2303
+msgid "and less commonly used actions"
+msgstr "그리고 덜 자주 사용하는 작업"
+
+#: ../src/glade-window.c:2305
+msgid "The object inspector took the palette's place"
+msgstr "오브젝트 검사가 팔레트 위치를 차지합니다"
+
+#: ../src/glade-window.c:2306
+msgid "To free up space for the property editor"
+msgstr "속성 편집기에 필요한 공간을 확보합니다"
+
+#: ../src/glade-window.c:2308
+msgid "The palette was replaced with a new object chooser"
+msgstr "팔레트는 새로운 오브젝트 선택 기능으로 바뀝니다"
+
+#: ../src/glade-window.c:2309
+msgid "Where you can search all supported classes"
+msgstr "여기서 지원하는 모든 클래스를 검색할 수 있습니다"
+
+#: ../src/glade-window.c:2310
+msgid "investigate GTK+ object groups"
+msgstr "GTK+ 오브젝트 그룹을 검사하고"
+
+#: ../src/glade-window.c:2311
+msgid "and find classes introduced by other libraries"
+msgstr "그리고 다른 라이브러리에서 제공한 클래스를 찾아보세요"
+
+#: ../src/glade-window.c:2313
+msgid ""
+"OK, now that we are done with the overview, let's start with the new workflow"
+msgstr "그럼 이제 대략적인 소개를 마쳤고, 새로운 작업 순서를 설명하겠습니다"
+
+#: ../src/glade-window.c:2315
+msgid "First of all, create a new project"
+msgstr "먼저, 새 프로젝트를 만듭니다"
+
+#: ../src/glade-window.c:2316
+msgid ""
+"OK, now add a GtkWindow using the new widget chooser or by double clicking "
+"on the workspace"
+msgstr "그리고 새 위젯 선택 창을 이용하거나 작업 공간에 마우스를 두 번 눌러 GtkWindow를 추가합니다"
+
+#: ../src/glade-window.c:2317
+msgid "Excellent!"
+msgstr "훌륭합니다!"
+
+#: ../src/glade-window.c:2318
+msgid ""
+"BTW, did you know you can double click on any placeholder to create widgets?"
+msgstr "들어갈 칸이 있을 때 마우스를 두 번 눌러서 위젯을 만들 수 있는 것 아시나요?"
+
+#: ../src/glade-window.c:2319
+msgid "Try adding a grid"
+msgstr "그리드를 추가하세요"
+
+#: ../src/glade-window.c:2320
+msgid "and a button"
+msgstr "그리고 단추도 추가"
+
+#: ../src/glade-window.c:2322
+msgid "Quite easy! Isn't it?"
+msgstr "참 쉽죠?"
+
+#: ../src/glade-window.c:2323
+msgid "Enjoy!"
+msgstr "그럼 즐겁게 사용하세요!"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:3515
+#: ../src/glade-window.c:2531
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -311,16 +365,16 @@ msgstr ""
 "- 지금 설문을 하시겠습니까?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:3519
+#: ../src/glade-window.c:2535
 msgid "If not, you can always find it in the Help menu."
 msgstr "지금 설문을 하지 않더라도, 도움말 메뉴에서 설문을 할 수 있습니다."
 
-#: ../src/glade-window.c:3521
+#: ../src/glade-window.c:2537
 msgid "_Do not show this dialog again"
 msgstr "이 대화창을 다시 표시하지 않기(_D)"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: ../src/glade-window.c:3542
+#: ../src/glade-window.c:2558
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr "도움말 -> 등록 및 사용자 설문 메뉴로 가서 설문 조사를 끝마치십시오!"
 
@@ -340,388 +394,150 @@ msgstr "[파일...]"
 msgid "be verbose"
 msgstr "자세히 출력"
 
-#: ../src/main.c:91
+#: ../src/main.c:90
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
 "GTK+ 혹은 그놈 프로그램의 사용자 인터페이스 디자인을 새로 만들거나 편집합니"
 "다."
 
-#: ../src/main.c:95 ../src/main.c:96
+#: ../src/main.c:94 ../src/main.c:95
 msgid "Glade options"
 msgstr "글레이드 옵션"
 
-#: ../src/main.c:102
+#: ../src/main.c:101
 msgid "Glade debug options"
 msgstr "글레이드 디버깅 옵션"
 
-#: ../src/main.c:103
+#: ../src/main.c:102
 msgid "Show Glade debug options"
 msgstr "글레이드 디버깅 옵션 표시"
 
-#: ../src/main.c:146
+#: ../src/main.c:145
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "gmodule 기능이 없습니다. 글레이드가 동작하려면 gmodule 기능이 필요합니다"
 
-#: ../src/main.c:183
+#: ../src/main.c:179
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "'%s' 파일을 열 수 없습니다. 파일이 없습니다.\n"
 
 #: ../src/glade.glade.h:1
-msgid ""
-"Copyright © 2001-2006 Ximian, Inc.\n"
-"Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2015 Tristan Van Berkom, Juan Pablo Ugarte, et al."
-msgstr ""
-"Copyright © 2001-2006 Ximian, Inc.\n"
-"Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2015 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+msgid "Close Project"
+msgstr "프로젝트 닫기"
 
-#: ../src/glade.glade.h:4
-msgid "A user interface designer for GTK+ and GNOME."
-msgstr "GTK+ 및 그놈 사용자 인터페이스 디자인 프로그램."
-
-#: ../src/glade.glade.h:5
-msgid "Visit Glade web site"
-msgstr "글레이드 홈페이지 방문"
-
-#: ../src/glade.glade.h:6
-msgid ""
-"Glade is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as \n"
-"published by the Free Software Foundation; either version 2 of the \n"
-"License, or (at your option) any later version.\n"
-"\n"
-"Glade is distributed in the hope that it will be useful\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the \n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License \n"
-"along with Glade; if not, write to the Free Software \n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
-"MA 02110-1301, USA."
-msgstr ""
-"Glade is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as \n"
-"published by the Free Software Foundation; either version 2 of the \n"
-"License, or (at your option) any later version.\n"
-"\n"
-"Glade is distributed in the hope that it will be useful\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the \n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License \n"
-"along with Glade; if not, write to the Free Software \n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
-"MA 02110-1301, USA."
-
-#: ../src/glade.glade.h:20
-msgid "translator-credits"
-msgstr "류창우 <cwryu@debian.org>"
-
-#: ../src/glade.glade.h:21
-msgid "Select"
-msgstr "선택"
-
-#: ../src/glade.glade.h:22
-msgid "Select widgets in the workspace"
-msgstr "작업 창의 위젯을 선택합니다"
-
-#: ../src/glade.glade.h:23
-msgid "Drag Resize"
-msgstr "끌어서 크기 조정"
-
-#: ../src/glade.glade.h:24
-msgid "Drag and resize widgets in the workspace"
-msgstr "작업 공간의 위젯을 끌어서 크기를 조정합니다"
-
-#: ../src/glade.glade.h:25
-msgid "Margin Edit"
-msgstr "간격 편집"
-
-#: ../src/glade.glade.h:26
-msgid "Edit widget margins"
-msgstr "위젯 간격 편집"
-
-#: ../src/glade.glade.h:27
-msgid "Alignment Edit"
-msgstr "맞춤 편집"
-
-#: ../src/glade.glade.h:28
-msgid "Edit widget alignment"
-msgstr "위젯 맞춤 편집"
-
-#. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:29 ../plugins/gtk+/gtk+.xml.in.h:628
-msgid "Save"
-msgstr "저장"
-
-#: ../src/glade.glade.h:30
-msgid "Save the current project"
-msgstr "현재 프로젝트를 저장합니다"
-
-#: ../src/glade.glade.h:31
-msgid "Save _As"
-msgstr "다른 이름으로 저장(_A)"
-
-#: ../src/glade.glade.h:32
-msgid "Save the current project with a different name"
-msgstr "현재 프로젝트를 다른 이름으로 저장합니다"
-
-#: ../src/glade.glade.h:34
-msgid "Edit project properties"
-msgstr "프로젝트 속성을 편집합니다"
-
-#. GtkButtonsType enumeration value
-#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:601
-msgid "Close"
-msgstr "닫기"
-
-#: ../src/glade.glade.h:36
-msgid "Close the current project"
-msgstr "현재 프로젝트를 닫습니다"
-
-#: ../src/glade.glade.h:37
-msgid "Undo"
-msgstr "실행 취소"
-
-#: ../src/glade.glade.h:38
-msgid "Undo the last action"
-msgstr "마지막 작업을 실행 취소합니다"
-
-#: ../src/glade.glade.h:39
-msgid "Redo"
-msgstr "다시 실행"
-
-#: ../src/glade.glade.h:40
-msgid "Redo the last action"
-msgstr "마지막 작업을 다시 실행합니다"
-
-# GTK_SHADOW_OUT
-#: ../src/glade.glade.h:41
-msgid "Cut"
-msgstr "잘라내기"
-
-#: ../src/glade.glade.h:42
-msgid "Cut the selection"
-msgstr "선택한 부분을 잘라냅니다"
-
-#: ../src/glade.glade.h:43
-msgid "Copy"
-msgstr "복사"
-
-#: ../src/glade.glade.h:44
-msgid "Copy the selection"
-msgstr "선택한 부분을 복사합니다"
-
-#: ../src/glade.glade.h:45
-msgid "Paste"
-msgstr "붙여넣기"
-
-#: ../src/glade.glade.h:46
-msgid "Paste the clipboard"
-msgstr "클립보드 내용을 붙여넣습니다"
-
-#: ../src/glade.glade.h:47 ../gladeui/glade-object-stub.c:99
-msgid "Delete"
-msgstr "삭제"
-
-#: ../src/glade.glade.h:48
-msgid "Delete the selection"
-msgstr "선택한 부분을 지웁니다"
-
-#: ../src/glade.glade.h:49
-msgid "_Previous Project"
-msgstr "이전 프로젝트(_P)"
-
-#: ../src/glade.glade.h:50
-msgid "Activate previous project"
-msgstr "이전 프로젝트를 활성화합니다"
-
-#: ../src/glade.glade.h:51
-msgid "_Next Project"
-msgstr "다음 프로젝트(_N)"
-
-#: ../src/glade.glade.h:52
-msgid "Activate next project"
-msgstr "다음 프로젝트를 활성화합니다"
-
-#: ../src/glade.glade.h:53
-msgid "_Use Small Icons"
-msgstr "작은 아이콘 사용(_U)"
-
-#: ../src/glade.glade.h:54
-msgid "Show items using small icons"
-msgstr "작은 아이콘으로 항목을 표시합니다"
-
-#: ../src/glade.glade.h:55
-msgid "Dock _Palette"
-msgstr "팔레트 붙이기(_P)"
-
-#: ../src/glade.glade.h:56
-msgid "Dock the palette into the main window"
-msgstr "팔레트를 메인 창에 붙입니다"
-
-#: ../src/glade.glade.h:57
-msgid "Dock _Inspector"
-msgstr "검사 붙이기(_I)"
-
-#: ../src/glade.glade.h:58
-msgid "Dock the inspector into the main window"
-msgstr "검사를 메인 창에 붙입니다"
-
-#: ../src/glade.glade.h:59
-msgid "Dock Prop_erties"
-msgstr "도크 속성(_E)"
-
-#: ../src/glade.glade.h:60
-msgid "Dock the editor into the main window"
-msgstr "편집기를 메인 창에 붙입니다"
-
-#: ../src/glade.glade.h:61
-msgid "_Statusbar"
-msgstr "상태 표시줄(_S)"
-
-#: ../src/glade.glade.h:62
-msgid "Show the statusbar"
-msgstr "상태 표시줄 보이기"
-
-#: ../src/glade.glade.h:63
-msgid "Tool_bar"
-msgstr "도구 모음(_B)"
-
-#: ../src/glade.glade.h:64
-msgid "Show the toolbar"
-msgstr "도구 모음 보이기"
-
-#: ../src/glade.glade.h:65
-msgid "Project _Tabs"
-msgstr "프로젝트 탭(_T)"
-
-#: ../src/glade.glade.h:66
-msgid "Show notebook tabs for loaded projects"
-msgstr "읽어들인 프로젝트의 노트북 탭 보이기"
-
-#: ../src/glade.glade.h:67
-msgid "Text _beside icons"
-msgstr "아이콘 옆에 텍스트(_B)"
-
-#: ../src/glade.glade.h:68
-msgid "Display items as text beside icons"
-msgstr "아이콘 옆에 텍스트를 놓는 식으로 항목을 표시합니다"
-
-#: ../src/glade.glade.h:69
-msgid "_Icons only"
-msgstr "아이콘만(_I)"
-
-#: ../src/glade.glade.h:70
-msgid "Display items as icons only"
-msgstr "아이콘으로만 항목을 표시합니다"
-
-#: ../src/glade.glade.h:71
-msgid "_Text only"
-msgstr "텍스트만(_T)"
-
-#: ../src/glade.glade.h:72
-msgid "Display items as text only"
-msgstr "텍스트로만 항목을 표시합니다"
-
-#: ../src/glade.glade.h:73
-msgid "_Editor Header"
-msgstr "편집기 헤더(_E)"
-
-#: ../src/glade.glade.h:74
-msgid "Show the header in the property editor"
-msgstr "속성 편집기에 헤더 표시"
-
-#: ../src/glade.glade.h:75
-msgid "New"
-msgstr "새로 만들기"
-
-#: ../src/glade.glade.h:76
-msgid "Create a new project"
-msgstr "새 프로젝트를 만듭니다"
-
-#. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:77 ../plugins/gtk+/gtk+.xml.in.h:630
-msgid "Open"
-msgstr "열기"
-
-#: ../src/glade.glade.h:78
-msgid "Open a project"
-msgstr "프로젝트를 엽니다"
-
-#: ../src/glade.glade.h:79
-msgid "Quit"
-msgstr "끝내기"
-
-#: ../src/glade.glade.h:80
-msgid "Quit the program"
-msgstr "프로그램을 끝냅니다"
-
-#: ../src/glade.glade.h:81
-msgid "About"
-msgstr "정보"
-
-#: ../src/glade.glade.h:82
-msgid "About this application"
-msgstr "이 프로그램의 정보"
-
-#: ../src/glade.glade.h:83
-msgid "_Developer Reference"
-msgstr "개발자 참고서(_D)"
-
-#: ../src/glade.glade.h:84
-msgid "Display the developer reference manual"
-msgstr "개발자 참고서 표시를 표시합니다"
-
-#: ../src/glade.glade.h:85
-msgid "Preferences"
-msgstr "기본 설정"
-
-#: ../src/glade.glade.h:86
-msgid "Edit Glade preferences"
-msgstr "글레이드 기본 설정 편집"
-
-#: ../src/glade.glade.h:87
-msgid "Open _Recent"
-msgstr "최근 열기(_R)"
-
-#: ../src/glade.glade.h:88
+#: ../src/glade.glade.h:2
 msgid "Registration & User Survey"
 msgstr "등록 및 사용자 설문"
 
-#: ../src/glade.glade.h:89
-msgid "Help us improve Glade by registering and completing the user survey!"
-msgstr "등록 및 사용자 설문으로 글레이드를 발전시키는데 도움을 주십시오!"
+#: ../src/glade.glade.h:3
+msgid "_Developer Reference"
+msgstr "개발자 참고서(_D)"
 
-#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:115
-msgid "_File"
-msgstr "파일(_F)"
+#: ../src/glade.glade.h:4
+msgid "Preferences"
+msgstr "기본 설정"
 
-#: ../src/glade.glade.h:91 ../plugins/gtk+/glade-gtk-menu-bar.c:126
-msgid "_Edit"
-msgstr "편집(_E)"
+#: ../src/glade.glade.h:5
+msgid "About"
+msgstr "정보"
 
-#: ../src/glade.glade.h:92 ../plugins/gtk+/glade-gtk-menu-bar.c:135
-msgid "_View"
-msgstr "보기(_V)"
+#: ../src/glade.glade.h:7
+msgid "page0"
+msgstr "페이지0"
 
-#: ../src/glade.glade.h:93
-msgid "Palette _Appearance"
-msgstr "팔레트 모양(_A)"
+#: ../src/glade.glade.h:8
+msgid "page1"
+msgstr "페이지1"
 
-#: ../src/glade.glade.h:94
-msgid "_Projects"
-msgstr "프로젝트(_P)"
+#. GtkFileChooserAction enumeration value
+#: ../src/glade.glade.h:9 ../plugins/gtk+/gtk+.xml.in.h:632
+msgid "Open"
+msgstr "열기"
 
-#: ../src/glade.glade.h:95 ../plugins/gtk+/glade-gtk-menu-bar.c:139
-msgid "_Help"
-msgstr "도움말(_H)"
+#: ../src/glade.glade.h:10
+msgid "Open a project"
+msgstr "프로젝트를 엽니다"
+
+#: ../src/glade.glade.h:11
+msgid "Create a new project"
+msgstr "새 프로젝트를 만듭니다"
+
+#: ../src/glade.glade.h:12
+msgid "Edit project properties"
+msgstr "프로젝트 속성을 편집합니다"
+
+#. GtkFileChooserAction enumeration value
+#: ../src/glade.glade.h:13 ../plugins/gtk+/gtk+.xml.in.h:630
+msgid "Save"
+msgstr "저장"
+
+#: ../src/glade.glade.h:14
+msgid "Save the current project"
+msgstr "현재 프로젝트를 저장합니다"
+
+#: ../src/glade.glade.h:15
+msgid "Save the current project with a different name"
+msgstr "현재 프로젝트를 다른 이름으로 저장합니다"
+
+#: ../src/glade.glade.h:16
+msgid "Start/resume interactive UI introduction"
+msgstr "시작/계속 사용자 인터페이스 소개"
+
+#: ../src/glade.glade.h:17
+msgid ""
+"Copyright © 2001-2006 Ximian, Inc.\n"
+"Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+"Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+msgstr ""
+"Copyright © 2001-2006 Ximian, Inc.\n"
+"Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+"Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+
+#: ../src/glade.glade.h:20
+msgid "A user interface designer for GTK+ and GNOME."
+msgstr "GTK+ 및 그놈 사용자 인터페이스 디자인 프로그램."
+
+#: ../src/glade.glade.h:21
+msgid "Visit Glade web site"
+msgstr "글레이드 홈페이지 방문"
+
+#: ../src/glade.glade.h:22
+msgid ""
+"Glade is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as \n"
+"published by the Free Software Foundation; either version 2 of the \n"
+"License, or (at your option) any later version.\n"
+"\n"
+"Glade is distributed in the hope that it will be useful\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the \n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License \n"
+"along with Glade; if not, write to the Free Software \n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
+"MA 02110-1301, USA."
+msgstr ""
+"Glade is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as \n"
+"published by the Free Software Foundation; either version 2 of the \n"
+"License, or (at your option) any later version.\n"
+"\n"
+"Glade is distributed in the hope that it will be useful\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the \n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License \n"
+"along with Glade; if not, write to the Free Software \n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
+"MA 02110-1301, USA."
+
+#: ../src/glade.glade.h:36
+msgid "translator-credits"
+msgstr "류창우 <cwryu@debian.org>"
 
 #: ../src/glade-preferences.glade.h:1
 msgid "Glade Preferences"
@@ -947,7 +763,7 @@ msgid "Glade Registration & User Survey"
 msgstr "글레이드 등록 및 사용자 설문"
 
 #. GtkButtonsType enumeration value
-#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:599
+#: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:601
 msgid "Cancel"
 msgstr "취소"
 
@@ -966,6 +782,12 @@ msgstr "사용자 정보"
 #: ../src/glade-registration.glade.h:6
 msgid "<Your name or nickname is required>"
 msgstr "<이름 또는 별명이 필요합니다>"
+
+#: ../src/glade-registration.glade.h:7
+#: ../gladeui/glade-project-properties.ui.h:12
+#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
+msgid "Name:"
+msgstr "이름:"
 
 #: ../src/glade-registration.glade.h:8
 msgid "Email:"
@@ -1102,7 +924,7 @@ msgstr "펄"
 #. GtkCellRendererAccelMode enumeration value
 #: ../src/glade-registration.glade.h:41
 #: ../gladeui/glade-project-properties.ui.h:19
-#: ../plugins/gtk+/gtk+.xml.in.h:787
+#: ../plugins/gtk+/gtk+.xml.in.h:789
 msgid "Other"
 msgstr "기타"
 
@@ -1280,7 +1102,7 @@ msgstr "GNU/리눅스"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:817
+#: ../src/glade-registration.glade.h:85 ../plugins/gtk+/gtk+.xml.in.h:819
 msgid "BSD"
 msgstr "BSD"
 
@@ -1432,12 +1254,12 @@ msgid "Have you ever encountered a bug?"
 msgstr "버그를 발견했습니까?"
 
 #. GtkResponseType enumeration value
-#: ../src/glade-registration.glade.h:122 ../plugins/gtk+/gtk+.xml.in.h:603
+#: ../src/glade-registration.glade.h:122 ../plugins/gtk+/gtk+.xml.in.h:605
 msgid "Yes"
 msgstr "예"
 
 #. GtkResponseType enumeration value
-#: ../src/glade-registration.glade.h:123 ../plugins/gtk+/gtk+.xml.in.h:605
+#: ../src/glade-registration.glade.h:123 ../plugins/gtk+/gtk+.xml.in.h:607
 msgid "No"
 msgstr "아니요"
 
@@ -1479,7 +1301,7 @@ msgstr ""
 "개별 데이터는 알 수 없는 위치에 보관되며 공개되거나 제3자에게 전달되지 않습니"
 "다."
 
-#: ../gladeui/glade-app.c:535
+#: ../gladeui/glade-app.c:549
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -1488,7 +1310,7 @@ msgstr ""
 "내부 데이터를 %s 디렉터리에 저장하려고 하였으나 일반 파일입니다.\n"
 "이 세션에서는 내부 데이터를 저장하지 않습니다"
 
-#: ../gladeui/glade-app.c:547
+#: ../gladeui/glade-app.c:561
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -1497,7 +1319,7 @@ msgstr ""
 "내부 데이터를 저장할 %s 디렉터리를 만드는데 실패했습니다.\n"
 "이 세션에서는 내부 데이터를 저장하지 않습니다"
 
-#: ../gladeui/glade-app.c:575
+#: ../gladeui/glade-app.c:589
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -1506,7 +1328,7 @@ msgstr ""
 "내부 데이터를 %s에 쓰는데 오류가 발생했습니다. (%s)\n"
 "이 세션에서는 내부 데이터를 저장하지 않습니다"
 
-#: ../gladeui/glade-app.c:587
+#: ../gladeui/glade-app.c:601
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -1515,7 +1337,7 @@ msgstr ""
 "설정 데이터를 저장하는데 직렬화에 오류가 발생했습니다. (%s)\n"
 "이 세션에서는 내부 데이터를 저장하지 않습니다"
 
-#: ../gladeui/glade-app.c:600
+#: ../gladeui/glade-app.c:614
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -1544,61 +1366,51 @@ msgstr "추가: %s"
 msgid "Add child %s"
 msgstr "하위 %s 추가"
 
-#: ../gladeui/glade-base-editor.c:943
+#: ../gladeui/glade-base-editor.c:942
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "삭제: %s 하위 위젯을 %s에서"
 
-#: ../gladeui/glade-base-editor.c:1069
+#: ../gladeui/glade-base-editor.c:1068
 #, c-format
 msgid "Reorder %s's children"
 msgstr "순서 바꾸기: %s의 하위 위젯"
 
-#: ../gladeui/glade-base-editor.c:1501 ../plugins/gtk+/gtk+.xml.in.h:363
-msgid "Container"
-msgstr "컨테이너"
-
-#: ../gladeui/glade-base-editor.c:1502
-msgid "The container object this editor is currently editing"
-msgstr "이 편집기가 현재 편집하고 있는 컨테이너 오브젝트"
-
-#. translators: refers to a tab name used to group all the relevant widget's properties
-#: ../gladeui/glade-base-editor.c:1734 ../gladeui/glade-editor.c:919
-msgid "General"
-msgstr "일반"
-
-#. translators: refers to a tab name used to show the widget hierarchy
-#: ../gladeui/glade-base-editor.c:1743
-msgid "Hierarchy"
-msgstr "계층 구조"
-
 #. AtkRole enumeration value
-#: ../gladeui/glade-base-editor.c:1781 ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../gladeui/glade-base-editor.c:1547 ../plugins/gtk+/gtk+.xml.in.h:144
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:9
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:2
 msgid "Label"
 msgstr "레이블"
 
-#: ../gladeui/glade-base-editor.c:1796 ../gladeui/glade-widget-adaptor.c:1446
+#: ../gladeui/glade-base-editor.c:1562 ../gladeui/glade-widget-adaptor.c:1454
 #: ../plugins/gtk+/glade-eprop-enum-int.c:70
 #: ../plugins/gtk+/glade-eprop-enum-int.c:71
 msgid "Type"
 msgstr "종류"
 
+#: ../gladeui/glade-base-editor.c:1592 ../plugins/gtk+/gtk+.xml.in.h:363
+msgid "Container"
+msgstr "컨테이너"
+
+#: ../gladeui/glade-base-editor.c:1593
+msgid "The container object this editor is currently editing"
+msgstr "이 편집기가 현재 편집하고 있는 컨테이너 오브젝트"
+
 #. Name
 #. translators: The unique identifier of an object in the project
-#: ../gladeui/glade-base-editor.c:2033 ../gladeui/glade-editor-table.c:305
+#: ../gladeui/glade-base-editor.c:1878 ../gladeui/glade-editor-table.c:305
 #: ../gladeui/glade-editor-table.c:578
 msgid "ID:"
 msgstr "ID:"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:2053
+#: ../gladeui/glade-base-editor.c:1898
 #: ../plugins/gtk+/glade-window-editor.ui.h:8
 msgid "Type:"
 msgstr "종류:"
 
-#: ../gladeui/glade-base-editor.c:2273
+#: ../gladeui/glade-base-editor.c:2111
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1620,7 +1432,7 @@ msgstr "인증"
 # 창 관리자 힌트
 #. GTK_STOCK_DND
 #. GdkWindowTypeHint enumeration value
-#: ../gladeui/glade-builtins.c:73 ../plugins/gtk+/gtk+.xml.in.h:421
+#: ../gladeui/glade-builtins.c:73 ../plugins/gtk+/gtk+.xml.in.h:423
 msgid "Drag and Drop"
 msgstr "끌어 놓기"
 
@@ -1714,12 +1526,12 @@ msgstr "사용 해제: %2$s 위젯의 %1$s 속성"
 msgid "Setting multiple properties"
 msgstr "설정: 여러 개 속성"
 
-#: ../gladeui/glade-command.c:813 ../gladeui/glade-editor-property.c:3652
+#: ../gladeui/glade-command.c:813 ../gladeui/glade-editor-property.c:3650
 #, c-format
 msgid "Setting %s of %s"
 msgstr "설정: %2$s의 %1$s"
 
-#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3357
+#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3355
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "설정: %2$s의 %1$s 값을 %3$s(으)로"
@@ -1856,55 +1668,63 @@ msgstr "그림을 읽어들일 수 없습니다(%s)"
 msgid "Editing alignments of %s"
 msgstr "편집: %s의 맞춤"
 
-#: ../gladeui/glade-design-layout.c:735
+#: ../gladeui/glade-design-layout.c:733
 #, c-format
 msgid "Editing margins of %s"
 msgstr "편집: %s의 간격"
 
-#: ../gladeui/glade-design-layout.c:2041
+#: ../gladeui/glade-design-layout.c:2043
 msgid "Design View"
 msgstr "디자인 뷰"
 
-#: ../gladeui/glade-design-layout.c:2042
+#: ../gladeui/glade-design-layout.c:2044
 msgid "The GladeDesignView that contains this layout"
 msgstr "이 레이아웃이 들어 있는 GladeDesignView"
 
-#: ../gladeui/glade-editor.c:228
+#: ../gladeui/glade-editor.c:236
 msgid "Show info"
 msgstr "정보 표시"
 
-#: ../gladeui/glade-editor.c:229
+#: ../gladeui/glade-editor.c:237
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "읽어들인 위젯에 대한 정보 단추를 표시할지 여부"
 
-#: ../gladeui/glade-editor.c:236 ../plugins/gtk+/gtk+.xml.in.h:1
+#: ../gladeui/glade-editor.c:244 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "Widget"
 msgstr "위젯"
 
-#: ../gladeui/glade-editor.c:237
+#: ../gladeui/glade-editor.c:245
 msgid "The currently loaded widget in this editor"
 msgstr "이 편집기에서 현재 읽어들인 위젯"
 
-#: ../gladeui/glade-editor.c:243
+#: ../gladeui/glade-editor.c:251
 msgid "Show Class Field"
 msgstr "클래스 필드 표시"
 
-#: ../gladeui/glade-editor.c:244
+#: ../gladeui/glade-editor.c:252
 msgid "Whether to show the class field at the top"
 msgstr "맨 위에 클래스 필드를 표시할지 여부"
 
-#: ../gladeui/glade-editor.c:250
+#: ../gladeui/glade-editor.c:258
 msgid "Class Field"
 msgstr "클래스 필드"
 
-#: ../gladeui/glade-editor.c:251
+#: ../gladeui/glade-editor.c:259
 msgid "The class field string"
 msgstr "클래스 필드 문자열"
+
+#: ../gladeui/glade-editor.c:264
+msgid "Show Border"
+msgstr "테두리 표시"
+
+#: ../gladeui/glade-editor.c:265
+msgid "Whether the border should be shown"
+msgstr "테두리를 표시할지 여부"
 
 #. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
 #. * example: Window Properties - GtkWindow [window1]
 #.
-#: ../gladeui/glade-editor.c:311
+#: ../gladeui/glade-editor.c:325
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "%s 속성 - %s [%s]"
@@ -1912,78 +1732,94 @@ msgstr "%s 속성 - %s [%s]"
 #. translators: %s(Class Title) Properties - %s (ClassName)
 #. * example: Window Properties - GtkWindow
 #.
-#: ../gladeui/glade-editor.c:321
+#: ../gladeui/glade-editor.c:335
 #, c-format
 msgid "%s Properties - %s"
 msgstr "%s 속성 - %s"
 
-#: ../gladeui/glade-editor.c:761
+#: ../gladeui/glade-editor.c:349 ../gladeui/glade-widget.c:1377
+#: ../gladeui/glade-project-properties.ui.h:11
+#: ../plugins/gtk+/glade-gtk-action-group.c:184
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:365
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:518
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:545
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:564
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:605
+#: ../plugins/gtk+/glade-gtk-text-tag-table.c:126
+msgid "Properties"
+msgstr "속성"
+
+#: ../gladeui/glade-editor.c:775
 #, c-format
 msgid "Create a %s"
 msgstr "%s 만들기"
 
-#: ../gladeui/glade-editor.c:769
+#: ../gladeui/glade-editor.c:783
 msgid "Crea_te"
 msgstr "만들기(_T)"
 
-#: ../gladeui/glade-editor.c:877
+#: ../gladeui/glade-editor.c:891
 msgid "Reset"
 msgstr "초기화"
 
-#: ../gladeui/glade-editor.c:888 ../gladeui/glade-property-label.c:119
+#: ../gladeui/glade-editor.c:902 ../gladeui/glade-property-label.c:119
 msgid "Property"
 msgstr "속성"
 
-#: ../gladeui/glade-editor.c:927
+#: ../gladeui/glade-editor.c:933
+msgid "General"
+msgstr "일반"
+
+#: ../gladeui/glade-editor.c:941
 msgid "Common"
 msgstr "공통 사항"
 
-#: ../gladeui/glade-editor.c:935 ../gladeui/glade-editor.ui.h:5
+#: ../gladeui/glade-editor.c:949 ../gladeui/glade-editor.ui.h:5
 msgid "Accessibility"
 msgstr "접근성"
 
-#: ../gladeui/glade-editor.c:968
+#: ../gladeui/glade-editor.c:982
 msgid "(default)"
 msgstr "(기본값)"
 
-#: ../gladeui/glade-editor.c:983
+#: ../gladeui/glade-editor.c:997
 msgid "Select the properties that you want to reset to their default values"
 msgstr "기본값으로 초기화하려는 속성을 선택하십시오"
 
-#: ../gladeui/glade-editor.c:1117
+#: ../gladeui/glade-editor.c:1131
 msgid "Reset Widget Properties"
 msgstr "위젯 속성 초기화"
 
-#: ../gladeui/glade-editor.c:1122 ../gladeui/glade-editor-property.c:1691
+#: ../gladeui/glade-editor.c:1136 ../gladeui/glade-editor-property.c:1691
 #: ../gladeui/glade-editor-property.c:1998
-#: ../gladeui/glade-editor-property.c:3139
-#: ../gladeui/glade-editor-property.c:3252
-#: ../gladeui/glade-editor-property.c:3268
-#: ../gladeui/glade-editor-property.c:3587 ../plugins/gtk+/glade-accels.c:526
+#: ../gladeui/glade-editor-property.c:3137
+#: ../gladeui/glade-editor-property.c:3250
+#: ../gladeui/glade-editor-property.c:3266
+#: ../gladeui/glade-editor-property.c:3585 ../plugins/gtk+/glade-accels.c:526
 #: ../plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "확인(_O)"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1134
+#: ../gladeui/glade-editor.c:1148
 msgid "_Properties:"
 msgstr "속성(_P):"
 
-#: ../gladeui/glade-editor.c:1163
+#: ../gladeui/glade-editor.c:1177
 msgid "_Select All"
 msgstr "모두 선택(_S)"
 
-#: ../gladeui/glade-editor.c:1171
+#: ../gladeui/glade-editor.c:1185
 msgid "_Unselect All"
 msgstr "모두 선택 해제(_U)"
 
 #. Description
-#: ../gladeui/glade-editor.c:1181
+#: ../gladeui/glade-editor.c:1195
 msgid "Property _Description:"
 msgstr "속성 설명(_D):"
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1283
+#: ../gladeui/glade-editor.c:1297
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - %s 속성"
@@ -2072,71 +1908,71 @@ msgstr ""
 msgid "Co_mments for translators:"
 msgstr "번역자 주석문(_M):"
 
-#: ../gladeui/glade-editor-property.c:2192
+#: ../gladeui/glade-editor-property.c:2194
 msgid "Select a file from the project resource directory"
 msgstr "프로젝트 리소스 디렉터리에서 파일을 선택하십시오"
 
-#: ../gladeui/glade-editor-property.c:2197 ../gladeui/glade-utils.c:486
+#: ../gladeui/glade-editor-property.c:2199 ../gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "열기(_O)"
 
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:3057
-#: ../gladeui/glade-widget-adaptor.c:1439 ../gladeui/glade-widget.c:1341
-#: ../plugins/gtk+/gtk+.xml.in.h:545
+#: ../gladeui/glade-editor-property.c:3055
+#: ../gladeui/glade-widget-adaptor.c:1447 ../gladeui/glade-widget.c:1341
+#: ../plugins/gtk+/gtk+.xml.in.h:547
 msgid "Name"
 msgstr "이름"
 
-#: ../gladeui/glade-editor-property.c:3066 ../gladeui/glade-property.c:647
+#: ../gladeui/glade-editor-property.c:3064 ../gladeui/glade-property.c:647
 msgid "Class"
 msgstr "클래스"
 
-#: ../gladeui/glade-editor-property.c:3086
+#: ../gladeui/glade-editor-property.c:3084
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "이 프로젝트에서 상위 위젯 없는 %s 종류 오브젝트 선택"
 
-#: ../gladeui/glade-editor-property.c:3088
+#: ../gladeui/glade-editor-property.c:3086
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "이 프로젝트에서 %s 종류 오브젝트 선택"
 
-#: ../gladeui/glade-editor-property.c:3108
+#: ../gladeui/glade-editor-property.c:3106
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "이 프로젝트에서 상위 위젯 없는 %s 선택"
 
-#: ../gladeui/glade-editor-property.c:3110
+#: ../gladeui/glade-editor-property.c:3108
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "이 프로젝트에서 %s 선택"
 
-#: ../gladeui/glade-editor-property.c:3138
-#: ../gladeui/glade-editor-property.c:3250
-#: ../gladeui/glade-editor-property.c:3267
-#: ../gladeui/glade-editor-property.c:3585 ../plugins/gtk+/glade-accels.c:524
+#: ../gladeui/glade-editor-property.c:3136
+#: ../gladeui/glade-editor-property.c:3248
+#: ../gladeui/glade-editor-property.c:3265
+#: ../gladeui/glade-editor-property.c:3583 ../plugins/gtk+/glade-accels.c:524
 #: ../plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "지우기(_L)"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3160
-#: ../gladeui/glade-editor-property.c:3290
+#: ../gladeui/glade-editor-property.c:3158
+#: ../gladeui/glade-editor-property.c:3288
 msgid "O_bjects:"
 msgstr "오브젝트(_B):"
 
-#: ../gladeui/glade-editor-property.c:3251
+#: ../gladeui/glade-editor-property.c:3249
 msgid "_New"
 msgstr "새로 만들기(_N)"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3400
+#: ../gladeui/glade-editor-property.c:3398
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "만들기: %s, 속성 %s 위젯 %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3603
+#: ../gladeui/glade-editor-property.c:3601
 msgid "Objects:"
 msgstr "오브젝트:"
 
@@ -2210,6 +2046,10 @@ msgstr "표준 아이콘 목록만 표시(_L)"
 #, c-format
 msgid "Could not create directory: %s"
 msgstr "디렉터리를 만들 수 없습니다: %s"
+
+#: ../gladeui/glade-object-stub.c:99
+msgid "Delete"
+msgstr "삭제"
 
 #: ../gladeui/glade-object-stub.c:101
 msgid "Delete All"
@@ -2288,7 +2128,7 @@ msgstr "뒤바꿈"
 # After - signal을 기존 꺼 나중에 실행한다는 뜻...  뭐라고 번역해도 모르면 알 수 없긴 마찬가지
 #. translators: GConnectFlags value
 #: ../gladeui/glade-previewer.c:759 ../gladeui/glade-signal.c:207
-#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:669
+#: ../gladeui/glade-signal-editor.c:1391 ../plugins/gtk+/gtk+.xml.in.h:671
 msgid "After"
 msgstr "다음에"
 
@@ -2571,7 +2411,7 @@ msgstr "%s 문서 속성"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2913
+#: ../gladeui/glade-project.c:3010
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2579,24 +2419,24 @@ msgstr ""
 "다"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2917
+#: ../gladeui/glade-project.c:3014
 #, c-format
-msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
-msgstr "[%s] '%s' 오브젝트 클래스는 %s %d.%d 버전에 처음 생겼습니다\n"
+msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
+msgstr "[%s] '<b>%s</b>' 오브젝트 클래스는 %s %d.%d 버전에 처음 생겼습니다\n"
 
-#: ../gladeui/glade-project.c:2919
+#: ../gladeui/glade-project.c:3016
 msgid "This widget is deprecated"
 msgstr "이 위젯은 사용을 권장하지 않습니다"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2922
+#: ../gladeui/glade-project.c:3019
 #, c-format
-msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
-msgstr "[%s] '%s' 오브젝트 클래스는(버전 %s %d.%d) 사용을 권장하지 않습니다\n"
+msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
+msgstr "[%s] '<b>%s</b>' 오브젝트 클래스는 (버전 %s %d.%d) 사용을 권장하지 않습니다\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2927
+#: ../gladeui/glade-project.c:3024
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2604,33 +2444,34 @@ msgstr ""
 "다"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2931
-#, c-format
-msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr ""
-"[%s] '%s' 속성은('%s' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
-
-#. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2935
+#: ../gladeui/glade-project.c:3028
 #, c-format
 msgid ""
-"[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr ""
-"[%s] '%s' 패킹 속성은('%s' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
+"[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
+"%d.%d\n"
+msgstr "[%s] '<b>%s</b>' 속성은('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
 
-#: ../gladeui/glade-project.c:2938
+#. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:3032
+#, c-format
+msgid ""
+"[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was introduced "
+"in %s %d.%d\n"
+msgstr "[%s] '<b>%s</b>' 패킹 속성은 ('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
+
+#: ../gladeui/glade-project.c:3035
 msgid "This property is deprecated"
 msgstr "이 속성은 사용을 권장하지 않습니다"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2941
+#: ../gladeui/glade-project.c:3038
 #, c-format
-msgid "[%s] Property '%s' of object class '%s' is deprecated"
-msgstr "[%s] '%s' 속성은('%s' 오브젝트 클래스) 사용을 권장하지 않습니다"
+msgid "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
+msgstr "[%s] '<b>%s</b>' 속성은 ('<b>%s</b>' 오브젝트 클래스) 사용을 권장하지 않습니다\n"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2945
+#: ../gladeui/glade-project.c:3042
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2638,82 +2479,83 @@ msgstr ""
 "니다"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2949
+#: ../gladeui/glade-project.c:3046
 #, c-format
-msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr ""
-"[%s] '%s' 시그널은('%s' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
+msgid ""
+"[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
+"%d\n"
+msgstr "[%s] '<b>%s</b>' 시그널은 ('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
 
-#: ../gladeui/glade-project.c:2952
+#: ../gladeui/glade-project.c:3049
 msgid "This signal is deprecated"
 msgstr "이 시그널은 사용을 권장하지 않습니다"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2955
+#: ../gladeui/glade-project.c:3052
 #, c-format
-msgid "[%s] Signal '%s' of object class '%s' is deprecated"
-msgstr "[%s] '%s' 시그널은('%s' 오브젝트 클래스) 사용을 권장하지 않습니다"
+msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
+msgstr "[%s] '<b>%s</b>' 시그널은 ('<b>%s</b>' 오브젝트 클래스) 사용을 권장하지 않습니다\n"
 
-#: ../gladeui/glade-project.c:3251
+#: ../gladeui/glade-project.c:3349
 msgid "Details"
 msgstr "자세히"
 
-#: ../gladeui/glade-project.c:3266
+#: ../gladeui/glade-project.c:3366
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "\"%s\" 프로젝트에 오류가 있습니다. 그래도 저장하시겠습니까?"
 
-#: ../gladeui/glade-project.c:3267
+#: ../gladeui/glade-project.c:3367
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr "\"%s\" 프로젝트에 권장하지 않는 위젯이 있거나 버전 불일치가 있습니다."
 
-#: ../gladeui/glade-project.c:3292
+#: ../gladeui/glade-project.c:3392
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr "%s 오브젝트는 클래스 서식이지만 gtk+ %d.%d 버전에서 지원하지 않습니다."
 
-#: ../gladeui/glade-project.c:3307
+#: ../gladeui/glade-project.c:3407
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "%s 오브젝트에 알 수 없는 %s 타입이 들어 있습니다\n"
 
 # filename
-#: ../gladeui/glade-project.c:4777
+#: ../gladeui/glade-project.c:4872
 #, c-format
 msgid "Unsaved %i"
 msgstr "저장하지 않음 %i"
 
-#: ../gladeui/glade-project.c:5076 ../gladeui/glade-project.c:5127
-#: ../gladeui/glade-project.c:5284
+#: ../gladeui/glade-project.c:5171 ../gladeui/glade-project.c:5222
+#: ../gladeui/glade-project.c:5379
 msgid "No widget selected."
 msgstr "위젯을 선택하지 않았습니다."
 
-#: ../gladeui/glade-project.c:5092
+#: ../gladeui/glade-project.c:5187
 msgid "Unable to copy unrecognized widget type."
 msgstr "알 수 없는 위젯 타입을 복사할 수 없습니다."
 
-#: ../gladeui/glade-project.c:5124
+#: ../gladeui/glade-project.c:5219
 msgid "Unable to cut unrecognized widget type"
 msgstr "알 수 없는 위젯 타입을 잘라낼 수 없습니다"
 
-#: ../gladeui/glade-project.c:5176
+#: ../gladeui/glade-project.c:5271
 msgid "Unable to paste to the selected parent"
 msgstr "선택한 상위 위젯으로 붙여넣을 수 없습니다"
 
-#: ../gladeui/glade-project.c:5187
+#: ../gladeui/glade-project.c:5282
 msgid "Unable to paste to multiple widgets"
 msgstr "여러 개 위젯으로 붙여넣을 수 없습니다"
 
-#: ../gladeui/glade-project.c:5197
+#: ../gladeui/glade-project.c:5292
 msgid "No widget on the clipboard"
 msgstr "클립보드에 위젯이 없습니다"
 
-#: ../gladeui/glade-project.c:5242
+#: ../gladeui/glade-project.c:5337
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "이 컨테이너에는 한 번에 한 개 위젯만 붙여넣을 수 있습니다"
 
-#: ../gladeui/glade-project.c:5254
+#: ../gladeui/glade-project.c:5349
 msgid "Insufficient amount of placeholders in target container"
 msgstr "대상 컨테이너에 들어갈 수 있는 칸이 부족합니다"
 
@@ -2955,8 +2797,8 @@ msgstr "링크를 표시할 수 없습니다:"
 # 팝업 위치
 #. Reset the column
 #. GtkTextDirection enumeration value
-#: ../gladeui/glade-utils.c:1639 ../plugins/gtk+/glade-attributes.c:827
-#: ../plugins/gtk+/gtk+.xml.in.h:429
+#: ../gladeui/glade-utils.c:1686 ../plugins/gtk+/glade-attributes.c:827
+#: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "None"
 msgstr "없음"
 
@@ -2973,7 +2815,7 @@ msgid "Whether this action is sensitive"
 msgstr "이 동작이 입출력 가능한지 여부"
 
 #: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1430
-#: ../plugins/gtk+/gtk+.xml.in.h:931
+#: ../plugins/gtk+/gtk+.xml.in.h:933
 msgid "Visible"
 msgstr "표시"
 
@@ -2981,71 +2823,71 @@ msgstr "표시"
 msgid "Whether this action is visible"
 msgstr "이 동작이 보이는지 여부"
 
-#: ../gladeui/glade-widget-adaptor.c:241
+#: ../gladeui/glade-widget-adaptor.c:243
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "%2$s의 파생 어댑터가(%1$s) 이미 있습니다!"
 
-#: ../gladeui/glade-widget-adaptor.c:943
+#: ../gladeui/glade-widget-adaptor.c:951
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s 위젯은 하위 위젯 추가를 지원하지 않습니다."
 
-#: ../gladeui/glade-widget-adaptor.c:1440
+#: ../gladeui/glade-widget-adaptor.c:1448
 msgid "Name of the class"
 msgstr "클래스의 이름"
 
-#: ../gladeui/glade-widget-adaptor.c:1447
+#: ../gladeui/glade-widget-adaptor.c:1455
 msgid "GType of the class"
 msgstr "클래스의 GType"
 
-#: ../gladeui/glade-widget-adaptor.c:1453
+#: ../gladeui/glade-widget-adaptor.c:1461
 msgid "Title"
 msgstr "제목"
 
-#: ../gladeui/glade-widget-adaptor.c:1454
+#: ../gladeui/glade-widget-adaptor.c:1462
 msgid "Translated title for the class used in the glade UI"
 msgstr "글레이드 UI에서 사용할 클래스의 번역한 이름"
 
-#: ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-widget-adaptor.c:1468
 msgid "Generic Name"
 msgstr "일반 이름"
 
-#: ../gladeui/glade-widget-adaptor.c:1461
+#: ../gladeui/glade-widget-adaptor.c:1469
 msgid "Used to generate names of new widgets"
 msgstr "새 위젯의 이름을 만들 때 사용합니다"
 
-#: ../gladeui/glade-widget-adaptor.c:1467 ../plugins/gtk+/gtk+.xml.in.h:661
+#: ../gladeui/glade-widget-adaptor.c:1475 ../plugins/gtk+/gtk+.xml.in.h:663
 #: ../plugins/gtk+/glade-window-editor.ui.h:6
 msgid "Icon Name"
 msgstr "아이콘 이름"
 
-#: ../gladeui/glade-widget-adaptor.c:1468
+#: ../gladeui/glade-widget-adaptor.c:1476
 msgid "The icon name"
 msgstr "아이콘의 이름"
 
-#: ../gladeui/glade-widget-adaptor.c:1474
+#: ../gladeui/glade-widget-adaptor.c:1482
 msgid "Catalog"
 msgstr "카탈로그"
 
-#: ../gladeui/glade-widget-adaptor.c:1475
+#: ../gladeui/glade-widget-adaptor.c:1483
 msgid "The name of the widget catalog this class was declared by"
 msgstr "이 클래스가 선언되어 있는 위젯 카탈로그의 이름"
 
-#: ../gladeui/glade-widget-adaptor.c:1481
+#: ../gladeui/glade-widget-adaptor.c:1489
 msgid "Book"
 msgstr "북"
 
-#: ../gladeui/glade-widget-adaptor.c:1482
+#: ../gladeui/glade-widget-adaptor.c:1490
 msgid "DevHelp search namespace for this widget class"
 msgstr "이 위젯 클래스의 개발자 도움말 검색 네임스페이스"
 
-#: ../gladeui/glade-widget-adaptor.c:1488
+#: ../gladeui/glade-widget-adaptor.c:1496
 msgid "Special Child Type"
 msgstr "특수 하위 위젯 종류"
 
 # 무슨 이야기인지 잘..
-#: ../gladeui/glade-widget-adaptor.c:1489
+#: ../gladeui/glade-widget-adaptor.c:1497
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -3053,13 +2895,21 @@ msgstr ""
 "이 컨테이너 클래스에 대한 특수 하위 위젯을 설명하는 용도의 패킹 속성의 이름입"
 "니다."
 
-#: ../gladeui/glade-widget-adaptor.c:1496
+#: ../gladeui/glade-widget-adaptor.c:1504
 msgid "Cursor"
 msgstr "커서"
 
-#: ../gladeui/glade-widget-adaptor.c:1497
+#: ../gladeui/glade-widget-adaptor.c:1505
 msgid "A cursor for inserting widgets in the UI"
 msgstr "UI에서 위젯을 집어 넣을 때 사용할 커서"
+
+#: ../gladeui/glade-widget-adaptor.c:1509
+msgid "Query"
+msgstr "질의"
+
+#: ../gladeui/glade-widget-adaptor.c:1510
+msgid "Whether the adaptor should query the use or not"
+msgstr "위젯 어댑터가 사용을 질의하는지 여부."
 
 #: ../gladeui/glade-widget.c:1342
 msgid "The name of the widget"
@@ -3208,7 +3058,7 @@ msgstr "일부 시그널에 버전 문제가 있습니다: "
 msgid "Actions"
 msgstr "동작"
 
-#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1078
+#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:1080
 msgid "Applications"
 msgstr "프로그램"
 
@@ -3243,6 +3093,26 @@ msgstr "위치"
 #: ../gladeui/icon-naming-spec.c:56
 msgid "Status"
 msgstr "상태"
+
+#: ../gladeui/glade-adaptor-chooser.ui.h:1
+msgid "All available widgets and objects"
+msgstr "사용 가능한 모든 위젯 및 오브젝트"
+
+#: ../gladeui/glade-adaptor-chooser.ui.h:2
+msgid ""
+"Click on a placeholder to create this class\n"
+"(use middle button to create more than one)"
+msgstr ""
+"들어갈 칸을 눌러 이 클래스를 만듭니다\n"
+"(가운데 단추를 누르면 여러 개를 만듭니다)"
+
+#: ../gladeui/glade-adaptor-chooser.ui.h:4
+msgid "Non-GTK+ widgets and objects"
+msgstr "GTK+ 아닌 위젯 및 오브젝트"
+
+#: ../gladeui/glade-adaptor-chooser.ui.h:5
+msgid "Extra GTK+ objects"
+msgstr "추가 GTK+ 오브젝트"
 
 #: ../gladeui/glade-editor.ui.h:1
 msgid "_General"
@@ -3699,20 +3569,20 @@ msgid "Whether this container supports resizes of child widgets"
 msgstr "이 컨테이너가 하위 위젯의 크기 조절을 지원하는지 여부"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:180
-#: ../plugins/gtk+/glade-gtk-action-group.c:219
-#: ../plugins/gtk+/gtk+.xml.in.h:885
+#: ../plugins/gtk+/glade-gtk-action-group.c:215
+#: ../plugins/gtk+/gtk+.xml.in.h:887
 msgid "Action"
 msgstr "동작"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:220
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:418
+#: ../plugins/gtk+/glade-gtk-action-group.c:216
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:417
 #: ../plugins/gtk+/glade-gtk-toolbar.c:236
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:183
-#: ../plugins/gtk+/glade-gtk-tree-view.c:97
+#: ../plugins/gtk+/glade-gtk-tree-view.c:91
 msgid "Toggle"
 msgstr "토글"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:221
+#: ../plugins/gtk+/glade-gtk-action-group.c:217
 #: ../plugins/gtk+/glade-gtk-toolbar.c:237
 #: ../plugins/gtk+/glade-gtk-toolbar.c:248
 #: ../plugins/gtk+/glade-gtk-toolbar.c:256
@@ -3722,11 +3592,11 @@ msgstr "토글"
 msgid "Radio"
 msgstr "라디오"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:222
+#: ../plugins/gtk+/glade-gtk-action-group.c:218
 msgid "Recent"
 msgstr "최근"
 
-#: ../plugins/gtk+/glade-gtk-action-group.c:230
+#: ../plugins/gtk+/glade-gtk-action-group.c:226
 msgid "Action Group Editor"
 msgstr "동작 그룹 편집기"
 
@@ -3747,75 +3617,75 @@ msgstr "확인 페이지"
 msgid "Ordering children of %s"
 msgstr "%s의 하위 위젯 순서 바꾸기"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:908
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:360
+#: ../plugins/gtk+/gtk+.xml.in.h:910
 msgid "Tree View Column"
 msgstr "트리 뷰 열"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:916
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:360
+#: ../plugins/gtk+/gtk+.xml.in.h:918
 msgid "Cell Renderer"
 msgstr "셀 렌더러"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:362
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:366
 msgid "Properties and Attributes"
 msgstr "속성"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:368
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:372
 msgid "Common Properties and Attributes"
 msgstr "공통 속성"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:412
-#: ../plugins/gtk+/glade-gtk-tree-view.c:91 ../plugins/gtk+/gtk+.xml.in.h:204
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:411
+#: ../plugins/gtk+/glade-gtk-tree-view.c:85 ../plugins/gtk+/gtk+.xml.in.h:204
 #: ../plugins/gtk+/glade-entry-editor.ui.h:3
 msgid "Text"
 msgstr "텍스트"
 
 #. Accelerator
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:413
-#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:887
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:412
+#: ../plugins/gtk+/glade-gtk-tree-view.c:86 ../plugins/gtk+/gtk+.xml.in.h:889
 msgid "Accelerator"
 msgstr "단축키"
 
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:414
-#: ../plugins/gtk+/glade-gtk-tree-view.c:93 ../plugins/gtk+/gtk+.xml.in.h:419
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:413
+#: ../plugins/gtk+/glade-gtk-tree-view.c:87 ../plugins/gtk+/gtk+.xml.in.h:421
 msgid "Combo"
 msgstr "콤보"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:415
-#: ../plugins/gtk+/glade-gtk-tree-view.c:94
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:414
+#: ../plugins/gtk+/glade-gtk-tree-view.c:88
 msgid "Spin"
 msgstr "스핀"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:416
-#: ../plugins/gtk+/glade-gtk-tree-view.c:95
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:415
+#: ../plugins/gtk+/glade-gtk-tree-view.c:89
 msgid "Pixbuf"
 msgstr "픽스버퍼"
 
 # 도우미 창 페이지의 성격 (content, intro, confirm, summary, progress)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:417
-#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:860
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:416
+#: ../plugins/gtk+/glade-gtk-tree-view.c:90 ../plugins/gtk+/gtk+.xml.in.h:862
 #: ../plugins/gtk+/glade-entry-editor.ui.h:4
 msgid "Progress"
 msgstr "진행"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:419
-#: ../plugins/gtk+/glade-gtk-tree-view.c:98 ../plugins/gtk+/gtk+.xml.in.h:520
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:418
+#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:522
 msgid "Spinner"
 msgstr "스피너"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:452
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:451
 msgid "Icon View Editor"
 msgstr "아이콘 뷰 편집기"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:457
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:456
 msgid "Combo Editor"
 msgstr "콤보 편집기"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:462
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:461
 msgid "Entry Completion Editor"
 msgstr "입력창 완성 편집기"
 
@@ -3935,6 +3805,22 @@ msgstr "이 속성은 이름 있는 아이콘에만 적용됩니다"
 msgid "This property only applies if ellipsize and wrapping are enabled"
 msgstr "이 속성은 말줄임표와 줄바꿈을 사용할 때만 효과가 있습니다"
 
+#: ../plugins/gtk+/glade-gtk-menu-bar.c:115
+msgid "_File"
+msgstr "파일(_F)"
+
+#: ../plugins/gtk+/glade-gtk-menu-bar.c:126
+msgid "_Edit"
+msgstr "편집(_E)"
+
+#: ../plugins/gtk+/glade-gtk-menu-bar.c:135
+msgid "_View"
+msgstr "보기(_V)"
+
+#: ../plugins/gtk+/glade-gtk-menu-bar.c:139
+msgid "_Help"
+msgstr "도움말(_H)"
+
 #: ../plugins/gtk+/glade-gtk-menu-item.c:53
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:173
 msgid "Edit Menu Bar"
@@ -4012,11 +3898,11 @@ msgstr "최근 메뉴"
 msgid "Tool Item"
 msgstr "도구 항목"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:541 ../plugins/gtk+/gtk+.xml.in.h:496
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:541 ../plugins/gtk+/gtk+.xml.in.h:498
 msgid "Tool Item Group"
 msgstr "도구 항목 그룹"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:751
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:753
 msgid "Recent Chooser Menu"
 msgstr "최근 선택 메뉴"
 
@@ -4052,18 +3938,18 @@ msgid "Search bar is already full"
 msgstr "검색 표시줄이 이미 가득 차 있습니다"
 
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:122
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:152
+#: ../plugins/gtk+/glade-gtk-text-tag-table.c:148
 msgid "Tag"
 msgstr "태그"
 
-#: ../plugins/gtk+/glade-gtk-text-tag-table.c:160
+#: ../plugins/gtk+/glade-gtk-text-tag-table.c:156
 msgid "Text Tag Table Editor"
 msgstr "텍스트 태그 테이블 편집기"
 
 #. GtkIconSize enumeration value
 #: ../plugins/gtk+/glade-gtk-toolbar.c:235
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:182
-#: ../plugins/gtk+/gtk+.xml.in.h:483
+#: ../plugins/gtk+/gtk+.xml.in.h:485
 msgid "Button"
 msgstr "단추"
 
@@ -4079,7 +3965,7 @@ msgstr "메뉴"
 #. GtkRecentSortType enumeration value
 #: ../plugins/gtk+/glade-gtk-toolbar.c:239
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:186
-#: ../plugins/gtk+/gtk+.xml.in.h:807 ../plugins/gtk+/glade-widget-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:809 ../plugins/gtk+/glade-widget-editor.ui.h:7
 msgid "Custom"
 msgstr "사용자 설정"
 
@@ -4101,7 +3987,7 @@ msgstr "구분선"
 #: ../plugins/gtk+/glade-gtk-toolbar.c:253
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:191
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:200
-#: ../plugins/gtk+/gtk+.xml.in.h:403
+#: ../plugins/gtk+/gtk+.xml.in.h:405
 msgid "Normal"
 msgstr "보통"
 
@@ -4139,11 +4025,11 @@ msgstr "그룹"
 msgid "Tool Palette Editor"
 msgstr "도구 팔레트 편집기"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:88
+#: ../plugins/gtk+/glade-gtk-tree-view.c:82
 msgid "Column"
 msgstr "열"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:111
+#: ../plugins/gtk+/glade-gtk-tree-view.c:105
 msgid "Tree View Editor"
 msgstr "트리 뷰 편집기"
 
@@ -4151,20 +4037,20 @@ msgstr "트리 뷰 편집기"
 #. * treeview editors and provide a custom control that sets all its columns
 #. * to fixed size and then control the column's sensitivity accordingly.
 #.
-#: ../plugins/gtk+/glade-gtk-tree-view.c:204
+#: ../plugins/gtk+/glade-gtk-tree-view.c:198
 msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr "고정 높이 모드를 설정한 트리뷰에서는 열의 크기를 고정해야 합니다."
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:294
+#: ../plugins/gtk+/glade-gtk-tree-view.c:288
 msgid "Search is disabled"
 msgstr "검색 기능 없음"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:301
+#: ../plugins/gtk+/glade-gtk-tree-view.c:295
 msgid "Headers are invisible"
 msgstr "헤더가 보이지 않음"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:308
+#: ../plugins/gtk+/glade-gtk-tree-view.c:302
 msgid "Expanders are not shown"
 msgstr "확장을 표시하지 않음"
 
@@ -4272,7 +4158,7 @@ msgstr "이 '%s' 아이콘 소스에 상태를 지정할지 여부를 설정합�
 msgid "Set the state for this source of '%s'"
 msgstr "이 '%s' 아이콘 소스의 상태를 설정합니다"
 
-#: ../plugins/gtk+/glade-icon-sources.c:848 ../plugins/gtk+/gtk+.xml.in.h:662
+#: ../plugins/gtk+/glade-icon-sources.c:848 ../plugins/gtk+/gtk+.xml.in.h:664
 msgid "File Name"
 msgstr "파일 이름"
 
@@ -4489,7 +4375,7 @@ msgid "Reverse"
 msgstr "거꾸로"
 
 # 인쇄물에서 눈금 표시
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:746
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:748
 msgid "Scale"
 msgstr "눈금"
 
@@ -4861,8 +4747,8 @@ msgstr "대화 상자"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:124
-msgid "Directory Name"
-msgstr "디렉터리 이름"
+msgid "Directory Pane"
+msgstr "디렉터리 창"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:126
@@ -5574,689 +5460,699 @@ msgstr "동작 모음"
 msgid "The number of items in the action bar"
 msgstr "동작 모음의 항목 수"
 
-#. GdkGravity enumeration value
+#. Virtual accel-groups property to record accel groups
 #: ../plugins/gtk+/gtk+.xml.in.h:385
+msgid "Accel Groups"
+msgstr "단축키 그룹"
+
+#. GdkGravity enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:387
 msgid "North West"
 msgstr "북서"
 
 #. GdkGravity enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:387
+#: ../plugins/gtk+/gtk+.xml.in.h:389
 msgid "North"
 msgstr "북"
 
 #. GdkGravity enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:389
+#: ../plugins/gtk+/gtk+.xml.in.h:391
 msgid "North East"
 msgstr "북동"
 
 #. GdkGravity enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:391
+#: ../plugins/gtk+/gtk+.xml.in.h:393
 msgid "West"
 msgstr "서"
 
 #. GdkGravity enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:393
+#: ../plugins/gtk+/gtk+.xml.in.h:395
 msgid "East"
 msgstr "동"
 
 #. GdkGravity enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:395
+#: ../plugins/gtk+/gtk+.xml.in.h:397
 msgid "South West"
 msgstr "남서"
 
 #. GdkGravity enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:397
+#: ../plugins/gtk+/gtk+.xml.in.h:399
 msgid "South"
 msgstr "남"
 
 #. GdkGravity enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:399
+#: ../plugins/gtk+/gtk+.xml.in.h:401
 msgid "South East"
 msgstr "남동"
 
 #. GdkGravity enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:401
+#: ../plugins/gtk+/gtk+.xml.in.h:403
 msgid "Static"
 msgstr "고정"
 
 # 창 관리자 힌트
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:405
+#: ../plugins/gtk+/gtk+.xml.in.h:407
 msgid "Toolbar"
 msgstr "도구 모음"
 
 # 창 관리자 힌트
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:407
+#: ../plugins/gtk+/gtk+.xml.in.h:409
 msgid "Splash Screen"
 msgstr "스플래시 화면"
 
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:409
+#: ../plugins/gtk+/gtk+.xml.in.h:411
 msgid "Utility"
 msgstr "유틸리티"
 
 # 창 관리자 힌트
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:411
+#: ../plugins/gtk+/gtk+.xml.in.h:413
 msgid "Dock"
 msgstr "도크"
 
 # 창 관리자 힌트
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:413
+#: ../plugins/gtk+/gtk+.xml.in.h:415
 msgid "Desktop"
 msgstr "바탕 화면"
 
 # 창 관리자 힌트
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:415
+#: ../plugins/gtk+/gtk+.xml.in.h:417
 msgid "Drop Down Menu"
 msgstr "드롭 다운 메뉴"
 
 # 창 관리자 힌트
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:417
+#: ../plugins/gtk+/gtk+.xml.in.h:419
 msgid "Tooltip"
 msgstr "풍선 도움말"
 
 #. GtkWindowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:423
+#: ../plugins/gtk+/gtk+.xml.in.h:425
 msgid "Top Level"
 msgstr "최상위"
 
 #. GtkWindowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:425
+#: ../plugins/gtk+/gtk+.xml.in.h:427
 msgid "Popup"
 msgstr "팝업"
 
 # offscreen rendering 관련
 #. GtkWindowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:427
+#: ../plugins/gtk+/gtk+.xml.in.h:429
 msgid "Offscreen"
 msgstr "보이지 않음"
 
 # 팝업 위치
 #. GtkWindowPosition enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:431
+#: ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Mouse"
 msgstr "마우스"
 
 #. GtkWindowPosition enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:433
+#: ../plugins/gtk+/gtk+.xml.in.h:435
 msgid "Always Center"
 msgstr "언제나 가운데"
 
 # 팝업 위치
 #. GtkWindowPosition enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:435
+#: ../plugins/gtk+/gtk+.xml.in.h:437
 msgid "Center on Parent"
 msgstr "상위 위젯의 가운데"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:436
+#: ../plugins/gtk+/gtk+.xml.in.h:438
 msgid "A list of accel groups to be added to this window"
 msgstr "이 창에 추가할 단축키 그룹 목록"
 
 # offscreen rendering 관련
-#: ../plugins/gtk+/gtk+.xml.in.h:437
+#: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Offscreen Window"
 msgstr "보이지 않는 창"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:438
+#: ../plugins/gtk+/gtk+.xml.in.h:440
 msgid "Application Window"
 msgstr "프로그램 창"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:439
+#: ../plugins/gtk+/gtk+.xml.in.h:441
 msgid "Overlay"
 msgstr "오버레이"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:440
+#: ../plugins/gtk+/gtk+.xml.in.h:442
 msgid "Menu Shell"
 msgstr "메뉴 셸"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:441 ../plugins/gtk+/glade-button-editor.ui.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:443 ../plugins/gtk+/glade-button-editor.ui.h:8
 msgid "Position"
 msgstr "위치"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:442
+#: ../plugins/gtk+/gtk+.xml.in.h:444
 msgid "The position of the menu item in the menu shell"
 msgstr "메뉴 셸에서 메뉴 항목의 위치"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:443
+#: ../plugins/gtk+/gtk+.xml.in.h:445
 msgid "Edit&#8230;"
 msgstr "편집&#8230;"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:444
+#: ../plugins/gtk+/gtk+.xml.in.h:446
 msgid "Use Underline"
 msgstr "밑줄 사용"
 
 #. GtkActivatable
-#: ../plugins/gtk+/gtk+.xml.in.h:446
+#: ../plugins/gtk+/gtk+.xml.in.h:448
 msgid "Related Action"
 msgstr "관련 액션"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:447
+#: ../plugins/gtk+/gtk+.xml.in.h:449
 msgid "Use Action Appearance"
 msgstr "동작 표시 사용"
 
 #. GtkActionable
-#: ../plugins/gtk+/gtk+.xml.in.h:449
+#: ../plugins/gtk+/gtk+.xml.in.h:451
 msgid "Action Name"
 msgstr "동작 이름"
 
 #. Atk click property
-#: ../plugins/gtk+/gtk+.xml.in.h:451
+#: ../plugins/gtk+/gtk+.xml.in.h:453
 msgid "Click"
 msgstr "클릭"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:452
+#: ../plugins/gtk+/gtk+.xml.in.h:454
 msgid "Set the description of the Click atk action"
 msgstr "클릭 ATK 동작에 대한 설명 설정"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:453
+#: ../plugins/gtk+/gtk+.xml.in.h:455
 msgid "Image Menu Item"
 msgstr "그림 메뉴 항목"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:454
+#: ../plugins/gtk+/gtk+.xml.in.h:456
 msgid "Stock Item"
 msgstr "스톡 항목"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:455
+#: ../plugins/gtk+/gtk+.xml.in.h:457
 msgid "Accel Group"
 msgstr "단축키 그룹"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:456
+#: ../plugins/gtk+/gtk+.xml.in.h:458
 msgid "The stock item for this menu item"
 msgstr "이 메뉴 항목의 스톡 항목"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:457
+#: ../plugins/gtk+/gtk+.xml.in.h:459
 msgid "Separator Menu Item"
 msgstr "구분선 메뉴 항목"
 
 #. GtkTextDirection enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:459
+#: ../plugins/gtk+/gtk+.xml.in.h:461
 msgid "Left to Right"
 msgstr "왼쪽에서 오른쪽으로"
 
 #. GtkTextDirection enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:461
+#: ../plugins/gtk+/gtk+.xml.in.h:463
 msgid "Right to Left"
 msgstr "오른쪽에서 왼쪽으로"
 
 #. GtkPackDirection enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:463
+#: ../plugins/gtk+/gtk+.xml.in.h:465
 msgid "Top to Bottom"
 msgstr "위에서 아래로"
 
 #. GtkPackDirection enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:465
+#: ../plugins/gtk+/gtk+.xml.in.h:467
 msgid "Bottom to Top"
 msgstr "아래에서 위로"
 
 #. GtkTreeViewGridLines enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:467 ../plugins/gtk+/glade-misc-editor.ui.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:469 ../plugins/gtk+/glade-misc-editor.ui.h:2
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:3
 msgid "Horizontal"
 msgstr "가로"
 
 #. GtkTreeViewGridLines enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:469 ../plugins/gtk+/glade-misc-editor.ui.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:471 ../plugins/gtk+/glade-misc-editor.ui.h:3
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:4
 msgid "Vertical"
 msgstr "세로"
 
 #. GtkToolbarStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:471
+#: ../plugins/gtk+/gtk+.xml.in.h:473
 msgid "Icons only"
 msgstr "아이콘만"
 
 #. GtkToolbarStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:473
+#: ../plugins/gtk+/gtk+.xml.in.h:475
 msgid "Text only"
 msgstr "텍스트만"
 
 #. GtkToolbarStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:475
+#: ../plugins/gtk+/gtk+.xml.in.h:477
 msgid "Text below icons"
 msgstr "아이콘 아래 텍스트"
 
 #. GtkToolbarStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:477
+#: ../plugins/gtk+/gtk+.xml.in.h:479
 msgid "Text beside icons"
 msgstr "아이콘 옆에 텍스트"
 
 #. GtkIconSize enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:479
+#: ../plugins/gtk+/gtk+.xml.in.h:481
 msgid "Small Toolbar"
 msgstr "작은 도구 모음"
 
 #. GtkIconSize enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:481
+#: ../plugins/gtk+/gtk+.xml.in.h:483
 msgid "Large Toolbar"
 msgstr "큰 툴바"
 
 #. GtkIconSize enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:485
+#: ../plugins/gtk+/gtk+.xml.in.h:487
 msgid "Drag & Drop"
 msgstr "끌어 놓기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:486
+#: ../plugins/gtk+/gtk+.xml.in.h:488
 msgid "A symbolic icon size for the stock icon"
 msgstr "이 스톡 아이콘의 심볼릭 아이콘 크기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:487
+#: ../plugins/gtk+/gtk+.xml.in.h:489
 msgid "The position of the tool item in the toolbar"
 msgstr "도구 모음에서 도구 항목의 위치"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:488
+#: ../plugins/gtk+/gtk+.xml.in.h:490
 msgid "Tool Palette"
 msgstr "도구 팔레트"
 
 #. GtkScrollablePolicy enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:490
+#: ../plugins/gtk+/gtk+.xml.in.h:492
 msgid "Minimum"
 msgstr "최소"
 
 #. GtkScrollablePolicy enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:492
+#: ../plugins/gtk+/gtk+.xml.in.h:494
 msgid "Natural"
 msgstr "자연스럽게"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:493
+#: ../plugins/gtk+/gtk+.xml.in.h:495
 msgid "Whether to start scrolling at less than minimum or natural width"
 msgstr "최소 또는 자연스러운 너비보다 작게 스크롤을 시작할지 여부"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:494
+#: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "Whether to start scrolling at less than minimum or natural height"
 msgstr "최소 또는 자연스러운 높이보다 작게 스크롤을 시작할지 여부"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:495
+#: ../plugins/gtk+/gtk+.xml.in.h:497
 msgid "The position of the tool item group in the palette"
 msgstr "팔레트에서 도구 항목의 위치"
 
 #. PangoEllipsizeMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:498
+#: ../plugins/gtk+/gtk+.xml.in.h:500
 msgid "Middle"
 msgstr "가운데"
 
 #. GtkReliefStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:500
+#: ../plugins/gtk+/gtk+.xml.in.h:502
 msgid "Half"
 msgstr "절반"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:501
+#: ../plugins/gtk+/gtk+.xml.in.h:503
 msgid "Separator Tool Item"
 msgstr "구분선 도구 항목"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:502
+#: ../plugins/gtk+/gtk+.xml.in.h:504
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:1
 msgid "Tool Button"
 msgstr "토글 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:503
+#: ../plugins/gtk+/gtk+.xml.in.h:505
 msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr "항목에 표시할 스톡 아이콘(GTK+ 스톡이나 아이콘 팩토리에서 항목 선택)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:504
+#: ../plugins/gtk+/gtk+.xml.in.h:506
 msgid "Toggle Tool Button"
 msgstr "토글 도구 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:505
+#: ../plugins/gtk+/gtk+.xml.in.h:507
 msgid "Radio Tool Button"
 msgstr "라디오 도구 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:506
+#: ../plugins/gtk+/gtk+.xml.in.h:508
 msgid "Menu Tool Button"
 msgstr "메뉴 도구 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:507
+#: ../plugins/gtk+/gtk+.xml.in.h:509
 msgid "Handle Box"
 msgstr "핸들 박스"
 
 #. PangoAlignment enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:509
+#: ../plugins/gtk+/gtk+.xml.in.h:511
 msgid "Left"
 msgstr "왼쪽"
 
 #. PangoAlignment enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:511
+#: ../plugins/gtk+/gtk+.xml.in.h:513
 msgid "Right"
 msgstr "오른쪽"
 
 # GTK_SHADOW_IN
 #. GtkShadowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:513
+#: ../plugins/gtk+/gtk+.xml.in.h:515
 msgid "In"
 msgstr "안쪽"
 
 # GTK_SHADOW_OUT
 #. GtkShadowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:515
+#: ../plugins/gtk+/gtk+.xml.in.h:517
 msgid "Out"
 msgstr "바깥쪽"
 
 # GTK_SHADOW_ETCHED_IN
 #. GtkShadowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:517
+#: ../plugins/gtk+/gtk+.xml.in.h:519
 msgid "Etched In"
 msgstr "들어가 보이게"
 
 # GTK_SHADOW_ETCHED_OUT
 #. GtkShadowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:519
+#: ../plugins/gtk+/gtk+.xml.in.h:521
 msgid "Etched Out"
 msgstr "나와 보이게"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:521
+#: ../plugins/gtk+/gtk+.xml.in.h:523
 msgid "Attributes"
 msgstr "속성"
 
 #. GtkWrapMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:523
+#: ../plugins/gtk+/gtk+.xml.in.h:525
 msgid "Word"
 msgstr "단어"
 
 #. GtkWrapMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:525
+#: ../plugins/gtk+/gtk+.xml.in.h:527
 msgid "Character"
 msgstr "문자"
 
 #. GtkWrapMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:527
+#: ../plugins/gtk+/gtk+.xml.in.h:529
 msgid "Word Character"
 msgstr "단어 문자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:528
+#: ../plugins/gtk+/gtk+.xml.in.h:530
 msgid "The pango attributes for this label"
 msgstr "이 레이블의 판고 속성"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:529
+#: ../plugins/gtk+/gtk+.xml.in.h:531
 msgid "Text Entry"
 msgstr "텍스트 입력창"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:531
+#: ../plugins/gtk+/gtk+.xml.in.h:533
 msgid "Free Form"
 msgstr "자유 형식"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:533
+#: ../plugins/gtk+/gtk+.xml.in.h:535
 msgid "Alpha"
 msgstr "알파벳"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:535
+#: ../plugins/gtk+/gtk+.xml.in.h:537
 msgid "Digits"
 msgstr "숫자"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:537
+#: ../plugins/gtk+/gtk+.xml.in.h:539
 msgid "Number"
 msgstr "번호"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:539
+#: ../plugins/gtk+/gtk+.xml.in.h:541
 msgid "Phone"
 msgstr "전화"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:541
+#: ../plugins/gtk+/gtk+.xml.in.h:543
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:8
 msgid "URL"
 msgstr "URL"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:543
+#: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Email"
 msgstr "전자메일"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:547
+#: ../plugins/gtk+/gtk+.xml.in.h:549
 msgid "Password"
 msgstr "암호"
 
 #. GtkInputPurpose enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:549
+#: ../plugins/gtk+/gtk+.xml.in.h:551
 msgid "Pin Code"
 msgstr "PIN 번호"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:551
+#: ../plugins/gtk+/gtk+.xml.in.h:553
 msgid "Spellcheck"
 msgstr "맞춤법 검사"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:553
+#: ../plugins/gtk+/gtk+.xml.in.h:555
 msgid "No Spellcheck"
 msgstr "맞춤법 검사 없음"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:555
+#: ../plugins/gtk+/gtk+.xml.in.h:557
 msgid "Word Completion"
 msgstr "단어 완성"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:557
+#: ../plugins/gtk+/gtk+.xml.in.h:559
 msgid "Lowercase"
 msgstr "소문자"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:559
+#: ../plugins/gtk+/gtk+.xml.in.h:561
 msgid "Uppercase Chars"
 msgstr "대문자 문자"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:561
+#: ../plugins/gtk+/gtk+.xml.in.h:563
 msgid "Uppercase Words"
 msgstr "대문자 단어"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:563
+#: ../plugins/gtk+/gtk+.xml.in.h:565
 msgid "Uppercase Sentences"
 msgstr "대문자 문장"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:565
+#: ../plugins/gtk+/gtk+.xml.in.h:567
 msgid "Inhibit On-screen Keyboard"
 msgstr "화면 키보드 금지"
 
 #. GtkInputHints enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:567
+#: ../plugins/gtk+/gtk+.xml.in.h:569
 msgid "Vertical Writing"
 msgstr "세로쓰기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:568
+#: ../plugins/gtk+/gtk+.xml.in.h:570
 msgid "Primary Stock Icon"
 msgstr "주요 스톡 아이콘"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:569
+#: ../plugins/gtk+/gtk+.xml.in.h:571
 msgid "Secondary Stock Icon"
 msgstr "보조 스톡 아이콘"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:570
+#: ../plugins/gtk+/gtk+.xml.in.h:572
 msgid "Primary Icon Pixbuf"
 msgstr "주요 아이콘 픽스버퍼"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:571
+#: ../plugins/gtk+/gtk+.xml.in.h:573
 msgid "Secondary Icon Pixbuf"
 msgstr "보조 아이콘 픽스버퍼"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:572
+#: ../plugins/gtk+/gtk+.xml.in.h:574
 msgid "Primary Icon Name"
 msgstr "주요 아이콘 이름"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:573
+#: ../plugins/gtk+/gtk+.xml.in.h:575
 msgid "Secondary Icon Name"
 msgstr "보조 아이콘 이름"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:574
+#: ../plugins/gtk+/gtk+.xml.in.h:576
 msgid "Primary Icon Activatable"
 msgstr "주요 아이콘 활성화 가능"
 
 # GtkActivatable subclass
-#: ../plugins/gtk+/gtk+.xml.in.h:575
+#: ../plugins/gtk+/gtk+.xml.in.h:577
 msgid "Secondary Icon Activatable"
 msgstr "보조 아이콘 활성화 가능"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:576
+#: ../plugins/gtk+/gtk+.xml.in.h:578
 msgid "Primary Icon Sensitive"
 msgstr "주요 아이콘 입출력 가능"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:577
+#: ../plugins/gtk+/gtk+.xml.in.h:579
 msgid "Secondary Icon Sensitive"
 msgstr "보조 아이콘 입출력 가능"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:578
+#: ../plugins/gtk+/gtk+.xml.in.h:580
 msgid "Progress Fraction"
 msgstr "진행률 비율"
 
 # progress cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:579
+#: ../plugins/gtk+/gtk+.xml.in.h:581
 msgid "Progress Pulse Step"
 msgstr "진행률 박자 단계"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:580
+#: ../plugins/gtk+/gtk+.xml.in.h:582
 msgid "Primary Icon Tooltip Text"
 msgstr "주요 아이콘 도구 설명 텍스트"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:581
+#: ../plugins/gtk+/gtk+.xml.in.h:583
 msgid "Secondary Icon Tooltip Text"
 msgstr "보조 아이콘 도구 설명 텍스트"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:582
+#: ../plugins/gtk+/gtk+.xml.in.h:584
 msgid "Primary Icon Tooltip Markup"
 msgstr "주요 아이콘 도구 설명 마크업"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:583
+#: ../plugins/gtk+/gtk+.xml.in.h:585
 msgid "Secondary Icon Tooltip Markup"
 msgstr "보조 아이콘 도구 설명 마크업"
 
 #. Atk activate property
-#: ../plugins/gtk+/gtk+.xml.in.h:585
+#: ../plugins/gtk+/gtk+.xml.in.h:587
 msgid "Activate"
 msgstr "활성화"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:586
+#: ../plugins/gtk+/gtk+.xml.in.h:588
 msgid "Set the description of the Activate atk action"
 msgstr "활성화 ATK 동작에 대한 설명 설정"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:587
+#: ../plugins/gtk+/gtk+.xml.in.h:589
 msgid "Search Entry"
 msgstr "검색 입력창"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:588
+#: ../plugins/gtk+/gtk+.xml.in.h:590
 msgid "Text View"
 msgstr "텍스트 뷰"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:589
+#: ../plugins/gtk+/gtk+.xml.in.h:591
 msgid "Search Bar"
 msgstr "검색 모음"
 
 #. GtkResponseType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:591
+#: ../plugins/gtk+/gtk+.xml.in.h:593
 msgid "Reject"
 msgstr "거절"
 
 #. GtkResponseType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:593
+#: ../plugins/gtk+/gtk+.xml.in.h:595
 msgid "Accept"
 msgstr "허용"
 
 #. GtkResponseType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:595
+#: ../plugins/gtk+/gtk+.xml.in.h:597
 msgid "Delete Event"
 msgstr "이벤트 삭제"
 
 #. GtkResponseType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:597
+#: ../plugins/gtk+/gtk+.xml.in.h:599
 msgid "OK"
 msgstr "확인"
 
+#. GtkButtonsType enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:603
+msgid "Close"
+msgstr "닫기"
+
 #. GtkResponseType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:607
+#: ../plugins/gtk+/gtk+.xml.in.h:609
 msgid "Apply"
 msgstr "적용"
 
 #. GtkResponseType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:609
+#: ../plugins/gtk+/gtk+.xml.in.h:611
 msgid "Help"
 msgstr "도움말"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:610 ../plugins/gtk+/glade-button-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:612 ../plugins/gtk+/glade-button-editor.ui.h:7
 msgid "Stock Button"
 msgstr "스톡 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:611
+#: ../plugins/gtk+/gtk+.xml.in.h:613
 msgid "Response ID"
 msgstr "응답 ID"
 
 #. Atk press property
-#: ../plugins/gtk+/gtk+.xml.in.h:613
+#: ../plugins/gtk+/gtk+.xml.in.h:615
 msgid "Press"
 msgstr "누르기"
 
 #. Atk release property
-#: ../plugins/gtk+/gtk+.xml.in.h:615
+#: ../plugins/gtk+/gtk+.xml.in.h:617
 msgid "Release"
 msgstr "떼기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:616
+#: ../plugins/gtk+/gtk+.xml.in.h:618
 msgid "The stock item for this button"
 msgstr "이 단추의 스톡 항목"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:617
+#: ../plugins/gtk+/gtk+.xml.in.h:619
 msgid "The response ID of this button in a dialog"
 msgstr "대화 상자에서 이 단추의 응답 ID"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:618
+#: ../plugins/gtk+/gtk+.xml.in.h:620
 msgid "Set the description of the Press atk action"
 msgstr "누르기 ATK 동작에 대한 설명 설정"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:619
+#: ../plugins/gtk+/gtk+.xml.in.h:621
 msgid "Set the description of the Release atk action"
 msgstr "떼기 ATK 동작에 대한 설명 설정"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:620
+#: ../plugins/gtk+/gtk+.xml.in.h:622
 msgid "Check Button"
 msgstr "확인란"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:622
+#: ../plugins/gtk+/gtk+.xml.in.h:624
 msgid "Always"
 msgstr "언제나"
 
 #. GtkSpinButtonUpdatePolicy enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:624
+#: ../plugins/gtk+/gtk+.xml.in.h:626
 msgid "If Valid"
 msgstr "올바를 경우"
 
 # 스위치 위젯을 말함
-#: ../plugins/gtk+/gtk+.xml.in.h:625
+#: ../plugins/gtk+/gtk+.xml.in.h:627
 msgid "Switch"
 msgstr "스위치"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:626
+#: ../plugins/gtk+/gtk+.xml.in.h:628
 #: ../plugins/gtk+/glade-file-chooser-button-editor.ui.h:1
 msgid "File Chooser Button"
 msgstr "파일 선택 단추"
 
 #. GtkFileChooserAction enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:632
+#: ../plugins/gtk+/gtk+.xml.in.h:634
 msgid "Select Folder"
 msgstr "폴더 선택"
 
 #. GtkFileChooserAction enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:634
+#: ../plugins/gtk+/gtk+.xml.in.h:636
 msgid "Create Folder"
 msgstr "폴더 만들기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:635
+#: ../plugins/gtk+/gtk+.xml.in.h:637
 msgid "Scale Button"
 msgstr "스케일 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:636
+#: ../plugins/gtk+/gtk+.xml.in.h:638
 msgid ""
 "The names of the icons to be used by the scale button. The first item in the "
 "array will be used in the button when the current value is the lowest value, "
@@ -6267,537 +6163,537 @@ msgstr ""
 "목을 사용합니다. 최대값인 경우 두 번째 항목을 사용합니다. 그 뒤의 아이콘은 균"
 "등하게 그 사이 범위의 다른 값에 사용합니다."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:637
+#: ../plugins/gtk+/gtk+.xml.in.h:639
 msgid "Volume Button"
 msgstr "볼륨 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:638
+#: ../plugins/gtk+/gtk+.xml.in.h:640
 msgid "File Chooser Widget"
 msgstr "파일 선택 위젯"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:639
+#: ../plugins/gtk+/gtk+.xml.in.h:641
 msgid "Application Chooser Widget"
 msgstr "프로그램 선택 위젯"
 
 #. GtkPlacesOpenFlags enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:641
+#: ../plugins/gtk+/gtk+.xml.in.h:643
 msgid "New Tab"
 msgstr "새 탭"
 
 #. GtkPlacesOpenFlags enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:643
+#: ../plugins/gtk+/gtk+.xml.in.h:645
 msgid "New Window"
 msgstr "새 창"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:644
+#: ../plugins/gtk+/gtk+.xml.in.h:646
 msgid "Color Button"
 msgstr "색 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:645
+#: ../plugins/gtk+/gtk+.xml.in.h:647
 msgid "Font Button"
 msgstr "글꼴 단추"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:647
+#: ../plugins/gtk+/gtk+.xml.in.h:649
 msgid "Automatic"
 msgstr "자동"
 
 #. GtkSensitivityType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:649
+#: ../plugins/gtk+/gtk+.xml.in.h:651
 msgid "On"
 msgstr "켬"
 
 #. GtkSensitivityType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:651
+#: ../plugins/gtk+/gtk+.xml.in.h:653
 msgid "Off"
 msgstr "끔"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:652
+#: ../plugins/gtk+/gtk+.xml.in.h:654
 msgid "Combo Box Text"
 msgstr "콤보 상자 텍스트"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:653
+#: ../plugins/gtk+/gtk+.xml.in.h:655
 msgid "Items"
 msgstr "항목"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:654
+#: ../plugins/gtk+/gtk+.xml.in.h:656
 msgid "The list of items to show in the combo box"
 msgstr "콤보 상자에 표시할 항목 목록"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:655
+#: ../plugins/gtk+/gtk+.xml.in.h:657
 msgid "Application Chooser Button"
 msgstr "프로그램 선택 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:656
+#: ../plugins/gtk+/gtk+.xml.in.h:658
 msgid "Progress Bar"
 msgstr "진행률 표시줄"
 
 # GtkRange 위젯의 업데이트
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:658
+#: ../plugins/gtk+/gtk+.xml.in.h:660
 msgid "Continuous"
 msgstr "연속"
 
 # progress bar의 증가 방식
 #. GtkLevelBarMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:660
+#: ../plugins/gtk+/gtk+.xml.in.h:662
 msgid "Discrete"
 msgstr "불연속"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:663
+#: ../plugins/gtk+/gtk+.xml.in.h:665
 msgid "Resource Name"
 msgstr "리소스 이름"
 
 #. We have to save/load icon-size as int, and fake the enum
-#: ../plugins/gtk+/gtk+.xml.in.h:665
+#: ../plugins/gtk+/gtk+.xml.in.h:667
 msgid "Icon Size"
 msgstr "아이콘 크기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:666
+#: ../plugins/gtk+/gtk+.xml.in.h:668
 msgid "Dialog Box"
 msgstr "대화 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:667
+#: ../plugins/gtk+/gtk+.xml.in.h:669
 msgid "Insert Row"
 msgstr "행 넣기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:668
+#: ../plugins/gtk+/gtk+.xml.in.h:670
 msgid "Before"
 msgstr "이전에"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:670
+#: ../plugins/gtk+/gtk+.xml.in.h:672
 msgid "Insert Column"
 msgstr "열 넣기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:671
+#: ../plugins/gtk+/gtk+.xml.in.h:673
 msgid "Remove Row"
 msgstr "행 제거"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:672
+#: ../plugins/gtk+/gtk+.xml.in.h:674
 msgid "Remove Column"
 msgstr "열 제거"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:674
+#: ../plugins/gtk+/gtk+.xml.in.h:676
 #: ../plugins/gtk+/glade-widget-editor.ui.h:10
 msgid "Expand"
 msgstr "늘리기"
 
 #. GtkAttachOptions enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:676
+#: ../plugins/gtk+/gtk+.xml.in.h:678
 msgid "Shrink"
 msgstr "줄어들기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:677 ../plugins/gtk+/glade-grid-editor.ui.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:679 ../plugins/gtk+/glade-grid-editor.ui.h:2
 msgid "Rows"
 msgstr "행"
 
 # GtkCList
-#: ../plugins/gtk+/gtk+.xml.in.h:678 ../plugins/gtk+/glade-grid-editor.ui.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:680 ../plugins/gtk+/glade-grid-editor.ui.h:3
 msgid "Columns"
 msgstr "열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:679
+#: ../plugins/gtk+/gtk+.xml.in.h:681
 msgid "The number of rows for this grid"
 msgstr "이 격자의 행 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:680
+#: ../plugins/gtk+/gtk+.xml.in.h:682
 msgid "The number of columns for this grid"
 msgstr "이 격자의 열 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:681
+#: ../plugins/gtk+/gtk+.xml.in.h:683
 msgid "Horizontal Panes"
 msgstr "가로 칸막이"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:682
+#: ../plugins/gtk+/gtk+.xml.in.h:684
 msgid "Vertical Panes"
 msgstr "세로 칸막이"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:683
+#: ../plugins/gtk+/gtk+.xml.in.h:685
 msgid "Notebook"
 msgstr "노트북"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:684
+#: ../plugins/gtk+/gtk+.xml.in.h:686
 msgid "Insert Page Before"
 msgstr "앞에 페이지 넣기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:685
+#: ../plugins/gtk+/gtk+.xml.in.h:687
 msgid "Insert Page After"
 msgstr "뒤에 페이지 넣기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:686
+#: ../plugins/gtk+/gtk+.xml.in.h:688
 msgid "Remove Page"
 msgstr "페이지 제거"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:687
+#: ../plugins/gtk+/gtk+.xml.in.h:689
 msgid "Number of pages"
 msgstr "페이지 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:688
+#: ../plugins/gtk+/gtk+.xml.in.h:690
 msgid "Start Action"
 msgstr "시작 동작"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:689
+#: ../plugins/gtk+/gtk+.xml.in.h:691
 msgid "End Action"
 msgstr "끝 동작"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:690
+#: ../plugins/gtk+/gtk+.xml.in.h:692
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr "현재 편집에 활성화된 페이지를 지정, 이 속성은 저장되지 않습니다"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:691
+#: ../plugins/gtk+/gtk+.xml.in.h:693
 msgid "The number of pages in the notebook"
 msgstr "노트북의 페이지 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:692
+#: ../plugins/gtk+/gtk+.xml.in.h:694
 msgid "HeaderBar"
 msgstr "헤더 모음"
 
 # 주의: 자막이 아님
-#: ../plugins/gtk+/gtk+.xml.in.h:693
+#: ../plugins/gtk+/gtk+.xml.in.h:695
 msgid "Reserve space for subtitle"
 msgstr "부제목을 쓸 공간 확보"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:694
+#: ../plugins/gtk+/gtk+.xml.in.h:696
 msgid "Custom Title"
 msgstr "사용자 설정 제목 표시줄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:695
+#: ../plugins/gtk+/gtk+.xml.in.h:697
 msgid "Add Slot"
 msgstr "공간 추가"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:696
+#: ../plugins/gtk+/gtk+.xml.in.h:698
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr "헤더 모음 높이를 부제목이 바뀔 때에도 동일하게 유지합니다."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:697
+#: ../plugins/gtk+/gtk+.xml.in.h:699
 msgid "The number of items in the header bar"
 msgstr "헤더 모음의 항목 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:698
+#: ../plugins/gtk+/gtk+.xml.in.h:700
 msgid "Edit page"
 msgstr "페이지 편집"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:699
+#: ../plugins/gtk+/gtk+.xml.in.h:701
 msgid "Visible child"
 msgstr "표시 하위 위젯"
 
 # 페이드인 + 페이드아웃
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:701
+#: ../plugins/gtk+/gtk+.xml.in.h:703
 msgid "Crossfade"
 msgstr "페이드인/아웃"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:703
+#: ../plugins/gtk+/gtk+.xml.in.h:705
 msgid "Slide Right"
 msgstr "오른쪽으로 슬라이드"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:705
+#: ../plugins/gtk+/gtk+.xml.in.h:707
 msgid "Slide Left"
 msgstr "왼쪽으로 슬라이드"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:707
+#: ../plugins/gtk+/gtk+.xml.in.h:709
 msgid "Slide Up"
 msgstr "위로 슬라이드"
 
 #. GtkRevealerTransitionType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:709
+#: ../plugins/gtk+/gtk+.xml.in.h:711
 msgid "Slide Down"
 msgstr "아래로 슬라이드"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:710
+#: ../plugins/gtk+/gtk+.xml.in.h:712
 msgid "Slide Left-Right"
 msgstr "왼쪽 오른쪽 슬라이드"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:711
+#: ../plugins/gtk+/gtk+.xml.in.h:713
 msgid "Slide Up-Down"
 msgstr "위 아래 슬라이드"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:712
+#: ../plugins/gtk+/gtk+.xml.in.h:714
 msgid "Move Over Up"
 msgstr "위로 덮기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:713
+#: ../plugins/gtk+/gtk+.xml.in.h:715
 msgid "Move Over Down"
 msgstr "아래로 덮기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:714
+#: ../plugins/gtk+/gtk+.xml.in.h:716
 msgid "Move Over Left"
 msgstr "왼쪽으로 덮기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:715
+#: ../plugins/gtk+/gtk+.xml.in.h:717
 msgid "Move Over Right"
 msgstr "오른쪽으로 덮기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:716
+#: ../plugins/gtk+/gtk+.xml.in.h:718
 msgid "Move Over Up-Down"
 msgstr "위-아래로 덮기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:717
+#: ../plugins/gtk+/gtk+.xml.in.h:719
 msgid "Move Over Down-Up"
 msgstr "아래-위로 덮기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:718
+#: ../plugins/gtk+/gtk+.xml.in.h:720
 msgid "Move Over Left-Right"
 msgstr "왼쪽-오른쪽으로 덮기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:719
+#: ../plugins/gtk+/gtk+.xml.in.h:721
 msgid "Move Over Right-Left"
 msgstr "오른쪽-왼쪽으로 덮기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:720
+#: ../plugins/gtk+/gtk+.xml.in.h:722
 msgid "Move Under Up"
 msgstr "위로 드러내기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:721
+#: ../plugins/gtk+/gtk+.xml.in.h:723
 msgid "Move Under Down"
 msgstr "아래로 드러내기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:722
+#: ../plugins/gtk+/gtk+.xml.in.h:724
 msgid "Move Under Left"
 msgstr "왼쪽으로 드러내기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:723
+#: ../plugins/gtk+/gtk+.xml.in.h:725
 msgid "Move Under Right"
 msgstr "오른쪽으로 드러내기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:724
+#: ../plugins/gtk+/gtk+.xml.in.h:726
 msgid "The number of pages in the stack"
 msgstr "스택의 페이지 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:725
+#: ../plugins/gtk+/gtk+.xml.in.h:727
 msgid "Stack Switcher"
 msgstr "스택 바꾸기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:726
+#: ../plugins/gtk+/gtk+.xml.in.h:728
 msgid "Stack Sidebar"
 msgstr "스택 가장자리 창"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:727
+#: ../plugins/gtk+/gtk+.xml.in.h:729
 msgid "Revealer"
 msgstr "드러내기"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:728
+#: ../plugins/gtk+/gtk+.xml.in.h:730
 msgid "Add Row"
 msgstr "열 추가"
 
 # 캔버스 selection 방식
 # 밑줄 형식
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:730
+#: ../plugins/gtk+/gtk+.xml.in.h:732
 msgid "Single"
 msgstr "하나"
 
 # 캔버스 selection 방식
 #. GtkSelectionMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:732
+#: ../plugins/gtk+/gtk+.xml.in.h:734
 msgid "Browse"
 msgstr "찾아보기"
 
 # 캔버스 selection 방식
 #. GtkSelectionMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:734
+#: ../plugins/gtk+/gtk+.xml.in.h:736
 msgid "Multiple"
 msgstr "여러 개"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:735
+#: ../plugins/gtk+/gtk+.xml.in.h:737
 msgid "The position of the row item in the listbox"
 msgstr "리스트 모음에서 행 항목의 위치"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:736
+#: ../plugins/gtk+/gtk+.xml.in.h:738
 msgid "List Box Row"
 msgstr "리스트 모음 행"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:737
+#: ../plugins/gtk+/gtk+.xml.in.h:739
 msgid "Flow Box"
 msgstr "플로우 박스"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:738
+#: ../plugins/gtk+/gtk+.xml.in.h:740
 msgid "Add Child"
 msgstr "하위 위젯 추가"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:739
+#: ../plugins/gtk+/gtk+.xml.in.h:741
 msgid "The position of the child in the flowbox"
 msgstr "플로우 박스에서 하위 위젯의 위치"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:740
+#: ../plugins/gtk+/gtk+.xml.in.h:742
 msgid "Flow Box Child"
 msgstr "플로우 박스 하위 위젯"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:741
+#: ../plugins/gtk+/gtk+.xml.in.h:743
 msgid "Range"
 msgstr "범위"
 
 # GtkRange 위젯의 업데이트
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:743
+#: ../plugins/gtk+/gtk+.xml.in.h:745
 msgid "Discontinuous"
 msgstr "불연속"
 
 # GtkRange 위젯의 업데이트
 #. GtkUpdateType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:745
+#: ../plugins/gtk+/gtk+.xml.in.h:747
 msgid "Delayed"
 msgstr "시간 지연"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:747
+#: ../plugins/gtk+/gtk+.xml.in.h:749
 msgid "The number of digits to round the value to when the value changes"
 msgstr "값이 바뀔 때 값을 반올림할 유효 숫자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:748
+#: ../plugins/gtk+/gtk+.xml.in.h:750
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr "맨 아래에서 조절 손잡이까지 아래 부분을 강조할지 여부"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:749
+#: ../plugins/gtk+/gtk+.xml.in.h:751
 msgid "Horizontal Scale"
 msgstr "가로 스케일"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:750
+#: ../plugins/gtk+/gtk+.xml.in.h:752
 msgid "Vertical Scale"
 msgstr "세로 스케일"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:752
+#: ../plugins/gtk+/gtk+.xml.in.h:754
 msgid "Scrollbar"
 msgstr "스크롤 막대"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:753
+#: ../plugins/gtk+/gtk+.xml.in.h:755
 msgid "Horizontal Scrollbar"
 msgstr "가로 스크롤 막대"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:754
+#: ../plugins/gtk+/gtk+.xml.in.h:756
 msgid "Vertical Scrollbar"
 msgstr "세로 스크롤 막대"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:755
+#: ../plugins/gtk+/gtk+.xml.in.h:757
 msgid "Button Box"
 msgstr "단추 상자"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:757
+#: ../plugins/gtk+/gtk+.xml.in.h:759
 msgid "Default"
 msgstr "기본값"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:759
+#: ../plugins/gtk+/gtk+.xml.in.h:761
 msgid "Spread"
 msgstr "퍼뜨리기"
 
 #. GtkButtonBoxStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:761
+#: ../plugins/gtk+/gtk+.xml.in.h:763
 msgid "Edge"
 msgstr "가장자리"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:762
+#: ../plugins/gtk+/gtk+.xml.in.h:764
 msgid "Horizontal Button Box"
 msgstr "가로 단추 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:763
+#: ../plugins/gtk+/gtk+.xml.in.h:765
 msgid "Vertical Button Box"
 msgstr "세로 단추 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:764
+#: ../plugins/gtk+/gtk+.xml.in.h:766
 msgid "Horizontal Separator"
 msgstr "가로 구분선"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:765
+#: ../plugins/gtk+/gtk+.xml.in.h:767
 msgid "Vertical Separator"
 msgstr "세로 구분선"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:766
+#: ../plugins/gtk+/gtk+.xml.in.h:768
 msgid "Accel Label"
 msgstr "단축키 레이블"
 
 #. GtkArrowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:768
+#: ../plugins/gtk+/gtk+.xml.in.h:770
 msgid "Up"
 msgstr "위"
 
 #. GtkArrowType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:770
+#: ../plugins/gtk+/gtk+.xml.in.h:772
 msgid "Down"
 msgstr "아래"
 
 #. Declare menu button here because the arrow-type values already exist
-#: ../plugins/gtk+/gtk+.xml.in.h:772
+#: ../plugins/gtk+/gtk+.xml.in.h:774
 msgid "Menu Button"
 msgstr "메뉴 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:773
+#: ../plugins/gtk+/gtk+.xml.in.h:775
 msgid "Lock Button"
 msgstr "잠그기 단추"
 
 # GtkLayout
-#: ../plugins/gtk+/gtk+.xml.in.h:774
+#: ../plugins/gtk+/gtk+.xml.in.h:776
 msgid "Layout"
 msgstr "배치"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:776
+#: ../plugins/gtk+/gtk+.xml.in.h:778
 msgid "Fixed"
 msgstr "고정"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:777
+#: ../plugins/gtk+/gtk+.xml.in.h:779
 msgid "OpenGL Area"
 msgstr "OpenGL 영역"
 
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:779
+#: ../plugins/gtk+/gtk+.xml.in.h:781
 msgid "Info"
 msgstr "정보"
 
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:781
+#: ../plugins/gtk+/gtk+.xml.in.h:783
 msgid "Warning"
 msgstr "경고"
 
 #. GtkMessageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:783
+#: ../plugins/gtk+/gtk+.xml.in.h:785
 msgid "Question"
 msgstr "물음"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:785
+#: ../plugins/gtk+/gtk+.xml.in.h:787
 msgid "Error"
 msgstr "오류"
 
 # 스크롤바 사용
 # appbar 인터랙트
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:789
+#: ../plugins/gtk+/gtk+.xml.in.h:791
 msgid "Never"
 msgstr "사용하지 않음"
 
 #. GtkPolicyType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:791
+#: ../plugins/gtk+/gtk+.xml.in.h:793
 msgid "External"
 msgstr "외부"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:793
+#: ../plugins/gtk+/gtk+.xml.in.h:795
 msgid "Top Left"
 msgstr "위 왼쪽"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:795
+#: ../plugins/gtk+/gtk+.xml.in.h:797
 msgid "Bottom Left"
 msgstr "아래 왼쪽"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:797
+#: ../plugins/gtk+/gtk+.xml.in.h:799
 msgid "Top Right"
 msgstr "위 오른쪽"
 
 #. GtkCornerType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:799
+#: ../plugins/gtk+/gtk+.xml.in.h:801
 msgid "Bottom Right"
 msgstr "아래 오른쪽"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:800
+#: ../plugins/gtk+/gtk+.xml.in.h:802
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
@@ -6809,71 +6705,71 @@ msgstr ""
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
 #. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../plugins/gtk+/gtk+.xml.in.h:805
+#: ../plugins/gtk+/gtk+.xml.in.h:807
 msgid "About Dialog"
 msgstr "프로그램 정보 대화 상자"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:809
+#: ../plugins/gtk+/gtk+.xml.in.h:811
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:811
+#: ../plugins/gtk+/gtk+.xml.in.h:813
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:813
+#: ../plugins/gtk+/gtk+.xml.in.h:815
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:815
+#: ../plugins/gtk+/gtk+.xml.in.h:817
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:819
+#: ../plugins/gtk+/gtk+.xml.in.h:821
 msgid "MIT X11"
 msgstr "MIT X11"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:821
+#: ../plugins/gtk+/gtk+.xml.in.h:823
 msgid "Artistic"
 msgstr "Artistic"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:823
+#: ../plugins/gtk+/gtk+.xml.in.h:825
 msgid "GPL 2.0 Only"
 msgstr "GPL 2.0 버전만"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:825
+#: ../plugins/gtk+/gtk+.xml.in.h:827
 msgid "GPL 3.0 Only"
 msgstr "GPL 3.0 버전만"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:827
+#: ../plugins/gtk+/gtk+.xml.in.h:829
 msgid "LGPL 2.1 Only"
 msgstr "LGPL 2.1 버전만"
 
 # 라이선스
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:829
+#: ../plugins/gtk+/gtk+.xml.in.h:831
 msgid "LGPL 3.0 Only"
 msgstr "LGPL 3.0 버전만"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:830
+#: ../plugins/gtk+/gtk+.xml.in.h:832
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -6883,888 +6779,895 @@ msgstr ""
 "의 이름과 주소로 설정하고, 그렇지 않으면 모든 번역자를 열거해 놓고 이 문자열"
 "을 번역에서 제외합니다."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:831
+#: ../plugins/gtk+/gtk+.xml.in.h:833
 msgid "Color Selection Dialog"
 msgstr "색 선택 대화 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:832
+#: ../plugins/gtk+/gtk+.xml.in.h:834
 msgid "File Chooser Dialog"
 msgstr "파일선택 다이어로그"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:833
+#: ../plugins/gtk+/gtk+.xml.in.h:835
 msgid "Font Selection Dialog"
 msgstr "글꼴 선택 대화 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:834
+#: ../plugins/gtk+/gtk+.xml.in.h:836
 msgid "Application Chooser Dialog"
 msgstr "프로그램 선택 대화 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:835
+#: ../plugins/gtk+/gtk+.xml.in.h:837
 msgid "Message Dialog"
 msgstr "메시지 대화 상자"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:837
+#: ../plugins/gtk+/gtk+.xml.in.h:839
 msgid "Ok"
 msgstr "확인"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:839
+#: ../plugins/gtk+/gtk+.xml.in.h:841
 msgid "Yes, No"
 msgstr "예, 아니오"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:841
+#: ../plugins/gtk+/gtk+.xml.in.h:843
 msgid "Ok, Cancel"
 msgstr "확인, 취소"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:842
+#: ../plugins/gtk+/gtk+.xml.in.h:844
 msgid "Color Selection"
 msgstr "색 선택"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:843
+#: ../plugins/gtk+/gtk+.xml.in.h:845
 msgid "Color Chooser Widget"
 msgstr "색 선택 위젯"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:844
+#: ../plugins/gtk+/gtk+.xml.in.h:846
 msgid "Color Chooser Dialog"
 msgstr "색 선택 대화 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:845
+#: ../plugins/gtk+/gtk+.xml.in.h:847
 msgid "Font Chooser Widget"
 msgstr "글꼴 선택 위젯"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:846
+#: ../plugins/gtk+/gtk+.xml.in.h:848
 msgid "Font Chooser Dialog"
 msgstr "글꼴 선택 대화 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:847
+#: ../plugins/gtk+/gtk+.xml.in.h:849
 msgid "Font Selection"
 msgstr "글꼴 선택"
 
 # GtkAssistant widget
-#: ../plugins/gtk+/gtk+.xml.in.h:848
+#: ../plugins/gtk+/gtk+.xml.in.h:850
 msgid "Assistant"
 msgstr "도우미"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:849
+#: ../plugins/gtk+/gtk+.xml.in.h:851
 msgid "Number of Pages"
 msgstr "페이지 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:850
+#: ../plugins/gtk+/gtk+.xml.in.h:852
 msgid "Initially Complete"
 msgstr "최초 완성"
 
 # 도우미 창 페이지의 성격 (content, intro, confirm, summary, progress)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:852
+#: ../plugins/gtk+/gtk+.xml.in.h:854
 msgid "Content"
 msgstr "내용"
 
 # 도우미 창 페이지의 성격 (content, intro, confirm, summary, progress)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:854
+#: ../plugins/gtk+/gtk+.xml.in.h:856
 msgid "Intro"
 msgstr "소개"
 
 # 도우미 창 페이지의 성격 (content, intro, confirm, summary, progress)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:856
+#: ../plugins/gtk+/gtk+.xml.in.h:858
 msgid "Confirm"
 msgstr "확인"
 
 # 도우미 창 페이지의 성격 (content, intro, confirm, summary, progress)
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:858
+#: ../plugins/gtk+/gtk+.xml.in.h:860
 msgid "Summary"
 msgstr "요약"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:861
+#: ../plugins/gtk+/gtk+.xml.in.h:863
 msgid "Number of pages in this assistant"
 msgstr "이 도우미의 페이지 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:862
+#: ../plugins/gtk+/gtk+.xml.in.h:864
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
 msgstr "최초에 사용자 입력에 관계없이 이 페이지를 완료로 표시할지 여부."
 
-#: ../plugins/gtk+/gtk+.xml.in.h:863
+#: ../plugins/gtk+/gtk+.xml.in.h:865
 msgid "The page position in the Assistant"
 msgstr "도우미에서 페이지의 위치"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:864
+#: ../plugins/gtk+/gtk+.xml.in.h:866
 msgid "Popover"
 msgstr "팝오버"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:865
+#: ../plugins/gtk+/gtk+.xml.in.h:867
 msgid "Popover Menu"
 msgstr "팝오버 메뉴"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:866
+#: ../plugins/gtk+/gtk+.xml.in.h:868
 msgid "Number of submenus"
 msgstr "하위 메뉴 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:867
+#: ../plugins/gtk+/gtk+.xml.in.h:869
 msgid "Edit menu"
 msgstr "메뉴 편집"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:868
+#: ../plugins/gtk+/gtk+.xml.in.h:870
 msgid "The number of submenus in the popover menu"
 msgstr "팝오버 메뉴에서 하위 메뉴의 수"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:869
+#: ../plugins/gtk+/gtk+.xml.in.h:871
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr "현재 편집에 활성화된 하위 메뉴를 지정, 이 속성은 저장되지 않습니다"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:870
+#: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "Model Button"
 msgstr "모델 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:871
+#: ../plugins/gtk+/gtk+.xml.in.h:873
 msgid "Link Button"
 msgstr "링크 단추"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:872
+#: ../plugins/gtk+/gtk+.xml.in.h:874
 msgid "Recent Chooser"
 msgstr "최근 선택"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:874
+#: ../plugins/gtk+/gtk+.xml.in.h:876
 msgid "Most Recently Used first"
 msgstr "최근에 사용한 것부터"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:876
+#: ../plugins/gtk+/gtk+.xml.in.h:878
 msgid "Least Recently Used first"
 msgstr "오래전에 사용한 것부터"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:877
+#: ../plugins/gtk+/gtk+.xml.in.h:879
 msgid "Recent Chooser Dialog"
 msgstr "최근 선택 대화 상자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:878
+#: ../plugins/gtk+/gtk+.xml.in.h:880
 msgid "Size Group"
 msgstr "크기 그룹"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:879
+#: ../plugins/gtk+/gtk+.xml.in.h:881
 msgid "Widgets"
 msgstr "위젯"
 
 #. GtkSizeGroupMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:881
+#: ../plugins/gtk+/gtk+.xml.in.h:883
 msgid "Both"
 msgstr "둘 다"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:882
+#: ../plugins/gtk+/gtk+.xml.in.h:884
 msgid "List of widgets in this group"
 msgstr "이 그룹의 위젯 목록"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:883
+#: ../plugins/gtk+/gtk+.xml.in.h:885
 msgid "Window Group"
 msgstr "창 그룹"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:884
+#: ../plugins/gtk+/gtk+.xml.in.h:886
 msgid "Adjustment"
 msgstr "조정"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:888
+#: ../plugins/gtk+/gtk+.xml.in.h:890
 msgid "An accelerator key for this action"
 msgstr "이 동작의 단축키"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:889
+#: ../plugins/gtk+/gtk+.xml.in.h:891
 msgid "Toggle Action"
 msgstr "토글 액션"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:890
+#: ../plugins/gtk+/gtk+.xml.in.h:892
 msgid "Radio Action"
 msgstr "라디오 액션"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:891
+#: ../plugins/gtk+/gtk+.xml.in.h:893
 msgid "Recent Action"
 msgstr "최근 액션"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:892
+#: ../plugins/gtk+/gtk+.xml.in.h:894
 msgid "Action Group"
 msgstr "동작 그룹"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:893
+#: ../plugins/gtk+/gtk+.xml.in.h:895
 msgid "Entry Completion"
 msgstr "입력창 완성"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:894
+#: ../plugins/gtk+/gtk+.xml.in.h:896
 msgid "Icon Factory"
 msgstr "아이콘 팩토리"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:895
+#: ../plugins/gtk+/gtk+.xml.in.h:897
 msgid "Icon Sources"
 msgstr "아이콘 소스"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:896
+#: ../plugins/gtk+/gtk+.xml.in.h:898
 msgid "A list of sources for this icon factory"
 msgstr "이 아이콘 팩토리의 소스 목록"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:897
+#: ../plugins/gtk+/gtk+.xml.in.h:899
 msgid "List Store"
 msgstr "리스트 스토어"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:898
+#: ../plugins/gtk+/gtk+.xml.in.h:900
 msgid "Data"
 msgstr "데이터"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:899
+#: ../plugins/gtk+/gtk+.xml.in.h:901
 msgid "Enter a list of column types for this data store"
 msgstr "이 데이터 스토어의 열의 형식의 목록을 입력하십시오"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:900
+#: ../plugins/gtk+/gtk+.xml.in.h:902
 msgid "Enter a list of values to be applied on each row"
 msgstr "각 행에 적용할 값의 목록을 입력하십시오"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:901
+#: ../plugins/gtk+/gtk+.xml.in.h:903
 msgid "Tree Store"
 msgstr "트리 스토어"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:902
+#: ../plugins/gtk+/gtk+.xml.in.h:904
 msgid "Tree Model Filter"
 msgstr "트리 모델 필터"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:903
+#: ../plugins/gtk+/gtk+.xml.in.h:905
 msgid "Tree Model Sort"
 msgstr "트리 모델 정렬"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:904
+#: ../plugins/gtk+/gtk+.xml.in.h:906
 msgid "Tree Selection"
 msgstr "트리 선택"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:905
+#: ../plugins/gtk+/gtk+.xml.in.h:907
 msgid "Tree View"
 msgstr "트리 뷰"
 
 #. GtkTreeViewGridLines enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:907
+#: ../plugins/gtk+/gtk+.xml.in.h:909
 msgid "Horizontal and Vertical"
 msgstr "가로 및 세로"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:910
+#: ../plugins/gtk+/gtk+.xml.in.h:912
 msgid "Ascending"
 msgstr "오름차순"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:912
+#: ../plugins/gtk+/gtk+.xml.in.h:914
 msgid "Descending"
 msgstr "내림차순"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:914
+#: ../plugins/gtk+/gtk+.xml.in.h:916
 msgid "Grow Only"
 msgstr "확대만 가능"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:915
+#: ../plugins/gtk+/gtk+.xml.in.h:917
 msgid "Icon View"
 msgstr "아이콘 뷰"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:917
+#: ../plugins/gtk+/gtk+.xml.in.h:919
 msgid "Cell Background Color name column"
 msgstr "셀 배경 색 이름 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:918
+#: ../plugins/gtk+/gtk+.xml.in.h:920
 msgid "Cell Background Color column"
 msgstr "셀 배경 색 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:919
+#: ../plugins/gtk+/gtk+.xml.in.h:921
 msgid "Cell Background RGBA column"
 msgstr "셀 배경 RGBA 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:920
+#: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Width column"
 msgstr "너비 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:921
+#: ../plugins/gtk+/gtk+.xml.in.h:923
 msgid "Height column"
 msgstr "높이 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:922
+#: ../plugins/gtk+/gtk+.xml.in.h:924
 msgid "Horizontal Padding"
 msgstr "가로 채움"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:923
+#: ../plugins/gtk+/gtk+.xml.in.h:925
 msgid "Horizontal Padding column"
 msgstr "가로 채움 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:924
+#: ../plugins/gtk+/gtk+.xml.in.h:926
 msgid "Vertical Padding"
 msgstr "세로 채움"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:925
+#: ../plugins/gtk+/gtk+.xml.in.h:927
 msgid "Vertical Padding column"
 msgstr "세로 채움 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:926
+#: ../plugins/gtk+/gtk+.xml.in.h:928
 msgid "Horizontal Alignment"
 msgstr "가로 맞춤"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:927
+#: ../plugins/gtk+/gtk+.xml.in.h:929
 msgid "Horizontal Alignment column"
 msgstr "가로 맞춤 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:928
+#: ../plugins/gtk+/gtk+.xml.in.h:930
 msgid "Vertical Alignment"
 msgstr "세로 맞춤"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:929
+#: ../plugins/gtk+/gtk+.xml.in.h:931
 msgid "Vertical Alignment column"
 msgstr "세로 맞춤 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:930
+#: ../plugins/gtk+/gtk+.xml.in.h:932
 msgid "Sensitive column"
 msgstr "입출력 가능 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:932
+#: ../plugins/gtk+/gtk+.xml.in.h:934
 msgid "Visible column"
 msgstr "표시 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:933
+#: ../plugins/gtk+/gtk+.xml.in.h:935
 msgid "The column in the model to load the value from"
 msgstr "값을 읽어들일 모델의 열"
 
 # text cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:934
+#: ../plugins/gtk+/gtk+.xml.in.h:936
 msgid "Text Renderer"
 msgstr "텍스트 렌더러"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:935
+#: ../plugins/gtk+/gtk+.xml.in.h:937
 msgid "Alignment column"
 msgstr "맞춤 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:936
+#: ../plugins/gtk+/gtk+.xml.in.h:938
 msgid "Attributes column"
 msgstr "속성 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:937
+#: ../plugins/gtk+/gtk+.xml.in.h:939
 msgid "Background Color Name column"
 msgstr "배경 색 이름 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:938
+#: ../plugins/gtk+/gtk+.xml.in.h:940
 msgid "Background Color column"
 msgstr "배경 색 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:939
+#: ../plugins/gtk+/gtk+.xml.in.h:941
 msgid "Editable column"
 msgstr "편집 가능 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:940
+#: ../plugins/gtk+/gtk+.xml.in.h:942
 msgid "Ellipsize column"
 msgstr "말줄임표 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:941
+#: ../plugins/gtk+/gtk+.xml.in.h:943
 msgid "Family column"
 msgstr "패밀리 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:942
+#: ../plugins/gtk+/gtk+.xml.in.h:944
 msgid "Font column"
 msgstr "글꼴 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:943
+#: ../plugins/gtk+/gtk+.xml.in.h:945
 msgid "Font Description column"
 msgstr "글꼴 디스크립션 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:944
+#: ../plugins/gtk+/gtk+.xml.in.h:946
 msgid "Foreground Color Name column"
 msgstr "전경 색 이름 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:945
+#: ../plugins/gtk+/gtk+.xml.in.h:947
 msgid "Foreground Color column"
 msgstr "전경 색 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:946
+#: ../plugins/gtk+/gtk+.xml.in.h:948
 msgid "Language column"
 msgstr "언어 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:947
+#: ../plugins/gtk+/gtk+.xml.in.h:949
 msgid "Markup column"
 msgstr "마크업 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:948
+#: ../plugins/gtk+/gtk+.xml.in.h:950
 msgid "Rise column"
 msgstr "올림 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:949
+#: ../plugins/gtk+/gtk+.xml.in.h:951
 msgid "Scale column"
 msgstr "스케일 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:950
+#: ../plugins/gtk+/gtk+.xml.in.h:952
 msgid "Single Paragraph Mode column"
 msgstr "한 문단 모드 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:951
+#: ../plugins/gtk+/gtk+.xml.in.h:953
 msgid "Size column"
 msgstr "크기 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:952
+#: ../plugins/gtk+/gtk+.xml.in.h:954
 msgid "Data column"
 msgstr "데이터 열"
 
 # pango stretch type
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:954
+#: ../plugins/gtk+/gtk+.xml.in.h:956
 msgid "Ultra Condensed"
 msgstr "아주 크게 줄임"
 
 # pango stretch type
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:956
+#: ../plugins/gtk+/gtk+.xml.in.h:958
 msgid "Extra Condensed"
 msgstr "크게 줄임"
 
 # pango stretch type
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:958
+#: ../plugins/gtk+/gtk+.xml.in.h:960
 msgid "Condensed"
 msgstr "줄임"
 
 # pango stretch type
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:960
+#: ../plugins/gtk+/gtk+.xml.in.h:962
 msgid "Semi Condensed"
 msgstr "약간 줄임"
 
 # pango stretch type
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:962
+#: ../plugins/gtk+/gtk+.xml.in.h:964
 msgid "Semi Expanded"
 msgstr "약간 늘림"
 
 # pango stretch type
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:964
+#: ../plugins/gtk+/gtk+.xml.in.h:966
 msgid "Expanded"
 msgstr "늘림"
 
 # pango stretch type
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:966
+#: ../plugins/gtk+/gtk+.xml.in.h:968
 msgid "Extra Expanded"
 msgstr "크게 늘림"
 
 # pango stretch type
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:968
+#: ../plugins/gtk+/gtk+.xml.in.h:970
 msgid "Ultra Expanded"
 msgstr "아주 크게 늘림"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:969
+#: ../plugins/gtk+/gtk+.xml.in.h:971
 msgid "Stretch column"
 msgstr "늘림 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:970
+#: ../plugins/gtk+/gtk+.xml.in.h:972
 msgid "Strikethrough column"
 msgstr "취소선 열"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:972
+#: ../plugins/gtk+/gtk+.xml.in.h:974
 msgid "Oblique"
 msgstr "기울임"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:974
+#: ../plugins/gtk+/gtk+.xml.in.h:976
 msgid "Italic"
 msgstr "이탤릭"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:975
+#: ../plugins/gtk+/gtk+.xml.in.h:977
 msgid "Style column"
 msgstr "스타일 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:976
+#: ../plugins/gtk+/gtk+.xml.in.h:978
 msgid "Text column"
 msgstr "텍스트 열"
 
 # 밑줄 형식
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:978
+#: ../plugins/gtk+/gtk+.xml.in.h:980
 msgid "Double"
 msgstr "둘"
 
 # 밑줄 형식
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:980
+#: ../plugins/gtk+/gtk+.xml.in.h:982
 msgid "Low"
 msgstr "낮음"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:981
+#: ../plugins/gtk+/gtk+.xml.in.h:983
 msgid "Underline column"
 msgstr "밑줄 열"
 
 #. PangoVariant enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:983
+#: ../plugins/gtk+/gtk+.xml.in.h:985
 msgid "Small Capitals"
 msgstr "작은 대문자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:984
+#: ../plugins/gtk+/gtk+.xml.in.h:986
 msgid "Variant column"
 msgstr "변형 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:985
+#: ../plugins/gtk+/gtk+.xml.in.h:987
 msgid "Weight column"
 msgstr "굵기 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:986
+#: ../plugins/gtk+/gtk+.xml.in.h:988
 msgid "Width in Characters column"
 msgstr "문자 수 단위 너비 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:987
+#: ../plugins/gtk+/gtk+.xml.in.h:989
 msgid "Wrap Mode column"
 msgstr "줄바꿈 모드 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:988
+#: ../plugins/gtk+/gtk+.xml.in.h:990
 msgid "Wrap Width column"
 msgstr "줄바꿈 너비 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:989
+#: ../plugins/gtk+/gtk+.xml.in.h:991
 msgid "Background RGBA column"
 msgstr "배경 RGBA 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:990
+#: ../plugins/gtk+/gtk+.xml.in.h:992
 msgid "Foreground RGBA column"
 msgstr "전경 RGBA 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:991
+#: ../plugins/gtk+/gtk+.xml.in.h:993
 msgid "Maximum width in characters"
 msgstr "최대 너비, 문자 수 단위"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:992
+#: ../plugins/gtk+/gtk+.xml.in.h:994
 msgid "Placeholder text"
 msgstr "칸 채우기 텍스트"
 
 # accelerator cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:993
+#: ../plugins/gtk+/gtk+.xml.in.h:995
 msgid "Accelerator Renderer"
 msgstr "단축키 렌더러"
 
 #. GtkCellRendererAccelMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:995
+#: ../plugins/gtk+/gtk+.xml.in.h:997
 msgid "Gtk"
 msgstr "Gtk"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:996
+#: ../plugins/gtk+/gtk+.xml.in.h:998
 msgid "Accelerator Mode column"
 msgstr "단축키 모드 열"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:998
+#: ../plugins/gtk+/gtk+.xml.in.h:1000
 msgid "Shift Key"
 msgstr "Shift 키"
 
 # 키 이름
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1000
+#: ../plugins/gtk+/gtk+.xml.in.h:1002
 msgid "Lock Key"
 msgstr "Lock 키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1002
+#: ../plugins/gtk+/gtk+.xml.in.h:1004
 msgid "Control Key"
 msgstr "Control 키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1004
+#: ../plugins/gtk+/gtk+.xml.in.h:1006
 msgid "Alt Key"
 msgstr "Alt 키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1006
+#: ../plugins/gtk+/gtk+.xml.in.h:1008
 msgid "Fifth Key"
 msgstr "다섯번째 키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1008
+#: ../plugins/gtk+/gtk+.xml.in.h:1010
 msgid "Sixth Key"
 msgstr "여섯번째 키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1010
+#: ../plugins/gtk+/gtk+.xml.in.h:1012
 msgid "Seventh Key"
 msgstr "일곱번째 키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1012
+#: ../plugins/gtk+/gtk+.xml.in.h:1014
 msgid "Eighth Key"
 msgstr "여덟번째 키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1014
+#: ../plugins/gtk+/gtk+.xml.in.h:1016
 msgid "First Mouse Button"
 msgstr "첫번째 마우스 단추"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1016
+#: ../plugins/gtk+/gtk+.xml.in.h:1018
 msgid "Second Mouse Button"
 msgstr "두번째 마우스 단추"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1018
+#: ../plugins/gtk+/gtk+.xml.in.h:1020
 msgid "Third Mouse Button"
 msgstr "세번째 마우스 단추"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1020
+#: ../plugins/gtk+/gtk+.xml.in.h:1022
 msgid "Fourth Mouse Button"
 msgstr "네번째 마우스 단추"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1022
+#: ../plugins/gtk+/gtk+.xml.in.h:1024
 msgid "Fifth Mouse Button"
 msgstr "다섯번째 마우스 단추"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1024
+#: ../plugins/gtk+/gtk+.xml.in.h:1026
 msgid "Super Modifier"
 msgstr "Super 조합키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1026
+#: ../plugins/gtk+/gtk+.xml.in.h:1028
 msgid "Hyper Modifier"
 msgstr "Hyper 조합키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1028
+#: ../plugins/gtk+/gtk+.xml.in.h:1030
 msgid "Meta Modifier"
 msgstr "Meta 조합키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1030
+#: ../plugins/gtk+/gtk+.xml.in.h:1032
 msgid "Release Modifier"
 msgstr "떼기 조합키"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:1032
+#: ../plugins/gtk+/gtk+.xml.in.h:1034
 msgid "All Modifiers"
 msgstr "모든 조합키"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1033
+#: ../plugins/gtk+/gtk+.xml.in.h:1035
 msgid "Accelerator Modifiers column"
 msgstr "단축키 조합키 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1034
+#: ../plugins/gtk+/gtk+.xml.in.h:1036
 msgid "Keycode column"
 msgstr "키 코드 열"
 
 # combo cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:1035
+#: ../plugins/gtk+/gtk+.xml.in.h:1037
 msgid "Combo Renderer"
 msgstr "콤보 렌더러"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1036
+#: ../plugins/gtk+/gtk+.xml.in.h:1038
 msgid "Has Entry column"
 msgstr "입력창 있음 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1037
+#: ../plugins/gtk+/gtk+.xml.in.h:1039
 msgid "Model column"
 msgstr "모델 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1038
+#: ../plugins/gtk+/gtk+.xml.in.h:1040
 msgid "Text Column column"
 msgstr "텍스트 열 열"
 
 # spin cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:1039
+#: ../plugins/gtk+/gtk+.xml.in.h:1041
 msgid "Spin Renderer"
 msgstr "스핀 렌더러"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1040
+#: ../plugins/gtk+/gtk+.xml.in.h:1042
 msgid "Adjustment column"
 msgstr "조정 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1041
+#: ../plugins/gtk+/gtk+.xml.in.h:1043
 msgid "Climb Rate column"
 msgstr "상승/하강률 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1042
+#: ../plugins/gtk+/gtk+.xml.in.h:1044
 msgid "Digits column"
 msgstr "숫자 열"
 
 # pixbuf cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:1043
+#: ../plugins/gtk+/gtk+.xml.in.h:1045
 msgid "Pixbuf Renderer"
 msgstr "픽스버퍼 렌더러"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1044
+#: ../plugins/gtk+/gtk+.xml.in.h:1046
 msgid "Follow State column"
 msgstr "상태 따르기 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1045
+#: ../plugins/gtk+/gtk+.xml.in.h:1047
 msgid "Icon Name column"
 msgstr "아이콘 이름 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1046
+#: ../plugins/gtk+/gtk+.xml.in.h:1048
 msgid "Pixbuf column"
 msgstr "픽스버퍼 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1047
+#: ../plugins/gtk+/gtk+.xml.in.h:1049
 msgid "GIcon column"
 msgstr "G아이콘 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1048
+#: ../plugins/gtk+/gtk+.xml.in.h:1050
 msgid "Pixbuf Expander Closed column"
 msgstr "픽스버퍼 익스팬더 닫힌 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1049
+#: ../plugins/gtk+/gtk+.xml.in.h:1051
 msgid "Pixbuf Expander Open column"
 msgstr "픽스버퍼 익스팬더 열린 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1050
+#: ../plugins/gtk+/gtk+.xml.in.h:1052
 msgid "Stock Detail column"
 msgstr "스톡 자세히 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1051
+#: ../plugins/gtk+/gtk+.xml.in.h:1053
 msgid "Stock column"
 msgstr "스톡 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1052
+#: ../plugins/gtk+/gtk+.xml.in.h:1054
 msgid "Stock Size column"
 msgstr "스톡 크기 열"
 
 # progress cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:1053
+#: ../plugins/gtk+/gtk+.xml.in.h:1055
 msgid "Progress Renderer"
 msgstr "진행률 렌더러"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1054
+#: ../plugins/gtk+/gtk+.xml.in.h:1056
 msgid "Orientation column"
 msgstr "방향 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1055
+#: ../plugins/gtk+/gtk+.xml.in.h:1057
 msgid "Pulse column"
 msgstr "박자 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1056
+#: ../plugins/gtk+/gtk+.xml.in.h:1058
 msgid "Text Horizontal Alignment column"
 msgstr "텍스트 가로 맞춤 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1057
+#: ../plugins/gtk+/gtk+.xml.in.h:1059
 msgid "Text Vertical Alignment column"
 msgstr "텍스트 세로 맞춤 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1058
+#: ../plugins/gtk+/gtk+.xml.in.h:1060
 msgid "Value column"
 msgstr "값 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1059
+#: ../plugins/gtk+/gtk+.xml.in.h:1061
 msgid "Inverted column"
 msgstr "열 반전"
 
 # spin cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:1060
+#: ../plugins/gtk+/gtk+.xml.in.h:1062
 msgid "Spinner Renderer"
 msgstr "스피너 렌더러"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1061
+#: ../plugins/gtk+/gtk+.xml.in.h:1063
 msgid "Active column"
 msgstr "활성화 열"
 
 # toggle cell renderer
-#: ../plugins/gtk+/gtk+.xml.in.h:1062
+#: ../plugins/gtk+/gtk+.xml.in.h:1064
 msgid "Toggle Renderer"
 msgstr "토글 렌더러"
 
 # GtkActivatable 위젯
-#: ../plugins/gtk+/gtk+.xml.in.h:1063
+#: ../plugins/gtk+/gtk+.xml.in.h:1065
 msgid "Activatable column"
 msgstr "활성화 가능 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1064
+#: ../plugins/gtk+/gtk+.xml.in.h:1066
 msgid "Inconsistent column"
 msgstr "불일치 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1065
+#: ../plugins/gtk+/gtk+.xml.in.h:1067
 msgid "Indicator Size column"
 msgstr "표시 크기 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1066
+#: ../plugins/gtk+/gtk+.xml.in.h:1068
 msgid "Radio column"
 msgstr "라디오 열"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1067
+#: ../plugins/gtk+/gtk+.xml.in.h:1069
 msgid "Status Icon"
 msgstr "상태 아이콘"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1068
+#: ../plugins/gtk+/gtk+.xml.in.h:1070
 msgid "Text Buffer"
 msgstr "텍스트 버퍼"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1069
+#: ../plugins/gtk+/gtk+.xml.in.h:1071
 msgid "Entry Buffer"
 msgstr "입력창 버퍼"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1070
+#: ../plugins/gtk+/gtk+.xml.in.h:1072
 msgid "Text Tag"
 msgstr "텍스트 태그"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1071
+#: ../plugins/gtk+/gtk+.xml.in.h:1073
 msgid "Text Tag Table"
 msgstr "텍스트 태그 테이블"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1072
+#: ../plugins/gtk+/gtk+.xml.in.h:1074
 msgid "File Filter"
 msgstr "파일 필터"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1073
+#: ../plugins/gtk+/gtk+.xml.in.h:1075
 msgid "Mime Types"
 msgstr "MIME 종류"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1074
+#: ../plugins/gtk+/gtk+.xml.in.h:1076
 msgid "Patterns"
 msgstr "패턴"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1075
+#: ../plugins/gtk+/gtk+.xml.in.h:1077
 msgid "The list of mime types to add to the filter"
 msgstr "필터에 추가할 MIME 종류의 목록"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1076
+#: ../plugins/gtk+/gtk+.xml.in.h:1078
 msgid "The list of file name patterns to add to the filter"
 msgstr "필터에 추가할 파일 이름 패턴 목록"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1077
+#: ../plugins/gtk+/gtk+.xml.in.h:1079
 msgid "Recent Filter"
 msgstr "최근 필터"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1079
+#: ../plugins/gtk+/gtk+.xml.in.h:1081
 msgid "The list of application names to add to the filter"
 msgstr "필터에 추가할 프로그램 이름 목록"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1080
+#: ../plugins/gtk+/gtk+.xml.in.h:1082
 msgid "Recent Manager"
 msgstr "최근 관리자"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1081
+#: ../plugins/gtk+/gtk+.xml.in.h:1083
 msgid "Themed Icon"
 msgstr "테마 아이콘"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1082
+#: ../plugins/gtk+/gtk+.xml.in.h:1084
 msgid "Toplevels"
 msgstr "최상위"
 
 # widget 분류
-#: ../plugins/gtk+/gtk+.xml.in.h:1083
+#: ../plugins/gtk+/gtk+.xml.in.h:1085
 msgid "Containers"
 msgstr "컨테이너"
 
 # widget 분류
-#: ../plugins/gtk+/gtk+.xml.in.h:1084
-msgid "Control and Display"
-msgstr "컨트롤 및 표시"
+#: ../plugins/gtk+/gtk+.xml.in.h:1086
+msgid "Control"
+msgstr "컨트롤"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1085
+# widget 분류
+#: ../plugins/gtk+/gtk+.xml.in.h:1087
+msgid "Display"
+msgstr "표시"
+
+# widget 분류
+#: ../plugins/gtk+/gtk+.xml.in.h:1088
 msgid "Composite Widgets"
 msgstr "결합 위젯"
 
-# 위젯 분류
-#: ../plugins/gtk+/gtk+.xml.in.h:1086
+# widget 분류
+#: ../plugins/gtk+/gtk+.xml.in.h:1089
 msgid "Miscellaneous"
 msgstr "기타"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:1087
+# widget 분류
+#: ../plugins/gtk+/gtk+.xml.in.h:1090
 msgid "Deprecated"
 msgstr "권장하지 않음"
 
@@ -8408,6 +8311,197 @@ msgstr "클라이언트에서 창 꾸미기"
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
 msgstr "이 창에서 사용자 설정 제목 표시줄을 사용하는지 여부."
+
+#~ msgid "Activate '%s' %s"
+#~ msgstr "'%s' %s 활성화"
+
+#~ msgid "Activate '%s'"
+#~ msgstr "'%s' 활성화"
+
+#~ msgid "Requires:"
+#~ msgstr "필요:"
+
+#~ msgid "_Undo"
+#~ msgstr "실행 취소(_U)"
+
+#~ msgid "_Redo"
+#~ msgstr "다시 실행(_R)"
+
+#~ msgid "Close document"
+#~ msgstr "문서 닫기"
+
+#~ msgid "Palette"
+#~ msgstr "팔레트"
+
+#~ msgid "Inspector"
+#~ msgstr "검사"
+
+#~ msgid "Select"
+#~ msgstr "선택"
+
+#~ msgid "Select widgets in the workspace"
+#~ msgstr "작업 창의 위젯을 선택합니다"
+
+#~ msgid "Drag Resize"
+#~ msgstr "끌어서 크기 조정"
+
+#~ msgid "Drag and resize widgets in the workspace"
+#~ msgstr "작업 공간의 위젯을 끌어서 크기를 조정합니다"
+
+#~ msgid "Margin Edit"
+#~ msgstr "간격 편집"
+
+#~ msgid "Edit widget margins"
+#~ msgstr "위젯 간격 편집"
+
+#~ msgid "Alignment Edit"
+#~ msgstr "맞춤 편집"
+
+#~ msgid "Edit widget alignment"
+#~ msgstr "위젯 맞춤 편집"
+
+#~ msgid "Save _As"
+#~ msgstr "다른 이름으로 저장(_A)"
+
+#~ msgid "Close the current project"
+#~ msgstr "현재 프로젝트를 닫습니다"
+
+#~ msgid "Undo the last action"
+#~ msgstr "마지막 작업을 실행 취소합니다"
+
+#~ msgid "Redo the last action"
+#~ msgstr "마지막 작업을 다시 실행합니다"
+
+# GTK_SHADOW_OUT
+#~ msgid "Cut"
+#~ msgstr "잘라내기"
+
+#~ msgid "Cut the selection"
+#~ msgstr "선택한 부분을 잘라냅니다"
+
+#~ msgid "Copy"
+#~ msgstr "복사"
+
+#~ msgid "Copy the selection"
+#~ msgstr "선택한 부분을 복사합니다"
+
+#~ msgid "Paste"
+#~ msgstr "붙여넣기"
+
+#~ msgid "Paste the clipboard"
+#~ msgstr "클립보드 내용을 붙여넣습니다"
+
+#~ msgid "Delete the selection"
+#~ msgstr "선택한 부분을 지웁니다"
+
+#~ msgid "_Previous Project"
+#~ msgstr "이전 프로젝트(_P)"
+
+#~ msgid "Activate previous project"
+#~ msgstr "이전 프로젝트를 활성화합니다"
+
+#~ msgid "_Next Project"
+#~ msgstr "다음 프로젝트(_N)"
+
+#~ msgid "Activate next project"
+#~ msgstr "다음 프로젝트를 활성화합니다"
+
+#~ msgid "_Use Small Icons"
+#~ msgstr "작은 아이콘 사용(_U)"
+
+#~ msgid "Show items using small icons"
+#~ msgstr "작은 아이콘으로 항목을 표시합니다"
+
+#~ msgid "Dock _Palette"
+#~ msgstr "팔레트 붙이기(_P)"
+
+#~ msgid "Dock the palette into the main window"
+#~ msgstr "팔레트를 메인 창에 붙입니다"
+
+#~ msgid "Dock _Inspector"
+#~ msgstr "검사 붙이기(_I)"
+
+#~ msgid "Dock the inspector into the main window"
+#~ msgstr "검사를 메인 창에 붙입니다"
+
+#~ msgid "Dock Prop_erties"
+#~ msgstr "도크 속성(_E)"
+
+#~ msgid "Dock the editor into the main window"
+#~ msgstr "편집기를 메인 창에 붙입니다"
+
+#~ msgid "_Statusbar"
+#~ msgstr "상태 표시줄(_S)"
+
+#~ msgid "Show the statusbar"
+#~ msgstr "상태 표시줄 보이기"
+
+#~ msgid "Tool_bar"
+#~ msgstr "도구 모음(_B)"
+
+#~ msgid "Show the toolbar"
+#~ msgstr "도구 모음 보이기"
+
+#~ msgid "Project _Tabs"
+#~ msgstr "프로젝트 탭(_T)"
+
+#~ msgid "Show notebook tabs for loaded projects"
+#~ msgstr "읽어들인 프로젝트의 노트북 탭 보이기"
+
+#~ msgid "Text _beside icons"
+#~ msgstr "아이콘 옆에 텍스트(_B)"
+
+#~ msgid "Display items as text beside icons"
+#~ msgstr "아이콘 옆에 텍스트를 놓는 식으로 항목을 표시합니다"
+
+#~ msgid "_Icons only"
+#~ msgstr "아이콘만(_I)"
+
+#~ msgid "Display items as icons only"
+#~ msgstr "아이콘으로만 항목을 표시합니다"
+
+#~ msgid "_Text only"
+#~ msgstr "텍스트만(_T)"
+
+#~ msgid "Display items as text only"
+#~ msgstr "텍스트로만 항목을 표시합니다"
+
+#~ msgid "_Editor Header"
+#~ msgstr "편집기 헤더(_E)"
+
+#~ msgid "New"
+#~ msgstr "새로 만들기"
+
+#~ msgid "Quit"
+#~ msgstr "끝내기"
+
+#~ msgid "Quit the program"
+#~ msgstr "프로그램을 끝냅니다"
+
+#~ msgid "About this application"
+#~ msgstr "이 프로그램의 정보"
+
+#~ msgid "Display the developer reference manual"
+#~ msgstr "개발자 참고서 표시를 표시합니다"
+
+#~ msgid "Edit Glade preferences"
+#~ msgstr "글레이드 기본 설정 편집"
+
+#~ msgid "Open _Recent"
+#~ msgstr "최근 열기(_R)"
+
+#~ msgid "Help us improve Glade by registering and completing the user survey!"
+#~ msgstr "등록 및 사용자 설문으로 글레이드를 발전시키는데 도움을 주십시오!"
+
+#~ msgid "Palette _Appearance"
+#~ msgstr "팔레트 모양(_A)"
+
+#~ msgid "Hierarchy"
+#~ msgstr "계층 구조"
+
+# widget 분류
+#~ msgid "Control and Display"
+#~ msgstr "컨트롤 및 표시"
 
 #~ msgid "See Privacy Note"
 #~ msgstr "개인정보 보호 안내 보기"
