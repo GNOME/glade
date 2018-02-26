@@ -309,7 +309,7 @@ glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 
-  return glade_widget_adaptor_get_parent_adaptor_by_type (adaptor->priv->type);
+  return glade_widget_adaptor_get_parent_adaptor_by_type (adaptor->priv->real_type);
 }
 
 gboolean
@@ -2711,7 +2711,21 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
             glade_xml_get_property_string (class_node,
                                            GLADE_TAG_GET_TYPE_FUNCTION)) != NULL)
     {
+      GType real_type;
+
       object_type = glade_util_get_type_from_name (func_name, TRUE);
+      real_type = g_type_from_name (name);
+
+      if (object_type != G_TYPE_INVALID && !g_type_is_a (object_type, real_type))
+        {
+          g_warning ("Trying to define class '%s' with %s() function. "
+                     "But it returns a non derived class %s",
+                     name, func_name, g_type_name (object_type));
+          g_free (name);
+          g_free (func_name);
+          return NULL;
+        }
+
       g_free (func_name);
     }
   else
