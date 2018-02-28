@@ -23,8 +23,8 @@
 
 #include <config.h>
 #include <glib/gi18n-lib.h>
-#include <gladeui/glade.h>
 
+#include "glade-gtk-popover.h"
 #include "glade-popover-editor.h"
 
 #define GLADE_TYPE_GTK_POPOVER glade_gtk_popover_get_type ()
@@ -37,11 +37,17 @@ struct _GladeGtkPopover
 
 G_DEFINE_TYPE (GladeGtkPopover, glade_gtk_popover, GTK_TYPE_POPOVER)
 
-static void
-glade_gtk_popover_init (GladeGtkPopover *popover)
+void
+glade_gtk_popover_init_common (gpointer popover)
 {
   gtk_popover_set_modal (GTK_POPOVER (popover), FALSE);
   gtk_popover_set_relative_to (GTK_POPOVER (popover), NULL);
+}
+
+static void
+glade_gtk_popover_init (GladeGtkPopover *popover)
+{
+  glade_gtk_popover_init_common (popover);
 }
 
 static void
@@ -73,8 +79,8 @@ glade_gtk_popover_key_press_event (GtkWidget *popover, GdkEventKey *event)
   return FALSE;
 }
 
-static void
-glade_gtk_popover_class_init (GladeGtkPopoverClass *klass)
+void
+glade_gtk_popover_class_init_common (gpointer klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
@@ -86,6 +92,12 @@ glade_gtk_popover_class_init (GladeGtkPopoverClass *klass)
   /* Make some warning go away */
   widget_class->map = glade_gtk_popover_map;
   widget_class->unmap = glade_gtk_popover_unmap;
+}
+
+static void
+glade_gtk_popover_class_init (GladeGtkPopoverClass *klass)
+{
+  glade_gtk_popover_class_init_common (klass);
 }
 
 
