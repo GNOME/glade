@@ -3499,8 +3499,12 @@
         </properties>
       </glade-widget-class>
 
-      <glade-widget-class name="GtkPopoverMenu" generic-name="popovermenu" _title="Popover Menu" toplevel="True" since="3.16">
-        <constructor-function>glade_gtk_popover_menu_constructor</constructor-function>
+      <glade-widget-class name="GtkPopoverMenu"
+                                get-type-function="glade_gtk_popover_menu_get_type"
+                                generic-name="popovermenu"
+                                _title="Popover Menu"
+                                toplevel="True"
+                                since="3.16">
         <create-editable-function>glade_gtk_popover_menu_create_editable</create-editable-function>
         <post-create-function>glade_gtk_popover_menu_post_create</post-create-function>
         <add-child-function>glade_gtk_popover_menu_add_child</add-child-function>
@@ -3515,6 +3519,7 @@
         <properties>
           <property id="visible" default="False"/>
           <property id="visible-submenu" disabled="True"/>
+          <property id="pointing-to" disabled="True"/>
           <property id="submenus" _name="Number of submenus" save="False" default="1" custom-layout="True">
             <parameter-spec>
               <type>GParamInt</type>
