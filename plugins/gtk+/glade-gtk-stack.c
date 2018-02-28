@@ -548,13 +548,16 @@ glade_gtk_stack_replace_child (GladeWidgetAdaptor * adaptor,
                                                      new_widget);
 
   gbox = glade_widget_get_from_gobject (container);
-  glade_widget_property_get (gbox, "pages", &pages);
-  glade_widget_property_set (gbox, "pages", pages);
-  glade_widget_property_get (gbox, "page", &page);
-  glade_widget_property_set (gbox, "page", page);
 
   gchild = glade_widget_get_from_gobject (new_widget);
   if (gchild != NULL)
     glade_widget_set_pack_action_visible (gchild, "remove_page", FALSE);
 
+  /* NOTE: make sure to sync this at the end because new_widget could be
+   * a placeholder and syncing these properties could destroy it.
+   */
+  glade_widget_property_get (gbox, "pages", &pages);
+  glade_widget_property_set (gbox, "pages", pages);
+  glade_widget_property_get (gbox, "page", &page);
+  glade_widget_property_set (gbox, "page", page);
 }
