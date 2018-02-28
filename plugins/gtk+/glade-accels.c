@@ -626,6 +626,11 @@ glade_gtk_parse_modifiers (const gchar * string)
               modifiers |= GDK_SHIFT_MASK;
               pos += 10;
             }
+          else if (!strncmp (pos, "SUPER_MASK", 10))
+            {
+              modifiers |= GDK_SUPER_MASK;
+              pos += 10;
+            }            
           else if (!strncmp (pos, "LOCK_MASK", 9))
             {
               modifiers |= GDK_LOCK_MASK;
@@ -706,6 +711,13 @@ glade_gtk_modifier_string_from_bits (GdkModifierType modifiers)
       if (string->len > 0)
         g_string_append (string, " | ");
       g_string_append (string, "GDK_SHIFT_MASK");
+    }
+
+  if (modifiers & GDK_SUPER_MASK)
+    {
+      if (string->len > 0)
+        g_string_append (string, " | ");
+      g_string_append (string, "GDK_SUPER_MASK");
     }
 
   if (modifiers & GDK_LOCK_MASK)
