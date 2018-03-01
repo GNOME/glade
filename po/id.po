@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-01-08 15:10+0000\n"
-"PO-Revision-Date: 2018-01-18 15:07+0700\n"
+"POT-Creation-Date: 2018-02-17 17:06+0000\n"
+"PO-Revision-Date: 2018-02-19 10:38+0700\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
 #: ../src/main.c:42 ../src/glade.glade.h:6
@@ -237,8 +237,8 @@ msgid "Hello, I will show you what's new in Glade"
 msgstr "Halo, saya akan menunjukkan apa yang baru di Glade"
 
 #: ../src/glade-window.c:2288
-msgid "The menubar and toolbar where merged in the headerbar"
-msgstr "Bilah menu dan bilah alat yang mana digabung pada bilah header"
+msgid "The menubar and toolbar were merged in the headerbar"
+msgstr "Bilah menu dan bilah alat yang digabung pada bilah header"
 
 #: ../src/glade-window.c:2290
 msgid "You can open a project"
@@ -537,7 +537,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Andika Triwidada <andika@gmail.com>, 2010-2014.\n"
-"Kukuh Syafaat <syafaatkukuh@gmail.com>, 2017."
+"Kukuh Syafaat <syafaatkukuh@gmail.com>, 2017, 2018."
 
 #: ../src/glade-preferences.glade.h:1
 msgid "Glade Preferences"
@@ -1683,16 +1683,16 @@ msgstr "Gagal memuat gambar (%s)"
 msgid "Editing alignments of %s"
 msgstr "Menyunting perataan %s"
 
-#: ../gladeui/glade-design-layout.c:735
+#: ../gladeui/glade-design-layout.c:733
 #, c-format
 msgid "Editing margins of %s"
 msgstr "Menyunting tepi %s"
 
-#: ../gladeui/glade-design-layout.c:2045
+#: ../gladeui/glade-design-layout.c:2043
 msgid "Design View"
 msgstr "Tilikan Rancangan"
 
-#: ../gladeui/glade-design-layout.c:2046
+#: ../gladeui/glade-design-layout.c:2044
 msgid "The GladeDesignView that contains this layout"
 msgstr "GladeDesignView yang memuat tata letak ini"
 
@@ -1755,7 +1755,7 @@ msgstr "Properti %s - %s"
 #: ../gladeui/glade-editor.c:349 ../gladeui/glade-widget.c:1377
 #: ../gladeui/glade-project-properties.ui.h:11
 #: ../plugins/gtk+/glade-gtk-action-group.c:184
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:361
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:365
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:518
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:545
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:564
@@ -3593,7 +3593,7 @@ msgid "Action"
 msgstr "Aksi"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:216
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:412
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:417
 #: ../plugins/gtk+/glade-gtk-toolbar.c:236
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:183
 #: ../plugins/gtk+/glade-gtk-tree-view.c:91
@@ -3635,74 +3635,74 @@ msgstr "Halaman konfirmasi"
 msgid "Ordering children of %s"
 msgstr "Mengurutkan anak %s"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:356
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:360
 #: ../plugins/gtk+/gtk+.xml.in.h:910
 msgid "Tree View Column"
 msgstr "Kolom Tilikan Tree"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:356
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:360
 #: ../plugins/gtk+/gtk+.xml.in.h:918
 msgid "Cell Renderer"
 msgstr "Perender Sel"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:362
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:366
 msgid "Properties and Attributes"
 msgstr "Properti dan Atribut"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:368
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:372
 msgid "Common Properties and Attributes"
 msgstr "Properti dan Atribut Bersama"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:406
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:411
 #: ../plugins/gtk+/glade-gtk-tree-view.c:85 ../plugins/gtk+/gtk+.xml.in.h:204
 #: ../plugins/gtk+/glade-entry-editor.ui.h:3
 msgid "Text"
 msgstr "Teks"
 
 #. Accelerator
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:407
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:412
 #: ../plugins/gtk+/glade-gtk-tree-view.c:86 ../plugins/gtk+/gtk+.xml.in.h:889
 msgid "Accelerator"
 msgstr "Akselerator"
 
 #. GdkWindowTypeHint enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:408
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:413
 #: ../plugins/gtk+/glade-gtk-tree-view.c:87 ../plugins/gtk+/gtk+.xml.in.h:421
 msgid "Combo"
 msgstr "Kombo"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:409
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:414
 #: ../plugins/gtk+/glade-gtk-tree-view.c:88
 msgid "Spin"
 msgstr "Spin"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:410
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:415
 #: ../plugins/gtk+/glade-gtk-tree-view.c:89
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:411
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:416
 #: ../plugins/gtk+/glade-gtk-tree-view.c:90 ../plugins/gtk+/gtk+.xml.in.h:862
 #: ../plugins/gtk+/glade-entry-editor.ui.h:4
 msgid "Progress"
 msgstr "Kemajuan"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:413
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:418
 #: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:522
 msgid "Spinner"
 msgstr "Spinner"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:446
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:451
 msgid "Icon View Editor"
 msgstr "Penyunting Tilikan Ikon"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:451
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:456
 msgid "Combo Editor"
 msgstr "Penyunting Kombo"
 
-#: ../plugins/gtk+/glade-gtk-cell-layout.c:456
+#: ../plugins/gtk+/glade-gtk-cell-layout.c:461
 msgid "Entry Completion Editor"
 msgstr "Penyunting Pelengkapan Entri"
 
