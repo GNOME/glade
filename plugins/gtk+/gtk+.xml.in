@@ -3042,6 +3042,8 @@
           <property id="menu-model" disabled="True"/>
           <property id="popup" ignore="True"/>
           <property id="align-widget" ignore="True"/>
+          <property id="popover" ignore="True" since="3.12"/>
+          <property id="use-popover" ignore="True" since="3.12"/>
         </properties>
       </glade-widget-class>
 
@@ -3514,6 +3516,7 @@
         <properties>
           <property id="visible" default="False"/>
           <property id="relative-to" ignore="True" custom-layout="True"/>
+          <property id="pointing-to" disabled="True"/>
           <property id="constrain-to" ignore="True" custom-layout="True" since="3.20">
             <displayable-values>
               <!-- GtkPopoverConstraint enumeration value -->
@@ -3529,7 +3532,6 @@
       </glade-widget-class>
 
       <glade-widget-class name="GtkPopoverMenu" generic-name="popovermenu" _title="Popover Menu" toplevel="True" since="3.16">
-        <constructor-function>glade_gtk_popover_menu_constructor</constructor-function>
         <create-editable-function>glade_gtk_popover_menu_create_editable</create-editable-function>
         <post-create-function>glade_gtk_popover_menu_post_create</post-create-function>
         <add-child-function>glade_gtk_popover_menu_add_child</add-child-function>
@@ -3544,6 +3546,7 @@
         <properties>
           <property id="visible" default="False"/>
           <property id="visible-submenu" disabled="True"/>
+          <property id="pointing-to" disabled="True"/>
           <property id="submenus" _name="Number of submenus" save="False" default="1" custom-layout="True">
             <parameter-spec>
               <type>GParamInt</type>

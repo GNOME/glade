@@ -27,25 +27,6 @@
 
 #include "glade-popover-menu-editor.h"
 
-GObject *
-glade_gtk_popover_menu_constructor (GType type,
-                                    guint n_construct_properties,
-                                    GObjectConstructParam * construct_properties)
-{
-  GladeWidgetAdaptor *adaptor;
-  GObject *ret_obj;
-
-  ret_obj = GWA_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
-      (type, n_construct_properties, construct_properties);
-
-  adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
-
-  glade_widget_adaptor_action_remove (adaptor, "add_parent");
-  glade_widget_adaptor_action_remove (adaptor, "remove_parent");
-
-  return ret_obj;
-}
-
 static void
 glade_gtk_popover_menu_parse_finished (GladeProject * project,
                                        GObject * object)
