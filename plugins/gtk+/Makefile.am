@@ -207,7 +207,6 @@ noinst_HEADERS =			\
 	glade-gtk-dialog.h		\
 	glade-gtk-frame.h		\
 	glade-gtk-image.h		\
-	glade-gtk-popover.h		\
 	glade-gtk-menu-shell.h		\
 	glade-gtk-notebook.h		\
 	glade-gtk-tree-view.h		\

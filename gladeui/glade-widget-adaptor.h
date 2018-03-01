@@ -132,16 +132,6 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
    GLADE_WIDGET_ADAPTOR_GET_CLASS (glade_widget_adaptor_get_by_type(type)))
 
 /**
- * GWA_GET_PARENT:
- * @adaptor: A #GladeWidgetAdaptor
- *
- * Shorthand for referencing glade adaptor parent class from
- * the plugin eg. GWA_GET_PARENT (adaptor)->post_create (adaptor...
- */
-#define GWA_GET_PARENT(adaptor)                                                      \
-  (GLADE_WIDGET_ADAPTOR_GET_CLASS (glade_widget_adaptor_get_parent_adaptor(adaptor)))
-
-/**
  * GWA_GET_OCLASS:
  * @type: A #GType.
  *
