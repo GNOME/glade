@@ -3042,8 +3042,6 @@
           <property id="menu-model" disabled="True"/>
           <property id="popup" ignore="True"/>
           <property id="align-widget" ignore="True"/>
-          <property id="popover" ignore="True" since="3.12"/>
-          <property id="use-popover" ignore="True" since="3.12"/>
         </properties>
       </glade-widget-class>
 
@@ -3509,18 +3507,13 @@
         </packing-properties>
       </glade-widget-class>
       
-      <glade-widget-class name="GtkPopover"
-                          get-type-function="glade_gtk_popover_get_type"
-                          generic-name="popover"
-                          _title="Popover"
-                          toplevel="True"
-                          since="3.12">
+      <glade-widget-class name="GtkPopover" generic-name="popover" _title="Popover" toplevel="True" since="3.12">
         <constructor-function>glade_gtk_popover_constructor</constructor-function>
         <create-editable-function>glade_gtk_popover_create_editable</create-editable-function>
+        <post-create-function>glade_gtk_popover_post_create</post-create-function>
         <properties>
           <property id="visible" default="False"/>
           <property id="relative-to" ignore="True" custom-layout="True"/>
-          <property id="pointing-to" disabled="True"/>
           <property id="constrain-to" ignore="True" custom-layout="True" since="3.20">
             <displayable-values>
               <!-- GtkPopoverConstraint enumeration value -->
