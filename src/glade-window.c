@@ -272,7 +272,6 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
     {
       GladeWidgetAction *action = l->data;
       GWActionClass     *aclass = glade_widget_action_get_class (action);
-      GtkWidget         *image;
 
       if (!aclass->important || !glade_widget_action_get_visible (action))
         continue;
@@ -283,9 +282,10 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
           continue;
         }
 
-      image = gtk_image_new_from_icon_name ((aclass->stock) ? aclass->stock : "system-run",
-                                            GTK_ICON_SIZE_LARGE_TOOLBAR);
-      item = gtk_tool_button_new (image, NULL);
+      item = gtk_tool_button_new (NULL, aclass->label);
+      gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item),
+                                     (aclass->stock) ? aclass->stock : "system-run");
+
       if (aclass->label)
         gtk_widget_set_tooltip_text (GTK_WIDGET (item), aclass->label);
 
@@ -300,7 +300,7 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
                              action, action_disconnect, 0);
 
       gtk_widget_set_sensitive (GTK_WIDGET (item), 
-				glade_widget_action_get_sensitive (action));
+      glade_widget_action_get_sensitive (action));
 
       g_signal_connect (action, "notify::sensitive",
                         G_CALLBACK (activate_action), GTK_WIDGET (item));
