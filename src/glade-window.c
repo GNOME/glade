@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2001 Ximian, Inc.
  * Copyright (C) 2007 Vincent Geddes.
- * Copyright (C) 2012-2017 Juan Pablo Ugarte.
+ * Copyright (C) 2012-2018 Juan Pablo Ugarte.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -221,7 +221,7 @@ activate_action (GtkToolButton *toolbutton, GladeWidgetAction *action)
   if ((widget = g_object_get_data (G_OBJECT (toolbutton), "glade-widget")))
     glade_widget_adaptor_action_activate (glade_widget_get_adaptor (widget),
                                           glade_widget_get_object (widget), 
-					  aclass->path);
+                                          aclass->path);
 }
 
 static void
@@ -300,7 +300,7 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
                              action, action_disconnect, 0);
 
       gtk_widget_set_sensitive (GTK_WIDGET (item), 
-      glade_widget_action_get_sensitive (action));
+                                glade_widget_action_get_sensitive (action));
 
       g_signal_connect (action, "notify::sensitive",
                         G_CALLBACK (activate_action), GTK_WIDGET (item));
@@ -481,13 +481,13 @@ autosave_project (gpointer data)
 
   if (glade_project_autosave (project, NULL))
     glade_util_flash_message (window->priv->statusbar,
-			      window->priv->statusbar_actions_context_id,
-			      _("Autosaving '%s'"), display_name);
+                              window->priv->statusbar_actions_context_id,
+                              _("Autosaving '%s'"), display_name);
   else
     /* This is problematic, should we be more intrusive and popup a dialog ? */
     glade_util_flash_message (window->priv->statusbar,
-			      window->priv->statusbar_actions_context_id,
-			      _("Error autosaving '%s'"), display_name);
+                              window->priv->statusbar_actions_context_id,
+                              _("Error autosaving '%s'"), display_name);
 
   g_free (display_name);
 
@@ -497,19 +497,18 @@ autosave_project (gpointer data)
 }
 
 static void
-project_queue_autosave (GladeWindow  *window,
-			GladeProject *project)
+project_queue_autosave (GladeWindow *window, GladeProject *project)
 {
   if (glade_project_get_path (project) != NULL &&
       glade_project_get_modified (project) &&
       glade_preferences_autosave (window->priv->preferences))
     {
       guint autosave_id =
-	g_timeout_add_seconds (glade_preferences_autosave_seconds (window->priv->preferences),
-			       autosave_project, project);
+        g_timeout_add_seconds (glade_preferences_autosave_seconds (window->priv->preferences),
+                               autosave_project, project);
 
       g_object_set_data_full (G_OBJECT (project), "glade-autosave-id",
-			      GUINT_TO_POINTER (autosave_id), cancel_autosave);
+                              GUINT_TO_POINTER (autosave_id), cancel_autosave);
     }
   else
       g_object_set_data (G_OBJECT (project), "glade-autosave-id", NULL);
@@ -762,12 +761,12 @@ do_save (GladeWindow *window, GladeProject *project, const gchar *path)
       !glade_project_backup (project, path, NULL))
     {
       if (!glade_util_ui_message (GTK_WIDGET (window),
-				  GLADE_UI_ARE_YOU_SURE, NULL,
-				  _("Failed to backup existing file, continue saving?")))
-	{
-	  g_free (display_path);
-	  return FALSE;
-	}
+                                  GLADE_UI_ARE_YOU_SURE, NULL,
+                                  _("Failed to backup existing file, continue saving?")))
+        {
+          g_free (display_path);
+          return FALSE;
+        }
     }
 
   if (glade_preferences_warn_versioning (window->priv->preferences))
@@ -781,8 +780,8 @@ do_save (GladeWindow *window, GladeProject *project, const gchar *path)
     {
       if (error)
         {
-	  /* Reset path so future saves will prompt the file chooser */
-	  glade_project_reset_path (project);
+          /* Reset path so future saves will prompt the file chooser */
+          glade_project_reset_path (project);
 
           glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_ERROR, NULL,
                                  _("Failed to save %s: %s"),
@@ -818,42 +817,42 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
       mtime = glade_util_get_file_mtime (glade_project_get_path (project), NULL);
 
       if (mtime > glade_project_get_file_mtime (project))
-	{
+        {
 
-	  dialog = gtk_message_dialog_new (GTK_WINDOW (window),
-					   GTK_DIALOG_MODAL,
-					   GTK_MESSAGE_WARNING,
-					   GTK_BUTTONS_NONE,
-					   _("The file %s has been modified since reading it"),
-					   glade_project_get_path (project));
+          dialog = gtk_message_dialog_new (GTK_WINDOW (window),
+                                           GTK_DIALOG_MODAL,
+                                           GTK_MESSAGE_WARNING,
+                                           GTK_BUTTONS_NONE,
+                                           _("The file %s has been modified since reading it"),
+                                           glade_project_get_path (project));
 
-	  gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-						    _("If you save it, all the external changes could be lost. "
-						      "Save it anyway?"));
+          gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+                                                    _("If you save it, all the external changes could be lost. "
+                                                    "Save it anyway?"));
 
-	  gtk_window_set_title (GTK_WINDOW (dialog), "");
+          gtk_window_set_title (GTK_WINDOW (dialog), "");
 
-	  button = gtk_button_new_with_mnemonic (_("_Save Anyway"));
-	  gtk_button_set_image (GTK_BUTTON (button),
-				gtk_image_new_from_icon_name ("document-save",
-                                                              GTK_ICON_SIZE_BUTTON));
-	  gtk_widget_show (button);
+          button = gtk_button_new_with_mnemonic (_("_Save Anyway"));
+          gtk_button_set_image (GTK_BUTTON (button),
+                                gtk_image_new_from_icon_name ("document-save",
+                                                                      GTK_ICON_SIZE_BUTTON));
+          gtk_widget_show (button);
 
-	  gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
-					GTK_RESPONSE_ACCEPT);
-	  gtk_dialog_add_button (GTK_DIALOG (dialog), _("_Don't Save"),
-				 GTK_RESPONSE_REJECT);
+          gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
+                                        GTK_RESPONSE_ACCEPT);
+          gtk_dialog_add_button (GTK_DIALOG (dialog), _("_Don't Save"),
+                                 GTK_RESPONSE_REJECT);
 
-	  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
-					   GTK_RESPONSE_REJECT);
+          gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_REJECT);
 
-	  response = gtk_dialog_run (GTK_DIALOG (dialog));
+          response = gtk_dialog_run (GTK_DIALOG (dialog));
 
-	  gtk_widget_destroy (dialog);
+          gtk_widget_destroy (dialog);
 
-	  if (response == GTK_RESPONSE_REJECT)
-	    return;
-	}
+          if (response == GTK_RESPONSE_REJECT)
+            return;
+      }
     }
 
   /* Interestingly; we cannot use `path' after glade_project_reset_path
@@ -973,8 +972,8 @@ save_as (GladeWindow *window)
                                        path);
 
       gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-						_("You do not have the permissions "
-						  "necessary to save the file."));
+                                                _("You do not have the permissions "
+                                                  "necessary to save the file."));
 
       gtk_window_set_title (GTK_WINDOW (dialog), "");
 
@@ -1528,7 +1527,7 @@ drag_data_received (GtkWidget *widget,
           g_warning ("Could not convert uri to local path: %s", error->message);
 
           g_error_free (error);
-	}
+        }
       g_free (path);
     }
   g_strfreev (uris);
