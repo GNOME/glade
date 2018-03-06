@@ -633,7 +633,8 @@ gtk_container_children_callback (GtkWidget *widget, gpointer client_data)
   GList **children;
 
   children = (GList **) client_data;
-  *children = g_list_prepend (*children, widget);
+  if (!g_list_find (*children, widget))
+    *children = g_list_prepend (*children, widget);
 }
 
 /**
@@ -657,6 +658,7 @@ glade_util_container_get_all_children (GtkContainer *container)
   g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
 
   gtk_container_forall (container, gtk_container_children_callback, &children);
+  gtk_container_foreach (container, gtk_container_children_callback, &children);
 
   /* Preserve the natural order by reversing the list */
   return g_list_reverse (children);
