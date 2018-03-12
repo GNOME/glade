@@ -72,6 +72,9 @@
 #define CONFIG_KEY_AUTOSAVE         "autosave"
 #define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
+#define CONFIG_INTRO_GROUP          "Intro"
+#define CONFIG_INTRO_DONE           "intro-done"
+
 #define GLADE_WINDOW_ACTIVE_VIEW(w) ((GladeDesignView *) gtk_stack_get_visible_child (w->priv->view_stack))
 
 struct _GladeWindowPrivate
@@ -88,6 +91,7 @@ struct _GladeWindowPrivate
 
   GtkWidget *start_page;
   GtkLabel  *version_label;
+  GtkWidget *intro_button;
 
   GladeAdaptorChooser *adaptor_chooser;
   GtkStack *inspectors_stack;           /* Cached per project inspectors */
@@ -2035,6 +2039,10 @@ glade_window_config_load (GladeWindow *window)
   /* Paned positions */
   load_paned_position (config, window->priv->left_paned, "left_pane", 200);
   load_paned_position (config, window->priv->center_paned, "center_pane", 400);
+
+  /* Intro button */
+  if (g_key_file_get_boolean (config, CONFIG_INTRO_GROUP, CONFIG_INTRO_DONE, FALSE))
+    gtk_widget_hide (window->priv->intro_button);
 }
 
 static void
@@ -2103,6 +2111,7 @@ static void
 on_intro_action_activate (GSimpleAction *action, GVariant *p, gpointer data)
 {
   GladeWindow *window = data;
+  gtk_widget_show (window->priv->intro_button);
   glade_intro_play (window->priv->intro);
 }
 
@@ -2271,6 +2280,14 @@ on_intro_hide_node (GladeIntro  *intro,
 
       g_list_free (children);
     }
+  else if (!g_strcmp0 (node, "done"))
+    {
+      gtk_widget_hide (window->priv->intro_button);
+      g_key_file_set_boolean (glade_app_get_config (),
+                              CONFIG_INTRO_GROUP,
+                              CONFIG_INTRO_DONE,
+                              TRUE);
+    }
   else if (!g_strcmp0 (node, "add-project") ||
            !g_strcmp0 (node, "add-window") ||
            !g_strcmp0 (node, "add-grid") ||
@@ -2318,8 +2335,8 @@ glade_window_populate_intro (GladeWindow *window)
   ADD_NODE ("add-grid",    "intro-button", BOTTOM, 3, _("Try adding a grid"));
   ADD_NODE ("add-button",  "intro-button", BOTTOM, 3, _("and a button"));
 
-  ADD_NODE (NULL, "intro-button",  BOTTOM, 3, _("Quite easy! Isn't it?"));
-  ADD_NODE (NULL, "intro-button",  BOTTOM, 2, _("Enjoy!"));
+  ADD_NODE (NULL,   "intro-button",  BOTTOM, 3, _("Quite easy! Isn't it?"));
+  ADD_NODE ("done", "intro-button",  BOTTOM, 2, _("Enjoy!"));
 
   g_signal_connect (window->priv->intro, "show-node",
                     G_CALLBACK (on_intro_show_node),
@@ -2467,6 +2484,7 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, about_dialog);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, start_page);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, version_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, intro_button);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, center_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, left_paned);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, open_button_box);
