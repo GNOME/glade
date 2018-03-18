@@ -20,10 +20,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=glade&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-03-12 18:27+0000\n"
-"PO-Revision-Date: 2018-03-14 09:47-0200\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glade&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2018-03-18 00:10+0000\n"
+"PO-Revision-Date: 2018-03-18 13:05-0200\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -454,7 +454,6 @@ msgid "_Developer Reference"
 msgstr "Referência para _desenvolvedores"
 
 #: ../src/glade.glade.h:4
-#| msgid "Interface Designer"
 msgid "Interactive Intro"
 msgstr "Introdução interativa"
 
@@ -1227,7 +1226,7 @@ msgstr "Software fechado/proprietário"
 
 #: ../src/glade-registration.glade.h:104
 msgid "None - distributed internally"
-msgstr "Nenhuma - distribuído internamente"
+msgstr "Nenhuma – distribuído internamente"
 
 #: ../src/glade-registration.glade.h:105
 msgid ""
@@ -1777,7 +1776,7 @@ msgstr "Se a borda deve ser mostrada"
 #: ../gladeui/glade-editor.c:325
 #, c-format
 msgid "%s Properties - %s [%s]"
-msgstr "%s Propriedades - %s [%s]"
+msgstr "%s Propriedades – %s [%s]"
 
 #. translators: %s(Class Title) Properties - %s (ClassName)
 #. * example: Window Properties - GtkWindow
@@ -1785,7 +1784,7 @@ msgstr "%s Propriedades - %s [%s]"
 #: ../gladeui/glade-editor.c:335
 #, c-format
 msgid "%s Properties - %s"
-msgstr "Propriedades de %s - %s"
+msgstr "Propriedades de %s – %s"
 
 #: ../gladeui/glade-editor.c:349 ../gladeui/glade-widget.c:1377
 #: ../gladeui/glade-project-properties.ui.h:11
@@ -1874,7 +1873,7 @@ msgstr "_Descrição da propriedade:"
 #: ../gladeui/glade-editor.c:1297
 #, c-format
 msgid "%s - %s Properties"
-msgstr "%s - %s Propriedades"
+msgstr "%s – %s Propriedades"
 
 #: ../gladeui/glade-editor-property.c:725
 msgid "Property Class"
@@ -3841,6 +3840,34 @@ msgstr "Remover coluna em %s"
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Remover linha em %s"
+
+#. --------------------------------- Constants ------------------------------
+#: ../plugins/gtk+/glade-gtk.h:34
+msgid "This property does not apply unless Use Underline is set."
+msgstr ""
+"Esta propriedade não se aplica a menos que “Usar sublinha” esteja definido."
+
+#: ../plugins/gtk+/glade-gtk.h:35
+msgid "Property not selected"
+msgstr "Propriedade não selecionada"
+
+#: ../plugins/gtk+/glade-gtk.h:36
+msgid "This property is only for use in dialog action buttons"
+msgstr ""
+"Esta propriedade é destinada somente para o uso em botões de diálogos de ação"
+
+#: ../plugins/gtk+/glade-gtk.h:37
+msgid "This property is set to be controlled by an Action"
+msgstr "Esta propriedade está definida para ser controlada por uma ação"
+
+#: ../plugins/gtk+/glade-gtk.h:39
+#, c-format
+msgid "Only objects of type %s can be added to objects of type %s."
+msgstr "Somente objetos do tipo %s podem ser adicionados à objetos do tipo %s."
+
+#: ../plugins/gtk+/glade-gtk.h:41
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr "O acelerador só poder ser definido quando dentro de um grupo de ação."
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
@@ -8573,10 +8600,6 @@ msgstr "Se a janela deve incluir uma barra de título personalizada."
 #~ "Tamanho simbólico a ser usado para um ícone predefinido, conjunto de "
 #~ "ícones ou ícone nomeado"
 
-#~ msgid "The accelerator can only be set when inside an Action Group."
-#~ msgstr ""
-#~ "O acelerador só poder ser definido quando dentro de um grupo de ação."
-
 #~ msgid "Set Image Size"
 #~ msgstr "Definir tamanho da imagem"
 
@@ -8678,21 +8701,6 @@ msgstr "Se a janela deve incluir uma barra de título personalizada."
 
 #~ msgid "Loading %s: loaded %d of %d objects"
 #~ msgstr "Carregando %s: carregado %d de %d objetos"
-
-#~ msgid "Property not selected"
-#~ msgstr "Propriedade não selecionada"
-
-#~ msgid "This property is only for use in dialog action buttons"
-#~ msgstr ""
-#~ "Esta propriedade é destinada somente para o uso em botões de diálogos de "
-#~ "ação"
-
-#~ msgid "This property is set to be controlled by an Action"
-#~ msgstr "Esta propriedade está definida para ser controlada por uma ação"
-
-#~ msgid "Only objects of type %s can be added to objects of type %s."
-#~ msgstr ""
-#~ "Somente objetos do tipo %s podem ser adicionados à objetos do tipo %s."
 
 #~ msgid "Could not display the URL '%s'"
 #~ msgstr "Não foi possível exibir a URL \"%s\""
