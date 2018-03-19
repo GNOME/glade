@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-03-12 18:27+0000\n"
-"PO-Revision-Date: 2018-03-12 23:04+0200\n"
+"POT-Creation-Date: 2018-03-18 00:10+0000\n"
+"PO-Revision-Date: 2018-03-19 22:56+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -432,7 +432,6 @@ msgid "_Developer Reference"
 msgstr "P_rogramuotojo žinynas"
 
 #: ../src/glade.glade.h:4
-#| msgid "Interface Designer"
 msgid "Interactive Intro"
 msgstr "Interaktyvi įžanga"
 
@@ -3769,6 +3768,35 @@ msgstr "Pašalinti stulpelį iš %s"
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Pašalinti eilutę iš %s"
+
+#. --------------------------------- Constants ------------------------------
+#: ../plugins/gtk+/glade-gtk.h:34
+#| msgid "This property does not apply when a custom title is set"
+msgid "This property does not apply unless Use Underline is set."
+msgstr "Ši savybė netaikoma, nebent nustatyta naudoti pabraukimą."
+
+#: ../plugins/gtk+/glade-gtk.h:35
+#| msgid "This property is deprecated"
+msgid "Property not selected"
+msgstr "Nepažymėta savybė"
+
+#: ../plugins/gtk+/glade-gtk.h:36
+#| msgid "This property only applies to named icons"
+msgid "This property is only for use in dialog action buttons"
+msgstr "Ši savybė naudojama tik dialogų veiksmų mygtukams"
+
+#: ../plugins/gtk+/glade-gtk.h:37
+msgid "This property is set to be controlled by an Action"
+msgstr "Ši savybė yra nustatoma, kad būtų valdoma veiksmo (Action)"
+
+#: ../plugins/gtk+/glade-gtk.h:39
+#, c-format
+msgid "Only objects of type %s can be added to objects of type %s."
+msgstr "Į %1$s tipo objektus galima įdėti tik %2$s tipo objektus."
+
+#: ../plugins/gtk+/glade-gtk.h:41
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr "Trumpinį galima nustatyti tik veiksmų grupės viduje."
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
