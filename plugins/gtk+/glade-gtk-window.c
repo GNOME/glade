@@ -41,15 +41,20 @@
 static void
 glade_gtk_window_parse_finished (GladeProject * project, GObject * object)
 {
-  glade_widget_property_set (glade_widget_get_from_gobject (object),
-                             "use-csd", gtk_window_get_titlebar(GTK_WINDOW (object)) != NULL);
+  GtkWidget *titlebar = gtk_window_get_titlebar(GTK_WINDOW (object));
+  glade_widget_property_set (glade_widget_get_from_gobject (object), "use-csd",
+                             titlebar && gtk_widget_get_visible (titlebar));
 }
 
 static void
 glade_gtk_window_ensure_titlebar_placeholder (GObject *window)
 {
-  GtkWidget *placeholder = glade_placeholder_new ();
+  GtkWidget *placeholder;
 
+  if (gtk_window_get_titlebar (GTK_WINDOW (window)))
+    return;
+
+  placeholder = glade_placeholder_new ();
   gtk_window_set_titlebar (GTK_WINDOW (window), placeholder);
 
   gtk_widget_hide (placeholder);
@@ -193,7 +198,7 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor * adaptor,
                                GladeXmlContext * context, GladeXmlNode * node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -359,4 +364,23 @@ glade_gtk_window_remove_child (GladeWidgetAdaptor * adaptor,
       gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
       gtk_container_add (GTK_CONTAINER (object), placeholder);
     }
+}
+
+GList *
+glade_gtk_window_get_children (GladeWidgetAdaptor *adaptor, GObject *container)
+{
+  GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+  GtkWidget *child = gtk_bin_get_child (GTK_BIN (container));
+  GtkWidget *titlebar = gtk_window_get_titlebar (GTK_WINDOW (container));
+  GList *children = NULL;
+  gboolean use_csd;
+
+  if (child)
+    children = g_list_prepend (children, child);
+
+  if (glade_widget_property_get (gwidget, "use-csd", &use_csd) &&
+      use_csd && titlebar)
+    children = g_list_prepend (children, titlebar);
+
+  return children;
 }
