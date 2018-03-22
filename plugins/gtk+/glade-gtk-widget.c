@@ -504,7 +504,7 @@ glade_gtk_widget_write_atk_action (GladeProperty * property,
                                           GLADE_TAG_A11Y_DESC, value);
     }
 
-  g_free (value)
+  g_free (value);
 }
 
 static void
