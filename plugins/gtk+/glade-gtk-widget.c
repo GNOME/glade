@@ -344,16 +344,13 @@ glade_gtk_widget_write_atk_property (GladeProperty * property,
                                      GladeXmlContext * context,
                                      GladeXmlNode * node)
 {
-  GladeXmlNode *prop_node;
-  GladePropertyClass *pclass;
-  gchar *value;
+  gchar *value = glade_property_make_string (property);
 
-  glade_property_get (property, &value);
   if (value && value[0])
     {
-      pclass = glade_property_get_class (property);
+      GladePropertyClass *pclass = glade_property_get_class (property);
+      GladeXmlNode *prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_PROPERTY);
 
-      prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_PROPERTY);
       glade_xml_node_append_child (node, prop_node);
 
       glade_xml_node_set_property_string (prop_node,
@@ -376,6 +373,8 @@ glade_gtk_widget_write_atk_property (GladeProperty * property,
                                             GLADE_TAG_CONTEXT,
                                             glade_property_i18n_get_context (property));
     }
+
+  g_free (value);
 }
 
 static void
@@ -384,17 +383,23 @@ glade_gtk_widget_write_atk_properties (GladeWidget * widget,
                                        GladeXmlNode * node)
 {
   GladeXmlNode *child_node, *object_node;
-  GladeProperty *name_prop, *desc_prop;
+  GladeProperty *name_prop, *desc_prop, *role_prop;
 
   name_prop = glade_widget_get_property (widget, "AtkObject::accessible-name");
   desc_prop =
       glade_widget_get_property (widget, "AtkObject::accessible-description");
+  role_prop = glade_widget_get_property (widget, "AtkObject::accessible-role");
 
   /* Create internal child here if any of these properties are non-null */
   if (!glade_property_default (name_prop) ||
-      !glade_property_default (desc_prop))
+      !glade_property_default (desc_prop) ||
+      !glade_property_default (role_prop))
     {
-      gchar *atkname = g_strdup_printf ("%s-atkobject", glade_widget_get_name (widget));
+      const gchar *widget_name = glade_widget_get_name (widget);
+      gchar *atkname = NULL;
+
+      if (!g_str_has_prefix (widget_name, GLADE_UNNAMED_PREFIX))
+        atkname = g_strdup_printf ("%s-atkobject", widget_name);
 
       child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
       glade_xml_node_append_child (node, child_node);
@@ -409,13 +414,16 @@ glade_gtk_widget_write_atk_properties (GladeWidget * widget,
       glade_xml_node_set_property_string (object_node,
                                           GLADE_XML_TAG_CLASS, "AtkObject");
 
-      glade_xml_node_set_property_string (object_node,
-                                          GLADE_XML_TAG_ID, atkname);
+      if (atkname)
+        glade_xml_node_set_property_string (object_node,
+                                            GLADE_XML_TAG_ID, atkname);
 
       if (!glade_property_default (name_prop))
         glade_gtk_widget_write_atk_property (name_prop, context, object_node);
       if (!glade_property_default (desc_prop))
         glade_gtk_widget_write_atk_property (desc_prop, context, object_node);
+      if (!glade_property_default (role_prop))
+        glade_gtk_widget_write_atk_property (role_prop, context, object_node);
 
       g_free (atkname);
     }
@@ -481,16 +489,12 @@ glade_gtk_widget_write_atk_action (GladeProperty * property,
                                    GladeXmlContext * context,
                                    GladeXmlNode * node)
 {
-  GladeXmlNode *prop_node;
-  GladePropertyClass *pclass;
-  gchar *value = NULL;
-
-  glade_property_get (property, &value);
+  gchar *value = glade_property_make_string (property);
 
   if (value && value[0])
     {
-      pclass = glade_property_get_class (property);
-      prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_ACTION);
+      GladePropertyClass *pclass = glade_property_get_class (property);
+      GladeXmlNode *prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_ACTION);
       glade_xml_node_append_child (node, prop_node);
 
       glade_xml_node_set_property_string (prop_node,
@@ -499,6 +503,8 @@ glade_gtk_widget_write_atk_action (GladeProperty * property,
       glade_xml_node_set_property_string (prop_node,
                                           GLADE_TAG_A11Y_DESC, value);
     }
+
+  g_free (value)
 }
 
 static void
