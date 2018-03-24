@@ -70,6 +70,9 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *widget, *vbox_widget, *actionarea_widget;
   GtkDialog *dialog;
 
+  /* Chain Up first */
+  GWA_GET_CLASS (GTK_TYPE_WINDOW)->post_create (adaptor, object, reason);
+
   g_return_if_fail (GTK_IS_DIALOG (object));
 
   widget = glade_widget_get_from_gobject (GTK_WIDGET (object));
