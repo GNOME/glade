@@ -369,17 +369,14 @@ glade_gtk_window_remove_child (GladeWidgetAdaptor * adaptor,
 GList *
 glade_gtk_window_get_children (GladeWidgetAdaptor *adaptor, GObject *container)
 {
-  GladeWidget *gwidget = glade_widget_get_from_gobject (container);
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (container));
   GtkWidget *titlebar = gtk_window_get_titlebar (GTK_WINDOW (container));
   GList *children = NULL;
-  gboolean use_csd;
 
   if (child)
     children = g_list_prepend (children, child);
 
-  if (glade_widget_property_get (gwidget, "use-csd", &use_csd) &&
-      use_csd && titlebar)
+  if (titlebar)
     children = g_list_prepend (children, titlebar);
 
   return children;
