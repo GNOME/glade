@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-03-12 18:27+0000\n"
-"PO-Revision-Date: 2018-03-12 20:12+0100\n"
+"POT-Creation-Date: 2018-03-24 17:43+0000\n"
+"PO-Revision-Date: 2018-03-25 09:14+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -3035,8 +3035,8 @@ msgstr "Zda je widget viditelný nebo ne"
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Zda je tento widget šablona pro složený widget"
 
-#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1018
-#: ../plugins/gtk+/glade-gtk-widget.c:1081
+#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1024
+#: ../plugins/gtk+/glade-gtk-widget.c:1087
 msgid "(unnamed)"
 msgstr "(bez názvu)"
 
@@ -3781,6 +3781,32 @@ msgstr "Odstranit sloupec z %s"
 msgid "Remove Row on %s"
 msgstr "Odstranit řádek z %s"
 
+#. --------------------------------- Constants ------------------------------
+#: ../plugins/gtk+/glade-gtk.h:34
+msgid "This property does not apply unless Use Underline is set."
+msgstr "Tato vlastnost se nepoužije, pokud není zapnuté podržení."
+
+#: ../plugins/gtk+/glade-gtk.h:35
+msgid "Property not selected"
+msgstr "Vlastnost není vybraná"
+
+#: ../plugins/gtk+/glade-gtk.h:36
+msgid "This property is only for use in dialog action buttons"
+msgstr "Tato vlastnost se používá jen u akčních tlačítek v dialogových oknech"
+
+#: ../plugins/gtk+/glade-gtk.h:37
+msgid "This property is set to be controlled by an Action"
+msgstr "Tato vlastnost je nastavená na řízení pomocí Akce"
+
+#: ../plugins/gtk+/glade-gtk.h:39
+#, c-format
+msgid "Only objects of type %s can be added to objects of type %s."
+msgstr "Do objektů typu %1$s je možné přidat jen objekty typu %2$s."
+
+#: ../plugins/gtk+/glade-gtk.h:41
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr "Klávesovou zkratku je možné nastavit jen uvnitř skupiny akcí."
+
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
 msgstr "Tato vlastnost se nepoužije, když je nastaven vlastní název"
@@ -4067,28 +4093,28 @@ msgstr "Záhlaví jsou neviditelná"
 msgid "Expanders are not shown"
 msgstr "Prvky pro rozbalování nejsou zobrazeny"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:836
+#: ../plugins/gtk+/glade-gtk-widget.c:842
 #, c-format
 msgid "Removing parent of %s"
 msgstr "Odstranění rodiče widgetu „%s“"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:895
+#: ../plugins/gtk+/glade-gtk-widget.c:901
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "Přidání rodiče „%s“ pro „%s“"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1030
+#: ../plugins/gtk+/glade-gtk-widget.c:1036
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Přidání „%s“ do skupinové velikosti „%s“"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1034
+#: ../plugins/gtk+/glade-gtk-widget.c:1040
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Přidání „%s“ do nové skupinové velikosti"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk-widget.c:1101
+#: ../plugins/gtk+/glade-gtk-widget.c:1107
 msgid "New Size Group"
 msgstr "Nová skupinová velikost"
 
