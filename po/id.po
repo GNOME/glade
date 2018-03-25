@@ -1,16 +1,16 @@
 # Translation of glade3 into Indonesian
 # Copyright (C) 2010 THE glade3'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the glade3 package.
-# Andika Triwidada <andika@gmail.com>, 2010-2014.
+# Andika Triwidada <andika@gmail.com>, 2010-2014, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glade master\n"
+"Project-Id-Version: glade glade-3-22\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-03-12 18:27+0000\n"
-"PO-Revision-Date: 2018-03-13 13:12+0700\n"
-"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
+"POT-Creation-Date: 2018-03-25 07:16+0000\n"
+"PO-Revision-Date: 2018-03-26 01:49+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
@@ -325,7 +325,7 @@ msgstr ""
 
 #: ../src/glade-window.c:2333
 msgid "Excellent!"
-msgstr "Bagus sekali"
+msgstr "Sempurna!"
 
 #: ../src/glade-window.c:2334
 msgid ""
@@ -532,7 +532,7 @@ msgstr ""
 #: ../src/glade.glade.h:35
 msgid "translator-credits"
 msgstr ""
-"Andika Triwidada <andika@gmail.com>, 2010-2014.\n"
+"Andika Triwidada <andika@gmail.com>, 2010-2014, 2018.\n"
 "Kukuh Syafaat <syafaatkukuh@gmail.com>, 2017, 2018."
 
 #: ../src/glade-preferences.glade.h:1
@@ -2022,7 +2022,7 @@ msgstr "Projek yang sedang diperiksa"
 
 #: ../gladeui/glade-inspector.c:578
 msgid " < Search Widgets >"
-msgstr "< Cari Widget >"
+msgstr " < Cari Widget >"
 
 #: ../gladeui/glade-inspector.c:617
 msgid "Expand all"
@@ -2775,7 +2775,7 @@ msgstr "Widget glade untuk menyunting sinyal"
 #: ../gladeui/glade-utils.c:136 ../gladeui/glade-utils.c:168
 #, c-format
 msgid "We could not find the symbol \"%s\""
-msgstr "Simbol \"%s\" tak dapat ditemukan"
+msgstr "Kami tak bisa temukan simbol \"%s\""
 
 #: ../gladeui/glade-utils.c:144
 #, c-format
@@ -3037,8 +3037,8 @@ msgstr "Apakah widget nampak atau tidak"
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Apakah widget ini adalah templat bagi suatu widget komposit"
 
-#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1018
-#: ../plugins/gtk+/glade-gtk-widget.c:1081
+#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1024
+#: ../plugins/gtk+/glade-gtk-widget.c:1087
 msgid "(unnamed)"
 msgstr "(tanpa nama)"
 
@@ -3054,19 +3054,19 @@ msgstr "Objek memiliki tipe %s yang tak dikenal"
 
 #: ../gladeui/glade-widget.c:4878
 msgid "Property has versioning problems: "
-msgstr "Properti mengalami masalah pemversian:"
+msgstr "Properti mengalami masalah pemversian: "
 
 #: ../gladeui/glade-widget.c:4880
 msgid "Some properties have versioning problems: "
-msgstr "Beberapa properti mengalami masalah pemversian:"
+msgstr "Beberapa properti mengalami masalah pemversian: "
 
 #: ../gladeui/glade-widget.c:4900
 msgid "Signal has versioning problems: "
-msgstr "Sinyal mengalami masalah pemversian:"
+msgstr "Sinyal mengalami masalah pemversian: "
 
 #: ../gladeui/glade-widget.c:4902
 msgid "Some signals have versioning problems: "
-msgstr "Beberapa sinyal mengalami masalah pemversian:"
+msgstr "Beberapa sinyal mengalami masalah pemversian: "
 
 #: ../gladeui/icon-naming-spec.c:38
 msgid "Actions"
@@ -3781,6 +3781,32 @@ msgstr "Hapus Kolom pada %s"
 msgid "Remove Row on %s"
 msgstr "Hapus Baris pada %s"
 
+#. --------------------------------- Constants ------------------------------
+#: ../plugins/gtk+/glade-gtk.h:34
+msgid "This property does not apply unless Use Underline is set."
+msgstr "Properti ini tidak berlaku ketika judul ubahan ditata."
+
+#: ../plugins/gtk+/glade-gtk.h:35
+msgid "Property not selected"
+msgstr "Properti tak dipilih"
+
+#: ../plugins/gtk+/glade-gtk.h:36
+msgid "This property is only for use in dialog action buttons"
+msgstr "Properti ini hanya untuk dipakai dalam tombol aksi dialog"
+
+#: ../plugins/gtk+/glade-gtk.h:37
+msgid "This property is set to be controlled by an Action"
+msgstr "Properti ini ditata agar dikendalikan oleh sebuah Aksi"
+
+#: ../plugins/gtk+/glade-gtk.h:39
+#, c-format
+msgid "Only objects of type %s can be added to objects of type %s."
+msgstr "Hanya objek bertipe %s dapat ditambahkan ke objek bertipe %s."
+
+#: ../plugins/gtk+/glade-gtk.h:41
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr "Akselerator hanya dapat ditata bila di dalam suatu Grup Aksi."
+
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
 msgstr "Properti ini tidak berlaku ketika judul ubahan ditata"
@@ -4065,28 +4091,28 @@ msgstr "Tajuk tak nampak"
 msgid "Expanders are not shown"
 msgstr "Peregang tak ditampilkan"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:836
+#: ../plugins/gtk+/glade-gtk-widget.c:842
 #, c-format
 msgid "Removing parent of %s"
 msgstr "Menghapus induk %s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:895
+#: ../plugins/gtk+/glade-gtk-widget.c:901
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "Menambah induk %s bagi %s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1030
+#: ../plugins/gtk+/glade-gtk-widget.c:1036
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Menambahkan %s ke Grup Ukuran %s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1034
+#: ../plugins/gtk+/glade-gtk-widget.c:1040
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Menambahkan %s ke Grup Ukuran baru"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk-widget.c:1101
+#: ../plugins/gtk+/glade-gtk-widget.c:1107
 msgid "New Size Group"
 msgstr "Kelompok Ukuran Baru"
 
@@ -4136,7 +4162,8 @@ msgid ""
 "will only ever load them in the runtime from your project directory)."
 msgstr ""
 "Masukkan suatu nama berkas atau path lengkap atau relatif bagi sumber ini "
-"dari '%s' (Glade hanya akan memuat "
+"dari '%s' (Glade hanya akan memuat mereka dalam runtime dari direktori "
+"proyek Anda)."
 
 #: ../plugins/gtk+/glade-icon-sources.c:765
 #, c-format
@@ -4318,7 +4345,7 @@ msgstr "Menata %s untuk memakai widget label gubahan"
 
 #: ../plugins/gtk+/glade-tool-item-group-editor.c:232
 msgid "Group Header"
-msgstr "Tajuk Grup:"
+msgstr "Kepala Grup"
 
 #: ../plugins/gtk+/glade-treeview-editor.c:207
 msgid ""
@@ -8048,7 +8075,7 @@ msgstr "Atribut Tombol Skala"
 
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:2
 msgid "Scale orientation:"
-msgstr "Orientasi skala"
+msgstr "Orientasi skala:"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:1
 msgid "Scale Attributes"
@@ -8250,200 +8277,3 @@ msgstr "Dekorasi jendela sisi klien"
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
 msgstr "Apakah jendela ini mesti menyertakan suatu bilah judul gubahan."
-
-#~ msgid "page0"
-#~ msgstr "halaman0"
-
-#~ msgid "page1"
-#~ msgstr "halaman1"
-
-#~ msgid "Activate '%s' %s"
-#~ msgstr "Aktifkan '%s' %s"
-
-#~ msgid "Activate '%s'"
-#~ msgstr "Aktifkan '%s'"
-
-#~ msgid "Requires:"
-#~ msgstr "Memerlukan:"
-
-#~ msgid "_Undo"
-#~ msgstr "_Batalkan"
-
-#~ msgid "_Redo"
-#~ msgstr "_Jadi Lagi"
-
-#~ msgid "Close document"
-#~ msgstr "Tutup dokumen"
-
-#~ msgid "Palette"
-#~ msgstr "Palet"
-
-#~ msgid "Inspector"
-#~ msgstr "Pemeriksa"
-
-#~ msgid "Select"
-#~ msgstr "Pilih"
-
-#~ msgid "Select widgets in the workspace"
-#~ msgstr "Pilih widget di ruang kerja"
-
-#~ msgid "Drag Resize"
-#~ msgstr "Seret Ubah Ukuran"
-
-#~ msgid "Drag and resize widgets in the workspace"
-#~ msgstr "Seret dan ubah ukuran widget di ruang kerja"
-
-#~ msgid "Margin Edit"
-#~ msgstr "Sunting Tepi"
-
-#~ msgid "Edit widget margins"
-#~ msgstr "Sunting tepi widget"
-
-#~ msgid "Alignment Edit"
-#~ msgstr "Sunting Perataan"
-
-#~ msgid "Edit widget alignment"
-#~ msgstr "Sunting perataan widget"
-
-#~ msgid "Save _As"
-#~ msgstr "Simp_an Sebagai"
-
-#~ msgid "Close the current project"
-#~ msgstr "Tutup projek kini"
-
-#~ msgid "Undo the last action"
-#~ msgstr "Batalkan aksi terakhir"
-
-#~ msgid "Redo the last action"
-#~ msgstr "Ulangi langkah terakhir"
-
-#~ msgid "Cut"
-#~ msgstr "Potong"
-
-#~ msgid "Cut the selection"
-#~ msgstr "Potong bagian yang dipilih"
-
-#~ msgid "Copy"
-#~ msgstr "Salin"
-
-#~ msgid "Copy the selection"
-#~ msgstr "Salin bagian yang dipilih"
-
-#~ msgid "Paste"
-#~ msgstr "Tempel"
-
-#~ msgid "Paste the clipboard"
-#~ msgstr "Tempel isi clipboard"
-
-#~ msgid "Delete the selection"
-#~ msgstr "Hapus bagian yang dipilih"
-
-#~ msgid "_Previous Project"
-#~ msgstr "_Projek Sebelumnya:"
-
-#~ msgid "Activate previous project"
-#~ msgstr "Aktifkan projek sebelumnya"
-
-#~ msgid "_Next Project"
-#~ msgstr "Projek Sela_njutnya"
-
-#~ msgid "Activate next project"
-#~ msgstr "Aktifkan projek selanjutnya"
-
-#~ msgid "_Use Small Icons"
-#~ msgstr "G_unakan Ikon Kecil"
-
-#~ msgid "Show items using small icons"
-#~ msgstr "Tampilkan butir-butir memakai ikon kecil"
-
-#~ msgid "Dock _Palette"
-#~ msgstr "Dok _Palet"
-
-#~ msgid "Dock the palette into the main window"
-#~ msgstr "Sandarkan palet ke jendela utama"
-
-#~ msgid "Dock _Inspector"
-#~ msgstr "Dok Pemer_iksa"
-
-#~ msgid "Dock the inspector into the main window"
-#~ msgstr "Sandarkan pemeriksa ke jendela utama"
-
-#~ msgid "Dock Prop_erties"
-#~ msgstr "Dok Prop_erti"
-
-#~ msgid "Dock the editor into the main window"
-#~ msgstr "Sandarkan penyunting ke jendela utama"
-
-#~ msgid "_Statusbar"
-#~ msgstr "Bilah _Status"
-
-#~ msgid "Show the statusbar"
-#~ msgstr "Tampilkan bilah status"
-
-#~ msgid "Tool_bar"
-#~ msgstr "_Bilah Alat"
-
-#~ msgid "Show the toolbar"
-#~ msgstr "Tampilkan bilah alat"
-
-#~ msgid "Project _Tabs"
-#~ msgstr "_Tab Projek"
-
-#~ msgid "Show notebook tabs for loaded projects"
-#~ msgstr "Tampilkan tab notebook bagi projek yang dimuat"
-
-#~ msgid "Text _beside icons"
-#~ msgstr "Teks di se_belah ikon"
-
-#~ msgid "Display items as text beside icons"
-#~ msgstr "Tampilkan butir sebagai teks di samping ikon"
-
-#~ msgid "_Icons only"
-#~ msgstr "_Ikon saja"
-
-#~ msgid "Display items as icons only"
-#~ msgstr "Tampilkan butir hanya sebagai ikon"
-
-#~ msgid "_Text only"
-#~ msgstr "_Teks saja"
-
-#~ msgid "Display items as text only"
-#~ msgstr "Tampilkan butir hanya sebagai teks"
-
-#~ msgid "_Editor Header"
-#~ msgstr "Tajuk P_enyunting:"
-
-#~ msgid "New"
-#~ msgstr "Baru"
-
-#~ msgid "Quit"
-#~ msgstr "Keluar"
-
-#~ msgid "Quit the program"
-#~ msgstr "Keluar dari program"
-
-#~ msgid "About this application"
-#~ msgstr "Tentang aplikasi ini"
-
-#~ msgid "Display the developer reference manual"
-#~ msgstr "Tampilkan manual acuan pengembang"
-
-#~ msgid "Edit Glade preferences"
-#~ msgstr "Sunting preferensi Glade"
-
-#~ msgid "Open _Recent"
-#~ msgstr "Buka Te_rkini"
-
-#~ msgid "Help us improve Glade by registering and completing the user survey!"
-#~ msgstr ""
-#~ "Bantu kami memperbaiki Glade dengan mendaftar dan melengkapi survei "
-#~ "pengguna!"
-
-#~ msgid "Palette _Appearance"
-#~ msgstr "Penampilan P_alet"
-
-#~ msgid "Hierarchy"
-#~ msgstr "Hirarki"
-
-#~ msgid "Control and Display"
-#~ msgstr "Kendali dan Tampilan"
