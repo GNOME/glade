@@ -4800,8 +4800,7 @@ glade_widget_verify (GladeWidget *widget)
       glade_project_get_target_version (priv->project, "gtk+", &major, &minor);
 
       if (major == 3 && minor < 10)
-        warning = g_strdup_printf (_("Template classes are not supported in gtk+ %d.%d"),
-                                   major, minor); 
+        warning = g_strdup (_("Template classes are only usable in GTK+ 3.10 and later."));
     }
 
   if (!warning && GLADE_IS_OBJECT_STUB (priv->object))
