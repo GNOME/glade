@@ -6,18 +6,18 @@
 # Necdet Yücel <necdetyucel@gmail.com>, 2015.
 # İşbaran Akçayır <isbaran@gmail.com>, 2015.
 # Çağatay Yiğit Şahin <cyigitsahin@outlook.com>, 2018.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2018.
 # Muhammet Kara <muhammetk@gnome.org>, 2011, 2014, 2015, 2016, 2017, 2018.
+# Furkan Tokaç <developmentft@gmail.com>, 2018.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-03-12 18:27+0000\n"
-"PO-Revision-Date: 2018-03-13 21:09+0300\n"
-"Last-Translator: Muhammet Kara <muhammetk@gnome.org>\n"
-"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
+"POT-Creation-Date: 2018-04-02 22:29+0000\n"
+"PO-Revision-Date: 2018-04-18 21:54+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -124,7 +124,7 @@ msgstr "%s projesi hala yükleniyor."
 #: ../src/glade-window.c:769
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
-"Mevcut dosyanın yedeklenmesi başarısız oldu, kaydetmeye devam edilsin mi?"
+"Var olan dosyanın yedeklenmesi başarısız oldu, kaydetmeye devam edilsin mi?"
 
 #: ../src/glade-window.c:791
 #, c-format
@@ -241,7 +241,7 @@ msgstr "_Yeniden Yükle"
 
 #: ../src/glade-window.c:2303
 msgid "Hello, I will show you what's new in Glade"
-msgstr "Merhaba, sana Glade’de yeni neler olduğunu göstereceğim"
+msgstr "Merhaba, Glade’deki yenilikleri göstereceğim"
 
 #: ../src/glade-window.c:2304
 msgid "The menubar and toolbar were merged in the headerbar"
@@ -273,19 +273,19 @@ msgstr "Proje değiştirici"
 
 #: ../src/glade-window.c:2316
 msgid "and Save button are directly accessible in the headerbar"
-msgstr "ve Kaydet düğmeleri, tıpkı Farklı Kaydet"
+msgstr "ve Kaydet düğmeleri, doğrudan başlık çubuğundan ulaşılabilir"
 
 #: ../src/glade-window.c:2317
 msgid "just like Save As"
-msgstr "proje özellikleri"
+msgstr "tıpkı Farklı Kaydet"
 
 #: ../src/glade-window.c:2318
 msgid "project properties"
-msgstr "ve daha seyrek kullanılan eylemler gibi"
+msgstr "proje özellikleri"
 
 #: ../src/glade-window.c:2319
 msgid "and less commonly used actions"
-msgstr "başlık çubuğundan doğrudan ulaşılabilir"
+msgstr "ve diğer az kullanılan eylemler gibi"
 
 #: ../src/glade-window.c:2321
 msgid "The object inspector took the palette's place"
@@ -297,19 +297,21 @@ msgstr "paletin yerini aldı"
 
 #: ../src/glade-window.c:2324
 msgid "The palette was replaced with a new object chooser"
-msgstr "Palet, tüm desteklenen sınıfları arayabileceğiniz"
+msgstr "Palet;"
 
 #: ../src/glade-window.c:2325
 msgid "Where you can search all supported classes"
-msgstr "GTK+ nesne gruplarını inceleyebileceğiniz"
+msgstr "Tüm desteklenen sınıfları arayabileceğiniz"
 
 #: ../src/glade-window.c:2326
 msgid "investigate GTK+ object groups"
-msgstr "ve diğer kütüphaneler tarafından sunulan sınıfları bulabileceğiniz"
+msgstr "GTK+ nesne gruplarını inceleyebileceğiniz"
 
 #: ../src/glade-window.c:2327
 msgid "and find classes introduced by other libraries"
-msgstr "yeni nesne seçiciyle değiştirildi"
+msgstr ""
+"ve diğer kütüphaneler tarafından sunulan sınıfları bulabileceğiniz yeni "
+"nesne seçiciyle değiştirildi"
 
 #: ../src/glade-window.c:2329
 msgid ""
@@ -424,7 +426,7 @@ msgstr ""
 #: ../src/main.c:179
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
-msgstr "'%s' dosyası açılamadı, dosya mevcut değil.\n"
+msgstr "'%s' dosyası açılamadı, dosya yok.\n"
 
 #: ../src/glade.glade.h:1
 msgid "Close Project"
@@ -439,7 +441,6 @@ msgid "_Developer Reference"
 msgstr "_Geliştirici Referansı"
 
 #: ../src/glade.glade.h:4
-#| msgid "Interface Designer"
 msgid "Interactive Intro"
 msgstr "Etkileşimli Giriş"
 
@@ -475,11 +476,11 @@ msgstr "Kaydet"
 
 #: ../src/glade.glade.h:13
 msgid "Save the current project"
-msgstr "Mevcut projeyi kaydet"
+msgstr "Geçerli projeyi kaydet"
 
 #: ../src/glade.glade.h:14
 msgid "Save the current project with a different name"
-msgstr "Mevcut projeyi farklı bir ad ile kaydet"
+msgstr "Geçerli projeyi farklı bir ad ile kaydet"
 
 #: ../src/glade.glade.h:15
 msgid "Start/resume interactive UI introduction"
@@ -1851,11 +1852,11 @@ msgstr "Geri al/yeniden yap yığını için komut API'si kullanılması"
 
 #: ../gladeui/glade-editor-property.c:739 ../gladeui/glade-property-shell.c:143
 msgid "Disable Check"
-msgstr "Kontrolü Kapat"
+msgstr "Denetimi Kapat"
 
 #: ../gladeui/glade-editor-property.c:740 ../gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
-msgstr "Kontrol düğmesi doğrudan kapatılsın mı"
+msgstr "Seçim düğmesi doğrudan kapatılsın mı"
 
 #: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-label.c:152
 #: ../gladeui/glade-property-shell.c:137
@@ -1911,7 +1912,7 @@ msgid ""
 "string"
 msgstr ""
 "Kısa ve belirsiz metinler için: buraya bu metnin başka yerlerde geçen başka "
-"anlamlarıyla ayrımını yapabilmek için bir kelime girin"
+"anlamlarıyla ayrımını yapabilmek için bir sözcük girin"
 
 #: ../gladeui/glade-editor-property.c:2103
 msgid "Co_mments for translators:"
@@ -2359,7 +2360,7 @@ msgid ""
 "The following required catalogs are unavailable: %s"
 msgstr ""
 "%s yüklenemedi.\n"
-"Gerekli kataloglar mevcut değil: %s"
+"Gerekli kataloglar yok: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
 #: ../gladeui/glade-project.c:1873
@@ -2517,7 +2518,7 @@ msgstr "Ayrıntılar"
 #: ../gladeui/glade-project.c:3366
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
-msgstr "\"%s\" projesinde hatalar mevcut. Yine de kaydedilsin mi ?"
+msgstr "\"%s\" projesinde hatalar var. Yine de kaydedilsin mi ?"
 
 #: ../gladeui/glade-project.c:3367
 #, c-format
@@ -2841,7 +2842,7 @@ msgstr "Bu eylemin görünür olup olmadığı"
 #: ../gladeui/glade-widget-adaptor.c:243
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr "%2$s için türetilmiş adaptör (%1$s) zaten mevcut!"
+msgstr "%2$s için türetilmiş adaptör (%1$s) zaten var!"
 
 #: ../gladeui/glade-widget-adaptor.c:951
 #, c-format
@@ -3036,8 +3037,8 @@ msgstr "Parçacığın görünür olup olmaması"
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Bu parçacığın bir birleşik parçacığın şablonu olup olmadığı"
 
-#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1018
-#: ../plugins/gtk+/glade-gtk-widget.c:1081
+#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1024
+#: ../plugins/gtk+/glade-gtk-widget.c:1087
 msgid "(unnamed)"
 msgstr "(adsız)"
 
@@ -3784,6 +3785,32 @@ msgstr "%s üzerindeki sütunu sil"
 msgid "Remove Row on %s"
 msgstr "%s Üzerinden Satır Sil"
 
+#. --------------------------------- Constants ------------------------------
+#: ../plugins/gtk+/glade-gtk.h:34
+msgid "This property does not apply unless Use Underline is set."
+msgstr "Altçizgi Kullan ayarlanmadığı sürece bu özellik geçerli değildir."
+
+#: ../plugins/gtk+/glade-gtk.h:35
+msgid "Property not selected"
+msgstr "Özellik seçilmedi"
+
+#: ../plugins/gtk+/glade-gtk.h:36
+msgid "This property is only for use in dialog action buttons"
+msgstr "Bu özellik yalnızca pencere eylem düğmeleri kullanımı içindir"
+
+#: ../plugins/gtk+/glade-gtk.h:37
+msgid "This property is set to be controlled by an Action"
+msgstr "Bu özellik bir Eylem tarafından denetlenmek üzere ayarlanmıştır"
+
+#: ../plugins/gtk+/glade-gtk.h:39
+#, c-format
+msgid "Only objects of type %s can be added to objects of type %s."
+msgstr "Yalnızca %s türündeki nesneler %s türündeki nesnelere eklenebilir."
+
+#: ../plugins/gtk+/glade-gtk.h:41
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr "Hızlandırıcı, yalnızca bir Eylem Grubu içinde olduğunda ayarlanabilir."
+
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
 msgstr "Bu özellik özel bir başlık ayarlandığında uygulanmaz"
@@ -3892,7 +3919,7 @@ msgstr "Resim ögesi"
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:470
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:478
 msgid "Check item"
-msgstr "Kontrol ögesi"
+msgstr "Denetim ögesi"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:471
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:479
@@ -4019,7 +4046,7 @@ msgstr "Resim"
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:193
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:202
 msgid "Check"
-msgstr "Kontrol"
+msgstr "Denetim"
 
 #: ../plugins/gtk+/glade-gtk-toolbar.c:279
 msgid "Tool Bar Editor"
@@ -4068,28 +4095,28 @@ msgstr "Başlıklar görünmez"
 msgid "Expanders are not shown"
 msgstr "Genişleticiler görüntülenmiyor"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:836
+#: ../plugins/gtk+/glade-gtk-widget.c:842
 #, c-format
 msgid "Removing parent of %s"
 msgstr "%s üstü siliniyor"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:895
+#: ../plugins/gtk+/glade-gtk-widget.c:901
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "%s üst olarak %s için ekleniyor"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1030
+#: ../plugins/gtk+/glade-gtk-widget.c:1036
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "%s Boyut Grubu %s için ekleniyor"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1034
+#: ../plugins/gtk+/glade-gtk-widget.c:1040
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "%s yeni Boyut Grubuna ekleniyor"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk-widget.c:1101
+#: ../plugins/gtk+/glade-gtk-widget.c:1107
 msgid "New Size Group"
 msgstr "Yeni Boyut Grubu"
 
@@ -4252,7 +4279,7 @@ msgstr "%s tek satır kullanması için atanması"
 #: ../plugins/gtk+/glade-label-editor.c:396
 #, c-format
 msgid "Setting %s to use specific Pango word wrapping"
-msgstr "%s özel Pango kelime kaydırma kullanacak şekilde ayarlanıyor"
+msgstr "%s özel Pango sözcük kaydırma kullanacak şekilde ayarlanıyor"
 
 #: ../plugins/gtk+/glade-model-data.c:1120
 msgid "Add and remove rows:"
@@ -5618,7 +5645,7 @@ msgstr "Düzenle&#8230;"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:446
 msgid "Use Underline"
-msgstr "Altyazı Kullan"
+msgstr "Altçizgi Kullan"
 
 #. GtkActivatable
 #: ../plugins/gtk+/gtk+.xml.in.h:448
@@ -5844,7 +5871,7 @@ msgstr "Öznitelikler"
 #. GtkWrapMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:525
 msgid "Word"
-msgstr "Kelime"
+msgstr "Sözcük"
 
 #. GtkWrapMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:527
@@ -5854,7 +5881,7 @@ msgstr "Karakter"
 #. GtkWrapMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:529
 msgid "Word Character"
-msgstr "Kelime Karakteri"
+msgstr "Sözcük Karakteri"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:530
 msgid "The pango attributes for this label"
@@ -5923,7 +5950,7 @@ msgstr "Yazım Denetimi Yok"
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:557
 msgid "Word Completion"
-msgstr "Kelime Tamamlama"
+msgstr "Sözcük Tamamlama"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:559
@@ -5938,7 +5965,7 @@ msgstr "Büyük Harfler"
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:563
 msgid "Uppercase Words"
-msgstr "Büyük Harfli Kelimeler"
+msgstr "Büyük Harfli Sözcükler"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:565
@@ -6154,7 +6181,7 @@ msgid ""
 "for all the other values, spread evenly over the range of values"
 msgstr ""
 "Ölçekleme düğmesi tarafından kullanılacak simgelerin adları. Dizideki ilk "
-"değer düğmede, mevcut değer en küçük değerindeyken, ikincisi en büyük "
+"değer düğmede, geçerli değer en küçük değerindeyken, ikincisi en büyük "
 "değerindeyken kullanılacak. Takip eden diğer tüm simgeler tüm diğer değerler "
 "arasında değer aralığına göre eşit olarak dağıtılarak kullanılacak."
 
@@ -6332,7 +6359,7 @@ msgstr "Bitiş Eylemi"
 #: ../plugins/gtk+/gtk+.xml.in.h:692
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
-"Mevcut etkin sayfayı düzenlemek için ayarlayın, bu özellik kaydedilmeyecek"
+"Geçerli etkin sayfayı düzenlemek için ayarlayın, bu özellik kaydedilmeyecek"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:693
 msgid "The number of pages in the notebook"
@@ -6884,7 +6911,8 @@ msgstr "Açılan kutucuk menüsündeki alt menülerin sayısı"
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
-"Mevcut etkin alt menüyü düzenlemek için ayarlayın, bu özellik kaydedilmeyecek"
+"Geçerli etkin alt menüyü düzenlemek için ayarlayın, bu özellik "
+"kaydedilmeyecek"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "Model Button"
@@ -8405,16 +8433,16 @@ msgstr "Bu pencere özel bir başlık çubuğu içermeli mi."
 #~ msgstr "Ögeleri simgelerin yanında metin olarak göster"
 
 #~ msgid "_Icons only"
-#~ msgstr "Sadece _simge"
+#~ msgstr "Yalnızca _simgeler"
 
 #~ msgid "Display items as icons only"
-#~ msgstr "Ögeleri sadece simge olarak göster"
+#~ msgstr "Ögeleri yalnızca simge olarak göster"
 
 #~ msgid "_Text only"
-#~ msgstr "Sadece _Metin"
+#~ msgstr "Yalnızca _metin"
 
 #~ msgid "Display items as text only"
-#~ msgstr "Ögeleri sadece metin olarak göster"
+#~ msgstr "Ögeleri yalnızca metin olarak göster"
 
 #~ msgid "_Editor Header"
 #~ msgstr "_Düzenleyici Başlığı"
@@ -8507,9 +8535,6 @@ msgstr "Bu pencere özel bir başlık çubuğu içermeli mi."
 #~ msgstr ""
 #~ "Depo simgesi, simge kümesi ya da isimlendirilmiş simge için kullanılacak "
 #~ "sembolik boyut"
-
-#~ msgid "This property does not apply when Ellipsize is set."
-#~ msgstr "Bu özellik Kısaltma atandığı zaman uygulanmaz."
 
 #~ msgid "Configure button content"
 #~ msgstr "Düğme içeriğini yapılandır"
