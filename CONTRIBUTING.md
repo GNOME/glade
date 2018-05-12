@@ -1,11 +1,6 @@
 Glade official git repository is hosted by the GNOME foundation at
 git.gnome.org
 
-The GNOME contributing guidelines recomend patches to be forwarded
-to GNOME's Bugzilla instance hosted at https://bugzilla.gnome.org,
-as such please do not open Pull Requests (PRs) in others git mirrors
-since there is a good chance they will not get noticed.
-
 Mailing List
 ~~~~~~~~~~~~
 Glade discussion takes place on glade-devel@lists.ximian.com
@@ -14,11 +9,11 @@ To subscribe or to consult archives visit
 	http://lists.ximian.com/mailman/listinfo/glade-devel
 
 
-Bugzilla
+GitLab
 ~~~~~~~~
 Glade bugs are tracked at
 
-	http://bugzilla.gnome.org/enter_bug.cgi?product=glade
+	https://gitlab.gnome.org/GNOME/glade
 
 
 GIT
