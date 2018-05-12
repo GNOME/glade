@@ -55,6 +55,7 @@ glade_gtk_window_ensure_titlebar_placeholder (GObject *window)
     return;
 
   placeholder = glade_placeholder_new ();
+  g_object_set_data (G_OBJECT (placeholder), "special-child-type", "titlebar");
   gtk_window_set_titlebar (GTK_WINDOW (window), placeholder);
 
   gtk_widget_hide (placeholder);

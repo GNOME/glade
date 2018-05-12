@@ -1281,8 +1281,9 @@ glade_command_add (GList            *widgets,
                 {
                   child = l->data;
 
-                  /* Find a placeholder for this child */
-                  if (GLADE_IS_PLACEHOLDER (child) && 
+                  /* Find a placeholder for this child, ignore special child types */
+                  if (GLADE_IS_PLACEHOLDER (child) &&
+                      g_object_get_data (G_OBJECT (child), "special-child-type") == NULL &&
                       g_list_find (placeholders, child) == NULL)
                     {
                       placeholders = g_list_append (placeholders, child);
