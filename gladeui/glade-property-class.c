@@ -448,6 +448,26 @@ glade_property_class_make_string_from_objects (GladePropertyClass *
   return string;
 }
 
+static gchar *
+glade_dtostr (double number, gdouble epsilon)
+{
+  char *str = g_malloc (G_ASCII_DTOSTR_BUF_SIZE);
+  int i;
+
+  for (i = 0; i <= 20; i++)
+    {
+      double rounded;
+
+      snprintf (str, G_ASCII_DTOSTR_BUF_SIZE, "%.*f", i, number);
+      rounded = g_ascii_strtod (str, NULL);
+
+      if (ABS (rounded - number) <= epsilon)
+        return str;
+    }
+
+  return str;
+}
+
 /**
  * glade_property_class_make_string_from_gvalue:
  * @property_class: A #GladePropertyClass
@@ -460,7 +480,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
                                               property_class,
                                               const GValue * value)
 {
-  gchar *string = NULL, **strv, str[G_ASCII_DTOSTR_BUF_SIZE];
+  gchar *string = NULL, **strv;
   GObject *object;
   GdkColor *color;
   GdkRGBA *rgba;
@@ -533,15 +553,11 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
   else if (G_IS_PARAM_SPEC_UINT64 (property_class->pspec))
     string = g_strdup_printf ("%" G_GUINT64_FORMAT, g_value_get_uint64 (value));
   else if (G_IS_PARAM_SPEC_FLOAT (property_class->pspec))
-    {
-      g_ascii_dtostr (str, sizeof (str), g_value_get_float (value));
-      string = g_strdup (str);
-    }
+    string = glade_dtostr (g_value_get_float (value),
+                           ((GParamSpecFloat *)property_class->pspec)->epsilon);
   else if (G_IS_PARAM_SPEC_DOUBLE (property_class->pspec))
-    {
-      g_ascii_dtostr (str, sizeof (str), g_value_get_double (value));
-      string = g_strdup (str);
-    }
+    string = glade_dtostr (g_value_get_double (value),
+                           ((GParamSpecDouble *)property_class->pspec)->epsilon);
   else if (G_IS_PARAM_SPEC_STRING (property_class->pspec))
     {
       string = g_value_dup_string (value);
