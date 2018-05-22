@@ -756,6 +756,7 @@ typedef struct
   GladeEditorProperty parent_instance;
 
   GtkWidget *spin;
+  GBinding *binding;
 
   gboolean refreshing;
 } GladeEPropNumeric;
@@ -788,6 +789,8 @@ glade_eprop_numeric_load (GladeEditorProperty *eprop, GladeProperty *property)
   /* Chain up first */
   editor_property_class->load (eprop, property);
 
+  g_clear_object (&eprop_numeric->binding);
+
   if (property)
     {
       value = glade_property_inline_value (property);
@@ -813,6 +816,13 @@ glade_eprop_numeric_load (GladeEditorProperty *eprop, GladeProperty *property)
         g_warning ("Unsupported type %s\n",
                    g_type_name (G_PARAM_SPEC_TYPE (pspec)));
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_numeric->spin), val);
+
+      if (G_IS_PARAM_SPEC_FLOAT (pspec) || G_IS_PARAM_SPEC_DOUBLE (pspec))
+        eprop_numeric->binding = g_object_bind_property (property,
+                                                         "precision",
+                                                         eprop_numeric->spin,
+                                                         "digits",
+                                                         G_BINDING_SYNC_CREATE);
     }
 }
 
@@ -921,6 +931,15 @@ glade_eprop_numeric_force_update (GtkSpinButton       *spin,
   g_free (text);
 }
 
+static void
+on_spin_digits_notify (GObject *gobject, GParamSpec *pspec, gpointer user_data)
+{
+  gint digits = gtk_spin_button_get_digits (GTK_SPIN_BUTTON (gobject));
+  gdouble step = 1.0 / pow (10, digits);
+
+  gtk_spin_button_set_increments (GTK_SPIN_BUTTON (gobject), step, step * 10);
+}
+
 static GtkWidget *
 glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
 {
@@ -931,15 +950,17 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
   pspec      = glade_property_class_get_pspec (eprop->priv->klass);
   adjustment = glade_property_class_make_adjustment (eprop->priv->klass);
   eprop_numeric->spin = 
-    gtk_spin_button_new (adjustment, 4,
-			 G_IS_PARAM_SPEC_FLOAT (pspec) ||
-			 G_IS_PARAM_SPEC_DOUBLE (pspec) ? 2 : 0);
+    gtk_spin_button_new (adjustment, 0.01,
+                         G_IS_PARAM_SPEC_FLOAT (pspec) ||
+                         G_IS_PARAM_SPEC_DOUBLE (pspec) ? 2 : 0);
   gtk_widget_set_hexpand (eprop_numeric->spin, TRUE);
   gtk_widget_set_halign (eprop_numeric->spin, GTK_ALIGN_FILL);
   gtk_widget_set_valign (eprop_numeric->spin, GTK_ALIGN_CENTER);
 
   gtk_entry_set_activates_default (GTK_ENTRY (eprop_numeric->spin), TRUE);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (eprop_numeric->spin), TRUE);
+  g_signal_connect (eprop_numeric->spin, "notify::digits",
+                    G_CALLBACK (on_spin_digits_notify), NULL);
 
   glade_util_remove_scroll_events (eprop_numeric->spin);
   gtk_widget_show (eprop_numeric->spin);
