@@ -3697,8 +3697,18 @@
 			_title="Accel Group" toplevel="True"/>
       <glade-widget-class name="GtkAdjustment" generic-name="adjustment" 
 			_title="Adjustment" toplevel="True">
+        <read-widget-function>glade_gtk_adjustment_read_widget</read-widget-function>
         <write-widget-function>glade_gtk_adjustment_write_widget</write-widget-function>
+        <set-property-function>glade_gtk_adjustment_set_property</set-property-function>
+        <verify-function>glade_gtk_adjustment_verify_property</verify-function>
         <properties>
+          <property id="glade-digits" _name="Digits" save="False" weight="1.0">
+            <parameter-spec>
+              <type>GParamInt</type>
+              <min>2</min>
+              <max>20</max>
+            </parameter-spec>
+          </property>
           <property id="value" default="0.0" save="False"/>
           <property id="lower" default="0.0" save="False"/>
           <property id="upper" default="100.0" save="False"/>
