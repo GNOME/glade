@@ -104,6 +104,8 @@ struct _GladePropertyPrivate {
 					* or derived widget code).
 					*/
 
+  gint      precision;
+
   /* Used only for translatable strings. */
   guint     i18n_translatable : 1;
   gchar    *i18n_context;
@@ -130,6 +132,7 @@ enum
   PROP_I18N_CONTEXT,
   PROP_I18N_COMMENT,
   PROP_STATE,
+  PROP_PRECISION,
   N_PROPERTIES
 };
 
@@ -295,6 +298,13 @@ glade_property_fix_state (GladeProperty *property)
   g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_STATE]);
 }
 
+static void
+glade_property_set_precision (GladeProperty *property, gint precision)
+{
+  property->priv->precision = precision;
+
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_PRECISION]);
+}
 
 static gboolean
 glade_property_set_value_impl (GladeProperty *property, const GValue *value)
@@ -537,6 +547,9 @@ glade_property_set_real_property (GObject      *object,
       case PROP_I18N_COMMENT:
         glade_property_i18n_set_comment (property, g_value_get_string (value));
         break;
+      case PROP_PRECISION:
+        glade_property_set_precision (property, g_value_get_int (value));
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -575,6 +588,9 @@ glade_property_get_real_property (GObject    *object,
       case PROP_STATE:
         g_value_set_int (value, property->priv->state);
         break;
+      case PROP_PRECISION:
+        g_value_set_int (value, property->priv->precision);
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -610,6 +626,7 @@ glade_property_init (GladeProperty *property)
 						GLADE_TYPE_PROPERTY,
 						GladePropertyPrivate);
 
+  property->priv->precision = 2;
   property->priv->enabled = TRUE;
   property->priv->sensitive = TRUE;
   property->priv->i18n_translatable = TRUE;
@@ -690,6 +707,15 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
                       GLADE_STATE_NORMAL,
                       G_PARAM_READABLE);
   
+  properties[PROP_PRECISION] =
+    g_param_spec_int ("precision",
+                      _("Precision"),
+                      _("Where applicable, precision to use on editors"),
+                      0,
+                      G_MAXINT,
+                      2,
+                      G_PARAM_READWRITE);
+
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
