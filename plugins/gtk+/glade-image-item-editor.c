@@ -172,7 +172,7 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 
   glade_editable_block (GLADE_EDITABLE (item_editor));
 
-  glade_command_push_group (_("Setting %s to use a stock item"), glade_widget_get_name (loaded));
+  glade_command_push_group (_("Setting %s to use a stock item"), glade_widget_get_display_name (loaded));
 
   property = glade_widget_get_property (loaded, "label");
   glade_command_set_property (property, NULL);
@@ -220,7 +220,7 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
   adaptor = glade_widget_get_adaptor (gwidget);
 
   glade_command_push_group (_("Setting %s to use a label and image"),
-                            glade_widget_get_name (gwidget));
+                            glade_widget_get_display_name (gwidget));
 
   /* First clear stock...  */
   property = glade_widget_get_property (gwidget, "stock");
