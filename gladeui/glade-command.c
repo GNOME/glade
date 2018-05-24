@@ -618,6 +618,16 @@ glade_command_set_property_execute (GladeCommand *cmd)
             }
         }
 
+      /* Make sure the target object has a name for object properties */
+      if (glade_property_class_is_object (pclass))
+        {
+          GObject *pobject = g_value_get_object (&new_value);
+          GladeWidget *pwidget;
+
+          if (pobject && (pwidget = glade_widget_get_from_gobject (pobject)))
+            glade_widget_ensure_name (pwidget, cmd->priv->project, TRUE);
+        }
+
       success = glade_property_set_value (sdata->property, &new_value);
       retval  = retval || success;
 
