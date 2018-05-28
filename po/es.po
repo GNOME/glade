@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2018-05-15 19:45+0000\n"
-"PO-Revision-Date: 2018-05-22 10:06+0200\n"
+"POT-Creation-Date: 2018-05-24 15:07+0000\n"
+"PO-Revision-Date: 2018-05-28 17:53+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -193,13 +193,13 @@ msgstr "Cerrar _sin guardar"
 
 #: ../src/glade-window.c:1075 ../src/glade-window.c:1751
 #: ../gladeui/glade-editor.c:779 ../gladeui/glade-editor.c:1135
-#: ../gladeui/glade-editor-property.c:1690
-#: ../gladeui/glade-editor-property.c:1997
-#: ../gladeui/glade-editor-property.c:2198
-#: ../gladeui/glade-editor-property.c:3135
-#: ../gladeui/glade-editor-property.c:3247
-#: ../gladeui/glade-editor-property.c:3264
-#: ../gladeui/glade-editor-property.c:3584 ../gladeui/glade-utils.c:483
+#: ../gladeui/glade-editor-property.c:1711
+#: ../gladeui/glade-editor-property.c:2018
+#: ../gladeui/glade-editor-property.c:2219
+#: ../gladeui/glade-editor-property.c:3156
+#: ../gladeui/glade-editor-property.c:3268
+#: ../gladeui/glade-editor-property.c:3285
+#: ../gladeui/glade-editor-property.c:3605 ../gladeui/glade-utils.c:483
 #: ../plugins/gtk+/glade-accels.c:525 ../plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Cancelar"
@@ -1377,7 +1377,7 @@ msgstr "Estableciendo el tipo de objeto en %s a %s"
 msgid "Add a %s to %s"
 msgstr "Añadir un %s a %s"
 
-#: ../gladeui/glade-base-editor.c:822 ../gladeui/glade-command.c:1240
+#: ../gladeui/glade-base-editor.c:822 ../gladeui/glade-command.c:1250
 #, c-format
 msgid "Add %s"
 msgstr "Añadir %s"
@@ -1543,140 +1543,140 @@ msgstr "Activando la propiedad %s en el widget %s"
 msgid "Disabling property %s on widget %s"
 msgstr "Desactivando la propiedad %s en el widget %s"
 
-#: ../gladeui/glade-command.c:801
+#: ../gladeui/glade-command.c:811
 #, c-format
 msgid "Setting multiple properties"
 msgstr "Estableciendo propiedades múltiples"
 
-#: ../gladeui/glade-command.c:813 ../gladeui/glade-editor-property.c:3650
+#: ../gladeui/glade-command.c:823 ../gladeui/glade-editor-property.c:3671
 #, c-format
 msgid "Setting %s of %s"
 msgstr "Estableciendo %s de %s"
 
-#: ../gladeui/glade-command.c:819 ../gladeui/glade-editor-property.c:3355
+#: ../gladeui/glade-command.c:829 ../gladeui/glade-editor-property.c:3376
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Estableciendo %s de %s a %s"
 
-#: ../gladeui/glade-command.c:1076 ../gladeui/glade-command.c:1103
+#: ../gladeui/glade-command.c:1086 ../gladeui/glade-command.c:1113
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "Renombrando %s a %s"
 
-#: ../gladeui/glade-command.c:1241 ../gladeui/glade-command.c:1850
-#: ../gladeui/glade-command.c:1876 ../gladeui/glade-command.c:1978
-#: ../gladeui/glade-command.c:2020
+#: ../gladeui/glade-command.c:1251 ../gladeui/glade-command.c:1860
+#: ../gladeui/glade-command.c:1886 ../gladeui/glade-command.c:1988
+#: ../gladeui/glade-command.c:2030
 msgid "multiple"
 msgstr "múltiple"
 
-#: ../gladeui/glade-command.c:1386
+#: ../gladeui/glade-command.c:1396
 msgid "You cannot remove a widget internal to a composite widget."
 msgstr "No puede eliminar un widget interno a un widget compuesto."
 
-#: ../gladeui/glade-command.c:1393
+#: ../gladeui/glade-command.c:1403
 #, c-format
 msgid "%s is locked by %s, edit %s first."
 msgstr "%s está bloqueado por %s, edite %s primero."
 
-#: ../gladeui/glade-command.c:1409
+#: ../gladeui/glade-command.c:1419
 #, c-format
 msgid "Remove %s"
 msgstr "Eliminar %s"
 
-#: ../gladeui/glade-command.c:1412
+#: ../gladeui/glade-command.c:1422
 msgid "Remove multiple"
 msgstr "Eliminación múltiple"
 
-#: ../gladeui/glade-command.c:1822
+#: ../gladeui/glade-command.c:1832
 #, c-format
 msgid "Create %s"
 msgstr "Crear %s"
 
-#: ../gladeui/glade-command.c:1848
+#: ../gladeui/glade-command.c:1858
 #, c-format
 msgid "Delete %s"
 msgstr "Eliminar %s"
 
-#: ../gladeui/glade-command.c:1874
+#: ../gladeui/glade-command.c:1884
 #, c-format
 msgid "Cut %s"
 msgstr "Cortar %s"
 
-#: ../gladeui/glade-command.c:1976
+#: ../gladeui/glade-command.c:1986
 #, c-format
 msgid "Paste %s"
 msgstr "Pegar %s"
 
-#: ../gladeui/glade-command.c:2018
+#: ../gladeui/glade-command.c:2028
 #, c-format
 msgid "Drag %s and Drop to %s"
 msgstr "Arrastrar %s y soltar en %s"
 
-#: ../gladeui/glade-command.c:2021
+#: ../gladeui/glade-command.c:2031
 msgid "root"
 msgstr "raíz"
 
-#: ../gladeui/glade-command.c:2145
+#: ../gladeui/glade-command.c:2155
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Añadir el manipulador de señal %s"
 
-#: ../gladeui/glade-command.c:2146
+#: ../gladeui/glade-command.c:2156
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Quitar el manipulador de señal %s"
 
-#: ../gladeui/glade-command.c:2147
+#: ../gladeui/glade-command.c:2157
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Cambiar el manipulador de señal %s"
 
-#: ../gladeui/glade-command.c:2364
+#: ../gladeui/glade-command.c:2374
 #, c-format
 msgid "Setting i18n metadata"
 msgstr "Configurando metadatos de internacionalización"
 
-#: ../gladeui/glade-command.c:2481
+#: ../gladeui/glade-command.c:2491
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr "Bloqueando %s por el widget %s"
 
-#: ../gladeui/glade-command.c:2522
+#: ../gladeui/glade-command.c:2532
 #, c-format
 msgid "Unlocking %s"
 msgstr "Desbloqueando %s"
 
-#: ../gladeui/glade-command.c:2644 ../gladeui/glade-command.c:2687
+#: ../gladeui/glade-command.c:2654 ../gladeui/glade-command.c:2697
 #, c-format
 msgid "Setting target version of '%s' to %d.%d"
 msgstr "Estableciendo la versión objetivo de «%s» a %d.%d"
 
-#: ../gladeui/glade-command.c:2840
+#: ../gladeui/glade-command.c:2850
 #, c-format
 msgid "Setting project's %s property"
 msgstr "Configurando las propiedades del proyecto %s"
 
-#: ../gladeui/glade-command.c:2943
+#: ../gladeui/glade-command.c:2953
 #, c-format
 msgid "Setting resource path to '%s'"
 msgstr "Estableciendo la ruta del recurso a «%s»"
 
-#: ../gladeui/glade-command.c:2974
+#: ../gladeui/glade-command.c:2984
 #, c-format
 msgid "Setting translation domain to '%s'"
 msgstr "Estableciendo el dominio de traducción a «%s»"
 
-#: ../gladeui/glade-command.c:3009
+#: ../gladeui/glade-command.c:3019
 #, c-format
 msgid "Unsetting widget '%s' as template"
 msgstr "Quitando el widget «%s» como plantilla"
 
-#: ../gladeui/glade-command.c:3012
+#: ../gladeui/glade-command.c:3022
 #, c-format
 msgid "Setting widget '%s' as template"
 msgstr "Estableciendo el widget «%s» como plantilla"
 
-#: ../gladeui/glade-command.c:3015
+#: ../gladeui/glade-command.c:3025
 msgid "Unsetting template"
 msgstr "Quitando la plantilla"
 
@@ -1815,12 +1815,12 @@ msgstr ""
 msgid "Reset Widget Properties"
 msgstr "Restablecer propiedades del widget"
 
-#: ../gladeui/glade-editor.c:1136 ../gladeui/glade-editor-property.c:1691
-#: ../gladeui/glade-editor-property.c:1998
-#: ../gladeui/glade-editor-property.c:3137
-#: ../gladeui/glade-editor-property.c:3250
-#: ../gladeui/glade-editor-property.c:3266
-#: ../gladeui/glade-editor-property.c:3585 ../plugins/gtk+/glade-accels.c:526
+#: ../gladeui/glade-editor.c:1136 ../gladeui/glade-editor-property.c:1712
+#: ../gladeui/glade-editor-property.c:2019
+#: ../gladeui/glade-editor-property.c:3158
+#: ../gladeui/glade-editor-property.c:3271
+#: ../gladeui/glade-editor-property.c:3287
+#: ../gladeui/glade-editor-property.c:3606 ../plugins/gtk+/glade-accels.c:526
 #: ../plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_Aceptar"
@@ -1888,45 +1888,45 @@ msgstr "Texto personalizado"
 msgid "Custom Text to display in the property label"
 msgstr "Testo personalizado que mostrar en la etiqueta de la propiedad"
 
-#: ../gladeui/glade-editor-property.c:1320
+#: ../gladeui/glade-editor-property.c:1341
 msgid "Select Fields"
 msgstr "Seleccionar campos"
 
-#: ../gladeui/glade-editor-property.c:1323
+#: ../gladeui/glade-editor-property.c:1344
 msgid "_Close"
 msgstr "_Cerrar"
 
-#: ../gladeui/glade-editor-property.c:1336
+#: ../gladeui/glade-editor-property.c:1357
 msgid "_Select individual fields:"
 msgstr "_Seleccionar campos individuales:"
 
-#: ../gladeui/glade-editor-property.c:1686
+#: ../gladeui/glade-editor-property.c:1707
 msgid "Select Named Icon"
 msgstr "Seleccionar icono de nombre"
 
-#: ../gladeui/glade-editor-property.c:1992
+#: ../gladeui/glade-editor-property.c:2013
 msgid "Edit Text"
 msgstr "Editar texto"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:2015
+#: ../gladeui/glade-editor-property.c:2036
 msgid "_Text:"
 msgstr "_Texto:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:2051
+#: ../gladeui/glade-editor-property.c:2072
 msgid "T_ranslatable"
 msgstr "_Traducible"
 
-#: ../gladeui/glade-editor-property.c:2057 ../gladeui/glade-property.c:680
+#: ../gladeui/glade-editor-property.c:2078 ../gladeui/glade-property.c:697
 msgid "Whether this property is translatable"
 msgstr "Indica si esta propiedad se puede traducir"
 
-#: ../gladeui/glade-editor-property.c:2065
+#: ../gladeui/glade-editor-property.c:2086
 msgid "Conte_xt for translation:"
 msgstr "Conte_xto para traducción:"
 
-#: ../gladeui/glade-editor-property.c:2071
+#: ../gladeui/glade-editor-property.c:2092
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -1936,75 +1936,75 @@ msgstr ""
 "significado de esta cadena del significado de otras ocurrencias de la misma "
 "cadena"
 
-#: ../gladeui/glade-editor-property.c:2103
+#: ../gladeui/glade-editor-property.c:2124
 msgid "Co_mments for translators:"
 msgstr "_Comentarios para los traductores:"
 
-#: ../gladeui/glade-editor-property.c:2194
+#: ../gladeui/glade-editor-property.c:2215
 msgid "Select a file from the project resource directory"
 msgstr "Seleccionar un archivo desde la carpeta de recursos del proyecto"
 
-#: ../gladeui/glade-editor-property.c:2199 ../gladeui/glade-utils.c:486
+#: ../gladeui/glade-editor-property.c:2220 ../gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Abrir"
 
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:3055
+#: ../gladeui/glade-editor-property.c:3076
 #: ../gladeui/glade-widget-adaptor.c:1447 ../gladeui/glade-widget.c:1341
 #: ../plugins/gtk+/gtk+.xml.in.h:547
 msgid "Name"
 msgstr "Nombre"
 
-#: ../gladeui/glade-editor-property.c:3064 ../gladeui/glade-property.c:647
+#: ../gladeui/glade-editor-property.c:3085 ../gladeui/glade-property.c:664
 msgid "Class"
 msgstr "Clase"
 
-#: ../gladeui/glade-editor-property.c:3084
+#: ../gladeui/glade-editor-property.c:3105
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Elegir tipos de objeto %s huérfanos en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3086
+#: ../gladeui/glade-editor-property.c:3107
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Elegir tipos de objeto %s en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3106
+#: ../gladeui/glade-editor-property.c:3127
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Eligir un %s huérfano en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3108
+#: ../gladeui/glade-editor-property.c:3129
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Elija un %s en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3136
-#: ../gladeui/glade-editor-property.c:3248
-#: ../gladeui/glade-editor-property.c:3265
-#: ../gladeui/glade-editor-property.c:3583 ../plugins/gtk+/glade-accels.c:524
+#: ../gladeui/glade-editor-property.c:3157
+#: ../gladeui/glade-editor-property.c:3269
+#: ../gladeui/glade-editor-property.c:3286
+#: ../gladeui/glade-editor-property.c:3604 ../plugins/gtk+/glade-accels.c:524
 #: ../plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "_Limpiar"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3158
-#: ../gladeui/glade-editor-property.c:3288
+#: ../gladeui/glade-editor-property.c:3179
+#: ../gladeui/glade-editor-property.c:3309
 msgid "O_bjects:"
 msgstr "O_bjetos:"
 
-#: ../gladeui/glade-editor-property.c:3249
+#: ../gladeui/glade-editor-property.c:3270
 msgid "_New"
 msgstr "_Nuevo"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3398
+#: ../gladeui/glade-editor-property.c:3419
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Creando %s para %s de %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3601
+#: ../gladeui/glade-editor-property.c:3622
 msgid "Objects:"
 msgstr "Objetos:"
 
@@ -2619,57 +2619,66 @@ msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr ""
 "El proyecto %s no tiene widgets obsoletos o inconsistencias entre versiones."
 
-#: ../gladeui/glade-property.c:648
+#: ../gladeui/glade-property.c:665
 msgid "The GladePropertyClass for this property"
 msgstr "La GladePropertyClass para esta propiedad"
 
-#: ../gladeui/glade-property.c:653
+#: ../gladeui/glade-property.c:670
 msgid "Enabled"
 msgstr "Activado"
 
-#: ../gladeui/glade-property.c:654
+#: ../gladeui/glade-property.c:671
 msgid "If the property is optional, this is its enabled state"
 msgstr "Si la propiedad es opcional, esto está en su estado activado"
 
-#: ../gladeui/glade-property.c:659 ../gladeui/glade-widget-action.c:190
+#: ../gladeui/glade-property.c:676 ../gladeui/glade-widget-action.c:190
 msgid "Sensitive"
 msgstr "Sensible"
 
-#: ../gladeui/glade-property.c:660
+#: ../gladeui/glade-property.c:677
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 "Esto proporciona a los backend el control para establecer la propiedad de "
 "sensibilidad"
 
-#: ../gladeui/glade-property.c:665
+#: ../gladeui/glade-property.c:682
 msgid "Context"
 msgstr "Contexto"
 
-#: ../gladeui/glade-property.c:666
+#: ../gladeui/glade-property.c:683
 msgid "Context for translation"
 msgstr "Comentario para traducción"
 
 #. AtkRole enumeration value
-#: ../gladeui/glade-property.c:672 ../plugins/gtk+/gtk+.xml.in.h:272
+#: ../gladeui/glade-property.c:689 ../plugins/gtk+/gtk+.xml.in.h:272
 msgid "Comment"
 msgstr "Comentario"
 
-#: ../gladeui/glade-property.c:673
+#: ../gladeui/glade-property.c:690
 msgid "Comment for translators"
 msgstr "Comentario para los traductores"
 
-#: ../gladeui/glade-property.c:679
+#: ../gladeui/glade-property.c:696
 msgid "Translatable"
 msgstr "Traducible"
 
-#: ../gladeui/glade-property.c:686
+#: ../gladeui/glade-property.c:703
 msgid "Visual State"
 msgstr "Estado visual"
 
-#: ../gladeui/glade-property.c:687
+#: ../gladeui/glade-property.c:704
 msgid "Priority information for the property editor to act on"
 msgstr ""
 "Información de prioridad para que el editor de propiedades actúe sobre ella"
+
+#: ../gladeui/glade-property.c:712
+#| msgid "version"
+msgid "Precision"
+msgstr "Precisión"
+
+#: ../gladeui/glade-property.c:713
+msgid "Where applicable, precision to use on editors"
+msgstr "Si aplica, precisión que usar en los editores"
 
 #: ../gladeui/glade-property-label.c:120
 msgid "The GladeProperty to display a label for"
@@ -3088,7 +3097,6 @@ msgid "(unnamed)"
 msgstr "(sin nombre)"
 
 #: ../gladeui/glade-widget.c:4803
-#| msgid "Template classes are not supported in gtk+ %d.%d"
 msgid "Template classes are only usable in GTK+ 3.10 and later."
 msgstr "Las plantillas de clases sólo se pueden usar en GTK+ 3.10 y superior."
 
