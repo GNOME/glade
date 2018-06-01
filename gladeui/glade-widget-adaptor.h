@@ -65,6 +65,40 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
    (GWA_VERSION_SINCE_MAJOR (adaptor) <= major_version))
 
 /**
+ * GWA_DEPRECATED_SINCE_MAJOR:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks major version in which this widget was deprecated
+ */
+#define GWA_DEPRECATED_SINCE_MAJOR(obj) \
+  ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->deprecated_since_major : 0)
+
+/**
+ * GWA_DEPRECATED_SINCE_MINOR:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks minor version in which this widget was deprecated
+ */
+#define GWA_DEPRECATED_SINCE_MINOR(obj) \
+  ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->deprecated_since_minor : 0)
+
+/**
+ * GWA_DEPRECATED_SINCE_CHECK:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @major_version: The major version to check
+ * @minor_version: The minor version to check
+ *
+ * Evaluates to %TRUE if @adaptor is deprecated in its owning library version-@major_verion.@minor_version.
+ *
+ */
+#define GWA_DEPRECATED_SINCE_CHECK(adaptor, major_version, minor_version)	\
+  ((GWA_DEPRECATED_SINCE_MAJOR (adaptor) || GWA_DEPRECATED_SINCE_MINOR (adaptor)) ? \
+    ((GWA_DEPRECATED_SINCE_MAJOR (adaptor) == major_version)  ? 	\
+      (GWA_DEPRECATED_SINCE_MINOR (adaptor) <= minor_version)  :	\
+      (GWA_DEPRECATED_SINCE_MAJOR (adaptor) <= major_version)) :  \
+    FALSE)
+
+/**
  * GWA_IS_TOPLEVEL:
  * @obj: A #GladeWidgetAdaptor
  *
@@ -681,13 +715,15 @@ struct _GladeWidgetAdaptorClass
 
   GladeDestroyObjectFunc       destroy_object;    /* Object destructor */
   GladeWriteWidgetFunc         write_widget_after;/* Writes widget attributes to the xml (after children) */
-    
+
+  guint16                      deprecated_since_major;
+  guint16                      deprecated_since_minor;
+
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);
   void   (* glade_reserved3)   (void);
   void   (* glade_reserved4)   (void);
   void   (* glade_reserved5)   (void);
-  void   (* glade_reserved6)   (void);
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \

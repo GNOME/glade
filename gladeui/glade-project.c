@@ -3500,10 +3500,11 @@ glade_project_verify_adaptor (GladeProject       *project,
         }
 
       if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
-	  GWA_DEPRECATED (adaptor_iter))
+          (GWA_DEPRECATED (adaptor_iter) ||
+           GWA_DEPRECATED_SINCE_CHECK (adaptor_iter, target_major, target_minor)))
         {
-	  GLADE_NOTE (VERIFY, g_print ("VERIFY: Adaptor '%s' is deprecated\n",
-				       glade_widget_adaptor_get_name (adaptor_iter)));
+          GLADE_NOTE (VERIFY, g_print ("VERIFY: Adaptor '%s' is deprecated\n",
+                                       glade_widget_adaptor_get_name (adaptor_iter)));
 
           if (forwidget)
             {

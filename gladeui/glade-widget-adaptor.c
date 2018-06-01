@@ -1686,6 +1686,8 @@ gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
 {
   GladeXmlNode *node = data->node;
   GModule *module = data->module;
+  guint16 deprecated_since_major = 0;
+  guint16 deprecated_since_minor = 0;
 
   /* Load catalog symbols from module */
   if (module)
@@ -1699,6 +1701,12 @@ gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
   adaptor_class->deprecated =
       glade_xml_get_property_boolean
       (node, GLADE_TAG_DEPRECATED, adaptor_class->deprecated);
+
+  glade_xml_get_property_version
+      (node, GLADE_TAG_DEPRECATED_SINCE,
+       &deprecated_since_major, &deprecated_since_minor);
+  adaptor_class->deprecated_since_major = deprecated_since_major;
+  adaptor_class->deprecated_since_minor = deprecated_since_minor;
 
   adaptor_class->toplevel =
       glade_xml_get_property_boolean

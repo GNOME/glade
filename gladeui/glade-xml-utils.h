@@ -69,6 +69,7 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_TAG_VERSION_SINCE                   "since"
 #define GLADE_TAG_BUILDER_SINCE                   "gtkbuilder-since"
 #define GLADE_TAG_DEPRECATED                      "deprecated"
+#define GLADE_TAG_DEPRECATED_SINCE                "deprecated-since"
 
 #define GLADE_TAG_GLADE_CATALOG                   "glade-catalog"
 #define GLADE_TAG_GLADE_WIDGET_CLASSES            "glade-widget-classes"
