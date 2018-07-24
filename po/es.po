@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2018-05-24 15:07+0000\n"
+"POT-Creation-Date: 2018-05-28 16:00+0000\n"
 "PO-Revision-Date: 2018-05-28 17:53+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
@@ -1858,8 +1858,7 @@ msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
 "La clase GladePropertyClass para la que se creó este GladeEditorProperty"
 
-#: ../gladeui/glade-editor-property.c:732
-#: ../gladeui/glade-property-shell.c:125
+#: ../gladeui/glade-editor-property.c:732 ../gladeui/glade-property-shell.c:125
 msgid "Use Command"
 msgstr "Usar comando"
 
@@ -1868,23 +1867,20 @@ msgid "Whether we should use the command API for the undo/redo stack"
 msgstr ""
 "Indica si se debería usar el API de comandos para la pila de deshacer/rehacer"
 
-#: ../gladeui/glade-editor-property.c:739
-#: ../gladeui/glade-property-shell.c:143
+#: ../gladeui/glade-editor-property.c:739 ../gladeui/glade-property-shell.c:143
 msgid "Disable Check"
 msgstr "Desactivar comprobación"
 
-#: ../gladeui/glade-editor-property.c:740
-#: ../gladeui/glade-property-shell.c:144
+#: ../gladeui/glade-editor-property.c:740 ../gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
 msgstr "Indica si se debe desactivar explícitamente el botón de comprobación"
 
-#: ../gladeui/glade-editor-property.c:746
-#: ../gladeui/glade-property-label.c:152 ../gladeui/glade-property-shell.c:137
+#: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-label.c:152
+#: ../gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "Texto personalizado"
 
-#: ../gladeui/glade-editor-property.c:747
-#: ../gladeui/glade-property-shell.c:138
+#: ../gladeui/glade-editor-property.c:747 ../gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
 msgstr "Testo personalizado que mostrar en la etiqueta de la propiedad"
 
@@ -2247,7 +2243,7 @@ msgstr ""
 
 #: ../gladeui/glade-previewer-main.c:306
 msgid "Print handlers signature on invocation"
-msgstr "Imprimir la firma de los manejadores al invocar"
+msgstr "Imprimir la firma de los gestores al invocar"
 
 #: ../gladeui/glade-previewer-main.c:307
 msgid "Display previewer version"
@@ -2672,7 +2668,6 @@ msgstr ""
 "Información de prioridad para que el editor de propiedades actúe sobre ella"
 
 #: ../gladeui/glade-property.c:712
-#| msgid "version"
 msgid "Precision"
 msgstr "Precisión"
 
@@ -2769,7 +2764,7 @@ msgstr "Manipulador"
 
 #: ../gladeui/glade-signal.c:190
 msgid "The handler for this signal"
-msgstr "El manejador para esta señal"
+msgstr "El gestor para esta señal"
 
 #: ../gladeui/glade-signal.c:195
 msgid "User Data"
@@ -2790,17 +2785,17 @@ msgstr "El aviso de soporte de versión para esta señal"
 #: ../gladeui/glade-signal.c:208
 msgid "Whether this signal is run after default handlers"
 msgstr ""
-"Indica si esta señal se ejecuta después de los manejadores predeterminados"
+"Indica si esta señal se ejecuta después de los gestores predeterminados"
 
 #: ../gladeui/glade-signal.c:214
 msgid "Whether the user data is swapped with the instance for the handler"
 msgstr ""
 "Indica si los datos del usuario se intercambian con la instancia del "
-"manejador"
+"gestor"
 
 #: ../gladeui/glade-signal-editor.c:514
 msgid "Select an object to pass to the handler"
-msgstr "Seleccionar un objeto que pasar al manejador"
+msgstr "Seleccionar un objeto que pasar al gestor"
 
 #: ../gladeui/glade-signal-editor.c:1299 ../plugins/gtk+/glade-accels.c:451
 msgid "Signal"
@@ -4005,19 +4000,16 @@ msgstr "Menú «Recientes»"
 msgid "Tool Item"
 msgstr "Elemento de herramienta"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:541
-#: ../plugins/gtk+/gtk+.xml.in.h:498
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:541 ../plugins/gtk+/gtk+.xml.in.h:498
 msgid "Tool Item Group"
 msgstr "Grupo de elementos de herramienta"
 
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:560
-#: ../plugins/gtk+/gtk+.xml.in.h:753
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:753
 msgid "Recent Chooser Menu"
 msgstr "Menú del selector de recientes"
 
 #. AtkRole enumeration value
-#: ../plugins/gtk+/glade-gtk-menu-shell.c:598
-#: ../plugins/gtk+/gtk+.xml.in.h:156
+#: ../plugins/gtk+/glade-gtk-menu-shell.c:598 ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "Menu Item"
 msgstr "Elemento del menú"
 
@@ -4073,8 +4065,7 @@ msgstr "Menú"
 #. GtkRecentSortType enumeration value
 #: ../plugins/gtk+/glade-gtk-toolbar.c:239
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:186
-#: ../plugins/gtk+/gtk+.xml.in.h:809
-#: ../plugins/gtk+/glade-widget-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:809 ../plugins/gtk+/glade-widget-editor.ui.h:7
 msgid "Custom"
 msgstr "Personalizado"
 
@@ -5698,8 +5689,7 @@ msgstr "Superposición de capas"
 msgid "Menu Shell"
 msgstr "Shell del menú"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:443
-#: ../plugins/gtk+/glade-button-editor.ui.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:443 ../plugins/gtk+/glade-button-editor.ui.h:8
 msgid "Position"
 msgstr "Posición"
 
@@ -6174,8 +6164,7 @@ msgstr "Aplicar"
 msgid "Help"
 msgstr "Ayuda"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:612
-#: ../plugins/gtk+/glade-button-editor.ui.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:612 ../plugins/gtk+/glade-button-editor.ui.h:7
 msgid "Stock Button"
 msgstr "Botón de stock"
 
@@ -8848,13 +8837,13 @@ msgstr "Indica si la ventana debe incluir una barra de título personalizada."
 #~ msgstr "El nombre de la señal a la que conectarse"
 
 #~ msgid "An object to pass to the handler"
-#~ msgstr "Un objeto que pasarle al manejador"
+#~ msgstr "Un objeto que pasarle al gestor"
 
 #~ msgid ""
 #~ "Whether the handler should be called before or after the default handler "
 #~ "of the signal"
 #~ msgstr ""
-#~ "Indica si el manejador debería llamarse antes o después del manejador "
+#~ "Indica si el gestor debería llamarse antes o después del gestor "
 #~ "predeterminado de la señal"
 
 #~ msgid ""
