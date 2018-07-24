@@ -4085,7 +4085,7 @@ glade_widget_read (GladeProject *project,
 		}
 
 	      if (!(widget = glade_widget_get_from_gobject (child_object)))
-		g_error ("Unable to get GladeWidget "
+		g_warning ("Unable to get GladeWidget "
 			 "for internal child %s\n", internal);
 
 	      /* Apply internal widget name from here */
