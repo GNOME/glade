@@ -98,9 +98,7 @@ sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b, GtkWidget *box)
 {
   GladeWidget *gwidget_a, *gwidget_b;
   gint position_a, position_b;
-
-  gwidget_a = glade_widget_get_from_gobject (widget_a);
-  gwidget_b = glade_widget_get_from_gobject (widget_b);
+  GtkWidget *center;
 
   /* Indirect children might be internal children, sort internal children before any other children */
   if (box != gtk_widget_get_parent (widget_a))
@@ -108,24 +106,31 @@ sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b, GtkWidget *box)
   if (box != gtk_widget_get_parent (widget_b))
     return 1;
 
-  if (gtk_box_get_center_widget (GTK_BOX (box)) == widget_a)
+  center = gtk_box_get_center_widget (GTK_BOX (box));
+  if (center == widget_a)
     return -1;
-  if (gtk_box_get_center_widget (GTK_BOX (box)) == widget_b)
-    return -1;
+  if (center == widget_b)
+    return 1;
 
-  /* XXX Sometimes the packing "position" property doesnt exist here, why ?
-   */
-  if (gwidget_a)
-    glade_widget_pack_property_get (gwidget_a, "position", &position_a);
-  else
-    gtk_container_child_get (GTK_CONTAINER (box),
-                             widget_a, "position", &position_a, NULL);
+  if ((gwidget_a = glade_widget_get_from_gobject (widget_a)) &&
+      (gwidget_b = glade_widget_get_from_gobject (widget_b)))
+    {
+      glade_widget_pack_property_get (gwidget_a, "position", &position_a);
+      glade_widget_pack_property_get (gwidget_b, "position", &position_b);
 
-  if (gwidget_b)
-    glade_widget_pack_property_get (gwidget_b, "position", &position_b);
+      /* If position is the same, try to give an stable order */
+      if (position_a == position_b)
+        return g_strcmp0 (glade_widget_get_name (gwidget_a),
+                          glade_widget_get_name (gwidget_b));
+    }
   else
-    gtk_container_child_get (GTK_CONTAINER (box),
-                             widget_b, "position", &position_b, NULL);
+    {
+      gtk_container_child_get (GTK_CONTAINER (box),
+                               widget_a, "position", &position_a, NULL);
+      gtk_container_child_get (GTK_CONTAINER (box),
+                               widget_b, "position", &position_b, NULL);
+    }
+
   return position_a - position_b;
 }
 
