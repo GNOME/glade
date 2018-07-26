@@ -435,6 +435,53 @@ glade_gtk_header_bar_verify_property (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
+static gint
+sort_children (GtkWidget *widget_a, GtkWidget *widget_b, GtkWidget *bar)
+{
+  GladeWidget *gwidget_a, *gwidget_b;
+  gint position_a, position_b;
+  GtkWidget *title;
+
+  /* title goes first */
+  title = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (bar));
+  if (title == widget_a)
+    return -1;
+  if (title == widget_b)
+    return 1;
+
+  if ((gwidget_a = glade_widget_get_from_gobject (widget_a)) &&
+      (gwidget_b = glade_widget_get_from_gobject (widget_b)))
+    {
+      glade_widget_pack_property_get (gwidget_a, "position", &position_a);
+      glade_widget_pack_property_get (gwidget_b, "position", &position_b);
+
+      /* If position is the same, try to give an stable order */
+      if (position_a == position_b)
+        return g_strcmp0 (glade_widget_get_name (gwidget_a),
+                          glade_widget_get_name (gwidget_b));
+    }
+  else
+    {
+      gtk_container_child_get (GTK_CONTAINER (bar), widget_a,
+                               "position", &position_a, NULL);
+      gtk_container_child_get (GTK_CONTAINER (bar), widget_b,
+                               "position", &position_b, NULL);
+    }
+
+  return position_a - position_b;
+}
+
+GList *
+glade_gtk_header_bar_get_children (GladeWidgetAdaptor *adaptor,
+                                   GObject            *container)
+{
+  GList *children;
+
+  children = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_children (adaptor, container);
+  return g_list_sort_with_data (children, (GCompareDataFunc) sort_children, container);
+}
+
+
 void
 glade_gtk_header_bar_child_set_property (GladeWidgetAdaptor *adaptor,
                                          GObject *container,
@@ -442,22 +489,99 @@ glade_gtk_header_bar_child_set_property (GladeWidgetAdaptor *adaptor,
                                          const gchar *property_name,
                                          const GValue *value)
 {
-  GladeWidget *gbox;
-  gint size;
+  GladeWidget *gbox, *gchild, *gchild_iter;
+  GList *children, *list;
+  gboolean is_position;
+  gint old_position, iter_position, new_position;
+  static gboolean recursion = FALSE;
 
-  d(g_message ("Set child prop %s %s\n", g_type_name_from_instance (child), property_name));
-
-  gtk_container_child_set_property (GTK_CONTAINER (container),
-                                    GTK_WIDGET (child),
-                                    property_name,
-                                    value);
+  g_return_if_fail (GTK_IS_HEADER_BAR (container));
+  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (property_name != NULL || value != NULL);
 
   gbox = glade_widget_get_from_gobject (container);
-  if (!glade_widget_superuser ())
+  gchild = glade_widget_get_from_gobject (child);
+
+  g_return_if_fail (GLADE_IS_WIDGET (gbox));
+
+  /* Get old position */
+  if ((is_position = (strcmp (property_name, "position") == 0)) != FALSE)
     {
-      glade_widget_property_get (gbox, "size", &size);
-      glade_widget_property_set (gbox, "size", size);
+      gtk_container_child_get (GTK_CONTAINER (container),
+                               GTK_WIDGET (child),
+                               "position", &old_position,
+                               NULL);
+
+
+      /* Get the real value */
+      new_position = g_value_get_int (value);
     }
+
+  if (is_position && recursion == FALSE)
+    {
+      children = glade_widget_get_children (gbox);
+
+      for (list = children; list; list = list->next)
+        {
+          gchild_iter = glade_widget_get_from_gobject (list->data);
+
+          if (gchild_iter == gchild)
+            {
+              gtk_container_child_set (GTK_CONTAINER (container),
+                                       GTK_WIDGET (child),
+                                      "position", new_position,
+                                       NULL);
+              continue;
+            }
+
+          /* Get the old value from glade */
+          glade_widget_pack_property_get
+              (gchild_iter, "position", &iter_position);
+
+          /* Search for the child at the old position and update it */
+          if (iter_position == new_position &&
+              glade_property_superuser () == FALSE)
+            {
+              /* Update glade with the real value */
+              recursion = TRUE;
+              glade_widget_pack_property_set
+                  (gchild_iter, "position", old_position);
+              recursion = FALSE;
+              continue;
+            }
+          else
+            {
+              gtk_container_child_set (GTK_CONTAINER (container),
+                                       GTK_WIDGET (list->data),
+                                      "position", iter_position,
+                                       NULL);
+            }
+        }
+
+      for (list = children; list; list = list->next)
+        {
+          gchild_iter = glade_widget_get_from_gobject (list->data);
+
+          /* Refresh values yet again */
+          glade_widget_pack_property_get
+              (gchild_iter, "position", &iter_position);
+
+          gtk_container_child_set (GTK_CONTAINER (container),
+                                   GTK_WIDGET (list->data),
+                                   "position", iter_position,
+                                   NULL);
+        }
+
+      if (children)
+        g_list_free (children);
+    }
+
+  /* Chain Up */
+  if (!is_position)
+    GWA_GET_CLASS
+        (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
+                                                  container,
+                                                  child, property_name, value);
 }
 
 

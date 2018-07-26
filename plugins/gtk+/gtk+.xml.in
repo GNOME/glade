@@ -2516,7 +2516,9 @@
 
     <glade-widget-class name="GtkHeaderBar" generic-name="headerbar" _title="HeaderBar" since="3.10">
       <post-create-function>glade_gtk_header_bar_post_create</post-create-function>
+      <get-children-function>glade_gtk_header_bar_get_children</get-children-function>
       <add-child-function>glade_gtk_header_bar_add_child</add-child-function>
+      <child-set-property-function>glade_gtk_header_bar_child_set_property</child-set-property-function>
       <action-activate-function>glade_gtk_header_bar_action_activate</action-activate-function>
       <child-action-activate-function>glade_gtk_header_bar_child_action_activate</child-action-activate-function>
       <set-property-function>glade_gtk_header_bar_set_property</set-property-function>
