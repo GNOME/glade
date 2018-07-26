@@ -1918,13 +1918,14 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 
   if (pspec->value_type == G_TYPE_STRV ||
       pspec->value_type == value_array_type ||
-      pspec->value_type == GDK_TYPE_PIXBUF)
+      pspec->value_type == GDK_TYPE_PIXBUF ||
+      pspec->value_type == G_TYPE_FILE)
     {
       GladeWidget *gwidget = glade_property_get_widget (eprop->priv->property);
 
       val = glade_property_class_make_gvalue_from_string (eprop->priv->klass, 
-							  text, 
-							  glade_widget_get_project (gwidget));
+                                                          text,
+                                                          glade_widget_get_project (gwidget));
     }
   else
     {
@@ -2254,6 +2255,15 @@ glade_eprop_text_show_resource_dialog (GladeEditorProperty *eprop)
 
   if (glade_editor_property_show_resource_dialog (project, GTK_WIDGET (eprop), &text))
     {
+      GParamSpec *pspec = glade_property_class_get_pspec (eprop->priv->klass);
+
+      if (G_PARAM_SPEC_VALUE_TYPE (pspec) == G_TYPE_FILE)
+        {
+          gchar *path = text;
+          text = g_strconcat ("file://", path, NULL);
+          g_free (path);
+        }
+
       glade_eprop_text_changed_common (eprop, text, eprop->priv->use_command);
 
       glade_editor_property_load (eprop, eprop->priv->property);
@@ -2460,7 +2470,8 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
       g_signal_connect (G_OBJECT (eprop_text->text_entry), "changed",
                         G_CALLBACK (glade_eprop_text_changed), eprop);
 
-      if (pspec->value_type == GDK_TYPE_PIXBUF)
+      if (pspec->value_type == GDK_TYPE_PIXBUF ||
+          pspec->value_type == G_TYPE_FILE)
         {
           gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_text->text_entry),
                                              GTK_ENTRY_ICON_SECONDARY,

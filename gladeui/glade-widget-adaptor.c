@@ -1263,7 +1263,8 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
     type = GLADE_TYPE_EPROP_UNICHAR;
   else if (G_IS_PARAM_SPEC_OBJECT (pspec))
     {
-      if (pspec->value_type == GDK_TYPE_PIXBUF)
+      if (pspec->value_type == GDK_TYPE_PIXBUF ||
+          pspec->value_type == G_TYPE_FILE)
         type = GLADE_TYPE_EPROP_TEXT;
       else
         type = GLADE_TYPE_EPROP_OBJECT;

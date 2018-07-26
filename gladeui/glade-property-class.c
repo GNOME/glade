@@ -411,6 +411,11 @@ glade_property_class_make_string_from_object (GladePropertyClass *
       if ((filename = g_object_get_data (object, "GladeFileName")) != NULL)
         string = g_strdup (filename);
     }
+  else if (property_class->pspec->value_type == G_TYPE_FILE)
+    {
+      if ((filename = g_object_get_data (object, "GladeFileURI")) != NULL)
+        string = g_strdup (filename);
+    }
   else if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
     string = g_strdup (glade_widget_get_name (gwidget));
   else
@@ -714,10 +719,10 @@ glade_property_class_make_object_from_string (GladePropertyClass *
   GObject *object = NULL;
   gchar *fullpath;
 
-  if (string == NULL)
+  if (string == NULL || project == NULL)
     return NULL;
 
-  if (property_class->pspec->value_type == GDK_TYPE_PIXBUF && project)
+  if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
     {
       GdkPixbuf *pixbuf;
 
@@ -744,7 +749,20 @@ glade_property_class_make_object_from_string (GladePropertyClass *
 
       g_free (fullpath);
     }
-  else if (project)
+  else if (property_class->pspec->value_type == G_TYPE_FILE)
+    {
+      GFile *file;
+
+      if (*string == '\0')
+        return NULL;
+
+      file = g_file_new_for_uri (string);
+
+      object = G_OBJECT (file);
+      g_object_set_data_full (object, "GladeFileURI",
+                              g_strdup (string), g_free);
+    }
+  else
     {
       GladeWidget *gwidget;
       if ((gwidget = glade_project_get_widget_by_name (project, string)) != NULL)
@@ -1292,7 +1310,8 @@ glade_property_class_is_object (GladePropertyClass * klass)
 
   return (GLADE_IS_PARAM_SPEC_OBJECTS (klass->pspec) ||
           (G_IS_PARAM_SPEC_OBJECT (klass->pspec) &&
-           klass->pspec->value_type != GDK_TYPE_PIXBUF));
+           klass->pspec->value_type != GDK_TYPE_PIXBUF &&
+           klass->pspec->value_type != G_TYPE_FILE));
 }
 
 void

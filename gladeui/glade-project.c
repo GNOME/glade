@@ -1528,11 +1528,12 @@ update_project_for_resource_path (GladeProject *project)
           pspec    = glade_property_class_get_pspec (klass);
 
           /* XXX We should have a "resource" flag on properties that need
-           *   to be loaded from the resource path, but that would require
+           * to be loaded from the resource path, but that would require
            * that they can serialize both ways (custom properties are only
-                                                * required to generate unique strings for value comparisons).
-                                                  */
-          if (pspec->value_type == GDK_TYPE_PIXBUF)
+           * required to generate unique strings for value comparisons).
+           */
+          if (pspec->value_type == GDK_TYPE_PIXBUF ||
+              pspec->value_type == G_TYPE_FILE)
             {
               GValue *value;
               gchar  *string;
