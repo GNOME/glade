@@ -561,7 +561,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">22</property>
+            <property name="top_attach">24</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -578,7 +578,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">23</property>
+            <property name="top_attach">25</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -595,7 +595,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">22</property>
+            <property name="top_attach">24</property>
             <property name="width">4</property>
             <property name="height">1</property>
           </packing>
@@ -611,7 +611,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">23</property>
+            <property name="top_attach">25</property>
             <property name="width">4</property>
             <property name="height">1</property>
           </packing>
@@ -685,7 +685,7 @@ instead of setting a literal tooltip</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">24</property>
+            <property name="top_attach">26</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -701,7 +701,7 @@ instead of setting a literal tooltip</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">24</property>
+            <property name="top_attach">26</property>
             <property name="width">4</property>
             <property name="height">1</property>
           </packing>
@@ -1008,6 +1008,24 @@ instead of setting a literal tooltip</property>
           </packing>
         </child>
         <child>
+          <object class="GladePropertyLabel" id="margin_start_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">end</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">margin-start</property>
+            <property name="custom_text" translatable="yes">Start:</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">20</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GladePropertyLabel" id="margin_left_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -1019,8 +1037,26 @@ instead of setting a literal tooltip</property>
             <property name="custom_text" translatable="yes">Left:</property>
           </object>
           <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">22</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="margin_end_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">end</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">margin-end</property>
+            <property name="custom_text" translatable="yes">End:</property>
+          </object>
+          <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">20</property>
+            <property name="top_attach">21</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -1038,8 +1074,24 @@ instead of setting a literal tooltip</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">21</property>
+            <property name="top_attach">22</property>
             <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="margin_start_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">margin-start</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">20</property>
+            <property name="width">2</property>
             <property name="height">1</property>
           </packing>
         </child>
@@ -1053,8 +1105,24 @@ instead of setting a literal tooltip</property>
             <property name="property_name">margin-left</property>
           </object>
           <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">22</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="margin_end_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">margin-end</property>
+          </object>
+          <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">20</property>
+            <property name="top_attach">21</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -1070,7 +1138,7 @@ instead of setting a literal tooltip</property>
           </object>
           <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">21</property>
+            <property name="top_attach">22</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -1176,9 +1244,13 @@ instead of setting a literal tooltip</property>
       <editor id="margin_bottom_label"/>
       <editor id="margin_top_editor"/>
       <editor id="margin_bottom_editor"/>
+      <editor id="margin_start_label"/>
       <editor id="margin_left_label"/>
+      <editor id="margin_end_label"/>
       <editor id="margin_right_label"/>
+      <editor id="margin_start_editor"/>
       <editor id="margin_left_editor"/>
+      <editor id="margin_end_editor"/>
       <editor id="margin_right_editor"/>
     </child-editors>
   </template>
