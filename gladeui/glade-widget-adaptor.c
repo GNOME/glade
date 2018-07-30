@@ -1247,7 +1247,8 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
       else if (pspec->value_type == G_TYPE_STRV)
         type = GLADE_TYPE_EPROP_TEXT;
     }
-  else if (G_IS_PARAM_SPEC_STRING (pspec))
+  else if (G_IS_PARAM_SPEC_STRING (pspec) ||
+           G_IS_PARAM_SPEC_VARIANT (pspec))
     type = GLADE_TYPE_EPROP_TEXT;
   else if (G_IS_PARAM_SPEC_BOOLEAN (pspec))
     type = GLADE_TYPE_EPROP_BOOL;

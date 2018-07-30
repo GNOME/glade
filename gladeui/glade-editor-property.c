@@ -1919,7 +1919,8 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
   if (pspec->value_type == G_TYPE_STRV ||
       pspec->value_type == value_array_type ||
       pspec->value_type == GDK_TYPE_PIXBUF ||
-      pspec->value_type == G_TYPE_FILE)
+      pspec->value_type == G_TYPE_FILE ||
+      pspec->value_type == G_TYPE_VARIANT)
     {
       GladeWidget *gwidget = glade_property_get_widget (eprop->priv->property);
 

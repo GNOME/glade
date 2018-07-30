@@ -581,6 +581,13 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
   else if (G_IS_PARAM_SPEC_BOOLEAN (property_class->pspec))
     string = g_strdup_printf ("%s", g_value_get_boolean (value) ?
                               GLADE_TAG_TRUE : GLADE_TAG_FALSE);
+  else if (G_IS_PARAM_SPEC_VARIANT (property_class->pspec))
+    {
+      GVariant *variant;
+
+      if ((variant = g_value_get_variant (value)))
+        string = g_variant_print (variant, TRUE);
+    }
   else if (G_IS_PARAM_SPEC_OBJECT (property_class->pspec))
     {
       object = g_value_get_object (value);
@@ -878,6 +885,8 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
           g_value_take_boxed (value, strv);
         }
     }
+  else if (G_IS_PARAM_SPEC_VARIANT (property_class->pspec))
+    g_value_take_variant (value, g_variant_parse (NULL, string, NULL, NULL, NULL));
   else if (G_IS_PARAM_SPEC_INT (property_class->pspec))
     g_value_set_int (value, g_ascii_strtoll (string, NULL, 10));
   else if (G_IS_PARAM_SPEC_UINT (property_class->pspec))
