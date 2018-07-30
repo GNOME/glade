@@ -73,20 +73,6 @@ Author: Matthias Clasen <mclasen@redhat.com>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="action_name_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">action-name</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">2</property>
-            <property name="width">4</property>
           </packing>
         </child>
         <child>
@@ -99,21 +85,7 @@ Author: Matthias Clasen <mclasen@redhat.com>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="text_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">text</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">3</property>
-            <property name="width">4</property>
+            <property name="top_attach">4</property>
           </packing>
         </child>
         <child>
@@ -126,62 +98,20 @@ Author: Matthias Clasen <mclasen@redhat.com>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="menu_name_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">menu-name</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">4</property>
-            <property name="width">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="inverted_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">inverted</property>
-            <property name="editor_type">GladeEpropCheck</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
             <property name="top_attach">5</property>
-            <property name="width">4</property>
           </packing>
         </child>
         <child>
-          <object class="GladePropertyLabel" id="centered_label">
+          <object class="GladePropertyLabel" id="action_target_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
-            <property name="property_name">centered</property>
+            <property name="property_name">action-target</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="centered_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">centered</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">6</property>
-            <property name="width">4</property>
+            <property name="top_attach">3</property>
           </packing>
         </child>
         <child>
@@ -194,8 +124,59 @@ Author: Matthias Clasen <mclasen@redhat.com>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
-            <property name="width">2</property>
+            <property name="top_attach">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="action_name_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">action-name</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+            <property name="width">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="action_target_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">action-target</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">3</property>
+            <property name="width">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="text_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">text</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">4</property>
+            <property name="width">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="menu_name_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">menu-name</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
+            <property name="width">5</property>
           </packing>
         </child>
         <child>
@@ -206,23 +187,35 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="property_name">icon</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">7</property>
-            <property name="width">4</property>
+            <property name="left_attach">1</property>
+            <property name="top_attach">6</property>
+            <property name="width">5</property>
           </packing>
         </child>
         <child>
-          <object class="GladePropertyLabel" id="iconic_label">
+          <object class="GladePropertyShell" id="inverted_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
             <property name="hexpand">False</property>
-            <property name="property_name">iconic</property>
+            <property name="property_name">inverted</property>
+            <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
-            <property name="width">2</property>
+            <property name="left_attach">1</property>
+            <property name="top_attach">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="centered_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">centered</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">7</property>
           </packing>
         </child>
         <child>
@@ -231,15 +224,13 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="can_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">iconic</property>
+            <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">8</property>
-            <property name="width">4</property>
+            <property name="left_attach">3</property>
+            <property name="top_attach">7</property>
+            <property name="width">3</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
         </child>
         <child>
           <placeholder/>
@@ -254,17 +245,17 @@ Author: Matthias Clasen <mclasen@redhat.com>
     <child-editors>
       <editor id="embed"/>
       <editor id="action_name_label"/>
-      <editor id="action_name_editor"/>
       <editor id="text_label"/>
-      <editor id="text_editor"/>
       <editor id="menu_name_label"/>
-      <editor id="menu_name_editor"/>
-      <editor id="inverted_editor"/>
-      <editor id="centered_label"/>
-      <editor id="centered_editor"/>
+      <editor id="action_target_label"/>
       <editor id="icon_label"/>
+      <editor id="action_name_editor"/>
+      <editor id="action_target_editor"/>
+      <editor id="text_editor"/>
+      <editor id="menu_name_editor"/>
       <editor id="icon_editor"/>
-      <editor id="iconic_label"/>
+      <editor id="inverted_editor"/>
+      <editor id="centered_editor"/>
       <editor id="iconic_editor"/>
     </child-editors>
   </template>
