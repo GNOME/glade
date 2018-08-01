@@ -22,6 +22,7 @@
  */
 
 #include "glade-app.h"
+#include "glade-private.h"
 #include "gladeui-enum-types.h"
 #include "glade-adaptor-chooser-widget.h"
 #include "glade-dnd.h"
@@ -382,7 +383,7 @@ adaptor_text_cell_data_func (GtkTreeViewColumn *tree_column,
   if (adaptor)
     g_object_set (cell,
                   "sensitive", TRUE,
-                  "text", glade_widget_adaptor_get_name (adaptor),
+                  "text", _glade_widget_adaptor_get_real_name (adaptor),
                   "style", PANGO_STYLE_NORMAL,
                   NULL);
   else
