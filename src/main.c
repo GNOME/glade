@@ -18,6 +18,7 @@
  * Authors:
  *   Chema Celorio <chema@celorio.com>
  *   Vincent Geddes <vgeddes@gnome.org>
+ *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
 #include <config.h>
@@ -44,7 +45,7 @@
 
 /* Application arguments */
 static gboolean version = FALSE, without_devhelp = FALSE;
-static gchar **files = NULL;
+static gboolean verbose = FALSE;
 
 static GOptionEntry option_entries[] = {
   {"version", '\0', 0, G_OPTION_ARG_NONE, &version,
@@ -53,29 +54,14 @@ static GOptionEntry option_entries[] = {
   {"without-devhelp", '\0', 0, G_OPTION_ARG_NONE, &without_devhelp,
    N_("Disable Devhelp integration"), NULL},
 
-  {G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &files,
-   NULL, N_("[FILE...]")},
-
-  {NULL}
-};
-
-/* Debugging arguments */
-static gboolean verbose = FALSE;
-
-static GOptionEntry debug_option_entries[] = {
   {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, N_("be verbose"), NULL},
+
   {NULL}
 };
 
-int
-main (int argc, char *argv[])
+static void
+startup (GApplication *application)
 {
-  GladeWindow *window;
-  GOptionContext *option_context;
-  GOptionGroup *option_group;
-  GError *error = NULL;
-  GTimer *timer = NULL;
-
 #ifdef ENABLE_NLS
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, glade_app_get_locale_dir ());
@@ -83,61 +69,102 @@ main (int argc, char *argv[])
   textdomain (GETTEXT_PACKAGE);
 #endif
 
-  /* Set up option groups */
-  option_context = g_option_context_new (NULL);
+  glade_setup_log_handlers ();
 
-  g_option_context_set_summary (option_context,
-                                N_("Create or edit user interface designs for GTK+ or GNOME applications."));
-  g_option_context_set_translation_domain (option_context, GETTEXT_PACKAGE);
+  g_set_application_name (APPLICATION_NAME);
 
-  option_group = g_option_group_new ("glade",
-                                     N_("Glade options"),
-                                     N_("Glade options"), NULL, NULL);
-  g_option_group_add_entries (option_group, option_entries);
-  g_option_context_set_main_group (option_context, option_group);
-  g_option_group_set_translation_domain (option_group, GETTEXT_PACKAGE);
+  gtk_window_set_default_icon_name ("glade");
 
-  option_group = g_option_group_new ("debug",
-                                     N_("Glade debug options"),
-                                     N_("Show Glade debug options"),
-                                     NULL, NULL);
-  g_option_group_add_entries (option_group, debug_option_entries);
-  g_option_group_set_translation_domain (option_group, GETTEXT_PACKAGE);
-  g_option_context_add_group (option_context, option_group);
+}
 
-  /* Add Gtk option group */
-  g_option_context_add_group (option_context, gtk_get_option_group (FALSE));
+static void
+on_quit_activate (GAction      *action,
+                  GVariant     *parameter,
+                  GApplication *application)
+{
+  g_application_quit (application);
+}
 
-  /* Parse command line */
-  if (!g_option_context_parse (option_context, &argc, &argv, &error))
-    {
-      g_option_context_free (option_context);
+static void
+activate (GApplication *application)
 
-      if (error)
-        {
-          g_print ("%s\n", error->message);
-          g_error_free (error);
-        }
-      else
-        g_print ("An unknown error occurred\n");
-
-      return -1;
-    }
-
-  g_option_context_free (option_context);
-  option_context = NULL;
+{
+  GladeWindow *window;
+  GAction *quit;
 
   if (version != FALSE)
     {
       /* Print version information and exit */
       g_print ("%s\n", PACKAGE_STRING);
-      return 0;
+      g_application_quit (application);
+      return;
     }
 
-  /* Pass NULL here since we parsed the gtk+ args already...
-   * from this point on we need a DISPLAY variable to be set.
-   */
-  gtk_init (NULL, NULL);
+  window = GLADE_WINDOW (glade_window_new ());
+  gtk_application_add_window (GTK_APPLICATION (application),
+                              GTK_WINDOW (window));
+
+  if (without_devhelp == FALSE)
+    glade_window_check_devhelp (window);
+
+  gtk_widget_show (GTK_WIDGET (window));
+
+  glade_window_registration_notify_user (window);
+
+
+  quit = g_action_map_lookup_action (G_ACTION_MAP (window), "quit");
+  g_signal_connect (quit, "activate", G_CALLBACK (on_quit_activate), application);
+}
+
+static void
+open (GApplication  *application,
+      GFile        **files,
+      gint           n_files,
+      const gchar   *hint)
+{
+  GTimer *timer = NULL;
+  GtkWindow *window;
+  gint i;
+
+  g_application_activate (application);
+
+  window = gtk_application_get_active_window (GTK_APPLICATION (application));
+  
+  if (verbose) timer = g_timer_new ();
+
+  for (i = 0; i < n_files; i++)
+    {
+      gchar *path = g_file_get_path (files[i]);
+
+      for (i = 0; files[i]; ++i)
+        {
+          if (verbose) g_timer_start (timer);
+
+          if (g_file_test (path, G_FILE_TEST_EXISTS) != FALSE)
+            glade_window_open_project (GLADE_WINDOW (window), path);
+          else
+            g_warning (_("Unable to open '%s', the file does not exist.\n"),
+                       path);
+
+          if (verbose)
+            {
+              g_timer_stop (timer);
+              g_message ("Loading '%s' took %lf seconds", path,
+                         g_timer_elapsed (timer, NULL));
+            }
+        }
+
+      g_free (path);
+    }
+
+  if (verbose) g_timer_destroy (timer);
+}
+
+int
+main (int argc, char *argv[])
+{
+  GtkApplication *app;
+  int status;
 
   /* Check for gmodule support */
   if (!g_module_supported ())
@@ -147,55 +174,20 @@ main (int argc, char *argv[])
       return -1;
     }
 
-  g_set_application_name (APPLICATION_NAME);
-  gtk_window_set_default_icon_name ("glade");
+  app = gtk_application_new ("org.gnome.Glade", G_APPLICATION_HANDLES_OPEN);
 
-  glade_setup_log_handlers ();
+  g_application_set_option_context_summary (G_APPLICATION (app),
+                                            N_("Create or edit user interface designs for GTK+ or GNOME applications."));
+  g_application_add_main_option_entries (G_APPLICATION (app), option_entries);
 
-  window = GLADE_WINDOW (glade_window_new ());
+  g_signal_connect (app, "startup", G_CALLBACK (startup), NULL);
+  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+  g_signal_connect (app, "open", G_CALLBACK (open), NULL);
 
-  if (without_devhelp == FALSE)
-    glade_window_check_devhelp (window);
+  status = g_application_run (G_APPLICATION (app), argc, argv);
+  g_object_unref (app);
 
-  gtk_widget_show (GTK_WIDGET (window));
-
-  /* Update UI before loading files */
-  while (gtk_events_pending ()) gtk_main_iteration ();
-
-  if (verbose) timer = g_timer_new ();
-  
-  /* load files specified on commandline */
-  if (files != NULL)
-    {
-      guint i;
-
-      for (i = 0; files[i]; ++i)
-        {
-          if (verbose) g_timer_start (timer);
-          
-          if (g_file_test (files[i], G_FILE_TEST_EXISTS) != FALSE)
-	    glade_window_open_project (window, files[i]);
-          else
-            g_warning (_("Unable to open '%s', the file does not exist.\n"),
-                       files[i]);
-
-          if (verbose)
-            {
-              g_timer_stop (timer);
-              g_message ("Loading '%s' took %lf seconds", files[i],
-                         g_timer_elapsed (timer, NULL));
-            }
-        }
-      g_strfreev (files);
-    }
-
-  if (verbose) g_timer_destroy (timer);
-
-  glade_window_registration_notify_user (window);
-  
-  gtk_main ();
-
-  return 0;
+  return status;
 }
 
 #ifdef G_OS_WIN32

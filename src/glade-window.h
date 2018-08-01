@@ -38,14 +38,13 @@ typedef struct _GladeWindowClass    GladeWindowClass;
 
 struct _GladeWindow
 {
-	GtkWindow parent_instance;
-	
-	GladeWindowPrivate *priv;
+  GtkApplicationWindow parent_instance;
+  GladeWindowPrivate *priv;
 };
 
 struct _GladeWindowClass
 {
-	GtkWindowClass parent_class;
+  GtkApplicationWindowClass parent_class;
 };
 
 GType       glade_window_get_type      (void) G_GNUC_CONST;
@@ -55,7 +54,7 @@ GtkWidget  *glade_window_new           (void);
 void        glade_window_new_project   (GladeWindow *window);
 
 gboolean    glade_window_open_project  (GladeWindow *window,
-					const gchar *path);
+                                        const gchar *path);
 
 void        glade_window_check_devhelp (GladeWindow *window);
 
