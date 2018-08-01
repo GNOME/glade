@@ -946,6 +946,10 @@ glade_widget_constructor (GType                  type,
   /* Verify support warnings to start off */
   glade_widget_verify (gwidget);
 
+  if (g_str_has_prefix (glade_widget_adaptor_get_name (gwidget->priv->adaptor),
+                        GLADE_WIDGET_INSTANTIABLE_PREFIX))
+    glade_widget_set_is_composite (gwidget, TRUE);
+
   return ret_obj;
 }
 
@@ -4008,6 +4012,13 @@ glade_widget_read_child (GladeWidget *widget, GladeXmlNode *node)
  * @parent: The parent #GladeWidget or %NULL
  * @node: a #GladeXmlNode
  *
+ * Creates a new #GladeWidget from a XML node.
+ *
+ * If node is a template and its parent class is abstract/non instantiable,
+ * Glade will use a class with the GladeInstantiable prefix instead.
+ *
+ * For example, with a GtkBin template Glade will GladeInstantiableGtkBin class
+ *
  * Returns: a new #GladeWidget for @project, based on @node
  */
 GladeWidget *
@@ -4059,6 +4070,26 @@ glade_widget_read (GladeProject *project,
 	  else if (strncmp (id, GLADE_UNNAMED_PREFIX, strlen (GLADE_UNNAMED_PREFIX)) == 0)
 	    g_warning ("Loaded widget `%s' has internal glade prefix, please rename this widget", id);
 	}
+
+      if (template_parent)
+        {
+          GType template_type = glade_util_get_type_from_name (template_parent, FALSE);
+
+          /* Check if there is an instantiable version for this abstract class */
+          if (G_TYPE_IS_ABSTRACT (template_type))
+            {
+              gchar *instantiable = g_strconcat (GLADE_WIDGET_INSTANTIABLE_PREFIX,
+                                                 template_parent,
+                                                 NULL);
+              if (glade_util_get_type_from_name (instantiable, FALSE))
+                {
+                  g_free (template_parent);
+                  template_parent = instantiable;
+                }
+              else
+                g_free (instantiable);
+            }
+        }
 
       type_to_use = template_parent ? template_parent : klass;
 
@@ -4327,11 +4358,12 @@ glade_widget_write (GladeWidget     *widget,
     {
       widget_node = glade_xml_node_new (context, GLADE_XML_TAG_TEMPLATE);
       glade_xml_node_set_property_string (widget_node,
-					  GLADE_XML_TAG_CLASS,
-					  widget->priv->name);
+                                          GLADE_XML_TAG_CLASS,
+                                          widget->priv->name);
+
       glade_xml_node_set_property_string (widget_node,
-					  GLADE_TAG_PARENT,
-					  glade_widget_adaptor_get_name (widget->priv->adaptor));
+                                          GLADE_TAG_PARENT,
+                                          _glade_widget_adaptor_get_real_name (adaptor));
     }
   else
     {
