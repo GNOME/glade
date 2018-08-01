@@ -22,6 +22,7 @@
 #include <config.h>
 #include <glib/gi18n-lib.h>
 #include "glade.h"
+#include "glade-private.h"
 #include "gladeui-enum-types.h"
 
 #include "glade-editor-table.h"
@@ -337,7 +338,7 @@ glade_editor_table_load (GladeEditable *editable, GladeWidget *widget)
       table->priv->adaptor = glade_widget_get_adaptor (widget);
 
       if (table->priv->type == GLADE_PAGE_GENERAL)
-	append_name_field (table);
+        append_name_field (table);
 
       append_items (table, table->priv->adaptor, table->priv->type);
     }
@@ -377,26 +378,31 @@ glade_editor_table_load (GladeEditable *editable, GladeWidget *widget)
                          (GWeakNotify) widget_finalized, table);
 
       if (table->priv->composite_check)
-	{
-	  GObject *object = glade_widget_get_object (table->priv->loaded_widget);
+        {
+          GObject *object = glade_widget_get_object (table->priv->loaded_widget);
+          GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (table->priv->loaded_widget);
 
-	  if (GTK_IS_WIDGET (object) && 
-	      glade_widget_get_parent (table->priv->loaded_widget) == NULL)
-	    gtk_widget_show (table->priv->composite_check);
-	  else
-	    gtk_widget_hide (table->priv->composite_check);
-	}
+          if (GTK_IS_WIDGET (object) &&
+              glade_widget_get_parent (table->priv->loaded_widget) == NULL)
+            gtk_widget_show (table->priv->composite_check);
+          else
+            gtk_widget_hide (table->priv->composite_check);
+
+          gtk_widget_set_sensitive (table->priv->composite_check,
+                                    !g_str_has_prefix (glade_widget_adaptor_get_name (adaptor),
+                                                       GLADE_WIDGET_INSTANTIABLE_PREFIX));
+        }
 
       if (table->priv->name_entry)
-	{
-	  if (glade_widget_has_name (widget))
-	    gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), glade_widget_get_name (widget));
-	  else
-	    gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
-	}
+        {
+          if (glade_widget_has_name (widget))
+            gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), glade_widget_get_name (widget));
+          else
+            gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
+        }
 
       if (table->priv->name_label)
-	widget_composite_changed (widget, NULL, table);
+        widget_composite_changed (widget, NULL, table);
     }
   else if (table->priv->name_entry)
     gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
