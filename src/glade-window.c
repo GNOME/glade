@@ -103,8 +103,6 @@ struct _GladeWindowPrivate
   guint statusbar_menu_context_id;      /* The context id of the menu bar */
   guint statusbar_actions_context_id;   /* The context id of actions messages */
 
-  GActionGroup *actions;
-
   GtkRecentManager *recent_manager;
   GtkWidget *recent_menu;
 
@@ -131,7 +129,7 @@ struct _GladeWindowPrivate
 
 static void check_reload_project (GladeWindow *window, GladeProject *project);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeWindow, glade_window, GTK_TYPE_APPLICATION_WINDOW)
 
 static void
 refresh_title (GladeWindow *window)
@@ -408,7 +406,7 @@ project_targets_changed_cb (GladeProject *project, GladeWindow *window)
 static void
 actions_set_enabled (GladeWindow *window, const gchar *name, gboolean enabled)
 {
-  GAction *action = g_action_map_lookup_action (G_ACTION_MAP (window->priv->actions), name);
+  GAction *action = g_action_map_lookup_action (G_ACTION_MAP (window), name);
   g_simple_action_set_enabled (G_SIMPLE_ACTION (action), enabled);
 }
 
@@ -1540,7 +1538,7 @@ drag_data_received (GtkWidget *widget,
 static gboolean
 delete_event (GtkWindow *w, GdkEvent *event, GladeWindow *window)
 {
-  g_action_group_activate_action (window->priv->actions, "quit", NULL);
+  g_action_group_activate_action (G_ACTION_GROUP (window), "quit", NULL);
 
   /* return TRUE to stop other handlers */
   return TRUE;
@@ -2079,8 +2077,6 @@ on_quit_action_activate (GSimpleAction *action,
   glade_window_config_save (window);
 
   g_list_free (projects);
-
-  gtk_main_quit ();
 }
 
 static void
@@ -2148,10 +2144,9 @@ glade_window_init (GladeWindow *window)
 static void
 glade_window_action_handler (GladeWindow *window, const gchar *name)
 {
-  GladeWindowPrivate *priv = window->priv;
   GAction *action;
 
-  if ((action = g_action_map_lookup_action (G_ACTION_MAP (priv->actions), name)))
+  if ((action = g_action_map_lookup_action (G_ACTION_MAP (window), name)))
     g_action_activate (action, NULL);
 }
 
@@ -2221,12 +2216,12 @@ on_intro_show_node (GladeIntro  *intro,
   if (!g_strcmp0 (node, "new-project"))
     {
       /* Create two new project to make the project switcher visible */
-      g_action_group_activate_action (window->priv->actions, "new", NULL);
-      g_action_group_activate_action (window->priv->actions, "new", NULL);
+      g_action_group_activate_action (G_ACTION_GROUP (window), "new", NULL);
+      g_action_group_activate_action (G_ACTION_GROUP (window), "new", NULL);
     }
   else if (!g_strcmp0 (node, "add-project"))
     {
-      GAction *new_action = g_action_map_lookup_action (G_ACTION_MAP (priv->actions), "new");
+      GAction *new_action = g_action_map_lookup_action (G_ACTION_MAP (window), "new");
 
       g_signal_connect (new_action, "activate",
                         G_CALLBACK (on_user_new_action_activate),
@@ -2393,9 +2388,8 @@ glade_window_constructed (GObject *object)
   priv->recent_manager = gtk_recent_manager_get_default ();
 
   /* Setup Actions */
-  priv->actions = (GActionGroup *) g_simple_action_group_new ();
-  g_action_map_add_action_entries (G_ACTION_MAP (priv->actions), actions, G_N_ELEMENTS (actions), window);
-  gtk_widget_insert_action_group (GTK_WIDGET (window), "app", priv->actions);
+  g_action_map_add_action_entries (G_ACTION_MAP (window), actions, G_N_ELEMENTS (actions), window);
+  gtk_widget_insert_action_group (GTK_WIDGET (window), "app", G_ACTION_GROUP(window));
 
   /* status bar */
   priv->statusbar_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar), "general");
