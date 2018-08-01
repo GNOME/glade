@@ -59,6 +59,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-app-chooser-widget.c	\
 	glade-gtk-arrow.c		\
 	glade-gtk-assistant.c		\
+	glade-gtk-bin.c			\
 	glade-gtk-box.c			\
 	glade-gtk-button.c		\
 	glade-gtk-cell-layout.c		\

@@ -628,7 +628,9 @@
           <property id="child" disabled="True"/>
         </properties>
       </glade-widget-class>
-      
+
+      <glade-widget-class name="GladeInstantiableGtkBin" generic-name="bin" _title="Bin" toplevel="True" />
+
       <glade-widget-class name="GtkBox" generic-name="box" _title="Box">
         <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
         <create-editable-function>glade_gtk_box_create_editable</create-editable-function>
@@ -5574,6 +5576,7 @@
     </glade-widget-group>
     
     <glade-widget-group name="gtk-containers" _title="Containers">
+      <glade-widget-class-ref name="GladeInstantiableGtkBin"/>
       <glade-widget-class-ref name="GtkBox"/>
       <glade-widget-class-ref name="GtkGrid"/>
       <glade-widget-class-ref name="GtkNotebook"/>
