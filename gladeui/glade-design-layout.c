@@ -27,6 +27,7 @@
 #include "config.h"
 
 #include "glade.h"
+#include "glade-private.h"
 #include "glade-design-layout.h"
 #include "glade-design-private.h"
 #include "glade-accumulators.h"
@@ -953,7 +954,7 @@ update_widget_name (GladeDesignLayout *layout, GladeWidget *gwidget)
       else
         {
           GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (gwidget);
-          pango_layout_set_text (priv->widget_name, glade_widget_adaptor_get_name (adaptor), -1);
+          pango_layout_set_text (priv->widget_name, _glade_widget_adaptor_get_real_name (adaptor), -1);
         }
 
       gtk_widget_queue_resize (GTK_WIDGET (layout));
