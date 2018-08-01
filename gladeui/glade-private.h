@@ -33,6 +33,8 @@
 
 G_BEGIN_DECLS
 
+#define GLADE_WIDGET_INSTANTIABLE_PREFIX "GladeInstantiable"
+
 /* glade-widget.c */
 
 GList *_glade_widget_peek_prop_refs (GladeWidget *widget);
