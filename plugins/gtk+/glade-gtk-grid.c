@@ -46,19 +46,19 @@ typedef enum {
 } GroupAction;
 
 static gboolean glade_gtk_grid_configure_begin (GladeFixed  *fixed,
-						GladeWidget *child,
-						GtkWidget   *grid);
+                                                GladeWidget *child,
+                                                GtkWidget   *grid);
 static gboolean glade_gtk_grid_configure_end   (GladeFixed  *fixed,
-						GladeWidget *child,
-						GtkWidget   *grid);
+                                                GladeWidget *child,
+                                                GtkWidget   *grid);
 static gboolean glade_gtk_grid_configure_child (GladeFixed   *fixed,
-						GladeWidget  *child,
-						GdkRectangle *rect,
-						GtkWidget    *grid);
+                                                GladeWidget  *child,
+                                                GdkRectangle *rect,
+                                                GtkWidget    *grid);
 
 GladeEditable *
-glade_gtk_grid_create_editable (GladeWidgetAdaptor * adaptor,
-				GladeEditorPageType type)
+glade_gtk_grid_create_editable (GladeWidgetAdaptor *adaptor,
+                                GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_grid_editor_new ();
@@ -81,9 +81,9 @@ glade_gtk_grid_get_child_attachments (GtkWidget            *grid,
 
 static gboolean
 glade_gtk_grid_has_child (GtkGrid *grid,
-                          GList *children,
-                          guint left_attach,
-                          guint top_attach)
+                          GList   *children,
+                          guint    left_attach,
+                          guint    top_attach)
 {
   gboolean ret = FALSE;
   GList *list;
@@ -208,7 +208,7 @@ glade_gtk_grid_post_create (GladeWidgetAdaptor *adaptor,
 
 void
 glade_gtk_grid_destroy_object (GladeWidgetAdaptor *adaptor,
-			       GObject            *object)
+                               GObject            *object)
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProject *project = glade_widget_get_project (widget);

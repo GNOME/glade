@@ -27,11 +27,11 @@
 #include "glade-store-editor.h"
 
 
-static void glade_store_editor_finalize (GObject * object);
+static void glade_store_editor_finalize (GObject *object);
 
-static void glade_store_editor_editable_init (GladeEditableIface * iface);
+static void glade_store_editor_editable_init (GladeEditableIface *iface);
 
-static void glade_store_editor_grab_focus (GtkWidget * widget);
+static void glade_store_editor_grab_focus (GtkWidget *widget);
 
 
 static GladeEditableIface *parent_editable_iface;
@@ -42,7 +42,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeStoreEditor, glade_store_editor, GTK_TYPE_BOX,
 
 
 static void
-glade_store_editor_class_init (GladeStoreEditorClass * klass)
+glade_store_editor_class_init (GladeStoreEditorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -52,14 +52,14 @@ glade_store_editor_class_init (GladeStoreEditorClass * klass)
 }
 
 static void
-glade_store_editor_init (GladeStoreEditor * self)
+glade_store_editor_init (GladeStoreEditor *self)
 {
   gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
-				  GTK_ORIENTATION_VERTICAL);
+                                  GTK_ORIENTATION_VERTICAL);
 }
 
 static void
-glade_store_editor_load (GladeEditable * editable, GladeWidget * widget)
+glade_store_editor_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeStoreEditor *store_editor = GLADE_STORE_EDITOR (editable);
   GList *l;
@@ -77,7 +77,7 @@ glade_store_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_store_editor_set_show_name (GladeEditable * editable, gboolean show_name)
+glade_store_editor_set_show_name (GladeEditable *editable, gboolean show_name)
 {
   GladeStoreEditor *store_editor = GLADE_STORE_EDITOR (editable);
 
@@ -86,7 +86,7 @@ glade_store_editor_set_show_name (GladeEditable * editable, gboolean show_name)
 }
 
 static void
-glade_store_editor_editable_init (GladeEditableIface * iface)
+glade_store_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 
@@ -95,7 +95,7 @@ glade_store_editor_editable_init (GladeEditableIface * iface)
 }
 
 static void
-glade_store_editor_finalize (GObject * object)
+glade_store_editor_finalize (GObject *object)
 {
   GladeStoreEditor *store_editor = GLADE_STORE_EDITOR (object);
 
@@ -110,7 +110,7 @@ glade_store_editor_finalize (GObject * object)
 }
 
 static void
-glade_store_editor_grab_focus (GtkWidget * widget)
+glade_store_editor_grab_focus (GtkWidget *widget)
 {
   GladeStoreEditor *store_editor = GLADE_STORE_EDITOR (widget);
 
@@ -118,7 +118,7 @@ glade_store_editor_grab_focus (GtkWidget * widget)
 }
 
 GtkWidget *
-glade_store_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
+glade_store_editor_new (GladeWidgetAdaptor *adaptor, GladeEditable *embed)
 {
   GladeStoreEditor *store_editor;
   GladeEditorProperty *eprop;

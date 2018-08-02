@@ -33,7 +33,7 @@
 static void
 property_toolbar_style_notify_enabled (GladeProperty *property,
                                        GParamSpec    *spec, 
-				       GtkWidget     *widget)
+                                       GtkWidget     *widget)
 {
   GtkToolbarStyle style;
 
@@ -42,23 +42,23 @@ property_toolbar_style_notify_enabled (GladeProperty *property,
       glade_property_get (property, &style);
 
       if (GTK_IS_TOOLBAR (widget))
-	gtk_toolbar_set_style (GTK_TOOLBAR (widget), style);
+        gtk_toolbar_set_style (GTK_TOOLBAR (widget), style);
       else if (GTK_IS_TOOL_PALETTE (widget))
-	gtk_tool_palette_set_style (GTK_TOOL_PALETTE (widget), style);
+        gtk_tool_palette_set_style (GTK_TOOL_PALETTE (widget), style);
     }
   else
     {
       if (GTK_IS_TOOLBAR (widget))
-	gtk_toolbar_unset_style (GTK_TOOLBAR (widget));
+        gtk_toolbar_unset_style (GTK_TOOLBAR (widget));
       else if (GTK_IS_TOOL_PALETTE (widget))
-	gtk_tool_palette_unset_style (GTK_TOOL_PALETTE (widget));
+        gtk_tool_palette_unset_style (GTK_TOOL_PALETTE (widget));
     }
 }
 
 static void
 property_icon_size_notify_enabled (GladeProperty *property,
-				   GParamSpec    *spec, 
-				   GtkWidget     *widget)
+                                   GParamSpec    *spec, 
+                                   GtkWidget     *widget)
 {
   gint size;
 
@@ -67,22 +67,23 @@ property_icon_size_notify_enabled (GladeProperty *property,
       glade_property_get (property, &size);
 
       if (GTK_IS_TOOLBAR (widget))
-	gtk_toolbar_set_icon_size (GTK_TOOLBAR (widget), size);
+        gtk_toolbar_set_icon_size (GTK_TOOLBAR (widget), size);
       else if (GTK_IS_TOOL_PALETTE (widget))
-	gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (widget), size);
+        gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (widget), size);
     }
   else
     {
       if (GTK_IS_TOOLBAR (widget))
-	gtk_toolbar_unset_icon_size (GTK_TOOLBAR (widget));
+        gtk_toolbar_unset_icon_size (GTK_TOOLBAR (widget));
       else if (GTK_IS_TOOL_PALETTE (widget))
-	gtk_tool_palette_unset_icon_size (GTK_TOOL_PALETTE (widget));
+        gtk_tool_palette_unset_icon_size (GTK_TOOL_PALETTE (widget));
     }
 }
 
 void
-glade_gtk_toolbar_post_create (GladeWidgetAdaptor * adaptor,
-                               GObject * object, GladeCreateReason reason)
+glade_gtk_toolbar_post_create (GladeWidgetAdaptor *adaptor,
+                               GObject            *object,
+                               GladeCreateReason   reason)
 {
   GladeWidget *widget;
   GladeProperty *property;
@@ -99,11 +100,11 @@ glade_gtk_toolbar_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_toolbar_get_child_property (GladeWidgetAdaptor * adaptor,
-                                      GObject * container,
-                                      GObject * child,
-                                      const gchar * property_name,
-                                      GValue * value)
+glade_gtk_toolbar_get_child_property (GladeWidgetAdaptor *adaptor,
+                                      GObject            *container,
+                                      GObject            *child,
+                                      const gchar        *property_name,
+                                      GValue            *value)
 {
   g_return_if_fail (GTK_IS_TOOLBAR (container));
   if (GTK_IS_TOOL_ITEM (child) == FALSE)
@@ -125,11 +126,11 @@ glade_gtk_toolbar_get_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor * adaptor,
-                                      GObject * container,
-                                      GObject * child,
-                                      const gchar * property_name,
-                                      GValue * value)
+glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor *adaptor,
+                                      GObject            *container,
+                                      GObject            *child,
+                                      const gchar        *property_name,
+                                      GValue             *value)
 {
   g_return_if_fail (GTK_IS_TOOLBAR (container));
   g_return_if_fail (GTK_IS_TOOL_ITEM (child));
@@ -162,23 +163,23 @@ glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor * adaptor,
 
 gboolean
 glade_gtk_toolbar_add_verify (GladeWidgetAdaptor *adaptor,
-			      GtkWidget          *container,
-			      GtkWidget          *child,
-			      gboolean            user_feedback)
+                              GtkWidget          *container,
+                              GtkWidget          *child,
+                              gboolean            user_feedback)
 {
   if (!GTK_IS_TOOL_ITEM (child))
     {
       if (user_feedback)
-	{
-	  GladeWidgetAdaptor *tool_item_adaptor = 
-	    glade_widget_adaptor_get_by_type (GTK_TYPE_TOOL_ITEM);
+        {
+          GladeWidgetAdaptor *tool_item_adaptor = 
+            glade_widget_adaptor_get_by_type (GTK_TYPE_TOOL_ITEM);
 
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 ONLY_THIS_GOES_IN_THAT_MSG,
-				 glade_widget_adaptor_get_title (tool_item_adaptor),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 ONLY_THIS_GOES_IN_THAT_MSG,
+                                 glade_widget_adaptor_get_title (tool_item_adaptor),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }
@@ -187,8 +188,9 @@ glade_gtk_toolbar_add_verify (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_toolbar_add_child (GladeWidgetAdaptor * adaptor,
-                             GObject * object, GObject * child)
+glade_gtk_toolbar_add_child (GladeWidgetAdaptor *adaptor,
+                             GObject            *object,
+                             GObject            *child)
 {
   GtkToolbar *toolbar;
   GtkToolItem *item;
@@ -214,15 +216,16 @@ glade_gtk_toolbar_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_toolbar_remove_child (GladeWidgetAdaptor * adaptor,
-                                GObject * object, GObject * child)
+glade_gtk_toolbar_remove_child (GladeWidgetAdaptor *adaptor,
+                                GObject            *object,
+                                GObject            *child)
 {
   gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
 static void
-glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor * adaptor,
-                                 GObject * toolbar)
+glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor,
+                                 GObject            *toolbar)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GType image_menu_item = GTK_TYPE_IMAGE_MENU_ITEM;
@@ -255,7 +258,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
                                   _("Check"), GTK_TYPE_CHECK_MENU_ITEM,
                                   _("Radio"), GTK_TYPE_RADIO_MENU_ITEM,
                                   _("Separator"), GTK_TYPE_SEPARATOR_MENU_ITEM,
-				  _("Recent Menu"), GTK_TYPE_RECENT_CHOOSER_MENU,
+                                  _("Recent Menu"), GTK_TYPE_RECENT_CHOOSER_MENU,
                                   NULL);
 
   g_signal_connect (editor, "get-display-name",
@@ -281,8 +284,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 void
-glade_gtk_toolbar_action_activate (GladeWidgetAdaptor * adaptor,
-                                   GObject * object, const gchar * action_path)
+glade_gtk_toolbar_action_activate (GladeWidgetAdaptor *adaptor,
+                                   GObject            *object,
+                                   const gchar        *action_path)
 {
   if (strcmp (action_path, "launch_editor") == 0)
     {
@@ -295,12 +299,13 @@ glade_gtk_toolbar_action_activate (GladeWidgetAdaptor * adaptor,
 
 /* Write the GtkIconSize as an integer */
 void
-glade_gtk_toolbar_write_widget (GladeWidgetAdaptor * adaptor,
-				GladeWidget * widget,
-				GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_toolbar_write_widget (GladeWidgetAdaptor *adaptor,
+                                GladeWidget        *widget,
+                                GladeXmlContext    *context,
+                                GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and write all the normal properties (including "use-stock")... */

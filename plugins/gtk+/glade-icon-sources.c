@@ -29,7 +29,7 @@
 #include "glade-icon-sources.h"
 
 static GList *
-icon_set_copy (GList * set)
+icon_set_copy (GList *set)
 {
   GList *dup_set = NULL, *l;
   GtkIconSource *source;
@@ -46,7 +46,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 
 static void
-icon_set_free (GList * list)
+icon_set_free (GList *list)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_list_foreach (list, (GFunc) gtk_icon_source_free, NULL);
@@ -68,14 +68,14 @@ glade_icon_sources_new (void)
 
 
 static void
-icon_sources_dup (gchar * icon_name, GList * set, GladeIconSources * dup)
+icon_sources_dup (gchar *icon_name, GList *set, GladeIconSources *dup)
 {
   GList *dup_set = icon_set_copy (set);
   g_hash_table_insert (dup->sources, g_strdup (icon_name), dup_set);
 }
 
 GladeIconSources *
-glade_icon_sources_copy (GladeIconSources * sources)
+glade_icon_sources_copy (GladeIconSources *sources)
 {
   if (!sources)
     return NULL;
@@ -88,7 +88,7 @@ glade_icon_sources_copy (GladeIconSources * sources)
 }
 
 void
-glade_icon_sources_free (GladeIconSources * sources)
+glade_icon_sources_free (GladeIconSources *sources)
 {
   if (sources)
     {
@@ -143,7 +143,7 @@ GLADE_MAKE_EPROP (GladeEPropIconSources, glade_eprop_icon_sources)
 #define GLADE_IS_EPROP_ICON_SOURCES(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ICON_SOURCES))
 #define GLADE_IS_EPROP_ICON_SOURCES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ICON_SOURCES))
 #define GLADE_EPROP_ICON_SOURCES_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ICON_SOURCES, GladeEPropIconSourcesClass))
-     static void glade_eprop_icon_sources_finalize (GObject * object)
+     static void glade_eprop_icon_sources_finalize (GObject *object)
 {
   /* Chain up */
   GObjectClass *parent_class =
@@ -154,8 +154,9 @@ GLADE_MAKE_EPROP (GladeEPropIconSources, glade_eprop_icon_sources)
 }
 
 static void
-populate_store_foreach (const gchar * icon_name,
-                        GList * sources, GladeEPropIconSources * eprop_sources)
+populate_store_foreach (const gchar           *icon_name,
+                        GList                 *sources,
+                        GladeEPropIconSources *eprop_sources)
 {
   GtkIconSource *source;
   GtkTreeIter parent_iter, iter;
@@ -244,7 +245,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-icon_sources_populate_store (GladeEPropIconSources * eprop_sources)
+icon_sources_populate_store (GladeEPropIconSources *eprop_sources)
 {
   GladeIconSources *sources = NULL;
   GladeProperty *property;
@@ -265,8 +266,8 @@ icon_sources_populate_store (GladeEPropIconSources * eprop_sources)
 }
 
 static void
-glade_eprop_icon_sources_load (GladeEditorProperty * eprop,
-                               GladeProperty * property)
+glade_eprop_icon_sources_load (GladeEditorProperty *eprop,
+                               GladeProperty       *property)
 {
   GladeEditorPropertyClass *parent_class =
       g_type_class_peek_parent (GLADE_EDITOR_PROPERTY_GET_CLASS (eprop));
@@ -281,7 +282,7 @@ glade_eprop_icon_sources_load (GladeEditorProperty * eprop,
 }
 
 static gboolean
-reload_icon_sources_idle (GladeEditorProperty * eprop)
+reload_icon_sources_idle (GladeEditorProperty *eprop)
 {
   GladeProperty *property = glade_editor_property_get_property (eprop);
 
@@ -314,7 +315,7 @@ edit_row_idle (RowEditData *data)
 }
 
 static void
-add_clicked (GtkWidget * button, GladeEPropIconSources * eprop_sources)
+add_clicked (GtkWidget *button, GladeEPropIconSources *eprop_sources)
 {
   /* Remember to set focus on the cell and activate it ! */
   GtkTreeIter *parent_iter = NULL, iter, new_parent_iter;
@@ -401,8 +402,9 @@ expand_to_path_and_focus:
 }
 
 static GtkIconSource *
-get_icon_source (GladeIconSources * sources,
-                 const gchar * icon_name, gint index)
+get_icon_source (GladeIconSources *sources,
+                 const gchar      *icon_name,
+                 gint              index)
 {
   GList *source_list = g_hash_table_lookup (sources->sources, icon_name);
 
@@ -417,8 +419,8 @@ get_icon_source (GladeIconSources * sources,
 }
 
 static void
-update_icon_sources (GladeEditorProperty * eprop,
-                     GladeIconSources * icon_sources)
+update_icon_sources (GladeEditorProperty *eprop,
+                     GladeIconSources    *icon_sources)
 {
   GValue value = { 0, };
 
@@ -429,7 +431,7 @@ update_icon_sources (GladeEditorProperty * eprop,
 }
 
 static void
-delete_clicked (GtkWidget * button, GladeEditorProperty * eprop)
+delete_clicked (GtkWidget *button, GladeEditorProperty *eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
   GladeProperty *property = glade_editor_property_get_property (eprop);
@@ -486,9 +488,10 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-value_filename_edited (GtkCellRendererText * cell,
-                       const gchar * path,
-                       const gchar * new_text, GladeEditorProperty * eprop)
+value_filename_edited (GtkCellRendererText *cell,
+                       const gchar         *path,
+                       const gchar         *new_text,
+                       GladeEditorProperty *eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
   GladeProperty *property = glade_editor_property_get_property (eprop);
@@ -573,8 +576,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-value_attribute_toggled (GtkCellRendererToggle * cell_renderer,
-                         gchar * path, GladeEditorProperty * eprop)
+value_attribute_toggled (GtkCellRendererToggle *cell_renderer,
+                         gchar                 *path,
+                         GladeEditorProperty   *eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
   GladeProperty *property = glade_editor_property_get_property (eprop);
@@ -635,9 +639,10 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-value_attribute_edited (GtkCellRendererText * cell,
-                        const gchar * path,
-                        const gchar * new_text, GladeEditorProperty * eprop)
+value_attribute_edited (GtkCellRendererText *cell,
+                        const gchar         *path,
+                        const gchar         *new_text,
+                        GladeEditorProperty *eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
   GladeProperty *property = glade_editor_property_get_property (eprop);
@@ -710,12 +715,12 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static gboolean
-icon_sources_query_tooltip (GtkWidget * widget,
-                            gint x,
-                            gint y,
-                            gboolean keyboard_mode,
-                            GtkTooltip * tooltip,
-                            GladeEPropIconSources * eprop_sources)
+icon_sources_query_tooltip (GtkWidget             *widget,
+                            gint                   x,
+                            gint                   y,
+                            gboolean               keyboard_mode,
+                            GtkTooltip            *tooltip,
+                            GladeEPropIconSources *eprop_sources)
 {
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
@@ -819,7 +824,7 @@ icon_sources_query_tooltip (GtkWidget * widget,
 
 
 static GtkTreeView *
-build_view (GladeEditorProperty * eprop)
+build_view (GladeEditorProperty *eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
   static GtkListStore *direction_store = NULL, *size_store =
@@ -972,8 +977,7 @@ build_view (GladeEditorProperty * eprop)
 }
 
 static void
-icon_name_entry_activated (GtkEntry * entry,
-                           GladeEPropIconSources * eprop_sources)
+icon_name_entry_activated (GtkEntry *entry, GladeEPropIconSources *eprop_sources)
 {
   const gchar *text = gtk_entry_get_text (entry);
   GladeProperty *property;
@@ -1019,7 +1023,7 @@ glade_eprop_icon_sources_create_input (GladeEditorProperty * eprop)
   gtk_container_set_border_width (GTK_CONTAINER (button), 2);
   gtk_button_set_image (GTK_BUTTON (button),
                         gtk_image_new_from_icon_name ("list-add-symbolic",
-						      GTK_ICON_SIZE_BUTTON));
+                                                      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   g_signal_connect (G_OBJECT (button), "clicked",
                     G_CALLBACK (add_clicked), eprop_sources);
@@ -1027,7 +1031,7 @@ glade_eprop_icon_sources_create_input (GladeEditorProperty * eprop)
   button = gtk_button_new ();
   gtk_button_set_image (GTK_BUTTON (button),
                         gtk_image_new_from_icon_name ("list-remove-symbolic",
-						      GTK_ICON_SIZE_BUTTON));
+                                                      GTK_ICON_SIZE_BUTTON));
   gtk_container_set_border_width (GTK_CONTAINER (button), 2);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 

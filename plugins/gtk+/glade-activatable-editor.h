@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_ACTIVATABLE_EDITOR	            (glade_activatable_editor_get_type ())
-#define GLADE_ACTIVATABLE_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_ACTIVATABLE_EDITOR, GladeActivatableEditor))
-#define GLADE_ACTIVATABLE_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_ACTIVATABLE_EDITOR, GladeActivatableEditorClass))
-#define GLADE_IS_ACTIVATABLE_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_ACTIVATABLE_EDITOR))
-#define GLADE_IS_ACTIVATABLE_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_ACTIVATABLE_EDITOR))
-#define GLADE_ACTIVATABLE_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_ACTIVATABLE_EDITOR, GladeActivatableEditorClass))
+#define GLADE_TYPE_ACTIVATABLE_EDITOR            (glade_activatable_editor_get_type ())
+#define GLADE_ACTIVATABLE_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_ACTIVATABLE_EDITOR, GladeActivatableEditor))
+#define GLADE_ACTIVATABLE_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_ACTIVATABLE_EDITOR, GladeActivatableEditorClass))
+#define GLADE_IS_ACTIVATABLE_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_ACTIVATABLE_EDITOR))
+#define GLADE_IS_ACTIVATABLE_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_ACTIVATABLE_EDITOR))
+#define GLADE_ACTIVATABLE_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_ACTIVATABLE_EDITOR, GladeActivatableEditorClass))
 
 typedef struct _GladeActivatableEditor        GladeActivatableEditor;
 typedef struct _GladeActivatableEditorClass   GladeActivatableEditorClass;
@@ -51,7 +51,7 @@ struct _GladeActivatableEditorClass
 
 GType            glade_activatable_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_activatable_editor_new      (GladeWidgetAdaptor *adaptor,
-						    GladeEditable      *editable);
+                                                    GladeEditable      *editable);
 
 G_END_DECLS
 

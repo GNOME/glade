@@ -42,9 +42,9 @@ typedef enum {
 
 static void
 glade_gtk_filter_read_strings (GladeWidget  *widget,
-			       GladeXmlNode *node,
-			       FilterType    type,
-			       const gchar  *property_name)
+                               GladeXmlNode *node,
+                               FilterType    type,
+                               const gchar  *property_name)
 {
   GladeXmlNode *items_node;
   GladeXmlNode *item_node;
@@ -76,19 +76,19 @@ glade_gtk_filter_read_strings (GladeWidget  *widget,
     {
 
       for (item_node = glade_xml_node_get_children (items_node);
-	   item_node; item_node = glade_xml_node_next (item_node))
-	{
-	  gchar *str;
+           item_node; item_node = glade_xml_node_next (item_node))
+        {
+          gchar *str;
 
-	  if (!glade_xml_node_verify (item_node, string_tag))
-	    continue;
+          if (!glade_xml_node_verify (item_node, string_tag))
+            continue;
 
           if ((str = glade_xml_get_content (item_node)) == NULL)
-	    continue;
+            continue;
 
-	  string_list = glade_string_list_append (string_list, str, NULL, NULL, FALSE, NULL);
-	  g_free (str);
-	}
+          string_list = glade_string_list_append (string_list, str, NULL, NULL, FALSE, NULL);
+          g_free (str);
+        }
 
       glade_widget_property_set (widget, property_name, string_list);
       glade_string_list_free (string_list);
@@ -97,10 +97,10 @@ glade_gtk_filter_read_strings (GladeWidget  *widget,
 
 static void
 glade_gtk_filter_write_strings (GladeWidget     *widget,
-				GladeXmlContext *context,
-				GladeXmlNode    *node,
-				FilterType       type,
-				const gchar     *property_name)
+                                GladeXmlContext *context,
+                                GladeXmlNode    *node,
+                                FilterType       type,
+                                const gchar     *property_name)
 {
   GladeXmlNode *item_node;
   GList        *string_list = NULL, *l;
@@ -132,9 +132,9 @@ glade_gtk_filter_write_strings (GladeWidget     *widget,
 }
 
 GladeEditorProperty *
-glade_gtk_recent_file_filter_create_eprop (GladeWidgetAdaptor * adaptor,
-					   GladePropertyClass * klass, 
-					   gboolean use_command)
+glade_gtk_recent_file_filter_create_eprop (GladeWidgetAdaptor *adaptor,
+                                           GladePropertyClass *klass, 
+                                           gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
@@ -153,9 +153,9 @@ glade_gtk_recent_file_filter_create_eprop (GladeWidgetAdaptor * adaptor,
 }
 
 gchar *
-glade_gtk_recent_file_filter_string_from_value (GladeWidgetAdaptor * adaptor,
-						GladePropertyClass * klass,
-						const GValue * value)
+glade_gtk_recent_file_filter_string_from_value (GladeWidgetAdaptor *adaptor,
+                                                GladePropertyClass *klass,
+                                                const GValue       *value)
 {
   GParamSpec *pspec;
 
@@ -174,11 +174,11 @@ glade_gtk_recent_file_filter_string_from_value (GladeWidgetAdaptor * adaptor,
 
 void
 glade_gtk_recent_filter_read_widget (GladeWidgetAdaptor *adaptor,
-				     GladeWidget        *widget, 
-				     GladeXmlNode       *node)
+                                     GladeWidget        *widget, 
+                                     GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -191,14 +191,14 @@ glade_gtk_recent_filter_read_widget (GladeWidgetAdaptor *adaptor,
 
 void
 glade_gtk_recent_filter_write_widget (GladeWidgetAdaptor *adaptor,
-				      GladeWidget        *widget,
-				      GladeXmlContext    *context, 
-				      GladeXmlNode       *node)
+                                      GladeWidget        *widget,
+                                      GladeXmlContext    *context, 
+                                      GladeXmlNode       *node)
 {
   GladeXmlNode *strings_node;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -223,7 +223,7 @@ glade_gtk_recent_filter_write_widget (GladeWidgetAdaptor *adaptor,
 
   strings_node = glade_xml_node_new (context, GLADE_TAG_APPLICATIONS);
   glade_gtk_filter_write_strings (widget, context, strings_node, 
-				  FILTER_APPLICATION, "glade-applications");
+                                  FILTER_APPLICATION, "glade-applications");
 
   if (!glade_xml_node_get_children (strings_node))
     glade_xml_node_delete (strings_node);
@@ -233,11 +233,11 @@ glade_gtk_recent_filter_write_widget (GladeWidgetAdaptor *adaptor,
 
 void
 glade_gtk_file_filter_read_widget (GladeWidgetAdaptor *adaptor,
-				   GladeWidget        *widget, 
-				   GladeXmlNode       *node)
+                                   GladeWidget        *widget, 
+                                   GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -249,14 +249,14 @@ glade_gtk_file_filter_read_widget (GladeWidgetAdaptor *adaptor,
 
 void
 glade_gtk_file_filter_write_widget (GladeWidgetAdaptor *adaptor,
-				    GladeWidget        *widget,
-				    GladeXmlContext    *context, 
-				    GladeXmlNode       *node)
+                                    GladeWidget        *widget,
+                                    GladeXmlContext    *context, 
+                                    GladeXmlNode       *node)
 {
   GladeXmlNode *strings_node;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */

@@ -25,12 +25,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_IMAGE_ITEM_EDITOR	            (glade_image_item_editor_get_type ())
-#define GLADE_IMAGE_ITEM_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_IMAGE_ITEM_EDITOR, GladeImageItemEditor))
-#define GLADE_IMAGE_ITEM_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_IMAGE_ITEM_EDITOR, GladeImageItemEditorClass))
-#define GLADE_IS_IMAGE_ITEM_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_IMAGE_ITEM_EDITOR))
-#define GLADE_IS_IMAGE_ITEM_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_IMAGE_ITEM_EDITOR))
-#define GLADE_IMAGE_ITEM_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_IMAGE_ITEM_EDITOR, GladeImageItemEditorClass))
+#define GLADE_TYPE_IMAGE_ITEM_EDITOR            (glade_image_item_editor_get_type ())
+#define GLADE_IMAGE_ITEM_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_IMAGE_ITEM_EDITOR, GladeImageItemEditor))
+#define GLADE_IMAGE_ITEM_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_IMAGE_ITEM_EDITOR, GladeImageItemEditorClass))
+#define GLADE_IS_IMAGE_ITEM_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_IMAGE_ITEM_EDITOR))
+#define GLADE_IS_IMAGE_ITEM_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_IMAGE_ITEM_EDITOR))
+#define GLADE_IMAGE_ITEM_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_IMAGE_ITEM_EDITOR, GladeImageItemEditorClass))
 
 typedef struct _GladeImageItemEditor        GladeImageItemEditor;
 typedef struct _GladeImageItemEditorClass   GladeImageItemEditorClass;
@@ -57,7 +57,7 @@ struct _GladeImageItemEditorClass
 
 GType            glade_image_item_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_image_item_editor_new      (GladeWidgetAdaptor *adaptor,
-						   GladeEditable      *editable);
+                                                   GladeEditable      *editable);
 
 G_END_DECLS
 

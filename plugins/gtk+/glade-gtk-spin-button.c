@@ -28,8 +28,8 @@
 #include "glade-spin-button-editor.h"
 
 GladeEditable *
-glade_gtk_spin_button_create_editable (GladeWidgetAdaptor * adaptor,
-				       GladeEditorPageType type)
+glade_gtk_spin_button_create_editable (GladeWidgetAdaptor *adaptor,
+                                       GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_spin_button_editor_new ();
@@ -38,7 +38,7 @@ glade_gtk_spin_button_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_spin_button_set_adjustment (GObject * object, const GValue * value)
+glade_gtk_spin_button_set_adjustment (GObject *object, const GValue *value)
 {
   GObject *adjustment;
   GtkAdjustment *adj;
@@ -67,9 +67,10 @@ glade_gtk_spin_button_set_adjustment (GObject * object, const GValue * value)
 }
 
 void
-glade_gtk_spin_button_set_property (GladeWidgetAdaptor * adaptor,
-                                    GObject * object,
-                                    const gchar * id, const GValue * value)
+glade_gtk_spin_button_set_property (GladeWidgetAdaptor *adaptor,
+                                    GObject            *object,
+                                    const gchar        *id,
+                                    const GValue       *value)
 {
   if (!strcmp (id, "adjustment"))
     glade_gtk_spin_button_set_adjustment (object, value);

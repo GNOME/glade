@@ -27,11 +27,11 @@
 G_BEGIN_DECLS
 
 gboolean
-glade_gtk_write_special_child_label_item (GladeWidgetAdaptor * adaptor,
-					  GladeWidget * widget,
-					  GladeXmlContext * context,
-					  GladeXmlNode * node,
-					  GladeWriteWidgetFunc write_func);
+glade_gtk_write_special_child_label_item (GladeWidgetAdaptor   *adaptor,
+                                          GladeWidget          *widget,
+                                          GladeXmlContext      *context,
+                                          GladeXmlNode         *node,
+                                          GladeWriteWidgetFunc  write_func);
 
 
 G_END_DECLS

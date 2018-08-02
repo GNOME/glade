@@ -71,10 +71,10 @@ struct _GladeXmlContext
  * also to skip whitespace between nodes
  */
 #define skip_text(node) if ((xmlStrcmp ( ((xmlNodePtr)node)->name, BAD_CAST("text")) == 0) ||\
-			    (xmlStrcmp ( ((xmlNodePtr)node)->name, BAD_CAST("comment")) == 0)) { \
-			         node = (GladeXmlNode *)((xmlNodePtr)node)->next; continue ; };
+                            (xmlStrcmp ( ((xmlNodePtr)node)->name, BAD_CAST("comment")) == 0)) { \
+                                 node = (GladeXmlNode *)((xmlNodePtr)node)->next; continue ; };
 #define skip_text_libxml(node) if ((xmlStrcmp ( ((xmlNodePtr)node)->name, BAD_CAST("text")) == 0) ||\
-			           (xmlStrcmp ( ((xmlNodePtr)node)->name, BAD_CAST("comment")) == 0)) { \
+                                   (xmlStrcmp ( ((xmlNodePtr)node)->name, BAD_CAST("comment")) == 0)) { \
                                        node = ((xmlNodePtr)node)->next; continue ; };
 
 

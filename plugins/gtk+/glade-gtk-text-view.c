@@ -28,8 +28,8 @@
 #include "glade-text-view-editor.h"
 
 GladeEditable *
-glade_gtk_text_view_create_editable (GladeWidgetAdaptor * adaptor,
-				     GladeEditorPageType type)
+glade_gtk_text_view_create_editable (GladeWidgetAdaptor *adaptor,
+                                     GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {
@@ -40,17 +40,18 @@ glade_gtk_text_view_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static gboolean
-glade_gtk_text_view_stop_double_click (GtkWidget * widget,
-                                       GdkEventButton * event,
-                                       gpointer user_data)
+glade_gtk_text_view_stop_double_click (GtkWidget      *widget,
+                                       GdkEventButton *event,
+                                       gpointer        user_data)
 {
   /* Return True if the event is double or triple click */
   return (event->type == GDK_2BUTTON_PRESS || event->type == GDK_3BUTTON_PRESS);
 }
 
 void
-glade_gtk_text_view_post_create (GladeWidgetAdaptor * adaptor,
-                                 GObject * object, GladeCreateReason reason)
+glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object,
+                                 GladeCreateReason   reason)
 {
   /* This makes gtk_text_view_set_buffer() stop complaing */
   gtk_drag_dest_set (GTK_WIDGET (object), 0, NULL, 0, 0);
@@ -61,10 +62,10 @@ glade_gtk_text_view_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_text_view_set_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * object,
-                                  const gchar * property_name,
-                                  const GValue * value)
+glade_gtk_text_view_set_property (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object,
+                                  const gchar        *property_name,
+                                  const GValue       *value)
 {
   if (strcmp (property_name, "buffer") == 0)
     {

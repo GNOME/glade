@@ -87,7 +87,7 @@ glade_action_editor_grab_focus (GtkWidget * widget)
 
 static void
 glade_action_editor_load (GladeEditable *editable,
-			  GladeWidget   *gwidget)
+                          GladeWidget   *gwidget)
 {
   GladeActionEditor *action_editor = GLADE_ACTION_EDITOR (editable);
   GladeActionEditorPrivate *priv = action_editor->priv;
@@ -136,8 +136,8 @@ glade_action_editor_new (void)
  *************************************/
 void
 glade_action_editor_post_create (GladeWidgetAdaptor *adaptor,
-				 GObject            *editor,
-				 GladeCreateReason   reason)
+                                 GObject            *editor,
+                                 GladeCreateReason   reason)
 {
   GladeActionEditorPrivate *priv = GLADE_ACTION_EDITOR (editor)->priv;
 

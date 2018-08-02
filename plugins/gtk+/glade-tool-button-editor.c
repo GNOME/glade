@@ -32,15 +32,15 @@ static void glade_tool_button_editor_grab_focus    (GtkWidget * widget);
 
 /* Callbacks */
 static void standard_label_toggled (GtkWidget             *widget,
-				    GladeToolButtonEditor *button_editor);
+                                    GladeToolButtonEditor *button_editor);
 static void custom_label_toggled   (GtkWidget             *widget,
-				    GladeToolButtonEditor *button_editor);
+                                    GladeToolButtonEditor *button_editor);
 static void stock_toggled          (GtkWidget             *widget,
-				    GladeToolButtonEditor *button_editor);
+                                    GladeToolButtonEditor *button_editor);
 static void icon_toggled           (GtkWidget             *widget,
-				    GladeToolButtonEditor *button_editor);
+                                    GladeToolButtonEditor *button_editor);
 static void custom_toggled         (GtkWidget             *widget,
-				    GladeToolButtonEditor *button_editor);
+                                    GladeToolButtonEditor *button_editor);
 
 struct _GladeToolButtonEditorPrivate
 {
@@ -67,7 +67,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeToolButtonEditor, glade_tool_button_editor, GLADE_
                                                 glade_tool_button_editor_editable_init));
 
 static void
-glade_tool_button_editor_class_init (GladeToolButtonEditorClass * klass)
+glade_tool_button_editor_class_init (GladeToolButtonEditorClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
@@ -93,7 +93,7 @@ glade_tool_button_editor_class_init (GladeToolButtonEditorClass * klass)
 }
 
 static void
-glade_tool_button_editor_init (GladeToolButtonEditor * self)
+glade_tool_button_editor_init (GladeToolButtonEditor *self)
 {
   self->priv = glade_tool_button_editor_get_instance_private (self);
 
@@ -101,7 +101,7 @@ glade_tool_button_editor_init (GladeToolButtonEditor * self)
 }
 
 static void
-glade_tool_button_editor_load (GladeEditable * editable, GladeWidget * widget)
+glade_tool_button_editor_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeToolButtonEditor *button_editor = GLADE_TOOL_BUTTON_EDITOR (editable);
   GladeToolButtonEditorPrivate *priv = button_editor->priv;
@@ -146,8 +146,7 @@ glade_tool_button_editor_load (GladeEditable * editable, GladeWidget * widget)
 
 
 static void
-standard_label_toggled (GtkWidget * widget,
-                        GladeToolButtonEditor * button_editor)
+standard_label_toggled (GtkWidget *widget, GladeToolButtonEditor *button_editor)
 {
   GladeToolButtonEditorPrivate *priv = button_editor->priv;
   GladeProperty *property;
@@ -184,7 +183,7 @@ standard_label_toggled (GtkWidget * widget,
 }
 
 static void
-custom_label_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
+custom_label_toggled (GtkWidget *widget, GladeToolButtonEditor *button_editor)
 {
   GladeToolButtonEditorPrivate *priv = button_editor->priv;
   GladeProperty *property;
@@ -215,7 +214,7 @@ custom_label_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
 }
 
 static void
-stock_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
+stock_toggled (GtkWidget *widget, GladeToolButtonEditor *button_editor)
 {
   GladeToolButtonEditorPrivate *priv = button_editor->priv;
   GladeProperty *property;
@@ -250,7 +249,7 @@ stock_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
 }
 
 static void
-icon_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
+icon_toggled (GtkWidget *widget, GladeToolButtonEditor *button_editor)
 {
   GladeToolButtonEditorPrivate *priv = button_editor->priv;
   GladeProperty *property;
@@ -285,7 +284,7 @@ icon_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
 }
 
 static void
-custom_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
+custom_toggled (GtkWidget *widget, GladeToolButtonEditor *button_editor)
 {
   GladeToolButtonEditorPrivate *priv = button_editor->priv;
   GladeProperty *property;
@@ -320,7 +319,7 @@ custom_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
 }
 
 static void
-glade_tool_button_editor_editable_init (GladeEditableIface * iface)
+glade_tool_button_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 
@@ -328,7 +327,7 @@ glade_tool_button_editor_editable_init (GladeEditableIface * iface)
 }
 
 static void
-glade_tool_button_editor_grab_focus (GtkWidget * widget)
+glade_tool_button_editor_grab_focus (GtkWidget *widget)
 {
   GladeToolButtonEditor *button_editor = GLADE_TOOL_BUTTON_EDITOR (widget);
 

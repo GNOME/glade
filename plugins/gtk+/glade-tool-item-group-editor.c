@@ -27,11 +27,11 @@
 #include "glade-tool-item-group-editor.h"
 
 
-static void glade_tool_item_group_editor_finalize (GObject * object);
+static void glade_tool_item_group_editor_finalize (GObject *object);
 
-static void glade_tool_item_group_editor_editable_init (GladeEditableIface * iface);
+static void glade_tool_item_group_editor_editable_init (GladeEditableIface *iface);
 
-static void glade_tool_item_group_editor_grab_focus (GtkWidget * widget);
+static void glade_tool_item_group_editor_grab_focus (GtkWidget *widget);
 
 
 static GladeEditableIface *parent_editable_iface;
@@ -42,7 +42,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeToolItemGroupEditor, glade_tool_item_group_editor,
 
 
 static void
-glade_tool_item_group_editor_class_init (GladeToolItemGroupEditorClass * klass)
+glade_tool_item_group_editor_class_init (GladeToolItemGroupEditorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -52,14 +52,14 @@ glade_tool_item_group_editor_class_init (GladeToolItemGroupEditorClass * klass)
 }
 
 static void
-glade_tool_item_group_editor_init (GladeToolItemGroupEditor * self)
+glade_tool_item_group_editor_init (GladeToolItemGroupEditor *self)
 {
   gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
-				  GTK_ORIENTATION_VERTICAL);
+                                  GTK_ORIENTATION_VERTICAL);
 }
 
 static void
-glade_tool_item_group_editor_load (GladeEditable * editable, GladeWidget * widget)
+glade_tool_item_group_editor_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeToolItemGroupEditor *group_editor = GLADE_TOOL_ITEM_GROUP_EDITOR (editable);
   gboolean custom_label = FALSE;
@@ -91,7 +91,7 @@ glade_tool_item_group_editor_load (GladeEditable * editable, GladeWidget * widge
 }
 
 static void
-glade_tool_item_group_editor_set_show_name (GladeEditable * editable, gboolean show_name)
+glade_tool_item_group_editor_set_show_name (GladeEditable *editable, gboolean show_name)
 {
   GladeToolItemGroupEditor *group_editor = GLADE_TOOL_ITEM_GROUP_EDITOR (editable);
 
@@ -100,7 +100,7 @@ glade_tool_item_group_editor_set_show_name (GladeEditable * editable, gboolean s
 }
 
 static void
-glade_tool_item_group_editor_editable_init (GladeEditableIface * iface)
+glade_tool_item_group_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 
@@ -109,7 +109,7 @@ glade_tool_item_group_editor_editable_init (GladeEditableIface * iface)
 }
 
 static void
-glade_tool_item_group_editor_finalize (GObject * object)
+glade_tool_item_group_editor_finalize (GObject *object)
 {
   GladeToolItemGroupEditor *group_editor = GLADE_TOOL_ITEM_GROUP_EDITOR (object);
 
@@ -124,7 +124,7 @@ glade_tool_item_group_editor_finalize (GObject * object)
 }
 
 static void
-glade_tool_item_group_editor_grab_focus (GtkWidget * widget)
+glade_tool_item_group_editor_grab_focus (GtkWidget *widget)
 {
   GladeToolItemGroupEditor *group_editor = GLADE_TOOL_ITEM_GROUP_EDITOR (widget);
 
@@ -133,8 +133,7 @@ glade_tool_item_group_editor_grab_focus (GtkWidget * widget)
 
 
 static void
-label_toggled (GtkWidget * widget,
-	       GladeToolItemGroupEditor *group_editor)
+label_toggled (GtkWidget *widget, GladeToolItemGroupEditor *group_editor)
 {
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (group_editor));
@@ -171,7 +170,7 @@ label_toggled (GtkWidget * widget,
 }
 
 static void
-label_widget_toggled (GtkWidget * widget, GladeToolItemGroupEditor * group_editor)
+label_widget_toggled (GtkWidget *widget, GladeToolItemGroupEditor *group_editor)
 {
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (group_editor));
@@ -202,7 +201,7 @@ label_widget_toggled (GtkWidget * widget, GladeToolItemGroupEditor * group_edito
 }
 
 static void
-table_attach (GtkWidget * table, GtkWidget * child, gint pos, gint row)
+table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
 {
   gtk_grid_attach (GTK_GRID (table), child, pos, row, 1, 1);
 
@@ -212,7 +211,7 @@ table_attach (GtkWidget * table, GtkWidget * child, gint pos, gint row)
 
 GtkWidget *
 glade_tool_item_group_editor_new (GladeWidgetAdaptor *adaptor, 
-				  GladeEditable      *embed)
+                                  GladeEditable      *embed)
 {
   GladeToolItemGroupEditor *group_editor;
   GladeEditorProperty *eprop;

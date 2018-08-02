@@ -191,15 +191,15 @@ glade_entry_editor_load (GladeEditable * editable, GladeWidget * widget)
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->primary_tooltip_markup_check), primary_markup);
       gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->primary_tooltip_notebook),
-				     primary_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
+                                     primary_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
       gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->primary_tooltip_editor_notebook),
-				     primary_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
+                                     primary_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->secondary_tooltip_markup_check), secondary_markup);
       gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->secondary_tooltip_notebook),
-				     secondary_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
+                                     secondary_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
       gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->secondary_tooltip_editor_notebook),
-				     secondary_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
+                                     secondary_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
     }
 }
 
@@ -512,8 +512,8 @@ secondary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 
 static void
 transfer_text_property (GladeWidget *gwidget,
-			const gchar *from,
-			const gchar *to)
+                        const gchar *from,
+                        const gchar *to)
 {
   gchar *value = NULL;
   gchar *comment = NULL, *context = NULL;
@@ -551,8 +551,8 @@ transfer_text_property (GladeWidget *gwidget,
 
 static void
 toggle_tooltip_markup (GladeEntryEditor *entry_editor,
-		       GtkWidget        *widget,
-		       gboolean          primary)
+                       GtkWidget        *widget,
+                       gboolean          primary)
 {
   GladeProperty *property;
   GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
@@ -568,11 +568,11 @@ toggle_tooltip_markup (GladeEntryEditor *entry_editor,
   if (active)
     {
       if (primary)
-	glade_command_push_group (_("Setting primary icon of %s to use tooltip markup"),
-				  glade_widget_get_name (gwidget));
+        glade_command_push_group (_("Setting primary icon of %s to use tooltip markup"),
+                                  glade_widget_get_name (gwidget));
       else
-	glade_command_push_group (_("Setting secondary icon of %s to use tooltip markup"),
-				  glade_widget_get_name (gwidget));
+        glade_command_push_group (_("Setting secondary icon of %s to use tooltip markup"),
+                                  glade_widget_get_name (gwidget));
 
       transfer_text_property (gwidget, TOOLTIP_TEXT_NAME (primary), TOOLTIP_MARKUP_NAME (primary));
 
@@ -584,11 +584,11 @@ toggle_tooltip_markup (GladeEntryEditor *entry_editor,
   else
     {
       if (primary)
-	glade_command_push_group (_("Setting primary icon of %s to not use tooltip markup"),
-				  glade_widget_get_name (gwidget));
+        glade_command_push_group (_("Setting primary icon of %s to not use tooltip markup"),
+                                  glade_widget_get_name (gwidget));
       else
-	glade_command_push_group (_("Setting secondary icon of %s to not use tooltip markup"),
-				  glade_widget_get_name (gwidget));
+        glade_command_push_group (_("Setting secondary icon of %s to not use tooltip markup"),
+                                  glade_widget_get_name (gwidget));
 
       transfer_text_property (gwidget, TOOLTIP_MARKUP_NAME (primary), TOOLTIP_TEXT_NAME (primary));
 
@@ -606,14 +606,14 @@ toggle_tooltip_markup (GladeEntryEditor *entry_editor,
 
 static void
 primary_tooltip_markup_toggled (GtkWidget        *widget,
-				GladeEntryEditor *entry_editor)
+                                GladeEntryEditor *entry_editor)
 {
   toggle_tooltip_markup (entry_editor, widget, TRUE);
 }
 
 static void
 secondary_tooltip_markup_toggled (GtkWidget        *widget,
-				  GladeEntryEditor *entry_editor)
+                                  GladeEntryEditor *entry_editor)
 {
   toggle_tooltip_markup (entry_editor, widget, FALSE);
 }
@@ -629,8 +629,8 @@ glade_entry_editor_new (void)
  *************************************/
 void
 glade_entry_editor_post_create (GladeWidgetAdaptor *adaptor,
-				GObject            *editor,
-				GladeCreateReason   reason)
+                                GObject            *editor,
+                                GladeCreateReason   reason)
 {
   GladeEntryEditorPrivate *priv = GLADE_ENTRY_EDITOR (editor)->priv;
 

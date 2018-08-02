@@ -303,8 +303,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
             {
               gchar *clean_name = clean_stock_name (item.label);
 
-	      if (!glade_get_displayable_value (etype, enum_values[i].value_nick))
-		glade_register_translated_value (etype, enum_values[i].value_nick, clean_name);
+              if (!glade_get_displayable_value (etype, enum_values[i].value_nick))
+                glade_register_translated_value (etype, enum_values[i].value_nick, clean_name);
               g_free (clean_name);
             }
         }
@@ -340,8 +340,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
               gchar *clean_name = clean_stock_name (item.label);
 
               /* These are translated, we just cut out the mnemonic underscores */
-	      if (!glade_get_displayable_value (etype, enum_values[i].value_nick))
-		glade_register_translated_value (etype, enum_values[i].value_nick, clean_name);
+              if (!glade_get_displayable_value (etype, enum_values[i].value_nick))
+                glade_register_translated_value (etype, enum_values[i].value_nick, clean_name);
               g_free (clean_name);
             }
         }
@@ -349,11 +349,11 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       for (i = 0; i < G_N_ELEMENTS (builtin_stock_images); i++)
         {
           /* these ones are translated from glade */
-	  if (!glade_get_displayable_value (etype, builtin_stock_images[i]))
-	    glade_register_displayable_value (etype,
-					      builtin_stock_images[i],
-					      GETTEXT_PACKAGE,
-					      builtin_stock_displayables[i]);
+          if (!glade_get_displayable_value (etype, builtin_stock_images[i]))
+            glade_register_displayable_value (etype,
+                                              builtin_stock_images[i],
+                                              GETTEXT_PACKAGE,
+                                              builtin_stock_displayables[i]);
         }
     }
   return etype;
@@ -427,7 +427,7 @@ param_objects_validate (GParamSpec * pspec, GValue * value)
       object = list->data;
 
       if (!(G_OBJECT_TYPE (object) == ospec->type ||
-	    g_type_is_a (G_OBJECT_TYPE (object), ospec->type)))
+            g_type_is_a (G_OBJECT_TYPE (object), ospec->type)))
         toremove = g_list_prepend (toremove, object);
     }
 
@@ -526,7 +526,7 @@ glade_standard_pixbuf_spec (void)
 {
   return g_param_spec_object ("pixbuf", _("Image File Name"),
                               _("Enter a filename, relative path or full path to "
-				"load the image"), GDK_TYPE_PIXBUF,
+                                "load the image"), GDK_TYPE_PIXBUF,
                               G_PARAM_READWRITE);
 }
 

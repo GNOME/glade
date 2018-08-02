@@ -51,9 +51,9 @@ struct _GladePreviewClass
 
 GType         glade_preview_get_type    (void) G_GNUC_CONST;
 GladePreview *glade_preview_launch      (GladeWidget  *widget,
-					 const gchar  *buffer);
+                                         const gchar  *buffer);
 void          glade_preview_update      (GladePreview *preview,
-					 const gchar  *buffer);
+                                         const gchar  *buffer);
 GladeWidget  *glade_preview_get_widget  (GladePreview *preview);
 GPid          glade_preview_get_pid     (GladePreview *preview);
 

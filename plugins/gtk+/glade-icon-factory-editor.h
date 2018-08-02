@@ -25,33 +25,33 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_ICON_FACTORY_EDITOR	            (glade_icon_factory_editor_get_type ())
-#define GLADE_ICON_FACTORY_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_ICON_FACTORY_EDITOR, GladeIconFactoryEditor))
-#define GLADE_ICON_FACTORY_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_ICON_FACTORY_EDITOR, GladeIconFactoryEditorClass))
-#define GLADE_IS_ICON_FACTORY_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_ICON_FACTORY_EDITOR))
-#define GLADE_IS_ICON_FACTORY_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_ICON_FACTORY_EDITOR))
-#define GLADE_ICON_FACTORY_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_ICON_FACTORY_EDITOR, GladeIconFactoryEditorClass))
+#define GLADE_TYPE_ICON_FACTORY_EDITOR            (glade_icon_factory_editor_get_type ())
+#define GLADE_ICON_FACTORY_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_ICON_FACTORY_EDITOR, GladeIconFactoryEditor))
+#define GLADE_ICON_FACTORY_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_ICON_FACTORY_EDITOR, GladeIconFactoryEditorClass))
+#define GLADE_IS_ICON_FACTORY_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_ICON_FACTORY_EDITOR))
+#define GLADE_IS_ICON_FACTORY_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_ICON_FACTORY_EDITOR))
+#define GLADE_ICON_FACTORY_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_ICON_FACTORY_EDITOR, GladeIconFactoryEditorClass))
 
 typedef struct _GladeIconFactoryEditor        GladeIconFactoryEditor;
 typedef struct _GladeIconFactoryEditorClass   GladeIconFactoryEditorClass;
 
 struct _GladeIconFactoryEditor
 {
-	GtkBox  parent;
+  GtkBox  parent;
 
-	GtkWidget *embed;           /* Embedded parent class editor */
+  GtkWidget *embed;           /* Embedded parent class editor */
 
-	GList *properties;         /* A list of eprops to update at load() time */
+  GList *properties;         /* A list of eprops to update at load() time */
 };
 
 struct _GladeIconFactoryEditorClass
 {
-	GtkBoxClass parent;
+  GtkBoxClass parent;
 };
 
 GType            glade_icon_factory_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_icon_factory_editor_new      (GladeWidgetAdaptor *adaptor,
-						     GladeEditable      *editable);
+                                                     GladeEditable      *editable);
 
 G_END_DECLS
 

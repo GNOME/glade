@@ -30,9 +30,9 @@
 #include "glade-gtk.h"
 
 void
-glade_gtk_menu_item_action_activate (GladeWidgetAdaptor * adaptor,
-                                     GObject * object,
-                                     const gchar * action_path)
+glade_gtk_menu_item_action_activate (GladeWidgetAdaptor *adaptor,
+                                     GObject            *object,
+                                     const gchar        *action_path)
 {
   GObject *obj = NULL, *shell = NULL;
   GladeWidget *w = glade_widget_get_from_gobject (object);
@@ -65,7 +65,7 @@ glade_gtk_menu_item_action_activate (GladeWidgetAdaptor * adaptor,
 GObject *
 glade_gtk_menu_item_constructor (GType type,
                                  guint n_construct_properties,
-                                 GObjectConstructParam * construct_properties)
+                                 GObjectConstructParam *construct_properties)
 {
   GladeWidgetAdaptor *adaptor;
   GObject *ret_obj;
@@ -97,8 +97,8 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 GList *
-glade_gtk_menu_item_get_children (GladeWidgetAdaptor * adaptor,
-                                  GObject * object)
+glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object)
 {
   GList *list = NULL;
   GtkWidget *child;
@@ -113,35 +113,35 @@ glade_gtk_menu_item_get_children (GladeWidgetAdaptor * adaptor,
 
 gboolean
 glade_gtk_menu_item_add_verify (GladeWidgetAdaptor *adaptor,
-				GtkWidget          *container,
-				GtkWidget          *child,
-				gboolean            user_feedback)
+                                GtkWidget          *container,
+                                GtkWidget          *child,
+                                gboolean            user_feedback)
 {
   if (!GTK_IS_MENU (child))
     {
       if (user_feedback)
-	{
-	  GladeWidgetAdaptor *menu_adaptor = 
-	    glade_widget_adaptor_get_by_type (GTK_TYPE_MENU);
+        {
+          GladeWidgetAdaptor *menu_adaptor = 
+            glade_widget_adaptor_get_by_type (GTK_TYPE_MENU);
 
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 ONLY_THIS_GOES_IN_THAT_MSG,
-				 glade_widget_adaptor_get_title (menu_adaptor),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 ONLY_THIS_GOES_IN_THAT_MSG,
+                                 glade_widget_adaptor_get_title (menu_adaptor),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }
   else if (GTK_IS_SEPARATOR_MENU_ITEM (container))
     {
       if (user_feedback)
-	{
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 _("An object of type %s cannot have any children."),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+        {
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 _("An object of type %s cannot have any children."),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }
@@ -150,8 +150,9 @@ glade_gtk_menu_item_add_verify (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_menu_item_add_child (GladeWidgetAdaptor * adaptor,
-                               GObject * object, GObject * child)
+glade_gtk_menu_item_add_child (GladeWidgetAdaptor *adaptor,
+                               GObject            *object,
+                               GObject            *child)
 {
   g_return_if_fail (GTK_IS_MENU_ITEM (object));
   g_return_if_fail (GTK_IS_MENU (child));
@@ -169,8 +170,9 @@ glade_gtk_menu_item_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_menu_item_remove_child (GladeWidgetAdaptor * adaptor,
-                                  GObject * object, GObject * child)
+glade_gtk_menu_item_remove_child (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object,
+                                  GObject            *child)
 {
   g_return_if_fail (GTK_IS_MENU_ITEM (object));
   g_return_if_fail (GTK_IS_MENU (child));
@@ -181,7 +183,7 @@ glade_gtk_menu_item_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_menu_item_set_label (GObject * object, const GValue * value)
+glade_gtk_menu_item_set_label (GObject *object, const GValue *value)
 {
   GladeWidget *gitem;
   GtkWidget *label;
@@ -208,9 +210,10 @@ glade_gtk_menu_item_set_use_underline (GObject * object, const GValue * value)
 
 
 void
-glade_gtk_menu_item_set_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * object,
-                                  const gchar * id, const GValue * value)
+glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object,
+                                  const gchar        *id,
+                                  const GValue       *value)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (gwidget, id);
@@ -226,7 +229,7 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditable *
-glade_gtk_activatable_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_activatable_create_editable (GladeWidgetAdaptor *adaptor,
                                        GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)

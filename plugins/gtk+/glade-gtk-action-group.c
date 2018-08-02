@@ -30,26 +30,26 @@
 
 gboolean
 glade_gtk_action_group_add_verify (GladeWidgetAdaptor *adaptor,
-				   GtkWidget          *container,
-				   GtkWidget          *child,
-				   gboolean            user_feedback)
+                                   GtkWidget          *container,
+                                   GtkWidget          *child,
+                                   gboolean            user_feedback)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (!GTK_IS_ACTION (child))
 G_GNUC_END_IGNORE_DEPRECATIONS
     {
       if (user_feedback)
-	{
+        {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-	  GladeWidgetAdaptor *action_adaptor = 
-	    glade_widget_adaptor_get_by_type (GTK_TYPE_ACTION);
+          GladeWidgetAdaptor *action_adaptor = 
+            glade_widget_adaptor_get_by_type (GTK_TYPE_ACTION);
 G_GNUC_END_IGNORE_DEPRECATIONS
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 ONLY_THIS_GOES_IN_THAT_MSG,
-				 glade_widget_adaptor_get_title (action_adaptor),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 ONLY_THIS_GOES_IN_THAT_MSG,
+                                 glade_widget_adaptor_get_title (action_adaptor),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }
@@ -58,8 +58,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 void
-glade_gtk_action_group_add_child (GladeWidgetAdaptor * adaptor,
-                                  GObject * container, GObject * child)
+glade_gtk_action_group_add_child (GladeWidgetAdaptor *adaptor,
+                                  GObject            *container,
+                                  GObject            *child)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     if (GTK_IS_ACTION (child))
@@ -83,8 +84,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 void
-glade_gtk_action_group_remove_child (GladeWidgetAdaptor * adaptor,
-                                     GObject * container, GObject * child)
+glade_gtk_action_group_remove_child (GladeWidgetAdaptor *adaptor,
+                                     GObject            *container,
+                                     GObject            *child)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (GTK_IS_ACTION (child))
@@ -103,23 +105,24 @@ G_GNUC_END_IGNORE_DEPRECATIONS
                               (GDestroyNotify) g_list_free);
       
       glade_widget_property_set_sensitive (gaction, "accelerator", FALSE, 
-					   ACTION_ACCEL_INSENSITIVE_MSG);
+                                           ACTION_ACCEL_INSENSITIVE_MSG);
       glade_widget_set_action_sensitive (gaction, "launch_editor", FALSE);
     }
 }
 
 void
-glade_gtk_action_group_replace_child (GladeWidgetAdaptor * adaptor,
-                                      GObject * container,
-                                      GObject * current, GObject * new_action)
+glade_gtk_action_group_replace_child (GladeWidgetAdaptor *adaptor,
+                                      GObject            *container,
+                                      GObject            *current,
+                                      GObject            *new_action)
 {
   glade_gtk_action_group_remove_child (adaptor, container, current);
   glade_gtk_action_group_add_child (adaptor, container, new_action);
 }
 
 GList *
-glade_gtk_action_group_get_children (GladeWidgetAdaptor * adaptor,
-                                     GObject * container)
+glade_gtk_action_group_get_children (GladeWidgetAdaptor *adaptor,
+                                     GObject            *container)
 {
   GladeWidget *ggroup = glade_widget_get_from_gobject (container);
   GList *actions = g_object_get_data (G_OBJECT (ggroup), "glade-actions");
@@ -129,8 +132,9 @@ glade_gtk_action_group_get_children (GladeWidgetAdaptor * adaptor,
 
 
 void
-glade_gtk_action_group_read_child (GladeWidgetAdaptor * adaptor,
-                                   GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_action_group_read_child (GladeWidgetAdaptor *adaptor,
+                                   GladeWidget        *widget,
+                                   GladeXmlNode       *node)
 {
   GladeXmlNode *widget_node;
   GladeWidget *child_widget;
@@ -155,10 +159,10 @@ glade_gtk_action_group_read_child (GladeWidgetAdaptor * adaptor,
 
 
 void
-glade_gtk_action_group_write_child (GladeWidgetAdaptor * adaptor,
-                                    GladeWidget * widget,
-                                    GladeXmlContext * context,
-                                    GladeXmlNode * node)
+glade_gtk_action_group_write_child (GladeWidgetAdaptor *adaptor,
+                                    GladeWidget        *widget,
+                                    GladeXmlContext    *context,
+                                    GladeXmlNode       *node)
 {
   GladeXmlNode *child_node;
 
@@ -174,23 +178,23 @@ glade_gtk_action_group_write_child (GladeWidgetAdaptor * adaptor,
 
 static void
 glade_gtk_action_child_selected (GladeBaseEditor *editor,
-				 GladeWidget *gchild,
-				 gpointer data)
+                                 GladeWidget     *gchild,
+                                 gpointer         data)
 {
   glade_base_editor_add_label (editor, _("Action"));
-	
+        
   glade_base_editor_add_default_properties (editor, gchild);
-	
+        
   glade_base_editor_add_label (editor, _("Properties"));
   glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
 }
 
 static gboolean
 glade_gtk_action_move_child (GladeBaseEditor *editor,
-			     GladeWidget *gparent,
-			     GladeWidget *gchild,
-			     gpointer data)
-{	
+                             GladeWidget     *gparent,
+                             GladeWidget     *gchild,
+                             gpointer         data)
+{        
   return FALSE;
 }
 
@@ -212,25 +216,25 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
   /* Editor */
   editor = glade_base_editor_new (glade_widget_get_object (widget), NULL,
-				  _("Action"), type_action,
-				  _("Toggle"), type_toggle_action,
-				  _("Radio"),  type_radio_action,
-				  _("Recent"), type_recent_action,
-				  NULL);
+                                  _("Action"), type_action,
+                                  _("Toggle"), type_toggle_action,
+                                  _("Radio"),  type_radio_action,
+                                  _("Recent"), type_recent_action,
+                                  NULL);
 
   g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_action_child_selected), NULL);
   g_signal_connect (editor, "move-child", G_CALLBACK (glade_gtk_action_move_child), NULL);
 
   gtk_widget_show (GTK_WIDGET (editor));
-	
+
   window = glade_base_editor_pack_new_window (editor, _("Action Group Editor"), NULL);
   gtk_widget_show (window);
 }
 
 void
 glade_gtk_action_action_activate (GladeWidgetAdaptor *adaptor,
-				  GObject *object,
-				  const gchar *action_path)
+                                  GObject *object,
+                                  const gchar *action_path)
 {
   if (strcmp (action_path, "launch_editor") == 0)
     {

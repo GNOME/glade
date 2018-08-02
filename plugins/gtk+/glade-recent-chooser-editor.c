@@ -25,7 +25,7 @@
 
 #include "glade-recent-chooser-editor.h"
 
-static void glade_recent_chooser_editor_editable_init (GladeEditableIface * iface);
+static void glade_recent_chooser_editor_editable_init (GladeEditableIface *iface);
 
 struct _GladeRecentChooserEditorPrivate {
   GtkWidget *select_multiple_editor;
@@ -40,7 +40,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeRecentChooserEditor, glade_recent_chooser_editor, 
                                                 glade_recent_chooser_editor_editable_init));
 
 static void
-glade_recent_chooser_editor_class_init (GladeRecentChooserEditorClass * klass)
+glade_recent_chooser_editor_class_init (GladeRecentChooserEditorClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
@@ -51,7 +51,7 @@ glade_recent_chooser_editor_class_init (GladeRecentChooserEditorClass * klass)
 }
 
 static void
-glade_recent_chooser_editor_init (GladeRecentChooserEditor * self)
+glade_recent_chooser_editor_init (GladeRecentChooserEditor *self)
 {
   self->priv = glade_recent_chooser_editor_get_instance_private (self);
 
@@ -60,7 +60,7 @@ glade_recent_chooser_editor_init (GladeRecentChooserEditor * self)
 
 static void
 glade_recent_chooser_editor_load (GladeEditable *editable,
-				  GladeWidget   *gwidget)
+                                  GladeWidget   *gwidget)
 {
   GladeRecentChooserEditor *recent_editor = GLADE_RECENT_CHOOSER_EDITOR (editable);
   GladeRecentChooserEditorPrivate *priv = recent_editor->priv;
@@ -82,7 +82,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-glade_recent_chooser_editor_editable_init (GladeEditableIface * iface)
+glade_recent_chooser_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

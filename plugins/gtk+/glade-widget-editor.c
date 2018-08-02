@@ -27,12 +27,12 @@
 #include "glade-widget-editor.h"
 
 
-static void glade_widget_editor_finalize (GObject * object);
+static void glade_widget_editor_finalize (GObject *object);
 
-static void glade_widget_editor_editable_init (GladeEditableIface * iface);
+static void glade_widget_editor_editable_init (GladeEditableIface *iface);
 
-static void markup_toggled (GtkWidget * widget, GladeWidgetEditor * widget_editor);
-static void custom_tooltip_toggled (GtkWidget * widget, GladeWidgetEditor * widget_editor);
+static void markup_toggled (GtkWidget * widget, GladeWidgetEditor *widget_editor);
+static void custom_tooltip_toggled (GtkWidget *widget, GladeWidgetEditor *widget_editor);
 
 struct _GladeWidgetEditorPrivate
 {
@@ -59,7 +59,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeWidgetEditor, glade_widget_editor, GLADE_TYPE_EDIT
                                                 glade_widget_editor_editable_init));
 
 static void
-glade_widget_editor_class_init (GladeWidgetEditorClass * klass)
+glade_widget_editor_class_init (GladeWidgetEditorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -82,7 +82,7 @@ glade_widget_editor_class_init (GladeWidgetEditorClass * klass)
 }
 
 static void
-glade_widget_editor_init (GladeWidgetEditor * self)
+glade_widget_editor_init (GladeWidgetEditor *self)
 {
   self->priv = glade_widget_editor_get_instance_private (self);
 
@@ -90,7 +90,7 @@ glade_widget_editor_init (GladeWidgetEditor * self)
 }
 
 static void
-glade_widget_editor_load (GladeEditable * editable, GladeWidget * gwidget)
+glade_widget_editor_load (GladeEditable *editable, GladeWidget *gwidget)
 {
   GladeWidgetEditor        *widget_editor = GLADE_WIDGET_EDITOR (editable);
   GladeWidgetEditorPrivate *priv = widget_editor->priv;
@@ -110,9 +110,9 @@ glade_widget_editor_load (GladeEditable * editable, GladeWidget * gwidget)
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->tooltip_markup_check), tooltip_markup);
       gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->tooltip_label_notebook),
-				     tooltip_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
+                                     tooltip_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
       gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->tooltip_editor_notebook),
-				     tooltip_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
+                                     tooltip_markup ? TOOLTIP_MARKUP_PAGE : TOOLTIP_TEXT_PAGE);
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->custom_tooltip_check), custom_tooltip);
       gtk_widget_set_sensitive (priv->tooltip_markup_check, !custom_tooltip);
@@ -128,7 +128,7 @@ glade_widget_editor_load (GladeEditable * editable, GladeWidget * gwidget)
 }
 
 static void
-glade_widget_editor_editable_init (GladeEditableIface * iface)
+glade_widget_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 
@@ -136,7 +136,7 @@ glade_widget_editor_editable_init (GladeEditableIface * iface)
 }
 
 static void
-glade_widget_editor_finalize (GObject * object)
+glade_widget_editor_finalize (GObject *object)
 {
   glade_editable_load (GLADE_EDITABLE (object), NULL);
 
@@ -145,7 +145,7 @@ glade_widget_editor_finalize (GObject * object)
 
 static void
 custom_tooltip_toggled (GtkWidget         *widget,
-			GladeWidgetEditor *widget_editor)
+                        GladeWidgetEditor *widget_editor)
 {
   GladeProperty *property;
   GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (widget_editor));
@@ -161,7 +161,7 @@ custom_tooltip_toggled (GtkWidget         *widget,
   if (active)
     {
       glade_command_push_group (_("Setting %s to use a custom tooltip"),
-				glade_widget_get_name (gwidget));
+                                glade_widget_get_name (gwidget));
 
       /* clear out some things... */
       property = glade_widget_get_property (gwidget, "tooltip-text");
@@ -181,7 +181,7 @@ custom_tooltip_toggled (GtkWidget         *widget,
   else
     {
       glade_command_push_group (_("Setting %s to use a custom tooltip"),
-				glade_widget_get_name (gwidget));
+                                glade_widget_get_name (gwidget));
 
       /* clear out some things... */
       property = glade_widget_get_property (gwidget, "tooltip-text");
@@ -207,8 +207,8 @@ custom_tooltip_toggled (GtkWidget         *widget,
 
 static void
 transfer_text_property (GladeWidget *gwidget,
-			const gchar *from,
-			const gchar *to)
+                        const gchar *from,
+                        const gchar *to)
 {
   gchar *value = NULL;
   gchar *comment = NULL, *context = NULL;
@@ -246,7 +246,7 @@ transfer_text_property (GladeWidget *gwidget,
 
 static void
 markup_toggled (GtkWidget         *widget,
-		GladeWidgetEditor *widget_editor)
+                GladeWidgetEditor *widget_editor)
 {
   GladeProperty *property;
   GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (widget_editor));
@@ -263,7 +263,7 @@ markup_toggled (GtkWidget         *widget,
   if (active)
     {
       glade_command_push_group (_("Setting %s to use tooltip markup"),
-				glade_widget_get_name (gwidget));
+                                glade_widget_get_name (gwidget));
 
       transfer_text_property (gwidget, "tooltip-text", "tooltip-markup");
 
@@ -275,7 +275,7 @@ markup_toggled (GtkWidget         *widget,
   else
     {
       glade_command_push_group (_("Setting %s to not use tooltip markup"),
-				glade_widget_get_name (gwidget));
+                                glade_widget_get_name (gwidget));
 
       transfer_text_property (gwidget, "tooltip-markup", "tooltip-text");
 

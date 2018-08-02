@@ -99,9 +99,9 @@ G_DEFINE_TYPE (GladeFixed, glade_fixed, GLADE_TYPE_WIDGET);
 /* From gtkmain.c */
 static gboolean
 glade_fixed_boolean_handled_accumulator (GSignalInvocationHint * ihint,
-					 GValue * return_accu,
-					 const GValue * handler_return,
-					 gpointer dummy)
+                                         GValue * return_accu,
+                                         const GValue * handler_return,
+                                         gpointer dummy)
 {
   gboolean continue_emission;
   gboolean signal_handled;
@@ -133,11 +133,11 @@ save_expand_data (GtkWidget *widget)
   gboolean v_expand_set;
 
   g_object_get (G_OBJECT (widget),
-		"hexpand-set", &h_expand_set,
-		"vexpand-set", &v_expand_set,
-		"hexpand", &h_expand,
-		"vexpand", &v_expand,
-		NULL);
+                "hexpand-set", &h_expand_set,
+                "vexpand-set", &v_expand_set,
+                "hexpand", &h_expand,
+                "vexpand", &v_expand,
+                NULL);
 
   flags = 
     (h_expand_set ? HEXPAND_SET_FLAG : 0) |
@@ -156,11 +156,11 @@ restore_expand_data (GtkWidget *widget)
   flags = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (widget), "glade-gtk-box-child-expand"));
 
   g_object_set (G_OBJECT (widget),
-		"hexpand",     ((flags & HEXPAND_FLAG) != 0),
-		"vexpand",     ((flags & VEXPAND_FLAG) != 0),
-		"hexpand-set", ((flags & HEXPAND_SET_FLAG) != 0),
-		"vexpand-set", ((flags & VEXPAND_SET_FLAG) != 0),
-		NULL);
+                "hexpand",     ((flags & HEXPAND_FLAG) != 0),
+                "vexpand",     ((flags & VEXPAND_FLAG) != 0),
+                "hexpand-set", ((flags & HEXPAND_SET_FLAG) != 0),
+                "vexpand-set", ((flags & VEXPAND_SET_FLAG) != 0),
+                NULL);
 }
 
 static void
@@ -260,8 +260,8 @@ glade_fixed_save_state (GladeFixed *fixed, GladeWidget *child, GdkDevice *device
   child_widget = GTK_WIDGET (glade_widget_get_object (child));
 
   glade_utils_get_pointer (widget, gtk_widget_get_window (widget), device,
-			   &(GLADE_FIXED (fixed)->pointer_x_origin),
-			   &(GLADE_FIXED (fixed)->pointer_y_origin));
+                           &(GLADE_FIXED (fixed)->pointer_x_origin),
+                           &(GLADE_FIXED (fixed)->pointer_y_origin));
 
   gtk_widget_translate_coordinates (child_widget, widget, 0, 0,
                                     &(fixed->child_x_origin),
@@ -622,7 +622,7 @@ glade_fixed_configure_end_impl (GladeFixed *fixed, GladeWidget *child)
 
   glade_command_push_group (_("Placing %s inside %s"),
                             glade_widget_get_name (child), 
-			    glade_widget_get_name (GLADE_WIDGET (fixed)));
+                            glade_widget_get_name (GLADE_WIDGET (fixed)));
 
   /* whew, all that for this call !
    */
@@ -692,8 +692,8 @@ glade_fixed_handle_child_event (GladeFixed *fixed,
       device = gdk_event_get_device (event);
       
       glade_utils_get_pointer (fixed_widget,
-			       window,
-			       device, &fixed_x, &fixed_y);
+                               window,
+                               device, &fixed_x, &fixed_y);
 
       /* Container widgets are trustable to have widget->window occupying
        * the entire widget allocation (gtk_widget_get_pointer broken on GtkEntry).
@@ -731,9 +731,9 @@ glade_fixed_handle_child_event (GladeFixed *fixed,
         else if (fixed->configuring)
           {
             /* Need to update mouse for configures. */
-	    glade_utils_get_pointer (fixed_widget,
-				     window, gdk_event_get_device (event),
-				     &fixed->mouse_x, &fixed->mouse_y);
+            glade_utils_get_pointer (fixed_widget,
+                                     window, gdk_event_get_device (event),
+                                     &fixed->mouse_x, &fixed->mouse_y);
 
             glade_fixed_configure_widget (fixed, child, event->motion.device);
             glade_cursor_set (project, window, fixed->operation);
@@ -750,14 +750,14 @@ glade_fixed_handle_child_event (GladeFixed *fixed,
           {
 
 
-	    expand_all_children (GLADE_WIDGET (fixed));
+            expand_all_children (GLADE_WIDGET (fixed));
 
-	    /* Spin the main loop so that the GladeFixed
-	     * widget gets reallocated before storing
-	     * the allocation sizes
-	     */
-	    while (gtk_events_pending ())
-	      gtk_main_iteration ();
+            /* Spin the main loop so that the GladeFixed
+             * widget gets reallocated before storing
+             * the allocation sizes
+             */
+            while (gtk_events_pending ())
+              gtk_main_iteration ();
 
 
 
@@ -838,7 +838,7 @@ glade_fixed_child_event (GladeWidget *gwidget,
 static void
 glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
                             GladeWidget *child,
-                            gboolean at_mouse)
+                            gboolean     at_mouse)
 {
   GladeFixed *fixed = GLADE_FIXED (gwidget_fixed);
   GtkAllocation allocation;
@@ -855,7 +855,7 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
   widget = GTK_WIDGET (glade_widget_get_object (gwidget_fixed));
   if (gtk_widget_get_window (widget))
     glade_utils_get_pointer (widget, NULL, NULL,
-			     &fixed->mouse_x, &fixed->mouse_y);
+                             &fixed->mouse_x, &fixed->mouse_y);
 
   /* Chain up for the basic parenting */
   GLADE_WIDGET_CLASS (glade_fixed_parent_class)->add_child
@@ -960,7 +960,7 @@ glade_fixed_event (GladeWidget *gwidget_fixed, GdkEvent *event)
     {
       /* Need to update mouse for configures. */
       glade_utils_get_pointer (GTK_WIDGET (glade_widget_get_object (gwidget_fixed)),
-			       window, device, &fixed->mouse_x, &fixed->mouse_y);
+                               window, device, &fixed->mouse_x, &fixed->mouse_y);
 
       if (fixed->configuring)
         {
@@ -990,7 +990,7 @@ glade_fixed_event (GladeWidget *gwidget_fixed, GdkEvent *event)
                                       glade_widget_get_project (GLADE_WIDGET (fixed)));
                 fixed->creating = FALSE;
 
-		glade_project_set_add_item (project, NULL);
+                glade_project_set_add_item (project, NULL);
 
                 handled = TRUE;
               }
@@ -1166,17 +1166,17 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
         _("Whether this container supports resizes of child widgets"),
         TRUE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-        /**
-	 * GladeFixed::configure-child:
-	 * @gladewidget: the #GladeFixed which received the signal.
-	 * @arg1: the child #GladeWidget
-	 * @arg2: a pointer to a #GdkRectange describing the new size.
-	 *
-	 * Delegates the Drag/Resize job.
-	 *
-	 * Returns: %TRUE means you have handled the event and cancels the
-	 *          default handler from being triggered.
-	 */
+  /**
+   * GladeFixed::configure-child:
+   * @gladewidget: the #GladeFixed which received the signal.
+   * @arg1: the child #GladeWidget
+   * @arg2: a pointer to a #GdkRectange describing the new size.
+   *
+   * Delegates the Drag/Resize job.
+   *
+   * Returns: %TRUE means you have handled the event and cancels the
+   *          default handler from being triggered.
+   */
   glade_fixed_signals[CONFIGURE_CHILD] =
       g_signal_new ("configure-child",
                     G_TYPE_FROM_CLASS (gobject_class),
@@ -1187,16 +1187,16 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
                     glade_gtk_marshal_BOOLEAN__OBJECT_POINTER,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_POINTER);
 
-        /**
-	 * GladeFixed::configure-begin:
-	 * @gladewidget: the #GladeFixed which received the signal.
-	 * @arg1: the child #GladeWidget
-	 *
-	 * Signals the beginning of a Drag/Resize
-	 *
-	 * Returns: %TRUE means you have handled the event and cancels the
-	 *          default handler from being triggered.
-	 */
+  /**
+   * GladeFixed::configure-begin:
+   * @gladewidget: the #GladeFixed which received the signal.
+   * @arg1: the child #GladeWidget
+   *
+   * Signals the beginning of a Drag/Resize
+   *
+   * Returns: %TRUE means you have handled the event and cancels the
+   *          default handler from being triggered.
+   */
   glade_fixed_signals[CONFIGURE_BEGIN] =
       g_signal_new ("configure-begin",
                     G_TYPE_FROM_CLASS (gobject_class),
@@ -1207,16 +1207,16 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
                     glade_gtk_marshal_BOOLEAN__OBJECT,
                     G_TYPE_BOOLEAN, 1, G_TYPE_OBJECT);
 
-        /**
-	 * GladeFixed::configure-end:
-	 * @gladewidget: the #GladeFixed which received the signal.
-	 * @arg1: the child #GladeWidget
-	 *
-	 * Signals the end of a Drag/Resize
-	 *
-	 * Returns: %TRUE means you have handled the event and cancels the
-	 *          default handler from being triggered.
-	 */
+  /**
+   * GladeFixed::configure-end:
+   * @gladewidget: the #GladeFixed which received the signal.
+   * @arg1: the child #GladeWidget
+   *
+   * Signals the end of a Drag/Resize
+   *
+   * Returns: %TRUE means you have handled the event and cancels the
+   *          default handler from being triggered.
+   */
   glade_fixed_signals[CONFIGURE_END] =
       g_signal_new ("configure-end",
                     G_TYPE_FROM_CLASS (gobject_class),

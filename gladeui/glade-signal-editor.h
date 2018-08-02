@@ -43,7 +43,7 @@ GType              glade_signal_editor_get_type (void) G_GNUC_CONST;
 
 GladeSignalEditor *glade_signal_editor_new                    (void);
 void               glade_signal_editor_load_widget            (GladeSignalEditor *editor, 
-							       GladeWidget       *widget);
+                                                               GladeWidget       *widget);
 GladeWidget       *glade_signal_editor_get_widget             (GladeSignalEditor *editor);
 
 void glade_signal_editor_enable_dnd (GladeSignalEditor *editor, gboolean enabled);

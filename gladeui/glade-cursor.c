@@ -57,7 +57,7 @@ set_cursor_recurse (GtkWidget * widget, GdkCursor * gdk_cursor)
 
 static void
 set_cursor (GladeProject *project,
-	    GdkCursor    *gdk_cursor)
+            GdkCursor    *gdk_cursor)
 {
   GList *list;
 
@@ -67,10 +67,10 @@ set_cursor (GladeProject *project,
       GObject *object = list->data;
 
       if (GTK_IS_WIDGET (object) &&
-	  gtk_widget_get_has_window (GTK_WIDGET (object)))
-	{
-	  set_cursor_recurse (GTK_WIDGET (object), gdk_cursor);
-	}
+          gtk_widget_get_has_window (GTK_WIDGET (object)))
+        {
+          set_cursor_recurse (GTK_WIDGET (object), gdk_cursor);
+        }
     }
 }
 
@@ -84,8 +84,8 @@ set_cursor (GladeProject *project,
  */
 void
 glade_cursor_set (GladeProject    *project,
-		  GdkWindow       *window, 
-		  GladeCursorType  type)
+                  GdkWindow       *window, 
+                  GladeCursorType  type)
 {
   GladeWidgetAdaptor *adaptor;
   GdkCursor *the_cursor = NULL;

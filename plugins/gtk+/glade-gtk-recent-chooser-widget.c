@@ -30,7 +30,7 @@
 
 GladeEditable *
 glade_gtk_recent_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
-						 GladeEditorPageType type)
+                                                 GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_recent_chooser_widget_editor_new ();

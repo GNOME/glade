@@ -30,8 +30,9 @@
 #include "glade-gtk.h"
 
 void
-glade_gtk_label_post_create (GladeWidgetAdaptor * adaptor,
-                             GObject * object, GladeCreateReason reason)
+glade_gtk_label_post_create (GladeWidgetAdaptor *adaptor,
+                             GObject            *object,
+                             GladeCreateReason   reason)
 {
   GladeWidget *glabel = glade_widget_get_from_gobject (object);
 
@@ -41,7 +42,7 @@ glade_gtk_label_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_label_set_label (GObject * object, const GValue * value)
+glade_gtk_label_set_label (GObject *object, const GValue *value)
 {
   GladeWidget *glabel;
   gboolean use_markup = FALSE, use_underline = FALSE;
@@ -60,7 +61,7 @@ glade_gtk_label_set_label (GObject * object, const GValue * value)
 }
 
 static void
-glade_gtk_label_set_attributes (GObject * object, const GValue * value)
+glade_gtk_label_set_attributes (GObject *object, const GValue *value)
 {
   GladeAttribute *gattr;
   PangoAttribute *attribute;
@@ -80,19 +81,19 @@ glade_gtk_label_set_attributes (GObject * object, const GValue * value)
         {
             /* PangoFontDescription */
           case PANGO_ATTR_FONT_DESC:
-	    if ((font_desc = 
-		 pango_font_description_from_string (g_value_get_string (&gattr->value))))
-	      {
-		attribute = pango_attr_font_desc_new (font_desc);
-		pango_font_description_free (font_desc);
-	      }
-	    break;
+            if ((font_desc = 
+                 pango_font_description_from_string (g_value_get_string (&gattr->value))))
+              {
+                attribute = pango_attr_font_desc_new (font_desc);
+                pango_font_description_free (font_desc);
+              }
+            break;
 
             /* PangoAttrLanguage */
           case PANGO_ATTR_LANGUAGE:
             if ((language =
                  pango_language_from_string (g_value_get_string (&gattr->value))))
-	      attribute = pango_attr_language_new (language);
+              attribute = pango_attr_language_new (language);
             break;
             /* PangoAttrInt */
           case PANGO_ATTR_STYLE:
@@ -207,7 +208,7 @@ glade_gtk_label_set_attributes (GObject * object, const GValue * value)
 
 
 static void
-glade_gtk_label_set_content_mode (GObject * object, const GValue * value)
+glade_gtk_label_set_content_mode (GObject *object, const GValue *value)
 {
   GladeLabelContentMode mode = g_value_get_int (value);
   GladeWidget *glabel;
@@ -239,7 +240,7 @@ glade_gtk_label_set_content_mode (GObject * object, const GValue * value)
 }
 
 static void
-glade_gtk_label_update_lines_sensitivity (GObject * object)
+glade_gtk_label_update_lines_sensitivity (GObject *object)
 {
   GladeWidget *glabel;
   PangoEllipsizeMode ellipsize_mode;
@@ -258,7 +259,7 @@ glade_gtk_label_update_lines_sensitivity (GObject * object)
 }
 
 static void
-glade_gtk_label_set_wrap_mode (GObject * object, const GValue * value)
+glade_gtk_label_set_wrap_mode (GObject *object, const GValue *value)
 {
   GladeLabelWrapMode mode = g_value_get_int (value);
   GladeWidget *glabel;
@@ -280,7 +281,7 @@ glade_gtk_label_set_wrap_mode (GObject * object, const GValue * value)
 }
 
 static void
-glade_gtk_label_set_use_underline (GObject * object, const GValue * value)
+glade_gtk_label_set_use_underline (GObject *object, const GValue *value)
 {
   GladeWidget *glabel;
 
@@ -296,9 +297,10 @@ glade_gtk_label_set_use_underline (GObject * object, const GValue * value)
 }
 
 void
-glade_gtk_label_set_property (GladeWidgetAdaptor * adaptor,
-                              GObject * object,
-                              const gchar * id, const GValue * value)
+glade_gtk_label_set_property (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              const gchar        *id,
+                              const GValue       *value)
 {
   if (!strcmp (id, "label"))
     glade_gtk_label_set_label (object, value);
@@ -313,14 +315,14 @@ glade_gtk_label_set_property (GladeWidgetAdaptor * adaptor,
   else
     {
       if (!strcmp (id, "ellipsize"))
-	glade_gtk_label_update_lines_sensitivity (object);
+        glade_gtk_label_update_lines_sensitivity (object);
 
       GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
 }
 
 static void
-glade_gtk_parse_attributes (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_parse_attributes (GladeWidget *widget, GladeXmlNode *node)
 {
   PangoAttrType attr_type;
   GladeXmlNode *prop;
@@ -371,7 +373,7 @@ glade_gtk_parse_attributes (GladeWidget * widget, GladeXmlNode * node)
 }
 
 static void
-glade_gtk_label_read_attributes (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_label_read_attributes (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *attrs_node;
 
@@ -384,13 +386,14 @@ glade_gtk_label_read_attributes (GladeWidget * widget, GladeXmlNode * node)
 }
 
 void
-glade_gtk_label_read_widget (GladeWidgetAdaptor * adaptor,
-                             GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_label_read_widget (GladeWidgetAdaptor *adaptor,
+                             GladeWidget        *widget,
+                             GladeXmlNode       *node)
 {
   GladeProperty *prop;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -401,7 +404,7 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor * adaptor,
   /* sync label property after a load... */
   prop = glade_widget_get_property (widget, "label");
   glade_gtk_label_set_label (glade_widget_get_object (widget), 
-			     glade_property_inline_value (prop));
+                             glade_property_inline_value (prop));
 
   /* Resolve "label-content-mode" virtual control property  */
   if (!glade_widget_property_original_default (widget, "use-markup"))
@@ -432,9 +435,9 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_label_write_attributes (GladeWidget * widget,
-                                  GladeXmlContext * context,
-                                  GladeXmlNode * node)
+glade_gtk_label_write_attributes (GladeWidget     *widget,
+                                  GladeXmlContext *context,
+                                  GladeXmlNode    *node)
 {
   GladeXmlNode *attr_node;
   GList *attrs = NULL, *l;
@@ -464,14 +467,15 @@ glade_gtk_label_write_attributes (GladeWidget * widget,
 }
 
 void
-glade_gtk_label_write_widget (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget,
-                              GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
+                              GladeWidget        *widget,
+                              GladeXmlContext    *context,
+                              GladeXmlNode       *node)
 {
   GladeXmlNode *attrs_node;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -490,9 +494,9 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor * adaptor,
 }
 
 gchar *
-glade_gtk_label_string_from_value (GladeWidgetAdaptor * adaptor,
-                                   GladePropertyClass * klass,
-                                   const GValue * value)
+glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
+                                   GladePropertyClass *klass,
+                                   const GValue       *value)
 {
   GParamSpec          *pspec;
 
@@ -524,8 +528,9 @@ glade_gtk_label_string_from_value (GladeWidgetAdaptor * adaptor,
 
 
 GladeEditorProperty *
-glade_gtk_label_create_eprop (GladeWidgetAdaptor * adaptor,
-                              GladePropertyClass * klass, gboolean use_command)
+glade_gtk_label_create_eprop (GladeWidgetAdaptor *adaptor,
+                              GladePropertyClass *klass,
+                              gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
@@ -546,7 +551,7 @@ glade_gtk_label_create_eprop (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditable *
-glade_gtk_label_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_label_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {
   GladeEditable *editable;

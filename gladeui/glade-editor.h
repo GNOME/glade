@@ -25,7 +25,7 @@ typedef struct _GladeEditorPrivate   GladeEditorPrivate;
 struct _GladeEditor
 {
   GtkBox vbox;  /* The editor is a vbox */
-	
+
   GladeEditorPrivate *priv;
 };
 
@@ -44,7 +44,7 @@ GType        glade_editor_get_type           (void);
 
 GladeEditor *glade_editor_new                (void);
 void         glade_editor_load_widget        (GladeEditor       *editor,
-					      GladeWidget       *widget);
+                                              GladeWidget       *widget);
 G_DEPRECATED
 void         glade_editor_show_info          (GladeEditor       *editor);
 G_DEPRECATED

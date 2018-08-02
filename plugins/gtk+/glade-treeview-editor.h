@@ -25,34 +25,34 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_TREE_VIEW_EDITOR	            (glade_tree_view_editor_get_type ())
-#define GLADE_TREE_VIEW_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_TREE_VIEW_EDITOR, GladeTreeViewEditor))
-#define GLADE_TREE_VIEW_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_TREE_VIEW_EDITOR, GladeTreeViewEditorClass))
-#define GLADE_IS_TREE_VIEW_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_TREE_VIEW_EDITOR))
-#define GLADE_IS_TREE_VIEW_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_TREE_VIEW_EDITOR))
-#define GLADE_TREE_VIEW_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_TREE_VIEW_EDITOR, GladeTreeViewEditorClass))
+#define GLADE_TYPE_TREE_VIEW_EDITOR            (glade_tree_view_editor_get_type ())
+#define GLADE_TREE_VIEW_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_TREE_VIEW_EDITOR, GladeTreeViewEditor))
+#define GLADE_TREE_VIEW_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_TREE_VIEW_EDITOR, GladeTreeViewEditorClass))
+#define GLADE_IS_TREE_VIEW_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_TREE_VIEW_EDITOR))
+#define GLADE_IS_TREE_VIEW_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_TREE_VIEW_EDITOR))
+#define GLADE_TREE_VIEW_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_TREE_VIEW_EDITOR, GladeTreeViewEditorClass))
 
 typedef struct _GladeTreeViewEditor        GladeTreeViewEditor;
 typedef struct _GladeTreeViewEditorClass   GladeTreeViewEditorClass;
 
 struct _GladeTreeViewEditor
 {
-	GtkBox  parent;
+  GtkBox  parent;
 
-	GtkWidget *embed;
-	GtkWidget *embed_list_store;
-	GtkWidget *embed_tree_store;
-	GtkWidget *no_model_message;
+  GtkWidget *embed;
+  GtkWidget *embed_list_store;
+  GtkWidget *embed_tree_store;
+  GtkWidget *no_model_message;
 };
 
 struct _GladeTreeViewEditorClass
 {
-	GtkBoxClass parent;
+  GtkBoxClass parent;
 };
 
 GType            glade_tree_view_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_tree_view_editor_new      (GladeWidgetAdaptor *adaptor,
-						  GladeEditable      *editable);
+                                                  GladeEditable      *editable);
 
 G_END_DECLS
 

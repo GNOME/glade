@@ -67,7 +67,7 @@ column_types_store_populate_enums_flags (GtkListStore * store, gboolean enums)
       for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
         {
           pclass = l->data;
-	  pspec  = glade_property_class_get_pspec (pclass);
+          pspec  = glade_property_class_get_pspec (pclass);
 
           /* special case out a few of these... */
           if (strcmp (g_type_name (pspec->value_type),
@@ -328,7 +328,7 @@ eprop_column_adjust_rows (GladeEditorProperty * eprop, GList * columns)
 static void
 eprop_column_append (GladeEditorProperty *eprop,
                      const gchar         *type_name, 
-		     const gchar         *column_name)
+                     const gchar         *column_name)
 {
   GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
   GList *columns = NULL;
@@ -365,7 +365,7 @@ eprop_column_append (GladeEditorProperty *eprop,
 static gboolean
 eprop_treeview_key_press (GtkWidget           *treeview,
                           GdkEventKey         *event, 
-			  GladeEditorProperty *eprop)
+                          GladeEditorProperty *eprop)
 {
   /* Remove from list and commit value, dont touch the liststore except in load() */
   GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
@@ -810,7 +810,7 @@ glade_eprop_column_types_create_input (GladeEditorProperty * eprop)
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
-/* 	hbox = gtk_hbox_new (FALSE, 4); */
+/*  hbox = gtk_hbox_new (FALSE, 4); */
 
   if (!types_model)
     {

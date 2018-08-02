@@ -143,10 +143,10 @@ typedef enum
   EDIT_INVALID
 } AttrEditType;
 
-#define ACTIVATE_COLUMN_FROM_TYPE(type)                 \
-	((type) == EDIT_TOGGLE ? COLUMN_TOGGLE_ACTIVE : \
-	 (type) == EDIT_SPIN ? COLUMN_SPIN_ACTIVE :     \
-	 (type) == EDIT_COMBO ? COLUMN_COMBO_ACTIVE: COLUMN_BUTTON_ACTIVE)
+#define ACTIVATE_COLUMN_FROM_TYPE(type)           \
+  ((type) == EDIT_TOGGLE ? COLUMN_TOGGLE_ACTIVE : \
+   (type) == EDIT_SPIN ? COLUMN_SPIN_ACTIVE :     \
+   (type) == EDIT_COMBO ? COLUMN_COMBO_ACTIVE: COLUMN_BUTTON_ACTIVE)
 
 
 static GtkListStore *
@@ -300,7 +300,7 @@ append_empty_row (GtkListStore *store, PangoAttrType type)
       case PANGO_ATTR_FONT_DESC:
         edit_type = EDIT_FONT;
         name = C_ ("textattr", "Font Description");
-	break;
+        break;
 
       case PANGO_ATTR_INVALID:
       case PANGO_ATTR_LETTER_SPACING:
@@ -664,7 +664,7 @@ sync_object (GladeEPropAttrs *eprop_attrs, gboolean use_command)
   else
     {
       GladeProperty *property = 
-	glade_editor_property_get_property (GLADE_EDITOR_PROPERTY (eprop_attrs));
+        glade_editor_property_get_property (GLADE_EDITOR_PROPERTY (eprop_attrs));
 
       glade_property_set (property, g_list_reverse (attributes));
       glade_attr_list_free (attributes);
@@ -715,7 +715,7 @@ value_icon_activate (GtkCellRendererToggle *cell_renderer,
   gtk_tree_model_get (eprop_attrs->model, &iter,
                       COLUMN_TEXT, &text,
                       COLUMN_TYPE, &type, 
-		      COLUMN_EDIT_TYPE, &edit_type, -1);
+                      COLUMN_EDIT_TYPE, &edit_type, -1);
 
   /* Launch dialog etc. */
   switch (edit_type)
@@ -863,25 +863,25 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 
   eprop_attrs->model = (GtkTreeModel *) 
     gtk_list_store_new (NUM_COLUMNS,
-			/* Main Data */
-			G_TYPE_STRING,      // COLUMN_NAME
-			G_TYPE_INT, // COLUMN_NAME_WEIGHT
-			G_TYPE_INT, // COLUMN_TYPE
-			G_TYPE_INT, // COLUMN_EDIT_TYPE
-			G_TYPE_POINTER,     // COLUMN_VALUE
-			G_TYPE_UINT,        // COLUMN_START
-			G_TYPE_UINT,        // COLUMN_END
-			/* Editor renderer related */
-			G_TYPE_BOOLEAN,     // COLUMN_TOGGLE_ACTIVE
-			G_TYPE_BOOLEAN,     // COLUMN_TOGGLE_DOWN
-			G_TYPE_BOOLEAN,     // COLUMN_BUTTON_ACTIVE
-			G_TYPE_STRING,      // COLUMN_TEXT
-			G_TYPE_INT, // COLUMN_TEXT_STYLE
-			G_TYPE_STRING,      // COLUMN_TEXT_FG
-			G_TYPE_BOOLEAN,     // COLUMN_COMBO_ACTIVE
-			GTK_TYPE_LIST_STORE,        // COLUMN_COMBO_MODEL
-			G_TYPE_BOOLEAN,     // COLUMN_SPIN_ACTIVE
-			G_TYPE_UINT);       // COLUMN_SPIN_DIGITS
+                        /* Main Data */
+                        G_TYPE_STRING,      // COLUMN_NAME
+                        G_TYPE_INT, // COLUMN_NAME_WEIGHT
+                        G_TYPE_INT, // COLUMN_TYPE
+                        G_TYPE_INT, // COLUMN_EDIT_TYPE
+                        G_TYPE_POINTER,     // COLUMN_VALUE
+                        G_TYPE_UINT,        // COLUMN_START
+                        G_TYPE_UINT,        // COLUMN_END
+                        /* Editor renderer related */
+                        G_TYPE_BOOLEAN,     // COLUMN_TOGGLE_ACTIVE
+                        G_TYPE_BOOLEAN,     // COLUMN_TOGGLE_DOWN
+                        G_TYPE_BOOLEAN,     // COLUMN_BUTTON_ACTIVE
+                        G_TYPE_STRING,      // COLUMN_TEXT
+                        G_TYPE_INT, // COLUMN_TEXT_STYLE
+                        G_TYPE_STRING,      // COLUMN_TEXT_FG
+                        G_TYPE_BOOLEAN,     // COLUMN_COMBO_ACTIVE
+                        GTK_TYPE_LIST_STORE,        // COLUMN_COMBO_MODEL
+                        G_TYPE_BOOLEAN,     // COLUMN_SPIN_ACTIVE
+                        G_TYPE_UINT);       // COLUMN_SPIN_DIGITS
   
   view_widget = gtk_tree_view_new_with_model (eprop_attrs->model);
   gtk_tree_view_set_show_expanders (GTK_TREE_VIEW (view_widget), FALSE);

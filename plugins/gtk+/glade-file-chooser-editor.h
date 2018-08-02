@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_FILE_CHOOSER_EDITOR	            (glade_file_chooser_editor_get_type ())
-#define GLADE_FILE_CHOOSER_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_FILE_CHOOSER_EDITOR, GladeFileChooserEditor))
-#define GLADE_FILE_CHOOSER_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_FILE_CHOOSER_EDITOR, GladeFileChooserEditorClass))
-#define GLADE_IS_FILE_CHOOSER_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_FILE_CHOOSER_EDITOR))
-#define GLADE_IS_FILE_CHOOSER_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_FILE_CHOOSER_EDITOR))
-#define GLADE_FILE_CHOOSER_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_FILE_CHOOSER_EDITOR, GladeFileChooserEditorClass))
+#define GLADE_TYPE_FILE_CHOOSER_EDITOR            (glade_file_chooser_editor_get_type ())
+#define GLADE_FILE_CHOOSER_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_FILE_CHOOSER_EDITOR, GladeFileChooserEditor))
+#define GLADE_FILE_CHOOSER_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_FILE_CHOOSER_EDITOR, GladeFileChooserEditorClass))
+#define GLADE_IS_FILE_CHOOSER_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_FILE_CHOOSER_EDITOR))
+#define GLADE_IS_FILE_CHOOSER_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_FILE_CHOOSER_EDITOR))
+#define GLADE_FILE_CHOOSER_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_FILE_CHOOSER_EDITOR, GladeFileChooserEditorClass))
 
 typedef struct _GladeFileChooserEditor        GladeFileChooserEditor;
 typedef struct _GladeFileChooserEditorClass   GladeFileChooserEditorClass;

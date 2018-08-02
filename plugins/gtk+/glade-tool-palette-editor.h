@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_TOOL_PALETTE_EDITOR	            (glade_tool_palette_editor_get_type ())
-#define GLADE_TOOL_PALETTE_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_TOOL_PALETTE_EDITOR, GladeToolPaletteEditor))
-#define GLADE_TOOL_PALETTE_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_TOOL_PALETTE_EDITOR, GladeToolPaletteEditorClass))
-#define GLADE_IS_TOOL_PALETTE_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_TOOL_PALETTE_EDITOR))
-#define GLADE_IS_TOOL_PALETTE_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_TOOL_PALETTE_EDITOR))
-#define GLADE_TOOL_PALETTE_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_TOOL_PALETTE_EDITOR, GladeToolPaletteEditorClass))
+#define GLADE_TYPE_TOOL_PALETTE_EDITOR            (glade_tool_palette_editor_get_type ())
+#define GLADE_TOOL_PALETTE_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_TOOL_PALETTE_EDITOR, GladeToolPaletteEditor))
+#define GLADE_TOOL_PALETTE_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_TOOL_PALETTE_EDITOR, GladeToolPaletteEditorClass))
+#define GLADE_IS_TOOL_PALETTE_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_TOOL_PALETTE_EDITOR))
+#define GLADE_IS_TOOL_PALETTE_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_TOOL_PALETTE_EDITOR))
+#define GLADE_TOOL_PALETTE_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_TOOL_PALETTE_EDITOR, GladeToolPaletteEditorClass))
 
 typedef struct _GladeToolPaletteEditor        GladeToolPaletteEditor;
 typedef struct _GladeToolPaletteEditorClass   GladeToolPaletteEditorClass;

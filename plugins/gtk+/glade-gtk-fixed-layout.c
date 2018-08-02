@@ -28,8 +28,8 @@
 #include "glade-layout-editor.h"
 
 GladeEditable *
-glade_gtk_layout_create_editable (GladeWidgetAdaptor * adaptor,
-				  GladeEditorPageType type)
+glade_gtk_layout_create_editable (GladeWidgetAdaptor *adaptor,
+                                  GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {
@@ -40,7 +40,7 @@ glade_gtk_layout_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_fixed_layout_sync_size_requests (GtkWidget * widget)
+glade_gtk_fixed_layout_sync_size_requests (GtkWidget *widget)
 {
   GList *children, *l;
 
@@ -74,15 +74,15 @@ get_fixed_layout_pattern (void)
     {
       gchar *path = g_build_filename (glade_app_get_pixmaps_dir (), "fixed-bg.png", NULL);
       cairo_surface_t *surface = 
-	cairo_image_surface_create_from_png (path);
+        cairo_image_surface_create_from_png (path);
 
       if (surface)
-	{
-	  static_pattern = cairo_pattern_create_for_surface (surface);
-	  cairo_pattern_set_extend (static_pattern, CAIRO_EXTEND_REPEAT);
-	}
+        {
+          static_pattern = cairo_pattern_create_for_surface (surface);
+          cairo_pattern_set_extend (static_pattern, CAIRO_EXTEND_REPEAT);
+        }
       else 
-	g_warning ("Failed to create surface for %s\n", path);
+        g_warning ("Failed to create surface for %s\n", path);
 
       g_free (path);
     }
@@ -106,8 +106,9 @@ glade_gtk_fixed_layout_draw (GtkWidget *widget, cairo_t *cr)
 }
 
 void
-glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor * adaptor,
-                                    GObject * object, GladeCreateReason reason)
+glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor *adaptor,
+                                    GObject            *object,
+                                    GladeCreateReason   reason)
 {
   /* Set a minimun size so you can actually see it if you added to a box */
   gtk_widget_set_size_request (GTK_WIDGET (object), 32, 32);
@@ -121,12 +122,13 @@ glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor * adaptor,
                             (glade_gtk_fixed_layout_sync_size_requests), NULL);
 
   g_signal_connect (object, "draw",
-		    G_CALLBACK (glade_gtk_fixed_layout_draw), NULL);
+                    G_CALLBACK (glade_gtk_fixed_layout_draw), NULL);
 }
 
 void
-glade_gtk_fixed_layout_add_child (GladeWidgetAdaptor * adaptor,
-                                  GObject * object, GObject * child)
+glade_gtk_fixed_layout_add_child (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object,
+                                  GObject            *child)
 {
   g_return_if_fail (GTK_IS_CONTAINER (object));
   g_return_if_fail (GTK_IS_WIDGET (child));
@@ -135,8 +137,9 @@ glade_gtk_fixed_layout_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor * adaptor,
-                                     GObject * object, GObject * child)
+glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor *adaptor,
+                                     GObject            *object,
+                                     GObject            *child)
 {
   g_return_if_fail (GTK_IS_CONTAINER (object));
   g_return_if_fail (GTK_IS_WIDGET (child));

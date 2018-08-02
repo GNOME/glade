@@ -37,7 +37,7 @@ G_BEGIN_DECLS
  * Evaluates to %TRUE if @klass is available in its owning library version-@major_verion.@minor_version.
  *
  */
-#define GSC_VERSION_CHECK(klass, major_version, minor_version)	\
+#define GSC_VERSION_CHECK(klass, major_version, minor_version)                      \
   ((glade_signal_class_since_major (GLADE_SIGNAL_CLASS (klass)) == major_version) ? \
    (glade_signal_class_since_minor (GLADE_SIGNAL_CLASS (klass)) <= minor_version) : \
    (glade_signal_class_since_major (GLADE_SIGNAL_CLASS (klass)) <= major_version))
@@ -48,12 +48,12 @@ G_BEGIN_DECLS
 typedef struct _GladeSignalClass GladeSignalClass;
 
 GladeSignalClass     *glade_signal_class_new                      (GladeWidgetAdaptor *adaptor,
-								   GType               for_type,
-								   guint               signal_id);
+                                                                   GType               for_type,
+                                                                   guint               signal_id);
 void                  glade_signal_class_free                     (GladeSignalClass   *signal_class);
 void                  glade_signal_class_update_from_node         (GladeSignalClass   *signal_class,
-								   GladeXmlNode       *node,
-								   const gchar        *domain);
+                                                                   GladeXmlNode       *node,
+                                                                   const gchar        *domain);
 
 GladeWidgetAdaptor   *glade_signal_class_get_adaptor              (const GladeSignalClass   *signal_class);
 G_CONST_RETURN gchar *glade_signal_class_get_name                 (const GladeSignalClass   *signal_class);
@@ -61,13 +61,13 @@ G_CONST_RETURN gchar *glade_signal_class_get_type                 (const GladeSi
 GSignalFlags          glade_signal_class_get_flags                (const GladeSignalClass   *signal_class);
 
 void                  glade_signal_class_set_since                (GladeSignalClass   *signal_class,
-								   guint16             since_major,
-								   guint16             since_minor);
+                                                                   guint16             since_major,
+                                                                   guint16             since_minor);
 guint16               glade_signal_class_since_major              (GladeSignalClass   *signal_class);
 guint16               glade_signal_class_since_minor              (GladeSignalClass   *signal_class);
 
 void                  glade_signal_class_set_deprecated           (GladeSignalClass   *signal_class,
-								   gboolean            deprecated);
+                                                                   gboolean            deprecated);
 gboolean              glade_signal_class_deprecated               (GladeSignalClass   *signal_class);
 
 

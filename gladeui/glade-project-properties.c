@@ -32,36 +32,36 @@
 /* GObjectClass */
 static void     glade_project_properties_finalize     (GObject                *object);
 static void     glade_project_properties_set_property (GObject                *object,
-						       guint                   prop_id,
-						       const GValue           *value,
-						       GParamSpec             *pspec);
+                                                       guint                   prop_id,
+                                                       const GValue           *value,
+                                                       GParamSpec             *pspec);
 
 /* UI Callbacks */
 static void     on_template_combo_box_changed         (GtkComboBox            *combo,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     on_template_checkbutton_toggled       (GtkToggleButton        *togglebutton,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     resource_default_toggled              (GtkWidget              *widget,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     resource_relative_toggled             (GtkWidget              *widget,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     resource_fullpath_toggled             (GtkWidget              *widget,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     on_relative_path_entry_insert_text    (GtkEditable            *editable,
                                                        gchar                  *new_text,
                                                        gint                    new_text_length,
                                                        gint                   *position,
                                                        GladeProjectProperties *properties); 
 static void     on_relative_path_entry_changed        (GtkEntry               *entry,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     resource_full_path_set                (GtkFileChooserButton   *button,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     verify_clicked                        (GtkWidget              *button,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     on_domain_entry_changed               (GtkWidget              *entry,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     target_button_clicked                 (GtkWidget              *widget,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     on_glade_project_properties_hide      (GtkWidget              *widget,
                                                        GladeProjectProperties *properties);
 static void     on_css_filechooser_file_set           (GtkFileChooserButton   *widget,
@@ -75,19 +75,19 @@ static void     on_license_data_changed               (GladeProjectProperties *p
 
 /* Project callbacks */
 static void     project_resource_path_changed         (GladeProject           *project,
-						       GParamSpec             *pspec,
-						       GladeProjectProperties *properties);
+                                                       GParamSpec             *pspec,
+                                                       GladeProjectProperties *properties);
 static void     project_template_changed              (GladeProject           *project,
-						       GParamSpec             *pspec,
-						       GladeProjectProperties *properties);
+                                                       GParamSpec             *pspec,
+                                                       GladeProjectProperties *properties);
 static void     project_domain_changed                (GladeProject           *project,
-						       GParamSpec             *pspec,
-						       GladeProjectProperties *properties);
+                                                       GParamSpec             *pspec,
+                                                       GladeProjectProperties *properties);
 static void     project_targets_changed               (GladeProject           *project,
-						       GladeProjectProperties *properties);
+                                                       GladeProjectProperties *properties);
 static void     project_license_changed               (GladeProject           *project,
-						       GParamSpec             *pspec,
-						       GladeProjectProperties *properties);
+                                                       GParamSpec             *pspec,
+                                                       GladeProjectProperties *properties);
 static void     project_css_provider_path_changed     (GladeProject           *project,
                                                        GParamSpec             *pspec,
                                                        GladeProjectProperties *properties);
@@ -166,9 +166,9 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   g_object_class_install_property
     (gobject_class, PROP_PROJECT,
      g_param_spec_object ("project", _("Project"),
-			  _("The project this properties dialog was created for"),
-			  GLADE_TYPE_PROJECT,
-			  G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+                          _("The project this properties dialog was created for"),
+                          GLADE_TYPE_PROJECT,
+                          G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 
   /* Setup the template GtkBuilder xml for this class
    */
@@ -357,7 +357,7 @@ update_prefs_for_resource_path (GladeProjectProperties *properties)
 
 static void
 glade_project_properties_set_project (GladeProjectProperties *properties,
-				      GladeProject           *project)
+                                      GladeProject           *project)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
 
@@ -366,17 +366,17 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
   priv->project = project;
 
   g_signal_connect (priv->project, "notify::resource-path",
-		    G_CALLBACK (project_resource_path_changed), properties);
+                    G_CALLBACK (project_resource_path_changed), properties);
   g_signal_connect (priv->project, "notify::template",
-		    G_CALLBACK (project_template_changed), properties);
+                    G_CALLBACK (project_template_changed), properties);
   g_signal_connect (priv->project, "notify::translation-domain",
-		    G_CALLBACK (project_domain_changed), properties);
+                    G_CALLBACK (project_domain_changed), properties);
   g_signal_connect (priv->project, "notify::css-provider-path",
-		    G_CALLBACK (project_css_provider_path_changed), properties);  
+                    G_CALLBACK (project_css_provider_path_changed), properties);  
   g_signal_connect (priv->project, "targets-changed",
-		    G_CALLBACK (project_targets_changed), properties);
+                    G_CALLBACK (project_targets_changed), properties);
   g_signal_connect (priv->project, "notify::license",
-		    G_CALLBACK (project_license_changed), properties);
+                    G_CALLBACK (project_license_changed), properties);
 
   target_version_box_fill (properties);
   update_prefs_for_resource_path (properties);
@@ -388,15 +388,15 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
 
 static void
 glade_project_properties_set_property (GObject *object,
-				       guint prop_id,
-				       const GValue *value,
-				       GParamSpec *pspec)
+                                       guint prop_id,
+                                       const GValue *value,
+                                       GParamSpec *pspec)
 {
   switch (prop_id)
     {
     case PROP_PROJECT:
       glade_project_properties_set_project (GLADE_PROJECT_PROPERTIES (object),
-					    g_value_get_object (value));
+                                            g_value_get_object (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -409,7 +409,7 @@ glade_project_properties_set_property (GObject *object,
  ********************************************************/
 static void
 target_button_clicked (GtkWidget              *widget,
-		       GladeProjectProperties *properties)
+                       GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
   GladeTargetableVersion        *version;
@@ -425,7 +425,7 @@ target_button_clicked (GtkWidget              *widget,
 
 static void
 resource_default_toggled (GtkWidget              *widget,
-			  GladeProjectProperties *properties)
+                          GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
 
@@ -438,7 +438,7 @@ resource_default_toggled (GtkWidget              *widget,
 
 static void
 resource_relative_toggled (GtkWidget              *widget,
-			   GladeProjectProperties *properties)
+                           GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
   GtkToggleButton *toggle = GTK_TOGGLE_BUTTON (widget);
@@ -454,7 +454,7 @@ resource_relative_toggled (GtkWidget              *widget,
 
 static void
 resource_fullpath_toggled (GtkWidget              *widget,
-			   GladeProjectProperties *properties)
+                           GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
   GtkToggleButton *toggle = GTK_TOGGLE_BUTTON (widget);
@@ -512,7 +512,7 @@ resource_full_path_set (GtkFileChooserButton *button, GladeProjectProperties *pr
 
 static void
 on_template_combo_box_changed (GtkComboBox            *combo,
-			       GladeProjectProperties *properties)
+                               GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
   GtkTreeIter iter;
@@ -549,22 +549,22 @@ on_template_checkbutton_toggled (GtkToggleButton        *togglebutton,
       GList *l;
 
       for (l = glade_project_toplevels (priv->project); l; l = l->next)
-	{
-	  GObject *object = l->data;
-	  GladeWidget *gwidget;
+        {
+          GObject *object = l->data;
+          GladeWidget *gwidget;
 
-	  gwidget = glade_widget_get_from_gobject (object);
+          gwidget = glade_widget_get_from_gobject (object);
 
-	  if (GTK_IS_WIDGET (object))
-	    {
-	      glade_command_set_project_template (priv->project, gwidget);
-	      composite = TRUE;
-	      break;
-	    }
-	}
+          if (GTK_IS_WIDGET (object))
+            {
+              glade_command_set_project_template (priv->project, gwidget);
+              composite = TRUE;
+              break;
+            }
+        }
 
       if (!composite)
-	gtk_toggle_button_set_active (togglebutton, FALSE);
+        gtk_toggle_button_set_active (togglebutton, FALSE);
     }
   else
     glade_command_set_project_template (priv->project, NULL);
@@ -582,8 +582,8 @@ template_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
   if (visible)
     {
       gtk_tree_model_get (model, iter,
-			  GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
-			  -1);
+                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
+                          -1);
 
       visible = GTK_IS_WIDGET (object);
       g_object_unref (object);
@@ -610,9 +610,9 @@ verify_clicked (GtkWidget *button, GladeProjectProperties *properties)
   GladeProjectPropertiesPrivate *priv = properties->priv;
 
   if (glade_project_verify (priv->project, FALSE,
-			    GLADE_VERIFY_VERSIONS     |
-			    GLADE_VERIFY_DEPRECATIONS |
-			    GLADE_VERIFY_UNRECOGNIZED))
+                            GLADE_VERIFY_VERSIONS     |
+                            GLADE_VERIFY_DEPRECATIONS |
+                            GLADE_VERIFY_UNRECOGNIZED))
     {
       gchar *name = glade_project_get_name (priv->project);
       glade_util_ui_message (glade_app_get_window (),
@@ -969,7 +969,7 @@ on_css_filechooser_file_set (GtkFileChooserButton   *widget,
  ******************************************************/
 static void
 project_targets_changed (GladeProject           *project,
-			 GladeProjectProperties *properties)
+                         GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
   GList *list;
@@ -995,29 +995,29 @@ project_targets_changed (GladeProject           *project,
 
       /* Fetch the radios for this catalog  */
       if (priv->target_radios &&
-	  (radios = g_hash_table_lookup (priv->target_radios, glade_catalog_get_name (catalog))) != NULL)
-	{
-	  for (l = radios; l; l = l->next)
-	    {
-	      GtkWidget *radio = l->data;
+          (radios = g_hash_table_lookup (priv->target_radios, glade_catalog_get_name (catalog))) != NULL)
+        {
+          for (l = radios; l; l = l->next)
+            {
+              GtkWidget *radio = l->data;
 
-	      /* Activate the appropriate button for the project/catalog */
-	      version = g_object_get_data (G_OBJECT (radio), "version");
-	      if (version->major == major && version->minor == minor)
-		{
-		  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
-		  break;
-		}
-	    }
-	}
+              /* Activate the appropriate button for the project/catalog */
+              version = g_object_get_data (G_OBJECT (radio), "version");
+              if (version->major == major && version->minor == minor)
+                {
+                  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
+                  break;
+                }
+            }
+        }
     }
   priv->ignore_ui_cb = FALSE;
 }
 
 static void
 project_domain_changed (GladeProject           *project,
-			GParamSpec             *pspec,
-			GladeProjectProperties *properties)
+                        GParamSpec             *pspec,
+                        GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
   const gchar *domain;
@@ -1032,8 +1032,8 @@ project_domain_changed (GladeProject           *project,
 
 static void
 project_resource_path_changed (GladeProject           *project,
-			       GParamSpec             *pspec,
-			       GladeProjectProperties *properties)
+                               GParamSpec             *pspec,
+                               GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
   priv->ignore_ui_cb = TRUE;
@@ -1043,8 +1043,8 @@ project_resource_path_changed (GladeProject           *project,
 
 static void
 project_template_changed (GladeProject           *project,
-			  GParamSpec             *pspec,
-			  GladeProjectProperties *properties)
+                          GParamSpec             *pspec,
+                          GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
   GtkTreeModel *model;
@@ -1077,11 +1077,11 @@ project_template_changed (GladeProject           *project,
       g_object_unref (obj);
 
       if (gwidget == glade_project_get_template (priv->project))
-	{
+        {
           gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), &iter);
 
-	  template_found = TRUE;
-	  break;
+          template_found = TRUE;
+          break;
         }
 
       valid = gtk_tree_model_iter_next (model, &iter);
@@ -1099,7 +1099,7 @@ project_template_changed (GladeProject           *project,
 static void
 project_license_changed (GladeProject           *project,
                          GParamSpec             *pspec,
-			 GladeProjectProperties *properties)
+                         GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
 

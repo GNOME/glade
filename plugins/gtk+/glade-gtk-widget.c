@@ -75,8 +75,8 @@ static const gchar *atk_relations_list[] = {
 
 
 void
-glade_gtk_widget_destroy_object (GladeWidgetAdaptor * adaptor,
-				 GObject *object)
+glade_gtk_widget_destroy_object (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object)
 {
   gtk_widget_destroy (GTK_WIDGET (object));
 
@@ -84,7 +84,7 @@ glade_gtk_widget_destroy_object (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_parse_atk_relation (GladeProperty * property, GladeXmlNode * node)
+glade_gtk_parse_atk_relation (GladeProperty *property, GladeXmlNode *node)
 {
   GladeXmlNode *prop;
   GladePropertyClass *pclass;
@@ -139,13 +139,13 @@ glade_gtk_parse_atk_relation (GladeProperty * property, GladeXmlNode * node)
   if (string)
     {
       g_object_set_data_full (G_OBJECT (property), "glade-loaded-object",
-			      /* 'string' here is already allocated on the heap */
+                              /* 'string' here is already allocated on the heap */
                               string, g_free);
     }
 }
 
 static void
-glade_gtk_parse_atk_props (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_parse_atk_props (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *prop;
   GladeProperty *property;
@@ -207,7 +207,7 @@ glade_gtk_parse_atk_props (GladeWidget * widget, GladeXmlNode * node)
 
           /* Set the parsed value on the property ... */
           gvalue = glade_property_class_make_gvalue_from_string
-	    (glade_property_get_class (property), value, glade_widget_get_project (widget));
+            (glade_property_get_class (property), value, glade_widget_get_project (widget));
           glade_property_set_value (property, gvalue);
           g_value_unset (gvalue);
           g_free (gvalue);
@@ -229,7 +229,7 @@ glade_gtk_parse_atk_props (GladeWidget * widget, GladeXmlNode * node)
 }
 
 static void
-glade_gtk_parse_atk_props_gtkbuilder (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_parse_atk_props_gtkbuilder (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *child, *object_node;
   gchar *internal;
@@ -257,7 +257,7 @@ glade_gtk_parse_atk_props_gtkbuilder (GladeWidget * widget, GladeXmlNode * node)
 }
 
 static void
-glade_gtk_widget_read_atk_props (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_widget_read_atk_props (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *atk_node;
   GladeProperty *property;
@@ -283,7 +283,7 @@ glade_gtk_widget_read_atk_props (GladeWidget * widget, GladeXmlNode * node)
 }
 
 static void
-glade_gtk_widget_read_style_classes (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_widget_read_style_classes (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *style_node;
   GladeXmlNode *class_node;
@@ -292,19 +292,19 @@ glade_gtk_widget_read_style_classes (GladeWidget * widget, GladeXmlNode * node)
   if ((style_node = glade_xml_search_child (node, GLADE_TAG_STYLE)) != NULL)
     {
       for (class_node = glade_xml_node_get_children (style_node);
-	   class_node; class_node = glade_xml_node_next (class_node))
-	{
-	  gchar *name;
+           class_node; class_node = glade_xml_node_next (class_node))
+        {
+          gchar *name;
 
-	  if (!glade_xml_node_verify (class_node, GLADE_TAG_CLASS))
-	    continue;
+          if (!glade_xml_node_verify (class_node, GLADE_TAG_CLASS))
+            continue;
 
-	  name = glade_xml_get_property_string (class_node, GLADE_TAG_NAME);
+          name = glade_xml_get_property_string (class_node, GLADE_TAG_NAME);
 
-	  string_list = glade_string_list_append (string_list, name, NULL, NULL, FALSE, NULL);
+          string_list = glade_string_list_append (string_list, name, NULL, NULL, FALSE, NULL);
 
-	  g_free (name);
-	}
+          g_free (name);
+        }
 
       glade_widget_property_set (widget, "glade-style-classes", string_list);
       glade_string_list_free (string_list);
@@ -312,13 +312,14 @@ glade_gtk_widget_read_style_classes (GladeWidget * widget, GladeXmlNode * node)
 }
 
 void
-glade_gtk_widget_read_widget (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
+                              GladeWidget        *widget,
+                              GladeXmlNode       *node)
 {
   const gchar *tooltip_markup = NULL;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -340,9 +341,9 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_widget_write_atk_property (GladeProperty * property,
-                                     GladeXmlContext * context,
-                                     GladeXmlNode * node)
+glade_gtk_widget_write_atk_property (GladeProperty   *property,
+                                     GladeXmlContext *context,
+                                     GladeXmlNode    *node)
 {
   gchar *value = glade_property_make_string (property);
 
@@ -378,9 +379,9 @@ glade_gtk_widget_write_atk_property (GladeProperty * property,
 }
 
 static void
-glade_gtk_widget_write_atk_properties (GladeWidget * widget,
-                                       GladeXmlContext * context,
-                                       GladeXmlNode * node)
+glade_gtk_widget_write_atk_properties (GladeWidget     *widget,
+                                       GladeXmlContext *context,
+                                       GladeXmlNode    *node)
 {
   GladeXmlNode *child_node, *object_node;
   GladeProperty *name_prop, *desc_prop, *role_prop;
@@ -431,9 +432,9 @@ glade_gtk_widget_write_atk_properties (GladeWidget * widget,
 }
 
 static void
-glade_gtk_widget_write_atk_relation (GladeProperty * property,
-                                     GladeXmlContext * context,
-                                     GladeXmlNode * node)
+glade_gtk_widget_write_atk_relation (GladeProperty   *property,
+                                     GladeXmlContext *context,
+                                     GladeXmlNode    *node)
 {
   GladeXmlNode *prop_node;
   GladePropertyClass *pclass;
@@ -448,7 +449,7 @@ glade_gtk_widget_write_atk_relation (GladeProperty * property,
         {
           for (i = 0; split[i] != NULL; i++)
             {
-	      pclass = glade_property_get_class (property);
+              pclass = glade_property_get_class (property);
 
               prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_RELATION);
               glade_xml_node_append_child (node, prop_node);
@@ -466,9 +467,9 @@ glade_gtk_widget_write_atk_relation (GladeProperty * property,
 }
 
 static void
-glade_gtk_widget_write_atk_relations (GladeWidget * widget,
-                                      GladeXmlContext * context,
-                                      GladeXmlNode * node)
+glade_gtk_widget_write_atk_relations (GladeWidget     *widget,
+                                      GladeXmlContext *context,
+                                      GladeXmlNode    *node)
 {
   GladeProperty *property;
   gint i;
@@ -485,9 +486,9 @@ glade_gtk_widget_write_atk_relations (GladeWidget * widget,
 }
 
 static void
-glade_gtk_widget_write_atk_action (GladeProperty * property,
-                                   GladeXmlContext * context,
-                                   GladeXmlNode * node)
+glade_gtk_widget_write_atk_action (GladeProperty   *property,
+                                   GladeXmlContext *context,
+                                   GladeXmlNode    *node)
 {
   gchar *value = glade_property_make_string (property);
 
@@ -508,9 +509,9 @@ glade_gtk_widget_write_atk_action (GladeProperty * property,
 }
 
 static void
-glade_gtk_widget_write_atk_actions (GladeWidget * widget,
-                                    GladeXmlContext * context,
-                                    GladeXmlNode * node)
+glade_gtk_widget_write_atk_actions (GladeWidget     *widget,
+                                    GladeXmlContext *context,
+                                    GladeXmlNode    *node)
 {
   GladeProperty *property;
 
@@ -525,9 +526,9 @@ glade_gtk_widget_write_atk_actions (GladeWidget * widget,
 }
 
 static void
-glade_gtk_widget_write_atk_props (GladeWidget * widget,
-                                  GladeXmlContext * context,
-                                  GladeXmlNode * node)
+glade_gtk_widget_write_atk_props (GladeWidget     *widget,
+                                  GladeXmlContext *context,
+                                  GladeXmlNode    *node)
 {
   GladeXmlNode *atk_node;
 
@@ -546,9 +547,9 @@ glade_gtk_widget_write_atk_props (GladeWidget * widget,
 
 
 static void
-glade_gtk_widget_write_style_classes (GladeWidget * widget,
-				      GladeXmlContext * context,
-				      GladeXmlNode * node)
+glade_gtk_widget_write_style_classes (GladeWidget     *widget,
+                                      GladeXmlContext *context,
+                                      GladeXmlNode    *node)
 {
   GladeXmlNode *class_node, *style_node;
   GList        *string_list = NULL, *l;
@@ -567,8 +568,8 @@ glade_gtk_widget_write_style_classes (GladeWidget * widget,
       glade_xml_node_append_child (style_node, class_node);
 
       glade_xml_node_set_property_string (class_node,
-					  GLADE_TAG_NAME,
-					  string->string);
+                                          GLADE_TAG_NAME,
+                                          string->string);
     }
 
   if (!glade_xml_node_get_children (style_node))
@@ -578,14 +579,15 @@ glade_gtk_widget_write_style_classes (GladeWidget * widget,
 }
 
 void
-glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
-                               GladeWidget * widget,
-                               GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
+                               GladeWidget        *widget,
+                               GladeXmlContext    *context,
+                               GladeXmlNode       *node)
 {
   GladeProperty *prop;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* Make sure use-action-appearance and related-action properties are
@@ -603,9 +605,10 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_widget_write_widget_after (GladeWidgetAdaptor * adaptor,
-				     GladeWidget * widget,
-				     GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_widget_write_widget_after (GladeWidgetAdaptor *adaptor,
+                                     GladeWidget        *widget,
+                                     GladeXmlContext    *context,
+                                     GladeXmlNode       *node)
 {
   /* The ATK properties are actually children */
   glade_gtk_widget_write_atk_props (widget, context, node);
@@ -619,8 +622,9 @@ glade_gtk_widget_write_widget_after (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditorProperty *
-glade_gtk_widget_create_eprop (GladeWidgetAdaptor * adaptor,
-                               GladePropertyClass * klass, gboolean use_command)
+glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
+                               GladePropertyClass *klass,
+                               gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
@@ -642,8 +646,8 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditable *
-glade_gtk_widget_create_editable (GladeWidgetAdaptor * adaptor,
-				  GladeEditorPageType type)
+glade_gtk_widget_create_editable (GladeWidgetAdaptor *adaptor,
+                                  GladeEditorPageType type)
 {
   GladeEditable *editable;
 
@@ -657,9 +661,9 @@ glade_gtk_widget_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 gchar *
-glade_gtk_widget_string_from_value (GladeWidgetAdaptor * adaptor,
-                                    GladePropertyClass * klass,
-                                    const GValue * value)
+glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
+                                    GladePropertyClass *klass,
+                                    const GValue       *value)
 {
   GParamSpec          *pspec;
 
@@ -679,8 +683,9 @@ glade_gtk_widget_string_from_value (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-widget_parent_changed (GtkWidget * widget,
-                       GParamSpec * pspec, GladeWidgetAdaptor * adaptor)
+widget_parent_changed (GtkWidget          *widget,
+                       GParamSpec         *pspec,
+                       GladeWidgetAdaptor *adaptor)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
   GladeWidget *parent;
@@ -699,8 +704,9 @@ widget_parent_changed (GtkWidget * widget,
 }
 
 void
-glade_gtk_widget_deep_post_create (GladeWidgetAdaptor * adaptor,
-                                   GObject * widget, GladeCreateReason reason)
+glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
+                                   GObject            *widget,
+                                   GladeCreateReason   reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
 
@@ -724,9 +730,10 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_widget_set_property (GladeWidgetAdaptor * adaptor,
-                               GObject * object,
-                               const gchar * id, const GValue * value)
+glade_gtk_widget_set_property (GladeWidgetAdaptor *adaptor,
+                               GObject            *object,
+                               const gchar        *id,
+                               const GValue       *value)
 {
   /* FIXME: is this still needed with the new gtk+ tooltips? */
   if (!strcmp (id, "tooltip"))
@@ -748,16 +755,16 @@ glade_gtk_widget_set_property (GladeWidgetAdaptor * adaptor,
        */
       styles = g_object_get_data (object, "glade-style-classes");
       for (l = styles; l; l = g_list_next (l))
-	{
-	  GladeString *style = l->data;
+        {
+          GladeString *style = l->data;
           gtk_style_context_remove_class (context, style->string);
-	}
+        }
 
       for (l = g_value_get_boxed (value); l; l = g_list_next (l))
-	{
-	  GladeString *style = l->data;
-	  gtk_style_context_add_class (context, style->string);
-	}
+        {
+          GladeString *style = l->data;
+          gtk_style_context_add_class (context, style->string);
+        }
 
       /* Save the list here so we can use it later on to remove them from the style context */
       g_object_set_data_full (object, "glade-style-classes",
@@ -783,7 +790,7 @@ glade_gtk_widget_get_property (GladeWidgetAdaptor * adaptor,
 
 
 static GList *
-create_command_property_list (GladeWidget * gnew, GList * saved_props)
+create_command_property_list (GladeWidget *gnew, GList *saved_props)
 {
   GList *l, *command_properties = NULL;
 
@@ -792,7 +799,7 @@ create_command_property_list (GladeWidget * gnew, GList * saved_props)
       GladeProperty *property = l->data;
       GladePropertyClass *pclass = glade_property_get_class (property);
       GladeProperty *orig_prop =
-	glade_widget_get_pack_property (gnew, glade_property_class_id (pclass));
+        glade_widget_get_pack_property (gnew, glade_property_class_id (pclass));
       GCSetPropData *pdata = g_new0 (GCSetPropData, 1);
 
       pdata->property = orig_prop;
@@ -809,8 +816,9 @@ create_command_property_list (GladeWidget * gnew, GList * saved_props)
 
 
 void
-glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
-                                  GObject * object, const gchar * action_path)
+glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object, 
+                                  const gchar        *action_path)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object), *gparent;
   GList this_widget = { 0, }, that_widget = { 0,};
@@ -858,7 +866,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
       /* If the parent had a parentless widget reference, undoably add the child
        * as the new parentless widget reference here */
       if (property)
-	glade_command_set_property (property, glade_widget_get_object (gwidget));
+        glade_command_set_property (property, glade_widget_get_object (gwidget));
 
       glade_command_pop_group ();
     }
@@ -895,22 +903,22 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
           GladeWidgetAdaptor *adaptor =
             glade_widget_adaptor_get_by_type (new_type);
           GList *saved_props, *prop_cmds;
-	  GladeWidget *gnew_parent;
+          GladeWidget *gnew_parent;
           GladeProperty *property;
 
           glade_command_push_group (_("Adding parent %s for %s"),
                                     glade_widget_adaptor_get_title (adaptor), 
-				    glade_widget_get_name (gwidget));
+                                    glade_widget_get_name (gwidget));
 
           /* Record packing properties */
           saved_props =
-	    glade_widget_dup_properties (gwidget, glade_widget_get_packing_properties (gwidget),
-					 FALSE, FALSE, FALSE);
+            glade_widget_dup_properties (gwidget, glade_widget_get_packing_properties (gwidget),
+                                         FALSE, FALSE, FALSE);
 
-	  property = glade_widget_get_parentless_widget_ref (gwidget);
+          property = glade_widget_get_parentless_widget_ref (gwidget);
 
-	  /* Remove "this" widget, If the parent we're removing is a parentless 
-	   * widget reference, the reference will be implicitly broken by the 'cut' command */
+          /* Remove "this" widget, If the parent we're removing is a parentless 
+           * widget reference, the reference will be implicitly broken by the 'cut' command */
           this_widget.data = gwidget;
           glade_command_delete (&this_widget);
 
@@ -918,10 +926,10 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
           if ((gnew_parent =
                glade_command_create (adaptor, gparent, NULL, project)) != NULL)
             {
-	      /* Now we created the new parent, if gwidget had a parentless widget reference...
-	       * set that reference to the new parent instead */
-	      if (property)
-		glade_command_set_property (property, glade_widget_get_object (gnew_parent));
+              /* Now we created the new parent, if gwidget had a parentless widget reference...
+               * set that reference to the new parent instead */
+              if (property)
+                glade_command_set_property (property, glade_widget_get_object (gnew_parent));
 
               /* Remove the alignment that we added in the frame's post_create... */
               if (new_type == GTK_TYPE_FRAME)
@@ -942,7 +950,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
               /* Apply the properties in an undoable way */
               if (prop_cmds)
                 glade_command_set_properties_list 
-		  (glade_widget_get_project (gparent), prop_cmds);
+                  (glade_widget_get_project (gparent), prop_cmds);
 
               /* Add "this" widget to the new parent */
               glade_command_add (&this_widget, gnew_parent, NULL, project, FALSE);
@@ -950,7 +958,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
               glade_command_pop_group ();
             }
           else
-	    {
+            {
               glade_command_pop_group ();
 
               /* Undo delete command
@@ -961,8 +969,8 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
                * Ideally we need a way to remove a redo item from the project or
                * simply do not let the user cancel a widget creation!
                */
-	      glade_project_undo (project);
-	    }
+              glade_project_undo (project);
+            }
 
           g_list_foreach (saved_props, (GFunc) g_object_unref, NULL);
           g_list_free (saved_props);
@@ -988,7 +996,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 }
 
 static GList *
-list_sizegroups (GladeWidget * gwidget)
+list_sizegroups (GladeWidget *gwidget)
 {
   GladeProject *project = glade_widget_get_project (gwidget);
   GList *groups = NULL;
@@ -1004,7 +1012,7 @@ list_sizegroups (GladeWidget * gwidget)
 }
 
 static void
-glade_gtk_widget_add2group_cb (GtkMenuItem * item, GladeWidget * gwidget)
+glade_gtk_widget_add2group_cb (GtkMenuItem *item, GladeWidget *gwidget)
 {
   GladeWidget *group =
       g_object_get_data (G_OBJECT (item), "glade-group-widget");
@@ -1021,20 +1029,20 @@ glade_gtk_widget_add2group_cb (GtkMenuItem * item, GladeWidget * gwidget)
     {
       size_group_name = glade_widget_get_name (group);
       if (g_str_has_prefix (size_group_name, GLADE_UNNAMED_PREFIX))
-	size_group_name = _("(unnamed)");
+        size_group_name = _("(unnamed)");
     }
 
   /* Ensure the widget has a name if it's going to be referred to by a size group */
   current_name = glade_widget_get_name (gwidget);
   if (g_str_has_prefix (current_name, GLADE_UNNAMED_PREFIX))
     widget_name = glade_project_new_widget_name (glade_widget_get_project (gwidget), NULL,
-						 glade_widget_adaptor_get_generic_name (glade_widget_get_adaptor (gwidget)));
+                                                 glade_widget_adaptor_get_generic_name (glade_widget_get_adaptor (gwidget)));
   else
     widget_name = g_strdup (current_name);
 
   if (group)
     glade_command_push_group (_("Adding %s to Size Group %s"),
-			      widget_name,
+                              widget_name,
                               size_group_name);
   else
     glade_command_push_group (_("Adding %s to a new Size Group"),
@@ -1063,8 +1071,9 @@ glade_gtk_widget_add2group_cb (GtkMenuItem * item, GladeWidget * gwidget)
 
 
 GtkWidget *
-glade_gtk_widget_action_submenu (GladeWidgetAdaptor * adaptor,
-                                 GObject * object, const gchar * action_path)
+glade_gtk_widget_action_submenu (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object,
+                                 const gchar        *action_path)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GList *groups, *list;
@@ -1082,11 +1091,11 @@ glade_gtk_widget_action_submenu (GladeWidgetAdaptor * adaptor,
             {
               group = list->data;
 
-	      size_group_name = glade_widget_get_name (group);
-	      if (g_str_has_prefix (size_group_name, GLADE_UNNAMED_PREFIX))
-		size_group_name = _("(unnamed)");
+              size_group_name = glade_widget_get_name (group);
+              if (g_str_has_prefix (size_group_name, GLADE_UNNAMED_PREFIX))
+                size_group_name = _("(unnamed)");
 
-	      item = gtk_menu_item_new_with_label (size_group_name);
+              item = gtk_menu_item_new_with_label (size_group_name);
 
               g_object_set_data (G_OBJECT (item), "glade-group-widget", group);
               g_signal_connect (G_OBJECT (item), "activate",

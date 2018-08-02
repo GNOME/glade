@@ -35,17 +35,17 @@
 static void      glade_property_label_finalize          (GObject         *object);
 static void      glade_property_label_dispose           (GObject         *object);
 static void      glade_property_label_set_real_property (GObject         *object,
-							 guint            prop_id,
-							 const GValue    *value,
-							 GParamSpec      *pspec);
+                                                         guint            prop_id,
+                                                         const GValue    *value,
+                                                         GParamSpec      *pspec);
 static void      glade_property_label_get_real_property (GObject         *object,
-							 guint            prop_id,
-							 GValue          *value,
-							 GParamSpec      *pspec);
+                                                         guint            prop_id,
+                                                         GValue          *value,
+                                                         GParamSpec      *pspec);
 
 /* GtkWidgetClass */
 static gint      glade_property_label_button_press      (GtkWidget       *widget,
-							 GdkEventButton  *event);
+                                                         GdkEventButton  *event);
 
 /* GladeEditableIface */
 static void      glade_property_label_editable_init     (GladeEditableIface *iface);
@@ -85,7 +85,7 @@ static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladePropertyLabel, glade_property_label, GTK_TYPE_EVENT_BOX,
                          G_ADD_PRIVATE (GladePropertyLabel)
-			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_property_label_editable_init));
 
 static void
@@ -117,8 +117,8 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
   g_object_class_install_property
     (gobject_class, PROP_PROPERTY,
      g_param_spec_object ("property", _("Property"),
-			  _("The GladeProperty to display a label for"),
-			  GLADE_TYPE_PROPERTY, G_PARAM_READWRITE));
+                          _("The GladeProperty to display a label for"),
+                          GLADE_TYPE_PROPERTY, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_PROPERTY_NAME,
@@ -127,14 +127,14 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
                              * the GladeProperty object from the GladeWidget the
                              * property belongs to.
                              */
-			    _("The property name to use when loading by widget"),
-			    NULL, G_PARAM_READWRITE));
+                            _("The property name to use when loading by widget"),
+                            NULL, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_APPEND_COLON,
        g_param_spec_boolean ("append-colon", _("Append Colon"),
-			     _("Whether to append a colon ':' to the property name"),
-			     TRUE, G_PARAM_READWRITE));
+                             _("Whether to append a colon ':' to the property name"),
+                             TRUE, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_PACKING,
@@ -144,20 +144,20 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
                               * to the container or child widget but to the relation.
                               * For more information see GtkContainer docs.
                               */
-			     _("Whether the property to load is a packing property or not"),
-			     FALSE, G_PARAM_READWRITE));
+                             _("Whether the property to load is a packing property or not"),
+                             FALSE, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_CUSTOM_TEXT,
        g_param_spec_string ("custom-text", _("Custom Text"),
-			    _("Custom text to override the property name"),
-			    NULL, G_PARAM_READWRITE));
+                            _("Custom text to override the property name"),
+                            NULL, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_CUSTOM_TOOLTIP,
        g_param_spec_string ("custom-tooltip", _("Custom Tooltip"),
-			    _("Custom tooltip to override the property description"),
-			    NULL, G_PARAM_READWRITE));
+                            _("Custom tooltip to override the property description"),
+                            NULL, G_PARAM_READWRITE));
 
   /* Bind to template */
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladeui/glade-property-label.ui");
@@ -191,10 +191,10 @@ glade_property_label_dispose (GObject *object)
 }
 
 static void
-glade_property_label_set_real_property (GObject         *object,
-					guint            prop_id,
-					const GValue    *value,
-					GParamSpec      *pspec)
+glade_property_label_set_real_property (GObject      *object,
+                                        guint         prop_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
 {
   GladePropertyLabel *label = GLADE_PROPERTY_LABEL (object);
 
@@ -225,10 +225,10 @@ glade_property_label_set_real_property (GObject         *object,
 }
 
 static void
-glade_property_label_get_real_property (GObject         *object,
-					guint            prop_id,
-					GValue          *value,
-					GParamSpec      *pspec)
+glade_property_label_get_real_property (GObject    *object,
+                                        guint       prop_id,
+                                        GValue     *value,
+                                        GParamSpec *pspec)
 {
   GladePropertyLabel *label = GLADE_PROPERTY_LABEL (object);
 
@@ -262,8 +262,8 @@ glade_property_label_get_real_property (GObject         *object,
  *                            GladeEditableIface                               *                               
  *******************************************************************************/
 static void
-glade_property_label_load (GladeEditable   *editable,
-			   GladeWidget     *widget)
+glade_property_label_load (GladeEditable *editable,
+                           GladeWidget   *widget)
 {
   GladePropertyLabel *label = GLADE_PROPERTY_LABEL (editable);
   GladePropertyLabelPrivate *priv;
@@ -279,9 +279,9 @@ glade_property_label_load (GladeEditable   *editable,
   if (widget)
     {
       if (priv->packing)
-	property = glade_widget_get_pack_property (widget, priv->property_name);
+        property = glade_widget_get_pack_property (widget, priv->property_name);
       else
-	property = glade_widget_get_property (widget, priv->property_name);
+        property = glade_widget_get_property (widget, priv->property_name);
 
       glade_property_label_set_property (label, property);
     }
@@ -307,8 +307,8 @@ glade_property_label_editable_init (GladeEditableIface *iface)
  *                     GtkWidgetClass                      *
  ***********************************************************/
 static gint
-glade_property_label_button_press (GtkWidget       *widget,
-				   GdkEventButton  *event)
+glade_property_label_button_press (GtkWidget      *widget,
+                                   GdkEventButton *event)
 {
   GladePropertyLabel        *label = GLADE_PROPERTY_LABEL (widget);
   GladePropertyLabelPrivate *priv = label->priv;
@@ -327,10 +327,10 @@ glade_property_label_button_press (GtkWidget       *widget,
  ***********************************************************/
 static void
 glade_property_label_tooltip_cb (GladeProperty      *property,
-				 const gchar        *tooltip,
-				 const gchar        *insensitive,
-				 const gchar        *support,
-				 GladePropertyLabel *label)
+                                 const gchar        *tooltip,
+                                 const gchar        *insensitive,
+                                 const gchar        *support,
+                                 GladePropertyLabel *label)
 {
   GladePropertyLabelPrivate *priv = label->priv;
   const gchar *choice_tooltip;
@@ -348,8 +348,8 @@ glade_property_label_tooltip_cb (GladeProperty      *property,
 
 static void
 glade_property_label_sensitivity_cb (GladeProperty      *property,
-				     GParamSpec         *pspec,
-				     GladePropertyLabel *label)
+                                     GParamSpec         *pspec,
+                                     GladePropertyLabel *label)
 {
   GladePropertyLabelPrivate *priv = label->priv;
   gboolean sensitive;
@@ -380,8 +380,8 @@ get_modified_attribute (void)
 
 static void
 glade_property_label_state_cb (GladeProperty      *property,
-			       GParamSpec         *pspec,
-			       GladePropertyLabel *label)
+                               GParamSpec         *pspec,
+                               GladePropertyLabel *label)
 {
   GladePropertyLabelPrivate *priv = label->priv;
 
@@ -403,7 +403,7 @@ glade_property_label_state_cb (GladeProperty      *property,
 
 static void
 glade_property_label_property_finalized (GladePropertyLabel *label,
-					 GladeProperty *where_property_was)
+                                         GladeProperty *where_property_was)
 {
   /* Silent disconnect */
   label->priv->property = NULL;
@@ -424,7 +424,7 @@ glade_property_label_new (void)
 
 void
 glade_property_label_set_property_name (GladePropertyLabel *label,
-					const gchar        *property_name)
+                                        const gchar        *property_name)
 {
   GladePropertyLabelPrivate *priv;
 
@@ -451,7 +451,7 @@ glade_property_label_get_property_name (GladePropertyLabel *label)
 
 void
 glade_property_label_set_append_colon (GladePropertyLabel *label,
-				       gboolean            append_colon)
+                                       gboolean            append_colon)
 {
   GladePropertyLabelPrivate *priv;
 
@@ -477,7 +477,7 @@ glade_property_label_get_append_colon (GladePropertyLabel *label)
 
 void
 glade_property_label_set_packing (GladePropertyLabel *label,
-				  gboolean            packing)
+                                  gboolean            packing)
 {
   GladePropertyLabelPrivate *priv;
 
@@ -503,7 +503,7 @@ glade_property_label_get_packing (GladePropertyLabel *label)
 
 void
 glade_property_label_set_custom_text (GladePropertyLabel *label,
-				      const gchar        *custom_text)
+                                      const gchar        *custom_text)
 {
   GladePropertyLabelPrivate *priv;
   gboolean changed = FALSE;
@@ -515,7 +515,7 @@ glade_property_label_set_custom_text (GladePropertyLabel *label,
   if (custom_text)
     {
       if (!priv->custom_text)
-	changed = TRUE;
+        changed = TRUE;
 
       priv->custom_text = TRUE;
 
@@ -524,12 +524,12 @@ glade_property_label_set_custom_text (GladePropertyLabel *label,
   else
     {
       if (priv->custom_text)
-	changed = TRUE;
+        changed = TRUE;
 
       priv->custom_text = FALSE;
 
       if (priv->property)
-	  glade_property_label_state_cb (priv->property, NULL, label);
+          glade_property_label_state_cb (priv->property, NULL, label);
     }
 
   if (changed)
@@ -553,7 +553,7 @@ glade_property_label_get_custom_text (GladePropertyLabel *label)
 
 void
 glade_property_label_set_custom_tooltip (GladePropertyLabel *label,
-					 const gchar        *custom_tooltip)
+                                         const gchar        *custom_tooltip)
 {
   GladePropertyLabelPrivate *priv;
   gboolean changed = FALSE;
@@ -565,7 +565,7 @@ glade_property_label_set_custom_tooltip (GladePropertyLabel *label,
   if (custom_tooltip)
     {
       if (!priv->custom_tooltip)
-	changed = TRUE;
+        changed = TRUE;
 
       priv->custom_tooltip = TRUE;
 
@@ -574,19 +574,19 @@ glade_property_label_set_custom_tooltip (GladePropertyLabel *label,
   else
     {
       if (priv->custom_tooltip)
-	changed = TRUE;
+        changed = TRUE;
 
       priv->custom_tooltip = FALSE;
 
       if (priv->property)
-	{
-	  GladePropertyClass *pclass = glade_property_get_class (priv->property);
+        {
+          GladePropertyClass *pclass = glade_property_get_class (priv->property);
 
-	  glade_property_label_tooltip_cb
-	    (priv->property, glade_property_class_get_tooltip (pclass),
-	     glade_propert_get_insensitive_tooltip (priv->property),
-	     glade_property_get_support_warning (priv->property), label);
-	}
+          glade_property_label_tooltip_cb
+            (priv->property, glade_property_class_get_tooltip (pclass),
+             glade_propert_get_insensitive_tooltip (priv->property),
+             glade_property_get_support_warning (priv->property), label);
+        }
     }
 
   if (changed)
@@ -610,7 +610,7 @@ glade_property_label_get_custom_tooltip (GladePropertyLabel *label)
 
 void
 glade_property_label_set_property (GladePropertyLabel *label,
-				   GladeProperty      *property)
+                                   GladeProperty      *property)
 {
   GladePropertyLabelPrivate *priv;
 
@@ -624,85 +624,85 @@ glade_property_label_set_property (GladePropertyLabel *label,
 
       /* Disconnect last */
       if (priv->property)
-	{
-	  if (priv->tooltip_id > 0)
-	    g_signal_handler_disconnect (priv->property, priv->tooltip_id);
-	  if (priv->state_id > 0)
-	    g_signal_handler_disconnect (priv->property, priv->state_id);
-	  if (priv->sensitive_id > 0)
-	    g_signal_handler_disconnect (priv->property, priv->sensitive_id);
-	  if (priv->enabled_id > 0)
-	    g_signal_handler_disconnect (priv->property, priv->enabled_id);
+        {
+          if (priv->tooltip_id > 0)
+            g_signal_handler_disconnect (priv->property, priv->tooltip_id);
+          if (priv->state_id > 0)
+            g_signal_handler_disconnect (priv->property, priv->state_id);
+          if (priv->sensitive_id > 0)
+            g_signal_handler_disconnect (priv->property, priv->sensitive_id);
+          if (priv->enabled_id > 0)
+            g_signal_handler_disconnect (priv->property, priv->enabled_id);
 
-	  priv->tooltip_id = 0;
-	  priv->state_id = 0;
-	  priv->sensitive_id = 0;
-	  priv->enabled_id = 0;
+          priv->tooltip_id = 0;
+          priv->state_id = 0;
+          priv->sensitive_id = 0;
+          priv->enabled_id = 0;
 
-	  g_object_weak_unref (G_OBJECT (priv->property),
-			       (GWeakNotify) glade_property_label_property_finalized, label);
-	}
+          g_object_weak_unref (G_OBJECT (priv->property),
+                               (GWeakNotify) glade_property_label_property_finalized, label);
+        }
 
       priv->property = property;
 
       /* Connect new */
       if (priv->property)
-	{
-	  GladePropertyClass *pclass = glade_property_get_class (priv->property);
+        {
+          GladePropertyClass *pclass = glade_property_get_class (priv->property);
 
-	  priv->tooltip_id =
-	    g_signal_connect (G_OBJECT (priv->property),
-			      "tooltip-changed",
-			      G_CALLBACK (glade_property_label_tooltip_cb),
-			      label);
-	  priv->sensitive_id =
-	    g_signal_connect (G_OBJECT (priv->property),
-			      "notify::sensitive",
-			      G_CALLBACK (glade_property_label_sensitivity_cb),
-			      label);
-	  priv->state_id =
-	    g_signal_connect (G_OBJECT (priv->property),
-			      "notify::state",
-			      G_CALLBACK (glade_property_label_state_cb), label);
-	  priv->enabled_id =
-	    g_signal_connect (G_OBJECT (priv->property),
-			      "notify::enabled",
-			      G_CALLBACK (glade_property_label_sensitivity_cb),
-			      label);
+          priv->tooltip_id =
+            g_signal_connect (G_OBJECT (priv->property),
+                              "tooltip-changed",
+                              G_CALLBACK (glade_property_label_tooltip_cb),
+                              label);
+          priv->sensitive_id =
+            g_signal_connect (G_OBJECT (priv->property),
+                              "notify::sensitive",
+                              G_CALLBACK (glade_property_label_sensitivity_cb),
+                              label);
+          priv->state_id =
+            g_signal_connect (G_OBJECT (priv->property),
+                              "notify::state",
+                              G_CALLBACK (glade_property_label_state_cb), label);
+          priv->enabled_id =
+            g_signal_connect (G_OBJECT (priv->property),
+                              "notify::enabled",
+                              G_CALLBACK (glade_property_label_sensitivity_cb),
+                              label);
 
-	  g_object_weak_ref (G_OBJECT (priv->property),
-			     (GWeakNotify) glade_property_label_property_finalized, label);
+          g_object_weak_ref (G_OBJECT (priv->property),
+                             (GWeakNotify) glade_property_label_property_finalized, label);
 
-	  /* Load initial tooltips
-	   */
-	  glade_property_label_tooltip_cb
-	    (property, glade_property_class_get_tooltip (pclass),
-	     glade_propert_get_insensitive_tooltip (property),
-	     glade_property_get_support_warning (property), label);
+          /* Load initial tooltips
+           */
+          glade_property_label_tooltip_cb
+            (property, glade_property_class_get_tooltip (pclass),
+             glade_propert_get_insensitive_tooltip (property),
+             glade_property_get_support_warning (property), label);
 
-	  /* Load initial sensitive state.
-	   */
-	  glade_property_label_sensitivity_cb (property, NULL, label);
+          /* Load initial sensitive state.
+           */
+          glade_property_label_sensitivity_cb (property, NULL, label);
 
-	  /* Load intial label state
-	   */
-	  glade_property_label_state_cb (property, NULL, label);
+          /* Load intial label state
+           */
+          glade_property_label_state_cb (property, NULL, label);
 
-	  if (!priv->custom_text)
-	    {
-	      if (priv->append_colon)
-		{
-		  gchar *text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
-		  gtk_label_set_text (GTK_LABEL (priv->label), text);
-		  g_free (text);
-		}
-	      else
-		{
-		  gtk_label_set_text (GTK_LABEL (priv->label),
-				      glade_property_class_get_name (pclass));
-		}
-	    }
-	}
+          if (!priv->custom_text)
+            {
+              if (priv->append_colon)
+                {
+                  gchar *text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
+                  gtk_label_set_text (GTK_LABEL (priv->label), text);
+                  g_free (text);
+                }
+              else
+                {
+                  gtk_label_set_text (GTK_LABEL (priv->label),
+                                      glade_property_class_get_name (pclass));
+                }
+            }
+        }
 
       g_object_notify (G_OBJECT (label), "property");
     }

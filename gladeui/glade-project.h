@@ -138,7 +138,7 @@ gboolean            glade_project_save                (GladeProject        *proj
                                                        GError             **error);
 gboolean            glade_project_save_verify         (GladeProject        *project,
                                                        const gchar         *path,
-						       GladeVerifyFlags     flags,
+                                                       GladeVerifyFlags     flags,
                                                        GError             **error);
 gboolean            glade_project_autosave            (GladeProject        *project,
                                                        GError             **error);
@@ -166,7 +166,7 @@ void                glade_project_check_reordered      (GladeProject       *proj
                                                         GList              *old_order);
 
 void                glade_project_set_template         (GladeProject       *project,
-							GladeWidget        *widget);
+                                                        GladeWidget        *widget);
 GladeWidget        *glade_project_get_template         (GladeProject       *project);
 
 void                glade_project_set_license          (GladeProject       *project,
@@ -200,7 +200,7 @@ GladeWidget        *glade_project_get_widget_by_name   (GladeProject       *proj
                                                         const gchar        *name);
 void                glade_project_set_widget_name      (GladeProject       *project,
                                                         GladeWidget        *widget, 
-							const gchar        *name);
+                                                        const gchar        *name);
 gchar              *glade_project_new_widget_name      (GladeProject       *project,
                                                         GladeWidget        *widget,
                                                         const gchar        *base_name);
@@ -242,9 +242,9 @@ void                glade_project_set_add_item         (GladeProject       *proj
                                                         GladeWidgetAdaptor *adaptor);
 GladeWidgetAdaptor *glade_project_get_add_item         (GladeProject       *project);
 void                glade_project_set_target_version   (GladeProject       *project,
-							const gchar        *catalog,
-							gint                major,
-							gint                minor);
+                                                        const gchar        *catalog,
+                                                        gint                major,
+                                                        gint                minor);
 void                glade_project_get_target_version   (GladeProject       *project,
                                                         const gchar        *catalog,
                                                         gint               *major,
@@ -265,8 +265,8 @@ const gchar        *glade_project_get_css_provider_path  (GladeProject *project)
 
 /* Verifications */
 gboolean            glade_project_verify               (GladeProject       *project,
-							gboolean            saving,
-							GladeVerifyFlags    flags);
+                                                        gboolean            saving,
+                                                        GladeVerifyFlags    flags);
 gchar              *glade_project_verify_widget_adaptor(GladeProject       *project,
                                                         GladeWidgetAdaptor *adaptor,
                                                         GladeSupportMask   *mask);

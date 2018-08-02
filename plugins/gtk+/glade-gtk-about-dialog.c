@@ -70,11 +70,11 @@ glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
 
 void
 glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor *adaptor,
-				    GladeWidget        *widget,
+                                    GladeWidget        *widget,
                                     GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -89,8 +89,8 @@ glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor *adaptor,
 
 void
 glade_gtk_about_dialog_set_property (GladeWidgetAdaptor *adaptor,
-				     GObject            *object,
-				     const gchar        *id,
+                                     GObject            *object,
+                                     const gchar        *id,
                                      const GValue       *value)
 {
   if (!strcmp (id, "glade-logo-as-file"))

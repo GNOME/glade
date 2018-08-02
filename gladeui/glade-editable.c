@@ -45,7 +45,7 @@ static void
 project_changed (GladeProject  *project,
                  GladeCommand  *command,
                  gboolean       execute, 
-		 GladeEditable *editable)
+                 GladeEditable *editable)
 {
   GladeWidget *widget;
 
@@ -56,7 +56,7 @@ project_changed (GladeProject  *project,
 
 static void
 project_closed (GladeProject  *project,
-		GladeEditable *editable)
+                GladeEditable *editable)
 {
   glade_editable_load (editable, NULL);
 }
@@ -69,7 +69,7 @@ editable_destroyed (GladeEditable *editable)
 
 static void
 glade_editable_load_default (GladeEditable  *editable,
-			     GladeWidget    *widget)
+                             GladeWidget    *widget)
 {
   GladeWidget  *old_widget;
   GladeProject *old_project;
@@ -80,26 +80,26 @@ glade_editable_load_default (GladeEditable  *editable,
   if (old_widget != widget)
     {
       if (old_widget)
-	{
-	  g_signal_handlers_disconnect_by_func (old_project, G_CALLBACK (project_changed), editable);
-	  g_signal_handlers_disconnect_by_func (old_project, G_CALLBACK (project_closed), editable);
+        {
+          g_signal_handlers_disconnect_by_func (old_project, G_CALLBACK (project_changed), editable);
+          g_signal_handlers_disconnect_by_func (old_project, G_CALLBACK (project_closed), editable);
 
-	  g_object_set_qdata (G_OBJECT (editable), glade_editable_widget_quark, NULL);
-	  g_object_set_qdata (G_OBJECT (editable), glade_editable_project_quark, NULL);
-	}
+          g_object_set_qdata (G_OBJECT (editable), glade_editable_widget_quark, NULL);
+          g_object_set_qdata (G_OBJECT (editable), glade_editable_project_quark, NULL);
+        }
 
       if (widget)
-	{
-	  GladeProject *project = glade_widget_get_project (widget);
+        {
+          GladeProject *project = glade_widget_get_project (widget);
 
-	  g_object_set_qdata (G_OBJECT (editable), glade_editable_widget_quark, widget);
-	  g_object_set_qdata (G_OBJECT (editable), glade_editable_project_quark, project);
+          g_object_set_qdata (G_OBJECT (editable), glade_editable_widget_quark, widget);
+          g_object_set_qdata (G_OBJECT (editable), glade_editable_project_quark, project);
 
-	  g_signal_connect (project, "changed", 
-			    G_CALLBACK (project_changed), editable);
-	  g_signal_connect (project, "close", 
-			    G_CALLBACK (project_closed), editable);
-	}
+          g_signal_connect (project, "changed", 
+                            G_CALLBACK (project_changed), editable);
+          g_signal_connect (project, "close", 
+                            G_CALLBACK (project_closed), editable);
+        }
     }
 }
 

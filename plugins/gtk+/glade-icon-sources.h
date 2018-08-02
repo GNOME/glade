@@ -27,14 +27,14 @@ G_BEGIN_DECLS
 
 struct _GladeIconSources
 {
-	GHashTable *sources;
+  GHashTable *sources;
 
 };
 
 typedef struct _GladeIconSources         GladeIconSources;
 typedef struct _GladeParamIconSources    GladeParamIconSources;
 
-#define	GLADE_TYPE_ICON_SOURCES       (glade_icon_sources_get_type())
+#define GLADE_TYPE_ICON_SOURCES       (glade_icon_sources_get_type())
 #define GLADE_TYPE_EPROP_ICON_SOURCES (glade_eprop_icon_sources_get_type())
 
 GType             glade_icon_sources_get_type          (void) G_GNUC_CONST;

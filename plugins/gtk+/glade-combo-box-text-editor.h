@@ -25,12 +25,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_COMBO_BOX_TEXT_EDITOR	          (glade_combo_box_text_editor_get_type ())
-#define GLADE_COMBO_BOX_TEXT_EDITOR(obj)	          (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR, GladeComboBoxTextEditor))
-#define GLADE_COMBO_BOX_TEXT_EDITOR_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR, GladeComboBoxTextEditorClass))
-#define GLADE_IS_COMBO_BOX_TEXT_EDITOR(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR))
-#define GLADE_IS_COMBO_BOX_TEXT_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR))
-#define GLADE_COMBO_BOX_TEXT_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR, GladeComboBoxTextEditorClass))
+#define GLADE_TYPE_COMBO_BOX_TEXT_EDITOR            (glade_combo_box_text_editor_get_type ())
+#define GLADE_COMBO_BOX_TEXT_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR, GladeComboBoxTextEditor))
+#define GLADE_COMBO_BOX_TEXT_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR, GladeComboBoxTextEditorClass))
+#define GLADE_IS_COMBO_BOX_TEXT_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR))
+#define GLADE_IS_COMBO_BOX_TEXT_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR))
+#define GLADE_COMBO_BOX_TEXT_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_COMBO_BOX_TEXT_EDITOR, GladeComboBoxTextEditorClass))
 
 typedef struct _GladeComboBoxTextEditor        GladeComboBoxTextEditor;
 typedef struct _GladeComboBoxTextEditorClass   GladeComboBoxTextEditorClass;

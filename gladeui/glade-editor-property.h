@@ -10,54 +10,53 @@ G_BEGIN_DECLS
  *******************************************************************************/
 /* XXX document me ! */
 
-#define GLADE_MAKE_EPROP_TYPE(func, type, parent)	\
-GType							\
-func ## _get_type (void)				\
-{							\
-	static GType cmd_type = 0;			\
-							\
-	if (!cmd_type)					\
-	{						\
-		static const GTypeInfo info =		\
-		{					\
-			sizeof (type ## Class),		\
-			(GBaseInitFunc) NULL,		\
-			(GBaseFinalizeFunc) NULL,	\
-			(GClassInitFunc) func ## _class_init,	\
-			(GClassFinalizeFunc) NULL,	\
-			NULL,				\
-			sizeof (type),			\
-			0,				\
-			(GInstanceInitFunc) NULL	\
-		};					\
-							\
-		cmd_type = g_type_register_static (parent, #type, &info, 0);	\
-	}						\
-							\
-	return cmd_type;				\
-}							\
+#define GLADE_MAKE_EPROP_TYPE(func, type, parent)                  \
+GType                                                              \
+func ## _get_type (void)                                           \
+{                                                                  \
+  static GType cmd_type = 0;                                       \
+                                                                   \
+  if (!cmd_type)                                                   \
+    {                                                              \
+      static const GTypeInfo info = {                              \
+        sizeof (type ## Class),                                    \
+        (GBaseInitFunc) NULL,                                      \
+        (GBaseFinalizeFunc) NULL,                                  \
+        (GClassInitFunc) func ## _class_init,                      \
+        (GClassFinalizeFunc) NULL,                                 \
+        NULL,                                                      \
+        sizeof (type),                                             \
+        0,                                                         \
+        (GInstanceInitFunc) NULL                                   \
+      };                                                           \
+                                                                   \
+      cmd_type = g_type_register_static (parent, #type, &info, 0); \
+    }                                                              \
+                                                                   \
+  return cmd_type;                                                 \
+}
 
 
-#define GLADE_MAKE_EPROP(type, func)					\
-static void								\
-func ## _finalize (GObject *object);					\
-static void								\
-func ## _load (GladeEditorProperty *me, GladeProperty *property);	\
-static GtkWidget *							\
-func ## _create_input (GladeEditorProperty *me);			\
-static void								\
-func ## _class_init (gpointer parent_tmp, gpointer notused)		\
-{									\
-	GladeEditorPropertyClass *parent = parent_tmp;			\
-	GObjectClass* object_class;					\
-	object_class = G_OBJECT_CLASS (parent);				\
-	parent->load =  func ## _load;					\
-	parent->create_input =  func ## _create_input;			\
-	object_class->finalize = func ## _finalize;			\
-}									\
-typedef struct {							\
-	GladeEditorPropertyClass cmd;					\
-} type ## Class;							\
+#define GLADE_MAKE_EPROP(type, func)                              \
+static void                                                       \
+func ## _finalize (GObject *object);                              \
+static void                                                       \
+func ## _load (GladeEditorProperty *me, GladeProperty *property); \
+static GtkWidget *                                                \
+func ## _create_input (GladeEditorProperty *me);                  \
+static void                                                       \
+func ## _class_init (gpointer parent_tmp, gpointer notused)       \
+{                                                                 \
+  GladeEditorPropertyClass *parent = parent_tmp;                  \
+  GObjectClass* object_class;                                     \
+  object_class = G_OBJECT_CLASS (parent);                         \
+  parent->load =  func ## _load;                                  \
+  parent->create_input =  func ## _create_input;                  \
+  object_class->finalize = func ## _finalize;                     \
+}                                                                 \
+typedef struct {                                                  \
+        GladeEditorPropertyClass cmd;                             \
+} type ## Class;                                                  \
 GLADE_MAKE_EPROP_TYPE(func, type, GLADE_TYPE_EDITOR_PROPERTY)
 
 
@@ -100,15 +99,15 @@ struct _GladeEditorPropertyClass {
 GType                glade_editor_property_get_type           (void) G_GNUC_CONST;
 
 void                 glade_editor_property_load               (GladeEditorProperty *eprop,
-							       GladeProperty       *property);
+                                                               GladeProperty       *property);
 
 void                 glade_editor_property_load_by_widget     (GladeEditorProperty *eprop,
-							       GladeWidget         *widget);
+                                                               GladeWidget         *widget);
 
 void                 glade_editor_property_commit             (GladeEditorProperty *eprop,
-							       GValue              *value);
+                                                               GValue              *value);
 void                 glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
-							       GValue              *value);
+                                                               GValue              *value);
 void                 glade_editor_property_set_custom_text    (GladeEditorProperty *eprop,
                                                                const gchar         *custom_text);
 const gchar         *glade_editor_property_get_custom_text    (GladeEditorProperty *eprop);
@@ -127,8 +126,8 @@ gboolean             glade_editor_property_show_i18n_dialog     (GtkWidget      
                                                                  gchar            **comment,
                                                                  gboolean          *translatable);
 gboolean             glade_editor_property_show_resource_dialog (GladeProject      *project, 
-								 GtkWidget         *parent, 
-								 gchar            **filename);
+                                                                 GtkWidget         *parent, 
+                                                                 gchar            **filename);
 
 gboolean             glade_editor_property_show_object_dialog   (GladeProject      *project,
                                                                  const gchar       *title,

@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_MODEL_BUTTON_EDITOR	            (glade_model_button_editor_get_type ())
-#define GLADE_MODEL_BUTTON_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_MODEL_BUTTON_EDITOR, GladeModelButtonEditor))
-#define GLADE_MODEL_BUTTON_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_MODEL_BUTTON_EDITOR, GladeModelButtonEditorClass))
-#define GLADE_IS_MODEL_BUTTON_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_MODEL_BUTTON_EDITOR))
-#define GLADE_IS_MODEL_BUTTON_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_MODEL_BUTTON_EDITOR))
-#define GLADE_MODEL_BUTTON_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_MODEL_BUTTON_EDITOR, GladeModelButtonEditorClass))
+#define GLADE_TYPE_MODEL_BUTTON_EDITOR            (glade_model_button_editor_get_type ())
+#define GLADE_MODEL_BUTTON_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_MODEL_BUTTON_EDITOR, GladeModelButtonEditor))
+#define GLADE_MODEL_BUTTON_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_MODEL_BUTTON_EDITOR, GladeModelButtonEditorClass))
+#define GLADE_IS_MODEL_BUTTON_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_MODEL_BUTTON_EDITOR))
+#define GLADE_IS_MODEL_BUTTON_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_MODEL_BUTTON_EDITOR))
+#define GLADE_MODEL_BUTTON_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_MODEL_BUTTON_EDITOR, GladeModelButtonEditorClass))
 
 typedef struct _GladeModelButtonEditor        GladeModelButtonEditor;
 typedef struct _GladeModelButtonEditorClass   GladeModelButtonEditorClass;

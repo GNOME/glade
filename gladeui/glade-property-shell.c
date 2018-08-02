@@ -35,13 +35,13 @@
 /* GObjectClass */
 static void      glade_property_shell_finalize          (GObject       *object);
 static void      glade_property_shell_set_real_property (GObject       *object,
-							 guint          prop_id,
-							 const GValue  *value,
-							 GParamSpec    *pspec);
+                                                         guint          prop_id,
+                                                         const GValue  *value,
+                                                         GParamSpec    *pspec);
 static void      glade_property_shell_get_real_property (GObject       *object,
-							 guint          prop_id,
-							 GValue        *value,
-							 GParamSpec    *pspec);
+                                                         guint          prop_id,
+                                                         GValue        *value,
+                                                         GParamSpec    *pspec);
 
 /* GladeEditableIface */
 static void      glade_property_shell_editable_init     (GladeEditableIface *iface);
@@ -86,7 +86,7 @@ static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladePropertyShell, glade_property_shell, GTK_TYPE_BOX,
                          G_ADD_PRIVATE (GladePropertyShell)
-			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_property_shell_editable_init));
 
 static void
@@ -111,38 +111,38 @@ glade_property_shell_class_init (GladePropertyShellClass *klass)
   g_object_class_install_property
       (gobject_class, PROP_PROPERTY_NAME,
        g_param_spec_string ("property-name", _("Property Name"),
-			    _("The property name to use when loading by widget"),
-			    NULL, G_PARAM_READWRITE));
+                            _("The property name to use when loading by widget"),
+                            NULL, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_PACKING,
        g_param_spec_boolean ("packing", _("Packing"),
-			     _("Whether the property to load is a packing property or not"),
-			     FALSE, G_PARAM_READWRITE));
+                             _("Whether the property to load is a packing property or not"),
+                             FALSE, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_USE_COMMAND,
        g_param_spec_boolean ("use-command", _("Use Command"),
-			     _("Whether to use the GladeCommand API when modifying properties"),
-			     TRUE, G_PARAM_READWRITE));
+                             _("Whether to use the GladeCommand API when modifying properties"),
+                             TRUE, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_EDITOR_TYPE,
        g_param_spec_string ("editor-type", _("Editor Property Type Name"),
-			    _("Specify the actual editor property type name to use for this shell"),
-			    NULL, G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+                            _("Specify the actual editor property type name to use for this shell"),
+                            NULL, G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 
   g_object_class_install_property
       (gobject_class, PROP_CUSTOM_TEXT,
        g_param_spec_string ("custom-text", _("Custom Text"),
-			    _("Custom Text to display in the property label"),
-			    NULL, G_PARAM_READWRITE));
+                            _("Custom Text to display in the property label"),
+                            NULL, G_PARAM_READWRITE));
   
   g_object_class_install_property
       (gobject_class, PROP_DISABLE_CHECK,
        g_param_spec_boolean ("disable-check", _("Disable Check"),
-			     _("Whether to explicitly disable the check button"),
-			     FALSE, G_PARAM_READWRITE));
+                             _("Whether to explicitly disable the check button"),
+                             FALSE, G_PARAM_READWRITE));
   
   /**
    * GladePropertyShell::pre-commit:
@@ -194,9 +194,9 @@ glade_property_shell_finalize (GObject *object)
 
 static void
 glade_property_shell_set_real_property (GObject      *object,
-					guint         prop_id,
-					const GValue *value,
-					GParamSpec   *pspec)
+                                        guint         prop_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (object);
   GladePropertyShellPrivate *priv = shell->priv;
@@ -218,12 +218,12 @@ glade_property_shell_set_real_property (GObject      *object,
       type_name = g_value_get_string (value);
 
       if (type_name)
-	type = glade_util_get_type_from_name (type_name, FALSE);
+        type = glade_util_get_type_from_name (type_name, FALSE);
 
       if (type > 0 && !g_type_is_a (type, GLADE_TYPE_EDITOR_PROPERTY))
-	g_warning ("Editor type '%s' is not a GladeEditorProperty", type_name);
+        g_warning ("Editor type '%s' is not a GladeEditorProperty", type_name);
       else
-	priv->editor_type = type;
+        priv->editor_type = type;
 
       break;
     case PROP_CUSTOM_TEXT:
@@ -240,9 +240,9 @@ glade_property_shell_set_real_property (GObject      *object,
 
 static void
 glade_property_shell_get_real_property (GObject    *object,
-					guint       prop_id,
-					GValue     *value,
-					GParamSpec *pspec)
+                                        guint       prop_id,
+                                        GValue     *value,
+                                        GParamSpec *pspec)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (object);
 
@@ -274,58 +274,58 @@ glade_property_shell_get_real_property (GObject    *object,
  *******************************************************************************/
 static void
 propagate_pre_commit (GladeEditorProperty *property,
-		      GValue              *value,
-		      GladePropertyShell  *shell)
+                      GValue              *value,
+                      GladePropertyShell  *shell)
 {
   g_signal_emit (G_OBJECT (shell), glade_property_shell_signals[PRE_COMMIT], 0, value);
 }
 
 static void
 propagate_post_commit (GladeEditorProperty *property,
-		       GValue              *value,
-		       GladePropertyShell  *shell)
+                       GValue              *value,
+                       GladePropertyShell  *shell)
 {
   g_signal_emit (G_OBJECT (shell), glade_property_shell_signals[POST_COMMIT], 0, value);
 }
 
 static void
 glade_property_shell_set_eprop (GladePropertyShell  *shell,
-				GladeEditorProperty *eprop)
+                                GladeEditorProperty *eprop)
 {
   GladePropertyShellPrivate *priv = shell->priv;
 
   if (priv->property_editor != eprop)
     {
       if (priv->property_editor)
-	{
-	  g_signal_handler_disconnect (priv->property_editor, priv->pre_commit_id);
-	  g_signal_handler_disconnect (priv->property_editor, priv->post_commit_id);
-	  priv->pre_commit_id = 0;
-	  priv->post_commit_id = 0;
+        {
+          g_signal_handler_disconnect (priv->property_editor, priv->pre_commit_id);
+          g_signal_handler_disconnect (priv->property_editor, priv->post_commit_id);
+          priv->pre_commit_id = 0;
+          priv->post_commit_id = 0;
 
-	  gtk_widget_destroy (GTK_WIDGET (priv->property_editor));
-	}
+          gtk_widget_destroy (GTK_WIDGET (priv->property_editor));
+        }
 
       priv->property_editor = eprop;
 
       if (priv->property_editor)
-	{
-	  glade_editor_property_set_custom_text (priv->property_editor, priv->custom_text);
+        {
+          glade_editor_property_set_custom_text (priv->property_editor, priv->custom_text);
           glade_editor_property_set_disable_check (priv->property_editor, priv->disable_check);
             
-	  priv->pre_commit_id = g_signal_connect (priv->property_editor, "commit",
-						  G_CALLBACK (propagate_pre_commit), shell);
-	  priv->post_commit_id = g_signal_connect_after (priv->property_editor, "commit",
-							 G_CALLBACK (propagate_post_commit), shell);
+          priv->pre_commit_id = g_signal_connect (priv->property_editor, "commit",
+                                                  G_CALLBACK (propagate_pre_commit), shell);
+          priv->post_commit_id = g_signal_connect_after (priv->property_editor, "commit",
+                                                         G_CALLBACK (propagate_post_commit), shell);
 
-	  gtk_container_add (GTK_CONTAINER (shell), GTK_WIDGET (priv->property_editor));
-	}
+          gtk_container_add (GTK_CONTAINER (shell), GTK_WIDGET (priv->property_editor));
+        }
     }
 }
 
 static void
 glade_property_shell_load (GladeEditable *editable,
-			   GladeWidget   *widget)
+                           GladeWidget   *widget)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (editable);
   GladePropertyShellPrivate *priv;
@@ -343,64 +343,64 @@ glade_property_shell_load (GladeEditable *editable,
 
       /* Use the parent adaptor if we're a packing property */
       if (priv->packing)
-	{
-	  GladeWidget *parent = glade_widget_get_parent (widget);
+        {
+          GladeWidget *parent = glade_widget_get_parent (widget);
 
-	  if (parent)
-	    adaptor = glade_widget_get_adaptor (parent);
-	}
+          if (parent)
+            adaptor = glade_widget_get_adaptor (parent);
+        }
       else
-	adaptor = glade_widget_get_adaptor (widget);
+        adaptor = glade_widget_get_adaptor (widget);
 
       /* Need to rebuild the internal editor */
       if (priv->adaptor != adaptor)
-	{
-	  GladePropertyClass *pclass = NULL;
-	  GladeEditorProperty *eprop = NULL;
+        {
+          GladePropertyClass *pclass = NULL;
+          GladeEditorProperty *eprop = NULL;
 
-	  priv->adaptor = adaptor;
+          priv->adaptor = adaptor;
 
-	  if (adaptor)
-	    {
-	      if (priv->packing)
-		pclass = glade_widget_adaptor_get_pack_property_class (priv->adaptor,
-								       priv->property_name);
-	      else
-		pclass = glade_widget_adaptor_get_property_class (priv->adaptor,
-								  priv->property_name);
-	    }
+          if (adaptor)
+            {
+              if (priv->packing)
+                pclass = glade_widget_adaptor_get_pack_property_class (priv->adaptor,
+                                                                       priv->property_name);
+              else
+                pclass = glade_widget_adaptor_get_property_class (priv->adaptor,
+                                                                  priv->property_name);
+            }
 
-	  /* Be forgiving, allow usage of properties that wont work, so that
-	   * some editors can include properties for subclasses, and hide
-	   * those properties if they're not applicable
-	   */
-	  if (pclass == NULL)
-	    {
-	      priv->property_editor = NULL;
-	    }
-	  /* Construct custom editor property if specified */
-	  else if (g_type_is_a (priv->editor_type, GLADE_TYPE_EDITOR_PROPERTY))
-	    {
-	      eprop = g_object_new (priv->editor_type,
-				    "property-class", pclass,
-				    "use-command", priv->use_command,
-				    NULL);
-	    }
-	  else
-	    {
-	      /* Let the adaptor create one */
-	      eprop = glade_widget_adaptor_create_eprop_by_name (priv->adaptor,
-								 priv->property_name,
-								 priv->packing,
-								 priv->use_command);
-	    }
+          /* Be forgiving, allow usage of properties that wont work, so that
+           * some editors can include properties for subclasses, and hide
+           * those properties if they're not applicable
+           */
+          if (pclass == NULL)
+            {
+              priv->property_editor = NULL;
+            }
+          /* Construct custom editor property if specified */
+          else if (g_type_is_a (priv->editor_type, GLADE_TYPE_EDITOR_PROPERTY))
+            {
+              eprop = g_object_new (priv->editor_type,
+                                    "property-class", pclass,
+                                    "use-command", priv->use_command,
+                                    NULL);
+            }
+          else
+            {
+              /* Let the adaptor create one */
+              eprop = glade_widget_adaptor_create_eprop_by_name (priv->adaptor,
+                                                                 priv->property_name,
+                                                                 priv->packing,
+                                                                 priv->use_command);
+            }
 
-	  glade_property_shell_set_eprop (shell, eprop);
-	}
+          glade_property_shell_set_eprop (shell, eprop);
+        }
 
       /* If we have an editor for the right adaptor, load it */
       if (priv->property_editor)
-	glade_editable_load (GLADE_EDITABLE (priv->property_editor), widget);
+        glade_editable_load (GLADE_EDITABLE (priv->property_editor), widget);
     }
   else if (priv->property_editor)
     glade_editable_load (GLADE_EDITABLE (priv->property_editor), NULL);
@@ -431,7 +431,7 @@ glade_property_shell_new (void)
 
 void
 glade_property_shell_set_property_name (GladePropertyShell *shell,
-					const gchar        *property_name)
+                                        const gchar        *property_name)
 {
   GladePropertyShellPrivate *priv;
 
@@ -458,7 +458,7 @@ glade_property_shell_get_property_name (GladePropertyShell *shell)
 
 void
 glade_property_shell_set_custom_text (GladePropertyShell *shell,
-				      const gchar        *custom_text)
+                                      const gchar        *custom_text)
 {
   GladePropertyShellPrivate *priv;
 
@@ -472,7 +472,7 @@ glade_property_shell_set_custom_text (GladePropertyShell *shell,
       priv->custom_text = g_strdup (custom_text);
 
       if (priv->property_editor)
-	glade_editor_property_set_custom_text (priv->property_editor, custom_text);
+        glade_editor_property_set_custom_text (priv->property_editor, custom_text);
 
       g_object_notify (G_OBJECT (shell), "custom-text");
     }
@@ -488,7 +488,7 @@ glade_property_shell_get_custom_text (GladePropertyShell *shell)
 
 void
 glade_property_shell_set_packing (GladePropertyShell *shell,
-				  gboolean            packing)
+                                  gboolean            packing)
 {
   GladePropertyShellPrivate *priv;
 
@@ -514,7 +514,7 @@ glade_property_shell_get_packing (GladePropertyShell *shell)
 
 void
 glade_property_shell_set_use_command (GladePropertyShell *shell,
-				      gboolean            use_command)
+                                      gboolean            use_command)
 {
   GladePropertyShellPrivate *priv;
 
@@ -553,7 +553,7 @@ glade_property_shell_set_disable_check (GladePropertyShell *shell,
       priv->disable_check = disable_check;
 
       if (priv->property_editor)
-	g_object_set (priv->property_editor, "disable-check", disable_check, NULL);
+        g_object_set (priv->property_editor, "disable-check", disable_check, NULL);
 
       g_object_notify (G_OBJECT (shell), "disable-check");
     }

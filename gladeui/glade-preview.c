@@ -283,8 +283,8 @@ glade_preview_launch (GladeWidget *widget, const gchar *buffer)
 
   preview->priv->watch = 
     g_child_watch_add (preview->priv->pid,
-		       glade_preview_internal_watch,
-		       preview);
+                       glade_preview_internal_watch,
+                       preview);
 
   g_free (executable);
   g_free (name);

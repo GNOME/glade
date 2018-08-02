@@ -31,16 +31,16 @@
 #include "glade-model-data.h"
 #include "glade-gtk-cell-layout.h"
 
-#define GLADE_TAG_COLUMNS	"columns"
-#define GLADE_TAG_COLUMN	"column"
-#define GLADE_TAG_TYPE		"type"
+#define GLADE_TAG_COLUMNS       "columns"
+#define GLADE_TAG_COLUMN        "column"
+#define GLADE_TAG_TYPE          "type"
 
 #define GLADE_TAG_ROW           "row"
 #define GLADE_TAG_DATA          "data"
 #define GLADE_TAG_COL           "col"
 
 static void
-glade_gtk_store_set_columns (GObject * object, const GValue * value)
+glade_gtk_store_set_columns (GObject *object, const GValue *value)
 {
   GList *l;
   gint i, n;
@@ -66,7 +66,7 @@ glade_gtk_store_set_columns (GObject * object, const GValue * value)
 }
 
 static void
-glade_gtk_store_set_data (GObject * object, const GValue * value)
+glade_gtk_store_set_data (GObject *object, const GValue *value)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GList *columns = NULL;
@@ -122,9 +122,10 @@ glade_gtk_store_set_data (GObject * object, const GValue * value)
 }
 
 void
-glade_gtk_store_set_property (GladeWidgetAdaptor * adaptor,
-                              GObject * object,
-                              const gchar * property_name, const GValue * value)
+glade_gtk_store_set_property (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              const gchar        *property_name,
+                              const GValue       *value)
 {
   if (strcmp (property_name, "columns") == 0)
     {
@@ -141,8 +142,9 @@ glade_gtk_store_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditorProperty *
-glade_gtk_store_create_eprop (GladeWidgetAdaptor * adaptor,
-                              GladePropertyClass * klass, gboolean use_command)
+glade_gtk_store_create_eprop (GladeWidgetAdaptor *adaptor,
+                              GladePropertyClass *klass,
+                              gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
@@ -166,9 +168,10 @@ glade_gtk_store_create_eprop (GladeWidgetAdaptor * adaptor,
 
 
 static void
-glade_gtk_store_columns_changed (GladeProperty * property,
-                                 GValue * old_value,
-                                 GValue * new_value, GladeWidget * store)
+glade_gtk_store_columns_changed (GladeProperty *property,
+                                 GValue        *old_value,
+                                 GValue        *new_value,
+                                 GladeWidget   *store)
 {
   GList *l, *list, *children, *prop_refs;
 
@@ -199,8 +202,9 @@ glade_gtk_store_columns_changed (GladeProperty * property,
 }
 
 void
-glade_gtk_store_post_create (GladeWidgetAdaptor * adaptor,
-                             GObject * object, GladeCreateReason reason)
+glade_gtk_store_post_create (GladeWidgetAdaptor *adaptor,
+                             GObject            *object,
+                             GladeCreateReason   reason)
 {
   GladeWidget *gwidget;
   GladeProperty *property;
@@ -226,7 +230,7 @@ glade_gtk_store_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditable *
-glade_gtk_store_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_store_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {
   GladeEditable *editable;
@@ -241,9 +245,9 @@ glade_gtk_store_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 gchar *
-glade_gtk_store_string_from_value (GladeWidgetAdaptor * adaptor,
-                                   GladePropertyClass * klass,
-                                   const GValue * value)
+glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
+                                   GladePropertyClass *klass,
+                                   const GValue       *value)
 {
   GString *string;
   GParamSpec *pspec;
@@ -320,8 +324,9 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_store_write_columns (GladeWidget * widget,
-                               GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_store_write_columns (GladeWidget     *widget,
+                               GladeXmlContext *context,
+                               GladeXmlNode    *node)
 {
   GladeXmlNode *columns_node;
   GladeProperty *prop;
@@ -356,8 +361,9 @@ glade_gtk_store_write_columns (GladeWidget * widget,
 }
 
 static void
-glade_gtk_store_write_data (GladeWidget * widget,
-                            GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_store_write_data (GladeWidget     *widget,
+                            GladeXmlContext *context,
+                            GladeXmlNode    *node)
 {
   GladeXmlNode *data_node, *col_node, *row_node;
   GList *columns = NULL;
@@ -433,12 +439,13 @@ glade_gtk_store_write_data (GladeWidget * widget,
 
 
 void
-glade_gtk_store_write_widget (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget,
-                              GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_store_write_widget (GladeWidgetAdaptor *adaptor,
+                              GladeWidget        *widget,
+                              GladeXmlContext    *context,
+                              GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and write all the normal properties.. */
@@ -449,7 +456,7 @@ glade_gtk_store_write_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_store_read_columns (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_store_read_columns (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeNameContext *context;
   GladeXmlNode *columns_node;
@@ -491,15 +498,15 @@ glade_gtk_store_read_columns (GladeWidget * widget, GladeXmlNode * node)
           glade_xml_get_property_string_required (prop, GLADE_TAG_TYPE, NULL);
 
       if (!column_name[0])
-	{
-	  gchar *cname = g_ascii_strdown (type, -1);
+        {
+          gchar *cname = g_ascii_strdown (type, -1);
 
-	  data = glade_column_type_new (type, cname);
+          data = glade_column_type_new (type, cname);
 
-	  g_free (cname);
-	}
+          g_free (cname);
+        }
       else
-	data = glade_column_type_new (type, column_name);
+        data = glade_column_type_new (type, column_name);
 
       if (glade_name_context_has_name (context, data->column_name))
         {
@@ -526,7 +533,7 @@ glade_gtk_store_read_columns (GladeWidget * widget, GladeXmlNode * node)
 }
 
 static void
-glade_gtk_store_read_data (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *data_node, *row_node, *col_node;
   GNode *data_tree, *row, *item;
@@ -601,11 +608,11 @@ glade_gtk_store_read_data (GladeWidget * widget, GladeXmlNode * node)
                */
               value_str = glade_xml_get_content (col_node);
               value = glade_utils_value_from_string (g_type_from_name (column_type->type_name), value_str,
-						     glade_widget_get_project (widget));
+                                                     glade_widget_get_project (widget));
               g_free (value_str);
 
               data = glade_model_data_new (g_type_from_name (column_type->type_name),
-					   column_type->column_name);
+                                           column_type->column_name);
 
               g_value_copy (value, &data->value);
               g_value_unset (value);
@@ -641,11 +648,12 @@ glade_gtk_store_read_data (GladeWidget * widget, GladeXmlNode * node)
 }
 
 void
-glade_gtk_store_read_widget (GladeWidgetAdaptor * adaptor,
-                             GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
+                             GladeWidget        *widget, 
+                             GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */

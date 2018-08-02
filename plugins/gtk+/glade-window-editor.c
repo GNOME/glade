@@ -25,13 +25,13 @@
 
 #include "glade-window-editor.h"
 
-static void glade_window_editor_editable_init (GladeEditableIface * iface);
-static void glade_window_editor_grab_focus (GtkWidget * widget);
+static void glade_window_editor_editable_init (GladeEditableIface *iface);
+static void glade_window_editor_grab_focus (GtkWidget *widget);
 
 /* Callbacks */
-static void icon_name_toggled    (GtkWidget *widget, GladeWindowEditor * window_editor);
-static void icon_file_toggled    (GtkWidget *widget, GladeWindowEditor * window_editor);
-static void use_csd_toggled      (GtkWidget *widget, GladeWindowEditor * window_editor);
+static void icon_name_toggled    (GtkWidget *widget, GladeWindowEditor *window_editor);
+static void icon_file_toggled    (GtkWidget *widget, GladeWindowEditor *window_editor);
+static void use_csd_toggled      (GtkWidget *widget, GladeWindowEditor *window_editor);
 
 struct _GladeWindowEditorPrivate {
   GtkWidget *embed;
@@ -53,7 +53,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeWindowEditor, glade_window_editor, GLADE_TYPE_EDIT
                                                 glade_window_editor_editable_init));
 
 static void
-glade_window_editor_class_init (GladeWindowEditorClass * klass)
+glade_window_editor_class_init (GladeWindowEditorClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
@@ -75,7 +75,7 @@ glade_window_editor_class_init (GladeWindowEditorClass * klass)
 }
 
 static void
-glade_window_editor_init (GladeWindowEditor * self)
+glade_window_editor_init (GladeWindowEditor *self)
 {
   self->priv = glade_window_editor_get_instance_private (self);
 
@@ -83,7 +83,7 @@ glade_window_editor_init (GladeWindowEditor * self)
 }
 
 static void
-glade_window_editor_grab_focus (GtkWidget * widget)
+glade_window_editor_grab_focus (GtkWidget *widget)
 {
   GladeWindowEditor *window_editor =
       GLADE_WINDOW_EDITOR (widget);
@@ -93,7 +93,7 @@ glade_window_editor_grab_focus (GtkWidget * widget)
 
 static void
 glade_window_editor_load (GladeEditable *editable,
-			  GladeWidget   *gwidget)
+                          GladeWidget   *gwidget)
 {
   GladeWindowEditor *window_editor = GLADE_WINDOW_EDITOR (editable);
   GladeWindowEditorPrivate *priv = window_editor->priv;
@@ -110,16 +110,16 @@ glade_window_editor_load (GladeEditable *editable,
       glade_widget_property_get (gwidget, "use-csd", &use_csd);
 
       if (icon_name)
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->icon_name_radio), TRUE);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->icon_name_radio), TRUE);
       else
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->icon_file_radio), TRUE);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->icon_file_radio), TRUE);
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->use_csd_check), use_csd);
     }
 }
 
 static void
-glade_window_editor_editable_init (GladeEditableIface * iface)
+glade_window_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 
@@ -128,7 +128,7 @@ glade_window_editor_editable_init (GladeEditableIface * iface)
 
 static void
 icon_name_toggled (GtkWidget         *widget,
-		   GladeWindowEditor *window_editor)
+                   GladeWindowEditor *window_editor)
 {
   GladeWindowEditorPrivate *priv = window_editor->priv;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (window_editor));
@@ -162,7 +162,7 @@ icon_name_toggled (GtkWidget         *widget,
 
 static void
 icon_file_toggled (GtkWidget         *widget,
-		   GladeWindowEditor *window_editor)
+                   GladeWindowEditor *window_editor)
 {
   GladeWindowEditorPrivate *priv = window_editor->priv;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (window_editor));
@@ -196,7 +196,7 @@ icon_file_toggled (GtkWidget         *widget,
 
 static void
 use_csd_toggled (GtkWidget         *widget,
-		 GladeWindowEditor *window_editor)
+                 GladeWindowEditor *window_editor)
 {
   GladeWindowEditorPrivate *priv = window_editor->priv;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (window_editor));
@@ -223,10 +223,10 @@ use_csd_toggled (GtkWidget         *widget,
 
   if (use_csd)
     glade_command_push_group (_("Setting %s to use a custom titlebar"),
-			      glade_widget_get_name (gwidget));
+                              glade_widget_get_name (gwidget));
   else
     glade_command_push_group (_("Setting %s to use a system provided titlebar"),
-			      glade_widget_get_name (gwidget));
+                              glade_widget_get_name (gwidget));
 
   /* If a project widget exists when were disabling CSD, it needs
    * to be removed first as a part of the issuing GladeCommand group
@@ -274,8 +274,8 @@ glade_window_editor_new (void)
  *************************************/
 void
 glade_window_editor_post_create (GladeWidgetAdaptor *adaptor,
-				 GObject            *editor,
-				 GladeCreateReason   reason)
+                                 GObject            *editor,
+                                 GladeCreateReason   reason)
 {
   GladeWindowEditorPrivate *priv = GLADE_WINDOW_EDITOR (editor)->priv;
 

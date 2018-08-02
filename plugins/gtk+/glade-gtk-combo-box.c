@@ -31,8 +31,8 @@
 #define NO_ENTRY_MSG _("This combo box is not configured to have an entry")
 
 GladeEditable *
-glade_gtk_combo_box_create_editable (GladeWidgetAdaptor * adaptor,
-				     GladeEditorPageType type)
+glade_gtk_combo_box_create_editable (GladeWidgetAdaptor *adaptor,
+                                     GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {
@@ -44,8 +44,8 @@ glade_gtk_combo_box_create_editable (GladeWidgetAdaptor * adaptor,
 
 void
 glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
-				 GObject            *object, 
-				 GladeCreateReason   reason)
+                                 GObject            *object, 
+                                 GladeCreateReason   reason)
 {
   GladeWidget *widget;
 
@@ -66,9 +66,10 @@ glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_combo_box_set_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * object,
-                                  const gchar * id, const GValue * value)
+glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object,
+                                  const gchar        *id,
+                                  const GValue       *value)
 {
   if (!strcmp (id, "entry-text-column"))
     {
@@ -88,10 +89,10 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor * adaptor,
       GladeWidget *widget = glade_widget_get_from_gobject (object);
 
       if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (widget, "tearoff-title", TRUE, NULL);
+        glade_widget_property_set_sensitive (widget, "tearoff-title", TRUE, NULL);
       else
-	glade_widget_property_set_sensitive (widget, "tearoff-title", FALSE,
-					     _("Tearoff menus are disabled"));
+        glade_widget_property_set_sensitive (widget, "tearoff-title", FALSE,
+                                             _("Tearoff menus are disabled"));
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
@@ -99,8 +100,8 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 GList *
-glade_gtk_combo_box_get_children (GladeWidgetAdaptor * adaptor,
-                                  GtkComboBox * combo)
+glade_gtk_combo_box_get_children (GladeWidgetAdaptor *adaptor,
+                                  GtkComboBox        *combo)
 {
   GList *list = NULL;
 

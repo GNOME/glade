@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_WINDOW_EDITOR	            (glade_window_editor_get_type ())
-#define GLADE_WINDOW_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_WINDOW_EDITOR, GladeWindowEditor))
-#define GLADE_WINDOW_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_WINDOW_EDITOR, GladeWindowEditorClass))
-#define GLADE_IS_WINDOW_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_WINDOW_EDITOR))
-#define GLADE_IS_WINDOW_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WINDOW_EDITOR))
-#define GLADE_WINDOW_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WINDOW_EDITOR, GladeWindowEditorClass))
+#define GLADE_TYPE_WINDOW_EDITOR            (glade_window_editor_get_type ())
+#define GLADE_WINDOW_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_WINDOW_EDITOR, GladeWindowEditor))
+#define GLADE_WINDOW_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_WINDOW_EDITOR, GladeWindowEditorClass))
+#define GLADE_IS_WINDOW_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_WINDOW_EDITOR))
+#define GLADE_IS_WINDOW_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WINDOW_EDITOR))
+#define GLADE_WINDOW_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WINDOW_EDITOR, GladeWindowEditorClass))
 
 typedef struct _GladeWindowEditor        GladeWindowEditor;
 typedef struct _GladeWindowEditorClass   GladeWindowEditorClass;

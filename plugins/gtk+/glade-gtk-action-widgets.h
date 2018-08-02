@@ -34,16 +34,16 @@ G_BEGIN_DECLS
 #define GLADE_TAG_RESPONSE       "response"
 
 void glade_gtk_action_widgets_ensure_names (GladeWidget *widget,
-					    gchar *action_container);
+                                            gchar       *action_container);
 
-void glade_gtk_action_widgets_read_child  (GladeWidget *widget,
+void glade_gtk_action_widgets_read_child  (GladeWidget  *widget,
                                            GladeXmlNode *node,
-                                           gchar *action_container);
+                                           gchar        *action_container);
 
-void glade_gtk_action_widgets_write_child (GladeWidget *widget,
+void glade_gtk_action_widgets_write_child (GladeWidget     *widget,
                                            GladeXmlContext *context,
-                                           GladeXmlNode *node,
-                                           gchar *action_container);
+                                           GladeXmlNode    *node,
+                                           gchar           *action_container);
 G_END_DECLS
 
 #endif /* __GLADE_GTK_ACTION_WIDGETS_H__ */

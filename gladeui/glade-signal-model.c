@@ -50,11 +50,11 @@ enum
 static void gtk_tree_model_iface_init (GtkTreeModelIface *iface);
 static void gtk_tree_drag_source_iface_init (GtkTreeDragSourceIface *iface);
 static void on_glade_signal_model_added (GladeWidget *widget, const GladeSignal *signal,
-					 GladeSignalModel *model);
+                                         GladeSignalModel *model);
 static void on_glade_signal_model_removed (GladeWidget *widget, const GladeSignal *signal,
-					   GladeSignalModel *model);
+                                           GladeSignalModel *model);
 static void on_glade_signal_model_changed (GladeWidget *widget, const GladeSignal *signal,
-					   GladeSignalModel *model);	
+                                           GladeSignalModel *model);
 static void on_glade_widget_support_changed (GladeWidget *widget, GladeSignalModel *model);
 
 G_DEFINE_TYPE_WITH_CODE (GladeSignalModel, glade_signal_model, G_TYPE_OBJECT,
@@ -86,11 +86,11 @@ glade_signal_model_create_widget_list (GladeSignalModel *sig_model)
       GladeSignalClass *signal = (GladeSignalClass *) list->data;
 
       if (!g_list_find_custom (sig_model->priv->widgets, 
-			       (gpointer) glade_signal_class_get_type (signal), (GCompareFunc) strcmp))
-	{
-	  sig_model->priv->widgets = 
-	    g_list_prepend (sig_model->priv->widgets, (gpointer) glade_signal_class_get_type (signal));
-	}
+                               (gpointer) glade_signal_class_get_type (signal), (GCompareFunc) strcmp))
+        {
+          sig_model->priv->widgets = 
+            g_list_prepend (sig_model->priv->widgets, (gpointer) glade_signal_class_get_type (signal));
+        }
     }
   sig_model->priv->widgets = g_list_reverse (sig_model->priv->widgets);
 }
@@ -176,18 +176,18 @@ glade_signal_model_class_init (GladeSignalModelClass *klass)
   object_class->get_property = glade_signal_model_get_property;
 
   g_object_class_install_property (object_class,
-				   PROP_WIDGET,
-				   g_param_spec_object ("widget",
-							"A GladeWidget",
-							"The GladeWidget used to query the signals",
-							GLADE_TYPE_WIDGET,
-							G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+                                   PROP_WIDGET,
+                                   g_param_spec_object ("widget",
+                                                        "A GladeWidget",
+                                                        "The GladeWidget used to query the signals",
+                                                        GLADE_TYPE_WIDGET,
+                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
   g_object_class_install_property (object_class,
-				   PROP_SIGNALS,
-				   g_param_spec_pointer ("signals",
-							 "A GHashTable containing the widget signals",
-							 "Use to query signals",
-							 G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+                                   PROP_SIGNALS,
+                                   g_param_spec_pointer ("signals",
+                                                         "A GHashTable containing the widget signals",
+                                                         "Use to query signals",
+                                                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
 }
 
 /*
@@ -203,8 +203,8 @@ GtkTreeModel *
 glade_signal_model_new (GladeWidget *widget, GHashTable *signals)
 {
   GObject *object = g_object_new (GLADE_TYPE_SIGNAL_MODEL,
-				  "widget", widget, 
-				  "signals", signals, NULL);
+                                  "widget", widget, 
+                                  "signals", signals, NULL);
   return GTK_TREE_MODEL (object);
 }
 
@@ -257,30 +257,30 @@ enum
 
 static inline gboolean
 glade_signal_model_is_dummy_handler (GladeSignalModel *model,
-                                     GladeSignal *signal)
+                                     GladeSignal      *signal)
 {
   return glade_signal_get_handler (signal) == NULL;
 }
 
 static GladeSignal *
-glade_signal_model_get_dummy_handler (GladeSignalModel *model, 
+glade_signal_model_get_dummy_handler (GladeSignalModel       *model, 
                                       const GladeSignalClass *sig_class)
 {
   GladeSignal *signal;
 
   signal = g_hash_table_lookup (model->priv->dummy_signals, 
-				glade_signal_class_get_name (sig_class));
+                                glade_signal_class_get_name (sig_class));
 
   if (!signal)
     {
       signal = glade_signal_new (sig_class,
-				 NULL,
-				 NULL,
-				 FALSE,
-				 FALSE);
+                                 NULL,
+                                 NULL,
+                                 FALSE,
+                                 FALSE);
       g_hash_table_insert (model->priv->dummy_signals, 
-			   (gpointer) glade_signal_class_get_name (sig_class), 
-			   signal);
+                           (gpointer) glade_signal_class_get_name (sig_class), 
+                           signal);
 
       glade_project_verify_signal (model->priv->widget, signal);
     }
@@ -289,8 +289,8 @@ glade_signal_model_get_dummy_handler (GladeSignalModel *model,
 
 static void
 glade_signal_model_create_widget_iter (GladeSignalModel *sig_model,
-                                       const gchar *widget,
-                                       GtkTreeIter *iter)
+                                       const gchar      *widget,
+                                       GtkTreeIter      *iter)
 {
   iter->stamp = sig_model->priv->stamp;
   iter->user_data = (gpointer) widget;
@@ -299,18 +299,18 @@ glade_signal_model_create_widget_iter (GladeSignalModel *sig_model,
 }
 
 static void
-glade_signal_model_create_signal_iter (GladeSignalModel *sig_model,
-                                       const gchar *widget,
+glade_signal_model_create_signal_iter (GladeSignalModel  *sig_model,
+                                       const gchar       *widget,
                                        const GladeSignal *signal,
-                                       GtkTreeIter *iter)
+                                       GtkTreeIter       *iter)
 {
-	glade_signal_model_create_widget_iter (sig_model, widget, iter);
-	iter->user_data2 = GLADE_SIGNAL (signal);
+        glade_signal_model_create_widget_iter (sig_model, widget, iter);
+        iter->user_data2 = GLADE_SIGNAL (signal);
 }
 
 static GList *
 glade_signal_model_create_signal_list (GladeSignalModel *sig_model,
-				       const gchar *widget_type)
+                                       const gchar      *widget_type)
 {
   GList *widget_signals = NULL;
   const GList *signals;
@@ -323,26 +323,26 @@ glade_signal_model_create_signal_list (GladeSignalModel *sig_model,
     {
       GladeSignalClass *sig_class = signals->data;
       if (g_str_equal (glade_signal_class_get_type (sig_class), widget_type))
-	{
-	  widget_signals = g_list_append (widget_signals, sig_class);
-	}
+        {
+          widget_signals = g_list_append (widget_signals, sig_class);
+        }
     }
   return widget_signals;
 }
 
 static void
-on_glade_signal_model_added (GladeWidget *widget,
+on_glade_signal_model_added (GladeWidget       *widget,
                              const GladeSignal *signal,
-                             GladeSignalModel* model)
+                             GladeSignalModel  *model)
 {
-  GtkTreeIter iter;	
+  GtkTreeIter iter;
   GtkTreePath *path;
   const GladeSignalClass *sig_class = glade_signal_get_class (signal);
 
   glade_signal_model_create_signal_iter (model,
-					 glade_signal_class_get_type (sig_class),
-					 signal, 
-					 &iter);
+                                         glade_signal_class_get_type (sig_class),
+                                         signal, 
+                                         &iter);
   path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &iter);
 
   gtk_tree_model_row_inserted (GTK_TREE_MODEL (model), path, &iter);
@@ -351,18 +351,18 @@ on_glade_signal_model_added (GladeWidget *widget,
 }
 
 static void
-on_glade_signal_model_removed (GladeWidget *widget,
+on_glade_signal_model_removed (GladeWidget       *widget,
                                const GladeSignal *signal,
-                               GladeSignalModel *model)
+                               GladeSignalModel  *model)
 {
   GtkTreeIter iter;
   GtkTreePath *path;
   const GladeSignalClass *sig_class = glade_signal_get_class (signal);
   
   glade_signal_model_create_signal_iter (model,
-					 glade_signal_class_get_type (sig_class),
-					 signal, 
-					 &iter);
+                                         glade_signal_class_get_type (sig_class),
+                                         signal, 
+                                         &iter);
   path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &iter);
   gtk_tree_model_row_deleted (GTK_TREE_MODEL (model), path);
   gtk_tree_path_free (path);
@@ -379,9 +379,9 @@ on_glade_signal_model_changed (GladeWidget *widget,
   const GladeSignalClass *sig_class = glade_signal_get_class (signal);
   
   glade_signal_model_create_signal_iter (model,
-					 glade_signal_class_get_type (sig_class),
-					 signal, 
-					 &iter);
+                                         glade_signal_class_get_type (sig_class),
+                                         signal, 
+                                         &iter);
   path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &iter);
   gtk_tree_model_row_changed (GTK_TREE_MODEL (model), path, &iter);
   gtk_tree_path_free (path);
@@ -389,8 +389,8 @@ on_glade_signal_model_changed (GladeWidget *widget,
 }
 
 static void
-verify_dummies (const gchar *signal_name,
-                GladeSignal *signal,
+verify_dummies (const gchar      *signal_name,
+                GladeSignal      *signal,
                 GladeSignalModel *model)
 {
   glade_project_verify_signal (model->priv->widget, signal);
@@ -399,9 +399,9 @@ verify_dummies (const gchar *signal_name,
 }
 
 static void
-emit_changed (const gchar *signal_name,
-	      GPtrArray *signals,
-	      GladeSignalModel *model)
+emit_changed (const gchar      *signal_name,
+              GPtrArray        *signals,
+              GladeSignalModel *model)
 {
   gint i;
   GladeSignal *signal;
@@ -425,8 +425,8 @@ on_glade_widget_support_changed (GladeWidget *widget, GladeSignalModel *model)
 
 static gboolean
 glade_signal_model_get_iter (GtkTreeModel *model,
-                             GtkTreeIter *iter,
-                             GtkTreePath *path)
+                             GtkTreeIter  *iter,
+                             GtkTreePath  *path)
 {
   gint *indices;
   gint depth;
@@ -492,52 +492,52 @@ glade_signal_model_get_path (GtkTreeModel *model, GtkTreeIter *iter)
       gint index0, index1 = 0;
       GList *signal;
       GList *signals = glade_signal_model_create_signal_list (sig_model,
-							      widget);
+                                                              widget);
 
       index0 = g_list_index (sig_model->priv->widgets,
-			     widget);
+                             widget);
 
       for (signal = signals; signal != NULL; signal = g_list_next (signal))
-	{		
-	  GPtrArray *handlers = g_hash_table_lookup (sig_model->priv->signals,
-						     glade_signal_class_get_name (signal->data));
+        {
+          GPtrArray *handlers = g_hash_table_lookup (sig_model->priv->signals,
+                                                     glade_signal_class_get_name (signal->data));
 
-	  if (signal->data != sig_class)
-	    {
-	      if (handlers) 
+          if (signal->data != sig_class)
+            {
+              if (handlers) 
                 index1 += handlers->len;
-	      index1++; /* dummy_handler */
-	    }
-	  else
-	    {
-	      if (handlers)
-		{
-		  guint handler_index;
-		  if (g_ptr_array_find (handlers, handler, &handler_index))
-		    index1 += handler_index;
-		  else
-		    index1 += handlers->len;
-		}
-	      break;
-	    }
-	}
+              index1++; /* dummy_handler */
+            }
+          else
+            {
+              if (handlers)
+                {
+                  guint handler_index;
+                  if (g_ptr_array_find (handlers, handler, &handler_index))
+                    index1 += handler_index;
+                  else
+                    index1 += handlers->len;
+                }
+              break;
+            }
+        }
       return gtk_tree_path_new_from_indices (index0, index1, -1);
     }
   else if (widget)
     {
       /* Widget */
       return gtk_tree_path_new_from_indices (g_list_index (sig_model->priv->widgets,
-							   widget), -1);
+                                                           widget), -1);
     }
   g_assert_not_reached();
 }
 
 static void
 glade_signal_model_get_value (GtkTreeModel *model,
-                              GtkTreeIter *iter,
-                              gint column,
-                              GValue *value)
-{	
+                              GtkTreeIter  *iter,
+                              gint          column,
+                              GValue       *value)
+{
   const gchar *widget;
   GladeSignal *signal;
   GladeSignalModel *sig_model;
@@ -550,7 +550,7 @@ glade_signal_model_get_value (GtkTreeModel *model,
   sig_model = GLADE_SIGNAL_MODEL (model);
 
   value = g_value_init (value, 
-			glade_signal_model_get_column_type (model, column));
+                        glade_signal_model_get_column_type (model, column));
 
   switch (column)
     {
@@ -577,7 +577,7 @@ glade_signal_model_get_value (GtkTreeModel *model,
         }
         else if (widget)
           g_value_set_boolean (value, TRUE);
-      break;	
+      break;
       case GLADE_SIGNAL_COLUMN_HANDLER:
         if (signal)
           {
@@ -637,30 +637,30 @@ glade_signal_model_get_value (GtkTreeModel *model,
 
 static gboolean
 glade_signal_model_iter_next_signal (GladeSignalModel *sig_model,
-                                     const gchar *widget,
-                                     GtkTreeIter *iter,
-                                     GList *signal)
+                                     const gchar      *widget,
+                                     GtkTreeIter      *iter,
+                                     GList            *signal)
 {
   if (signal->next)
     {
       signal = signal->next;
       GladeSignal *next_handler;
       GPtrArray *next_handlers = 
-	g_hash_table_lookup (sig_model->priv->signals,
-			     glade_signal_class_get_name (signal->data));
+        g_hash_table_lookup (sig_model->priv->signals,
+                             glade_signal_class_get_name (signal->data));
       if (next_handlers && next_handlers->len)
-	{
-	  next_handler = g_ptr_array_index (next_handlers, 0);
-	}
+        {
+          next_handler = g_ptr_array_index (next_handlers, 0);
+        }
       else
-	{
-	  next_handler = 
-	    glade_signal_model_get_dummy_handler (sig_model,
-						  signal->data);
-	}
+        {
+          next_handler = 
+            glade_signal_model_get_dummy_handler (sig_model,
+                                                  signal->data);
+        }
       glade_signal_model_create_signal_iter (sig_model, widget,
-					     next_handler,
-					     iter);
+                                             next_handler,
+                                             iter);
       g_list_free (signal);
       return TRUE;
     }
@@ -688,54 +688,54 @@ glade_signal_model_iter_next (GtkTreeModel *model, GtkTreeIter *iter)
 
   sig_model = GLADE_SIGNAL_MODEL (model);  
 
-  gtk_tree_model_iter_parent (model, &parent, iter);		
+  gtk_tree_model_iter_parent (model, &parent, iter);
 
   if (handler)
     {
       const GladeSignalClass *sig_class = glade_signal_get_class (handler);
       GList *signals = 
-	glade_signal_model_create_signal_list (sig_model,
-					       widget);
+        glade_signal_model_create_signal_list (sig_model,
+                                               widget);
       GList* signal = g_list_find (signals, sig_class);
       GPtrArray* handlers = g_hash_table_lookup (sig_model->priv->signals,
-						 glade_signal_class_get_name (sig_class));
+                                                 glade_signal_class_get_name (sig_class));
       if (glade_signal_model_is_dummy_handler (sig_model, handler))
-	{
-	  return glade_signal_model_iter_next_signal (sig_model, widget, iter, signal);
-	}
+        {
+          return glade_signal_model_iter_next_signal (sig_model, widget, iter, signal);
+        }
       else if (handlers)
-	{
-	  guint new_index = 0;
-	  if (g_ptr_array_find (handlers, handler, &new_index))
-	    new_index++;
+        {
+          guint new_index = 0;
+          if (g_ptr_array_find (handlers, handler, &new_index))
+            new_index++;
 
-	  if (new_index < handlers->len)
-	    {
-	      glade_signal_model_create_signal_iter (sig_model, widget,
-						     g_ptr_array_index (handlers, new_index),
-						     iter);
-	      g_list_free (signals);
-	      return TRUE;
-	    }
-	  else if (new_index == handlers->len)
-	    {
-	      glade_signal_model_create_signal_iter (sig_model, widget,
-						     glade_signal_model_get_dummy_handler (sig_model,
-											   sig_class),
-						     iter);
-	      g_list_free (signals);
-	      return TRUE;
-	    }
-	  else
-	    {
-	      return glade_signal_model_iter_next_signal (sig_model, widget, iter, signal);
-	    }
-	}
+          if (new_index < handlers->len)
+            {
+              glade_signal_model_create_signal_iter (sig_model, widget,
+                                                     g_ptr_array_index (handlers, new_index),
+                                                     iter);
+              g_list_free (signals);
+              return TRUE;
+            }
+          else if (new_index == handlers->len)
+            {
+              glade_signal_model_create_signal_iter (sig_model, widget,
+                                                     glade_signal_model_get_dummy_handler (sig_model,
+                                                                                           sig_class),
+                                                     iter);
+              g_list_free (signals);
+              return TRUE;
+            }
+          else
+            {
+              return glade_signal_model_iter_next_signal (sig_model, widget, iter, signal);
+            }
+        }
       else
-	{
-	  g_list_free (signals);
-	  return FALSE;
-	}
+        {
+          g_list_free (signals);
+          return FALSE;
+        }
     }
   else if (widget)
     {
@@ -773,23 +773,23 @@ glade_signal_model_iter_n_children (GtkTreeModel *model, GtkTreeIter *iter)
   else if (widget)
     {
       GList *signals = glade_signal_model_create_signal_list (sig_model,
-							      widget);
+                                                              widget);
       GList *signal;
       gint retval = 0;
 
       for (signal = signals; signal != NULL; signal = g_list_next (signal))
-	{
-	  GPtrArray* handlers = g_hash_table_lookup (sig_model->priv->signals,
-						     glade_signal_class_get_name (signal->data));
-	  if (handlers)
-	    retval += handlers->len;
-	  retval++; 
-	}
+        {
+          GPtrArray* handlers = g_hash_table_lookup (sig_model->priv->signals,
+                                                     glade_signal_class_get_name (signal->data));
+          if (handlers)
+            retval += handlers->len;
+          retval++; 
+        }
       g_list_free (signals);
       
       return retval;
     }
-  g_assert_not_reached ();	
+  g_assert_not_reached ();
 }
 
 static gboolean
@@ -803,9 +803,9 @@ glade_signal_model_iter_has_child (GtkTreeModel *model, GtkTreeIter *iter)
 
 static gboolean
 glade_signal_model_iter_nth_child (GtkTreeModel *model,
-                                   GtkTreeIter *iter,
-                                   GtkTreeIter *parent,
-                                   gint n)
+                                   GtkTreeIter  *iter,
+                                   GtkTreeIter  *parent,
+                                   gint          n)
 {
   GladeSignal *handler;
   GladeSignalModel *sig_model;
@@ -825,59 +825,59 @@ glade_signal_model_iter_nth_child (GtkTreeModel *model,
   else if (widget)
     {
       GList *signals = glade_signal_model_create_signal_list (sig_model,
-							      widget);
+                                                              widget);
       GList *signal;
       for (signal = signals; signal != NULL; signal = g_list_next (signal))
-	{
-	  GPtrArray *handlers = g_hash_table_lookup (sig_model->priv->signals,
-						     glade_signal_class_get_name (signal->data));
-	  if (handlers)
-	    {
-	      if (n >= handlers->len)
-		n -= handlers->len;
-	      else
-		{
-		  glade_signal_model_create_signal_iter (sig_model,
-							 widget,
-							 g_ptr_array_index (handlers, n),
-							 iter);
-		  g_list_free (signals);
-		  return TRUE;
-		}
-	    }
-	  if (n == 0)
-	    {
-	      GladeSignal *handler =
-		glade_signal_model_get_dummy_handler (sig_model,
-						      signal->data);
-	      glade_signal_model_create_signal_iter (sig_model,
-						     widget,
-						     handler,
-						     iter);
-	      g_list_free (signals);
-	      return TRUE;
-	    }
-	  n--;
-	}
+        {
+          GPtrArray *handlers = g_hash_table_lookup (sig_model->priv->signals,
+                                                     glade_signal_class_get_name (signal->data));
+          if (handlers)
+            {
+              if (n >= handlers->len)
+                n -= handlers->len;
+              else
+                {
+                  glade_signal_model_create_signal_iter (sig_model,
+                                                         widget,
+                                                         g_ptr_array_index (handlers, n),
+                                                         iter);
+                  g_list_free (signals);
+                  return TRUE;
+                }
+            }
+          if (n == 0)
+            {
+              GladeSignal *handler =
+                glade_signal_model_get_dummy_handler (sig_model,
+                                                      signal->data);
+              glade_signal_model_create_signal_iter (sig_model,
+                                                     widget,
+                                                     handler,
+                                                     iter);
+              g_list_free (signals);
+              return TRUE;
+            }
+          n--;
+        }
       return FALSE;
     }
   else
     {
       if (g_list_length (sig_model->priv->widgets) > n)
-	{
-	  glade_signal_model_create_widget_iter (sig_model,
-						 g_list_nth_data (sig_model->priv->widgets, n),
-						 iter);
-	  return TRUE;
-	}
+        {
+          glade_signal_model_create_widget_iter (sig_model,
+                                                 g_list_nth_data (sig_model->priv->widgets, n),
+                                                 iter);
+          return TRUE;
+        }
     }
   return FALSE;
 }
 
 static gboolean
 glade_signal_model_iter_children (GtkTreeModel *model,
-                                  GtkTreeIter *iter,
-                                  GtkTreeIter *parent)
+                                  GtkTreeIter  *iter,
+                                  GtkTreeIter  *parent)
 {
   return glade_signal_model_iter_nth_child (model, iter, parent, 0);
 }
@@ -915,7 +915,7 @@ gtk_tree_model_iface_init (GtkTreeModelIface *iface)
   iface->get_n_columns = glade_signal_model_get_n_columns;
   iface->get_iter = glade_signal_model_get_iter;
   iface->get_path = glade_signal_model_get_path;
-  iface->get_value = glade_signal_model_get_value;	
+  iface->get_value = glade_signal_model_get_value;
   iface->iter_next = glade_signal_model_iter_next;
   iface->iter_children = glade_signal_model_iter_children;
   iface->iter_has_child = glade_signal_model_iter_has_child;
@@ -933,11 +933,11 @@ glade_signal_model_row_draggable (GtkTreeDragSource *model, GtkTreePath *path)
   gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
 
   gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
-		      -1);
+                      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+                      -1);
 
   retval = signal && !glade_signal_model_is_dummy_handler (GLADE_SIGNAL_MODEL (model),
-							   signal);
+                                                           signal);
 
   g_object_unref (signal);
   return retval;
@@ -945,8 +945,8 @@ glade_signal_model_row_draggable (GtkTreeDragSource *model, GtkTreePath *path)
 
 static gboolean
 glade_signal_model_drag_data_get (GtkTreeDragSource *model, 
-                                  GtkTreePath *path,
-                                  GtkSelectionData *data)
+                                  GtkTreePath       *path,
+                                  GtkSelectionData  *data)
 {
   GtkTreeIter iter;
 
@@ -958,7 +958,7 @@ glade_signal_model_drag_data_get (GtkTreeDragSource *model,
       const gchar *user_data;
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			  GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
+                          GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
 
       user_data = glade_signal_get_userdata (signal);
       
@@ -969,10 +969,10 @@ glade_signal_model_drag_data_get (GtkTreeDragSource *model,
                                   glade_signal_get_swapped (signal),
                                   glade_signal_get_after (signal));
       gtk_selection_data_set (data,
-			      gdk_atom_intern_static_string ("application/x-glade-signal"),
-			      8,
-			      (guchar*) dnd_text,
-			      strlen (dnd_text));
+                              gdk_atom_intern_static_string ("application/x-glade-signal"),
+                              8,
+                              (guchar*) dnd_text,
+                              strlen (dnd_text));
 
       g_free (dnd_text);
       return TRUE;
@@ -985,7 +985,7 @@ glade_signal_model_drag_data_get (GtkTreeDragSource *model,
 
 static gboolean
 glade_signal_model_drag_data_delete (GtkTreeDragSource *model, 
-                                     GtkTreePath *path)
+                                     GtkTreePath       *path)
 {
   /* We don't move rows... */
   return FALSE;
@@ -998,3 +998,4 @@ gtk_tree_drag_source_iface_init (GtkTreeDragSourceIface *iface)
   iface->drag_data_get = glade_signal_model_drag_data_get;
   iface->drag_data_delete = glade_signal_model_drag_data_delete;
 }
+

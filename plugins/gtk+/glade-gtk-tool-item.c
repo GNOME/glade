@@ -28,7 +28,7 @@
 GObject *
 glade_gtk_tool_item_constructor (GType type,
                                  guint n_construct_properties,
-                                 GObjectConstructParam * construct_properties)
+                                 GObjectConstructParam *construct_properties)
 {
   GladeWidgetAdaptor *adaptor;
   GObject *ret_obj;
@@ -47,7 +47,7 @@ glade_gtk_tool_item_constructor (GType type,
 void
 glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *object, 
-				 GladeCreateReason   reason)
+                                 GladeCreateReason   reason)
 {
   if (GTK_IS_SEPARATOR_TOOL_ITEM (object))
     return;
@@ -58,9 +58,10 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_tool_item_set_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * object,
-                                  const gchar * id, const GValue * value)
+glade_gtk_tool_item_set_property (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object,
+                                  const gchar        *id,
+                                  const GValue       *value)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (gwidget, id);

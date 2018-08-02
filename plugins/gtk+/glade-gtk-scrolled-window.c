@@ -28,8 +28,8 @@
 #include "glade-scrolled-window-editor.h"
 
 GladeEditable *
-glade_gtk_scrolled_window_create_editable (GladeWidgetAdaptor * adaptor,
-					   GladeEditorPageType type)
+glade_gtk_scrolled_window_create_editable (GladeWidgetAdaptor *adaptor,
+                                           GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {
@@ -40,9 +40,10 @@ glade_gtk_scrolled_window_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_scrolled_window_set_property (GladeWidgetAdaptor * adaptor,
-					GObject * object,
-					const gchar * id, const GValue * value)
+glade_gtk_scrolled_window_set_property (GladeWidgetAdaptor *adaptor,
+                                        GObject            *object,
+                                        const gchar        *id,
+                                        const GValue       *value)
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);
@@ -50,10 +51,10 @@ glade_gtk_scrolled_window_set_property (GladeWidgetAdaptor * adaptor,
   if (strcmp (id, "window-placement-set") == 0)
     {
       if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (widget, "window-placement", TRUE, NULL);
+        glade_widget_property_set_sensitive (widget, "window-placement", TRUE, NULL);
       else
-	glade_widget_property_set_sensitive (widget, "window-placement", FALSE,
-					     _("This property is disabled"));
+        glade_widget_property_set_sensitive (widget, "window-placement", FALSE,
+                                             _("This property is disabled"));
     }
   else if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);

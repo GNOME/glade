@@ -26,8 +26,8 @@
 #include <gladeui/glade.h>
 
 static GladeWidget *
-glade_gtk_menu_bar_append_new_submenu (GladeWidget * parent,
-                                       GladeProject * project)
+glade_gtk_menu_bar_append_new_submenu (GladeWidget  *parent,
+                                       GladeProject *project)
 {
   static GladeWidgetAdaptor *submenu_adaptor = NULL;
   GladeWidget *gsubmenu;
@@ -45,9 +45,10 @@ glade_gtk_menu_bar_append_new_submenu (GladeWidget * parent,
 }
 
 static GladeWidget *
-glade_gtk_menu_bar_append_new_item (GladeWidget * parent,
-                                    GladeProject * project,
-                                    const gchar * label, gboolean use_stock)
+glade_gtk_menu_bar_append_new_item (GladeWidget  *parent,
+                                    GladeProject *project,
+                                    const gchar  *label,
+                                    gboolean      use_stock)
 {
   static GladeWidgetAdaptor *item_adaptor =
       NULL, *image_item_adaptor, *separator_adaptor;
@@ -96,7 +97,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 void
 glade_gtk_menu_bar_post_create (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
-				GladeCreateReason   reason)
+                                GladeCreateReason   reason)
 {
   GladeProject *project;
   GladeWidget *gmenubar, *gitem, *gsubmenu;

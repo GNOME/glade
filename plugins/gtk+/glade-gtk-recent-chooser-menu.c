@@ -28,8 +28,8 @@
 #include "glade-recent-chooser-menu-editor.h"
 
 GladeEditable *
-glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor * adaptor,
-					       GladeEditorPageType type)
+glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor *adaptor,
+                                               GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_recent_chooser_menu_editor_new ();
@@ -38,9 +38,10 @@ glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_recent_chooser_menu_set_property (GladeWidgetAdaptor * adaptor,
-					    GObject * object,
-					    const gchar * id, const GValue * value)
+glade_gtk_recent_chooser_menu_set_property (GladeWidgetAdaptor *adaptor,
+                                            GObject            *object,
+                                            const gchar        *id,
+                                            const GValue       *value)
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);

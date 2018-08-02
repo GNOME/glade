@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_HEADER_BAR_EDITOR	            (glade_header_bar_editor_get_type ())
-#define GLADE_HEADER_BAR_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_HEADER_BAR_EDITOR, GladeHeaderBarEditor))
-#define GLADE_HEADER_BAR_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_HEADER_BAR_EDITOR, GladeHeaderBarEditorClass))
-#define GLADE_IS_HEADER_BAR_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_HEADER_BAR_EDITOR))
-#define GLADE_IS_HEADER_BAR_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_HEADER_BAR_EDITOR))
-#define GLADE_HEADER_BAR_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_HEADER_BAR_EDITOR, GladeHeaderBarEditorClass))
+#define GLADE_TYPE_HEADER_BAR_EDITOR            (glade_header_bar_editor_get_type ())
+#define GLADE_HEADER_BAR_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_HEADER_BAR_EDITOR, GladeHeaderBarEditor))
+#define GLADE_HEADER_BAR_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_HEADER_BAR_EDITOR, GladeHeaderBarEditorClass))
+#define GLADE_IS_HEADER_BAR_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_HEADER_BAR_EDITOR))
+#define GLADE_IS_HEADER_BAR_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_HEADER_BAR_EDITOR))
+#define GLADE_HEADER_BAR_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_HEADER_BAR_EDITOR, GladeHeaderBarEditorClass))
 
 typedef struct _GladeHeaderBarEditor        GladeHeaderBarEditor;
 typedef struct _GladeHeaderBarEditorClass   GladeHeaderBarEditorClass;

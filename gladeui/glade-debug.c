@@ -99,9 +99,9 @@ glade_init_debug_flags (void)
 
       env_string = g_getenv ("GLADE_DEBUG");
       if (env_string != NULL)
-	glade_debug_flags = 
-	  g_parse_debug_string (env_string,
-				glade_debug_keys,
-				G_N_ELEMENTS (glade_debug_keys));
+        glade_debug_flags = 
+          g_parse_debug_string (env_string,
+                                glade_debug_keys,
+                                G_N_ELEMENTS (glade_debug_keys));
     }
 }

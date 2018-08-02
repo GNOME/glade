@@ -44,7 +44,7 @@ typedef struct _GladeDesignLayoutClass    GladeDesignLayoutClass;
 struct _GladeDesignLayout
 {
   GtkBin     parent_instance;
-	
+
   GladeDesignLayoutPrivate *priv;
 };
 

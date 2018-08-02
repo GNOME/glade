@@ -36,9 +36,9 @@ struct _GladeWidgetClass
   void         (*remove_child)            (GladeWidget *, GladeWidget *);
   void         (*replace_child)           (GladeWidget *, GObject *, GObject *);
 
-  void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
-  void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
-  void         (*change_signal_handler)	(GladeWidget *, GladeSignal *);
+  void         (*add_signal_handler)      (GladeWidget *, GladeSignal *);
+  void         (*remove_signal_handler)   (GladeWidget *, GladeSignal *);
+  void         (*change_signal_handler)   (GladeWidget *, GladeSignal *);
 
   gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
   gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
@@ -61,185 +61,185 @@ struct _GladeWidgetClass
  */
 #define GLADE_UNNAMED_PREFIX   "__glade_unnamed_"
 
-#define IS_GLADE_WIDGET_EVENT(event)		 \
-	((event) == GDK_BUTTON_PRESS ||		 \
-	 (event) == GDK_BUTTON_RELEASE ||	 \
-	 (event) == GDK_MOTION_NOTIFY)
+#define IS_GLADE_WIDGET_EVENT(event)       \
+        ((event) == GDK_BUTTON_PRESS ||    \
+         (event) == GDK_BUTTON_RELEASE ||  \
+         (event) == GDK_MOTION_NOTIFY)
 
 /*******************************************************************************
                                   General api
  *******************************************************************************/
 
-GType                   glade_widget_get_type		    (void);
+GType                   glade_widget_get_type               (void);
 
 GladeWidget            *glade_widget_get_from_gobject       (gpointer          object);
 
 gboolean                glade_widget_add_verify             (GladeWidget      *parent,
-							     GladeWidget      *child,
-							     gboolean          user_feedback);
+                                                             GladeWidget      *child,
+                                                             gboolean          user_feedback);
 
 void                    glade_widget_add_child              (GladeWidget      *parent,
-							     GladeWidget      *child,
-							     gboolean          at_mouse);
+                                                             GladeWidget      *child,
+                                                             gboolean          at_mouse);
 
 void                    glade_widget_remove_child           (GladeWidget      *parent,
-							     GladeWidget      *child);
+                                                             GladeWidget      *child);
 
 void                    glade_widget_replace                (GladeWidget      *parent,
-							     GObject          *old_object,
-							     GObject          *new_object);
+                                                             GObject          *old_object,
+                                                             GObject          *new_object);
  
 void                    glade_widget_rebuild                (GladeWidget      *gwidget);
  
 GladeWidget            *glade_widget_dup                    (GladeWidget      *template_widget,
-							     gboolean          exact);
+                                                             gboolean          exact);
 
 GList                  *glade_widget_get_signal_list        (GladeWidget      *widget);
 
 void                    glade_widget_copy_signals           (GladeWidget      *widget,
-							     GladeWidget      *template_widget);
+                                                             GladeWidget      *template_widget);
 void                    glade_widget_copy_properties        (GladeWidget      *widget,
-							     GladeWidget      *template_widget,
-							     gboolean          copy_parentless,
-							     gboolean          exact);
+                                                             GladeWidget      *template_widget,
+                                                             gboolean          copy_parentless,
+                                                             gboolean          exact);
 
 void                    glade_widget_set_packing_properties (GladeWidget      *widget,
-							     GladeWidget      *container);
+                                                             GladeWidget      *container);
 
 GList                  *glade_widget_get_properties         (GladeWidget      *widget);
 GList                  *glade_widget_get_packing_properties (GladeWidget      *widget);
 
 GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
-							     const gchar      *id_property);
+                                                             const gchar      *id_property);
  
 GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
-							     const gchar      *id_property);
+                                                             const gchar      *id_property);
 
 GList                  *glade_widget_dup_properties         (GladeWidget      *dest_widget,
-							     GList            *template_props,
+                                                             GList            *template_props,
                                                              gboolean          as_load,
-							     gboolean          copy_parentless,
-							     gboolean          exact);
+                                                             gboolean          copy_parentless,
+                                                             gboolean          exact);
 
 void                    glade_widget_remove_property        (GladeWidget      *widget,
-							     const gchar      *id_property);
+                                                             const gchar      *id_property);
  
 void                    glade_widget_show                   (GladeWidget      *widget);
  
 void                    glade_widget_hide                   (GladeWidget      *widget);
  
 void                    glade_widget_add_signal_handler     (GladeWidget      *widget,
-							     const GladeSignal      *signal_handler);
+                                                             const GladeSignal      *signal_handler);
  
 void                    glade_widget_remove_signal_handler  (GladeWidget      *widget,
-							     const GladeSignal      *signal_handler);
+                                                             const GladeSignal      *signal_handler);
  
 void                    glade_widget_change_signal_handler  (GladeWidget      *widget,
-							     const GladeSignal      *old_signal_handler,
-							     const GladeSignal      *new_signal_handler);
+                                                             const GladeSignal      *old_signal_handler,
+                                                             const GladeSignal      *new_signal_handler);
  
 GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
-							     const gchar      *signal_name);
+                                                             const gchar      *signal_name);
  
 gboolean                glade_widget_has_decendant          (GladeWidget      *widget,
-							     GType             type);
+                                                             GType             type);
  
 gboolean                glade_widget_event                  (GladeWidget      *gwidget,
-							     GdkEvent         *event);
+                                                             GdkEvent         *event);
 
 gboolean                glade_widget_placeholder_relation   (GladeWidget      *parent, 
-							     GladeWidget      *widget);
+                                                             GladeWidget      *widget);
 
 GladeWidgetAction      *glade_widget_get_action             (GladeWidget *widget,
-							     const gchar *action_path);
+                                                             const gchar *action_path);
 
 GladeWidgetAction      *glade_widget_get_pack_action        (GladeWidget *widget,
-							     const gchar *action_path);
+                                                             const gchar *action_path);
 
 GList                  *glade_widget_get_actions            (GladeWidget *widget);
 GList                  *glade_widget_get_pack_actions       (GladeWidget *widget);
 
 gboolean                glade_widget_set_action_sensitive   (GladeWidget *widget,
-							     const gchar *action_path,
-							     gboolean     sensitive);
+                                                             const gchar *action_path,
+                                                             gboolean     sensitive);
 
 gboolean                glade_widget_set_pack_action_sensitive (GladeWidget *widget,
-								const gchar *action_path,
-								gboolean     sensitive);
+                                                                const gchar *action_path,
+                                                                gboolean     sensitive);
 
 gboolean                glade_widget_set_action_visible     (GladeWidget *widget,
-							     const gchar *action_path,
-							     gboolean     sensitive);
+                                                             const gchar *action_path,
+                                                             gboolean     sensitive);
 
 gboolean                glade_widget_set_pack_action_visible (GladeWidget *widget,
-							      const gchar *action_path,
-							      gboolean     sensitive);
+                                                              const gchar *action_path,
+                                                              gboolean     sensitive);
 
 void                    glade_widget_write                  (GladeWidget     *widget,
-							     GladeXmlContext *context,
-							     GladeXmlNode    *node);
+                                                             GladeXmlContext *context,
+                                                             GladeXmlNode    *node);
 
 void                    glade_widget_write_child            (GladeWidget     *widget,
-							     GladeWidget     *child,
-							     GladeXmlContext *context,
-							     GladeXmlNode    *node);
+                                                             GladeWidget     *child,
+                                                             GladeXmlContext *context,
+                                                             GladeXmlNode    *node);
 
 void                    glade_widget_write_signals          (GladeWidget     *widget,
-							     GladeXmlContext *context,
-							     GladeXmlNode    *node);
+                                                             GladeXmlContext *context,
+                                                             GladeXmlNode    *node);
 
 void                    glade_widget_write_placeholder      (GladeWidget     *parent,
-							     GObject         *object,
-							     GladeXmlContext *context,
-							     GladeXmlNode    *node);
-	
+                                                             GObject         *object,
+                                                             GladeXmlContext *context,
+                                                             GladeXmlNode    *node);
+        
 GladeWidget            *glade_widget_read                   (GladeProject     *project,
-							     GladeWidget      *parent,
-							     GladeXmlNode     *node,
-							     const gchar      *internal);
+                                                             GladeWidget      *parent,
+                                                             GladeXmlNode     *node,
+                                                             const gchar      *internal);
 
 void                    glade_widget_read_child             (GladeWidget      *widget,
-							     GladeXmlNode     *node);
+                                                             GladeXmlNode     *node);
 
 
 void                    glade_widget_write_special_child_prop (GladeWidget     *parent, 
-							       GObject         *object,
-							       GladeXmlContext *context,
-							       GladeXmlNode    *node);
+                                                               GObject         *object,
+                                                               GladeXmlContext *context,
+                                                               GladeXmlNode    *node);
 
 void                    glade_widget_set_child_type_from_node (GladeWidget         *parent,
-							       GObject             *child,
-							       GladeXmlNode        *node);
+                                                               GObject             *child,
+                                                               GladeXmlNode        *node);
 
 GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *widget,
-							     const gchar      *property,
-							     gboolean          packing,
-							     gboolean          use_command);
+                                                             const gchar      *property,
+                                                             gboolean          packing,
+                                                             gboolean          use_command);
 
 gchar                  *glade_widget_generate_path_name     (GladeWidget      *widget);
 
 gboolean                glade_widget_is_ancestor            (GladeWidget      *widget,
-							     GladeWidget      *ancestor);
+                                                             GladeWidget      *ancestor);
 
 G_DEPRECATED
 gboolean                glade_widget_depends                (GladeWidget      *widget,
-							     GladeWidget      *other);
+                                                             GladeWidget      *other);
 
 GdkDevice              *glade_widget_get_device_from_event  (GdkEvent *event);
 
 void                    glade_widget_ensure_name            (GladeWidget      *widget,
-							     GladeProject     *project,
-							     gboolean          use_command);
+                                                             GladeProject     *project,
+                                                             gboolean          use_command);
 
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/
  
 void                    glade_widget_add_prop_ref           (GladeWidget      *widget,
-							     GladeProperty    *property);
+                                                             GladeProperty    *property);
  
 void                    glade_widget_remove_prop_ref        (GladeWidget      *widget,
-							     GladeProperty    *property);
+                                                             GladeProperty    *property);
 
 GList                  *glade_widget_list_prop_refs         (GladeWidget      *widget);
 gboolean                glade_widget_has_prop_refs          (GladeWidget      *widget);
@@ -254,124 +254,124 @@ GList                  *glade_widget_get_parentless_reffed_widgets (GladeWidget 
  *******************************************************************************/
 
 void                    glade_widget_object_set_property    (GladeWidget      *widget,
-							     const gchar      *property_name,
-							     const GValue     *value);
+                                                             const gchar      *property_name,
+                                                             const GValue     *value);
 
 void                    glade_widget_object_get_property    (GladeWidget      *widget,
-							     const gchar      *property_name,
-							     GValue           *value);
+                                                             const gchar      *property_name,
+                                                             GValue           *value);
 
 void                    glade_widget_child_set_property     (GladeWidget      *widget,
-							     GladeWidget      *child,
-							     const gchar      *property_name,
-							     const GValue     *value);
+                                                             GladeWidget      *child,
+                                                             const gchar      *property_name,
+                                                             const GValue     *value);
 
 void                    glade_widget_child_get_property     (GladeWidget      *widget,
-							     GladeWidget      *child,
-							     const gchar      *property_name,
-							     GValue           *value);
+                                                             GladeWidget      *child,
+                                                             const gchar      *property_name,
+                                                             GValue           *value);
 
 /*******************************************************************************
                    GladeProperty api convenience wrappers
  *******************************************************************************/
  
 gboolean                glade_widget_property_get           (GladeWidget      *widget,
-							     const gchar      *id_property,
-							     ...);
+                                                             const gchar      *id_property,
+                                                             ...);
  
 gboolean                glade_widget_property_set           (GladeWidget      *widget,
-							     const gchar      *id_property,
-							     ...);
+                                                             const gchar      *id_property,
+                                                             ...);
  
 gboolean                glade_widget_pack_property_get      (GladeWidget      *widget,
-							     const gchar      *id_property,
-							     ...);
+                                                             const gchar      *id_property,
+                                                             ...);
  
 gboolean                glade_widget_pack_property_set      (GladeWidget      *widget,
-							     const gchar      *id_property,
-							     ...);
+                                                             const gchar      *id_property,
+                                                             ...);
  
 gboolean                glade_widget_property_reset         (GladeWidget      *widget,
-							     const gchar      *id_property);
+                                                             const gchar      *id_property);
  
 gboolean                glade_widget_pack_property_reset    (GladeWidget      *widget,
-							     const gchar      *id_property);
+                                                             const gchar      *id_property);
  
 gboolean                glade_widget_property_default       (GladeWidget      *widget,
-							     const gchar      *id_property);
+                                                             const gchar      *id_property);
  
 gboolean                glade_widget_property_original_default (GladeWidget      *widget,
-								const gchar      *id_property);
+                                                                const gchar      *id_property);
  
 gboolean                glade_widget_pack_property_default  (GladeWidget      *widget,
-							     const gchar      *id_property);
+                                                             const gchar      *id_property);
  
 gboolean                glade_widget_property_set_sensitive (GladeWidget      *widget,
-							     const gchar      *id_property,
-							     gboolean          sensitive,
-							     const gchar      *reason);
+                                                             const gchar      *id_property,
+                                                             gboolean          sensitive,
+                                                             const gchar      *reason);
  
 gboolean                glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
-								  const gchar      *id_property,
-								  gboolean          sensitive,
-								  const gchar      *reason);
+                                                                  const gchar      *id_property,
+                                                                  gboolean          sensitive,
+                                                                  const gchar      *reason);
  
 gboolean                glade_widget_property_set_enabled   (GladeWidget      *widget,
-							     const gchar      *id_property,
-							     gboolean          enabled);
+                                                             const gchar      *id_property,
+                                                             gboolean          enabled);
  
 gboolean                glade_widget_pack_property_set_enabled (GladeWidget      *widget,
-								const gchar      *id_property,
-								gboolean          enabled);
+                                                                const gchar      *id_property,
+                                                                gboolean          enabled);
 
  
 gboolean                glade_widget_property_set_save_always (GladeWidget      *widget,
-							       const gchar      *id_property,
-							       gboolean          setting);
+                                                               const gchar      *id_property,
+                                                               gboolean          setting);
  
 gboolean                glade_widget_pack_property_set_save_always (GladeWidget      *widget,
-								    const gchar      *id_property,
-								    gboolean          setting);
+                                                                    const gchar      *id_property,
+                                                                    gboolean          setting);
 
 gchar                  *glade_widget_property_string        (GladeWidget      *widget,
-							     const gchar      *id_property,
-							     const GValue     *value);
+                                                             const gchar      *id_property,
+                                                             const GValue     *value);
 
 
 gchar                  *glade_widget_pack_property_string   (GladeWidget      *widget,
-							     const gchar      *id_property,
-							     const GValue     *value);
+                                                             const gchar      *id_property,
+                                                             const GValue     *value);
 
 /*******************************************************************************
                                   Accessors
  *******************************************************************************/
 
-void                    glade_widget_set_name		    (GladeWidget      *widget,
-							     const gchar      *name);
+void                    glade_widget_set_name               (GladeWidget      *widget,
+                                                             const gchar      *name);
  
 G_CONST_RETURN gchar   *glade_widget_get_name               (GladeWidget      *widget);
 G_CONST_RETURN gchar   *glade_widget_get_display_name       (GladeWidget      *widget);
 gboolean                glade_widget_has_name               (GladeWidget      *widget);
 
 void                    glade_widget_set_is_composite       (GladeWidget      *widget,
-							     gboolean          composite);
+                                                             gboolean          composite);
 
 gboolean                glade_widget_get_is_composite       (GladeWidget      *widget);
 
-void                    glade_widget_set_internal	    (GladeWidget      *widget,
-							     const gchar      *internal);
+void                    glade_widget_set_internal           (GladeWidget      *widget,
+                                                             const gchar      *internal);
  
 G_CONST_RETURN gchar   *glade_widget_get_internal           (GladeWidget      *widget);
 
 GObject                *glade_widget_get_object             (GladeWidget      *widget);
 
-void                    glade_widget_set_project	    (GladeWidget      *widget,
-							     GladeProject     *project);
+void                    glade_widget_set_project            (GladeWidget      *widget,
+                                                             GladeProject     *project);
  
 GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
 
 void                    glade_widget_set_in_project         (GladeWidget      *widget,
-							     gboolean          in_project);
+                                                             gboolean          in_project);
 gboolean                glade_widget_in_project             (GladeWidget      *widget);
 
 GladeWidgetAdaptor     *glade_widget_get_adaptor            (GladeWidget      *widget);
@@ -379,9 +379,9 @@ GladeWidgetAdaptor     *glade_widget_get_adaptor            (GladeWidget      *w
 GladeWidget            *glade_widget_get_parent             (GladeWidget      *widget);
  
 void                    glade_widget_set_parent             (GladeWidget      *widget,
-							     GladeWidget      *parent);
+                                                             GladeWidget      *parent);
 
-GList                  *glade_widget_get_children	    (GladeWidget* widget);
+GList                  *glade_widget_get_children           (GladeWidget* widget);
 
 GladeWidget            *glade_widget_get_toplevel           (GladeWidget      *widget);
  
@@ -393,11 +393,11 @@ void                    glade_widget_pop_superuser          (void);
 
 void                    glade_widget_verify                 (GladeWidget      *widget);
 void                    glade_widget_set_support_warning    (GladeWidget      *widget,
-							     const gchar      *warning);
+                                                             const gchar      *warning);
 G_CONST_RETURN gchar   *glade_widget_support_warning        (GladeWidget      *widget);
 
 void                    glade_widget_lock                   (GladeWidget      *widget,
-							     GladeWidget      *locked);
+                                                             GladeWidget      *locked);
 void                    glade_widget_unlock                 (GladeWidget      *widget);
 
 GladeWidget            *glade_widget_get_locker             (GladeWidget      *widget);

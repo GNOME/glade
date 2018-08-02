@@ -15,9 +15,9 @@ static void        glade_eprop_enum_int_init         (GladeEPropEnumInt      *ep
 static void        glade_eprop_enum_int_class_init   (GladeEPropEnumIntClass *klass);
 static void        glade_eprop_enum_int_finalize     (GObject      *object);
 static void        glade_eprop_enum_int_set_property (GObject      *object,
-						      guint         property_id,
-						      const GValue *value,
-						      GParamSpec   *pspec);
+                                                      guint         property_id,
+                                                      const GValue *value,
+                                                      GParamSpec   *pspec);
 
 /* GladeEditorPropertyClass */
 static void        glade_eprop_enum_int_load         (GladeEditorProperty *eprop, GladeProperty *property);
@@ -44,8 +44,8 @@ enum {
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladeEPropEnumInt,
-			    glade_eprop_enum_int,
-			    GLADE_TYPE_EDITOR_PROPERTY);
+                            glade_eprop_enum_int,
+                            GLADE_TYPE_EDITOR_PROPERTY);
 
 static void
 glade_eprop_enum_int_init (GladeEPropEnumInt *eprop)
@@ -96,13 +96,13 @@ glade_eprop_enum_int_load (GladeEditorProperty *eprop, GladeProperty *property)
        * set the entry text
        */
       for (i = 0; i < enum_class->n_values; i++)
-	{
-	  if (enum_class->values[i].value == value)
-	    {
-	      found = TRUE;
-	      break;
-	    }
-	}
+        {
+          if (enum_class->values[i].value == value)
+            {
+              found = TRUE;
+              break;
+            }
+        }
 
       if (found)
         {
@@ -132,17 +132,17 @@ string_from_value (GType etype, gint val)
     {
       if (val == eclass->values[i].value)
         {
-	  if (glade_type_has_displayable_values (etype))
-	    {
-	      if (!glade_displayable_value_is_disabled (etype, eclass->values[i].value_nick))
-		string = glade_get_displayable_value (etype, eclass->values[i].value_nick);
-	    }
-	  else
-	    {
-	      string = eclass->values[i].value_nick;
-	    }
+          if (glade_type_has_displayable_values (etype))
+            {
+              if (!glade_displayable_value_is_disabled (etype, eclass->values[i].value_nick))
+                string = glade_get_displayable_value (etype, eclass->values[i].value_nick);
+            }
+          else
+            {
+              string = eclass->values[i].value_nick;
+            }
 
-	  break;
+          break;
         }
     }
   g_type_class_unref (eclass);
@@ -169,31 +169,31 @@ value_from_string (GType etype, const gchar *string, gint *value)
       eclass = g_type_class_ref (etype);
       ev = g_enum_get_value_by_name (eclass, string);
       if (!ev)
-	ev = g_enum_get_value_by_nick (eclass, string);
+        ev = g_enum_get_value_by_nick (eclass, string);
       
       if (ev)
-	{
-	  val = ev->value;
-	  found = TRUE;
-	}
+        {
+          val = ev->value;
+          found = TRUE;
+        }
 
       if (!found && string && string[0])
-	{
-	  /* Try Displayables */
-	  string = glade_get_value_from_displayable (etype, string);
-	  if (string)
-	    {
-	      ev = g_enum_get_value_by_name (eclass, string);
-	      if (!ev)
-		ev = g_enum_get_value_by_nick (eclass, string);
+        {
+          /* Try Displayables */
+          string = glade_get_value_from_displayable (etype, string);
+          if (string)
+            {
+              ev = g_enum_get_value_by_name (eclass, string);
+              if (!ev)
+                ev = g_enum_get_value_by_nick (eclass, string);
 
-	      if (ev)
-		{
-		  val = ev->value;
-		  found = TRUE;
-		}
-	    }
-	}
+              if (ev)
+                {
+                  val = ev->value;
+                  found = TRUE;
+                }
+            }
+        }
 
       g_type_class_unref (eclass);
   }
@@ -223,15 +223,15 @@ glade_eprop_enum_int_changed_combo (GtkWidget *combo_box, GladeEditorProperty *e
   if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (combo_box), &iter))
     {
       gtk_tree_model_get (tree_model, &iter,
-			  COLUMN_VALUE_INT, &ival,
-			  -1);
+                          COLUMN_VALUE_INT, &ival,
+                          -1);
     }
   else
     {
       const char *text = gtk_entry_get_text (GTK_ENTRY (priv->entry));
 
       if (!value_from_string (priv->type, text, &ival))
-	error = TRUE;
+        error = TRUE;
     }
   
   if (error)
@@ -255,8 +255,8 @@ glade_eprop_enum_int_changed_combo (GtkWidget *combo_box, GladeEditorProperty *e
 
 static gchar *
 glade_eprop_enum_int_format_entry_cb (GtkComboBox       *combo,
-				      const gchar       *path,
-				      GladeEPropEnumInt *eprop_enum)
+                                      const gchar       *path,
+                                      GladeEPropEnumInt *eprop_enum)
 {
   GladeEPropEnumIntPrivate *priv = glade_eprop_enum_int_get_instance_private (eprop_enum);
   GtkTreeIter iter;
@@ -326,8 +326,8 @@ glade_eprop_enum_int_focus_out_idle (gpointer user_data)
 
 static gboolean
 glade_eprop_enum_int_entry_focus_out (GtkWidget *widget,
-				      GdkEvent  *event,
-				      GladeEPropEnumInt *eprop_enum)
+                                      GdkEvent  *event,
+                                      GladeEPropEnumInt *eprop_enum)
 {
   GladeEPropEnumIntPrivate *priv = glade_eprop_enum_int_get_instance_private (eprop_enum);
 
@@ -352,8 +352,8 @@ glade_eprop_enum_int_create_input (GladeEditorProperty *eprop)
   enum_class = g_type_class_ref (priv->type);
  
   list_store = gtk_list_store_new (N_COLUMNS,
-				   G_TYPE_STRING, /* COLUMN_ENUM_TEXT */
-				   G_TYPE_INT);   /* COLUMN_VALUE_INT */
+                                   G_TYPE_STRING, /* COLUMN_ENUM_TEXT */
+                                   G_TYPE_INT);   /* COLUMN_VALUE_INT */
 
   if (!glade_type_has_displayable_values (priv->type))
     g_warning ("No displayable value found for type %s", g_type_name (priv->type));
@@ -366,9 +366,9 @@ glade_eprop_enum_int_create_input (GladeEditorProperty *eprop)
 
       gtk_list_store_append (list_store, &iter);
       gtk_list_store_set (list_store, &iter,
-			  COLUMN_ENUM_TEXT, string_from_value (priv->type, enum_class->values[i].value),
-			  COLUMN_VALUE_INT, enum_class->values[i].value,
-			  -1);
+                          COLUMN_ENUM_TEXT, string_from_value (priv->type, enum_class->values[i].value),
+                          COLUMN_VALUE_INT, enum_class->values[i].value,
+                          -1);
     }
 
   priv->combo_box = gtk_combo_box_new_with_model_and_entry (GTK_TREE_MODEL (list_store));
@@ -385,7 +385,7 @@ glade_eprop_enum_int_create_input (GladeEditorProperty *eprop)
                     G_CALLBACK (glade_eprop_enum_int_format_entry_cb), eprop);
 
   g_signal_connect_after (G_OBJECT (priv->entry), "focus-out-event",
-			  G_CALLBACK (glade_eprop_enum_int_entry_focus_out), eprop);
+                          G_CALLBACK (glade_eprop_enum_int_entry_focus_out), eprop);
 
   
   glade_util_remove_scroll_events (priv->combo_box);

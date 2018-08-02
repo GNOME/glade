@@ -29,7 +29,7 @@
 #define GLADE_TAG_SIZEGROUP_WIDGET  "widget"
 
 static void
-glade_gtk_size_group_read_widgets (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_size_group_read_widgets (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *widgets_node;
   GladeProperty *property;
@@ -80,11 +80,12 @@ glade_gtk_size_group_read_widgets (GladeWidget * widget, GladeXmlNode * node)
 }
 
 void
-glade_gtk_size_group_read_widget (GladeWidgetAdaptor * adaptor,
-                                  GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_size_group_read_widget (GladeWidgetAdaptor *adaptor,
+                                  GladeWidget        *widget,
+                                  GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -95,9 +96,9 @@ glade_gtk_size_group_read_widget (GladeWidgetAdaptor * adaptor,
 
 
 static void
-glade_gtk_size_group_write_widgets (GladeWidget * widget,
-                                    GladeXmlContext * context,
-                                    GladeXmlNode * node)
+glade_gtk_size_group_write_widgets (GladeWidget     *widget,
+                                    GladeXmlContext *context,
+                                    GladeXmlNode    *node)
 {
   GladeXmlNode *widgets_node, *widget_node;
   GList *widgets = NULL, *list;
@@ -127,13 +128,13 @@ glade_gtk_size_group_write_widgets (GladeWidget * widget,
 
 
 void
-glade_gtk_size_group_write_widget (GladeWidgetAdaptor * adaptor,
-                                   GladeWidget * widget,
-                                   GladeXmlContext * context,
-                                   GladeXmlNode * node)
+glade_gtk_size_group_write_widget (GladeWidgetAdaptor *adaptor,
+                                   GladeWidget        *widget,
+                                   GladeXmlContext    *context,
+                                   GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -144,10 +145,10 @@ glade_gtk_size_group_write_widget (GladeWidgetAdaptor * adaptor,
 
 
 void
-glade_gtk_size_group_set_property (GladeWidgetAdaptor * adaptor,
-                                   GObject * object,
-                                   const gchar * property_name,
-                                   const GValue * value)
+glade_gtk_size_group_set_property (GladeWidgetAdaptor *adaptor,
+                                   GObject            *object,
+                                   const gchar        *property_name,
+                                   const GValue       *value)
 {
   if (!strcmp (property_name, "widgets"))
     {

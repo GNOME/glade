@@ -62,14 +62,14 @@ struct _GladeButtonEditorPrivate
   /* Available in standard mode: */
   GtkWidget *stock_radio;    /* Create the button using the stock (Available: stock, image-position) */
   GtkWidget *label_radio;    /* Create the button with a custom label
-			      * (Available: label, use-underline, image, image-position */
+                              * (Available: label, use-underline, image, image-position */
 
   GtkWidget *standard_frame; /* Contains all the button configurations
-			      */
+                              */
   GtkWidget *stock_frame;    /* Contains stock and image-position properties
-			      */
+                              */
   GtkWidget *label_frame;    /* Contains label, use-underline, image and image-position properties 
-			      */
+                              */
 };
 
 static GladeEditableIface *parent_editable_iface;
@@ -142,9 +142,9 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
       gboolean modify_content = TRUE;
 
       if (GTK_IS_MENU_BUTTON (button) ||
-	  GTK_IS_LINK_BUTTON (button) ||
-	  GTK_IS_SCALE_BUTTON (button))
-	modify_content = FALSE;
+          GTK_IS_LINK_BUTTON (button) ||
+          GTK_IS_SCALE_BUTTON (button))
+        modify_content = FALSE;
 
       gtk_widget_set_visible (priv->active_shell, is_toggle);
       gtk_widget_set_visible (priv->inconsistent_shell, is_toggle);
@@ -239,7 +239,7 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   if (active)
     {
       glade_command_push_group (_("Setting %s to use a custom child"),
-				glade_widget_get_name (gwidget));
+                                glade_widget_get_name (gwidget));
 
       /* clear out some things... */
       property = glade_widget_get_property (gwidget, "image");
@@ -267,20 +267,20 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
       GValue value = { 0, };
 
       glade_command_push_group (_("Setting %s to use standard configuration"),
-				glade_widget_get_name (gwidget));
+                                glade_widget_get_name (gwidget));
 
       /* If theres a widget customly inside... command remove it first... */
       button = GTK_WIDGET (glade_widget_get_object (gwidget));
       child = gtk_bin_get_child (GTK_BIN (button));
       if (child)
-	gchild = glade_widget_get_from_gobject (child);
+        gchild = glade_widget_get_from_gobject (child);
 
       if (gchild && glade_widget_get_parent (gchild) == gwidget)
-	{
-	  GList widgets = { 0, };
-	  widgets.data = gchild;
-	  glade_command_delete (&widgets);
-	}
+        {
+          GList widgets = { 0, };
+          widgets.data = gchild;
+          glade_command_delete (&widgets);
+        }
 
       property = glade_widget_get_property (gwidget, "custom-child");
       glade_command_set_property (property, FALSE);
@@ -394,8 +394,8 @@ glade_button_editor_new (void)
  *************************************/
 void
 glade_button_editor_post_create (GladeWidgetAdaptor *adaptor,
-				 GObject            *editor,
-				 GladeCreateReason   reason)
+                                 GObject            *editor,
+                                 GladeCreateReason   reason)
 {
   GladeButtonEditorPrivate *priv = GLADE_BUTTON_EDITOR (editor)->priv;
 

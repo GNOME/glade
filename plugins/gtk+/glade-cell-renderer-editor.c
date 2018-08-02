@@ -73,7 +73,7 @@ static void
 glade_cell_renderer_editor_init (GladeCellRendererEditor * self)
 {
   gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
-				  GTK_ORIENTATION_VERTICAL);
+                                  GTK_ORIENTATION_VERTICAL);
 }
 
 static void
@@ -324,8 +324,8 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 
       /* "stock-size" is a normal property, but we virtualize it to use the GtkIconSize enumeration */
       if (glade_property_class_get_virtual (pclass) &&
-	  strcmp (glade_property_class_id (pclass), "stock-size") != 0)
-	continue;
+          strcmp (glade_property_class_id (pclass), "stock-size") != 0)
+        continue;
 
       attr_name = g_strdup_printf ("attr-%s", glade_property_class_id (pclass));
       use_attr_name = g_strdup_printf ("use-attr-%s", glade_property_class_id (pclass));
@@ -338,9 +338,9 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
       if (attr_pclass && use_attr_pclass)
         {
           CheckTab *tab = g_new0 (CheckTab, 1);
-	  GParamSpec *pspec;
+          GParamSpec *pspec;
 
-	  pspec = glade_property_class_get_pspec (pclass);
+          pspec = glade_property_class_get_pspec (pclass);
 
           tab->editor = renderer_editor;
           tab->pclass = pclass;

@@ -30,7 +30,7 @@
 #include "glade-gtk.h"
 
 static void
-glade_gtk_image_menu_item_set_use_stock (GObject * object, const GValue * value)
+glade_gtk_image_menu_item_set_use_stock (GObject *object, const GValue *value)
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   gboolean use_stock;
@@ -59,7 +59,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static gboolean
-glade_gtk_image_menu_item_set_label (GObject * object, const GValue * value)
+glade_gtk_image_menu_item_set_label (GObject *object, const GValue *value)
 {
   GladeWidget *gitem;
   GtkWidget *label;
@@ -103,7 +103,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-glade_gtk_image_menu_item_set_stock (GObject * object, const GValue * value)
+glade_gtk_image_menu_item_set_stock (GObject *object, const GValue *value)
 {
   GladeWidget *gitem;
   gboolean use_stock = FALSE;
@@ -118,9 +118,10 @@ glade_gtk_image_menu_item_set_stock (GObject * object, const GValue * value)
 }
 
 void
-glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor * adaptor,
-                                        GObject * object,
-                                        const gchar * id, const GValue * value)
+glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
+                                        GObject            *object,
+                                        const gchar        *id,
+                                        const GValue       *value)
 {
   if (!strcmp (id, "stock"))
     glade_gtk_image_menu_item_set_stock (object, value);
@@ -138,8 +139,8 @@ glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_image_menu_item_parse_finished (GladeProject * project,
-                                          GladeWidget * widget)
+glade_gtk_image_menu_item_parse_finished (GladeProject *project,
+                                          GladeWidget  *widget)
 {
   GladeWidget *gimage;
   GtkWidget *image = NULL;
@@ -150,16 +151,16 @@ glade_gtk_image_menu_item_parse_finished (GladeProject * project,
 }
 
 void
-glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor * adaptor,
-                                       GladeWidget * widget,
-                                       GladeXmlNode * node)
+glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
+                                       GladeWidget        *widget,
+                                       GladeXmlNode       *node)
 {
   GladeProperty *property;
   gboolean use_stock;
   gchar *label = NULL;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -189,17 +190,17 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor * adaptor,
 
 
 void
-glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor * adaptor,
-                                        GladeWidget * widget,
-                                        GladeXmlContext * context,
-                                        GladeXmlNode * node)
+glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
+                                        GladeWidget        *widget,
+                                        GladeXmlContext    *context,
+                                        GladeXmlNode       *node)
 {
   GladeProperty *label_prop;
   gboolean use_stock;
   gchar *stock;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
@@ -226,7 +227,7 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor * adaptor,
  */
 
 GladeEditable *
-glade_gtk_image_menu_item_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_image_menu_item_create_editable (GladeWidgetAdaptor *adaptor,
                                            GladeEditorPageType type)
 {
   GladeEditable *editable;

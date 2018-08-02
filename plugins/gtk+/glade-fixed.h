@@ -18,69 +18,69 @@ G_BEGIN_DECLS
 /* Convenience macros used in pointer events.
  */
 #define GLADE_FIXED_CURSOR_TOP(type)                      \
-	((type) == GLADE_CURSOR_RESIZE_TOP_RIGHT ||       \
-	 (type) == GLADE_CURSOR_RESIZE_TOP_LEFT  ||       \
-	 (type) == GLADE_CURSOR_RESIZE_TOP)
+        ((type) == GLADE_CURSOR_RESIZE_TOP_RIGHT ||       \
+         (type) == GLADE_CURSOR_RESIZE_TOP_LEFT  ||       \
+         (type) == GLADE_CURSOR_RESIZE_TOP)
 
 #define GLADE_FIXED_CURSOR_BOTTOM(type)                   \
-	((type) == GLADE_CURSOR_RESIZE_BOTTOM_RIGHT ||    \
-	 (type) == GLADE_CURSOR_RESIZE_BOTTOM_LEFT  ||    \
-	 (type) == GLADE_CURSOR_RESIZE_BOTTOM)
+        ((type) == GLADE_CURSOR_RESIZE_BOTTOM_RIGHT ||    \
+         (type) == GLADE_CURSOR_RESIZE_BOTTOM_LEFT  ||    \
+         (type) == GLADE_CURSOR_RESIZE_BOTTOM)
 
 #define GLADE_FIXED_CURSOR_RIGHT(type)                    \
-	((type) == GLADE_CURSOR_RESIZE_TOP_RIGHT    ||    \
-	 (type) == GLADE_CURSOR_RESIZE_BOTTOM_RIGHT ||    \
-	 (type) == GLADE_CURSOR_RESIZE_RIGHT)
+        ((type) == GLADE_CURSOR_RESIZE_TOP_RIGHT    ||    \
+         (type) == GLADE_CURSOR_RESIZE_BOTTOM_RIGHT ||    \
+         (type) == GLADE_CURSOR_RESIZE_RIGHT)
 
 #define GLADE_FIXED_CURSOR_LEFT(type)                    \
-	((type) == GLADE_CURSOR_RESIZE_TOP_LEFT    ||    \
-	 (type) == GLADE_CURSOR_RESIZE_BOTTOM_LEFT ||    \
-	 (type) == GLADE_CURSOR_RESIZE_LEFT)
+        ((type) == GLADE_CURSOR_RESIZE_TOP_LEFT    ||    \
+         (type) == GLADE_CURSOR_RESIZE_BOTTOM_LEFT ||    \
+         (type) == GLADE_CURSOR_RESIZE_LEFT)
 
 typedef struct _GladeFixed        GladeFixed;
 typedef struct _GladeFixedClass   GladeFixedClass;
 
 struct _GladeFixed {
-	GladeWidget       parent_instance;
+  GladeWidget       parent_instance;
 
-	gchar            *x_prop;      /* packing property names (on child widgets) used */
-	gchar            *y_prop;      /* to obtain & configure widget coordinates */
-	gchar            *width_prop;  /* property names (on child widgets) used to obtain */
-	gchar            *height_prop; /* & configure widget dimentions. */
+  gchar            *x_prop;      /* packing property names (on child widgets) used */
+  gchar            *y_prop;      /* to obtain & configure widget coordinates */
+  gchar            *width_prop;  /* property names (on child widgets) used to obtain */
+  gchar            *height_prop; /* & configure widget dimentions. */
 
-        gboolean          can_resize; /* whether the container supports child resizes or only
-				       * drags.
-				       */
+  gboolean          can_resize; /* whether the container supports child resizes or only
+                                 * drags.
+                                 */
 
-	/* State machine used to commit properties at the end
-	 * of a drag or a resize (i.e. a "configure").
-	 */
-	gint              pointer_x_origin;
-	gint              pointer_y_origin;
-	gint              pointer_x_child_origin;
-	gint              pointer_y_child_origin;
-	gint              child_x_origin;
-	gint              child_y_origin;
-	gint              child_width_origin;
-	gint              child_height_origin;
+  /* State machine used to commit properties at the end
+   * of a drag or a resize (i.e. a "configure").
+   */
+  gint              pointer_x_origin;
+  gint              pointer_y_origin;
+  gint              pointer_x_child_origin;
+  gint              pointer_y_child_origin;
+  gint              child_x_origin;
+  gint              child_y_origin;
+  gint              child_width_origin;
+  gint              child_height_origin;
 
-	GladeWidget      *configuring;
-	GladeCursorType   operation;
-	gboolean          creating;
-	gint              mouse_x;
-	gint              mouse_y;
+  GladeWidget      *configuring;
+  GladeCursorType   operation;
+  gboolean          creating;
+  gint              mouse_x;
+  gint              mouse_y;
 };
 
 struct _GladeFixedClass {
-	GladeWidgetClass   parent_class;
+  GladeWidgetClass   parent_class;
 
-	gboolean     (* configure_child) (GladeFixed *, GladeWidget *, GdkRectangle *);
-	gboolean     (* configure_begin) (GladeFixed *, GladeWidget *);
-	gboolean     (* configure_end)   (GladeFixed *, GladeWidget *);
+  gboolean     (* configure_child) (GladeFixed *, GladeWidget *, GdkRectangle *);
+  gboolean     (* configure_begin) (GladeFixed *, GladeWidget *);
+  gboolean     (* configure_end)   (GladeFixed *, GladeWidget *);
 
-	/* Signal handler for child widgets
-	 */
-	gint         (* child_event)     (GladeWidget *, GdkEvent *, GladeFixed *);
+  /* Signal handler for child widgets
+   */
+  gint         (* child_event)     (GladeWidget *, GdkEvent *, GladeFixed *);
 
 };
 

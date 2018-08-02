@@ -13,10 +13,10 @@ typedef enum {
 
 #ifdef GLADE_ENABLE_DEBUG
 
-#define GLADE_NOTE(type,action)					    \
-  G_STMT_START {						    \
-    if (glade_get_debug_flags () & GLADE_DEBUG_##type)		    \
-      { action; };						    \
+#define GLADE_NOTE(type,action)                        \
+  G_STMT_START {                                       \
+    if (glade_get_debug_flags () & GLADE_DEBUG_##type) \
+      { action; };                                     \
   } G_STMT_END
 
 #else /* !GLADE_ENABLE_DEBUG */

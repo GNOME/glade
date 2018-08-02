@@ -29,7 +29,7 @@
 #include "glade-gtk.h"
 
 static void
-glade_gtk_entry_changed (GtkEditable * editable, GladeWidget * gentry)
+glade_gtk_entry_changed (GtkEditable *editable, GladeWidget *gentry)
 {
   const gchar *text, *text_prop;
   GladeProperty *prop;
@@ -51,8 +51,9 @@ glade_gtk_entry_changed (GtkEditable * editable, GladeWidget * gentry)
 }
 
 void
-glade_gtk_entry_post_create (GladeWidgetAdaptor * adaptor,
-                             GObject * object, GladeCreateReason reason)
+glade_gtk_entry_post_create (GladeWidgetAdaptor *adaptor,
+                             GObject            *object,
+                             GladeCreateReason   reason)
 {
   GladeWidget *gentry;
 
@@ -65,7 +66,7 @@ glade_gtk_entry_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditable *
-glade_gtk_entry_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_entry_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
@@ -75,9 +76,10 @@ glade_gtk_entry_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
-                              GObject * object,
-                              const gchar * id, const GValue * value)
+glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              const gchar        *id,
+                              const GValue       *value)
 {
   GladeImageEditMode mode;
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
@@ -121,8 +123,8 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
                                                  TRUE, NULL);
             break;
           case GLADE_IMAGE_MODE_RESOURCE:
-	    /* Doesnt apply for entry icons */
-	    break;
+            /* Doesnt apply for entry icons */
+            break;
         }
     }
   else if (!strcmp (id, "secondary-icon-mode"))
@@ -153,8 +155,8 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
                                                  NULL);
             break;
           case GLADE_IMAGE_MODE_RESOURCE:
-	    /* Doesnt apply for entry icons */
-	    break;
+            /* Doesnt apply for entry icons */
+            break;
         }
     }
   else if (!strcmp (id, "primary-icon-tooltip-text") ||
@@ -189,22 +191,22 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "has-frame"))
     {
       if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (gwidget, "shadow-type", TRUE, NULL);
+        glade_widget_property_set_sensitive (gwidget, "shadow-type", TRUE, NULL);
       else
-	glade_widget_property_set_sensitive (gwidget, "shadow-type", FALSE,
-					     _("This property is only available\n"
-					       "if the entry has a frame"));
+        glade_widget_property_set_sensitive (gwidget, "shadow-type", FALSE,
+                                             _("This property is only available\n"
+                                               "if the entry has a frame"));
 
       GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (!strcmp (id, "visibility"))
     {
       if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (gwidget, "invisible-char", FALSE,
-					     _("This property is only available\n"
-					       "if the entry characters are invisible"));
+        glade_widget_property_set_sensitive (gwidget, "invisible-char", FALSE,
+                                             _("This property is only available\n"
+                                               "if the entry characters are invisible"));
       else
-	glade_widget_property_set_sensitive (gwidget, "invisible-char", TRUE, NULL);
+        glade_widget_property_set_sensitive (gwidget, "invisible-char", TRUE, NULL);
 
       GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
@@ -214,13 +216,14 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
-                             GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
+                             GladeWidget        *widget,
+                             GladeXmlNode       *node)
 {
   GladeProperty *property;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -238,7 +241,7 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
       gint target_minor, target_major;
 
       glade_project_get_target_version (glade_widget_get_project (widget), "gtk+", 
-					&target_major, &target_minor);
+                                        &target_major, &target_minor);
 
       property = glade_widget_get_property (widget, "buffer");
 

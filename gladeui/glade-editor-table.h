@@ -27,10 +27,10 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_EDITOR_TABLE	            (glade_editor_table_get_type ())
-#define GLADE_EDITOR_TABLE(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EDITOR_TABLE, GladeEditorTable))
-#define GLADE_EDITOR_TABLE_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EDITOR_TABLE, GladeEditorTableClass))
-#define GLADE_IS_EDITOR_TABLE(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EDITOR_TABLE))
+#define GLADE_TYPE_EDITOR_TABLE             (glade_editor_table_get_type ())
+#define GLADE_EDITOR_TABLE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EDITOR_TABLE, GladeEditorTable))
+#define GLADE_EDITOR_TABLE_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EDITOR_TABLE, GladeEditorTableClass))
+#define GLADE_IS_EDITOR_TABLE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EDITOR_TABLE))
 #define GLADE_IS_EDITOR_TABLE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EDITOR_TABLE))
 #define GLADE_EDITOR_TABLE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_EDITOR_TABLE, GladeEditorEditorClass))
 
@@ -57,7 +57,7 @@ struct _GladeEditorTableClass
 
 GType            glade_editor_table_get_type (void);
 GtkWidget       *glade_editor_table_new      (GladeWidgetAdaptor   *adaptor,
-					      GladeEditorPageType   type);
+                                              GladeEditorPageType   type);
 
 G_END_DECLS
 

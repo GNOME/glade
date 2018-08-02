@@ -68,35 +68,35 @@ struct _GladeBaseEditorClass
 GType                glade_base_editor_get_type               (void);
 
 GladeBaseEditor     *glade_base_editor_new                    (GObject *container,
-							       GladeEditable *main_editable,
-							       ...);
+                                                               GladeEditable *main_editable,
+                                                               ...);
 
 void                 glade_base_editor_append_types           (GladeBaseEditor *editor, 
-							       GType parent_type,
-							       ...);
+                                                               GType parent_type,
+                                                               ...);
 
 void                 glade_base_editor_add_editable           (GladeBaseEditor     *editor,
-							       GladeWidget         *gchild,
-							       GladeEditorPageType  page);
+                                                               GladeWidget         *gchild,
+                                                               GladeEditorPageType  page);
 
 void                 glade_base_editor_add_default_properties (GladeBaseEditor *editor,
-							       GladeWidget *gchild);
+                                                               GladeWidget *gchild);
 
 void                 glade_base_editor_add_properties         (GladeBaseEditor *editor,
-							       GladeWidget *gchild,
-							       gboolean packing,
-							       ...);
+                                                               GladeWidget *gchild,
+                                                               gboolean packing,
+                                                               ...);
 
 void                 glade_base_editor_add_label              (GladeBaseEditor *editor,
-							       gchar *str);
+                                                               gchar *str);
 
 void                 glade_base_editor_set_show_signal_editor (GladeBaseEditor *editor,
-							       gboolean val);
+                                                               gboolean val);
 
 /* Convenience functions */
 GtkWidget           *glade_base_editor_pack_new_window        (GladeBaseEditor *editor,
-							       gchar *title,
-							       gchar *help_markup);
+                                                               gchar *title,
+                                                               gchar *help_markup);
 
 G_END_DECLS
 

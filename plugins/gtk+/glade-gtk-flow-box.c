@@ -65,9 +65,9 @@ sync_child_positions (GtkFlowBox *flowbox)
 }
 
 static void
-glade_gtk_flowbox_insert (GtkFlowBox    *flowbox,
+glade_gtk_flowbox_insert (GtkFlowBox      *flowbox,
                           GtkFlowBoxChild *child,
-                          gint           position)
+                          gint             position)
 {
   gtk_flow_box_insert (flowbox, GTK_WIDGET (child), position);
   sync_child_positions (flowbox);
@@ -217,9 +217,9 @@ glade_gtk_flowbox_child_insert_action (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_flowbox_action_activate (GladeWidgetAdaptor * adaptor,
-				   GObject * object,
-				   const gchar * action_path)
+glade_gtk_flowbox_action_activate (GladeWidgetAdaptor *adaptor,
+                                   GObject            *object,
+                                   const gchar        *action_path)
 {
   if (strcmp (action_path, "add_child") == 0)
     {

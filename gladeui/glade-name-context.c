@@ -182,7 +182,7 @@ glade_name_context_release_name (GladeNameContext *context, const gchar *name)
     {
       id = (int) strtol (first_number, &end_number, 10);
       if (*end_number == 0)
-	glade_id_allocator_release (id_allocator, id);
+        glade_id_allocator_release (id_allocator, id);
     }
 
   g_free (base_name);

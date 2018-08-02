@@ -8,7 +8,7 @@ G_BEGIN_DECLS
 
 
 #define GLADE_TYPE_EPROP_ATTRS            (glade_eprop_attrs_get_type())
-#define	GLADE_TYPE_ATTR_GLIST             (glade_attr_glist_get_type())
+#define GLADE_TYPE_ATTR_GLIST             (glade_attr_glist_get_type())
 
 /* The GladeParamSpecAttributes is a GList * of GladeAttribute structs */
 typedef struct _GladeAttribute             GladeAttribute;
@@ -27,7 +27,7 @@ GType        glade_eprop_attrs_get_type         (void) G_GNUC_CONST;
 GType        glade_attr_glist_get_type          (void) G_GNUC_CONST;
 
 GladeAttribute *glade_gtk_attribute_from_string (PangoAttrType    type,
-						 const gchar     *strval);
+                                                 const gchar     *strval);
 gchar       *glade_gtk_string_from_attr         (GladeAttribute  *gattr);
 void         glade_attr_list_free               (GList           *attrs);
 

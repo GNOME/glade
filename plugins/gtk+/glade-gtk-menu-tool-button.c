@@ -28,8 +28,8 @@
 #include "glade-gtk.h"
 
 GList *
-glade_gtk_menu_tool_button_get_children (GladeWidgetAdaptor * adaptor,
-                                         GtkMenuToolButton * button)
+glade_gtk_menu_tool_button_get_children (GladeWidgetAdaptor *adaptor,
+                                         GtkMenuToolButton  *button)
 {
   GList *list = NULL;
   GtkWidget *menu = gtk_menu_tool_button_get_menu (button);
@@ -45,23 +45,23 @@ glade_gtk_menu_tool_button_get_children (GladeWidgetAdaptor * adaptor,
 
 gboolean
 glade_gtk_menu_tool_button_add_verify (GladeWidgetAdaptor *adaptor,
-				       GtkWidget          *container,
-				       GtkWidget          *child,
-				       gboolean            user_feedback)
+                                       GtkWidget          *container,
+                                       GtkWidget          *child,
+                                       gboolean            user_feedback)
 {
   if (!GTK_IS_MENU (child))
     {
       if (user_feedback)
-	{
-	  GladeWidgetAdaptor *menu_adaptor = 
-	    glade_widget_adaptor_get_by_type (GTK_TYPE_MENU);
+        {
+          GladeWidgetAdaptor *menu_adaptor = 
+            glade_widget_adaptor_get_by_type (GTK_TYPE_MENU);
 
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 ONLY_THIS_GOES_IN_THAT_MSG,
-				 glade_widget_adaptor_get_title (menu_adaptor),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 ONLY_THIS_GOES_IN_THAT_MSG,
+                                 glade_widget_adaptor_get_title (menu_adaptor),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }
@@ -70,21 +70,23 @@ glade_gtk_menu_tool_button_add_verify (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_menu_tool_button_add_child (GladeWidgetAdaptor * adaptor,
-                                      GObject * object, GObject * child)
+glade_gtk_menu_tool_button_add_child (GladeWidgetAdaptor *adaptor,
+                                      GObject            *object,
+                                      GObject            *child)
 {
   if (GTK_IS_MENU (child))
     {
       g_object_set_data (child, "special-child-type", "menu");
 
       gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (object),
-				     GTK_WIDGET (child));
+                                     GTK_WIDGET (child));
     }
 }
 
 void
-glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor * adaptor,
-                                         GObject * object, GObject * child)
+glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor *adaptor,
+                                         GObject            *object,
+                                         GObject            *child)
 {
   if (GTK_IS_MENU (child))
     {
@@ -95,9 +97,10 @@ glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_menu_tool_button_replace_child (GladeWidgetAdaptor * adaptor,
-					  GObject * container,
-					  GObject * current, GObject * new_object)
+glade_gtk_menu_tool_button_replace_child (GladeWidgetAdaptor *adaptor,
+                                          GObject            *container,
+                                          GObject            *current,
+                                          GObject            *new_object)
 {
   glade_gtk_menu_tool_button_remove_child (adaptor, container, current);
   glade_gtk_menu_tool_button_add_child (adaptor, container, new_object);

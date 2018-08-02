@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_TEXT_VIEW_EDITOR	            (glade_text_view_editor_get_type ())
-#define GLADE_TEXT_VIEW_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_TEXT_VIEW_EDITOR, GladeTextViewEditor))
-#define GLADE_TEXT_VIEW_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_TEXT_VIEW_EDITOR, GladeTextViewEditorClass))
-#define GLADE_IS_TEXT_VIEW_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_TEXT_VIEW_EDITOR))
-#define GLADE_IS_TEXT_VIEW_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_TEXT_VIEW_EDITOR))
-#define GLADE_TEXT_VIEW_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_TEXT_VIEW_EDITOR, GladeTextViewEditorClass))
+#define GLADE_TYPE_TEXT_VIEW_EDITOR            (glade_text_view_editor_get_type ())
+#define GLADE_TEXT_VIEW_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_TEXT_VIEW_EDITOR, GladeTextViewEditor))
+#define GLADE_TEXT_VIEW_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_TEXT_VIEW_EDITOR, GladeTextViewEditorClass))
+#define GLADE_IS_TEXT_VIEW_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_TEXT_VIEW_EDITOR))
+#define GLADE_IS_TEXT_VIEW_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_TEXT_VIEW_EDITOR))
+#define GLADE_TEXT_VIEW_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_TEXT_VIEW_EDITOR, GladeTextViewEditorClass))
 
 typedef struct _GladeTextViewEditor        GladeTextViewEditor;
 typedef struct _GladeTextViewEditorClass   GladeTextViewEditorClass;

@@ -34,17 +34,17 @@ struct _GladeEditableIface
 
   /* virtual table */
   void          (* load)          (GladeEditable  *editable,
-				   GladeWidget    *widget);
+                                   GladeWidget    *widget);
   void          (* set_show_name) (GladeEditable  *editable,
-				   gboolean        show_name);
+                                   gboolean        show_name);
 };
 
 GType        glade_editable_get_type       (void) G_GNUC_CONST;
 
 void         glade_editable_load           (GladeEditable *editable,
-					    GladeWidget   *widget);
+                                            GladeWidget   *widget);
 void         glade_editable_set_show_name  (GladeEditable *editable,
-					    gboolean       show_name);
+                                            gboolean       show_name);
 GladeWidget *glade_editable_loaded_widget  (GladeEditable *editable);
 gboolean     glade_editable_loading        (GladeEditable *editable);
 

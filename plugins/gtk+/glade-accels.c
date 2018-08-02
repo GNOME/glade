@@ -429,15 +429,15 @@ glade_eprop_accel_view (GladeEditorProperty * eprop)
 
   eprop_accel->model = (GtkTreeModel *) 
     gtk_tree_store_new (ACCEL_NUM_COLUMNS, G_TYPE_STRING,   /* The GSignal name formatted for display */
-			G_TYPE_STRING,      /* The GSignal name */
-			G_TYPE_STRING,      /* The text to show in the accelerator cell */
-			G_TYPE_INT, /* PangoWeight attribute for bold headers */
-			G_TYPE_INT, /* PangoStyle attribute for italic grey unset items */
-			G_TYPE_STRING,      /* Foreground colour for italic grey unset items */
-			G_TYPE_BOOLEAN,     /* Visible attribute to hide items for header entries */
-			G_TYPE_BOOLEAN,     /* Whether the key has been entered for this row */
-			G_TYPE_UINT,        /* Hardware keycode */
-			G_TYPE_INT);        /* GdkModifierType */
+                        G_TYPE_STRING,      /* The GSignal name */
+                        G_TYPE_STRING,      /* The text to show in the accelerator cell */
+                        G_TYPE_INT, /* PangoWeight attribute for bold headers */
+                        G_TYPE_INT, /* PangoStyle attribute for italic grey unset items */
+                        G_TYPE_STRING,      /* Foreground colour for italic grey unset items */
+                        G_TYPE_BOOLEAN,     /* Visible attribute to hide items for header entries */
+                        G_TYPE_BOOLEAN,     /* Whether the key has been entered for this row */
+                        G_TYPE_UINT,        /* Hardware keycode */
+                        G_TYPE_INT);        /* GdkModifierType */
   
   view_widget = gtk_tree_view_new_with_model (eprop_accel->model);
   gtk_tree_view_set_show_expanders (GTK_TREE_VIEW (view_widget), FALSE);

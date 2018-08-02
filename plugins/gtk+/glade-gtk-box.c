@@ -31,24 +31,24 @@
 #include "glade-box-editor.h"
 #include "glade-gtk.h"
 
-static gboolean glade_gtk_box_configure_child (GladeFixed * fixed,
-					       GladeWidget * child,
-					       GdkRectangle * rect,
-					       GtkWidget * box);
+static gboolean glade_gtk_box_configure_child (GladeFixed   *fixed,
+                                               GladeWidget  *child,
+                                               GdkRectangle *rect,
+                                               GtkWidget    *box);
 
-static gboolean glade_gtk_box_configure_begin (GladeFixed * fixed,
-					       GladeWidget * child,
-					       GtkWidget * box);
+static gboolean glade_gtk_box_configure_begin (GladeFixed  *fixed,
+                                               GladeWidget *child,
+                                               GtkWidget   *box);
 
 
-static gboolean glade_gtk_box_configure_end (GladeFixed * fixed,
-					     GladeWidget * child,
-					     GtkWidget * box);
+static gboolean glade_gtk_box_configure_end (GladeFixed  *fixed,
+                                             GladeWidget *child,
+                                             GtkWidget   *box);
 
 
 GladeEditable *
-glade_gtk_box_create_editable (GladeWidgetAdaptor * adaptor,
-			       GladeEditorPageType type)
+glade_gtk_box_create_editable (GladeWidgetAdaptor *adaptor,
+                               GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_box_editor_new ();
@@ -57,7 +57,7 @@ glade_gtk_box_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_box_parse_finished (GladeProject * project, GladeWidget *gbox)
+glade_gtk_box_parse_finished (GladeProject *project, GladeWidget *gbox)
 {
   GObject *box = glade_widget_get_object (gbox);
 
@@ -66,8 +66,9 @@ glade_gtk_box_parse_finished (GladeProject * project, GladeWidget *gbox)
 }
 
 void
-glade_gtk_box_post_create (GladeWidgetAdaptor * adaptor,
-                           GObject * container, GladeCreateReason reason)
+glade_gtk_box_post_create (GladeWidgetAdaptor *adaptor,
+                           GObject            *container,
+                           GladeCreateReason   reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (gwidget);
@@ -94,7 +95,7 @@ glade_gtk_box_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 static gint
-sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b, GtkWidget *box)
+sort_box_children (GtkWidget *widget_a, GtkWidget *widget_b, GtkWidget *box)
 {
   GladeWidget *gwidget_a, *gwidget_b;
   gint position_a, position_b;
@@ -135,8 +136,7 @@ sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b, GtkWidget *box)
 }
 
 GList *
-glade_gtk_box_get_children (GladeWidgetAdaptor * adaptor,
-                            GObject * container)
+glade_gtk_box_get_children (GladeWidgetAdaptor *adaptor, GObject *container)
 {
   GList *children;
 
@@ -146,10 +146,11 @@ glade_gtk_box_get_children (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_box_set_child_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * container,
-                                  GObject * child,
-                                  const gchar * property_name, GValue * value)
+glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
+                                  GObject            *container,
+                                  GObject            *child,
+                                  const gchar        *property_name,
+                                  GValue             *value)
 {
   GladeWidget *gbox, *gchild, *gchild_iter;
   GList *children, *list;
@@ -259,8 +260,10 @@ glade_gtk_box_get_num_children (GObject *box)
 }
 
 void
-glade_gtk_box_get_property (GladeWidgetAdaptor * adaptor,
-                            GObject * object, const gchar * id, GValue * value)
+glade_gtk_box_get_property (GladeWidgetAdaptor *adaptor,
+                            GObject            *object,
+                            const gchar        *id,
+                            GValue             *value)
 {
   if (!strcmp (id, "use-center-child"))
     {
@@ -278,7 +281,7 @@ glade_gtk_box_get_property (GladeWidgetAdaptor * adaptor,
 }
 
 static gint
-glade_gtk_box_get_first_blank (GtkBox * box)
+glade_gtk_box_get_first_blank (GtkBox *box)
 {
   GList *child, *children;
   GladeWidget *gwidget;
@@ -300,9 +303,9 @@ glade_gtk_box_get_first_blank (GtkBox * box)
           GladeProperty *property =
               glade_widget_get_pack_property (gwidget, "position");
 
-	  /* property can be NULL here when project is closing */
-	  if (property)
-	    gwidget_position = g_value_get_int (glade_property_inline_value (property));
+          /* property can be NULL here when project is closing */
+          if (property)
+            gwidget_position = g_value_get_int (glade_property_inline_value (property));
 
           if (gwidget_position > position)
             break;
@@ -315,7 +318,7 @@ glade_gtk_box_get_first_blank (GtkBox * box)
 }
 
 static void
-glade_gtk_box_set_size (GObject * object, const GValue * value)
+glade_gtk_box_set_size (GObject *object, const GValue *value)
 {
   GtkBox *box;
   GList *child, *children;
@@ -375,9 +378,10 @@ glade_gtk_box_set_size (GObject * object, const GValue * value)
 }
 
 void
-glade_gtk_box_set_property (GladeWidgetAdaptor * adaptor,
-                            GObject * object,
-                            const gchar * id, const GValue * value)
+glade_gtk_box_set_property (GladeWidgetAdaptor *adaptor,
+                            GObject            *object,
+                            const gchar        *id,
+                            const GValue       *value)
 {
   if (!strcmp (id, "use-center-child"))
     {
@@ -431,9 +435,10 @@ glade_gtk_box_verify_size (GObject *object, const GValue *value)
 
 
 gboolean
-glade_gtk_box_verify_property (GladeWidgetAdaptor * adaptor,
-                               GObject * object,
-                               const gchar * id, const GValue * value)
+glade_gtk_box_verify_property (GladeWidgetAdaptor *adaptor,
+                               GObject            *object,
+                               const gchar        *id,
+                               const GValue       *value)
 {
   if (!strcmp (id, "size"))
     return glade_gtk_box_verify_size (object, value);
@@ -446,7 +451,7 @@ glade_gtk_box_verify_property (GladeWidgetAdaptor * adaptor,
 
 
 static void
-fix_response_id_on_child (GladeWidget * gbox, GObject * child, gboolean add)
+fix_response_id_on_child (GladeWidget *gbox, GObject *child, gboolean add)
 {
   GladeWidget *gchild;
   const gchar *internal_name;
@@ -458,17 +463,18 @@ fix_response_id_on_child (GladeWidget * gbox, GObject * child, gboolean add)
     {
       if (add && (internal_name = glade_widget_get_internal (gbox)) &&
           !strcmp (internal_name, "action_area"))
-	glade_widget_property_set_sensitive (gchild, "response-id", TRUE,
-					     NULL);
+        glade_widget_property_set_sensitive (gchild, "response-id", TRUE,
+                                             NULL);
       else
-	glade_widget_property_set_sensitive (gchild, "response-id", FALSE,
-					     RESPID_INSENSITIVE_MSG);
+        glade_widget_property_set_sensitive (gchild, "response-id", FALSE,
+                                             RESPID_INSENSITIVE_MSG);
     }
 }
 
 void
-glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
-                         GObject * object, GObject * child)
+glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
+                         GObject            *object,
+                         GObject            *child)
 {
   GladeWidget *gbox, *gchild;
   gint num_children;
@@ -532,8 +538,9 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_box_remove_child (GladeWidgetAdaptor * adaptor,
-                            GObject * object, GObject * child)
+glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
+                            GObject            *object,
+                            GObject            *child)
 {
   GladeWidget *gbox;
   gint size;
@@ -568,9 +575,10 @@ glade_gtk_box_remove_child (GladeWidgetAdaptor * adaptor,
 
 
 void
-glade_gtk_box_replace_child (GladeWidgetAdaptor * adaptor,
-                             GObject * container,
-                             GObject * current, GObject * new_widget)
+glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
+                             GObject            *container,
+                             GObject            *current,
+                             GObject            *new_widget)
 {
   GladeWidget *gchild;
   GladeWidget *gbox;
@@ -647,9 +655,10 @@ typedef struct
 static GList *glade_gtk_box_original_positions = NULL;
 
 static gboolean
-glade_gtk_box_configure_child (GladeFixed * fixed,
-                               GladeWidget * child,
-                               GdkRectangle * rect, GtkWidget * box)
+glade_gtk_box_configure_child (GladeFixed   *fixed,
+                               GladeWidget  *child,
+                               GdkRectangle *rect,
+                               GtkWidget    *box)
 {
   GList *list, *children;
   GtkWidget *bchild;
@@ -749,8 +758,9 @@ glade_gtk_box_configure_child (GladeFixed * fixed,
 }
 
 static gboolean
-glade_gtk_box_configure_begin (GladeFixed * fixed,
-                               GladeWidget * child, GtkWidget * box)
+glade_gtk_box_configure_begin (GladeFixed  *fixed,
+                               GladeWidget *child,
+                               GtkWidget   *box)
 {
   GList *list, *children;
   GtkWidget *bchild;

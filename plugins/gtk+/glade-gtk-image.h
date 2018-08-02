@@ -26,10 +26,10 @@
 
 G_BEGIN_DECLS
 
-void  glade_gtk_write_icon_size (GladeWidget * widget,
-				 GladeXmlContext * context,
-				 GladeXmlNode * node,
-				 const gchar *prop_name);
+void  glade_gtk_write_icon_size (GladeWidget     *widget,
+                                 GladeXmlContext *context,
+                                 GladeXmlNode    *node,
+                                 const gchar     *prop_name);
 
 
 G_END_DECLS

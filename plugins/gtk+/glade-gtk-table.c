@@ -60,9 +60,9 @@ typedef enum
 #define GTK_TABLE(obj) ((GtkTable *)obj)
 
 static void
-glade_gtk_table_get_child_attachments (GtkWidget * table,
-                                       GtkWidget * child,
-                                       GtkTableChild * tchild)
+glade_gtk_table_get_child_attachments (GtkWidget     *table,
+                                       GtkWidget     *child,
+                                       GtkTableChild *tchild)
 {
   guint left, right, top, bottom;
 
@@ -80,8 +80,7 @@ glade_gtk_table_get_child_attachments (GtkWidget * table,
 }
 
 static gboolean
-glade_gtk_table_widget_exceeds_bounds (GtkTable * table, gint n_rows,
-                                       gint n_cols)
+glade_gtk_table_widget_exceeds_bounds (GtkTable *table, gint n_rows, gint n_cols)
 {
   GList *list, *children;
   gboolean ret = FALSE;
@@ -112,43 +111,46 @@ glade_gtk_table_widget_exceeds_bounds (GtkTable * table, gint n_rows,
     (occmap)[row * n_columns + col]
 
 static void
-glade_gtk_table_build_occupation_maps(GtkTable *table, guint n_columns, guint n_rows,
-				      gchar **child_map, gpointer **placeholder_map)
+glade_gtk_table_build_occupation_maps(GtkTable *table,
+                                      guint      n_columns, 
+                                      guint      n_rows,
+                                      gchar    **child_map,
+                                      gpointer **placeholder_map)
 {
-    guint i, j;
-    GList *list, *children = gtk_container_get_children (GTK_CONTAINER (table));
+  guint i, j;
+  GList *list, *children = gtk_container_get_children (GTK_CONTAINER (table));
 
-    *child_map = g_malloc0(n_columns * n_rows * sizeof(gchar));  /* gchar is smaller than gboolean */
-    *placeholder_map = g_malloc0(n_columns * n_rows * sizeof(gpointer));
+  *child_map = g_malloc0(n_columns * n_rows * sizeof(gchar));  /* gchar is smaller than gboolean */
+  *placeholder_map = g_malloc0(n_columns * n_rows * sizeof(gpointer));
 
-    for (list = children; list && list->data; list = list->next)
+  for (list = children; list && list->data; list = list->next)
     {
-	GtkTableChild child;
+      GtkTableChild child;
 
-	glade_gtk_table_get_child_attachments (GTK_WIDGET (table),
-					       GTK_WIDGET (list->data), &child);
+      glade_gtk_table_get_child_attachments (GTK_WIDGET (table),
+                                             GTK_WIDGET (list->data), &child);
 
-	if (GLADE_IS_PLACEHOLDER(list->data))
-	{
-	    /* assumption: placeholders are always attached to exactly 1 cell */
-	    TABLE_OCCUPIED(*placeholder_map, n_columns, child.left_attach, child.top_attach) = list->data;
-	}
-	else
-	{
-	    for (i = child.left_attach; i < child.right_attach && i < n_columns; i++)
-	    {
-		for (j = child.top_attach; j < child.bottom_attach && j < n_rows; j++)
-		{
-		    TABLE_OCCUPIED(*child_map, n_columns, i, j) = 1;
-		}
-	    }
-	}
+      if (GLADE_IS_PLACEHOLDER(list->data))
+        {
+          /* assumption: placeholders are always attached to exactly 1 cell */
+          TABLE_OCCUPIED(*placeholder_map, n_columns, child.left_attach, child.top_attach) = list->data;
+        }
+      else
+        {
+          for (i = child.left_attach; i < child.right_attach && i < n_columns; i++)
+            {
+              for (j = child.top_attach; j < child.bottom_attach && j < n_rows; j++)
+                {
+                  TABLE_OCCUPIED(*child_map, n_columns, i, j) = 1;
+                }
+            }
+        }
     }
     g_list_free (children);
 }
 
 static void
-glade_gtk_table_refresh_placeholders (GtkTable * table)
+glade_gtk_table_refresh_placeholders (GtkTable *table)
 {
   guint n_columns, n_rows, i, j;
   gchar *child_map;
@@ -156,34 +158,34 @@ glade_gtk_table_refresh_placeholders (GtkTable * table)
 
   g_object_get (table, "n-columns", &n_columns, "n-rows", &n_rows, NULL);
   glade_gtk_table_build_occupation_maps (table, n_columns, n_rows,
-					 &child_map, &placeholder_map);
+                                         &child_map, &placeholder_map);
 
   for (i = 0; i < n_columns; i++)
     {
       for (j = 0; j < n_rows; j++)
-	{
-	  gpointer placeholder = TABLE_OCCUPIED(placeholder_map, n_columns, i, j);
+        {
+          gpointer placeholder = TABLE_OCCUPIED(placeholder_map, n_columns, i, j);
 
-	  if (TABLE_OCCUPIED(child_map, n_columns, i, j))
-	    {
-	      if (placeholder)
-		{
-		  gtk_container_remove (GTK_CONTAINER (table), 
-					GTK_WIDGET (placeholder));
-		}
-	    }
-	  else
-	    {
-	      if (!placeholder)
-		{
-		  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-		  gtk_table_attach_defaults (table, 
-					     glade_placeholder_new (), 
-					     i, i + 1, j, j + 1);
-		  G_GNUC_END_IGNORE_DEPRECATIONS;
-		}
-	    }
-	}
+          if (TABLE_OCCUPIED(child_map, n_columns, i, j))
+            {
+              if (placeholder)
+                {
+                  gtk_container_remove (GTK_CONTAINER (table), 
+                                        GTK_WIDGET (placeholder));
+                }
+            }
+          else
+            {
+              if (!placeholder)
+                {
+                  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+                  gtk_table_attach_defaults (table, 
+                                             glade_placeholder_new (), 
+                                             i, i + 1, j, j + 1);
+                  G_GNUC_END_IGNORE_DEPRECATIONS;
+                }
+            }
+        }
     }
   g_free(child_map);
   g_free(placeholder_map);
@@ -193,7 +195,7 @@ glade_gtk_table_refresh_placeholders (GtkTable * table)
 }
 
 static void
-gtk_table_children_callback (GtkWidget * widget, gpointer client_data)
+gtk_table_children_callback (GtkWidget *widget, gpointer client_data)
 {
   GList **children;
 
@@ -202,8 +204,8 @@ gtk_table_children_callback (GtkWidget * widget, gpointer client_data)
 }
 
 GList *
-glade_gtk_table_get_children (GladeWidgetAdaptor * adaptor,
-                              GtkContainer * container)
+glade_gtk_table_get_children (GladeWidgetAdaptor *adaptor,
+                              GtkContainer       *container)
 {
   GList *children = NULL;
 
@@ -214,8 +216,9 @@ glade_gtk_table_get_children (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_table_add_child (GladeWidgetAdaptor * adaptor,
-                           GObject * object, GObject * child)
+glade_gtk_table_add_child (GladeWidgetAdaptor *adaptor,
+                           GObject            *object,
+                           GObject            *child)
 {
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
@@ -223,8 +226,9 @@ glade_gtk_table_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_table_remove_child (GladeWidgetAdaptor * adaptor,
-                              GObject * object, GObject * child)
+glade_gtk_table_remove_child (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              GObject            *child)
 {
   gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 
@@ -232,9 +236,10 @@ glade_gtk_table_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_table_replace_child (GladeWidgetAdaptor * adaptor,
-                               GtkWidget * container,
-                               GtkWidget * current, GtkWidget * new_widget)
+glade_gtk_table_replace_child (GladeWidgetAdaptor *adaptor,
+                               GtkWidget          *container,
+                               GtkWidget          *current,
+                               GtkWidget          *new_widget)
 {
   /* Chain Up */
   GWA_GET_CLASS
@@ -256,8 +261,9 @@ glade_gtk_table_replace_child (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_table_set_n_common (GObject * object, const GValue * value,
-                              gboolean for_rows)
+glade_gtk_table_set_n_common (GObject      *object,
+                              const GValue *value,
+                              gboolean      for_rows)
 {
   GladeWidget *widget;
   GtkTable *table;
@@ -351,9 +357,10 @@ glade_gtk_table_set_n_common (GObject * object, const GValue * value,
 }
 
 void
-glade_gtk_table_set_property (GladeWidgetAdaptor * adaptor,
-                              GObject * object,
-                              const gchar * id, const GValue * value)
+glade_gtk_table_set_property (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              const gchar        *id,
+                              const GValue       *value)
 {
   if (!strcmp (id, "n-rows"))
     glade_gtk_table_set_n_common (object, value, TRUE);
@@ -365,8 +372,9 @@ glade_gtk_table_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 static gboolean
-glade_gtk_table_verify_n_common (GObject * object, const GValue * value,
-                                 gboolean for_rows)
+glade_gtk_table_verify_n_common (GObject      *object,
+                                 const GValue *value,
+                                 gboolean      for_rows)
 {
   GtkTable *table = GTK_TABLE (object);
   guint n_columns, n_rows, new_size = g_value_get_uint (value);
@@ -382,9 +390,10 @@ glade_gtk_table_verify_n_common (GObject * object, const GValue * value,
 }
 
 gboolean
-glade_gtk_table_verify_property (GladeWidgetAdaptor * adaptor,
-                                 GObject * object,
-                                 const gchar * id, const GValue * value)
+glade_gtk_table_verify_property (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object,
+                                 const gchar        *id,
+                                 const GValue       *value)
 {
   if (!strcmp (id, "n-rows"))
     return glade_gtk_table_verify_n_common (object, value, TRUE);
@@ -398,10 +407,11 @@ glade_gtk_table_verify_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_table_set_child_property (GladeWidgetAdaptor * adaptor,
-                                    GObject * container,
-                                    GObject * child,
-                                    const gchar * property_name, GValue * value)
+glade_gtk_table_set_child_property (GladeWidgetAdaptor *adaptor,
+                                    GObject            *container,
+                                    GObject            *child,
+                                    const gchar        *property_name,
+                                    GValue             *value)
 {
   GWA_GET_CLASS
       (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
@@ -420,13 +430,13 @@ glade_gtk_table_set_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 static gboolean
-glade_gtk_table_verify_attach_common (GObject * object,
-                                      GValue * value,
-                                      guint * val,
-                                      const gchar * prop,
-                                      guint * prop_val,
-                                      const gchar * parent_prop,
-                                      guint * parent_val)
+glade_gtk_table_verify_attach_common (GObject     *object,
+                                      GValue      *value,
+                                      guint       *val,
+                                      const gchar *prop,
+                                      guint       *prop_val,
+                                      const gchar *parent_prop,
+                                      guint       *parent_val)
 {
   GladeWidget *widget, *parent;
 
@@ -443,10 +453,10 @@ glade_gtk_table_verify_attach_common (GObject * object,
 }
 
 static gboolean
-glade_gtk_table_verify_left_top_attach (GObject * object,
-                                        GValue * value,
-                                        const gchar * prop,
-                                        const gchar * parent_prop)
+glade_gtk_table_verify_left_top_attach (GObject     *object,
+                                        GValue      *value,
+                                        const gchar *prop,
+                                        const gchar *parent_prop)
 {
   guint val, prop_val, parent_val;
 
@@ -462,10 +472,10 @@ glade_gtk_table_verify_left_top_attach (GObject * object,
 }
 
 static gboolean
-glade_gtk_table_verify_right_bottom_attach (GObject * object,
-                                            GValue * value,
-                                            const gchar * prop,
-                                            const gchar * parent_prop)
+glade_gtk_table_verify_right_bottom_attach (GObject     *object,
+                                            GValue      *value,
+                                            const gchar *prop,
+                                            const gchar *parent_prop)
 {
   guint val, prop_val, parent_val;
 
@@ -481,10 +491,11 @@ glade_gtk_table_verify_right_bottom_attach (GObject * object,
 }
 
 gboolean
-glade_gtk_table_child_verify_property (GladeWidgetAdaptor * adaptor,
-                                       GObject * container,
-                                       GObject * child,
-                                       const gchar * id, GValue * value)
+glade_gtk_table_child_verify_property (GladeWidgetAdaptor *adaptor,
+                                       GObject            *container,
+                                       GObject            *child,
+                                       const gchar        *id,
+                                       GValue             *value)
 {
   if (!strcmp (id, "left-attach"))
     return glade_gtk_table_verify_left_top_attach (child,
@@ -514,14 +525,14 @@ glade_gtk_table_child_verify_property (GladeWidgetAdaptor * adaptor,
 
 static void
 glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor, 
-					    GObject            *container, 
-					    GObject            *object, 
-					    GroupAction         group_action,
-					    const gchar        *n_row_col, 
-					    const gchar        *attach1,    /* should be smaller (top/left) attachment */
+                                            GObject            *container, 
+                                            GObject            *object, 
+                                            GroupAction         group_action,
+                                            const gchar        *n_row_col, 
+                                            const gchar        *attach1,    /* should be smaller (top/left) attachment */
                                             const gchar        *attach2,      /* should be larger (bot/right) attachment */
                                             gboolean            remove, 
-					    gboolean            after)
+                                            gboolean            after)
 {
   GladeWidget *parent;
   GList *children, *l;
@@ -656,10 +667,10 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_table_child_action_activate (GladeWidgetAdaptor * adaptor,
-                                       GObject * container,
-                                       GObject * object,
-                                       const gchar * action_path)
+glade_gtk_table_child_action_activate (GladeWidgetAdaptor *adaptor,
+                                       GObject            *container,
+                                       GObject            *object,
+                                       const gchar        *action_path)
 {
   if (strcmp (action_path, "insert_row/after") == 0)
     {

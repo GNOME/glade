@@ -27,12 +27,12 @@
 #include "glade-icon-factory-editor.h"
 
 
-static void glade_icon_factory_editor_finalize (GObject * object);
+static void glade_icon_factory_editor_finalize (GObject *object);
 
 static void glade_icon_factory_editor_editable_init (GladeEditableIface *
                                                      iface);
 
-static void glade_icon_factory_editor_grab_focus (GtkWidget * widget);
+static void glade_icon_factory_editor_grab_focus (GtkWidget *widget);
 
 static GladeEditableIface *parent_editable_iface;
 
@@ -43,7 +43,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeIconFactoryEditor, glade_icon_factory_editor,
 
 
 static void
-glade_icon_factory_editor_class_init (GladeIconFactoryEditorClass * klass)
+glade_icon_factory_editor_class_init (GladeIconFactoryEditorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -53,14 +53,14 @@ glade_icon_factory_editor_class_init (GladeIconFactoryEditorClass * klass)
 }
 
 static void
-glade_icon_factory_editor_init (GladeIconFactoryEditor * self)
+glade_icon_factory_editor_init (GladeIconFactoryEditor *self)
 {
   gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
-				  GTK_ORIENTATION_VERTICAL);
+                                  GTK_ORIENTATION_VERTICAL);
 }
 
 static void
-glade_icon_factory_editor_load (GladeEditable * editable, GladeWidget * widget)
+glade_icon_factory_editor_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeIconFactoryEditor *factory_editor = GLADE_ICON_FACTORY_EDITOR (editable);
   GList *l;
@@ -78,8 +78,8 @@ glade_icon_factory_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_icon_factory_editor_set_show_name (GladeEditable * editable,
-                                         gboolean show_name)
+glade_icon_factory_editor_set_show_name (GladeEditable *editable,
+                                         gboolean       show_name)
 {
   GladeIconFactoryEditor *factory_editor = GLADE_ICON_FACTORY_EDITOR (editable);
 
@@ -88,7 +88,7 @@ glade_icon_factory_editor_set_show_name (GladeEditable * editable,
 }
 
 static void
-glade_icon_factory_editor_editable_init (GladeEditableIface * iface)
+glade_icon_factory_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 
@@ -97,7 +97,7 @@ glade_icon_factory_editor_editable_init (GladeEditableIface * iface)
 }
 
 static void
-glade_icon_factory_editor_finalize (GObject * object)
+glade_icon_factory_editor_finalize (GObject *object)
 {
   GladeIconFactoryEditor *factory_editor = GLADE_ICON_FACTORY_EDITOR (object);
 
@@ -112,7 +112,7 @@ glade_icon_factory_editor_finalize (GObject * object)
 }
 
 static void
-glade_icon_factory_editor_grab_focus (GtkWidget * widget)
+glade_icon_factory_editor_grab_focus (GtkWidget *widget)
 {
   GladeIconFactoryEditor *factory_editor = GLADE_ICON_FACTORY_EDITOR (widget);
 
@@ -121,8 +121,8 @@ glade_icon_factory_editor_grab_focus (GtkWidget * widget)
 
 
 GtkWidget *
-glade_icon_factory_editor_new (GladeWidgetAdaptor * adaptor,
-                               GladeEditable * embed)
+glade_icon_factory_editor_new (GladeWidgetAdaptor *adaptor,
+                               GladeEditable      *embed)
 {
   GladeIconFactoryEditor *factory_editor;
   GladeEditorProperty *eprop;

@@ -53,9 +53,9 @@
 #include "glade-editor-property.h"
 
 static void glade_editor_switch_page (GtkNotebook     *notebook,
-				      GtkWidget       *page,
-				      guint            page_num,
-				      GladeEditor     *editor);
+                                      GtkWidget       *page,
+                                      guint            page_num,
+                                      GladeEditor     *editor);
 
 enum
 {
@@ -76,24 +76,24 @@ struct _GladeEditorPrivate
   GtkWidget *notebook; /* The notebook widget */
 
   GladeWidget *loaded_widget; /* A handy pointer to the GladeWidget
-			       * that is loaded in the editor. NULL
-			       * if no widgets are selected
-			       */
+                               * that is loaded in the editor. NULL
+                               * if no widgets are selected
+                               */
 
   GladeWidgetAdaptor *loaded_adaptor; /* A pointer to the loaded
-				       * GladeWidgetAdaptor. Note that we can
-				       * have a class loaded without a
-				       * loaded_widget. For this reason we
-				       * can't use loaded_widget->adaptor.
-				       * When a widget is selected we load
-				       * this class in the editor first and
-				       * then fill the values of the inputs
-				       * with the GladeProperty items.
-				       * This is usefull for not having
-				       * to redraw/container_add the widgets
-				       * when we switch from widgets of the
-				       * same class
-				       */
+                                       * GladeWidgetAdaptor. Note that we can
+                                       * have a class loaded without a
+                                       * loaded_widget. For this reason we
+                                       * can't use loaded_widget->adaptor.
+                                       * When a widget is selected we load
+                                       * this class in the editor first and
+                                       * then fill the values of the inputs
+                                       * with the GladeProperty items.
+                                       * This is usefull for not having
+                                       * to redraw/container_add the widgets
+                                       * when we switch from widgets of the
+                                       * same class
+                                       */
 
   GtkWidget *page_widget;
   GtkWidget *page_packing;
@@ -101,24 +101,24 @@ struct _GladeEditorPrivate
   GtkWidget *page_atk;
 
   GladeSignalEditor *signal_editor; /* The signal editor packed into vbox_signals
-				     */
+                                     */
 
   GList *editables;     /* A list of GladeEditables. We have a widget
-			 * for each GladeWidgetAdaptor and we only load
-			 * them on demand
-			 */
-	
+                         * for each GladeWidgetAdaptor and we only load
+                         * them on demand
+                         */
+        
   GtkWidget *packing_page; /* Packing pages are dynamicly created each
-			    * selection, this pointer is only to free
-			    * the last packing page.
-			    */
+                            * selection, this pointer is only to free
+                            * the last packing page.
+                            */
   
   gboolean loading; /* Use when loading a GladeWidget into the editor
-		     * we set this flag so that we can ignore the
-		     * "changed" signal of the name entry text since
-		     * the name has not really changed, just a new name
-		     * was loaded.
-		     */
+                     * we set this flag so that we can ignore the
+                     * "changed" signal of the name entry text since
+                     * the name has not really changed, just a new name
+                     * was loaded.
+                     */
 
   gulong project_closed_signal_id; /* Unload widget when widget's project closes  */
   gulong project_removed_signal_id; /* Unload widget when its removed from the project. */
@@ -128,9 +128,9 @@ struct _GladeEditorPrivate
   GtkWidget *class_field; /* The class header */
 
   GtkWidget *warning;   /* A pointer to an icon we can show in the class
-			 * field to publish tooltips for class related
-			 * versioning errors.
-			 */
+                         * field to publish tooltips for class related
+                         * versioning errors.
+                         */
 
   GtkWidget *class_icon; /* An image with the current widget's class icon.  */
   GtkWidget *class_label; /* A label with the current class label. */
@@ -325,7 +325,7 @@ glade_editor_update_class_field (GladeEditor *editor)
           text = g_strdup_printf (_("%s Properties - %s [%s]"),
                                   glade_widget_adaptor_get_title (priv->loaded_adaptor),
                                   glade_widget_adaptor_get_display_name (priv->loaded_adaptor),
-		                  glade_widget_get_display_name (widget));
+                                  glade_widget_get_display_name (widget));
         }
       else
         {
@@ -335,8 +335,8 @@ glade_editor_update_class_field (GladeEditor *editor)
           text = g_strdup_printf (_("%s Properties - %s"),
                                   glade_widget_adaptor_get_title (priv->loaded_adaptor),
                                   glade_widget_adaptor_get_display_name (priv->loaded_adaptor));
-	}
-		 
+        }
+
       gtk_label_set_text (GTK_LABEL (priv->class_label), text);
       g_free (text);
 
@@ -361,10 +361,10 @@ glade_editor_update_widget_name_cb (GladeWidget *widget,
 }
 
 static void
-glade_editor_switch_page (GtkNotebook     *notebook,
-			  GtkWidget       *page,
-			  guint            page_num,
-			  GladeEditor     *editor)
+glade_editor_switch_page (GtkNotebook *notebook,
+                          GtkWidget   *page,
+                          guint        page_num,
+                          GladeEditor *editor)
 {
   GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
 
@@ -458,14 +458,14 @@ hide_or_remove_visible_child (GtkContainer *container, gboolean remove)
       widget = l->data;
 
       if (gtk_widget_get_visible (widget))
-	{
-	  gtk_widget_hide (widget);
+        {
+          gtk_widget_hide (widget);
 
-	  if (remove)
-	    gtk_container_remove (container, widget);
+          if (remove)
+            gtk_container_remove (container, widget);
 
-	  break;
-	}
+          break;
+        }
     }
   g_list_free (children);
 }
@@ -518,7 +518,7 @@ glade_editor_load_editable_in_page (GladeEditor        *editor,
 
   if ((scrolled_window = 
        gtk_widget_get_ancestor (GTK_WIDGET (container), 
-				GTK_TYPE_SCROLLED_WINDOW)) != NULL)
+                                GTK_TYPE_SCROLLED_WINDOW)) != NULL)
     {
       adj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (scrolled_window));
       gtk_container_set_focus_vadjustment (GTK_CONTAINER (editable), adj);
@@ -582,18 +582,18 @@ glade_editor_load_editable (GladeEditor        *editor,
       GladeWidgetAdaptor *adaptor;
 
       if (!parent)
-	return;
+        return;
 
       adaptor = glade_widget_get_adaptor (parent);
       editable =
-	glade_editor_load_editable_in_page (editor, adaptor,
-					    GLADE_PAGE_PACKING);
+        glade_editor_load_editable_in_page (editor, adaptor,
+                                            GLADE_PAGE_PACKING);
     }
   else
     editable = 
       glade_editor_get_editable_by_adaptor (editor, 
-					    glade_widget_get_adaptor (widget), 
-					    type);
+                                            glade_widget_get_adaptor (widget), 
+                                            type);
 
   g_assert (editable);
 
@@ -751,8 +751,8 @@ query_dialog_style_set_cb (GtkWidget *dialog,
 
 static gboolean
 query_dialog_delete_event_cb (GtkDialog *dialog,
-			      GdkEvent  *event,
-			      gpointer   user_data)
+                              GdkEvent  *event,
+                              gpointer   user_data)
 {
   gtk_dialog_response (dialog, GTK_RESPONSE_CANCEL);
   return TRUE;
@@ -1003,7 +1003,7 @@ glade_editor_reset_selection_changed_cb (GtkTreeSelection *selection,
       gtk_tree_model_get (model, &iter, COLUMN_PROPERTY, &property, -1);
 
       if (property)
-	pclass = glade_property_get_class (property);
+        pclass = glade_property_get_class (property);
 
       gtk_text_buffer_set_text (text_buffer,
                                 pclass ? glade_property_class_get_tooltip (pclass) : message,
@@ -1287,8 +1287,8 @@ glade_editor_hide_class_field (GladeEditor *editor)
 
 static void
 editor_widget_name_changed (GladeWidget *widget,
-			    GParamSpec  *pspec,
-			    GtkWindow   *window)
+                            GParamSpec  *pspec,
+                            GtkWindow   *window)
 {
   gchar *title, *prj_name;
 
@@ -1324,7 +1324,7 @@ glade_editor_dialog_for_widget (GladeWidget *widget)
   /* Keep the title up to date */
   editor_widget_name_changed (widget, NULL, GTK_WINDOW (window));
   g_signal_connect_object (G_OBJECT (widget), "notify::name",
-			   G_CALLBACK (editor_widget_name_changed), window, 0);
+                           G_CALLBACK (editor_widget_name_changed), window, 0);
 
   if (glade_app_get_accel_group ())
     {

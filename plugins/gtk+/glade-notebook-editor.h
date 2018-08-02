@@ -25,12 +25,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_NOTEBOOK_EDITOR	            (glade_notebook_editor_get_type ())
-#define GLADE_NOTEBOOK_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_NOTEBOOK_EDITOR, GladeNotebookEditor))
-#define GLADE_NOTEBOOK_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_NOTEBOOK_EDITOR, GladeNotebookEditorClass))
-#define GLADE_IS_NOTEBOOK_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_NOTEBOOK_EDITOR))
-#define GLADE_IS_NOTEBOOK_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_NOTEBOOK_EDITOR))
-#define GLADE_NOTEBOOK_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_NOTEBOOK_EDITOR, GladeNotebookEditorClass))
+#define GLADE_TYPE_NOTEBOOK_EDITOR            (glade_notebook_editor_get_type ())
+#define GLADE_NOTEBOOK_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_NOTEBOOK_EDITOR, GladeNotebookEditor))
+#define GLADE_NOTEBOOK_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_NOTEBOOK_EDITOR, GladeNotebookEditorClass))
+#define GLADE_IS_NOTEBOOK_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_NOTEBOOK_EDITOR))
+#define GLADE_IS_NOTEBOOK_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_NOTEBOOK_EDITOR))
+#define GLADE_NOTEBOOK_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_NOTEBOOK_EDITOR, GladeNotebookEditorClass))
 
 typedef struct _GladeNotebookEditor        GladeNotebookEditor;
 typedef struct _GladeNotebookEditorClass   GladeNotebookEditorClass;

@@ -136,16 +136,16 @@ glade_gtk_overlay_add_verify (GladeWidgetAdaptor *adaptor,
   if (!GTK_IS_WIDGET (child))
     {
       if (user_feedback)
-	{
-	  GladeWidgetAdaptor *widget_adaptor = 
-	    glade_widget_adaptor_get_by_type (GTK_TYPE_WIDGET);
+        {
+          GladeWidgetAdaptor *widget_adaptor = 
+            glade_widget_adaptor_get_by_type (GTK_TYPE_WIDGET);
 
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 ONLY_THIS_GOES_IN_THAT_MSG,
-				 glade_widget_adaptor_get_title (widget_adaptor),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 ONLY_THIS_GOES_IN_THAT_MSG,
+                                 glade_widget_adaptor_get_title (widget_adaptor),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }

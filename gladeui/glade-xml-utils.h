@@ -28,10 +28,10 @@ typedef struct _GladeProject        GladeProject;
 
 #define GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR    2
 #define GLADE_GTKBUILDER_VERSIONING_BASE_MINOR    14
-#define GLADE_GTKBUILDER_HAS_VERSIONING(maj, min) \
-	((maj) > GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR || \
-	 ((maj) == GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR && \
-	  (min) >= GLADE_GTKBUILDER_VERSIONING_BASE_MINOR))
+#define GLADE_GTKBUILDER_HAS_VERSIONING(maj, min)      \
+  ((maj) > GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR ||   \
+   ((maj) == GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR && \
+    (min) >= GLADE_GTKBUILDER_VERSIONING_BASE_MINOR))
 
 
 /* Used for catalog tags and attributes */
@@ -188,29 +188,29 @@ typedef struct _GladeProject        GladeProject;
 
 
 /* search child */
-GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const gchar *name);
-GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const gchar* name);
+GladeXmlNode *   glade_xml_search_child          (GladeXmlNode *node, const gchar *name);
+GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode *tree, const gchar *name);
 
 /* content */
 
-gchar *      glade_xml_get_content (GladeXmlNode * node_in); /* Get the content of the node */
+gchar *      glade_xml_get_content (GladeXmlNode *node_in); /* Get the content of the node */
 void         glade_xml_set_content (GladeXmlNode *node_in, const gchar *content);
 
-gboolean     glade_xml_get_value_int          (GladeXmlNode * node_in, const gchar *name, int *val);
-gboolean     glade_xml_get_value_int_required (GladeXmlNode * node, const gchar *name, int *val);
+gboolean     glade_xml_get_value_int          (GladeXmlNode *node_in, const gchar *name, int *val);
+gboolean     glade_xml_get_value_int_required (GladeXmlNode *node, const gchar *name, int *val);
 
-gchar *      glade_xml_get_value_string          (GladeXmlNode * node, const gchar *name);
-gchar *      glade_xml_get_value_string_required (GladeXmlNode * node,
-					    const gchar *name,
-					    const gchar *xtra_info);
+gchar *      glade_xml_get_value_string          (GladeXmlNode *node, const gchar *name);
+gchar *      glade_xml_get_value_string_required (GladeXmlNode *node,
+                                                  const gchar *name,
+                                                  const gchar *xtra_info);
 
-gboolean glade_xml_get_boolean (GladeXmlNode * node, const gchar *name, gboolean _default);
+gboolean glade_xml_get_boolean (GladeXmlNode *node, const gchar *name, gboolean _default);
 
-void         glade_xml_set_value (GladeXmlNode * node_in, const gchar *name, const gchar *val);
+void         glade_xml_set_value (GladeXmlNode *node_in, const gchar *name, const gchar *val);
 
 /* Properties */ 
-gchar *  glade_xml_get_property_string_required (GladeXmlNode *node_in, const gchar *name, const gchar *xtra);
-gchar *  glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
+gchar   *glade_xml_get_property_string_required (GladeXmlNode *node_in, const gchar *name, const gchar *xtra);
+gchar   *glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
 gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean _default);
 gdouble  glade_xml_get_property_double (GladeXmlNode *node_in, const gchar *name, gdouble _default);
 gint     glade_xml_get_property_int (GladeXmlNode *node_in, const gchar *name, gint _default);
@@ -229,14 +229,14 @@ void           glade_xml_node_delete (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_get_children (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_get_parent (GladeXmlNode *node_in);
 GladeXmlNode * glade_xml_node_next (GladeXmlNode *node_in);
-gboolean       glade_xml_node_verify (GladeXmlNode * node_in, const gchar *name);
+gboolean       glade_xml_node_verify (GladeXmlNode *node_in, const gchar *name);
 gboolean       glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name);
 const gchar *  glade_xml_node_get_name (GladeXmlNode *node_in);
-void           glade_xml_node_append_child (GladeXmlNode * node, GladeXmlNode * child);
+void           glade_xml_node_append_child (GladeXmlNode * node, GladeXmlNode *child);
 void           glade_xml_node_remove (GladeXmlNode *node_in);
 gboolean       glade_xml_node_is_comment (GladeXmlNode *node_in);
 GladeXmlNode * glade_xml_node_next_with_comments (GladeXmlNode *node_in);
-GladeXmlNode * glade_xml_node_prev_with_comments (GladeXmlNode * node_in);
+GladeXmlNode * glade_xml_node_prev_with_comments (GladeXmlNode *node_in);
 GladeXmlNode * glade_xml_node_get_children_with_comments (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_add_prev_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
 GladeXmlNode * glade_xml_node_add_next_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
@@ -254,17 +254,17 @@ GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, const gchar *name
 void              glade_xml_context_destroy (GladeXmlContext *context);
 void              glade_xml_context_free    (GladeXmlContext *context);
 GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
-						   const gchar *nspace,
-						   const gchar *root_name);
+                                                   const gchar *nspace,
+                                                   const gchar *root_name);
 GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
 
 /* Dumps an xml string from a context */
 gchar * glade_xml_dump_from_context (GladeXmlContext *context);
 
 gboolean        glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
-					      GModule          *module,
-					      gchar            *tagname,
-					      gpointer         *sym_location);
+                                              GModule          *module,
+                                              gchar            *tagname,
+                                              gpointer         *sym_location);
 
 G_END_DECLS
 

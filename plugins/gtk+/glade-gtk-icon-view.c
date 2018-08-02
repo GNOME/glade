@@ -28,8 +28,8 @@
 #include "glade-icon-view-editor.h"
 
 GladeEditable *
-glade_gtk_icon_view_create_editable (GladeWidgetAdaptor * adaptor,
-				     GladeEditorPageType type)
+glade_gtk_icon_view_create_editable (GladeWidgetAdaptor *adaptor,
+                                     GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {

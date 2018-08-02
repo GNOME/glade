@@ -26,9 +26,9 @@
 #include <gladeui/glade.h>
 
 static void
-glade_gtk_assistant_append_new_page (GladeWidget * parent,
-                                     GladeProject * project,
-                                     const gchar * label,
+glade_gtk_assistant_append_new_page (GladeWidget         *parent,
+                                     GladeProject        *project,
+                                     const gchar         *label,
                                      GtkAssistantPageType type)
 {
   static GladeWidgetAdaptor *adaptor = NULL;
@@ -55,7 +55,7 @@ glade_gtk_assistant_append_new_page (GladeWidget * parent,
   update its navigation buttons!
 */
 static void
-glade_gtk_assistant_update_page_type (GtkAssistant * assistant)
+glade_gtk_assistant_update_page_type (GtkAssistant *assistant)
 {
   gint i, current, pages;
   GtkWidget *page;
@@ -92,7 +92,7 @@ glade_gtk_assistant_update_page_type (GtkAssistant * assistant)
 }
 
 static gint
-glade_gtk_assistant_get_page (GtkAssistant * assistant, GtkWidget * page)
+glade_gtk_assistant_get_page (GtkAssistant *assistant, GtkWidget *page)
 {
   gint i, pages = gtk_assistant_get_n_pages (assistant);
 
@@ -104,7 +104,7 @@ glade_gtk_assistant_get_page (GtkAssistant * assistant, GtkWidget * page)
 }
 
 static void
-glade_gtk_assistant_update_position (GtkAssistant * assistant)
+glade_gtk_assistant_update_position (GtkAssistant *assistant)
 {
   gint i, pages = gtk_assistant_get_n_pages (assistant);
 
@@ -118,7 +118,7 @@ glade_gtk_assistant_update_position (GtkAssistant * assistant)
 }
 
 static void
-glade_gtk_assistant_parse_finished (GladeProject * project, GObject * object)
+glade_gtk_assistant_parse_finished (GladeProject *project, GObject *object)
 {
   GtkAssistant *assistant = GTK_ASSISTANT (object);
   gint pages = gtk_assistant_get_n_pages (assistant);
@@ -136,7 +136,7 @@ glade_gtk_assistant_parse_finished (GladeProject * project, GObject * object)
 
 GList *
 glade_gtk_assistant_get_children (GladeWidgetAdaptor *adaptor,
-                                  GObject *container)
+                                  GObject            *container)
 {
   GtkAssistant *assist = GTK_ASSISTANT (container);
   gint i, n_pages = gtk_assistant_get_n_pages (assist);
@@ -158,7 +158,7 @@ glade_gtk_assistant_get_children (GladeWidgetAdaptor *adaptor,
 
 static void
 on_assistant_project_selection_changed (GladeProject *project,
-                                        GladeWidget *gassist)
+                                        GladeWidget  *gassist)
 {
   GList *selection = glade_project_selection_get (project);
 
@@ -172,13 +172,14 @@ on_assistant_project_selection_changed (GladeProject *project,
 
       if (glade_widget_get_parent (selected) == gassist &&
           glade_widget_property_get (selected, "position", &pos, NULL))
-	gtk_assistant_set_current_page (assist, pos);
+        gtk_assistant_set_current_page (assist, pos);
     }
 }
 
 void
-glade_gtk_assistant_post_create (GladeWidgetAdaptor * adaptor,
-                                 GObject * object, GladeCreateReason reason)
+glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object,
+                                 GladeCreateReason   reason)
 {
   GladeWidget *parent = glade_widget_get_from_gobject (object);
   GladeProject *project = glade_widget_get_project (parent);
@@ -210,8 +211,8 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor * adaptor,
 
   if (project)
     g_signal_connect (project, "selection-changed",
-		      G_CALLBACK (on_assistant_project_selection_changed),
-		      parent);
+                      G_CALLBACK (on_assistant_project_selection_changed),
+                      parent);
 }
 
 void
@@ -232,16 +233,17 @@ assistant_remove_child (GtkAssistant *assistant, GtkWidget *child)
   for (i = 0; i < n; i++)
     {
       if (child == gtk_assistant_get_nth_page (assistant, i))
-	{
-	  gtk_assistant_remove_page (assistant, i);
-	  return;
-	}
+        {
+          gtk_assistant_remove_page (assistant, i);
+          return;
+        }
     }
 }
 
 void
-glade_gtk_assistant_remove_child (GladeWidgetAdaptor * adaptor,
-                                  GObject * container, GObject * child)
+glade_gtk_assistant_remove_child (GladeWidgetAdaptor *adaptor,
+                                  GObject            *container,
+                                  GObject            *child)
 {
   GladeWidget *gassistant = glade_widget_get_from_gobject (container);
   GtkAssistant *assistant = GTK_ASSISTANT (container);
@@ -253,9 +255,10 @@ glade_gtk_assistant_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_assistant_replace_child (GladeWidgetAdaptor * adaptor,
-                                   GObject * container,
-                                   GObject * current, GObject * new_object)
+glade_gtk_assistant_replace_child (GladeWidgetAdaptor *adaptor,
+                                   GObject            *container,
+                                   GObject            *current,
+                                   GObject            *new_object)
 {
   GtkAssistant *assistant = GTK_ASSISTANT (container);
   GtkWidget *page = GTK_WIDGET (new_object), *old_page = GTK_WIDGET (current);
@@ -272,10 +275,10 @@ glade_gtk_assistant_replace_child (GladeWidgetAdaptor * adaptor,
 }
 
 gboolean
-glade_gtk_assistant_verify_property (GladeWidgetAdaptor * adaptor,
-                                     GObject * object,
-                                     const gchar * property_name,
-                                     const GValue * value)
+glade_gtk_assistant_verify_property (GladeWidgetAdaptor *adaptor,
+                                     GObject            *object,
+                                     const gchar        *property_name,
+                                     const GValue       *value)
 {
   if (strcmp (property_name, "n-pages") == 0)
     return g_value_get_int (value) >=
@@ -291,10 +294,10 @@ glade_gtk_assistant_verify_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_assistant_set_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * object,
-                                  const gchar * property_name,
-                                  const GValue * value)
+glade_gtk_assistant_set_property (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object,
+                                  const gchar        *property_name,
+                                  const GValue       *value)
 {
   if (strcmp (property_name, "n-pages") == 0)
     {
@@ -303,10 +306,9 @@ glade_gtk_assistant_set_property (GladeWidgetAdaptor * adaptor,
 
       for (i = gtk_assistant_get_n_pages (GTK_ASSISTANT (object)),
            size = g_value_get_int (value); i < size; i++)
-	{
-	  g_message ("aaaa %d %d", i,size);
-        gtk_assistant_append_page (assistant, glade_placeholder_new ());
-	}
+        {
+          gtk_assistant_append_page (assistant, glade_placeholder_new ());
+        }
 
       glade_gtk_assistant_update_page_type (assistant);
 
@@ -319,9 +321,10 @@ glade_gtk_assistant_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_assistant_get_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * object,
-                                  const gchar * property_name, GValue * value)
+glade_gtk_assistant_get_property (GladeWidgetAdaptor *adaptor,
+                                  GObject            *object,
+                                  const gchar        *property_name,
+                                  GValue             *value)
 {
   if (strcmp (property_name, "n-pages") == 0)
     {
@@ -336,11 +339,11 @@ glade_gtk_assistant_get_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_assistant_set_child_property (GladeWidgetAdaptor * adaptor,
-                                        GObject * container,
-                                        GObject * child,
-                                        const gchar * property_name,
-                                        const GValue * value)
+glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
+                                        GObject            *container,
+                                        GObject            *child,
+                                        const gchar        *property_name,
+                                        const GValue       *value)
 {
   if (strcmp (property_name, "position") == 0)
     {
@@ -379,11 +382,11 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_assistant_get_child_property (GladeWidgetAdaptor * adaptor,
-                                        GObject * container,
-                                        GObject * child,
-                                        const gchar * property_name,
-                                        GValue * value)
+glade_gtk_assistant_get_child_property (GladeWidgetAdaptor *adaptor,
+                                        GObject            *container,
+                                        GObject            *child,
+                                        const gchar        *property_name,
+                                        GValue             *value)
 {
   if (strcmp (property_name, "position") == 0)
     {

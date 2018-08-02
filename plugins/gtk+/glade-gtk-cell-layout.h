@@ -26,21 +26,21 @@
 
 G_BEGIN_DECLS
 
-gboolean glade_gtk_cell_layout_sync_attributes (GObject * layout);
+gboolean glade_gtk_cell_layout_sync_attributes (GObject *layout);
 
 /* Base editor handlers */
-gchar   *glade_gtk_cell_layout_get_display_name (GladeBaseEditor * editor,
-						 GladeWidget * gchild,
-						 gpointer user_data);
-void     glade_gtk_cell_layout_child_selected   (GladeBaseEditor * editor,
-						 GladeWidget * gchild,
-						 gpointer data);
-gboolean glade_gtk_cell_layout_move_child       (GladeBaseEditor * editor,
-						 GladeWidget * gparent,
-						 GladeWidget * gchild,
-						 gpointer data); 
-GList   *glade_gtk_cell_layout_get_children     (GladeWidgetAdaptor * adaptor,
-						 GObject * container);
+gchar   *glade_gtk_cell_layout_get_display_name (GladeBaseEditor *editor,
+                                                 GladeWidget     *gchild,
+                                                 gpointer         user_data);
+void     glade_gtk_cell_layout_child_selected   (GladeBaseEditor *editor,
+                                                 GladeWidget     *gchild,
+                                                 gpointer         data);
+gboolean glade_gtk_cell_layout_move_child       (GladeBaseEditor *editor,
+                                                 GladeWidget     *gparent,
+                                                 GladeWidget     *gchild,
+                                                 gpointer         data); 
+GList   *glade_gtk_cell_layout_get_children     (GladeWidgetAdaptor *adaptor,
+                                                 GObject            *container);
 
 G_END_DECLS
 

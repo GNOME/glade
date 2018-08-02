@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_POPOVER_MENU_EDITOR	            (glade_popover_menu_editor_get_type ())
-#define GLADE_POPOVER_MENU_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_POPOVER_MENU_EDITOR, GladePopoverMenuEditor))
-#define GLADE_POPOVER_MENU_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_POPOVER_MENU_EDITOR, GladePopoverMenuEditorClass))
-#define GLADE_IS_POPOVER_MENU_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_POPOVER_MENU_EDITOR))
-#define GLADE_IS_POPOVER_MENU_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_POPOVER_MENU_EDITOR))
-#define GLADE_POPOVER_MENU_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_POPOVER_MENU_EDITOR, GladePopoverMenuEditorClass))
+#define GLADE_TYPE_POPOVER_MENU_EDITOR            (glade_popover_menu_editor_get_type ())
+#define GLADE_POPOVER_MENU_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_POPOVER_MENU_EDITOR, GladePopoverMenuEditor))
+#define GLADE_POPOVER_MENU_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_POPOVER_MENU_EDITOR, GladePopoverMenuEditorClass))
+#define GLADE_IS_POPOVER_MENU_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_POPOVER_MENU_EDITOR))
+#define GLADE_IS_POPOVER_MENU_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_POPOVER_MENU_EDITOR))
+#define GLADE_POPOVER_MENU_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_POPOVER_MENU_EDITOR, GladePopoverMenuEditorClass))
 
 typedef struct _GladePopoverMenuEditor        GladePopoverMenuEditor;
 typedef struct _GladePopoverMenuEditorClass   GladePopoverMenuEditorClass;

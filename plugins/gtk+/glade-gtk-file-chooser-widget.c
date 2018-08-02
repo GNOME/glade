@@ -30,9 +30,9 @@
 #include "glade-file-chooser-button-editor.h"
 
 void
-glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor * adaptor,
-                                           GObject * object,
-                                           GladeCreateReason reason)
+glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor *adaptor,
+                                           GObject            *object,
+                                           GladeCreateReason   reason)
 {
   gtk_container_forall (GTK_CONTAINER (object),
                         glade_gtk_file_chooser_default_forall, NULL);
@@ -40,7 +40,7 @@ glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor * adaptor,
 
 GladeEditable *
 glade_gtk_file_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
-					       GladeEditorPageType type)
+                                               GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_file_chooser_widget_editor_new ();
@@ -50,10 +50,10 @@ glade_gtk_file_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
 
 
 void
-glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor * adaptor,
-                                            GObject * object,
-                                            const gchar * id,
-                                            const GValue * value)
+glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor *adaptor,
+                                            GObject            *object,
+                                            const gchar        *id,
+                                            const GValue       *value)
 {
   /* Avoid a warning */
   if (!strcmp (id, "action"))
@@ -69,7 +69,7 @@ glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor * adaptor,
 
 GladeEditable *
 glade_gtk_file_chooser_button_create_editable (GladeWidgetAdaptor *adaptor,
-					       GladeEditorPageType type)
+                                               GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_file_chooser_button_editor_new ();

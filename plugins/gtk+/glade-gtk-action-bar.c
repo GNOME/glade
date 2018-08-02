@@ -202,7 +202,7 @@ glade_gtk_action_bar_get_property (GladeWidgetAdaptor * adaptor,
   if (!strcmp (id, "use-center-child"))
     {
       g_value_reset (value);
-      g_value_set_boolean (value, gtk_action_bar_get_center_widget (GTK_ACTION_BAR	 (object)) != NULL);
+      g_value_set_boolean (value, gtk_action_bar_get_center_widget (GTK_ACTION_BAR (object)) != NULL);
     }
   else if (!strcmp (id, "size"))
     {
@@ -236,9 +236,9 @@ glade_gtk_action_bar_get_first_blank (GtkActionBar * box)
           GladeProperty *property =
               glade_widget_get_pack_property (gwidget, "position");
 
-	  /* property can be NULL here when project is closing */
-	  if (property)
-	    gwidget_position = g_value_get_int (glade_property_inline_value (property));
+          /* property can be NULL here when project is closing */
+          if (property)
+            gwidget_position = g_value_get_int (glade_property_inline_value (property));
 
           if (gwidget_position > position)
             break;

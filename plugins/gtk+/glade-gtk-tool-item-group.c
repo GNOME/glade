@@ -30,23 +30,23 @@
 
 gboolean
 glade_gtk_tool_item_group_add_verify (GladeWidgetAdaptor *adaptor,
-				      GtkWidget          *container,
-				      GtkWidget          *child,
-				      gboolean            user_feedback)
+                                      GtkWidget          *container,
+                                      GtkWidget          *child,
+                                      gboolean            user_feedback)
 {
   if (!GTK_IS_TOOL_ITEM (child))
     {
       if (user_feedback)
-	{
-	  GladeWidgetAdaptor *tool_item_adaptor = 
-	    glade_widget_adaptor_get_by_type (GTK_TYPE_TOOL_ITEM);
+        {
+          GladeWidgetAdaptor *tool_item_adaptor = 
+            glade_widget_adaptor_get_by_type (GTK_TYPE_TOOL_ITEM);
 
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 ONLY_THIS_GOES_IN_THAT_MSG,
-				 glade_widget_adaptor_get_title (tool_item_adaptor),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 ONLY_THIS_GOES_IN_THAT_MSG,
+                                 glade_widget_adaptor_get_title (tool_item_adaptor),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }
@@ -55,22 +55,24 @@ glade_gtk_tool_item_group_add_verify (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_tool_item_group_add_child (GladeWidgetAdaptor * adaptor,
-				     GObject * object, GObject * child)
+glade_gtk_tool_item_group_add_child (GladeWidgetAdaptor *adaptor,
+                                     GObject            *object,
+                                     GObject            *child)
 {
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
 void
-glade_gtk_tool_item_group_remove_child (GladeWidgetAdaptor * adaptor,
-				     GObject * object, GObject * child)
+glade_gtk_tool_item_group_remove_child (GladeWidgetAdaptor *adaptor,
+                                        GObject            *object,
+                                        GObject            *child)
 {
   gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
 static void
-glade_gtk_tool_item_group_parse_finished (GladeProject * project,
-					  GladeWidget * widget)
+glade_gtk_tool_item_group_parse_finished (GladeProject *project,
+                                          GladeWidget  *widget)
 {
   GtkWidget *label_widget = NULL;
 
@@ -83,11 +85,12 @@ glade_gtk_tool_item_group_parse_finished (GladeProject * project,
 }
 
 void
-glade_gtk_tool_item_group_read_widget (GladeWidgetAdaptor * adaptor,
-				       GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_tool_item_group_read_widget (GladeWidgetAdaptor *adaptor,
+                                       GladeWidget        *widget,
+                                       GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -100,7 +103,7 @@ glade_gtk_tool_item_group_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_tool_item_group_set_custom_label (GObject * object, const GValue * value)
+glade_gtk_tool_item_group_set_custom_label (GObject *object, const GValue *value)
 {
   GladeWidget *gbutton;
 
@@ -118,9 +121,10 @@ glade_gtk_tool_item_group_set_custom_label (GObject * object, const GValue * val
 }
 
 void
-glade_gtk_tool_item_group_set_property (GladeWidgetAdaptor * adaptor,
-                                        GObject * object,
-                                        const gchar * id, const GValue * value)
+glade_gtk_tool_item_group_set_property (GladeWidgetAdaptor *adaptor,
+                                        GObject            *object,
+                                        const gchar        *id,
+                                        const GValue       *value)
 {
   if (!strcmp (id, "custom-label"))
     glade_gtk_tool_item_group_set_custom_label (object, value);
@@ -131,8 +135,8 @@ glade_gtk_tool_item_group_set_property (GladeWidgetAdaptor * adaptor,
 
       glade_widget_property_get (widget, "custom-label", &custom);
       if (!custom)
-	gtk_tool_item_group_set_label (GTK_TOOL_ITEM_GROUP (object),
-				       g_value_get_string (value));
+        gtk_tool_item_group_set_label (GTK_TOOL_ITEM_GROUP (object),
+                                       g_value_get_string (value));
     } 
   else if (!strcmp (id, "label-widget")) 
     {
@@ -142,14 +146,14 @@ glade_gtk_tool_item_group_set_property (GladeWidgetAdaptor * adaptor,
 
       glade_widget_property_get (widget, "custom-label", &custom);
       if (custom || (glade_util_object_is_loading (object) && label != NULL))
-	gtk_tool_item_group_set_label_widget (GTK_TOOL_ITEM_GROUP (object), label);
+        gtk_tool_item_group_set_label_widget (GTK_TOOL_ITEM_GROUP (object), label);
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
 GladeEditable *
-glade_gtk_tool_item_group_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_tool_item_group_create_editable (GladeWidgetAdaptor *adaptor,
                                            GladeEditorPageType type)
 {
   GladeEditable *editable;

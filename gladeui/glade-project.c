@@ -59,22 +59,22 @@
 
 static void     glade_project_target_version_for_adaptor
                                                     (GladeProject       *project,
-						     GladeWidgetAdaptor *adaptor,
-						     gint               *major,
-						     gint               *minor);
+                                                     GladeWidgetAdaptor *adaptor,
+                                                     gint               *major,
+                                                     gint               *minor);
 static void     glade_project_verify_properties     (GladeWidget        *widget);
 static void     glade_project_verify_project_for_ui (GladeProject       *project);
 static void     glade_project_verify_adaptor        (GladeProject       *project,
-						     GladeWidgetAdaptor *adaptor,
-						     const gchar        *path_name,
-						     GString            *string,
-						     GladeVerifyFlags    flags,
-						     gboolean            forwidget,
-						     GladeSupportMask   *mask);
+                                                     GladeWidgetAdaptor *adaptor,
+                                                     const gchar        *path_name,
+                                                     GString            *string,
+                                                     GladeVerifyFlags    flags,
+                                                     gboolean            forwidget,
+                                                     GladeSupportMask   *mask);
 static void     glade_project_set_readonly          (GladeProject       *project,
-						     gboolean            readonly);
+                                                     gboolean            readonly);
 static void     glade_project_set_modified          (GladeProject       *project,
-						     gboolean            modified);
+                                                     gboolean            modified);
 
 static void     glade_project_model_iface_init      (GtkTreeModelIface  *iface);
 
@@ -425,11 +425,11 @@ glade_project_set_property (GObject      *object,
       break;
     case PROP_TEMPLATE:
       glade_project_set_template (GLADE_PROJECT (object),
-				  g_value_get_object (value));
+                                  g_value_get_object (value));
       break;
     case PROP_RESOURCE_PATH:
       glade_project_set_resource_path (GLADE_PROJECT (object),
-				       g_value_get_string (value));
+                                       g_value_get_string (value));
       break;
     case PROP_LICENSE:
       glade_project_set_license (GLADE_PROJECT (object),
@@ -1148,7 +1148,7 @@ glade_project_model_get_value (GtkTreeModel *model,
         break;
       case GLADE_PROJECT_MODEL_COLUMN_WARNING:
         g_value_set_string (value, glade_widget_support_warning (widget));
-	break;
+        break;
 
       default:
         g_assert_not_reached ();
@@ -1354,8 +1354,8 @@ glade_project_fix_template (GladeProject *project)
 
       if (composite)
         {
-	  glade_project_set_template (project, gwidget);
-	  break;
+          glade_project_set_template (project, gwidget);
+          break;
         }
     }
 }
@@ -1834,7 +1834,7 @@ glade_project_count_xml_objects (GladeProject *project,
        node; node = glade_xml_node_next (node))
     {
       if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	  glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE))
+          glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE))
         count = glade_project_count_xml_objects (project, node, ++count);
       else if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_CHILD))
         count = glade_project_count_xml_objects (project, node, count);
@@ -2000,14 +2000,14 @@ glade_project_load_internal (GladeProject *project)
       display_name = glade_project_get_name (project);
 
       if (glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_YES_OR_NO, NULL,
-				 _("An automatically saved version of `%s' is more recent.\n\n"
-				   "Would you like to load the autosave version instead?"),
-				 display_name))
-	{
-	  mtime = autosave_mtime;
-	  load_path = g_strdup (autosave_path);
-	}
+                                 GLADE_UI_YES_OR_NO, NULL,
+                                 _("An automatically saved version of `%s' is more recent.\n\n"
+                                   "Would you like to load the autosave version instead?"),
+                                 display_name))
+        {
+          mtime = autosave_mtime;
+          load_path = g_strdup (autosave_path);
+        }
       g_free (display_name);
     }
 
@@ -2082,7 +2082,7 @@ glade_project_load_internal (GladeProject *project)
     {
       /* Skip "requires" tags */
       if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	    glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+            glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
         continue;
 
       if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
@@ -2829,9 +2829,9 @@ sync_project_resource_path (GladeProject *project)
  */
 gboolean
 glade_project_save_verify (GladeProject      *project,
-			   const gchar       *path,
-			   GladeVerifyFlags   flags,
-			   GError           **error)
+                           const gchar       *path,
+                           GladeVerifyFlags   flags,
+                           GError           **error)
 {
   GladeXmlContext *context;
   GladeXmlDoc *doc;
@@ -2921,9 +2921,9 @@ gboolean
 glade_project_save (GladeProject *project, const gchar *path, GError **error)
 {
   return glade_project_save_verify (project, path,
-				    GLADE_VERIFY_VERSIONS |
-				    GLADE_VERIFY_UNRECOGNIZED,
-				    error);
+                                    GLADE_VERIFY_VERSIONS |
+                                    GLADE_VERIFY_UNRECOGNIZED,
+                                    error);
 }
 
 /**
@@ -3059,7 +3059,7 @@ glade_project_verify_property_internal (GladeProject    *project,
                                         const gchar     *path_name,
                                         GString         *string,
                                         gboolean         forwidget,
-					GladeVerifyFlags flags)
+                                        GladeVerifyFlags flags)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladePropertyClass *pclass;
@@ -3088,9 +3088,9 @@ glade_project_verify_property_internal (GladeProject    *project,
       !GPC_VERSION_CHECK (pclass, target_major, target_minor))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Property '%s' of adaptor %s not available in version %d.%d\n",
-				   glade_property_class_id (pclass),
-				   glade_widget_adaptor_get_name (adaptor),
-				   target_major, target_minor));
+                                   glade_property_class_id (pclass),
+                                   glade_widget_adaptor_get_name (adaptor),
+                                   target_major, target_minor));
 
       if (forwidget)
         {
@@ -3116,19 +3116,19 @@ glade_project_verify_property_internal (GladeProject    *project,
                                   glade_property_class_since_minor (pclass));
     }
   else if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
-	   glade_property_class_deprecated (pclass))
+           glade_property_class_deprecated (pclass))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Property '%s' of adaptor %s is deprecated\n",
-				   glade_property_class_id (pclass),
-				   glade_widget_adaptor_get_name (adaptor)));
+                                   glade_property_class_id (pclass),
+                                   glade_widget_adaptor_get_name (adaptor)));
 
       if (forwidget)
-	glade_property_set_support_warning (property, FALSE, PROP_DEPRECATED_MSG);
+        glade_property_set_support_warning (property, FALSE, PROP_DEPRECATED_MSG);
       else
         g_string_append_printf (string,
                                 PROP_DEPRECATED_FMT,
                                 path_name,
-				glade_property_class_get_name (pclass),
+                                glade_property_class_get_name (pclass),
                                 glade_widget_adaptor_get_title (adaptor));
     }
   else if (forwidget)
@@ -3142,7 +3142,7 @@ glade_project_verify_properties_internal (GladeWidget     *widget,
                                           const gchar     *path_name,
                                           GString         *string,
                                           gboolean         forwidget,
-					  GladeVerifyFlags flags)
+                                          GladeVerifyFlags flags)
 {
   GList *list;
   GladeProperty *property;
@@ -3173,7 +3173,7 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
                                       const gchar     *path_name,
                                       GString         *string,
                                       gboolean         forwidget,
-				      GladeVerifyFlags flags)
+                                      GladeVerifyFlags flags)
 {
   GladeSignalClass   *signal_class;
   GladeWidgetAdaptor *adaptor;
@@ -3202,9 +3202,9 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
       !GSC_VERSION_CHECK (signal_class, target_major, target_minor))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s not avalable in version %d.%d\n",
-				   glade_signal_get_name (signal),
-				   glade_widget_adaptor_get_name (adaptor),
-				   target_major, target_minor));
+                                   glade_signal_get_name (signal),
+                                   glade_widget_adaptor_get_name (adaptor),
+                                   target_major, target_minor));
 
       if (forwidget)
         {
@@ -3229,14 +3229,14 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
                                 glade_signal_class_since_minor (signal_class));
     }
   else if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
-	   glade_signal_class_deprecated (signal_class))
+           glade_signal_class_deprecated (signal_class))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s is deprecated\n",
-				   glade_signal_get_name (signal),
-				   glade_widget_adaptor_get_name (adaptor)));
+                                   glade_signal_get_name (signal),
+                                   glade_widget_adaptor_get_name (adaptor)));
 
       if (forwidget)
-	glade_signal_set_support_warning (signal, SIGNAL_DEPRECATED_MSG);
+        glade_signal_set_support_warning (signal, SIGNAL_DEPRECATED_MSG);
       else
         g_string_append_printf (string,
                                 SIGNAL_DEPRECATED_FMT,
@@ -3263,18 +3263,18 @@ glade_project_verify_property (GladeProperty *property)
 
   if (project)
     glade_project_verify_property_internal (project, property, NULL, NULL, TRUE,
-					    GLADE_VERIFY_VERSIONS     |
-					    GLADE_VERIFY_DEPRECATIONS |
-					    GLADE_VERIFY_UNRECOGNIZED);
+                                            GLADE_VERIFY_VERSIONS     |
+                                            GLADE_VERIFY_DEPRECATIONS |
+                                            GLADE_VERIFY_UNRECOGNIZED);
 }
 
 void
 glade_project_verify_signal (GladeWidget *widget, GladeSignal *signal)
 {
   glade_project_verify_signal_internal (widget, signal, NULL, NULL, TRUE,
-					GLADE_VERIFY_VERSIONS     |
-					GLADE_VERIFY_DEPRECATIONS |
-					GLADE_VERIFY_UNRECOGNIZED);
+                                        GLADE_VERIFY_VERSIONS     |
+                                        GLADE_VERIFY_DEPRECATIONS |
+                                        GLADE_VERIFY_UNRECOGNIZED);
 }
 
 static void
@@ -3282,7 +3282,7 @@ glade_project_verify_signals (GladeWidget     *widget,
                               const gchar     *path_name,
                               GString         *string,
                               gboolean         forwidget,
-			      GladeVerifyFlags flags)
+                              GladeVerifyFlags flags)
 {
   GladeSignal *signal;
   GList *signals, *list;
@@ -3320,13 +3320,13 @@ glade_project_verify_properties (GladeWidget *widget)
     return;
 
   glade_project_verify_properties_internal (widget, NULL, NULL, TRUE,
-					    GLADE_VERIFY_VERSIONS     |
-					    GLADE_VERIFY_DEPRECATIONS |
-					    GLADE_VERIFY_UNRECOGNIZED);
+                                            GLADE_VERIFY_VERSIONS     |
+                                            GLADE_VERIFY_DEPRECATIONS |
+                                            GLADE_VERIFY_UNRECOGNIZED);
   glade_project_verify_signals (widget, NULL, NULL, TRUE,
-				GLADE_VERIFY_VERSIONS     |
-				GLADE_VERIFY_DEPRECATIONS |
-				GLADE_VERIFY_UNRECOGNIZED);
+                                GLADE_VERIFY_VERSIONS     |
+                                GLADE_VERIFY_DEPRECATIONS |
+                                GLADE_VERIFY_UNRECOGNIZED);
 
   glade_widget_support_changed (widget);
 }
@@ -3334,7 +3334,7 @@ glade_project_verify_properties (GladeWidget *widget)
 static gboolean
 glade_project_verify_dialog (GladeProject *project,
                              GString      *string,
-			     gboolean      saving)
+                             gboolean      saving)
 {
   GtkWidget *swindow;
   GtkWidget *textview;
@@ -3400,7 +3400,7 @@ glade_project_verify (GladeProject    *project,
       GladeWidget *widget = glade_widget_get_from_gobject (list->data);
       
       if ((flags & GLADE_VERIFY_UNRECOGNIZED) != 0 &&
-	  GLADE_IS_OBJECT_STUB (list->data))
+          GLADE_IS_OBJECT_STUB (list->data))
         {
           gchar *type;
           g_object_get (list->data, "object-type", &type, NULL);
@@ -3475,11 +3475,11 @@ glade_project_verify_adaptor (GladeProject       *project,
       /* Only one versioning message (builder or otherwise)...
        */
       if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
-	  !GWA_VERSION_CHECK (adaptor_iter, target_major, target_minor))
+          !GWA_VERSION_CHECK (adaptor_iter, target_major, target_minor))
         {
-	  GLADE_NOTE (VERIFY, g_print ("VERIFY: Adaptor '%s' not available in version %d.%d\n",
-				       glade_widget_adaptor_get_name (adaptor_iter),
-				       target_major, target_minor));
+          GLADE_NOTE (VERIFY, g_print ("VERIFY: Adaptor '%s' not available in version %d.%d\n",
+                                       glade_widget_adaptor_get_name (adaptor_iter),
+                                       target_major, target_minor));
 
           if (forwidget)
             g_string_append_printf (string,
@@ -3550,10 +3550,10 @@ glade_project_verify_widget_adaptor (GladeProject       *project,
 
   glade_project_verify_adaptor (project, adaptor, NULL,
                                 string,
-				GLADE_VERIFY_VERSIONS     |
-				GLADE_VERIFY_DEPRECATIONS |
-				GLADE_VERIFY_UNRECOGNIZED,
-				TRUE, mask);
+                                GLADE_VERIFY_VERSIONS     |
+                                GLADE_VERIFY_DEPRECATIONS |
+                                GLADE_VERIFY_UNRECOGNIZED,
+                                TRUE, mask);
 
   /* there was a '\0' byte... */
   if (string->len > 0)
@@ -4172,12 +4172,12 @@ glade_project_set_template (GladeProject *project, GladeWidget *widget)
   if (project->priv->template != widget)
     {
       if (project->priv->template)
-	glade_widget_set_is_composite (project->priv->template, FALSE);
+        glade_widget_set_is_composite (project->priv->template, FALSE);
 
       project->priv->template = widget;
 
       if (project->priv->template)
-	glade_widget_set_is_composite (project->priv->template, TRUE);
+        glade_widget_set_is_composite (project->priv->template, TRUE);
 
       glade_project_verify_project_for_ui (project);
 
@@ -5181,7 +5181,7 @@ glade_project_copy_selection (GladeProject *project)
       if (widget_contains_unknown_type (widget))
         has_unknown = TRUE;
       else
-	widgets = g_list_prepend (widgets, glade_widget_dup (widget, FALSE));
+        widgets = g_list_prepend (widgets, glade_widget_dup (widget, FALSE));
     }
 
   if (has_unknown)
@@ -5211,7 +5211,7 @@ glade_project_command_cut (GladeProject *project)
       if (widget_contains_unknown_type (widget))
         has_unknown = TRUE;
       else
-	widgets = g_list_prepend (widgets, widget);
+        widgets = g_list_prepend (widgets, widget);
     }
   
   if (failed == FALSE && widgets != NULL)

@@ -27,11 +27,11 @@
 #include "glade-image-item-editor.h"
 
 
-static void glade_image_item_editor_finalize (GObject * object);
+static void glade_image_item_editor_finalize (GObject *object);
 
-static void glade_image_item_editor_editable_init (GladeEditableIface * iface);
+static void glade_image_item_editor_editable_init (GladeEditableIface *iface);
 
-static void glade_image_item_editor_grab_focus (GtkWidget * widget);
+static void glade_image_item_editor_grab_focus (GtkWidget *widget);
 
 static GladeEditableIface *parent_editable_iface;
 
@@ -41,7 +41,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeImageItemEditor, glade_image_item_editor, GTK_TYPE
 
 
 static void
-glade_image_item_editor_class_init (GladeImageItemEditorClass * klass)
+glade_image_item_editor_class_init (GladeImageItemEditorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -51,14 +51,14 @@ glade_image_item_editor_class_init (GladeImageItemEditorClass * klass)
 }
 
 static void
-glade_image_item_editor_init (GladeImageItemEditor * self)
+glade_image_item_editor_init (GladeImageItemEditor *self)
 {
   gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
-				  GTK_ORIENTATION_VERTICAL);
+                                  GTK_ORIENTATION_VERTICAL);
 }
 
 static GladeWidget *
-get_image_widget (GladeWidget * widget)
+get_image_widget (GladeWidget *widget)
 {
   GtkWidget *image;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -68,7 +68,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-glade_image_item_editor_load (GladeEditable * editable, GladeWidget * widget)
+glade_image_item_editor_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeImageItemEditor *item_editor = GLADE_IMAGE_ITEM_EDITOR (editable);
   GladeWidget *image_widget;
@@ -112,8 +112,8 @@ glade_image_item_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_image_item_editor_set_show_name (GladeEditable * editable,
-                                       gboolean show_name)
+glade_image_item_editor_set_show_name (GladeEditable *editable,
+                                       gboolean       show_name)
 {
   GladeImageItemEditor *item_editor = GLADE_IMAGE_ITEM_EDITOR (editable);
 
@@ -121,7 +121,7 @@ glade_image_item_editor_set_show_name (GladeEditable * editable,
 }
 
 static void
-glade_image_item_editor_editable_init (GladeEditableIface * iface)
+glade_image_item_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 
@@ -130,7 +130,7 @@ glade_image_item_editor_editable_init (GladeEditableIface * iface)
 }
 
 static void
-glade_image_item_editor_finalize (GObject * object)
+glade_image_item_editor_finalize (GObject *object)
 {
   GladeImageItemEditor *item_editor = GLADE_IMAGE_ITEM_EDITOR (object);
 
@@ -146,7 +146,7 @@ glade_image_item_editor_finalize (GObject * object)
 }
 
 static void
-glade_image_item_editor_grab_focus (GtkWidget * widget)
+glade_image_item_editor_grab_focus (GtkWidget *widget)
 {
   GladeImageItemEditor *item_editor = GLADE_IMAGE_ITEM_EDITOR (widget);
 
@@ -156,7 +156,7 @@ glade_image_item_editor_grab_focus (GtkWidget * widget)
 
 
 static void
-stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
+stock_toggled (GtkWidget *widget, GladeImageItemEditor *item_editor)
 {
   GladeProperty *property;
   GladeWidget *image, *loaded;
@@ -187,7 +187,7 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
       glade_command_unlock_widget (image);
       glade_command_delete (&list);
       glade_project_selection_set (glade_widget_get_project (loaded), 
-				   glade_widget_get_object (loaded), TRUE);
+                                   glade_widget_get_object (loaded), TRUE);
     }
 
   property = glade_widget_get_property (loaded, "use-stock");
@@ -202,7 +202,7 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 }
 
 static void
-custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
+custom_toggled (GtkWidget *widget, GladeImageItemEditor *item_editor)
 {
   GladeProperty *property;
   GladeWidgetAdaptor *adaptor;
@@ -255,7 +255,7 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 
       /* reload widget by selection ;-) */
       glade_project_selection_set (glade_widget_get_project (loaded), 
-				   glade_widget_get_object (loaded), TRUE);
+                                   glade_widget_get_object (loaded), TRUE);
     }
   glade_command_pop_group ();
 
@@ -266,7 +266,7 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 }
 
 static void
-table_attach (GtkWidget * table, GtkWidget * child, gint pos, gint row)
+table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
 {
   gtk_grid_attach (GTK_GRID (table), child, pos, row, 1, 1);
 
@@ -275,8 +275,8 @@ table_attach (GtkWidget * table, GtkWidget * child, gint pos, gint row)
 }
 
 GtkWidget *
-glade_image_item_editor_new (GladeWidgetAdaptor * adaptor,
-                             GladeEditable * embed)
+glade_image_item_editor_new (GladeWidgetAdaptor *adaptor,
+                             GladeEditable      *embed)
 {
   GladeImageItemEditor *item_editor;
   GladeEditorProperty *eprop;

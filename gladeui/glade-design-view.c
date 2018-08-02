@@ -422,7 +422,7 @@ glade_design_view_init (GladeDesignView *view)
 
   gtk_widget_set_no_show_all (GTK_WIDGET (view), TRUE);
   gtk_orientable_set_orientation (GTK_ORIENTABLE (view),
-				  GTK_ORIENTATION_VERTICAL);
+                                  GTK_ORIENTATION_VERTICAL);
 
   view->priv->project = NULL;
   view->priv->layout_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);

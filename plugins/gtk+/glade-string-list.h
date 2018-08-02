@@ -8,7 +8,7 @@ G_BEGIN_DECLS
 
 
 #define GLADE_TYPE_EPROP_STRING_LIST       (glade_eprop_string_list_get_type())
-#define	GLADE_TYPE_STRING_LIST             (glade_string_list_get_type())
+#define GLADE_TYPE_STRING_LIST             (glade_string_list_get_type())
 
 /* The GladeStringList boxed type is a GList * of GladeString structs */
 typedef struct _GladeString             GladeString;
@@ -28,18 +28,18 @@ void         glade_string_list_free              (GList         *list);
 GList       *glade_string_list_copy              (GList         *list);
 
 GList       *glade_string_list_append            (GList         *list,
-						  const gchar   *string,
-						  const gchar   *comment,
-						  const gchar   *context,
-						  gboolean       translatable,
-						  const gchar   *id);
+                                                  const gchar   *string,
+                                                  const gchar   *comment,
+                                                  const gchar   *context,
+                                                  gboolean       translatable,
+                                                  const gchar   *id);
 
 gchar       *glade_string_list_to_string         (GList         *list);
 
 GladeEditorProperty *glade_eprop_string_list_new (GladePropertyClass *pclass,
-						  gboolean            use_command,
-						  gboolean            translatable,
-						  gboolean            with_id);
+                                                  gboolean            use_command,
+                                                  gboolean            translatable,
+                                                  gboolean            with_id);
 
 G_END_DECLS
 

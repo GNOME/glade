@@ -25,36 +25,36 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR	            (glade_tool_item_group_editor_get_type ())
-#define GLADE_TOOL_ITEM_GROUP_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR, GladeToolItemGroupEditor))
-#define GLADE_TOOL_ITEM_GROUP_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR, GladeToolItemGroupEditorClass))
-#define GLADE_IS_TOOL_ITEM_GROUP_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR))
-#define GLADE_IS_TOOL_ITEM_GROUP_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR))
-#define GLADE_TOOL_ITEM_GROUP_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR, GladeToolItemGroupEditorClass))
+#define GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR            (glade_tool_item_group_editor_get_type ())
+#define GLADE_TOOL_ITEM_GROUP_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR, GladeToolItemGroupEditor))
+#define GLADE_TOOL_ITEM_GROUP_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR, GladeToolItemGroupEditorClass))
+#define GLADE_IS_TOOL_ITEM_GROUP_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR))
+#define GLADE_IS_TOOL_ITEM_GROUP_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR))
+#define GLADE_TOOL_ITEM_GROUP_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_TOOL_ITEM_GROUP_EDITOR, GladeToolItemGroupEditorClass))
 
 typedef struct _GladeToolItemGroupEditor        GladeToolItemGroupEditor;
 typedef struct _GladeToolItemGroupEditorClass   GladeToolItemGroupEditorClass;
 
 struct _GladeToolItemGroupEditor
 {
-	GtkBox  parent;
+  GtkBox  parent;
 
-	GtkWidget *embed;
+  GtkWidget *embed;
 
-	GtkWidget *label_radio;         /* Set the label directly */
-	GtkWidget *label_widget_radio;  /* Use the custom label widget */
+  GtkWidget *label_radio;         /* Set the label directly */
+  GtkWidget *label_widget_radio;  /* Use the custom label widget */
 
-	GList *properties;         /* A list of eprops to update at load() time */
+  GList *properties;         /* A list of eprops to update at load() time */
 };
 
 struct _GladeToolItemGroupEditorClass
 {
-	GtkBoxClass parent;
+  GtkBoxClass parent;
 };
 
 GType            glade_tool_item_group_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_tool_item_group_editor_new      (GladeWidgetAdaptor *adaptor,
-							GladeEditable      *editable);
+                                                        GladeEditable      *editable);
 
 G_END_DECLS
 

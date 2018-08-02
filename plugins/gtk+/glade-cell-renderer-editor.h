@@ -26,12 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_CELL_RENDERER_EDITOR	            (glade_cell_renderer_editor_get_type ())
-#define GLADE_CELL_RENDERER_EDITOR(obj)		    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_CELL_RENDERER_EDITOR, GladeCellRendererEditor))
-#define GLADE_CELL_RENDERER_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_CELL_RENDERER_EDITOR, GladeCellRendererEditorClass))
-#define GLADE_IS_CELL_RENDERER_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_CELL_RENDERER_EDITOR))
-#define GLADE_IS_CELL_RENDERER_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_CELL_RENDERER_EDITOR))
-#define GLADE_CELL_RENDERER_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_CELL_RENDERER_EDITOR, GladeCellRendererEditorClass))
+#define GLADE_TYPE_CELL_RENDERER_EDITOR            (glade_cell_renderer_editor_get_type ())
+#define GLADE_CELL_RENDERER_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_CELL_RENDERER_EDITOR, GladeCellRendererEditor))
+#define GLADE_CELL_RENDERER_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_CELL_RENDERER_EDITOR, GladeCellRendererEditorClass))
+#define GLADE_IS_CELL_RENDERER_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_CELL_RENDERER_EDITOR))
+#define GLADE_IS_CELL_RENDERER_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_CELL_RENDERER_EDITOR))
+#define GLADE_CELL_RENDERER_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_CELL_RENDERER_EDITOR, GladeCellRendererEditorClass))
 
 #define GLADE_TYPE_EPROP_CELL_ATTRIBUTE (glade_eprop_cell_attribute_get_type())
 
@@ -41,25 +41,25 @@ typedef struct _GladeCellRendererEditorClass   GladeCellRendererEditorClass;
 
 struct _GladeCellRendererEditor
 {
-	GtkBox  parent;
+  GtkBox  parent;
 
-	GtkWidget *embed;           /* Embedded parent class editor */
+  GtkWidget *embed;           /* Embedded parent class editor */
 
-	GList *checks;             /* A list of radio buttons for each property/attribute pair */
+  GList *checks;             /* A list of radio buttons for each property/attribute pair */
 
-	GList *properties;         /* A list of eprops to update at load() time */
+  GList *properties;         /* A list of eprops to update at load() time */
 };
 
 struct _GladeCellRendererEditorClass
 {
-	GtkBoxClass parent;
+  GtkBoxClass parent;
 };
 
 GType            glade_eprop_cell_attribute_get_type (void) G_GNUC_CONST;
 GType            glade_cell_renderer_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_cell_renderer_editor_new      (GladeWidgetAdaptor  *adaptor,
-						      GladeEditorPageType  type,
-						      GladeEditable       *editable);
+                                                      GladeEditorPageType  type,
+                                                      GladeEditable       *editable);
 
 GladeWidget     *glade_cell_renderer_get_model       (GladeWidget         *renderer);
 

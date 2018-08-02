@@ -37,38 +37,38 @@ struct _GladeSignalKlass {
 GType                 glade_signal_get_type            (void) G_GNUC_CONST;
 
 GladeSignal          *glade_signal_new                 (const GladeSignalClass *sig_class,
-							const gchar        *handler,
-							const gchar        *userdata,
-							gboolean            after,
-							gboolean            swapped);
+                                                        const gchar        *handler,
+                                                        const gchar        *userdata,
+                                                        gboolean            after,
+                                                        gboolean            swapped);
 GladeSignal          *glade_signal_clone               (const GladeSignal  *signal);
 gboolean              glade_signal_equal               (const GladeSignal  *sig1, 
-							const GladeSignal  *sig2);
+                                                        const GladeSignal  *sig2);
 GladeSignal          *glade_signal_read                (GladeXmlNode       *node,
                                                         GladeWidgetAdaptor *adaptor);
 void                  glade_signal_write               (GladeSignal        *signal,
-							GladeXmlContext    *context,
-							GladeXmlNode       *node);
+                                                        GladeXmlContext    *context,
+                                                        GladeXmlNode       *node);
 
 G_CONST_RETURN gchar *glade_signal_get_name            (const GladeSignal  *signal);
 G_CONST_RETURN GladeSignalClass *glade_signal_get_class (const GladeSignal * signal);
 void                  glade_signal_set_detail          (GladeSignal        *signal,
-							const gchar        *detail);
+                                                        const gchar        *detail);
 G_CONST_RETURN gchar *glade_signal_get_detail          (const GladeSignal  *signal);
 void                  glade_signal_set_handler         (GladeSignal        *signal,
-							const gchar        *handler);
+                                                        const gchar        *handler);
 G_CONST_RETURN gchar *glade_signal_get_handler         (const GladeSignal  *signal);
 void                  glade_signal_set_userdata        (GladeSignal        *signal,
-							const gchar        *userdata);
+                                                        const gchar        *userdata);
 G_CONST_RETURN gchar *glade_signal_get_userdata        (const GladeSignal  *signal);
 void                  glade_signal_set_after           (GladeSignal        *signal,
-							gboolean            after);
+                                                        gboolean            after);
 gboolean              glade_signal_get_after           (const GladeSignal  *signal);
 void                  glade_signal_set_swapped         (GladeSignal        *signal,
-							gboolean            swapped);
+                                                        gboolean            swapped);
 gboolean              glade_signal_get_swapped         (const GladeSignal  *signal);
 void                  glade_signal_set_support_warning (GladeSignal        *signal,
-							const gchar        *support_warning);
+                                                        const gchar        *support_warning);
 G_CONST_RETURN gchar *glade_signal_get_support_warning (const GladeSignal  *signal);
 
 G_END_DECLS

@@ -25,12 +25,12 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_BOX_EDITOR	          (glade_box_editor_get_type ())
-#define GLADE_BOX_EDITOR(obj)	          (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_BOX_EDITOR, GladeBoxEditor))
-#define GLADE_BOX_EDITOR_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_BOX_EDITOR, GladeBoxEditorClass))
-#define GLADE_IS_BOX_EDITOR(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_BOX_EDITOR))
-#define GLADE_IS_BOX_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_BOX_EDITOR))
-#define GLADE_BOX_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_BOX_EDITOR, GladeBoxEditorClass))
+#define GLADE_TYPE_BOX_EDITOR            (glade_box_editor_get_type ())
+#define GLADE_BOX_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_BOX_EDITOR, GladeBoxEditor))
+#define GLADE_BOX_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_BOX_EDITOR, GladeBoxEditorClass))
+#define GLADE_IS_BOX_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_BOX_EDITOR))
+#define GLADE_IS_BOX_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_BOX_EDITOR))
+#define GLADE_BOX_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_BOX_EDITOR, GladeBoxEditorClass))
 
 typedef struct _GladeBoxEditor        GladeBoxEditor;
 typedef struct _GladeBoxEditorClass   GladeBoxEditorClass;

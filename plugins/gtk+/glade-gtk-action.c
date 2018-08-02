@@ -30,8 +30,9 @@
 #include "glade-recent-action-editor.h"
 
 void
-glade_gtk_action_post_create (GladeWidgetAdaptor * adaptor,
-                              GObject * object, GladeCreateReason reason)
+glade_gtk_action_post_create (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              GladeCreateReason   reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 
@@ -47,12 +48,12 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
   glade_widget_set_action_sensitive (gwidget, "launch_editor", FALSE);
   glade_widget_property_set_sensitive (gwidget, "accelerator", FALSE, 
-				       ACTION_ACCEL_INSENSITIVE_MSG);
+                                       ACTION_ACCEL_INSENSITIVE_MSG);
 }
 
 GladeEditable *
-glade_gtk_action_create_editable (GladeWidgetAdaptor * adaptor,
-				  GladeEditorPageType type)
+glade_gtk_action_create_editable (GladeWidgetAdaptor *adaptor,
+                                  GladeEditorPageType type)
 {
   GladeEditable *editable;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -64,9 +65,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       GType action_type = glade_widget_adaptor_get_object_type (adaptor);
 
       if (g_type_is_a (action_type, type_recent_action))
-	editable = (GladeEditable *) glade_recent_action_editor_new ();
+        editable = (GladeEditable *) glade_recent_action_editor_new ();
       else
-	editable = (GladeEditable *) glade_action_editor_new ();
+        editable = (GladeEditable *) glade_action_editor_new ();
     }
   else
     editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);

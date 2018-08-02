@@ -29,7 +29,7 @@
 #include "glade-tool-button-editor.h"
 
 GladeEditable *
-glade_gtk_tool_button_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_tool_button_create_editable (GladeWidgetAdaptor *adaptor,
                                        GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
@@ -39,7 +39,7 @@ glade_gtk_tool_button_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_tool_button_set_image_mode (GObject * object, const GValue * value)
+glade_gtk_tool_button_set_image_mode (GObject *object, const GValue *value)
 {
   GladeWidget *gbutton;
 
@@ -67,7 +67,7 @@ glade_gtk_tool_button_set_image_mode (GObject * object, const GValue * value)
 }
 
 static void
-glade_gtk_tool_button_set_custom_label (GObject * object, const GValue * value)
+glade_gtk_tool_button_set_custom_label (GObject *object, const GValue *value)
 {
   GladeWidget *gbutton;
 
@@ -89,7 +89,7 @@ glade_gtk_tool_button_set_custom_label (GObject * object, const GValue * value)
 }
 
 static void
-glade_gtk_tool_button_set_label (GObject * object, const GValue * value)
+glade_gtk_tool_button_set_label (GObject *object, const GValue *value)
 {
   const gchar *label;
 
@@ -104,7 +104,7 @@ glade_gtk_tool_button_set_label (GObject * object, const GValue * value)
 }
 
 static void
-glade_gtk_tool_button_set_stock_id (GObject * object, const GValue * value)
+glade_gtk_tool_button_set_stock_id (GObject *object, const GValue *value)
 {
   const gchar *stock_id;
 
@@ -121,7 +121,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-glade_gtk_tool_button_set_icon_name (GObject * object, const GValue * value)
+glade_gtk_tool_button_set_icon_name (GObject *object, const GValue *value)
 {
   const gchar *name;
 
@@ -136,9 +136,10 @@ glade_gtk_tool_button_set_icon_name (GObject * object, const GValue * value)
 }
 
 void
-glade_gtk_tool_button_set_property (GladeWidgetAdaptor * adaptor,
-                                    GObject * object,
-                                    const gchar * id, const GValue * value)
+glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
+                                    GObject            *object,
+                                    const gchar        *id,
+                                    const GValue       *value)
 {
   if (!strcmp (id, "image-mode"))
     glade_gtk_tool_button_set_image_mode (object, value);
@@ -156,8 +157,8 @@ glade_gtk_tool_button_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_tool_button_parse_finished (GladeProject * project,
-                                      GladeWidget * widget)
+glade_gtk_tool_button_parse_finished (GladeProject *project,
+                                      GladeWidget  *widget)
 {
   gchar *stock_str = NULL, *icon_name = NULL;
   gint stock_id = 0;
@@ -194,11 +195,12 @@ glade_gtk_tool_button_parse_finished (GladeProject * project,
 }
 
 void
-glade_gtk_tool_button_read_widget (GladeWidgetAdaptor * adaptor,
-                                   GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_tool_button_read_widget (GladeWidgetAdaptor *adaptor,
+                                   GladeWidget        *widget,
+                                   GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */

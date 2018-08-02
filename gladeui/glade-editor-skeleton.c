@@ -50,10 +50,10 @@ static GtkBuildableIface  *parent_buildable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorSkeleton, glade_editor_skeleton, GTK_TYPE_BOX,
                          G_ADD_PRIVATE (GladeEditorSkeleton)
-			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_editor_skeleton_editable_init)
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-						glade_editor_skeleton_buildable_init));
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
+                                                glade_editor_skeleton_buildable_init));
 
 static void
 glade_editor_skeleton_init (GladeEditorSkeleton *skeleton)
@@ -91,8 +91,8 @@ glade_editor_skeleton_dispose (GObject *object)
  *                            GladeEditableIface                               *                               
  *******************************************************************************/
 static void
-glade_editor_skeleton_load (GladeEditable   *editable,
-			    GladeWidget     *widget)
+glade_editor_skeleton_load (GladeEditable *editable,
+                            GladeWidget   *widget)
 {
   GladeEditorSkeleton *skeleton = GLADE_EDITOR_SKELETON (editable);
   GladeEditorSkeletonPrivate *priv = skeleton->priv;
@@ -143,11 +143,11 @@ typedef struct
 
 static void
 editor_start_element (GMarkupParseContext  *context,
-		      const gchar          *element_name,
-		      const gchar         **names,
-		      const gchar         **values,
-		      gpointer              user_data,
-		      GError              **error)
+                      const gchar          *element_name,
+                      const gchar         **names,
+                      const gchar         **values,
+                      gpointer              user_data,
+                      GError              **error)
 {
   EditorParserData *editor_data = (EditorParserData *)user_data;
   gchar *id;
@@ -177,11 +177,11 @@ static const GMarkupParser editor_parser =
 
 static gboolean
 glade_editor_skeleton_custom_tag_start (GtkBuildable  *buildable,
-					GtkBuilder    *builder,
-					GObject       *child,
-					const gchar   *tagname,
-					GMarkupParser *parser,
-					gpointer      *data)
+                                        GtkBuilder    *builder,
+                                        GObject       *child,
+                                        const gchar   *tagname,
+                                        GMarkupParser *parser,
+                                        gpointer      *data)
 {
   if (strcmp (tagname, "child-editors") == 0)
     {
@@ -194,15 +194,15 @@ glade_editor_skeleton_custom_tag_start (GtkBuildable  *buildable,
     }
 
   return parent_buildable_iface->custom_tag_start (buildable, builder, child,
-						   tagname, parser, data);
+                                                   tagname, parser, data);
 }
 
 static void
 glade_editor_skeleton_custom_finished (GtkBuildable *buildable,
-				       GtkBuilder   *builder,
-				       GObject      *child,
-				       const gchar  *tagname,
-				       gpointer      user_data)
+                                       GtkBuilder   *builder,
+                                       GObject      *child,
+                                       const gchar  *tagname,
+                                       gpointer      user_data)
 {
   EditorParserData *editor_data = (EditorParserData *)user_data;
   GSList *l;
@@ -210,7 +210,7 @@ glade_editor_skeleton_custom_finished (GtkBuildable *buildable,
   if (strcmp (tagname, "child-editors") != 0)
     {
       parent_buildable_iface->custom_finished (buildable, builder, child,
-					       tagname, user_data);
+                                               tagname, user_data);
       return;
     }
 
@@ -222,11 +222,11 @@ glade_editor_skeleton_custom_finished (GtkBuildable *buildable,
       object = gtk_builder_get_object (builder, id);
 
       if (!GLADE_EDITABLE (object))
-	g_warning ("Object '%s' is not a GladeEditable\n",
-		   object ? G_OBJECT_TYPE_NAME (object) : "(null)");
+        g_warning ("Object '%s' is not a GladeEditable\n",
+                   object ? G_OBJECT_TYPE_NAME (object) : "(null)");
       else
-	glade_editor_skeleton_add_editor (GLADE_EDITOR_SKELETON (buildable),
-					  GLADE_EDITABLE (object));
+        glade_editor_skeleton_add_editor (GLADE_EDITOR_SKELETON (buildable),
+                                          GLADE_EDITABLE (object));
     }
 
   g_slist_free_full (editor_data->editors, g_free);
@@ -252,7 +252,7 @@ glade_editor_skeleton_new (void)
 
 void
 glade_editor_skeleton_add_editor (GladeEditorSkeleton *skeleton,
-				  GladeEditable       *editor)
+                                  GladeEditable       *editor)
 {
   GladeEditorSkeletonPrivate *priv;
 

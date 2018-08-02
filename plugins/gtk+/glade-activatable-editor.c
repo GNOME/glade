@@ -74,7 +74,7 @@ glade_activatable_editor_grab_focus (GtkWidget * widget)
 
 static void
 glade_activatable_editor_load (GladeEditable *editable,
-			       GladeWidget   *gwidget)
+                               GladeWidget   *gwidget)
 {
   GladeActivatableEditor *activatable_editor = GLADE_ACTIVATABLE_EDITOR (editable);
   GladeActivatableEditorPrivate *priv = activatable_editor->priv;

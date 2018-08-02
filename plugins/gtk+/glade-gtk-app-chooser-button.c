@@ -29,8 +29,8 @@
 
 void
 glade_gtk_app_chooser_button_post_create (GladeWidgetAdaptor *adaptor,
-					  GObject            *object, 
-					  GladeCreateReason   reason)
+                                          GObject            *object, 
+                                          GladeCreateReason   reason)
 {
   GladeWidget *gwidget;
 
@@ -43,8 +43,8 @@ glade_gtk_app_chooser_button_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 GladeEditable *
-glade_gtk_app_chooser_button_create_editable (GladeWidgetAdaptor * adaptor,
-					      GladeEditorPageType type)
+glade_gtk_app_chooser_button_create_editable (GladeWidgetAdaptor *adaptor,
+                                              GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {

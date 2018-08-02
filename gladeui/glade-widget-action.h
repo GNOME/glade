@@ -41,10 +41,10 @@ typedef struct _GWActionClass            GWActionClass;
 struct _GWActionClass
 {
   const gchar    *id;     /* The identifier of this action in the action tree */
-  gchar          *path;	  /* Full action path  */
+  gchar          *path;   /* Full action path  */
   gchar          *label;  /* A translated label to show in the UI for this action */
   gchar          *stock;  /* If set, this stock item will be shown in the UI along side
-			   * the label */
+                           * the label */
   gboolean        important;  /* If this action is important */
 
   GList          *actions;/* Recursive list of child actions */
@@ -71,10 +71,10 @@ struct _GladeWidgetActionClass
 GType          glade_widget_action_get_type      (void) G_GNUC_CONST;
 
 void           glade_widget_action_set_sensitive (GladeWidgetAction *action,
-						  gboolean           sensitive);
+                                                  gboolean           sensitive);
 gboolean       glade_widget_action_get_sensitive (GladeWidgetAction *action);
 void           glade_widget_action_set_visible   (GladeWidgetAction *action,
-						  gboolean           visible);
+                                                  gboolean           visible);
 gboolean       glade_widget_action_get_visible   (GladeWidgetAction *action);
 GList         *glade_widget_action_get_children  (GladeWidgetAction *action);
 GWActionClass *glade_widget_action_get_class     (GladeWidgetAction *action);
@@ -84,11 +84,11 @@ GWActionClass *glade_widget_action_class_new           (const gchar   *path);
 GWActionClass *glade_widget_action_class_clone         (GWActionClass *action);
 void           glade_widget_action_class_free          (GWActionClass *action);
 void           glade_widget_action_class_set_label     (GWActionClass *action,
-							const gchar   *label);
+                                                        const gchar   *label);
 void           glade_widget_action_class_set_stock     (GWActionClass *action,
-							const gchar   *stock);
+                                                        const gchar   *stock);
 void           glade_widget_action_class_set_important (GWActionClass *action,
-							gboolean       important);
+                                                        gboolean       important);
 
 
 G_END_DECLS

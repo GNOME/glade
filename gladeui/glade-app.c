@@ -417,7 +417,7 @@ static void
 glade_app_class_init (GladeAppClass *klass)
 {
   GObjectClass *object_class;
-	
+
   object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructor = glade_app_constructor;
@@ -858,13 +858,13 @@ glade_app_new (void)
 
 void
 glade_app_search_docs (const gchar *book,
-		       const gchar *page, 
-		       const gchar *search)
+                       const gchar *page, 
+                       const gchar *search)
 {
   GladeApp *app;
 
   app = glade_app_get ();
 
   g_signal_emit (G_OBJECT (app), glade_app_signals[DOC_SEARCH], 0, 
-		 book, page, search);
+                 book, page, search);
 }

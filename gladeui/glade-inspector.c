@@ -54,19 +54,19 @@
 #endif
 
 #define GLADE_INSPECTOR_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
-					    GLADE_TYPE_INSPECTOR,                 \
-			 		    GladeInspectorPrivate))
+                                            GLADE_TYPE_INSPECTOR,                 \
+                                            GladeInspectorPrivate))
 
 
 static void     search_entry_text_inserted_cb (GtkEntry       *entry,
-					       const gchar    *text,
-					       gint            length,
-					       gint           *position,
-					       GladeInspector *inspector);
+                                               const gchar    *text,
+                                               gint            length,
+                                               gint           *position,
+                                               GladeInspector *inspector);
 static void     search_entry_text_deleted_cb  (GtkEditable    *editable,
-					       gint            start_pos,
-					       gint            end_pos,
-					       GladeInspector *inspector);
+                                               gint            start_pos,
+                                               gint            end_pos,
+                                               GladeInspector *inspector);
 
 enum
 {
@@ -117,8 +117,8 @@ G_DEFINE_TYPE_WITH_PRIVATE (GladeInspector, glade_inspector, GTK_TYPE_BOX)
 
 static void
 glade_inspector_set_property (GObject      *object,
-			      guint         property_id,
-			      const GValue *value,
+                              guint         property_id,
+                              const GValue *value,
                               GParamSpec   *pspec)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
@@ -270,7 +270,7 @@ typedef struct {
 
 static void
 reduce_string (gchar *str1,
-	       const gchar *str2)
+               const gchar *str2)
 {
   gint str1len = strlen (str1);
   gint i;
@@ -279,10 +279,10 @@ reduce_string (gchar *str1,
     {
 
       if (str1[i] != str2[i] || i >= str1len)
-	{
-	  str1[i] = '\0';
-	  break;
-	}
+        {
+          str1[i] = '\0';
+          break;
+        }
     }
 
   if (str2[i] == '\0')
@@ -291,9 +291,9 @@ reduce_string (gchar *str1,
 
 static gboolean
 search_common_matches (GtkTreeModel    *model,
-		       GtkTreePath     *path,
-		       GtkTreeIter     *iter,
-		       CommonMatchData *data)
+                       GtkTreePath     *path,
+                       GtkTreeIter     *iter,
+                       CommonMatchData *data)
 {
   GladeWidget *gwidget;
   const gchar *name;
@@ -315,12 +315,12 @@ search_common_matches (GtkTreeModel    *model,
   if (match)
     {
       if (!data->first_match)
-	data->first_match = g_strdup (name);
+        data->first_match = g_strdup (name);
 
       if (data->common_text)
         reduce_string (data->common_text, name);
       else
-	data->common_text = g_strdup (name);
+        data->common_text = g_strdup (name);
     }
 
   g_object_unref (obj);
@@ -335,8 +335,8 @@ search_common_matches (GtkTreeModel    *model,
  */
 static gchar *
 get_partial_match (GladeInspector *inspector,
-		   const gchar    *search,
-		   gchar         **first_match)
+                   const gchar    *search,
+                   gchar         **first_match)
 {
   GtkTreeModel     *model = GTK_TREE_MODEL (inspector->priv->project);
   CommonMatchData   data;
@@ -420,9 +420,9 @@ search_entry_text_inserted_cb (GtkEntry       *entry,
 
 static void
 search_entry_text_deleted_cb (GtkEditable    *editable,
-			      gint            start_pos,
-			      gint            end_pos,
-			      GladeInspector *inspector)
+                              gint            start_pos,
+                              gint            end_pos,
+                              GladeInspector *inspector)
 {
   GladeInspectorPrivate *priv = inspector->priv;
 
@@ -457,7 +457,7 @@ search_entry_key_press_event_cb (GtkEntry       *entry,
           gtk_editable_set_position (GTK_EDITABLE (entry), -1);
           gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
 
-	  glade_inspector_refilter (inspector);
+          glade_inspector_refilter (inspector);
         }
       return TRUE;
     }
@@ -469,27 +469,27 @@ search_entry_key_press_event_cb (GtkEntry       *entry,
 
       if (str && (name = get_partial_match (inspector, str, &full_match)))
         {
-	  GladeWidget *widget;
+          GladeWidget *widget;
 
           inspector_set_completion_text (inspector, full_match);
-	  g_free (name);
+          g_free (name);
 
-	  g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
-	  g_signal_handlers_block_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+          g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+          g_signal_handlers_block_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
 
           gtk_entry_set_text (GTK_ENTRY (entry), priv->completion_text);
 
-	  g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
-	  g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+          g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+          g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
 
           gtk_editable_set_position (GTK_EDITABLE (entry), -1);
           gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
 
-	  glade_inspector_refilter (inspector);
+          glade_inspector_refilter (inspector);
 
-	  widget = glade_project_get_widget_by_name (priv->project, priv->completion_text);
-	  if (widget)
-	    glade_project_selection_set (priv->project, glade_widget_get_object (widget), TRUE);
+          widget = glade_project_get_widget_by_name (priv->project, priv->completion_text);
+          if (widget)
+            glade_project_selection_set (priv->project, glade_widget_get_object (widget), TRUE);
         }
       return TRUE;
     }
@@ -498,31 +498,31 @@ search_entry_key_press_event_cb (GtkEntry       *entry,
   if (event->keyval == GDK_KEY_BackSpace)
     {
       if (!priv->search_disabled && !priv->idle_complete && str && str[0])
-	{
-	  /* Now, set the text to the current completion text -1 char, and recomplete */
-	  if (priv->completion_text && priv->completion_text[0])
-	    {
-	      /* If we're not at the position of the length of the completion text, just carry on */
-	      if (!gtk_editable_get_selection_bounds (GTK_EDITABLE (priv->entry), NULL, NULL))
-		return FALSE;
+        {
+          /* Now, set the text to the current completion text -1 char, and recomplete */
+          if (priv->completion_text && priv->completion_text[0])
+            {
+              /* If we're not at the position of the length of the completion text, just carry on */
+              if (!gtk_editable_get_selection_bounds (GTK_EDITABLE (priv->entry), NULL, NULL))
+                return FALSE;
 
-	      priv->completion_text[strlen (priv->completion_text) -1] = '\0';
+              priv->completion_text[strlen (priv->completion_text) -1] = '\0';
 
-	      g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
-	      g_signal_handlers_block_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+              g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+              g_signal_handlers_block_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
 
-	      gtk_entry_set_text (GTK_ENTRY (priv->entry), priv->completion_text);
-	      gtk_editable_set_position (GTK_EDITABLE (priv->entry), -1);
+              gtk_entry_set_text (GTK_ENTRY (priv->entry), priv->completion_text);
+              gtk_editable_set_position (GTK_EDITABLE (priv->entry), -1);
 
-	      g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
-	      g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+              g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+              g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
 
-	      priv->idle_complete =
-		g_idle_add ((GSourceFunc) search_complete_idle, inspector);
+              priv->idle_complete =
+                g_idle_add ((GSourceFunc) search_complete_idle, inspector);
 
-	      return TRUE;
-	    }
-	}
+              return TRUE;
+            }
+        }
     }
 
   return FALSE;
@@ -569,7 +569,7 @@ glade_inspector_init (GladeInspector *inspector)
   inspector->priv = priv = glade_inspector_get_instance_private (inspector);
 
   gtk_orientable_set_orientation (GTK_ORIENTABLE (inspector),
-				  GTK_ORIENTATION_VERTICAL);
+                                  GTK_ORIENTATION_VERTICAL);
 
   priv->project = NULL;
 
@@ -842,16 +842,16 @@ button_press_cb (GtkWidget      *widget,
 
 static void
 glade_inspector_warning_cell_data_func (GtkTreeViewColumn *column,
-					GtkCellRenderer   *renderer,
-					GtkTreeModel      *model,
-					GtkTreeIter       *iter,
-					gpointer           data)
+                                        GtkCellRenderer   *renderer,
+                                        GtkTreeModel      *model,
+                                        GtkTreeIter       *iter,
+                                        gpointer           data)
 {
   gchar *warning = NULL;
 
   gtk_tree_model_get (model, iter,
-		      GLADE_PROJECT_MODEL_COLUMN_WARNING, &warning,
-		      -1);
+                      GLADE_PROJECT_MODEL_COLUMN_WARNING, &warning,
+                      -1);
 
   g_object_set (renderer, "visible", warning != NULL, NULL);
 
@@ -860,24 +860,24 @@ glade_inspector_warning_cell_data_func (GtkTreeViewColumn *column,
 
 static void
 glade_inspector_name_cell_data_func (GtkTreeViewColumn *column,
-				     GtkCellRenderer   *renderer,
-				     GtkTreeModel      *model,
-				     GtkTreeIter       *iter,
-				     gpointer           data)
+                                     GtkCellRenderer   *renderer,
+                                     GtkTreeModel      *model,
+                                     GtkTreeIter       *iter,
+                                     gpointer           data)
 {
   GladeWidget *gwidget;
   GObject *obj;
 
   gtk_tree_model_get (model, iter,
-		      GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
-		      -1);
+                      GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
+                      -1);
 
   gwidget = glade_widget_get_from_gobject (obj);
 
   g_object_set (renderer, "text", 
-		(glade_widget_has_name (gwidget)) ? 
-		  glade_widget_get_display_name (gwidget) : NULL,
-		NULL);
+                (glade_widget_has_name (gwidget)) ? 
+                  glade_widget_get_display_name (gwidget) : NULL,
+                NULL);
 
   g_object_unref (obj);
 }
@@ -885,17 +885,17 @@ glade_inspector_name_cell_data_func (GtkTreeViewColumn *column,
 
 static void
 glade_inspector_detail_cell_data_func (GtkTreeViewColumn *column,
-				       GtkCellRenderer   *renderer,
-				       GtkTreeModel      *model,
-				       GtkTreeIter       *iter,
-				       gpointer           data)
+                                       GtkCellRenderer   *renderer,
+                                       GtkTreeModel      *model,
+                                       GtkTreeIter       *iter,
+                                       gpointer           data)
 {
   gchar *type_name = NULL, *detail = NULL;
 
   gtk_tree_model_get (model, iter,
-		      GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME, &type_name,
-		      GLADE_PROJECT_MODEL_COLUMN_MISC, &detail,
-		      -1);
+                      GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME, &type_name,
+                      GLADE_PROJECT_MODEL_COLUMN_MISC, &detail,
+                      -1);
 
   if (detail)
     {
@@ -939,19 +939,19 @@ add_columns (GtkTreeView *view)
   /* Warning cell */
   renderer = gtk_cell_renderer_pixbuf_new ();
   g_object_set (renderer,
-		"stock-id", "gtk-dialog-warning",
-		"xpad", 2,
-		NULL);
+                "stock-id", "gtk-dialog-warning",
+                "xpad", 2,
+                NULL);
   gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
   gtk_tree_view_column_set_cell_data_func (column, renderer,
-					   glade_inspector_warning_cell_data_func,
-					   NULL, NULL);
+                                           glade_inspector_warning_cell_data_func,
+                                           NULL, NULL);
 
   /* Class Icon */
   renderer = gtk_cell_renderer_pixbuf_new ();
   g_object_set (renderer,
-		"xpad", 2,
-		NULL);
+                "xpad", 2,
+                NULL);
   gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
   gtk_tree_view_column_set_attributes (column,
                                        renderer,
@@ -967,8 +967,8 @@ add_columns (GtkTreeView *view)
                                        "text", GLADE_PROJECT_MODEL_COLUMN_NAME,
                                        NULL);
   gtk_tree_view_column_set_cell_data_func (column, renderer,
-					   glade_inspector_name_cell_data_func,
-					   NULL, NULL);
+                                           glade_inspector_name_cell_data_func,
+                                           NULL, NULL);
 
   /* Padding */
   renderer = gtk_cell_renderer_text_new ();
@@ -979,14 +979,14 @@ add_columns (GtkTreeView *view)
   renderer = gtk_cell_renderer_text_new ();
   g_object_set (G_OBJECT (renderer),
                 "style", PANGO_STYLE_ITALIC,
-		"foreground", "Gray",
-		"ellipsize", PANGO_ELLIPSIZE_END,
-		NULL);
+                "foreground", "Gray",
+                "ellipsize", PANGO_ELLIPSIZE_END,
+                NULL);
 
   gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
   gtk_tree_view_column_set_cell_data_func (column, renderer,
-					   glade_inspector_detail_cell_data_func,
-					   NULL, NULL);
+                                           glade_inspector_detail_cell_data_func,
+                                           NULL, NULL);
 
   gtk_tree_view_append_column (view, column);
   gtk_tree_view_set_headers_visible (view, FALSE);

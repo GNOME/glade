@@ -522,18 +522,18 @@ catalogs_from_path (GList *catalogs, const gchar *path)
           if (!g_str_has_suffix (filename, ".xml"))
             continue;
 
-	  /* Special case, ignore gresource files (which are present
-	   * while running tests)
-	   */
-	  if (g_str_has_suffix (filename, ".gresource.xml"))
-	    continue;
+          /* Special case, ignore gresource files (which are present
+           * while running tests)
+           */
+          if (g_str_has_suffix (filename, ".gresource.xml"))
+            continue;
 
-	  /* If we're running in the bundle, don't ever try to load
-	   * anything except the GTK+ catalog
-	   */
-	  if (g_getenv (GLADE_ENV_BUNDLED) != NULL &&
-	      strcmp (filename, "gtk+.xml") != 0)
-	    continue;
+          /* If we're running in the bundle, don't ever try to load
+           * anything except the GTK+ catalog
+           */
+          if (g_getenv (GLADE_ENV_BUNDLED) != NULL &&
+              strcmp (filename, "gtk+.xml") != 0)
+            continue;
 
           catalog_filename = g_build_filename (path, filename, NULL);
           catalog = catalog_open (catalog_filename);
@@ -574,7 +574,7 @@ glade_catalog_add_path (const gchar *path)
   g_return_if_fail (path != NULL);
 
   if (g_list_find_custom (catalog_paths, path, (GCompareFunc) g_strcmp0) == NULL)
-	catalog_paths = g_list_append (catalog_paths, g_strdup (path));
+    catalog_paths = g_list_append (catalog_paths, g_strdup (path));
 }
 
 /**
@@ -590,14 +590,14 @@ glade_catalog_remove_path (const gchar *path)
   GList *l;
   
   if (path == NULL)
-	{
-	  g_list_free_full (catalog_paths, g_free);
-	  catalog_paths = NULL;
-	}
+    {
+      g_list_free_full (catalog_paths, g_free);
+      catalog_paths = NULL;
+    }
   else if ((l = g_list_find_custom (catalog_paths, path, (GCompareFunc) g_strcmp0)))
-	{
-	  catalog_paths = g_list_remove_link (catalog_paths, l); 
-	}
+    {
+      catalog_paths = g_list_remove_link (catalog_paths, l); 
+    }
 }
 
 /**
@@ -685,17 +685,17 @@ glade_catalog_load_all (void)
 
       /* Dont print missing icons in unit tests */
       if (glade_widget_adaptor_get_missing_icon (adaptor) &&
-	  g_getenv (GLADE_ENV_TESTING) == NULL)
+          g_getenv (GLADE_ENV_TESTING) == NULL)
         {
           if (!icon_warning)
             icon_warning = g_string_new ("Glade needs artwork; "
                                          "a default icon will be used for "
                                          "the following classes:");
 
-	  g_string_append_printf (icon_warning,
-				  "\n\t%s\tneeds an icon named '%s'",
-				  glade_widget_adaptor_get_name (adaptor), 
-				  glade_widget_adaptor_get_missing_icon (adaptor));
+          g_string_append_printf (icon_warning,
+                                  "\n\t%s\tneeds an icon named '%s'",
+                                  glade_widget_adaptor_get_name (adaptor), 
+                                  glade_widget_adaptor_get_missing_icon (adaptor));
         }
     }
 

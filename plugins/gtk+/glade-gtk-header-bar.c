@@ -67,8 +67,8 @@ glade_gtk_header_bar_get_num_children (GObject *object)
 }
 
 static void
-glade_gtk_header_bar_parse_finished (GladeProject * project,
-                                     GObject * object)
+glade_gtk_header_bar_parse_finished (GladeProject *project,
+                                     GObject      *object)
 {
   GladeWidget *gbox;
 
@@ -79,8 +79,8 @@ glade_gtk_header_bar_parse_finished (GladeProject * project,
 
 void
 glade_gtk_header_bar_post_create (GladeWidgetAdaptor *adaptor,
-                                  GObject *container,
-                                  GladeCreateReason reason)
+                                  GObject            *container,
+                                  GladeCreateReason   reason)
 {
   GladeWidget *parent = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (parent);
@@ -99,8 +99,8 @@ glade_gtk_header_bar_post_create (GladeWidgetAdaptor *adaptor,
 
 void
 glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
-                                      GObject * object,
-                                      const gchar *action_path)
+                                      GObject            *object,
+                                      const gchar        *action_path)
 {
   if (!strcmp (action_path, "add_slot"))
     {
@@ -123,10 +123,10 @@ glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor * adaptor,
-                                            GObject * container,
-                                            GObject * object,
-                                            const gchar * action_path)
+glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor *adaptor,
+                                            GObject            *container,
+                                            GObject            *object,
+                                            const gchar        *action_path)
 {
   if (strcmp (action_path, "remove_slot") == 0)
     {
@@ -162,10 +162,10 @@ glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_header_bar_get_property (GladeWidgetAdaptor * adaptor,
-                                   GObject * object,
-                                   const gchar * id,
-                                   GValue * value)
+glade_gtk_header_bar_get_property (GladeWidgetAdaptor *adaptor,
+                                   GObject            *object,
+                                   const gchar        *id,
+                                   GValue             *value)
 {
   if (!strcmp (id, "use-custom-title"))
     {
@@ -182,8 +182,8 @@ glade_gtk_header_bar_get_property (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_header_bar_set_size (GObject * object,
-                               const GValue * value)
+glade_gtk_header_bar_set_size (GObject      *object,
+                               const GValue *value)
 {
   GList *l, *next, *children;
   GtkWidget *child;
@@ -236,7 +236,7 @@ glade_gtk_header_bar_set_size (GObject * object,
 
 void
 glade_gtk_header_bar_set_use_custom_title (GObject *object,
-					   gboolean use_custom_title)
+                                           gboolean use_custom_title)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GtkWidget *child;
@@ -245,10 +245,10 @@ glade_gtk_header_bar_set_use_custom_title (GObject *object,
     {
       child = gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object));
       if (!child)
-	{
-	  child = glade_placeholder_new ();
-	  g_object_set_data (G_OBJECT (child), "special-child-type", "title");
-	}
+        {
+          child = glade_placeholder_new ();
+          g_object_set_data (G_OBJECT (child), "special-child-type", "title");
+        }
     }
   else
     child = NULL;
@@ -261,11 +261,11 @@ glade_gtk_header_bar_set_use_custom_title (GObject *object,
 
       list = glade_placeholder_packing_actions (GLADE_PLACEHOLDER (child));
       for (l = list; l; l = l->next)
-	{
-	  GladeWidgetAction *gwa = l->data;
-	  if (!strcmp (glade_widget_action_get_class (gwa)->id, "remove_slot"))
-	    glade_widget_action_set_visible (gwa, FALSE);
-	}
+        {
+          GladeWidgetAction *gwa = l->data;
+          if (!strcmp (glade_widget_action_get_class (gwa)->id, "remove_slot"))
+            glade_widget_action_set_visible (gwa, FALSE);
+        }
     }
 
   if (use_custom_title)
@@ -283,10 +283,10 @@ glade_gtk_header_bar_set_use_custom_title (GObject *object,
 }
 
 void
-glade_gtk_header_bar_set_property (GladeWidgetAdaptor * adaptor,
-                                   GObject * object,
-                                   const gchar * id,
-                                   const GValue * value)
+glade_gtk_header_bar_set_property (GladeWidgetAdaptor *adaptor,
+                                   GObject            *object,
+                                   const gchar        *id,
+                                   const GValue       *value)
 {
   if (!strcmp (id, "use-custom-title"))
     glade_gtk_header_bar_set_use_custom_title (object, g_value_get_boolean (value));
@@ -300,9 +300,9 @@ glade_gtk_header_bar_set_property (GladeWidgetAdaptor * adaptor,
        * when clicked.
        */
       glade_widget_property_set_sensitive (gwidget, "decoration-layout",
-					   g_value_get_boolean (value),
-					   _("The decoration layout does not apply to header bars "
-					     "which do no show window controls"));
+                                           g_value_get_boolean (value),
+                                           _("The decoration layout does not apply to header bars "
+                                             "which do no show window controls"));
     }
   else if (!strcmp (id, "size"))
     glade_gtk_header_bar_set_size (object, value);
@@ -312,8 +312,8 @@ glade_gtk_header_bar_set_property (GladeWidgetAdaptor * adaptor,
 
 void
 glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
-                                GObject *parent,
-                                GObject *child)
+                                GObject            *parent,
+                                GObject            *child)
 {
   GladeWidget *gbox, *gchild;
   gint size;
@@ -326,8 +326,8 @@ glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
   special_child_type = g_object_get_data (child, "special-child-type");
 
   d(g_message ("Add %s %p (special: %s)",
-	       GLADE_IS_PLACEHOLDER (child) ? "placeholder" : "child",
-	       child, special_child_type));
+               GLADE_IS_PLACEHOLDER (child) ? "placeholder" : "child",
+               child, special_child_type));
 
   if (special_child_type && !strcmp (special_child_type, "title"))
     {
@@ -346,9 +346,9 @@ glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_header_bar_remove_child (GladeWidgetAdaptor * adaptor,
-                                   GObject * object,
-                                   GObject * child)
+glade_gtk_header_bar_remove_child (GladeWidgetAdaptor *adaptor,
+                                   GObject            *object,
+                                   GObject            *child)
 {
   GladeWidget *gbox;
   gint size;
@@ -357,8 +357,8 @@ glade_gtk_header_bar_remove_child (GladeWidgetAdaptor * adaptor,
   special_child_type = g_object_get_data (child, "special-child-type");
 
   d(g_message ("Remove %s %p (special: %s)", 
-	       GLADE_IS_PLACEHOLDER (child) ? "placeholder" : "child",
-	       child, special_child_type));
+               GLADE_IS_PLACEHOLDER (child) ? "placeholder" : "child",
+               child, special_child_type));
 
   if (special_child_type && !strcmp (special_child_type, "title"))
     {
@@ -383,10 +383,10 @@ glade_gtk_header_bar_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_header_bar_replace_child (GladeWidgetAdaptor * adaptor,
-                                    GObject * container,
-                                    GObject * current,
-                                    GObject * new_widget)
+glade_gtk_header_bar_replace_child (GladeWidgetAdaptor *adaptor,
+                                    GObject            *container,
+                                    GObject            *current,
+                                    GObject            *new_widget)
 {
   GladeWidget *gbox;
   gchar *special_child_type;
@@ -396,10 +396,10 @@ glade_gtk_header_bar_replace_child (GladeWidgetAdaptor * adaptor,
     g_object_get_data (G_OBJECT (current), "special-child-type");
 
   d(g_message ("Replace %s %p (special: %s) with %s %p",
-	       GLADE_IS_PLACEHOLDER (current) ? "placeholder" : "child",
-	       current, special_child_type,
-	       GLADE_IS_PLACEHOLDER (new_widget) ? "placeholder" : "child",
-	       new_widget));
+               GLADE_IS_PLACEHOLDER (current) ? "placeholder" : "child",
+               current, special_child_type,
+               GLADE_IS_PLACEHOLDER (new_widget) ? "placeholder" : "child",
+               new_widget));
 
   if (special_child_type && !strcmp (special_child_type, "title"))
     {
@@ -484,10 +484,10 @@ glade_gtk_header_bar_get_children (GladeWidgetAdaptor *adaptor,
 
 void
 glade_gtk_header_bar_child_set_property (GladeWidgetAdaptor *adaptor,
-                                         GObject *container,
-                                         GObject *child,
-                                         const gchar *property_name,
-                                         const GValue *value)
+                                         GObject            *container,
+                                         GObject            *child,
+                                         const gchar        *property_name,
+                                         const GValue       *value)
 {
   GladeWidget *gbox, *gchild, *gchild_iter;
   GList *children, *list;
@@ -586,8 +586,8 @@ glade_gtk_header_bar_child_set_property (GladeWidgetAdaptor *adaptor,
 
 
 GladeEditable *
-glade_gtk_header_bar_create_editable (GladeWidgetAdaptor * adaptor,
-                                      GladeEditorPageType  type)
+glade_gtk_header_bar_create_editable (GladeWidgetAdaptor *adaptor,
+                                      GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_header_bar_editor_new ();

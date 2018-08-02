@@ -39,7 +39,7 @@
 #define CSD_DISABLED_MESSAGE _("This property does not apply to client-side decorated windows")
 
 static void
-glade_gtk_window_parse_finished (GladeProject * project, GObject * object)
+glade_gtk_window_parse_finished (GladeProject *project, GObject *object)
 {
   GtkWidget *titlebar = gtk_window_get_titlebar(GTK_WINDOW (object));
   glade_widget_property_set (glade_widget_get_from_gobject (object), "use-csd",
@@ -62,8 +62,9 @@ glade_gtk_window_ensure_titlebar_placeholder (GObject *window)
 }
 
 void
-glade_gtk_window_post_create (GladeWidgetAdaptor * adaptor,
-                              GObject * object, GladeCreateReason reason)
+glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              GladeCreateReason   reason)
 {
   GladeWidget *parent = glade_widget_get_from_gobject (object);
   GladeProject *project = glade_widget_get_project (parent);
@@ -93,7 +94,7 @@ glade_gtk_window_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_window_read_accel_groups (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_window_read_accel_groups (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *groups_node;
   GladeProperty *property;
@@ -143,11 +144,12 @@ glade_gtk_window_read_accel_groups (GladeWidget * widget, GladeXmlNode * node)
 }
 
 void
-glade_gtk_window_read_widget (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_window_read_widget (GladeWidgetAdaptor *adaptor,
+                              GladeWidget        *widget,
+                              GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -163,9 +165,9 @@ glade_gtk_window_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_window_write_accel_groups (GladeWidget * widget,
-                                     GladeXmlContext * context,
-                                     GladeXmlNode * node)
+glade_gtk_window_write_accel_groups (GladeWidget     *widget,
+                                     GladeXmlContext *context,
+                                     GladeXmlNode    *node)
 {
   GladeXmlNode *groups_node, *group_node;
   GList *groups = NULL, *list;
@@ -194,9 +196,10 @@ glade_gtk_window_write_accel_groups (GladeWidget * widget,
 
 
 void
-glade_gtk_window_write_widget (GladeWidgetAdaptor * adaptor,
-                               GladeWidget * widget,
-                               GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_window_write_widget (GladeWidgetAdaptor *adaptor,
+                               GladeWidget        *widget,
+                               GladeXmlContext    *context,
+                               GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
         glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
@@ -210,8 +213,8 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditable *
-glade_gtk_window_create_editable (GladeWidgetAdaptor * adaptor,
-				  GladeEditorPageType type)
+glade_gtk_window_create_editable (GladeWidgetAdaptor *adaptor,
+                                  GladeEditorPageType type)
 {
   GladeEditable *editable;
 
@@ -226,17 +229,17 @@ glade_gtk_window_create_editable (GladeWidgetAdaptor * adaptor,
       GType window_type = glade_widget_adaptor_get_object_type (adaptor);
 
       if (g_type_is_a (window_type, GTK_TYPE_ABOUT_DIALOG))
-	editable = (GladeEditable *) glade_about_dialog_editor_new ();
+        editable = (GladeEditable *) glade_about_dialog_editor_new ();
       else if (g_type_is_a (window_type, GTK_TYPE_FILE_CHOOSER_DIALOG))
-	editable = (GladeEditable *) glade_file_chooser_dialog_editor_new ();
+        editable = (GladeEditable *) glade_file_chooser_dialog_editor_new ();
       else if (g_type_is_a (window_type, GTK_TYPE_FONT_CHOOSER_DIALOG))
-	editable = (GladeEditable *) glade_font_chooser_dialog_editor_new ();
+        editable = (GladeEditable *) glade_font_chooser_dialog_editor_new ();
       else if (g_type_is_a (window_type, GTK_TYPE_RECENT_CHOOSER_DIALOG))
-	editable = (GladeEditable *) glade_recent_chooser_dialog_editor_new ();
+        editable = (GladeEditable *) glade_recent_chooser_dialog_editor_new ();
       else if (g_type_is_a (window_type, GTK_TYPE_MESSAGE_DIALOG))
-	editable = (GladeEditable *) glade_message_dialog_editor_new ();
+        editable = (GladeEditable *) glade_message_dialog_editor_new ();
       else
-	editable = (GladeEditable *) glade_window_editor_new ();
+        editable = (GladeEditable *) glade_window_editor_new ();
     }
   else
     editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
@@ -245,9 +248,10 @@ glade_gtk_window_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
-			       GObject * object,
-			       const gchar * id, const GValue * value)
+glade_gtk_window_set_property (GladeWidgetAdaptor *adaptor,
+                               GObject            *object,
+                               const gchar        *id,
+                               const GValue       *value)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 
@@ -257,9 +261,9 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
       glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE, NOT_SELECTED_MSG);
 
       if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
+        glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
       else
-	glade_widget_property_set_sensitive (gwidget, "icon", TRUE, NULL);
+        glade_widget_property_set_sensitive (gwidget, "icon", TRUE, NULL);
     }
   else if (!strcmp (id, "use-csd"))
     {
@@ -291,9 +295,10 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_window_replace_child (GladeWidgetAdaptor * adaptor,
-                               GtkWidget * container,
-                               GtkWidget * current, GtkWidget * new_widget)
+glade_gtk_window_replace_child (GladeWidgetAdaptor *adaptor,
+                                GtkWidget          *container,
+                                GtkWidget          *current,
+                                GtkWidget          *new_widget)
 {
   gchar *special_child_type;
 
@@ -315,8 +320,9 @@ glade_gtk_window_replace_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_window_add_child (GladeWidgetAdaptor * adaptor,
-                           GObject * object, GObject * child)
+glade_gtk_window_add_child (GladeWidgetAdaptor *adaptor,
+                            GObject            *object,
+                            GObject            *child)
 {
   GtkWidget *bin_child;
   gchar *special_child_type;
@@ -347,8 +353,9 @@ glade_gtk_window_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_window_remove_child (GladeWidgetAdaptor * adaptor,
-                              GObject * object, GObject * child)
+glade_gtk_window_remove_child (GladeWidgetAdaptor *adaptor,
+                               GObject            *object,
+                               GObject            *child)
 {
   gchar *special_child_type;
   GtkWidget *placeholder;

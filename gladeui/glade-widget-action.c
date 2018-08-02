@@ -107,7 +107,7 @@ glade_widget_action_constructor (GType                  type,
                                    NULL);
 
       action->priv->actions = g_list_prepend (action->priv->actions,
-					      GLADE_WIDGET_ACTION (obj));
+                                              GLADE_WIDGET_ACTION (obj));
     }
 
   action->priv->actions = g_list_reverse (action->priv->actions);
@@ -231,7 +231,7 @@ glade_widget_action_get_sensitive (GladeWidgetAction *action)
 
 void
 glade_widget_action_set_visible (GladeWidgetAction *action,
-				 gboolean           visible)
+                                 gboolean           visible)
 {
   g_return_if_fail (GLADE_IS_WIDGET_ACTION (action));
 
@@ -348,7 +348,7 @@ glade_widget_action_class_free (GWActionClass *action)
 
 void
 glade_widget_action_class_set_label (GWActionClass *action,
-				     const gchar   *label)
+                                     const gchar   *label)
 {
   g_free (action->label);
   action->label = g_strdup (label);
@@ -356,7 +356,7 @@ glade_widget_action_class_set_label (GWActionClass *action,
 
 void
 glade_widget_action_class_set_stock (GWActionClass *action,
-				     const gchar   *stock)
+                                     const gchar   *stock)
 {
   g_free (action->stock);
   action->stock = g_strdup (stock);
@@ -364,7 +364,7 @@ glade_widget_action_class_set_stock (GWActionClass *action,
 
 void
 glade_widget_action_class_set_important (GWActionClass *action,
-					 gboolean       important)
+                                         gboolean       important)
 {
   action->important = important;
 }

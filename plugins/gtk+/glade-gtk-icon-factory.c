@@ -38,8 +38,9 @@
 #define GLADE_TAG_SIZE      "size"
 
 void
-glade_gtk_icon_factory_post_create (GladeWidgetAdaptor * adaptor,
-                                    GObject * object, GladeCreateReason reason)
+glade_gtk_icon_factory_post_create (GladeWidgetAdaptor *adaptor,
+                                    GObject            *object,
+                                    GladeCreateReason   reason)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_icon_factory_add_default (GTK_ICON_FACTORY (object));
@@ -47,8 +48,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 void
-glade_gtk_icon_factory_destroy_object (GladeWidgetAdaptor * adaptor,
-				       GObject *object)
+glade_gtk_icon_factory_destroy_object (GladeWidgetAdaptor *adaptor,
+                                       GObject            *object)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_icon_factory_remove_default (GTK_ICON_FACTORY (object));
@@ -58,7 +59,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-glade_gtk_icon_factory_read_sources (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_icon_factory_read_sources (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeIconSources *sources;
   GtkIconSource *source;
@@ -192,11 +193,12 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 void
-glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor * adaptor,
-                                    GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor *adaptor,
+                                    GladeWidget        *widget,
+                                    GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in any normal properties.. */
@@ -212,7 +214,7 @@ typedef struct
 } SourceWriteTab;
 
 static void
-write_icon_sources (gchar * icon_name, GList * sources, SourceWriteTab * tab)
+write_icon_sources (gchar *icon_name, GList *sources, SourceWriteTab *tab)
 {
   GladeXmlNode *source_node;
   GtkIconSource *source;
@@ -280,9 +282,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 
 static void
-glade_gtk_icon_factory_write_sources (GladeWidget * widget,
-                                      GladeXmlContext * context,
-                                      GladeXmlNode * node)
+glade_gtk_icon_factory_write_sources (GladeWidget     *widget,
+                                      GladeXmlContext *context,
+                                      GladeXmlNode    *node)
 {
   GladeXmlNode *sources_node;
   GladeIconSources *sources = NULL;
@@ -307,13 +309,13 @@ glade_gtk_icon_factory_write_sources (GladeWidget * widget,
 
 
 void
-glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor * adaptor,
-                                     GladeWidget * widget,
-                                     GladeXmlContext * context,
-                                     GladeXmlNode * node)
+glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor *adaptor,
+                                     GladeWidget        *widget,
+                                     GladeXmlContext    *context,
+                                     GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and write all the normal properties.. */
@@ -323,8 +325,7 @@ glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-apply_icon_sources (gchar * icon_name,
-                    GList * sources, GtkIconFactory * factory)
+apply_icon_sources (gchar *icon_name, GList *sources, GtkIconFactory *factory)
 {
   GtkIconSource *source;
   GtkIconSet *set;
@@ -344,7 +345,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-glade_gtk_icon_factory_set_sources (GObject * object, const GValue * value)
+glade_gtk_icon_factory_set_sources (GObject *object, const GValue *value)
 {
   GladeIconSources *sources = g_value_get_boxed (value);
   if (sources)
@@ -354,10 +355,10 @@ glade_gtk_icon_factory_set_sources (GObject * object, const GValue * value)
 
 
 void
-glade_gtk_icon_factory_set_property (GladeWidgetAdaptor * adaptor,
-                                     GObject * object,
-                                     const gchar * property_name,
-                                     const GValue * value)
+glade_gtk_icon_factory_set_property (GladeWidgetAdaptor *adaptor,
+                                     GObject            *object,
+                                     const gchar        *property_name,
+                                     const GValue       *value)
 {
   if (strcmp (property_name, "sources") == 0)
     {
@@ -370,7 +371,7 @@ glade_gtk_icon_factory_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-serialize_icon_sources (gchar * icon_name, GList * sources, GString * string)
+serialize_icon_sources (gchar *icon_name, GList *sources, GString *string)
 {
   GList *l;
 
@@ -424,9 +425,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 gchar *
-glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor * adaptor,
-                                          GladePropertyClass * klass,
-                                          const GValue * value)
+glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
+                                          GladePropertyClass *klass,
+                                          const GValue       *value)
 {
   GString *string;
   GParamSpec *pspec;
@@ -452,9 +453,9 @@ glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor * adaptor,
 
 
 GladeEditorProperty *
-glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor * adaptor,
-                                     GladePropertyClass * klass,
-                                     gboolean use_command)
+glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
+                                     GladePropertyClass *klass,
+                                     gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
@@ -472,7 +473,7 @@ glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditable *
-glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor *adaptor,
                                         GladeEditorPageType type)
 {
   GladeEditable *editable;

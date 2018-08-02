@@ -28,11 +28,11 @@
 G_BEGIN_DECLS
 
 
-#define GLADE_TYPE_CELL_RENDERER_ICON			(glade_cell_renderer_icon_get_type ())
-#define GLADE_CELL_RENDERER_ICON(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIcon))
-#define GLADE_CELL_RENDERER_ICON_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIconClass))
-#define GLADE_IS_CELL_RENDERER_ICON(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_CELL_RENDERER_ICON))
-#define GLADE_IS_CELL_RENDERER_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_CELL_RENDERER_ICON))
+#define GLADE_TYPE_CELL_RENDERER_ICON                   (glade_cell_renderer_icon_get_type ())
+#define GLADE_CELL_RENDERER_ICON(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIcon))
+#define GLADE_CELL_RENDERER_ICON_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIconClass))
+#define GLADE_IS_CELL_RENDERER_ICON(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_CELL_RENDERER_ICON))
+#define GLADE_IS_CELL_RENDERER_ICON_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_CELL_RENDERER_ICON))
 #define GLADE_CELL_RENDERER_ICON_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIconClass))
 
 typedef struct _GladeCellRendererIcon        GladeCellRendererIcon;
@@ -51,7 +51,7 @@ struct _GladeCellRendererIconClass
   GtkCellRendererPixbufClass parent_class;
 
   void (* activate) (GladeCellRendererIcon *cell_renderer_icon,
-		     const gchar           *path);
+                     const gchar           *path);
 };
 
 GType            glade_cell_renderer_icon_get_type       (void) G_GNUC_CONST;
@@ -59,11 +59,11 @@ GtkCellRenderer *glade_cell_renderer_icon_new            (void);
 
 gboolean        glade_cell_renderer_icon_get_active      (GladeCellRendererIcon *icon);
 void            glade_cell_renderer_icon_set_active      (GladeCellRendererIcon *icon,
-							  gboolean               setting);
+                                                          gboolean               setting);
 
 gboolean        glade_cell_renderer_icon_get_activatable (GladeCellRendererIcon *icon);
 void            glade_cell_renderer_icon_set_activatable (GladeCellRendererIcon *icon,
-							  gboolean               setting);
+                                                          gboolean               setting);
 
 
 G_END_DECLS

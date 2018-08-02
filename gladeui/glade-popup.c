@@ -53,7 +53,7 @@ static void
 glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 {
   glade_project_selection_set (glade_widget_get_project (widget),
-			       glade_widget_get_object (widget), TRUE);
+                               glade_widget_get_object (widget), TRUE);
 }
 
 typedef struct {
@@ -203,8 +203,8 @@ glade_popup_menuitem_packing_activated (GtkMenuItem *item,
     {
       parent = glade_widget_get_parent (widget);
       glade_widget_adaptor_child_action_activate (glade_widget_get_adaptor (parent),
-						  glade_widget_get_object (parent),
-						  glade_widget_get_object (widget), action_path);
+                                                  glade_widget_get_object (parent),
+                                                  glade_widget_get_object (widget), action_path);
     }
 }
 
@@ -243,7 +243,7 @@ glade_popup_action_populate_menu_real (GtkWidget   *menu,
       GtkWidget         *submenu = NULL;
 
       if (!glade_widget_action_get_visible (action))
-	continue;
+        continue;
 
       if (children)
         {
@@ -306,7 +306,7 @@ glade_popup_action_populate_menu (GtkWidget         *menu,
       GList         *children = glade_widget_action_get_children (action);
       
       if (glade_widget_get_action (widget, aclass->path) &&
-	  glade_widget_action_get_visible (action))
+          glade_widget_action_get_visible (action))
         return glade_popup_action_populate_menu_real (menu,
                                                       widget,
                                                       children,
@@ -315,7 +315,7 @@ glade_popup_action_populate_menu (GtkWidget         *menu,
                                                       widget);
 
       if (glade_widget_get_pack_action (widget, aclass->path) &&
-	  glade_widget_action_get_visible (action))
+          glade_widget_action_get_visible (action))
         return glade_popup_action_populate_menu_real (menu,
                                                       glade_widget_get_parent
                                                       (widget), children,
@@ -343,9 +343,9 @@ glade_popup_action_populate_menu (GtkWidget         *menu,
         }
 
       n += glade_popup_action_populate_menu_real 
-	(menu, glade_widget_get_parent (widget),
-	 glade_widget_get_pack_actions (widget),
-	 G_CALLBACK (glade_popup_menuitem_packing_activated), widget);
+        (menu, glade_widget_get_parent (widget),
+         glade_widget_get_pack_actions (widget),
+         G_CALLBACK (glade_popup_menuitem_packing_activated), widget);
     }
 
   return n;
@@ -354,8 +354,8 @@ glade_popup_action_populate_menu (GtkWidget         *menu,
 static GtkWidget *
 glade_popup_create_menu (GladeWidget      *widget,
                          GladePlaceholder *placeholder, 
-			 GladeProject     *project,
-			 gboolean          packing)
+                         GladeProject     *project,
+                         gboolean          packing)
 {
   GtkWidget          *popup_menu;
   GtkWidget          *separator;
@@ -376,12 +376,12 @@ glade_popup_create_menu (GladeWidget      *widget,
       data->placeholder = placeholder;
       
       g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
-			      data, (GDestroyNotify)g_free);
+                              data, (GDestroyNotify)g_free);
 
       glade_popup_append_item (popup_menu, _("_Add widget here"),
                                data->parent != NULL,
-			       glade_popup_widget_add_cb,
-			       data);
+                               glade_popup_widget_add_cb,
+                               data);
 
       glade_popup_append_item (popup_menu, _("Add widget as _toplevel"), TRUE,
                                glade_popup_root_add_cb, data);
@@ -449,7 +449,7 @@ glade_popup_create_menu (GladeWidget      *widget,
         }
     }
   else if (widget && (glade_widget_get_actions (widget) || 
-		      (packing && glade_widget_get_pack_actions (widget))))
+                      (packing && glade_widget_get_pack_actions (widget))))
     {
       GtkWidget *separator = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -502,7 +502,7 @@ glade_popup_placeholder_pop (GladePlaceholder *placeholder,
   widget = glade_placeholder_get_parent (placeholder);
 
   popup_menu = glade_popup_create_menu (widget, placeholder, 
-					glade_widget_get_project (widget), TRUE);
+                                        glade_widget_get_project (widget), TRUE);
 
   if (event)
     {
@@ -521,8 +521,8 @@ glade_popup_placeholder_pop (GladePlaceholder *placeholder,
 
 void
 glade_popup_palette_pop (GladePalette       *palette, 
-			 GladeWidgetAdaptor *adaptor, 
-			 GdkEventButton     *event)
+                         GladeWidgetAdaptor *adaptor, 
+                         GdkEventButton     *event)
 {
   GladeProject *project;
   GtkWidget *popup_menu;
@@ -540,7 +540,7 @@ glade_popup_palette_pop (GladePalette       *palette,
   data->adaptor = adaptor;
   data->project = project;
   g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
-			  data, (GDestroyNotify)g_free);
+                          data, (GDestroyNotify)g_free);
 
   glade_popup_append_item (popup_menu, _("Add widget as _toplevel"), TRUE,
                            glade_popup_root_add_cb, data);

@@ -26,12 +26,12 @@
 #include "glade-treeview-editor.h"
 
 
-static void glade_tree_view_editor_finalize (GObject * object);
+static void glade_tree_view_editor_finalize (GObject *object);
 
-static void glade_tree_view_editor_editable_init (GladeEditableIface * iface);
+static void glade_tree_view_editor_editable_init (GladeEditableIface *iface);
 
-static void glade_tree_view_editor_realize (GtkWidget * widget);
-static void glade_tree_view_editor_grab_focus (GtkWidget * widget);
+static void glade_tree_view_editor_realize (GtkWidget *widget);
+static void glade_tree_view_editor_grab_focus (GtkWidget *widget);
 
 
 
@@ -43,7 +43,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeTreeViewEditor, glade_tree_view_editor, GTK_TYPE_B
 
 
 static void
-glade_tree_view_editor_class_init (GladeTreeViewEditorClass * klass)
+glade_tree_view_editor_class_init (GladeTreeViewEditorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -55,14 +55,14 @@ glade_tree_view_editor_class_init (GladeTreeViewEditorClass * klass)
 }
 
 static void
-glade_tree_view_editor_init (GladeTreeViewEditor * self)
+glade_tree_view_editor_init (GladeTreeViewEditor *self)
 {
   gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
-				  GTK_ORIENTATION_HORIZONTAL);
+                                  GTK_ORIENTATION_HORIZONTAL);
 }
 
 static GladeWidget *
-get_model_widget (GladeWidget * view)
+get_model_widget (GladeWidget *view)
 {
 
   GtkTreeModel *model = NULL;
@@ -82,7 +82,7 @@ get_model_widget (GladeWidget * view)
 }
 
 static void
-glade_tree_view_editor_load (GladeEditable * editable, GladeWidget * widget)
+glade_tree_view_editor_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeTreeViewEditor *view_editor = GLADE_TREE_VIEW_EDITOR (editable);
   GladeWidget *model_widget;
@@ -130,8 +130,8 @@ glade_tree_view_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_tree_view_editor_set_show_name (GladeEditable * editable,
-                                      gboolean show_name)
+glade_tree_view_editor_set_show_name (GladeEditable *editable,
+                                      gboolean       show_name)
 {
   GladeTreeViewEditor *view_editor = GLADE_TREE_VIEW_EDITOR (editable);
 
@@ -139,7 +139,7 @@ glade_tree_view_editor_set_show_name (GladeEditable * editable,
 }
 
 static void
-glade_tree_view_editor_editable_init (GladeEditableIface * iface)
+glade_tree_view_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 
@@ -148,7 +148,7 @@ glade_tree_view_editor_editable_init (GladeEditableIface * iface)
 }
 
 static void
-glade_tree_view_editor_finalize (GObject * object)
+glade_tree_view_editor_finalize (GObject *object)
 {
   GladeTreeViewEditor *view_editor = GLADE_TREE_VIEW_EDITOR (object);
 
@@ -163,7 +163,7 @@ glade_tree_view_editor_finalize (GObject * object)
 
 
 static void
-glade_tree_view_editor_realize (GtkWidget * widget)
+glade_tree_view_editor_realize (GtkWidget *widget)
 {
   GladeTreeViewEditor *view_editor = GLADE_TREE_VIEW_EDITOR (widget);
   GladeWidget         *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (view_editor));
@@ -182,7 +182,7 @@ glade_tree_view_editor_grab_focus (GtkWidget * widget)
 }
 
 GtkWidget *
-glade_tree_view_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
+glade_tree_view_editor_new (GladeWidgetAdaptor *adaptor, GladeEditable *embed)
 {
   GladeTreeViewEditor *view_editor;
   GtkWidget *vbox, *separator;

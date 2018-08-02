@@ -57,16 +57,16 @@ GType          glade_property_shell_get_type          (void) G_GNUC_CONST;
 GtkWidget     *glade_property_shell_new               (void);
 
 void           glade_property_shell_set_property_name (GladePropertyShell *shell,
-						       const gchar        *property_name);
+                                                       const gchar        *property_name);
 const gchar   *glade_property_shell_get_property_name (GladePropertyShell *shell);
 void           glade_property_shell_set_custom_text   (GladePropertyShell *shell,
-						       const gchar        *custom_text);
+                                                       const gchar        *custom_text);
 const gchar   *glade_property_shell_get_custom_text   (GladePropertyShell *shell);
 void           glade_property_shell_set_packing       (GladePropertyShell *shell,
-						       gboolean            packing);
+                                                       gboolean            packing);
 gboolean       glade_property_shell_get_packing       (GladePropertyShell *shell);
 void           glade_property_shell_set_use_command   (GladePropertyShell *shell,
-						       gboolean            use_command);
+                                                       gboolean            use_command);
 gboolean       glade_property_shell_get_use_command   (GladePropertyShell *shell);
 void           glade_property_shell_set_disable_check (GladePropertyShell *shell,
                                                        gboolean            disable_check);

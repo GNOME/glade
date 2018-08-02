@@ -29,13 +29,13 @@ G_BEGIN_DECLS
 
 #define GLADE_TYPE_PROJECT_PROPERTIES             (glade_project_properties_get_type ())
 #define GLADE_PROJECT_PROPERTIES(obj)             (G_TYPE_CHECK_INSTANCE_CAST \
-						   ((obj), GLADE_TYPE_PROJECT_PROPERTIES, GladeProjectProperties))
+                                                   ((obj), GLADE_TYPE_PROJECT_PROPERTIES, GladeProjectProperties))
 #define GLADE_PROJECT_PROPERTIES_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST \
-						   ((klass), GLADE_TYPE_PROJECT_PROPERTIES, GladeProjectPropertiesClass))
+                                                   ((klass), GLADE_TYPE_PROJECT_PROPERTIES, GladeProjectPropertiesClass))
 #define GLADE_IS_PROJECT_PROPERTIES(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROJECT_PROPERTIES))
 #define GLADE_IS_PROJECT_PROPERTIES_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT_PROPERTIES))
 #define GLADE_PROJECT_PROPERTIES_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS \
-						   ((obj), GLADE_TYPE_PROJECT_PROPERTIES, GladeProjectPropertiesClass))
+                                                   ((obj), GLADE_TYPE_PROJECT_PROPERTIES, GladeProjectPropertiesClass))
 
 typedef struct _GladeProjectProperties             GladeProjectProperties;
 typedef struct _GladeProjectPropertiesClass        GladeProjectPropertiesClass;

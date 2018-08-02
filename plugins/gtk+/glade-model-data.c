@@ -31,7 +31,7 @@
 #include "glade-column-types.h"
 
 GladeModelData *
-glade_model_data_new (GType type, const gchar * column_name)
+glade_model_data_new (GType type, const gchar *column_name)
 {
   GladeModelData *data = g_slice_new0 (GladeModelData);
 
@@ -47,7 +47,7 @@ glade_model_data_new (GType type, const gchar * column_name)
 }
 
 GladeModelData *
-glade_model_data_copy (GladeModelData * data)
+glade_model_data_copy (GladeModelData *data)
 {
   GladeModelData *dup;
 
@@ -72,7 +72,7 @@ glade_model_data_copy (GladeModelData * data)
 }
 
 void
-glade_model_data_free (GladeModelData * data)
+glade_model_data_free (GladeModelData *data)
 {
   if (data)
     {
@@ -87,13 +87,13 @@ glade_model_data_free (GladeModelData * data)
 }
 
 GNode *
-glade_model_data_tree_copy (GNode * node)
+glade_model_data_tree_copy (GNode *node)
 {
   return g_node_copy_deep (node, (GCopyFunc) glade_model_data_copy, NULL);
 }
 
 static gboolean
-model_data_traverse_free (GNode * node, gpointer data)
+model_data_traverse_free (GNode *node, gpointer data)
 {
   glade_model_data_free ((GladeModelData *) node->data);
 
@@ -101,7 +101,7 @@ model_data_traverse_free (GNode * node, gpointer data)
 }
 
 void
-glade_model_data_tree_free (GNode * node)
+glade_model_data_tree_free (GNode *node)
 {
   if (node)
     {
@@ -112,7 +112,7 @@ glade_model_data_tree_free (GNode * node)
 }
 
 GladeModelData *
-glade_model_data_tree_get_data (GNode * data_tree, gint row, gint colnum)
+glade_model_data_tree_get_data (GNode *data_tree, gint row, gint colnum)
 {
   GNode *node;
 
@@ -126,8 +126,10 @@ glade_model_data_tree_get_data (GNode * data_tree, gint row, gint colnum)
 }
 
 void
-glade_model_data_insert_column (GNode * node,
-                                GType type, const gchar * column_name, gint nth)
+glade_model_data_insert_column (GNode       *node,
+                                GType        type,
+                                const gchar *column_name,
+                                gint         nth)
 {
   GNode *row, *item;
   GladeModelData *data;
@@ -145,7 +147,7 @@ glade_model_data_insert_column (GNode * node,
 }
 
 void
-glade_model_data_remove_column (GNode * node, gint nth)
+glade_model_data_remove_column (GNode *node, gint nth)
 {
   GNode *row, *item;
   GladeModelData *data;
@@ -165,7 +167,7 @@ glade_model_data_remove_column (GNode * node, gint nth)
 }
 
 void
-glade_model_data_reorder_column (GNode * node, gint column, gint nth)
+glade_model_data_reorder_column (GNode *node, gint column, gint nth)
 {
   GNode *row, *item;
 
@@ -183,7 +185,7 @@ glade_model_data_reorder_column (GNode * node, gint column, gint nth)
 }
 
 gint
-glade_model_data_column_index (GNode * node, const gchar * column_name)
+glade_model_data_column_index (GNode *node, const gchar *column_name)
 {
   gint i;
   GNode *item;
@@ -201,9 +203,9 @@ glade_model_data_column_index (GNode * node, const gchar * column_name)
 }
 
 void
-glade_model_data_column_rename (GNode * node,
-                                const gchar * column_name,
-                                const gchar * new_name)
+glade_model_data_column_rename (GNode       *node,
+                                const gchar *column_name,
+                                const gchar *new_name)
 {
   gint idx;
   GNode *row, *iter;
@@ -269,7 +271,7 @@ GLADE_MAKE_EPROP (GladeEPropModelData, glade_eprop_model_data)
 
 static void eprop_data_focus_editing_cell (GladeEPropModelData *eprop_data);
 
-static void append_row (GNode * node, GList * columns)
+static void append_row (GNode *node, GList *columns)
 {
   GladeModelData *data;
   GladeColumnType *column;
@@ -292,7 +294,7 @@ static void append_row (GNode * node, GList * columns)
 }
 
 static void
-clear_view (GladeEditorProperty * eprop)
+clear_view (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkTreeViewColumn *column;
@@ -307,7 +309,7 @@ clear_view (GladeEditorProperty * eprop)
 }
 
 static gboolean
-update_data_tree_idle (GladeEditorProperty * eprop)
+update_data_tree_idle (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GladeProperty       *property = glade_editor_property_get_property (eprop);
@@ -330,7 +332,7 @@ update_data_tree_idle (GladeEditorProperty * eprop)
 }
 
 static gboolean
-update_and_focus_data_tree_idle (GladeEditorProperty * eprop)
+update_and_focus_data_tree_idle (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GladeProperty       *property = glade_editor_property_get_property (eprop);
@@ -348,7 +350,7 @@ update_and_focus_data_tree_idle (GladeEditorProperty * eprop)
 }
 
 static gboolean
-focus_data_tree_idle (GladeEditorProperty * eprop)
+focus_data_tree_idle (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
 
@@ -360,7 +362,7 @@ focus_data_tree_idle (GladeEditorProperty * eprop)
 }
 
 static void
-glade_eprop_model_data_add_row (GladeEditorProperty * eprop)
+glade_eprop_model_data_add_row (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GValue value = { 0, };
@@ -394,7 +396,7 @@ glade_eprop_model_data_add_row (GladeEditorProperty * eprop)
 }
 
 static void
-glade_eprop_model_data_delete_selected (GladeEditorProperty * eprop)
+glade_eprop_model_data_delete_selected (GladeEditorProperty *eprop)
 {
   GtkTreeIter iter;
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
@@ -428,22 +430,23 @@ glade_eprop_model_data_delete_selected (GladeEditorProperty * eprop)
 }
 
 static void
-glade_eprop_model_data_add_clicked (GtkWidget * button,
-                                    GladeEditorProperty * eprop)
+glade_eprop_model_data_add_clicked (GtkWidget           *button,
+                                    GladeEditorProperty *eprop)
 {
   glade_eprop_model_data_add_row (eprop);
 }
 
 static void
-glade_eprop_model_data_delete_clicked (GtkWidget * button,
-                                       GladeEditorProperty * eprop)
+glade_eprop_model_data_delete_clicked (GtkWidget           *button,
+                                       GladeEditorProperty *eprop)
 {
   glade_eprop_model_data_delete_selected (eprop);
 }
 
 static gboolean
-eprop_treeview_key_press (GtkWidget * treeview,
-                          GdkEventKey * event, GladeEditorProperty * eprop)
+eprop_treeview_key_press (GtkWidget           *treeview,
+                          GdkEventKey         *event,
+                          GladeEditorProperty *eprop)
 {
   if (event->keyval == GDK_KEY_Delete)
     {
@@ -461,7 +464,7 @@ eprop_treeview_key_press (GtkWidget * treeview,
 }
 
 static gboolean
-data_changed_idle (GladeEditorProperty * eprop)
+data_changed_idle (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GladeProperty *property = glade_editor_property_get_property (eprop);
@@ -503,8 +506,9 @@ data_changed_idle (GladeEditorProperty * eprop)
 }
 
 static void
-eprop_treeview_row_deleted (GtkTreeModel * tree_model,
-                            GtkTreePath * path, GladeEditorProperty * eprop)
+eprop_treeview_row_deleted (GtkTreeModel        *tree_model,
+                            GtkTreePath         *path,
+                            GladeEditorProperty *eprop)
 {
   if (glade_editor_property_loading (eprop))
     return;
@@ -514,7 +518,7 @@ eprop_treeview_row_deleted (GtkTreeModel * tree_model,
 
 
 static void
-glade_eprop_model_data_finalize (GObject * object)
+glade_eprop_model_data_finalize (GObject *object)
 {
   /* Chain up */
   GObjectClass *parent_class =
@@ -525,7 +529,7 @@ glade_eprop_model_data_finalize (GObject * object)
 }
 
 static GtkListStore *
-eprop_model_data_generate_store (GladeEditorProperty * eprop)
+eprop_model_data_generate_store (GladeEditorProperty *eprop)
 {
   GtkListStore *store = NULL;
   GladeModelData *iter_data;
@@ -591,8 +595,7 @@ eprop_model_data_generate_store (GladeEditorProperty * eprop)
 }
 
 static void
-value_toggled (GtkCellRendererToggle * cell,
-               gchar * path, GladeEditorProperty * eprop)
+value_toggled (GtkCellRendererToggle *cell, gchar *path, GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkTreeIter iter;
@@ -631,8 +634,9 @@ value_toggled (GtkCellRendererToggle * cell,
 }
 
 static void
-value_i18n_activate (GladeCellRendererIcon * cell,
-                     const gchar * path, GladeEditorProperty * eprop)
+value_i18n_activate (GladeCellRendererIcon *cell,
+                     const gchar           *path,
+                     GladeEditorProperty   *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkTreeIter iter;
@@ -686,9 +690,10 @@ value_i18n_activate (GladeCellRendererIcon * cell,
 }
 
 static void
-value_text_edited (GtkCellRendererText * cell,
-                   const gchar * path,
-                   const gchar * new_text, GladeEditorProperty * eprop)
+value_text_edited (GtkCellRendererText *cell,
+                   const gchar         *path,
+                   const gchar         *new_text,
+                   GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkTreeIter iter;
@@ -743,10 +748,11 @@ value_text_edited (GtkCellRendererText * cell,
 
 
 static void
-enum_flags_format_cell_data (GtkCellLayout * cell_layout,
-                             GtkCellRenderer * cell,
-                             GtkTreeModel * tree_model,
-                             GtkTreeIter * iter, gpointer data)
+enum_flags_format_cell_data (GtkCellLayout   *cell_layout,
+                             GtkCellRenderer *cell,
+                             GtkTreeModel    *tree_model,
+                             GtkTreeIter     *iter,
+                             gpointer data)
 {
   gint colnum =
       GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
@@ -768,9 +774,10 @@ enum_flags_format_cell_data (GtkCellLayout * cell_layout,
 
 
 static void
-data_editing_started (GtkCellRenderer * cell,
-                      GtkCellEditable * editable,
-                      gchar * path, GladeEditorProperty * eprop)
+data_editing_started (GtkCellRenderer     *cell,
+                      GtkCellEditable     *editable,
+                      gchar               *path,
+                      GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   gint colnum =
@@ -790,7 +797,7 @@ data_editing_started (GtkCellRenderer * cell,
 }
 
 static void
-data_editing_canceled (GtkCellRenderer * renderer, GladeEditorProperty * eprop)
+data_editing_canceled (GtkCellRenderer *renderer, GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
 
@@ -801,8 +808,9 @@ data_editing_canceled (GtkCellRenderer * renderer, GladeEditorProperty * eprop)
 }
 
 static GtkTreeViewColumn *
-eprop_model_generate_column (GladeEditorProperty * eprop,
-                             gint colnum, GladeModelData * data)
+eprop_model_generate_column (GladeEditorProperty *eprop,
+                             gint                 colnum,
+                             GladeModelData      *data)
 {
   GtkTreeViewColumn *column = gtk_tree_view_column_new ();
   GtkCellRenderer *renderer = NULL;
@@ -954,7 +962,7 @@ eprop_model_generate_column (GladeEditorProperty * eprop,
 }
 
 static void
-eprop_model_data_generate_columns (GladeEditorProperty * eprop)
+eprop_model_data_generate_columns (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GladeProperty *property = glade_editor_property_get_property (eprop);
@@ -980,7 +988,7 @@ eprop_model_data_generate_columns (GladeEditorProperty * eprop)
 }
 
 static void
-eprop_data_focus_new (GladeEPropModelData * eprop_data)
+eprop_data_focus_new (GladeEPropModelData *eprop_data)
 {
 
   /* Focus and edit the first column of a newly added row */
@@ -1020,7 +1028,7 @@ eprop_data_focus_new (GladeEPropModelData * eprop_data)
 }
 
 static void
-eprop_data_focus_editing_cell (GladeEPropModelData * eprop_data)
+eprop_data_focus_editing_cell (GladeEPropModelData *eprop_data)
 {
   /* Focus and edit the first column of a newly added row */
   if (!eprop_data->setting_focus && eprop_data->store && eprop_data->want_focus
@@ -1061,8 +1069,8 @@ eprop_data_focus_editing_cell (GladeEPropModelData * eprop_data)
 
 
 static void
-glade_eprop_model_data_load (GladeEditorProperty * eprop,
-                             GladeProperty * property)
+glade_eprop_model_data_load (GladeEditorProperty *eprop,
+                             GladeProperty       *property)
 {
   GladeEditorPropertyClass *parent_class =
       g_type_class_peek_parent (GLADE_EDITOR_PROPERTY_GET_CLASS (eprop));
@@ -1099,12 +1107,12 @@ glade_eprop_model_data_load (GladeEditorProperty * eprop,
         eprop_data_focus_new (eprop_data);
       else if (eprop_data->want_focus &&
                eprop_data->editing_row >= 0 && eprop_data->editing_column >= 0)
-	eprop_data_focus_editing_cell (eprop_data);
+        eprop_data_focus_editing_cell (eprop_data);
     }
 }
 
 static GtkWidget *
-glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
+glade_eprop_model_data_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkWidget *vbox, *hbox, *button, *swin, *label;
@@ -1127,7 +1135,7 @@ glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
   button = gtk_button_new ();
   gtk_button_set_image (GTK_BUTTON (button),
                         gtk_image_new_from_icon_name ("list-add-symbolic",
-						      GTK_ICON_SIZE_BUTTON));
+                                                      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
   g_signal_connect (G_OBJECT (button), "clicked",
@@ -1137,7 +1145,7 @@ glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
   button = gtk_button_new ();
   gtk_button_set_image (GTK_BUTTON (button),
                         gtk_image_new_from_icon_name ("list-remove-symbolic",
-						      GTK_ICON_SIZE_BUTTON));
+                                                      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
   g_signal_connect (G_OBJECT (button), "clicked",

@@ -78,21 +78,21 @@ GtkWidget           *glade_palette_new                      (void);
 
 GladeProject        *glade_palette_get_project              (GladePalette *palette);
 void                 glade_palette_set_project              (GladePalette *palette,
-							     GladeProject *project);
+                                                             GladeProject *project);
 
 GladeItemAppearance  glade_palette_get_item_appearance      (GladePalette *palette);
 
 void                 glade_palette_set_item_appearance      (GladePalette       *palette,
-							     GladeItemAppearance item_appearance);
-							     
+                                                             GladeItemAppearance item_appearance);
+                                                             
 gboolean             glade_palette_get_use_small_item_icons (GladePalette *palette);
 
-void		     glade_palette_set_use_small_item_icons (GladePalette *palette,
-							     gboolean      use_small_item_icons);
-							     
-void		     glade_palette_set_show_selector_button (GladePalette *palette,
-							     gboolean      show_selector_button);
-							     
+void                     glade_palette_set_use_small_item_icons (GladePalette *palette,
+                                                                 gboolean      use_small_item_icons);
+                                                             
+void                     glade_palette_set_show_selector_button (GladePalette *palette,
+                                                                 gboolean      show_selector_button);
+                                                             
 gboolean             glade_palette_get_show_selector_button (GladePalette *palette);
 
 GtkToolPalette      *glade_palette_get_tool_palette         (GladePalette *palette);

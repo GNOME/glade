@@ -137,7 +137,7 @@ glade_util_get_type_from_name (const gchar *name, gboolean have_func)
         }
 
       if (!have_func)
-	g_free (func_name);
+        g_free (func_name);
     }
 
   if (type == 0)
@@ -308,10 +308,10 @@ glade_util_check_and_warn_scrollable (GladeWidget *parent,
       glade_util_ui_message (parent_widget,
                              GLADE_UI_INFO, NULL,
                              _("Cannot add non scrollable %s widget to a %s directly.\n"
-			       "Add a %s first."), 
-			     glade_widget_adaptor_get_title (child_adaptor),
+                               "Add a %s first."), 
+                             glade_widget_adaptor_get_title (child_adaptor),
                              glade_widget_adaptor_get_title (parent_adaptor), 
-			     glade_widget_adaptor_get_title (vadaptor));
+                             glade_widget_adaptor_get_title (vadaptor));
       return TRUE;
     }
   return FALSE;
@@ -564,7 +564,7 @@ _glade_util_strreplace (gchar *str,
 
   if (free_str)
     g_free (str);
-	
+
   return retval;
 }
 
@@ -679,7 +679,7 @@ glade_util_count_placeholders (GladeWidget *parent)
   /* count placeholders */
   if ((children = 
        glade_widget_adaptor_get_children (glade_widget_get_adaptor (parent), 
-					  glade_widget_get_object (parent))) != NULL)
+                                          glade_widget_get_object (parent))) != NULL)
     {
       for (list = children; list && list->data; list = list->next)
         {
@@ -873,10 +873,10 @@ glade_util_canonical_path (const gchar *path)
           if (g_chdir (dirname) == 0)
             {
               if ((direct_dir = g_get_current_dir ()) != NULL)
-		{
-		  direct_name = g_build_filename (direct_dir, basename, NULL);
-		  g_free (direct_dir);
-		}
+                {
+                  direct_name = g_build_filename (direct_dir, basename, NULL);
+                  g_free (direct_dir);
+                }
               else
                 g_warning ("g_path");
 
@@ -2025,10 +2025,10 @@ glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
  */
 void
 glade_utils_get_pointer (GtkWidget *widget,
-			 GdkWindow *window,
-			 GdkDevice *device,
-			 gint      *x,
-			 gint      *y)
+                         GdkWindow *window,
+                         GdkDevice *device,
+                         gint      *x,
+                         gint      *y)
 {
   gint device_x = 0, device_y = 0;
   gint final_x = 0, final_y = 0;
@@ -2059,7 +2059,7 @@ glade_utils_get_pointer (GtkWidget *widget,
       gtk_widget_translate_coordinates (event_widget,
                                         widget,
                                         device_x, device_y,
-					&final_x, &final_y);
+                                        &final_x, &final_y);
     }
   else
     {
@@ -2080,8 +2080,8 @@ glade_utils_get_pointer (GtkWidget *widget,
  */
 static gint
 abort_scroll_events (GtkWidget *widget,
-		     GdkEvent  *event,
-		     gpointer   user_data)
+                     GdkEvent  *event,
+                     gpointer   user_data)
 {
   GtkWidget *parent = gtk_widget_get_parent (widget);
 
@@ -2104,7 +2104,7 @@ glade_util_remove_scroll_events (GtkWidget *widget)
   gtk_widget_set_events (widget, events);
 
   g_signal_connect (G_OBJECT (widget), "scroll-event",
-		    G_CALLBACK (abort_scroll_events), NULL);
+                    G_CALLBACK (abort_scroll_events), NULL);
 }
 
 /**

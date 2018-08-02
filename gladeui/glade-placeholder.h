@@ -43,7 +43,7 @@ typedef struct _GladePlaceholderPrivate GladePlaceholderPrivate;
 struct _GladePlaceholder
 {
   GtkWidget widget;
-	
+
   GladePlaceholderPrivate *priv;
 };
 

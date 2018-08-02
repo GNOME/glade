@@ -66,7 +66,7 @@ struct _GladeCommandClass
 GType                 glade_command_get_type             (void);
 
 void                  glade_command_push_group           (const gchar       *fmt,
-							  ...) G_GNUC_PRINTF (1, 2);
+                                                          ...) G_GNUC_PRINTF (1, 2);
 void                  glade_command_pop_group            (void);
 gint                  glade_command_get_group_depth      (void);
 
@@ -75,21 +75,21 @@ gint                  glade_command_group_id             (GladeCommand      *com
 gboolean              glade_command_execute              (GladeCommand      *command);
 gboolean              glade_command_undo                 (GladeCommand      *command);
 gboolean              glade_command_unifies              (GladeCommand      *command,
-							  GladeCommand      *other);
+                                                          GladeCommand      *other);
 void                  glade_command_collapse             (GladeCommand      *command,
-							  GladeCommand      *other);
+                                                          GladeCommand      *other);
 
 /************************ project ******************************/
 void           glade_command_set_project_target  (GladeProject *project,
-						  const gchar  *catalog,
-						  gint          major,
-						  gint          minor);
+                                                  const gchar  *catalog,
+                                                  gint          major,
+                                                  gint          minor);
 
 void           glade_command_set_project_domain  (GladeProject *project,     
-					          const gchar  *domain);
+                                                  const gchar  *domain);
 
 void           glade_command_set_project_template(GladeProject *project,     
-					          GladeWidget  *widget);
+                                                  GladeWidget  *widget);
 
 void           glade_command_set_project_license (GladeProject *project,
                                                   const gchar  *license);
@@ -100,21 +100,21 @@ void           glade_command_set_project_resource_path (GladeProject *project,
 /************************** properties *********************************/
 
 void           glade_command_set_property_enabled(GladeProperty *property,
-					          gboolean       enabled);
+                                                  gboolean       enabled);
 
 void           glade_command_set_property        (GladeProperty *property,
-					          ...);
+                                                  ...);
 
 void           glade_command_set_property_value  (GladeProperty *property,
-						  const GValue  *value);
+                                                  const GValue  *value);
 
 void           glade_command_set_properties      (GladeProperty *property,
-					          const GValue  *old_value,
-					          const GValue  *new_value,
-						  ...);
+                                                  const GValue  *old_value,
+                                                  const GValue  *new_value,
+                                                  ...);
 
 void           glade_command_set_properties_list (GladeProject  *project, 
-						  GList         *props); /* list of GCSetPropData */
+                                                  GList         *props); /* list of GCSetPropData */
 
 /************************** name ******************************/
 
@@ -124,7 +124,7 @@ void           glade_command_set_name      (GladeWidget       *glade_widget, con
 /************************ protection ******************************/
 
 void           glade_command_lock_widget   (GladeWidget   *widget, 
-					    GladeWidget   *lock);
+                                            GladeWidget   *lock);
 
 void           glade_command_unlock_widget (GladeWidget   *widget);
 
@@ -132,49 +132,49 @@ void           glade_command_unlock_widget (GladeWidget   *widget);
 /************************ create/add/delete ******************************/
 
 void           glade_command_add           (GList              *widgets,
-					    GladeWidget        *parent,
-					    GladePlaceholder   *placeholder, 
-					    GladeProject       *project,
-					    gboolean            pasting);
+                                            GladeWidget        *parent,
+                                            GladePlaceholder   *placeholder, 
+                                            GladeProject       *project,
+                                            gboolean            pasting);
 
 void           glade_command_delete        (GList              *widgets);
 
 GladeWidget   *glade_command_create        (GladeWidgetAdaptor *adaptor,
-					    GladeWidget        *parent,
-					    GladePlaceholder   *placeholder,
-					    GladeProject       *project);
+                                            GladeWidget        *parent,
+                                            GladePlaceholder   *placeholder,
+                                            GladeProject       *project);
 
 /************************ cut/paste/dnd ******************************/
 
 void           glade_command_cut           (GList             *widgets);
 
 void           glade_command_paste         (GList             *widgets,
-					    GladeWidget       *parent,
-					    GladePlaceholder  *placeholder,
-					    GladeProject      *project);
+                                            GladeWidget       *parent,
+                                            GladePlaceholder  *placeholder,
+                                            GladeProject      *project);
 
 void           glade_command_dnd           (GList             *widgets,
-					    GladeWidget       *parent,
-					    GladePlaceholder  *placeholder);
+                                            GladeWidget       *parent,
+                                            GladePlaceholder  *placeholder);
 
 /************************ signals ******************************/
 
 void           glade_command_add_signal    (GladeWidget       *glade_widget, 
-					    const GladeSignal *signal);
+                                            const GladeSignal *signal);
 
 void           glade_command_remove_signal (GladeWidget       *glade_widget, 
-					    const GladeSignal *signal);
+                                            const GladeSignal *signal);
 
 void           glade_command_change_signal (GladeWidget       *glade_widget, 
-					    const GladeSignal *old_signal, 
-					    const GladeSignal *new_signal);
+                                            const GladeSignal *old_signal, 
+                                            const GladeSignal *new_signal);
 
 /************************ set i18n ******************************/
 
 void           glade_command_set_i18n      (GladeProperty     *property,
-					    gboolean translatable,
-					    const gchar *context,
-					    const gchar *comment);
+                                            gboolean translatable,
+                                            const gchar *context,
+                                            const gchar *comment);
 
 
 G_END_DECLS

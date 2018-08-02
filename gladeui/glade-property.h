@@ -49,7 +49,7 @@ struct _GladePropertyKlass
   /* Signals */
   void             (* value_changed)         (GladeProperty *, GValue *, GValue *);
   void             (* tooltip_changed)       (GladeProperty *, const gchar *, 
-					      const gchar   *, const gchar *);
+                                              const gchar   *, const gchar *);
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);
   void   (* glade_reserved3)   (void);
@@ -62,11 +62,11 @@ struct _GladePropertyKlass
 GType                   glade_property_get_type              (void) G_GNUC_CONST;
 
 GladeProperty          *glade_property_new                   (GladePropertyClass *klass,
-							      GladeWidget        *widget,
-							      GValue             *value);
+                                                              GladeWidget        *widget,
+                                                              GValue             *value);
 
 GladeProperty          *glade_property_dup                   (GladeProperty      *template_prop,
-							      GladeWidget        *widget);
+                                                              GladeWidget        *widget);
 
 void                    glade_property_reset                 (GladeProperty      *property);
 
@@ -77,60 +77,60 @@ gboolean                glade_property_default               (GladeProperty     
 gboolean                glade_property_original_default      (GladeProperty      *property);
 
 gboolean                glade_property_equals_value          (GladeProperty      *property, 
-							      const GValue       *value);
+                                                              const GValue       *value);
 
 gboolean                glade_property_equals                (GladeProperty      *property, 
-							      ...);
+                                                              ...);
 
 gboolean                glade_property_set_value             (GladeProperty      *property, 
-							      const GValue       *value);
+                                                              const GValue       *value);
 
 gboolean                glade_property_set_va_list           (GladeProperty      *property,
-							      va_list             vl);
+                                                              va_list             vl);
 
 gboolean                glade_property_set                   (GladeProperty      *property,
-							      ...);
+                                                              ...);
 
 void                    glade_property_get_value             (GladeProperty      *property, 
-							      GValue             *value);
+                                                              GValue             *value);
 
 void                    glade_property_get_default           (GladeProperty      *property, 
-							      GValue             *value);
+                                                              GValue             *value);
 
 void                    glade_property_get_va_list           (GladeProperty      *property,
-							      va_list             vl);
+                                                              va_list             vl);
 
 void                    glade_property_get                   (GladeProperty      *property, 
-							      ...);
+                                                              ...);
 
 void                    glade_property_add_object            (GladeProperty      *property,
-							      GObject            *object);
+                                                              GObject            *object);
 
 void                    glade_property_remove_object         (GladeProperty      *property,
-							      GObject            *object);
+                                                              GObject            *object);
 
 void                    glade_property_sync                  (GladeProperty      *property);
 
 void                    glade_property_load                  (GladeProperty      *property);
 
 void                    glade_property_read                  (GladeProperty      *property,
-							      GladeProject       *project,
-							      GladeXmlNode       *node);
+                                                              GladeProject       *project,
+                                                              GladeXmlNode       *node);
 
-void                    glade_property_write                 (GladeProperty      *property,	
-							      GladeXmlContext    *context,
-							      GladeXmlNode       *node);
+void                    glade_property_write                 (GladeProperty      *property,        
+                                                              GladeXmlContext    *context,
+                                                              GladeXmlNode       *node);
 
 GladePropertyClass     *glade_property_get_class             (GladeProperty      *property);
 
 void                    glade_property_set_sensitive         (GladeProperty      *property,
-							      gboolean            sensitive,
-							      const gchar        *reason);
+                                                              gboolean            sensitive,
+                                                              const gchar        *reason);
 G_CONST_RETURN gchar   *glade_propert_get_insensitive_tooltip(GladeProperty      *property);
 
 void                    glade_property_set_support_warning   (GladeProperty      *property,
-							      gboolean            disable,
-							      const gchar        *reason);
+                                                              gboolean            disable,
+                                                              const gchar        *reason);
 G_CONST_RETURN gchar   *glade_property_get_support_warning   (GladeProperty      *property);
 
 gboolean                glade_property_warn_usage            (GladeProperty      *property);
@@ -139,13 +139,13 @@ gboolean                glade_property_get_sensitive         (GladeProperty     
 
 
 void                    glade_property_set_save_always       (GladeProperty      *property,
-							      gboolean            setting);
+                                                              gboolean            setting);
 
 gboolean                glade_property_get_save_always       (GladeProperty      *property);
 
 
 void                    glade_property_set_enabled           (GladeProperty      *property,
-							      gboolean            enabled);
+                                                              gboolean            enabled);
 
 gboolean                glade_property_get_enabled           (GladeProperty      *property);
 
@@ -154,24 +154,24 @@ gchar                  *glade_property_make_string           (GladeProperty     
 
 GladeWidget            *glade_property_get_widget            (GladeProperty      *property);
 void                    glade_property_set_widget            (GladeProperty      *property,
-							      GladeWidget        *widget);
+                                                              GladeWidget        *widget);
 
 GValue                 *glade_property_inline_value          (GladeProperty      *property);
 
 GladePropertyState      glade_property_get_state             (GladeProperty      *property);
 
 void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
-							      const gchar        *str);
+                                                              const gchar        *str);
 
 G_CONST_RETURN gchar   *glade_property_i18n_get_comment      (GladeProperty      *property);
 
 void                    glade_property_i18n_set_context      (GladeProperty      *property, 
-							      const gchar        *str);
+                                                              const gchar        *str);
 
 G_CONST_RETURN gchar   *glade_property_i18n_get_context      (GladeProperty      *property);
 
 void                    glade_property_i18n_set_translatable (GladeProperty      *property,
-							      gboolean            translatable);
+                                                              gboolean            translatable);
 
 gboolean                glade_property_i18n_get_translatable (GladeProperty      *property);
 

@@ -35,10 +35,10 @@ GladeIDAllocator    *glade_id_allocator_new       (void);
 
 void                 glade_id_allocator_destroy   (GladeIDAllocator *allocator);
 
-guint	             glade_id_allocator_allocate  (GladeIDAllocator *allocator);
+guint                glade_id_allocator_allocate  (GladeIDAllocator *allocator);
 
 void                 glade_id_allocator_release   (GladeIDAllocator *allocator,
-						   guint             id);
+                                                   guint             id);
 
 G_END_DECLS
 

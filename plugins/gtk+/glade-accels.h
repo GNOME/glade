@@ -6,7 +6,7 @@
 
 G_BEGIN_DECLS
 
-#define	GLADE_TYPE_ACCEL_GLIST         (glade_accel_glist_get_type())
+#define GLADE_TYPE_ACCEL_GLIST         (glade_accel_glist_get_type())
 #define GLADE_TYPE_EPROP_ACCEL         (glade_eprop_accel_get_type())
 
 
@@ -20,14 +20,14 @@ typedef struct _GladeKey                GladeKey;
 typedef struct _GladeAccelInfo          GladeAccelInfo;
 
 struct _GladeAccelInfo {
-    guint key;
-    GdkModifierType modifiers;
-    gchar *signal;
+  guint key;
+  GdkModifierType modifiers;
+  gchar *signal;
 };
 
 struct _GladeKey {
-	guint  value;
-	gchar *name;
+  guint  value;
+  gchar *name;
 };
 
 extern const GladeKey GladeKeys[];
@@ -45,20 +45,20 @@ void         glade_accel_list_free         (GList         *accels);
 
 gchar       *glade_accels_make_string      (GList *accels);
 
-GladeAccelInfo *glade_accel_read           (GladeXmlNode     *node,
-					    gboolean          require_signal);
-GladeXmlNode   *glade_accel_write          (GladeAccelInfo   *accel_info,
-					    GladeXmlContext  *context,
-					    gboolean          write_signal);
+GladeAccelInfo *glade_accel_read           (GladeXmlNode    *node,
+                                            gboolean         require_signal);
+GladeXmlNode   *glade_accel_write          (GladeAccelInfo  *accel_info,
+                                            GladeXmlContext *context,
+                                            gboolean         write_signal);
 
 
-void         glade_gtk_write_accels        (GladeWidget      *widget,
-					    GladeXmlContext  *context,
-					    GladeXmlNode     *node,
-					    gboolean          write_signal);
-void         glade_gtk_read_accels         (GladeWidget      *widget,
-					    GladeXmlNode     *node,
-					    gboolean          require_signal);
+void         glade_gtk_write_accels        (GladeWidget     *widget,
+                                            GladeXmlContext *context,
+                                            GladeXmlNode    *node,
+                                            gboolean         write_signal);
+void         glade_gtk_read_accels         (GladeWidget     *widget,
+                                            GladeXmlNode    *node,
+                                            gboolean         require_signal);
 
 G_END_DECLS
 

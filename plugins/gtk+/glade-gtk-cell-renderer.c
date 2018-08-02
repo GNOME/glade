@@ -32,9 +32,9 @@
 #include "glade-column-types.h"
 
 void
-glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor * adaptor,
-                                         GObject * object,
-                                         const gchar * action_path)
+glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
+                                         GObject            *object,
+                                         const gchar        *action_path)
 {
   if (strcmp (action_path, "launch_editor") == 0)
     {
@@ -42,7 +42,7 @@ glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor * adaptor,
 
       while ((w = glade_widget_get_parent (w)))
         {
-	  GObject *object = glade_widget_get_object (w);
+          GObject *object = glade_widget_get_object (w);
 
           if (GTK_IS_TREE_VIEW (object))
             {
@@ -56,9 +56,9 @@ glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor * adaptor,
-                                          GObject * object,
-                                          GladeCreateReason reason)
+glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor,
+                                          GObject            *object,
+                                          GladeCreateReason   reason)
 {
   GladePropertyClass *pclass;
   GladeProperty *property;
@@ -82,9 +82,9 @@ glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditorProperty *
-glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor * adaptor,
-                                      GladePropertyClass * klass,
-                                      gboolean use_command)
+glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
+                                      GladePropertyClass *klass,
+                                      gboolean            use_command)
 {
   GladeEditorProperty *eprop;
 
@@ -100,7 +100,7 @@ glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor * adaptor,
 
 
 GladeEditable *
-glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor *adaptor,
                                          GladeEditorPageType type)
 {
   GladeEditable *editable;
@@ -116,9 +116,9 @@ glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_cell_renderer_set_use_attribute (GObject * object,
-                                           const gchar * property_name,
-                                           const GValue * value)
+glade_gtk_cell_renderer_set_use_attribute (GObject      *object,
+                                           const gchar  *property_name,
+                                           const GValue *value)
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   gchar *attr_prop_name, *prop_msg, *attr_msg;
@@ -150,8 +150,8 @@ glade_gtk_cell_renderer_set_use_attribute (GObject * object,
 }
 
 static GladeProperty *
-glade_gtk_cell_renderer_attribute_switch (GladeWidget * gwidget,
-                                          const gchar * property_name)
+glade_gtk_cell_renderer_attribute_switch (GladeWidget *gwidget,
+                                          const gchar *property_name)
 {
   GladeProperty *property;
   gchar *use_attr_name = g_strdup_printf ("use-attr-%s", property_name);
@@ -163,8 +163,8 @@ glade_gtk_cell_renderer_attribute_switch (GladeWidget * gwidget,
 }
 
 static gboolean
-glade_gtk_cell_renderer_property_enabled (GObject * object,
-                                          const gchar * property_name)
+glade_gtk_cell_renderer_property_enabled (GObject     *object,
+                                          const gchar *property_name)
 {
   GladeProperty *property;
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
@@ -180,10 +180,10 @@ glade_gtk_cell_renderer_property_enabled (GObject * object,
 
 
 void
-glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor * adaptor,
-                                      GObject * object,
-                                      const gchar * property_name,
-                                      const GValue * value)
+glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor *adaptor,
+                                      GObject            *object,
+                                      const gchar        *property_name,
+                                      const GValue       *value)
 {
   static gint use_attr_len = 0;
   static gint attr_len = 0;
@@ -207,9 +207,9 @@ glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_cell_renderer_write_properties (GladeWidget * widget,
-                                          GladeXmlContext * context,
-                                          GladeXmlNode * node)
+glade_gtk_cell_renderer_write_properties (GladeWidget     *widget,
+                                          GladeXmlContext *context,
+                                          GladeXmlNode    *node)
 {
   GladeProperty *property, *prop;
   GladePropertyClass *pclass;
@@ -237,13 +237,13 @@ glade_gtk_cell_renderer_write_properties (GladeWidget * widget,
           prop = glade_widget_get_property (widget, attr_name);
 
           if (!use_attr && prop)
-	    {
-	      /* Special case to write GtkCellRendererPixbuf:stock-size */
-	      if (strcmp (attr_name, "stock-size") == 0)
-		glade_gtk_write_icon_size (widget, context, node, "stock-size");
-	      else
-		glade_property_write (prop, context, node);
-	    }
+            {
+              /* Special case to write GtkCellRendererPixbuf:stock-size */
+              if (strcmp (attr_name, "stock-size") == 0)
+                glade_gtk_write_icon_size (widget, context, node, "stock-size");
+              else
+                glade_property_write (prop, context, node);
+            }
 
           g_free (use_attr_str);
         }
@@ -251,13 +251,13 @@ glade_gtk_cell_renderer_write_properties (GladeWidget * widget,
 }
 
 void
-glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor * adaptor,
-                                      GladeWidget * widget,
-                                      GladeXmlContext * context,
-                                      GladeXmlNode * node)
+glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
+                                      GladeWidget        *widget,
+                                      GladeXmlContext    *context,
+                                      GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* Write our normal properties, then chain up to write any other normal properties,
@@ -269,8 +269,8 @@ glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_cell_renderer_parse_finished (GladeProject * project,
-                                        GladeWidget * widget)
+glade_gtk_cell_renderer_parse_finished (GladeProject *project,
+                                        GladeWidget  *widget)
 {
   GladeProperty *property;
   GList *l;
@@ -310,11 +310,12 @@ glade_gtk_cell_renderer_parse_finished (GladeProject * project,
 }
 
 void
-glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor * adaptor,
-                                     GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
+                                     GladeWidget        *widget,
+                                     GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the properties... */
@@ -326,8 +327,8 @@ glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static gboolean
-glade_gtk_cell_layout_has_renderer (GtkCellLayout * layout,
-                                    GtkCellRenderer * renderer)
+glade_gtk_cell_layout_has_renderer (GtkCellLayout   *layout,
+                                    GtkCellRenderer *renderer)
 {
   GList *cells = gtk_cell_layout_get_cells (layout);
   gboolean has_renderer;
@@ -340,7 +341,7 @@ glade_gtk_cell_layout_has_renderer (GtkCellLayout * layout,
 }
 
 gboolean
-glade_gtk_cell_renderer_sync_attributes (GObject * object)
+glade_gtk_cell_renderer_sync_attributes (GObject *object)
 {
 
   GtkCellLayout *layout;
@@ -398,7 +399,7 @@ glade_gtk_cell_renderer_sync_attributes (GObject * object)
               GladeColumnType *column_type =
                   (GladeColumnType *) g_list_nth_data (column_list, column);
               GType column_gtype = g_type_from_name (column_type->type_name);
-	      GParamSpec *pspec = glade_property_class_get_pspec (pclass);
+              GParamSpec *pspec = glade_property_class_get_pspec (pclass);
 
               if (column_gtype &&
                   g_value_type_transformable (column_gtype, pspec->value_type))

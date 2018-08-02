@@ -31,7 +31,7 @@ static void glade_label_editor_grab_focus    (GtkWidget          *widget);
 
 /* GladeEditableIface */
 static void glade_label_editor_load          (GladeEditable      *editable,
-					      GladeWidget        *widget);
+                                              GladeWidget        *widget);
 static void glade_label_editor_editable_init (GladeEditableIface *iface);
 
 /* Callbacks */
@@ -49,7 +49,7 @@ struct _GladeLabelEditorPrivate
   GtkWidget *attributes_radio;    /* Set pango attributes manually (attributes eprop embedded) */
   GtkWidget *markup_radio;        /* Parse the label as a pango markup string (no showing eprop) */
   GtkWidget *pattern_radio;       /* Use a pattern string to underline portions of the text
-				   * (pattern eprop embedded) */
+                                   * (pattern eprop embedded) */
 
   /* These control whether to use single-line-mode, wrap & wrap-mode or niether */
   GtkWidget *wrap_free_label; /* Set boldness on this label for a fake property */
@@ -66,7 +66,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeLabelEditor, glade_label_editor, GLADE_TYPE_EDITOR
                                                 glade_label_editor_editable_init));
 
 static void
-glade_label_editor_class_init (GladeLabelEditorClass * klass)
+glade_label_editor_class_init (GladeLabelEditorClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
@@ -92,7 +92,7 @@ glade_label_editor_class_init (GladeLabelEditorClass * klass)
 }
 
 static void
-glade_label_editor_init (GladeLabelEditor * self)
+glade_label_editor_init (GladeLabelEditor *self)
 {
   self->priv = glade_label_editor_get_instance_private (self);
 
@@ -100,7 +100,7 @@ glade_label_editor_init (GladeLabelEditor * self)
 }
 
 static void
-glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
+glade_label_editor_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeLabelEditor *label_editor = GLADE_LABEL_EDITOR (editable);
   GladeLabelEditorPrivate *priv = label_editor->priv;
@@ -176,7 +176,7 @@ glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_label_editor_editable_init (GladeEditableIface * iface)
+glade_label_editor_editable_init (GladeEditableIface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 
@@ -184,7 +184,7 @@ glade_label_editor_editable_init (GladeEditableIface * iface)
 }
 
 static void
-glade_label_editor_grab_focus (GtkWidget * widget)
+glade_label_editor_grab_focus (GtkWidget *widget)
 {
   GladeLabelEditor        *label_editor = GLADE_LABEL_EDITOR (widget);
   GladeLabelEditorPrivate *priv = label_editor->priv;
@@ -196,7 +196,7 @@ glade_label_editor_grab_focus (GtkWidget * widget)
                     label-content-mode radios
  **********************************************************************/
 static void
-attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
+attributes_toggled (GtkWidget *widget, GladeLabelEditor *label_editor)
 {
   GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
@@ -230,7 +230,7 @@ attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 }
 
 static void
-markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
+markup_toggled (GtkWidget *widget, GladeLabelEditor *label_editor)
 {
   GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
@@ -267,7 +267,7 @@ markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 }
 
 static void
-pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
+pattern_toggled (GtkWidget *widget, GladeLabelEditor *label_editor)
 {
   GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
@@ -304,7 +304,7 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
                     label-wrap-mode radios
  **********************************************************************/
 static void
-wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
+wrap_free_toggled (GtkWidget *widget, GladeLabelEditor *label_editor)
 {
   GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
@@ -341,7 +341,7 @@ wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 }
 
 static void
-single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
+single_toggled (GtkWidget *widget, GladeLabelEditor *label_editor)
 {
   GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
@@ -378,7 +378,7 @@ single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 }
 
 static void
-wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
+wrap_mode_toggled (GtkWidget *widget, GladeLabelEditor *label_editor)
 {
   GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;

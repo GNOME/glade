@@ -220,9 +220,9 @@ glade_gtk_listbox_child_insert_action (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_listbox_action_activate (GladeWidgetAdaptor * adaptor,
-				   GObject * object,
-				   const gchar * action_path)
+glade_gtk_listbox_action_activate (GladeWidgetAdaptor *adaptor,
+                                   GObject            *object,
+                                   const gchar        *action_path)
 {
   if (strcmp (action_path, "add_row") == 0)
     {

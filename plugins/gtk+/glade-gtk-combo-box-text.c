@@ -32,8 +32,8 @@
 #define GLADE_TAG_ITEM   "item"
 
 GladeEditable *
-glade_gtk_combo_box_text_create_editable (GladeWidgetAdaptor * adaptor,
-					  GladeEditorPageType type)
+glade_gtk_combo_box_text_create_editable (GladeWidgetAdaptor *adaptor,
+                                          GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {
@@ -45,8 +45,8 @@ glade_gtk_combo_box_text_create_editable (GladeWidgetAdaptor * adaptor,
 
 void
 glade_gtk_combo_box_text_post_create (GladeWidgetAdaptor *adaptor,
-				      GObject            *object, 
-				      GladeCreateReason   reason)
+                                      GObject            *object, 
+                                      GladeCreateReason   reason)
 {
   GladeWidget *gwidget;
 
@@ -59,9 +59,9 @@ glade_gtk_combo_box_text_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 GladeEditorProperty *
-glade_gtk_combo_box_text_create_eprop (GladeWidgetAdaptor * adaptor,
-				       GladePropertyClass * klass, 
-				       gboolean use_command)
+glade_gtk_combo_box_text_create_eprop (GladeWidgetAdaptor *adaptor,
+                                       GladePropertyClass *klass, 
+                                       gboolean use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
@@ -80,9 +80,9 @@ glade_gtk_combo_box_text_create_eprop (GladeWidgetAdaptor * adaptor,
 }
 
 gchar *
-glade_gtk_combo_box_text_string_from_value (GladeWidgetAdaptor * adaptor,
-					    GladePropertyClass * klass,
-					    const GValue * value)
+glade_gtk_combo_box_text_string_from_value (GladeWidgetAdaptor *adaptor,
+                                            GladePropertyClass *klass,
+                                            const GValue       *value)
 {
   GParamSpec          *pspec;
 
@@ -100,9 +100,10 @@ glade_gtk_combo_box_text_string_from_value (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_combo_box_text_set_property (GladeWidgetAdaptor * adaptor,
-				       GObject * object,
-				       const gchar * id, const GValue * value)
+glade_gtk_combo_box_text_set_property (GladeWidgetAdaptor *adaptor,
+                                       GObject            *object,
+                                       const gchar        *id,
+                                       const GValue       *value)
 {
   if (!strcmp (id, "glade-items"))
     {
@@ -118,21 +119,21 @@ glade_gtk_combo_box_text_set_property (GladeWidgetAdaptor * adaptor,
       gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (object));
 
       for (l = string_list; l; l = l->next)
-	{
-	  string = l->data;
+        {
+          string = l->data;
 
-	  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (object), string->id, string->string);
-	}
+          gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (object), string->id, string->string);
+        }
 
       gtk_combo_box_set_active (GTK_COMBO_BOX (object),
-				CLAMP (active, 0, g_list_length (string_list) - 1));
+                                CLAMP (active, 0, g_list_length (string_list) - 1));
     }
   else
     GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->set_property (adaptor, object, id, value);
 }
 
 static void
-glade_gtk_combo_box_text_read_items (GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_combo_box_text_read_items (GladeWidget *widget, GladeXmlNode *node)
 {
   GladeXmlNode *items_node;
   GladeXmlNode *item_node;
@@ -143,32 +144,32 @@ glade_gtk_combo_box_text_read_items (GladeWidget * widget, GladeXmlNode * node)
     {
 
       for (item_node = glade_xml_node_get_children (items_node);
-	   item_node; item_node = glade_xml_node_next (item_node))
-	{
-	  gchar *str, *comment, *context;
-	  gchar *id;
-	  gboolean translatable;
+           item_node; item_node = glade_xml_node_next (item_node))
+        {
+          gchar *str, *comment, *context;
+          gchar *id;
+          gboolean translatable;
 
-	  if (!glade_xml_node_verify (item_node, GLADE_TAG_ITEM))
-	    continue;
+          if (!glade_xml_node_verify (item_node, GLADE_TAG_ITEM))
+            continue;
 
           if ((str = glade_xml_get_content (item_node)) == NULL)
-	    continue;
+            continue;
 
-	  id           = glade_xml_get_property_string (item_node, GLADE_TAG_ID);
-	  context      = glade_xml_get_property_string (item_node, GLADE_TAG_CONTEXT);
-	  comment      = glade_xml_get_property_string (item_node, GLADE_TAG_COMMENT);
+          id           = glade_xml_get_property_string (item_node, GLADE_TAG_ID);
+          context      = glade_xml_get_property_string (item_node, GLADE_TAG_CONTEXT);
+          comment      = glade_xml_get_property_string (item_node, GLADE_TAG_COMMENT);
           translatable = glade_xml_get_property_boolean (item_node, GLADE_TAG_TRANSLATABLE, FALSE);
 
-	  string_list = 
-	    glade_string_list_append (string_list,
-				      str, comment, context, translatable, id);
+          string_list = 
+            glade_string_list_append (string_list,
+                                      str, comment, context, translatable, id);
 
-	  g_free (str);
-	  g_free (context);
-	  g_free (comment);
-	  g_free (id);
-	}
+          g_free (str);
+          g_free (context);
+          g_free (comment);
+          g_free (id);
+        }
 
       glade_widget_property_set (widget, "glade-items", string_list);
       glade_string_list_free (string_list);
@@ -176,11 +177,12 @@ glade_gtk_combo_box_text_read_items (GladeWidget * widget, GladeXmlNode * node)
 }
 
 void
-glade_gtk_combo_box_text_read_widget (GladeWidgetAdaptor * adaptor,
-				      GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_combo_box_text_read_widget (GladeWidgetAdaptor *adaptor,
+                                      GladeWidget        *widget,
+                                      GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -190,9 +192,9 @@ glade_gtk_combo_box_text_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_combo_box_text_write_items (GladeWidget * widget,
-				      GladeXmlContext * context,
-				      GladeXmlNode * node)
+glade_gtk_combo_box_text_write_items (GladeWidget     *widget,
+                                      GladeXmlContext *context,
+                                      GladeXmlNode    *node)
 {
   GladeXmlNode *item_node;
   GList *string_list = NULL, *l;
@@ -233,14 +235,15 @@ glade_gtk_combo_box_text_write_items (GladeWidget * widget,
 }
 
 void
-glade_gtk_combo_box_text_write_widget (GladeWidgetAdaptor * adaptor,
-				       GladeWidget * widget,
-				       GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_combo_box_text_write_widget (GladeWidgetAdaptor *adaptor,
+                                       GladeWidget        *widget,
+                                       GladeXmlContext    *context,
+                                       GladeXmlNode       *node)
 {
   GladeXmlNode *attrs_node;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */

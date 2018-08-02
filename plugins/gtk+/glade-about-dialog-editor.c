@@ -29,15 +29,15 @@ static void glade_about_dialog_editor_editable_init (GladeEditableIface *iface);
 
 /* Callbacks */
 static void license_type_pre_commit     (GladePropertyShell     *shell,
-					 GValue                 *value,
-					 GladeAboutDialogEditor *editor);
+                                         GValue                 *value,
+                                         GladeAboutDialogEditor *editor);
 static void license_type_post_commit    (GladePropertyShell     *shell,
-				         GValue                 *value,
-				         GladeAboutDialogEditor *editor);
+                                         GValue                 *value,
+                                         GladeAboutDialogEditor *editor);
 static void logo_file_toggled           (GtkWidget              *widget,
-					 GladeAboutDialogEditor *editor);
+                                         GladeAboutDialogEditor *editor);
 static void logo_icon_toggled           (GtkWidget              *widget,
-					 GladeAboutDialogEditor *editor);
+                                         GladeAboutDialogEditor *editor);
 
 
 struct _GladeAboutDialogEditorPrivate
@@ -131,15 +131,15 @@ glade_about_dialog_editor_editable_init (GladeEditableIface *iface)
 
 static void
 license_type_pre_commit (GladePropertyShell     *shell,
-			 GValue                 *value,
-			 GladeAboutDialogEditor *editor)
+                         GValue                 *value,
+                         GladeAboutDialogEditor *editor)
 {
   GladeWidget   *widget = glade_editable_loaded_widget (GLADE_EDITABLE (editor));
   GladeProperty *property;
   GtkLicense     license;
 
   glade_command_push_group (_("Setting License type of %s"),
-			    glade_widget_get_name (widget));
+                            glade_widget_get_name (widget));
 
   license = g_value_get_enum (value);
 
@@ -155,8 +155,8 @@ license_type_pre_commit (GladePropertyShell     *shell,
 
 static void
 license_type_post_commit (GladePropertyShell     *shell,
-			  GValue                 *value,
-			  GladeAboutDialogEditor *editor)
+                          GValue                 *value,
+                          GladeAboutDialogEditor *editor)
 {
   glade_command_pop_group ();
 }

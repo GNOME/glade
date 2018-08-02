@@ -64,7 +64,7 @@ struct _GladeSignalModel
 
 GType         glade_signal_model_get_type (void) G_GNUC_CONST;
 GtkTreeModel *glade_signal_model_new      (GladeWidget *widget,
-					   GHashTable  *signals);
+                                           GHashTable  *signals);
 
 G_END_DECLS
 

@@ -11,18 +11,18 @@ GladeNameContext  *glade_name_context_new                 (void);
 void               glade_name_context_destroy             (GladeNameContext *context);
 
 gchar             *glade_name_context_new_name            (GladeNameContext *context,
-							   const gchar      *base_name);
+                                                           const gchar      *base_name);
 
 guint              glade_name_context_n_names             (GladeNameContext *context);
 
 gboolean           glade_name_context_has_name            (GladeNameContext *context,
-							   const gchar      *name);
+                                                           const gchar      *name);
 
 gboolean           glade_name_context_add_name            (GladeNameContext *context,
-							   const gchar      *name);
+                                                           const gchar      *name);
 
 void               glade_name_context_release_name        (GladeNameContext *context,
-							   const gchar      *name);
+                                                           const gchar      *name);
 
 G_END_DECLS
 

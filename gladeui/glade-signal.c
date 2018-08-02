@@ -82,9 +82,10 @@ glade_signal_finalize (GObject *object)
 }
 
 static void
-glade_signal_get_property (GObject *object,
-			   guint prop_id,
-			   GValue *value, GParamSpec *pspec)
+glade_signal_get_property (GObject    *object,
+                           guint       prop_id,
+                           GValue     *value,
+                           GParamSpec *pspec)
 {
   GladeSignal *signal = GLADE_SIGNAL (object);
 
@@ -118,34 +119,35 @@ glade_signal_get_property (GObject *object,
 }
 
 static void
-glade_signal_set_property (GObject *object,
-			   guint prop_id,
-			   const GValue *value, GParamSpec *pspec)
+glade_signal_set_property (GObject      *object,
+                           guint         prop_id,
+                           const GValue *value,
+                           GParamSpec   *pspec)
 {
   GladeSignal *signal = GLADE_SIGNAL (object);
 
   switch (prop_id)
     {
       case PROP_CLASS:
-	signal->priv->class = g_value_get_pointer (value);
+        signal->priv->class = g_value_get_pointer (value);
         break;
       case PROP_DETAIL:
-	glade_signal_set_detail (signal, g_value_get_string (value));
+        glade_signal_set_detail (signal, g_value_get_string (value));
         break;
       case PROP_HANDLER:
-	glade_signal_set_handler (signal, g_value_get_string (value));
+        glade_signal_set_handler (signal, g_value_get_string (value));
         break;
       case PROP_USERDATA:
-	glade_signal_set_userdata (signal, g_value_get_string (value));
+        glade_signal_set_userdata (signal, g_value_get_string (value));
         break; 
       case PROP_SUPPORT_WARNING:
-	glade_signal_set_support_warning (signal, g_value_get_string (value));
+        glade_signal_set_support_warning (signal, g_value_get_string (value));
         break; 
       case PROP_AFTER:
-	glade_signal_set_after (signal, g_value_get_boolean (value));
+        glade_signal_set_after (signal, g_value_get_boolean (value));
         break; 
       case PROP_SWAPPED:
-	glade_signal_set_swapped (signal, g_value_get_boolean (value));
+        glade_signal_set_swapped (signal, g_value_get_boolean (value));
         break; 
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -234,8 +236,8 @@ GladeSignal *
 glade_signal_new (const GladeSignalClass *sig_class,
                   const gchar            *handler,
                   const gchar            *userdata, 
-		  gboolean                after, 
-		  gboolean                swapped)
+                  gboolean                after, 
+                  gboolean                swapped)
 {
   g_return_val_if_fail (sig_class != NULL, NULL);
 
@@ -294,8 +296,8 @@ glade_signal_clone (const GladeSignal *signal)
   dup = glade_signal_new (signal->priv->class,
                           signal->priv->handler,
                           signal->priv->userdata, 
-			  signal->priv->after, 
-			  signal->priv->swapped);
+                          signal->priv->after, 
+                          signal->priv->swapped);
 
   glade_signal_set_detail (dup, signal->priv->detail);
   glade_signal_set_support_warning (dup, signal->priv->support_warning);
@@ -413,9 +415,9 @@ glade_signal_read (GladeXmlNode *node, GladeWidgetAdaptor *adaptor)
     {
       /* XXX These errors should be collected and reported to the user */
       g_warning ("No signal %s was found for class %s, skipping\n", 
-		 name, glade_widget_adaptor_get_name (adaptor));
+                 name, glade_widget_adaptor_get_name (adaptor));
     }
-	
+
   g_free (name);
   g_free (handler);
   g_free (userdata);
@@ -434,7 +436,7 @@ glade_signal_get_name (const GladeSignal *signal)
 G_CONST_RETURN GladeSignalClass *
 glade_signal_get_class (const GladeSignal *signal)
 {
-	return signal->priv->class;
+        return signal->priv->class;
 }
 
 void

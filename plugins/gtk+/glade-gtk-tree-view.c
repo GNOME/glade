@@ -34,8 +34,8 @@
 
 
 GladeEditable *
-glade_gtk_treeview_create_editable (GladeWidgetAdaptor * adaptor,
-				    GladeEditorPageType type)
+glade_gtk_treeview_create_editable (GladeWidgetAdaptor *adaptor,
+                                    GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {
@@ -47,23 +47,23 @@ glade_gtk_treeview_create_editable (GladeWidgetAdaptor * adaptor,
 
 gboolean
 glade_gtk_treeview_add_verify (GladeWidgetAdaptor *adaptor,
-			       GtkWidget          *container,
-			       GtkWidget          *child,
-			       gboolean            user_feedback)
+                               GtkWidget          *container,
+                               GtkWidget          *child,
+                               gboolean            user_feedback)
 {
   if (!GTK_IS_TREE_VIEW_COLUMN (child))
     {
       if (user_feedback)
-	{
-	  GladeWidgetAdaptor *cell_adaptor = 
-	    glade_widget_adaptor_get_by_type (GTK_TYPE_TREE_VIEW_COLUMN);
+        {
+          GladeWidgetAdaptor *cell_adaptor = 
+            glade_widget_adaptor_get_by_type (GTK_TYPE_TREE_VIEW_COLUMN);
 
-	  glade_util_ui_message (glade_app_get_window (),
-				 GLADE_UI_INFO, NULL,
-				 ONLY_THIS_GOES_IN_THAT_MSG,
-				 glade_widget_adaptor_get_title (cell_adaptor),
-				 glade_widget_adaptor_get_title (adaptor));
-	}
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 ONLY_THIS_GOES_IN_THAT_MSG,
+                                 glade_widget_adaptor_get_title (cell_adaptor),
+                                 glade_widget_adaptor_get_title (adaptor));
+        }
 
       return FALSE;
     }
@@ -107,8 +107,9 @@ glade_gtk_treeview_launch_editor (GObject *treeview)
 }
 
 void
-glade_gtk_treeview_action_activate (GladeWidgetAdaptor * adaptor,
-                                    GObject * object, const gchar * action_path)
+glade_gtk_treeview_action_activate (GladeWidgetAdaptor *adaptor,
+                                    GObject            *object,
+                                    const gchar        *action_path)
 {
   if (strcmp (action_path, "launch_editor") == 0)
     {
@@ -134,11 +135,11 @@ glade_gtk_treeview_get_column_index (GtkTreeView * view,
 }
 
 void
-glade_gtk_treeview_get_child_property (GladeWidgetAdaptor * adaptor,
-                                       GObject * container,
-                                       GObject * child,
-                                       const gchar * property_name,
-                                       GValue * value)
+glade_gtk_treeview_get_child_property (GladeWidgetAdaptor *adaptor,
+                                       GObject            *container,
+                                       GObject            *child,
+                                       const gchar        *property_name,
+                                       GValue             *value)
 {
   if (strcmp (property_name, "position") == 0)
     g_value_set_int (value,
@@ -155,11 +156,11 @@ glade_gtk_treeview_get_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_treeview_set_child_property (GladeWidgetAdaptor * adaptor,
-                                       GObject * container,
-                                       GObject * child,
-                                       const gchar * property_name,
-                                       const GValue * value)
+glade_gtk_treeview_set_child_property (GladeWidgetAdaptor *adaptor,
+                                       GObject            *container,
+                                       GObject            *child,
+                                       const gchar        *property_name,
+                                       const GValue       *value)
 {
   if (strcmp (property_name, "position") == 0)
     {
@@ -179,8 +180,8 @@ glade_gtk_treeview_set_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 GList *
-glade_gtk_treeview_get_children (GladeWidgetAdaptor * adaptor,
-                                 GtkTreeView * view)
+glade_gtk_treeview_get_children (GladeWidgetAdaptor *adaptor,
+                                 GtkTreeView        *view)
 {
   GList *children;
 
@@ -195,7 +196,7 @@ glade_gtk_treeview_get_children (GladeWidgetAdaptor * adaptor,
  * to fixed size and then control the column's sensitivity accordingly.
  */
 #define INSENSITIVE_COLUMN_SIZING_MSG \
-	_("Columns must have a fixed size inside a treeview with fixed height mode set")
+        _("Columns must have a fixed size inside a treeview with fixed height mode set")
 
 void
 glade_gtk_treeview_add_child (GladeWidgetAdaptor * adaptor,
@@ -223,8 +224,9 @@ glade_gtk_treeview_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_treeview_remove_child (GladeWidgetAdaptor * adaptor,
-                                 GObject * container, GObject * child)
+glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
+                                 GObject            *container,
+                                 GObject            *child)
 {
   GtkTreeView *view = GTK_TREE_VIEW (container);
   GtkTreeViewColumn *column;
@@ -237,9 +239,10 @@ glade_gtk_treeview_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_treeview_replace_child (GladeWidgetAdaptor * adaptor,
-                                  GObject * container,
-                                  GObject * current, GObject * new_column)
+glade_gtk_treeview_replace_child (GladeWidgetAdaptor *adaptor,
+                                  GObject            *container,
+                                  GObject            *current, 
+                                  GObject            *new_column)
 {
   GtkTreeView *view = GTK_TREE_VIEW (container);
   GList *columns;
@@ -273,9 +276,10 @@ glade_gtk_treeview_replace_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_treeview_set_property (GladeWidgetAdaptor * adaptor,
-				 GObject * object,
-				 const gchar * id, const GValue * value)
+glade_gtk_treeview_set_property (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object,
+                                 const gchar        *id,
+                                 const GValue       *value)
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);
@@ -283,23 +287,23 @@ glade_gtk_treeview_set_property (GladeWidgetAdaptor * adaptor,
   if (strcmp (id, "enable-search") == 0)
     {
       if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (widget, "search-column", TRUE, NULL);
+        glade_widget_property_set_sensitive (widget, "search-column", TRUE, NULL);
       else
-	glade_widget_property_set_sensitive (widget, "search-column", FALSE, _("Search is disabled"));
+        glade_widget_property_set_sensitive (widget, "search-column", FALSE, _("Search is disabled"));
     }
   else if (strcmp (id, "headers-visible") == 0)
     {
       if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (widget, "headers-clickable", TRUE, NULL);
+        glade_widget_property_set_sensitive (widget, "headers-clickable", TRUE, NULL);
       else
-	glade_widget_property_set_sensitive (widget, "headers-clickable", FALSE, _("Headers are invisible"));
+        glade_widget_property_set_sensitive (widget, "headers-clickable", FALSE, _("Headers are invisible"));
     }
   else if (strcmp (id, "show-expanders") == 0)
     {
       if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (widget, "expander-column", TRUE, NULL);
+        glade_widget_property_set_sensitive (widget, "expander-column", TRUE, NULL);
       else
-	glade_widget_property_set_sensitive (widget, "expander-column", FALSE, _("Expanders are not shown"));
+        glade_widget_property_set_sensitive (widget, "expander-column", FALSE, _("Expanders are not shown"));
     }
 
   if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))

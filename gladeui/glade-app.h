@@ -77,8 +77,8 @@ gint               glade_app_config_save          (void);
 gboolean           glade_app_do_event             (GdkEvent *event);
 
 gboolean           glade_app_get_catalog_version  (const gchar   *name, 
-						   gint          *major, 
-						   gint          *minor);
+                                                   gint          *major, 
+                                                   gint          *minor);
 GList             *glade_app_get_catalogs         (void);
 GladeCatalog      *glade_app_get_catalog          (const gchar   *name);
 GladeClipboard*    glade_app_get_clipboard        (void);
@@ -96,8 +96,8 @@ void               glade_app_set_accel_group      (GtkAccelGroup *accel_group);
 GtkAccelGroup     *glade_app_get_accel_group      (void);
 
 void               glade_app_search_docs          (const gchar   *book, 
-						   const gchar   *page, 
-						   const gchar   *search);
+                                                   const gchar   *page, 
+                                                   const gchar   *search);
 
 /* package paths */
 const gchar       *glade_app_get_catalogs_dir     (void) G_GNUC_CONST;

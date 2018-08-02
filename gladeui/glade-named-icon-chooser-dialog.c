@@ -835,12 +835,12 @@ centre_selected_row (GladeNamedIconChooserDialog *dialog)
                                     (GtkTreePath *) l->data,
                                     NULL, TRUE, 0.5, 0.0);
 
-/*		gtk_tree_view_set_cursor (GTK_TREE_VIEW (dialog->priv->icons_view),
-					 (GtkTreePath *) l->data,
-					 0,
-					 FALSE);
-					 
-		gtk_widget_grab_focus (dialog->priv->icons_view);		
+/*                gtk_tree_view_set_cursor (GTK_TREE_VIEW (dialog->priv->icons_view),
+                                            (GtkTreePath *) l->data,
+                                            0,
+                                            FALSE);
+                                         
+                gtk_widget_grab_focus (dialog->priv->icons_view);
 */
       g_list_foreach (l, (GFunc) gtk_tree_path_free, NULL);
       g_list_free (l);
@@ -1524,15 +1524,15 @@ glade_named_icon_chooser_dialog_class_init (GladeNamedIconChooserDialogClass *kl
 
   window_class->set_focus = glade_named_icon_chooser_dialog_set_focus;
 
-        /**
-	 * GladeNamedIconChooserDialog::icon-activated
-	 * @chooser: the object which received the signal
-	 *
-	 * This signal is emitted when the user "activates" an icon
-	 * in the named icon chooser.  This can happen by double-clicking on an item
-	 * in the recently used resources list, or by pressing
-	 * <keycap>Enter</keycap>.
-	*/
+  /**
+   * GladeNamedIconChooserDialog::icon-activated
+   * @chooser: the object which received the signal
+   *
+   * This signal is emitted when the user "activates" an icon
+   * in the named icon chooser.  This can happen by double-clicking on an item
+   * in the recently used resources list, or by pressing
+   * <keycap>Enter</keycap>.
+   */
   dialog_signals[ICON_ACTIVATED] =
       g_signal_new ("icon-activated",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1541,15 +1541,15 @@ glade_named_icon_chooser_dialog_class_init (GladeNamedIconChooserDialogClass *kl
                                      icon_activated), NULL, NULL,
                     g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-        /**
-	 * GladeNamedIconChooserDialog::selection-changed
-	 * @chooser: the object which received the signal
-	 *
-	 * This signal is emitted when there is a change in the set of
-	 * selected icon names.  This can happen when a user
-	 * modifies the selection with the mouse or the keyboard, or when
-	 * explicitely calling functions to change the selection.
-	*/
+  /**
+   * GladeNamedIconChooserDialog::selection-changed
+   * @chooser: the object which received the signal
+   *
+   * This signal is emitted when there is a change in the set of
+   * selected icon names.  This can happen when a user
+   * modifies the selection with the mouse or the keyboard, or when
+   * explicitely calling functions to change the selection.
+   */
   dialog_signals[SELECTION_CHANGED] =
       g_signal_new ("selection-changed",
                     G_TYPE_FROM_CLASS (object_class),

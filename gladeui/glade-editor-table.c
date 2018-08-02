@@ -28,67 +28,67 @@
 #include "glade-editor-table.h"
 
 
-#define BLOCK_NAME_ENTRY_CB(table)					\
-	do { if (table->priv->name_entry)					\
-			g_signal_handlers_block_by_func (G_OBJECT (table->priv->name_entry), \
-							 G_CALLBACK (widget_name_edited), table); \
-	} while (0);
+#define BLOCK_NAME_ENTRY_CB(table)                                                 \
+  do { if (table->priv->name_entry)                                                \
+         g_signal_handlers_block_by_func (G_OBJECT (table->priv->name_entry),      \
+                                          G_CALLBACK (widget_name_edited), table); \
+  } while (0);
 
-#define UNBLOCK_NAME_ENTRY_CB(table)					\
-	do { if (table->priv->name_entry)					\
-			g_signal_handlers_unblock_by_func (G_OBJECT (table->priv->name_entry), \
-							   G_CALLBACK (widget_name_edited), table); \
-	} while (0);
+#define UNBLOCK_NAME_ENTRY_CB(table)                                                 \
+  do { if (table->priv->name_entry)                                                  \
+         g_signal_handlers_unblock_by_func (G_OBJECT (table->priv->name_entry),      \
+                                            G_CALLBACK (widget_name_edited), table); \
+  } while (0);
 
 
 
-static void glade_editor_table_init          (GladeEditorTable * self);
-static void glade_editor_table_class_init    (GladeEditorTableClass * klass);
+static void glade_editor_table_init          (GladeEditorTable *self);
+static void glade_editor_table_class_init    (GladeEditorTableClass *klass);
 
-static void glade_editor_table_dispose       (GObject         *object);
-static void glade_editor_table_set_property  (GObject         *object,
-					      guint            prop_id,
-					      const GValue    *value,
-					      GParamSpec      *pspec);
+static void glade_editor_table_dispose       (GObject      *object);
+static void glade_editor_table_set_property  (GObject      *object,
+                                              guint         prop_id,
+                                              const GValue *value,
+                                              GParamSpec   *pspec);
 
-static void glade_editor_table_editable_init (GladeEditableIface * iface);
-static void glade_editor_table_realize       (GtkWidget * widget);
-static void glade_editor_table_grab_focus    (GtkWidget * widget);
+static void glade_editor_table_editable_init (GladeEditableIface *iface);
+static void glade_editor_table_realize       (GtkWidget *widget);
+static void glade_editor_table_grab_focus    (GtkWidget *widget);
 
 static void append_name_field (GladeEditorTable   *table);
 static void append_items      (GladeEditorTable   *table,
-			       GladeWidgetAdaptor *adaptor,
-			       GladeEditorPageType type);
+                               GladeWidgetAdaptor *adaptor,
+                               GladeEditorPageType type);
 
 
 struct _GladeEditorTablePrivate
 {
   GladeWidgetAdaptor *adaptor; /* The GladeWidgetAdaptor this
-				* table was created for.
-				*/
+                                * table was created for.
+                                */
 
   GladeWidget *loaded_widget; /* A pointer to the currently loaded GladeWidget
-			       */
-	
+                               */
+
   GtkWidget *name_label; /* A pointer to the "Name:" label (for show/hide) */
   GtkWidget *name_entry; /* A pointer to the gtk_entry that holds
-			  * the name of the widget. This is the
-			  * first item _pack'ed to the table_widget.
-			  * We have a pointer here because it is an
-			  * entry which will not be created from a
-			  * GladeProperty but rather from code.
-			  */
+                          * the name of the widget. This is the
+                          * first item _pack'ed to the table_widget.
+                          * We have a pointer here because it is an
+                          * entry which will not be created from a
+                          * GladeProperty but rather from code.
+                          */
   GtkWidget *composite_check; /* A pointer to the composite check button */
   GtkWidget *name_field; /* A box containing the name entry and composite check */
 
   GList *properties; /* A list of GladeEditorPropery items.
-		      * For each row in the gtk_table, there is a
-		      * corrsponding GladeEditorProperty struct.
-		      */
+                      * For each row in the gtk_table, there is a
+                      * corrsponding GladeEditorProperty struct.
+                      */
 
   GladeEditorPageType type; /* Is this table to be used in the common tab, ?
-			     * the general tab, a packing tab or the query popup ?
-			     */
+                             * the general tab, a packing tab or the query popup ?
+                             */
 
   gint rows;
 
@@ -120,9 +120,9 @@ glade_editor_table_class_init (GladeEditorTableClass *klass)
   g_object_class_install_property
       (object_class, PROP_PAGE_TYPE,
        g_param_spec_enum ("page-type", _("Page Type"),
-			  _("The editor page type to create this GladeEditorTable for"),
-			  GLADE_TYPE_EDITOR_PAGE_TYPE, GLADE_PAGE_GENERAL,
-			  G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+                          _("The editor page type to create this GladeEditorTable for"),
+                          GLADE_TYPE_EDITOR_PAGE_TYPE, GLADE_PAGE_GENERAL,
+                          G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -157,10 +157,10 @@ glade_editor_table_dispose (GObject *object)
 }
 
 static void
-glade_editor_table_set_property (GObject         *object,
-				 guint            prop_id,
-				 const GValue    *value,
-				 GParamSpec      *pspec)
+glade_editor_table_set_property (GObject      *object,
+                                 guint         prop_id,
+                                 const GValue *value,
+                                 GParamSpec   *pspec)
 {
   GladeEditorTable *table = GLADE_EDITOR_TABLE (object);
 
@@ -234,14 +234,14 @@ widget_name_edited (GtkWidget *editable, GladeEditorTable *table)
        * Otherwise, we need to allocate a new unnamed prefix name for the widget
        */
       if (!glade_widget_has_prop_refs (widget))
-	{
-	  gchar *unnamed_name = glade_project_new_widget_name (glade_widget_get_project (widget), NULL, GLADE_UNNAMED_PREFIX);
-	  glade_command_set_name (widget, unnamed_name);
-	  g_free (unnamed_name);
-	}
+        {
+          gchar *unnamed_name = glade_project_new_widget_name (glade_widget_get_project (widget), NULL, GLADE_UNNAMED_PREFIX);
+          glade_command_set_name (widget, unnamed_name);
+          g_free (unnamed_name);
+        }
     }
   else if (glade_project_available_widget_name (glade_widget_get_project (widget), 
-						widget, new_name))
+                                                widget, new_name))
     glade_command_set_name (widget, new_name);
 
   g_free (new_name);
@@ -249,7 +249,7 @@ widget_name_edited (GtkWidget *editable, GladeEditorTable *table)
 
 static void
 widget_composite_toggled (GtkToggleButton  *composite_check,
-			  GladeEditorTable *table)
+                          GladeEditorTable *table)
 {
   GladeProject *project;
 
@@ -265,16 +265,16 @@ widget_composite_toggled (GtkToggleButton  *composite_check,
   if (project)
     {
       if (gtk_toggle_button_get_active (composite_check))
-	glade_command_set_project_template (project, table->priv->loaded_widget);
+        glade_command_set_project_template (project, table->priv->loaded_widget);
       else
-	glade_command_set_project_template (project, NULL);
+        glade_command_set_project_template (project, NULL);
     }
 }
 
 static void
 widget_name_changed (GladeWidget      *widget,
                      GParamSpec       *pspec,
-		     GladeEditorTable *table)
+                     GladeEditorTable *table)
 {
   if (!gtk_widget_get_mapped (GTK_WIDGET (table)))
     return;
@@ -284,9 +284,9 @@ widget_name_changed (GladeWidget      *widget,
       BLOCK_NAME_ENTRY_CB (table);
 
       if (glade_widget_has_name (table->priv->loaded_widget))
-	gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), glade_widget_get_name (table->priv->loaded_widget));
+        gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), glade_widget_get_name (table->priv->loaded_widget));
       else
-	gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
+        gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
 
       UNBLOCK_NAME_ENTRY_CB (table);
     }
@@ -294,25 +294,25 @@ widget_name_changed (GladeWidget      *widget,
 
 static void
 widget_composite_changed (GladeWidget      *widget,
-			  GParamSpec       *pspec,
-			  GladeEditorTable *table)
+                          GParamSpec       *pspec,
+                          GladeEditorTable *table)
 {
   if (!gtk_widget_get_mapped (GTK_WIDGET (table)))
     return;
 
   if (table->priv->name_label)
     gtk_label_set_text (GTK_LABEL (table->priv->name_label),
-			glade_widget_get_is_composite (table->priv->loaded_widget) ?
-			_("Class Name:") : _("ID:"));
+                        glade_widget_get_is_composite (table->priv->loaded_widget) ?
+                        _("Class Name:") : _("ID:"));
 
   if (table->priv->composite_check)
     {
       g_signal_handlers_block_by_func (G_OBJECT (table->priv->composite_check),
-				       G_CALLBACK (widget_composite_toggled), table);
+                                       G_CALLBACK (widget_composite_toggled), table);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (table->priv->composite_check),
-				    glade_widget_get_is_composite (table->priv->loaded_widget));
+                                    glade_widget_get_is_composite (table->priv->loaded_widget));
       g_signal_handlers_unblock_by_func (G_OBJECT (table->priv->composite_check),
-					 G_CALLBACK (widget_composite_toggled), table);
+                                         G_CALLBACK (widget_composite_toggled), table);
     }
 }
 
@@ -427,10 +427,10 @@ glade_editor_table_set_show_name (GladeEditable *editable, gboolean show_name)
       table->priv->show_name = show_name;
 
       if (table->priv->name_label)
-	{
-	  gtk_widget_set_visible (table->priv->name_label, show_name);
-	  gtk_widget_set_visible (table->priv->name_field, show_name);
-	}
+        {
+          gtk_widget_set_visible (table->priv->name_label, show_name);
+          gtk_widget_set_visible (table->priv->name_field, show_name);
+        }
     }
 }
 
@@ -511,9 +511,9 @@ get_sorted_properties (GladeWidgetAdaptor *adaptor, GladeEditorPageType type)
        * out properties from the GladeEditorTable using the "custom-layout" attribute.
        */
       if (GLADE_PROPERTY_CLASS_IS_TYPE (klass, type) &&
-	  (type == GLADE_PAGE_QUERY || 
-	   (!glade_property_class_custom_layout (klass) &&
-	    glade_property_class_is_visible (klass))))
+          (type == GLADE_PAGE_QUERY || 
+           (!glade_property_class_custom_layout (klass) &&
+            glade_property_class_is_visible (klass))))
         {
           list = g_list_prepend (list, klass);
         }
@@ -535,7 +535,7 @@ append_item (GladeEditorTable   *table,
     {
       g_critical ("Unable to create editor for property '%s' of class '%s'",
                   glade_property_class_id (klass), 
-		  glade_widget_adaptor_get_name (glade_property_class_get_adaptor (klass)));
+                  glade_widget_adaptor_get_name (glade_property_class_get_adaptor (klass)));
       return NULL;
     }
 

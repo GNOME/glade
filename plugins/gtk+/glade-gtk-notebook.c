@@ -43,8 +43,8 @@ static gboolean glade_gtk_notebook_setting_position = FALSE;
 
 
 GladeEditable *
-glade_gtk_notebook_create_editable (GladeWidgetAdaptor * adaptor,
-				    GladeEditorPageType type)
+glade_gtk_notebook_create_editable (GladeWidgetAdaptor *adaptor,
+                                    GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_notebook_editor_new ();
@@ -53,7 +53,7 @@ glade_gtk_notebook_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static gint
-notebook_child_compare_func (GtkWidget * widget_a, GtkWidget * widget_b)
+notebook_child_compare_func (GtkWidget *widget_a, GtkWidget *widget_b)
 {
   GladeWidget *gwidget_a, *gwidget_b;
   gint pos_a = 0, pos_b = 0;
@@ -70,7 +70,7 @@ notebook_child_compare_func (GtkWidget * widget_a, GtkWidget * widget_b)
 }
 
 static gint
-notebook_find_child (GtkWidget * check, gpointer cmp_pos_p)
+notebook_find_child (GtkWidget *check, gpointer cmp_pos_p)
 {
   GladeWidget *gcheck;
   gint position = 0, cmp_pos = GPOINTER_TO_INT (cmp_pos_p);
@@ -84,7 +84,7 @@ notebook_find_child (GtkWidget * check, gpointer cmp_pos_p)
 }
 
 static gint
-notebook_search_tab (GtkNotebook * notebook, GtkWidget * tab)
+notebook_search_tab (GtkNotebook *notebook, GtkWidget *tab)
 {
   GtkWidget *page;
   gint i;
@@ -101,7 +101,7 @@ notebook_search_tab (GtkNotebook * notebook, GtkWidget * tab)
 }
 
 static GtkWidget *
-notebook_get_filler (NotebookChildren * nchildren, gboolean page)
+notebook_get_filler (NotebookChildren *nchildren, gboolean page)
 {
   GtkWidget *widget = NULL;
 
@@ -134,7 +134,7 @@ notebook_get_filler (NotebookChildren * nchildren, gboolean page)
 }
 
 static GtkWidget *
-notebook_get_page (NotebookChildren * nchildren, gint position)
+notebook_get_page (NotebookChildren *nchildren, gint position)
 {
   GList *node;
   GtkWidget *widget = NULL;
@@ -154,7 +154,7 @@ notebook_get_page (NotebookChildren * nchildren, gint position)
 }
 
 static GtkWidget *
-notebook_get_tab (NotebookChildren * nchildren, gint position)
+notebook_get_tab (NotebookChildren *nchildren, gint position)
 {
   GList *node;
   GtkWidget *widget = NULL;
@@ -174,7 +174,7 @@ notebook_get_tab (NotebookChildren * nchildren, gint position)
 }
 
 static NotebookChildren *
-glade_gtk_notebook_extract_children (GtkWidget * notebook)
+glade_gtk_notebook_extract_children (GtkWidget *notebook)
 {
   NotebookChildren *nchildren;
   gchar *special_child_type;
@@ -244,17 +244,17 @@ glade_gtk_notebook_extract_children (GtkWidget * notebook)
       GtkWidget *tab = gtk_notebook_get_tab_label (nb, page);
 
       if (tab)
-	g_object_ref (tab);
+        g_object_ref (tab);
 
       /* Explicitly remove the tab label first */
       gtk_notebook_set_tab_label (nb, page, NULL);
 
       /* FIXE: we need to unparent here to avoid anoying warning when reparenting */
       if (tab)
-	{
-	  gtk_widget_unparent (tab);
-	  g_object_unref (tab);
-	}
+        {
+          gtk_widget_unparent (tab);
+          g_object_unref (tab);
+        }
 
       gtk_notebook_remove_page (nb, 0);
     }
@@ -266,8 +266,8 @@ glade_gtk_notebook_extract_children (GtkWidget * notebook)
 }
 
 static void
-glade_gtk_notebook_insert_children (GtkWidget * notebook,
-                                    NotebookChildren * nchildren)
+glade_gtk_notebook_insert_children (GtkWidget        *notebook,
+                                    NotebookChildren *nchildren)
 {
   gint i;
 
@@ -308,9 +308,10 @@ glade_gtk_notebook_insert_children (GtkWidget * notebook,
 }
 
 static void
-glade_gtk_notebook_switch_page (GtkNotebook * notebook,
-                                GtkWidget * page,
-                                guint page_num, gpointer user_data)
+glade_gtk_notebook_switch_page (GtkNotebook *notebook,
+                                GtkWidget   *page,
+                                guint        page_num,
+                                gpointer     user_data)
 {
   GladeWidget *gnotebook = glade_widget_get_from_gobject (notebook);
 
@@ -322,8 +323,8 @@ glade_gtk_notebook_switch_page (GtkNotebook * notebook,
  * the selected widget.
  */
 static void
-glade_gtk_notebook_selection_changed (GladeProject * project,
-                                      GladeWidget * gwidget)
+glade_gtk_notebook_selection_changed (GladeProject *project,
+                                      GladeWidget  *gwidget)
 {
   GList *list;
   gint i;
@@ -358,8 +359,9 @@ glade_gtk_notebook_selection_changed (GladeProject * project,
 }
 
 static void
-glade_gtk_notebook_project_changed (GladeWidget * gwidget,
-                                    GParamSpec * pspec, gpointer userdata)
+glade_gtk_notebook_project_changed (GladeWidget *gwidget,
+                                    GParamSpec  *pspec,
+                                    gpointer     userdata)
 {
   GladeProject
       * project = glade_widget_get_project (gwidget),
@@ -381,7 +383,7 @@ glade_gtk_notebook_project_changed (GladeWidget * gwidget,
 }
 
 static void
-glade_gtk_notebook_parse_finished (GladeProject * project, GObject * object)
+glade_gtk_notebook_parse_finished (GladeProject *project, GObject *object)
 {
   GtkWidget *action;
 
@@ -394,8 +396,9 @@ glade_gtk_notebook_parse_finished (GladeProject * project, GObject * object)
 }
 
 void
-glade_gtk_notebook_post_create (GladeWidgetAdaptor * adaptor,
-                                GObject * notebook, GladeCreateReason reason)
+glade_gtk_notebook_post_create (GladeWidgetAdaptor *adaptor,
+                                GObject            *notebook,
+                                GladeCreateReason   reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (notebook);
   GladeProject *project = glade_widget_get_project (gwidget);
@@ -417,7 +420,7 @@ glade_gtk_notebook_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 static gint
-glade_gtk_notebook_get_first_blank_page (GtkNotebook * notebook)
+glade_gtk_notebook_get_first_blank_page (GtkNotebook *notebook)
 {
   GladeWidget *gwidget;
   GtkWidget *widget;
@@ -440,7 +443,7 @@ glade_gtk_notebook_get_first_blank_page (GtkNotebook * notebook)
 }
 
 static GladeWidget *
-glade_gtk_notebook_generate_tab (GladeWidget * notebook, gint page_id)
+glade_gtk_notebook_generate_tab (GladeWidget *notebook, gint page_id)
 {
   static GladeWidgetAdaptor *wadaptor = NULL;
   gchar *str;
@@ -466,7 +469,7 @@ glade_gtk_notebook_generate_tab (GladeWidget * notebook, gint page_id)
 }
 
 static void
-glade_gtk_notebook_set_n_pages (GObject * object, const GValue * value)
+glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 {
   GladeWidget *widget;
   GtkNotebook *notebook;
@@ -546,9 +549,10 @@ glade_gtk_notebook_set_n_pages (GObject * object, const GValue * value)
 }
 
 void
-glade_gtk_notebook_set_property (GladeWidgetAdaptor * adaptor,
-                                 GObject * object,
-                                 const gchar * id, const GValue * value)
+glade_gtk_notebook_set_property (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object,
+                                 const gchar        *id,
+                                 const GValue       *value)
 {
   if (!strcmp (id, "pages"))
     glade_gtk_notebook_set_n_pages (object, value);
@@ -584,8 +588,10 @@ glade_gtk_notebook_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_notebook_get_property (GladeWidgetAdaptor * adaptor,
-                            GObject * object, const gchar * id, GValue * value)
+glade_gtk_notebook_get_property (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object,
+                                 const gchar        *id,
+                                 GValue             *value)
 {
   if (!strcmp (id, "has-action-start"))
     {
@@ -603,7 +609,7 @@ glade_gtk_notebook_get_property (GladeWidgetAdaptor * adaptor,
 }
 
 static gboolean
-glade_gtk_notebook_verify_n_pages (GObject * object, const GValue * value)
+glade_gtk_notebook_verify_n_pages (GObject *object, const GValue *value)
 {
   GtkNotebook *notebook = GTK_NOTEBOOK (object);
   GtkWidget *child_widget, *tab_widget;
@@ -628,9 +634,10 @@ glade_gtk_notebook_verify_n_pages (GObject * object, const GValue * value)
 }
 
 gboolean
-glade_gtk_notebook_verify_property (GladeWidgetAdaptor * adaptor,
-                                    GObject * object,
-                                    const gchar * id, const GValue * value)
+glade_gtk_notebook_verify_property (GladeWidgetAdaptor *adaptor,
+                                    GObject            *object,
+                                    const gchar        *id,
+                                    const GValue       *value)
 {
   if (!strcmp (id, "pages"))
     return glade_gtk_notebook_verify_n_pages (object, value);
@@ -642,8 +649,9 @@ glade_gtk_notebook_verify_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_notebook_add_child (GladeWidgetAdaptor * adaptor,
-                              GObject * object, GObject * child)
+glade_gtk_notebook_add_child (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              GObject            *child)
 {
   GtkNotebook *notebook;
   gint num_page, position = 0;
@@ -742,8 +750,9 @@ glade_gtk_notebook_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_notebook_remove_child (GladeWidgetAdaptor * adaptor,
-                                 GObject * object, GObject * child)
+glade_gtk_notebook_remove_child (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object,
+                                 GObject            *child)
 {
   NotebookChildren *nchildren;
   gchar *special_child_type;
@@ -793,9 +802,10 @@ glade_gtk_notebook_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_notebook_replace_child (GladeWidgetAdaptor * adaptor,
-                                  GtkWidget * container,
-                                  GtkWidget * current, GtkWidget * new_widget)
+glade_gtk_notebook_replace_child (GladeWidgetAdaptor *adaptor,
+                                  GtkWidget          *container,
+                                  GtkWidget          *current,
+                                  GtkWidget          *new_widget)
 {
   GtkNotebook *notebook;
   GladeWidget *gcurrent, *gnew;
@@ -847,10 +857,11 @@ glade_gtk_notebook_replace_child (GladeWidgetAdaptor * adaptor,
 }
 
 gboolean
-glade_gtk_notebook_child_verify_property (GladeWidgetAdaptor * adaptor,
-                                          GObject * container,
-                                          GObject * child,
-                                          const gchar * id, GValue * value)
+glade_gtk_notebook_child_verify_property (GladeWidgetAdaptor *adaptor,
+                                          GObject            *container,
+                                          GObject            *child,
+                                          const gchar        *id,
+                                          GValue             *value)
 {
   if (!strcmp (id, "position"))
     return g_value_get_int (value) >= 0 &&
@@ -866,11 +877,11 @@ glade_gtk_notebook_child_verify_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_notebook_set_child_property (GladeWidgetAdaptor * adaptor,
-                                       GObject * container,
-                                       GObject * child,
-                                       const gchar * property_name,
-                                       const GValue * value)
+glade_gtk_notebook_set_child_property (GladeWidgetAdaptor *adaptor,
+                                       GObject            *container,
+                                       GObject            *child,
+                                       const gchar        *property_name,
+                                       const GValue       *value)
 {
   NotebookChildren *nchildren;
 
@@ -893,11 +904,11 @@ glade_gtk_notebook_set_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_notebook_get_child_property (GladeWidgetAdaptor * adaptor,
-                                       GObject * container,
-                                       GObject * child,
-                                       const gchar * property_name,
-                                       GValue * value)
+glade_gtk_notebook_get_child_property (GladeWidgetAdaptor *adaptor,
+                                       GObject            *container,
+                                       GObject            *child,
+                                       const gchar        *property_name,
+                                       GValue             *value)
 {
   gint position;
 
@@ -1071,7 +1082,7 @@ glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
       list.data = gtab;
 
       glade_command_paste (&list, parent, GLADE_PLACEHOLDER (tab_placeholder),
-			   glade_widget_get_project (parent));
+                           glade_widget_get_project (parent));
     }
 
   g_list_foreach (children, (GFunc) g_object_unref, NULL);

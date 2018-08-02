@@ -27,8 +27,9 @@
 #include "glade-gtk-frame.h"
 
 void
-glade_gtk_frame_post_create (GladeWidgetAdaptor * adaptor,
-                             GObject * frame, GladeCreateReason reason)
+glade_gtk_frame_post_create (GladeWidgetAdaptor *adaptor,
+                             GObject            *frame,
+                             GladeCreateReason   reason)
 {
   static GladeWidgetAdaptor *label_adaptor = NULL, *alignment_adaptor = NULL;
   GladeWidget *gframe, *glabel, *galignment;
@@ -62,7 +63,7 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor * adaptor,
 
       glade_widget_property_set (glabel, "label", glade_widget_get_name (gframe));
       g_object_set_data (glade_widget_get_object (glabel), 
-			 "special-child-type", "label_item");
+                         "special-child-type", "label_item");
       glade_widget_add_child (gframe, glabel, FALSE);
 
       /* add alignment */
@@ -81,9 +82,10 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_frame_replace_child (GladeWidgetAdaptor * adaptor,
-                               GtkWidget * container,
-                               GtkWidget * current, GtkWidget * new_widget)
+glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
+                               GtkWidget          *container,
+                               GtkWidget          *current,
+                               GtkWidget          *new_widget)
 {
   gchar *special_child_type;
 
@@ -107,8 +109,9 @@ glade_gtk_frame_replace_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_frame_add_child (GladeWidgetAdaptor * adaptor,
-                           GObject * object, GObject * child)
+glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
+                           GObject            *object,
+                           GObject            *child)
 {
   GtkWidget *bin_child;
   gchar *special_child_type;
@@ -144,8 +147,9 @@ glade_gtk_frame_add_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_frame_remove_child (GladeWidgetAdaptor * adaptor,
-                              GObject * object, GObject * child)
+glade_gtk_frame_remove_child (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              GObject            *child)
 {
   gchar *special_child_type;
 
@@ -162,13 +166,14 @@ glade_gtk_frame_remove_child (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_frame_write_child (GladeWidgetAdaptor * adaptor,
-                             GladeWidget * widget,
-                             GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_frame_write_child (GladeWidgetAdaptor *adaptor,
+                             GladeWidget        *widget,
+                             GladeXmlContext    *context,
+                             GladeXmlNode       *node)
 {
 
   if (!glade_gtk_write_special_child_label_item (adaptor, widget, context, node,
-						 GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child))
+                                                 GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child))
     /* Chain Up */
     GWA_GET_CLASS
         (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
@@ -176,11 +181,11 @@ glade_gtk_frame_write_child (GladeWidgetAdaptor * adaptor,
 
 /* Shared with GtkExpander code */
 gboolean
-glade_gtk_write_special_child_label_item (GladeWidgetAdaptor * adaptor,
-					  GladeWidget * widget,
-					  GladeXmlContext * context,
-					  GladeXmlNode * node,
-					  GladeWriteWidgetFunc write_func)
+glade_gtk_write_special_child_label_item (GladeWidgetAdaptor  *adaptor,
+                                          GladeWidget         *widget,
+                                          GladeXmlContext     *context,
+                                          GladeXmlNode        *node,
+                                          GladeWriteWidgetFunc write_func)
 {
   gchar *special_child_type = NULL;
   GObject *child;

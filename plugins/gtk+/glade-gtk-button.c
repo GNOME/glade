@@ -38,8 +38,8 @@
  * glade property through the glade-command api.
  */
 static void
-glade_gtk_font_button_refresh_font_name (GtkFontButton * button,
-                                         GladeWidget * gbutton)
+glade_gtk_font_button_refresh_font_name (GtkFontButton *button,
+                                         GladeWidget   *gbutton)
 {
   GladeProperty *property;
 
@@ -51,8 +51,8 @@ glade_gtk_font_button_refresh_font_name (GtkFontButton * button,
 
 /* ----------------------------- GtkColorButton ------------------------------ */
 static void
-glade_gtk_color_button_refresh_color (GtkColorButton * button,
-                                      GladeWidget * gbutton)
+glade_gtk_color_button_refresh_color (GtkColorButton *button,
+                                      GladeWidget    *gbutton)
 {
   GladeProperty *property;
   GdkRGBA rgba = { 0, };
@@ -62,28 +62,29 @@ glade_gtk_color_button_refresh_color (GtkColorButton * button,
   if ((property = glade_widget_get_property (gbutton, "color")) != NULL)
     {
       if (glade_property_get_enabled (property))
-	{
-	  GdkColor color = { 0, };
+        {
+          GdkColor color = { 0, };
 
-	  color.red   = (gint16) (rgba.red * 65535);
-	  color.green = (gint16) (rgba.green * 65535);
-	  color.blue  = (gint16) (rgba.blue * 65535);
+          color.red   = (gint16) (rgba.red * 65535);
+          color.green = (gint16) (rgba.green * 65535);
+          color.blue  = (gint16) (rgba.blue * 65535);
 
-	  glade_command_set_property (property, &color);
-	}
+          glade_command_set_property (property, &color);
+        }
     }
 
   if ((property = glade_widget_get_property (gbutton, "rgba")) != NULL)
     {
       if (glade_property_get_enabled (property))
-	glade_command_set_property (property, &rgba);
+        glade_command_set_property (property, &rgba);
     }
 }
 
 void
-glade_gtk_color_button_set_property (GladeWidgetAdaptor * adaptor,
-                                     GObject * object,
-                                     const gchar * id, const GValue * value)
+glade_gtk_color_button_set_property (GladeWidgetAdaptor *adaptor,
+                                     GObject            *object,
+                                     const gchar        *id,
+                                     const GValue       *value)
 {
   GladeProperty *property;
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
@@ -91,25 +92,25 @@ glade_gtk_color_button_set_property (GladeWidgetAdaptor * adaptor,
   if (!strcmp (id, "color"))
     {
       if ((property = glade_widget_get_property (gwidget, "color")) != NULL &&
-	  glade_property_get_enabled (property) && g_value_get_boxed (value))
-	{
-	  GdkColor *color = g_value_get_boxed (value);
-	  GdkRGBA copy;
+          glade_property_get_enabled (property) && g_value_get_boxed (value))
+        {
+          GdkColor *color = g_value_get_boxed (value);
+          GdkRGBA copy;
 
-	  copy.red   = color->red   / 65535.0;
-	  copy.green = color->green / 65535.0;
-	  copy.blue  = color->blue  / 65535.0;
-	  copy.alpha = 1.0;
+          copy.red   = color->red   / 65535.0;
+          copy.green = color->green / 65535.0;
+          copy.blue  = color->blue  / 65535.0;
+          copy.alpha = 1.0;
 
-	  gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (object), &copy);
-	}
+          gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (object), &copy);
+        }
     }
   else if (!strcmp (id, "rgba"))
     {
       if ((property = glade_widget_get_property (gwidget, "rgba")) != NULL &&
-	  glade_property_get_enabled (property) && g_value_get_boxed (value))
-	gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (object),
-				    (GdkRGBA *) g_value_get_boxed (value));
+          glade_property_get_enabled (property) && g_value_get_boxed (value))
+        gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (object),
+                                    (GdkRGBA *) g_value_get_boxed (value));
     }
   else
     GWA_GET_CLASS (GTK_TYPE_BUTTON)->set_property (adaptor, object, id, value);
@@ -117,7 +118,7 @@ glade_gtk_color_button_set_property (GladeWidgetAdaptor * adaptor,
 
 /* ----------------------------- GtkButton ------------------------------ */
 GladeEditable *
-glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_button_create_editable (GladeWidgetAdaptor *adaptor,
                                   GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
@@ -125,11 +126,11 @@ glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
       GType type = glade_widget_adaptor_get_object_type (adaptor);
 
       if (g_type_is_a (type, GTK_TYPE_FONT_BUTTON))
-	return (GladeEditable *) glade_font_button_editor_new ();
+        return (GladeEditable *) glade_font_button_editor_new ();
       else if (g_type_is_a (type, GTK_TYPE_SCALE_BUTTON))
-	return (GladeEditable *) glade_scale_button_editor_new ();
+        return (GladeEditable *) glade_scale_button_editor_new ();
       else if (!g_type_is_a (type, GTK_TYPE_LOCK_BUTTON))
-	return (GladeEditable *) glade_button_editor_new ();
+        return (GladeEditable *) glade_button_editor_new ();
     }
 
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
@@ -151,8 +152,9 @@ glade_gtk_button_update_stock (GladeWidget *widget)
 }
 
 void
-glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
-                              GObject * button, GladeCreateReason reason)
+glade_gtk_button_post_create (GladeWidgetAdaptor *adaptor,
+                              GObject            *button,
+                              GladeCreateReason   reason)
 {
   GladeWidget *gbutton = glade_widget_get_from_gobject (button);
 
@@ -192,9 +194,10 @@ glade_gtk_lock_button_is_own_property (GladeProperty *property)
 }
 
 void
-glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
-                               GObject * object,
-                               const gchar * id, const GValue * value)
+glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
+                               GObject            *object,
+                               const gchar        *id,
+                               const GValue       *value)
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);
@@ -246,13 +249,14 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_button_read_widget (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
+                              GladeWidget        *widget,
+                              GladeXmlNode       *node)
 {
   GObject *object;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -269,17 +273,18 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor * adaptor,
       glade_widget_property_get (widget, "font-name", &font_prop_value);
 
       if (font_prop_value != NULL)
-	{
-	  glade_widget_property_set (widget, "font", font_prop_value);
-	  glade_widget_property_set (widget, "font-name", NULL);
-	}
+        {
+          glade_widget_property_set (widget, "font", font_prop_value);
+          glade_widget_property_set (widget, "font-name", NULL);
+        }
     }
 }
 
 void
-glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
-                               GladeWidget * widget,
-                               GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
+                               GladeWidget        *widget,
+                               GladeXmlContext    *context,
+                               GladeXmlNode       *node)
 {
   GladeProperty *prop;
   gboolean use_stock;
@@ -287,7 +292,7 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
   GObject *object;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   object = glade_widget_get_object (widget);
@@ -321,9 +326,9 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditorProperty *
-glade_gtk_button_create_eprop (GladeWidgetAdaptor * adaptor,
-				       GladePropertyClass * klass, 
-				       gboolean use_command)
+glade_gtk_button_create_eprop (GladeWidgetAdaptor *adaptor,
+                               GladePropertyClass *klass, 
+                               gboolean            use_command)
 {
   GladeEditorProperty *eprop;
 

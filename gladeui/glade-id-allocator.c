@@ -165,7 +165,7 @@ glade_id_allocator_release (GladeIDAllocator *allocator, guint id)
        * that loaded unallocated ids are out of range
        */
       if (word_idx < allocator->n_words)
-	allocator->data[word_idx] |= 1 << (id & 31);
+        allocator->data[word_idx] |= 1 << (id & 31);
     }
 }
 

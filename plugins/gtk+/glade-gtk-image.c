@@ -30,13 +30,14 @@
 #include "glade-gtk.h"
 
 void
-glade_gtk_image_read_widget (GladeWidgetAdaptor * adaptor,
-                             GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
+                             GladeWidget        *widget,
+                             GladeXmlNode       *node)
 {
   GladeProperty *property;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -68,13 +69,14 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_image_write_widget (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget,
-                              GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_image_write_widget (GladeWidgetAdaptor *adaptor,
+                              GladeWidget        *widget,
+                              GladeXmlContext    *context,
+                              GladeXmlNode       *node)
 {
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and write all the normal properties (including "use-stock")... */
@@ -85,7 +87,7 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor * adaptor,
 
 
 static void
-glade_gtk_image_set_image_mode (GObject * object, const GValue * value)
+glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
 {
   GladeWidget *gwidget;
   GladeImageEditMode type;
@@ -135,9 +137,10 @@ glade_gtk_image_set_image_mode (GObject * object, const GValue * value)
 }
 
 void
-glade_gtk_image_get_property (GladeWidgetAdaptor * adaptor,
-                              GObject * object,
-                              const gchar * id, GValue * value)
+glade_gtk_image_get_property (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              const gchar        *id,
+                              GValue             *value)
 {
   if (!strcmp (id, "icon-size"))
     {
@@ -154,9 +157,10 @@ glade_gtk_image_get_property (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_image_set_property (GladeWidgetAdaptor * adaptor,
-                              GObject * object,
-                              const gchar * id, const GValue * value)
+glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
+                              GObject            *object,
+                              const gchar        *id,
+                              const GValue       *value)
 {
   if (!strcmp (id, "image-mode"))
     glade_gtk_image_set_image_mode (object, value);
@@ -192,7 +196,7 @@ glade_gtk_image_set_property (GladeWidgetAdaptor * adaptor,
             if (!strcmp (id, "stock") || !strcmp (id, "icon-name"))
               return;
           case GLADE_IMAGE_MODE_RESOURCE:
-	    /* Screw the resource mode here, we can't apply them at Glade's runtime anyway  */
+            /* Screw the resource mode here, we can't apply them at Glade's runtime anyway  */
           default:
             break;
         }
@@ -203,7 +207,7 @@ glade_gtk_image_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 GladeEditable *
-glade_gtk_image_create_editable (GladeWidgetAdaptor * adaptor,
+glade_gtk_image_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
@@ -214,10 +218,10 @@ glade_gtk_image_create_editable (GladeWidgetAdaptor * adaptor,
 
 /* Shared with other classes */
 void
-glade_gtk_write_icon_size (GladeWidget * widget,
-			   GladeXmlContext * context,
-			   GladeXmlNode * node,
-			   const gchar *prop_name)
+glade_gtk_write_icon_size (GladeWidget     *widget,
+                           GladeXmlContext *context,
+                           GladeXmlNode    *node,
+                           const gchar     *prop_name)
 {
   GladeXmlNode *prop_node;
   GladeProperty *size_prop;

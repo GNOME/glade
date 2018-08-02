@@ -30,8 +30,8 @@
 #define TEXT_DISABLED_MSG _("This progressbar does not show text")
 
 GladeEditable *
-glade_gtk_progress_bar_create_editable (GladeWidgetAdaptor * adaptor,
-					   GladeEditorPageType type)
+glade_gtk_progress_bar_create_editable (GladeWidgetAdaptor *adaptor,
+                                        GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
     {
@@ -42,9 +42,10 @@ glade_gtk_progress_bar_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 void
-glade_gtk_progress_bar_set_property (GladeWidgetAdaptor * adaptor,
-					GObject * object,
-					const gchar * id, const GValue * value)
+glade_gtk_progress_bar_set_property (GladeWidgetAdaptor *adaptor,
+                                     GObject            *object,
+                                     const gchar        *id,
+                                     const GValue       *value)
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);
@@ -52,15 +53,15 @@ glade_gtk_progress_bar_set_property (GladeWidgetAdaptor * adaptor,
   if (strcmp (id, "show-text") == 0)
     {
       if (g_value_get_boolean (value))
-	{
-	  glade_widget_property_set_sensitive (widget, "text", TRUE, NULL);
-	  glade_widget_property_set_sensitive (widget, "ellipsize", TRUE, NULL);
-	}
+        {
+          glade_widget_property_set_sensitive (widget, "text", TRUE, NULL);
+          glade_widget_property_set_sensitive (widget, "ellipsize", TRUE, NULL);
+        }
       else
-	{
-	  glade_widget_property_set_sensitive (widget, "text", FALSE, TEXT_DISABLED_MSG);
-	  glade_widget_property_set_sensitive (widget, "ellipsize", FALSE, TEXT_DISABLED_MSG);
-	}
+        {
+          glade_widget_property_set_sensitive (widget, "text", FALSE, TEXT_DISABLED_MSG);
+          glade_widget_property_set_sensitive (widget, "ellipsize", FALSE, TEXT_DISABLED_MSG);
+        }
     }
 
   if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
