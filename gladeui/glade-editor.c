@@ -324,7 +324,7 @@ glade_editor_update_class_field (GladeEditor *editor)
            */
           text = g_strdup_printf (_("%s Properties - %s [%s]"),
                                   glade_widget_adaptor_get_title (priv->loaded_adaptor),
-                                  glade_widget_adaptor_get_name (priv->loaded_adaptor), 
+                                  glade_widget_adaptor_get_display_name (priv->loaded_adaptor),
 		                  glade_widget_get_display_name (widget));
         }
       else
@@ -334,7 +334,7 @@ glade_editor_update_class_field (GladeEditor *editor)
            */
           text = g_strdup_printf (_("%s Properties - %s"),
                                   glade_widget_adaptor_get_title (priv->loaded_adaptor),
-                                  glade_widget_adaptor_get_name (priv->loaded_adaptor));
+                                  glade_widget_adaptor_get_display_name (priv->loaded_adaptor));
 	}
 		 
       gtk_label_set_text (GTK_LABEL (priv->class_label), text);
@@ -772,7 +772,7 @@ glade_editor_query_dialog (GladeWidget *widget)
   
   adaptor = glade_widget_get_adaptor (widget);
 
-  title = g_strdup_printf (_("Create a %s"), glade_widget_adaptor_get_name (adaptor));
+  title = g_strdup_printf (_("Create a %s"), glade_widget_adaptor_get_display_name (adaptor));
   dialog = gtk_dialog_new_with_buttons (title, NULL,
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,

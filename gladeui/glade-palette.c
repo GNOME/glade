@@ -272,7 +272,7 @@ glade_palette_drag_begin (GtkWidget *widget,
 {
   _glade_dnd_set_icon_widget (context,
                               glade_widget_adaptor_get_icon_name (adaptor),
-                              glade_widget_adaptor_get_name (adaptor));
+                              glade_widget_adaptor_get_display_name (adaptor));
 }
 
 static void

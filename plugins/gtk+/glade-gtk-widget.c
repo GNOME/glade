@@ -979,7 +979,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
   else if (strcmp (action_path, "read_documentation") == 0)
     {
       glade_app_search_docs (glade_widget_adaptor_get_book (adaptor),
-                             glade_widget_adaptor_get_name (adaptor),
+                             glade_widget_adaptor_get_display_name (adaptor),
                              NULL);
     }
   else

@@ -177,6 +177,13 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
 #define GLADE_VALID_CREATE_REASON(reason) (reason >= 0 && reason < GLADE_CREATE_REASONS)
 
 /**
+ * GWA_INSTANTIABLE_PREFIX:
+ *
+ * Class prefix used for abstract classes (ie GtkBin -> GladeInstantiableGtkBin)
+ */
+#define GWA_INSTANTIABLE_PREFIX "GladeInstantiable"
+
+/**
  * GladeCreateReason:
  * @GLADE_CREATE_USER: Was created at the user's request
  *                     (this is a good time to set any properties
@@ -735,6 +742,7 @@ GType                 glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
 GType                 glade_widget_adaptor_get_object_type  (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_name         (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_generic_name (GladeWidgetAdaptor   *adaptor);
+G_CONST_RETURN gchar *glade_widget_adaptor_get_display_name (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_title        (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_icon_name    (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor   *adaptor);

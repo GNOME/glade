@@ -1787,13 +1787,19 @@ glade_widget_adaptor_get_name (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->name;
 }
 
+/**
+ * glade_widget_adaptor_get_display_name
+ * @adaptor: a #GladeWidgetAdaptor
+ *
+ * Returns the name of the adaptor without GWA_INSTANTIABLE_PREFIX
+ */
 G_CONST_RETURN gchar *
-_glade_widget_adaptor_get_real_name (GladeWidgetAdaptor *adaptor)
+glade_widget_adaptor_get_display_name (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 
-  if (g_str_has_prefix (adaptor->priv->name, GLADE_WIDGET_INSTANTIABLE_PREFIX))
-    return &adaptor->priv->name[GLADE_WIDGET_INSTANTIABLE_PREFIX_LEN];
+  if (g_str_has_prefix (adaptor->priv->name, GWA_INSTANTIABLE_PREFIX))
+    return &adaptor->priv->name[GWA_INSTANTIABLE_PREFIX_LEN];
 
   return adaptor->priv->name;
 }

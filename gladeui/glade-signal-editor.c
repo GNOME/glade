@@ -629,7 +629,7 @@ glade_signal_editor_devhelp (GtkCellRenderer *cell,
 
   search = g_strdup_printf ("The %s signal", glade_signal_get_name (signal));
 
-  glade_app_search_docs (book, glade_widget_adaptor_get_name (adaptor), search);
+  glade_app_search_docs (book, glade_widget_adaptor_get_display_name (adaptor), search);
 
   g_free (search);
   g_free (book);

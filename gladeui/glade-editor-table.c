@@ -390,7 +390,7 @@ glade_editor_table_load (GladeEditable *editable, GladeWidget *widget)
 
           gtk_widget_set_sensitive (table->priv->composite_check,
                                     !g_str_has_prefix (glade_widget_adaptor_get_name (adaptor),
-                                                       GLADE_WIDGET_INSTANTIABLE_PREFIX));
+                                                       GWA_INSTANTIABLE_PREFIX));
         }
 
       if (table->priv->name_entry)

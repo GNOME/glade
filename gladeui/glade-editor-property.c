@@ -3429,7 +3429,7 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
 
       /* translators: Creating 'a widget' for 'a property' of 'a widget' */
       glade_command_push_group (_("Creating %s for %s of %s"),
-                                glade_widget_adaptor_get_name (create_adaptor),
+                                glade_widget_adaptor_get_display_name (create_adaptor),
                                 glade_property_class_get_name (eprop->priv->klass),
                                 glade_widget_get_name (widget));
 

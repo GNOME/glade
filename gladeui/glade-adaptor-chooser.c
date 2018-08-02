@@ -291,7 +291,7 @@ glade_adaptor_chooser_update_adaptor (GladeAdaptorChooser *chooser)
                                     glade_widget_adaptor_get_icon_name (adaptor),
                                     GTK_ICON_SIZE_BUTTON);
       gtk_label_set_label (priv->class_label,
-                           glade_widget_adaptor_get_name (adaptor));
+                           glade_widget_adaptor_get_display_name (adaptor));
     }
   else
     {

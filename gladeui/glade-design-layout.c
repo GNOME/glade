@@ -954,7 +954,7 @@ update_widget_name (GladeDesignLayout *layout, GladeWidget *gwidget)
       else
         {
           GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (gwidget);
-          pango_layout_set_text (priv->widget_name, _glade_widget_adaptor_get_real_name (adaptor), -1);
+          pango_layout_set_text (priv->widget_name, glade_widget_adaptor_get_display_name (adaptor), -1);
         }
 
       gtk_widget_queue_resize (GTK_WIDGET (layout));
@@ -1973,7 +1973,7 @@ glade_design_layout_drag_begin (GtkWidget *widget, GdkDragContext *context)
   gwidget = glade_widget_get_from_gobject (priv->drag_source);
   adaptor = glade_widget_get_adaptor (gwidget);
   description = g_strdup_printf ("%s [%s]",
-                                 glade_widget_adaptor_get_name (adaptor),
+                                 glade_widget_adaptor_get_display_name (adaptor),
                                  glade_widget_get_name (gwidget));
 
   _glade_dnd_set_icon_widget (context,

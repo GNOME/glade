@@ -1110,7 +1110,7 @@ glade_project_model_get_value (GtkTreeModel *model,
       case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
         {
           GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
-          g_value_set_static_string (value, _glade_widget_adaptor_get_real_name (adaptor));
+          g_value_set_static_string (value, glade_widget_adaptor_get_display_name (adaptor));
           break;
         }
       case GLADE_PROJECT_MODEL_COLUMN_OBJECT:

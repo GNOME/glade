@@ -33,15 +33,11 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_WIDGET_INSTANTIABLE_PREFIX "GladeInstantiable"
-#define GLADE_WIDGET_INSTANTIABLE_PREFIX_LEN 17
+#define GWA_INSTANTIABLE_PREFIX_LEN 17
 
 /* glade-widget.c */
 
 GList *_glade_widget_peek_prop_refs (GladeWidget *widget);
-
-/* glade-widget-adaptor.c */
-G_CONST_RETURN gchar *_glade_widget_adaptor_get_real_name (GladeWidgetAdaptor *adaptor);
 
 /* glade-catalog.c */
 

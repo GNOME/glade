@@ -947,7 +947,7 @@ glade_widget_constructor (GType                  type,
   glade_widget_verify (gwidget);
 
   if (g_str_has_prefix (glade_widget_adaptor_get_name (gwidget->priv->adaptor),
-                        GLADE_WIDGET_INSTANTIABLE_PREFIX))
+                        GWA_INSTANTIABLE_PREFIX))
     glade_widget_set_is_composite (gwidget, TRUE);
 
   return ret_obj;
@@ -4078,7 +4078,7 @@ glade_widget_read (GladeProject *project,
           /* Check if there is an instantiable version for this abstract class */
           if (G_TYPE_IS_ABSTRACT (template_type))
             {
-              gchar *instantiable = g_strconcat (GLADE_WIDGET_INSTANTIABLE_PREFIX,
+              gchar *instantiable = g_strconcat (GWA_INSTANTIABLE_PREFIX,
                                                  template_parent,
                                                  NULL);
               if (glade_util_get_type_from_name (instantiable, FALSE))
@@ -4363,7 +4363,7 @@ glade_widget_write (GladeWidget     *widget,
 
       glade_xml_node_set_property_string (widget_node,
                                           GLADE_TAG_PARENT,
-                                          _glade_widget_adaptor_get_real_name (widget->priv->adaptor));
+                                          glade_widget_adaptor_get_display_name (widget->priv->adaptor));
     }
   else
     {

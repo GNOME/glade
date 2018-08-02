@@ -170,7 +170,7 @@ normalize_name (const gchar *name)
 static inline void
 store_append_adaptor (GtkListStore *store, GladeWidgetAdaptor *adaptor)
 {
-  gchar *normalized_name = normalize_name (_glade_widget_adaptor_get_real_name (adaptor));
+  gchar *normalized_name = normalize_name (glade_widget_adaptor_get_display_name (adaptor));
 
   gtk_list_store_insert_with_values (store, NULL, -1,
                                      COLUMN_ADAPTOR, adaptor,
@@ -383,7 +383,7 @@ adaptor_text_cell_data_func (GtkTreeViewColumn *tree_column,
   if (adaptor)
     g_object_set (cell,
                   "sensitive", TRUE,
-                  "text", _glade_widget_adaptor_get_real_name (adaptor),
+                  "text", glade_widget_adaptor_get_display_name (adaptor),
                   "style", PANGO_STYLE_NORMAL,
                   NULL);
   else
@@ -412,7 +412,7 @@ glade_adaptor_chooser_widget_drag_begin (GtkWidget      *widget,
       gtk_tree_model_get (model, &iter, COLUMN_ADAPTOR, &adaptor, -1);
       _glade_dnd_set_icon_widget (context,
                                   glade_widget_adaptor_get_icon_name (adaptor),
-                                  glade_widget_adaptor_get_name (adaptor));
+                                  glade_widget_adaptor_get_display_name (adaptor));
     }
 }
 

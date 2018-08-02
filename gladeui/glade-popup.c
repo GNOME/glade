@@ -42,7 +42,7 @@ glade_popup_docs_cb (GtkMenuItem *item, GladeWidgetAdaptor *adaptor)
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
   glade_app_search_docs (glade_widget_adaptor_get_book (adaptor),
-                         glade_widget_adaptor_get_name (adaptor),
+                         glade_widget_adaptor_get_display_name (adaptor),
                          NULL);
 }
 
