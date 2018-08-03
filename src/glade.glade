@@ -166,7 +166,7 @@ Author: Juan Pablo Ugarte
     <property name="show_numbers">True</property>
     <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
   </object>
-  <template class="GladeWindow" parent="GtkApplicationWindow">
+  <template class="GladeWindow" parent="GtkWindow">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkStack" id="stack">
