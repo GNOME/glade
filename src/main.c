@@ -78,14 +78,6 @@ startup (GApplication *application)
 }
 
 static void
-on_quit_activate (GAction      *action,
-                  GVariant     *parameter,
-                  GApplication *application)
-{
-  g_application_quit (application);
-}
-
-static void
 activate (GApplication *application)
 
 {
@@ -110,10 +102,6 @@ activate (GApplication *application)
   gtk_widget_show (GTK_WIDGET (window));
 
   glade_window_registration_notify_user (window);
-
-
-  quit = g_action_map_lookup_action (G_ACTION_MAP (window), "quit");
-  g_signal_connect (quit, "activate", G_CALLBACK (on_quit_activate), application);
 }
 
 static void

@@ -80,6 +80,7 @@
 struct _GladeWindowPrivate
 {
   GladeApp *app;
+  GtkApplication *application;
 
   GtkStack *stack;
   GtkStack *view_stack;
@@ -406,7 +407,8 @@ project_targets_changed_cb (GladeProject *project, GladeWindow *window)
 static void
 actions_set_enabled (GladeWindow *window, const gchar *name, gboolean enabled)
 {
-  GAction *action = g_action_map_lookup_action (G_ACTION_MAP (window), name);
+  GladeWindowPrivate *priv = window->priv;
+  GAction *action = g_action_map_lookup_action (G_ACTION_MAP (priv->application), name);
   g_simple_action_set_enabled (G_SIMPLE_ACTION (action), enabled);
 }
 
@@ -1538,7 +1540,9 @@ drag_data_received (GtkWidget *widget,
 static gboolean
 delete_event (GtkWindow *w, GdkEvent *event, GladeWindow *window)
 {
-  g_action_group_activate_action (G_ACTION_GROUP (window), "quit", NULL);
+  GladeWindowPrivate *priv = window->priv;
+
+  g_action_group_activate_action (G_ACTION_GROUP (priv->application), "quit", NULL);
 
   /* return TRUE to stop other handlers */
   return TRUE;
@@ -2077,6 +2081,8 @@ on_quit_action_activate (GSimpleAction *action,
   glade_window_config_save (window);
 
   g_list_free (projects);
+
+  g_application_quit (G_APPLICATION (window->priv->application));
 }
 
 static void
@@ -2144,9 +2150,10 @@ glade_window_init (GladeWindow *window)
 static void
 glade_window_action_handler (GladeWindow *window, const gchar *name)
 {
+  GladeWindowPrivate *priv = window->priv;
   GAction *action;
 
-  if ((action = g_action_map_lookup_action (G_ACTION_MAP (window), name)))
+  if ((action = g_action_map_lookup_action (G_ACTION_MAP (priv->application), name)))
     g_action_activate (action, NULL);
 }
 
@@ -2216,16 +2223,17 @@ on_intro_show_node (GladeIntro  *intro,
   if (!g_strcmp0 (node, "new-project"))
     {
       /* Create two new project to make the project switcher visible */
-      g_action_group_activate_action (G_ACTION_GROUP (window), "new", NULL);
-      g_action_group_activate_action (G_ACTION_GROUP (window), "new", NULL);
+      g_action_group_activate_action (G_ACTION_GROUP (priv->application), "new", NULL);
+      g_action_group_activate_action (G_ACTION_GROUP (priv->application), "new", NULL);
     }
   else if (!g_strcmp0 (node, "add-project"))
     {
-      GAction *new_action = g_action_map_lookup_action (G_ACTION_MAP (window), "new");
+      GAction *new_action = g_action_map_lookup_action (G_ACTION_MAP (priv->application), "new");
 
-      g_signal_connect (new_action, "activate",
-                        G_CALLBACK (on_user_new_action_activate),
-                        window);
+      if (new_action)
+        g_signal_connect (new_action, "activate",
+                          G_CALLBACK (on_user_new_action_activate),
+                          window);
     }
   else if (!g_strcmp0 (node, "add-window"))
     {
@@ -2342,7 +2350,7 @@ glade_window_populate_intro (GladeWindow *window)
 }
 
 static void
-glade_window_constructed (GObject *object)
+on_application_notify (GObject *gobject, GParamSpec *pspec)
 {
   static GActionEntry actions[] = {
     { "open",         on_open_action_activate, NULL, NULL, NULL },
@@ -2372,12 +2380,31 @@ glade_window_constructed (GObject *object)
     { "margin_edit",  on_pointer_margin_edit_action_activate, NULL, NULL, NULL },
     { "align_edit",   on_pointer_align_edit_action_activate, NULL, NULL, NULL },
   };
+  GladeWindowPrivate * priv = GLADE_WINDOW (gobject)->priv;
+
+  priv->application = gtk_window_get_application (GTK_WINDOW (gobject));
+
+  g_action_map_add_action_entries (G_ACTION_MAP (priv->application),
+                                   actions,
+                                   G_N_ELEMENTS (actions),
+                                   gobject);
+  gtk_widget_insert_action_group (GTK_WIDGET (gobject), "app",
+                                  G_ACTION_GROUP (priv->application));
+
+  project_actions_set_enabled (GLADE_WINDOW (gobject), FALSE);
+}
+
+static void
+glade_window_constructed (GObject *object)
+{
   GladeWindow *window = GLADE_WINDOW (object);
   GladeWindowPrivate *priv = window->priv;
   gchar *version;
 
   /* Chain up... */
   G_OBJECT_CLASS (glade_window_parent_class)->constructed (object);
+
+  g_signal_connect (object, "notify::application", G_CALLBACK (on_application_notify), NULL);
 
   /* Init Glade version */
   version = g_strdup_printf ("%d.%d.%d", GLADE_MAJOR_VERSION, GLADE_MINOR_VERSION, GLADE_MICRO_VERSION);
@@ -2386,10 +2413,6 @@ glade_window_constructed (GObject *object)
 
   /* recent files */
   priv->recent_manager = gtk_recent_manager_get_default ();
-
-  /* Setup Actions */
-  g_action_map_add_action_entries (G_ACTION_MAP (window), actions, G_N_ELEMENTS (actions), window);
-  gtk_widget_insert_action_group (GTK_WIDGET (window), "app", G_ACTION_GROUP(window));
 
   /* status bar */
   priv->statusbar_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar), "general");
@@ -2430,7 +2453,6 @@ glade_window_constructed (GObject *object)
   glade_window_populate_intro (window);
 
   refresh_title (window);
-  project_actions_set_enabled (window, FALSE);
 }
 
 #define DEFINE_ACTION_SIGNAL(klass, name, handler,...) \
