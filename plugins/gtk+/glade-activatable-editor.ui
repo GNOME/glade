@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 
+<!-- Generated with glade 3.22.0 
 
 libgladegtk - Glade UI Designer Gtk+ support plugin
 Copyright (C) 2013 Tristan Van Berkom <tvb@gnome.org>
@@ -27,24 +27,18 @@ Author: Tristan Van Berkom <tvb@gnome.org>
   <template class="GladeActivatableEditor" parent="GladeEditorSkeleton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="has_focus">False</property>
-    <property name="is_focus">False</property>
     <property name="orientation">vertical</property>
     <property name="spacing">4</property>
     <child>
       <object class="GtkGrid" id="grid1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="has_focus">False</property>
-        <property name="is_focus">False</property>
         <property name="row_spacing">6</property>
         <property name="column_spacing">6</property>
         <child>
-          <object class="GladePropertyLabel" id="propertylabel1">
+          <object class="GladePropertyLabel" id="related_action_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">related-action</property>
@@ -52,32 +46,24 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
-          <object class="GladePropertyShell" id="propertyshell1">
+          <object class="GladePropertyShell" id="related_action_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">True</property>
             <property name="property_name">related-action</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
-          <object class="GladePropertyLabel" id="propertylabel2">
+          <object class="GladePropertyLabel" id="use_action_appearance_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">use-action-appearance</property>
@@ -85,32 +71,24 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
-          <object class="GladePropertyShell" id="propertyshell2">
+          <object class="GladePropertyShell" id="use_action_appearance_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">True</property>
             <property name="property_name">use-action-appearance</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
           <object class="GladePropertyLabel" id="action_name_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">action-name</property>
@@ -118,32 +96,24 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">4</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
           <object class="GladePropertyShell" id="action_name_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">True</property>
             <property name="property_name">action-name</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">4</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
             <property name="margin_bottom">2</property>
@@ -157,21 +127,41 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
             <property name="width">2</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
           <object class="GladeEditorTable" id="embed">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
             <property name="width">2</property>
-            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="action_target_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">action-target</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="action_target_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="property_name">action-target</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
           </packing>
         </child>
       </object>
@@ -182,13 +172,15 @@ Author: Tristan Van Berkom <tvb@gnome.org>
       </packing>
     </child>
     <child-editors>
-      <editor id="propertylabel1"/>
-      <editor id="propertyshell1"/>
-      <editor id="propertylabel2"/>
-      <editor id="propertyshell2"/>
+      <editor id="related_action_label"/>
+      <editor id="related_action_editor"/>
+      <editor id="use_action_appearance_label"/>
+      <editor id="use_action_appearance_editor"/>
       <editor id="action_name_label"/>
       <editor id="action_name_editor"/>
       <editor id="embed"/>
+      <editor id="action_target_label"/>
+      <editor id="action_target_editor"/>
     </child-editors>
   </template>
 </interface>
