@@ -36,6 +36,7 @@
 #include <gladeui/glade-popup.h>
 #include <gladeui/glade-inspector.h>
 #include <gladeui/glade-adaptor-chooser.h>
+#include <gladeui/gladeui-enum-types.h>
 
 #include <gladeui/glade-project.h>
 
@@ -2088,27 +2089,16 @@ on_quit_action_activate (GSimpleAction *action,
 }
 
 static void
-on_pointer_select_action_activate (GSimpleAction *action, GVariant *p, gpointer data)
+on_pointer_mode_action_activate (GSimpleAction *simple,
+                                 GVariant      *parameter,
+                                 gpointer       data)
 {
-  glade_project_set_pointer_mode (get_active_project (data), GLADE_POINTER_SELECT);
-}
+  GladePointerMode mode;
 
-static void
-on_pointer_align_edit_action_activate (GSimpleAction *action, GVariant *p, gpointer data)
-{
-  glade_project_set_pointer_mode (get_active_project (data), GLADE_POINTER_ALIGN_EDIT);
-}
-
-static void
-on_pointer_drag_resize_action_activate (GSimpleAction *action, GVariant *p, gpointer data)
-{
-  glade_project_set_pointer_mode (get_active_project (data), GLADE_POINTER_DRAG_RESIZE);
-}
-
-static void
-on_pointer_margin_edit_action_activate (GSimpleAction *action, GVariant *p, gpointer data)
-{
-  glade_project_set_pointer_mode (get_active_project (data), GLADE_POINTER_MARGIN_EDIT);
+  mode = glade_utils_enum_value_from_string (GLADE_TYPE_POINTER_MODE,
+                                             g_variant_get_string (parameter,
+                                                                   NULL));
+  glade_project_set_pointer_mode (get_active_project (data), mode);
 }
 
 static void
@@ -2376,11 +2366,7 @@ on_application_notify (GObject *gobject, GParamSpec *pspec)
     { "delete",       on_delete_action_activate, NULL, NULL, NULL },
     { "previous",     on_previous_action_activate, NULL, NULL, NULL },
     { "next",         on_next_action_activate, NULL, NULL, NULL },
-    /* Pointer mode actions */
-    { "select",       on_pointer_select_action_activate, NULL, NULL, NULL },
-    { "drag_resize",  on_pointer_drag_resize_action_activate, NULL, NULL, NULL },
-    { "margin_edit",  on_pointer_margin_edit_action_activate, NULL, NULL, NULL },
-    { "align_edit",   on_pointer_align_edit_action_activate, NULL, NULL, NULL },
+    { "pointer-mode", on_pointer_mode_action_activate, "s", NULL, NULL },
   };
   GladeWindowPrivate * priv = GLADE_WINDOW (gobject)->priv;
 

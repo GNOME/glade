@@ -27,7 +27,7 @@ Author: Juan Pablo Ugarte
   <!-- interface-license-type lgplv2 -->
   <!-- interface-name Glade -->
   <!-- interface-description A user interface designer for GTK+ and GNOME. -->
-  <!-- interface-copyright 2012-2017 Juan Pablo Ugarte -->
+  <!-- interface-copyright 2012-2018 Juan Pablo Ugarte -->
   <!-- interface-authors Juan Pablo Ugarte -->
   <object class="GtkPopoverMenu" id="main_menu">
     <property name="can_focus">False</property>
@@ -273,7 +273,8 @@ Author: Juan Pablo Ugarte
                           <object class="GtkToolButton" id="selector_button">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="action_name">app.select</property>
+                            <property name="action_name">app.pointer-mode</property>
+                            <property name="action_target">'select'</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">glade-selector</property>
                           </object>
@@ -286,7 +287,8 @@ Author: Juan Pablo Ugarte
                           <object class="GtkToolButton" id="drag_resize_button">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="action_name">app.drag_resize</property>
+                            <property name="action_name">app.pointer-mode</property>
+                            <property name="action_target">'drag-resize'</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">glade-drag-resize</property>
                           </object>
@@ -299,7 +301,8 @@ Author: Juan Pablo Ugarte
                           <object class="GtkToolButton" id="margin_edit_button">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="action_name">app.margin_edit</property>
+                            <property name="action_name">app.pointer-mode</property>
+                            <property name="action_target">'margin-edit'</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">glade-margin-edit</property>
                           </object>
@@ -312,7 +315,8 @@ Author: Juan Pablo Ugarte
                           <object class="GtkToolButton" id="align_edit_button">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="action_name">app.align_edit</property>
+                            <property name="action_name">app.pointer-mode</property>
+                            <property name="action_target">'align-edit'</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">glade-align-edit</property>
                           </object>
@@ -722,7 +726,7 @@ Author: Juan Pablo Ugarte
     <property name="transient_for">GladeWindow</property>
     <property name="copyright" translatable="yes">Copyright © 2001-2006 Ximian, Inc.
 Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
-Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al.</property>
+Copyright © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.</property>
     <property name="comments" translatable="yes">A user interface designer for GTK+ and GNOME.</property>
     <property name="website">http://glade.gnome.org</property>
     <property name="website_label" translatable="yes">Visit Glade web site</property>
