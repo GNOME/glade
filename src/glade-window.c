@@ -75,7 +75,8 @@
 #define CONFIG_INTRO_GROUP          "Intro"
 #define CONFIG_INTRO_DONE           "intro-done"
 
-#define GLADE_WINDOW_ACTIVE_VIEW(w) ((GladeDesignView *) gtk_stack_get_visible_child (w->priv->view_stack))
+#define GLADE_WINDOW_ACTIVE_VIEW(w)  ((GladeDesignView *) gtk_stack_get_visible_child (w->priv->view_stack))
+#define GLADE_WINDOW_GET_ACTION(w,a) ((w && ((GladeWindow *)w)->priv->application) ? g_action_map_lookup_action (G_ACTION_MAP (((GladeWindow *)w)->priv->application), a) : NULL)
 
 struct _GladeWindowPrivate
 {
@@ -130,7 +131,7 @@ struct _GladeWindowPrivate
 
 static void check_reload_project (GladeWindow *window, GladeProject *project);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeWindow, glade_window, GTK_TYPE_APPLICATION_WINDOW)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
 
 static void
 refresh_title (GladeWindow *window)
@@ -404,12 +405,13 @@ project_targets_changed_cb (GladeProject *project, GladeWindow *window)
   refresh_stack_title_for_project (window, project);
 }
 
-static void
+static inline void
 actions_set_enabled (GladeWindow *window, const gchar *name, gboolean enabled)
 {
-  GladeWindowPrivate *priv = window->priv;
-  GAction *action = g_action_map_lookup_action (G_ACTION_MAP (priv->application), name);
-  g_simple_action_set_enabled (G_SIMPLE_ACTION (action), enabled);
+  GAction *action;
+
+  if ((action = GLADE_WINDOW_GET_ACTION (window, name)))
+    g_simple_action_set_enabled (G_SIMPLE_ACTION (action), enabled);
 }
 
 static void
@@ -2153,7 +2155,7 @@ glade_window_action_handler (GladeWindow *window, const gchar *name)
   GladeWindowPrivate *priv = window->priv;
   GAction *action;
 
-  if ((action = g_action_map_lookup_action (G_ACTION_MAP (priv->application), name)))
+  if ((action = GLADE_WINDOW_GET_ACTION (window, name)))
     g_action_activate (action, NULL);
 }
 
@@ -2228,9 +2230,9 @@ on_intro_show_node (GladeIntro  *intro,
     }
   else if (!g_strcmp0 (node, "add-project"))
     {
-      GAction *new_action = g_action_map_lookup_action (G_ACTION_MAP (priv->application), "new");
+      GAction *new_action;
 
-      if (new_action)
+      if ((new_action = GLADE_WINDOW_GET_ACTION (window, "new")))
         g_signal_connect (new_action, "activate",
                           G_CALLBACK (on_user_new_action_activate),
                           window);

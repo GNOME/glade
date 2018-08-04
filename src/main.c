@@ -82,7 +82,6 @@ activate (GApplication *application)
 
 {
   GladeWindow *window;
-  GAction *quit;
 
   if (version != FALSE)
     {

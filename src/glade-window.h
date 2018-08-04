@@ -38,13 +38,13 @@ typedef struct _GladeWindowClass    GladeWindowClass;
 
 struct _GladeWindow
 {
-  GtkApplicationWindow parent_instance;
+  GtkWindow parent_instance;
   GladeWindowPrivate *priv;
 };
 
 struct _GladeWindowClass
 {
-  GtkApplicationWindowClass parent_class;
+  GtkWindowClass parent_class;
 };
 
 GType       glade_window_get_type      (void) G_GNUC_CONST;
