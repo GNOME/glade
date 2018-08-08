@@ -128,6 +128,7 @@ enum
   
   COLUMN_SPIN_ACTIVE,      /* whether the spin renderer is being used */
   COLUMN_SPIN_DIGITS,      /* How many decimal points to show (used to edit float values) */
+  COLUMN_SPIN_ADJUSTMENT,
 
   NUM_COLUMNS
 };
@@ -208,6 +209,7 @@ append_empty_row (GtkListStore *store, PangoAttrType type)
 {
   const gchar *name = NULL;
   guint spin_digits = 0;
+  GtkAdjustment *adjustment = NULL;
   GtkListStore *model = get_enum_model_for_combo (type);
   GtkTreeIter iter;
   AttrEditType edit_type = EDIT_INVALID;
@@ -260,10 +262,12 @@ append_empty_row (GtkListStore *store, PangoAttrType type)
         /* PangoAttrSize */
       case PANGO_ATTR_SIZE:
         edit_type = EDIT_SPIN;
+        adjustment = gtk_adjustment_new (0, 0, PANGO_SCALE*PANGO_SCALE, PANGO_SCALE, 0, 0);
         name = C_ ("textattr", "Size");
         break;
       case PANGO_ATTR_ABSOLUTE_SIZE:
         edit_type = EDIT_SPIN;
+        adjustment = gtk_adjustment_new (0, 0, PANGO_SCALE*PANGO_SCALE, PANGO_SCALE, 0, 0);
         name = C_ ("textattr", "Absolute Size");
         break;
 
@@ -293,6 +297,7 @@ append_empty_row (GtkListStore *store, PangoAttrType type)
         /* PangoAttrFloat */
       case PANGO_ATTR_SCALE:
         edit_type = EDIT_SPIN;
+        adjustment = gtk_adjustment_new (0, 0, 128, 1, 0, 0);
         name = C_ ("textattr", "Scale");
         spin_digits = 3;
         break;
@@ -330,6 +335,7 @@ append_empty_row (GtkListStore *store, PangoAttrType type)
                           COLUMN_TEXT_FG, "Grey",
                           COLUMN_COMBO_MODEL, model,
                           COLUMN_SPIN_DIGITS, spin_digits,
+                          COLUMN_SPIN_ADJUSTMENT, adjustment,
                           ACTIVATE_COLUMN_FROM_TYPE (edit_type), TRUE, -1);
       return TRUE;
     }
@@ -859,9 +865,8 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
   GtkWidget *view_widget;
   GtkCellRenderer *renderer;
   GtkTreeViewColumn *column;
-  GtkAdjustment *adjustment;
 
-  eprop_attrs->model = (GtkTreeModel *) 
+  eprop_attrs->model = (GtkTreeModel *)
     gtk_list_store_new (NUM_COLUMNS,
                         /* Main Data */
                         G_TYPE_STRING,      // COLUMN_NAME
@@ -881,7 +886,8 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
                         G_TYPE_BOOLEAN,     // COLUMN_COMBO_ACTIVE
                         GTK_TYPE_LIST_STORE,        // COLUMN_COMBO_MODEL
                         G_TYPE_BOOLEAN,     // COLUMN_SPIN_ACTIVE
-                        G_TYPE_UINT);       // COLUMN_SPIN_DIGITS
+                        G_TYPE_UINT,        // COLUMN_SPIN_DIGITS
+                        GTK_TYPE_ADJUSTMENT);// COLUMN_SPIN_ADJUSTMENT
   
   view_widget = gtk_tree_view_new_with_model (eprop_attrs->model);
   gtk_tree_view_set_show_expanders (GTK_TREE_VIEW (view_widget), FALSE);
@@ -952,10 +958,6 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 
   /* Spin renderer */
   renderer = gtk_cell_renderer_spin_new ();
-  adjustment =
-      (GtkAdjustment *) gtk_adjustment_new (0, -G_MAXDOUBLE, G_MAXDOUBLE, 100,
-                                            100, 100);
-  g_object_set (G_OBJECT (renderer), "adjustment", adjustment, NULL);
   gtk_tree_view_column_pack_start (column, renderer, TRUE);
   gtk_tree_view_column_set_attributes (column, renderer,
                                        "visible", COLUMN_SPIN_ACTIVE,
@@ -963,7 +965,9 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
                                        "text", COLUMN_TEXT,
                                        "style", COLUMN_TEXT_STYLE,
                                        "foreground", COLUMN_TEXT_FG,
-                                       "digits", COLUMN_SPIN_DIGITS, NULL);
+                                       "digits", COLUMN_SPIN_DIGITS,
+                                       "adjustment", COLUMN_SPIN_ADJUSTMENT,
+                                       NULL);
   g_signal_connect (G_OBJECT (renderer), "edited",
                     G_CALLBACK (value_combo_spin_edited), eprop);
   g_signal_connect (G_OBJECT (renderer), "editing-started",
