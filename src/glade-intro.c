@@ -1,7 +1,7 @@
 /*
  * glade-intro.c
  *
- * Copyright (C) 2017 Juan Pablo Ugarte
+ * Copyright (C) 2017-2018 Juan Pablo Ugarte
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -38,7 +38,6 @@ typedef struct
   GtkWidget  *toplevel;
 
   GList      *script;      /* List of (ScriptNode *) */
-  GHashTable *widgets;     /* Table with all named widget in toplevel */
 
   GtkPopover *popover;     /* Popover to show the script text */
 
@@ -211,35 +210,90 @@ glade_intro_new (GtkWindow *toplevel)
   return (GladeIntro*) g_object_new (GLADE_TYPE_INTRO, "toplevel", toplevel, NULL);
 }
 
-static void
-get_toplevel_widgets (GtkWidget *widget, gpointer data)
+static inline const gchar *
+widget_get_name (GtkWidget *widget)
 {
   const gchar *name;
 
+  if (!widget)
+    return NULL;
+
   if ((name = gtk_widget_get_name (widget)) &&
       g_strcmp0 (name, G_OBJECT_TYPE_NAME (widget)))
-    g_hash_table_insert (GET_PRIVATE (data)->widgets, (gpointer)name, widget);
+    return name;
+
+  if (GTK_IS_BUILDABLE (widget) &&
+      (name = gtk_buildable_get_name (GTK_BUILDABLE (widget))) &&
+      !g_str_has_prefix (name, "___object_"))
+    return name;
+
+  return NULL;
+}
+
+typedef struct
+{
+  const gchar *name;
+  GtkWidget *widget;
+} FindData;
+
+static void
+find_widget_forall (GtkWidget *widget, gpointer user_data)
+{
+  FindData *data = user_data;
+
+  if (data->widget)
+    return;
+
+  if (g_strcmp0 (widget_get_name (widget), data->name) == 0 &&
+      gtk_widget_is_visible (widget))
+    {
+      data->widget = widget;
+      return;
+    }
 
   if (GTK_IS_CONTAINER (widget))
-    gtk_container_forall (GTK_CONTAINER (widget), get_toplevel_widgets, data);
+    gtk_container_forall ((GtkContainer *) widget, find_widget_forall, data);
+}
+
+static inline GtkWidget *
+toplevel_get_widget (GtkWidget *widget, const gchar *name)
+{
+  FindData data = { name, NULL };
+
+  if (!widget || !name)
+    return NULL;
+
+  find_widget_forall (widget, &data);
+
+  return data.widget;
 }
 
 void
 glade_intro_set_toplevel (GladeIntro *intro, GtkWindow *toplevel)
 {
   GladeIntroPrivate *priv;
+  ScriptNode *node;
+  GList *l;
 
   g_return_if_fail (GLADE_IS_INTRO (intro));
   priv = GET_PRIVATE (intro);
 
+  if (priv->toplevel == (GtkWidget *) toplevel)
+    return;
+
   g_clear_object (&priv->toplevel);
-  g_clear_pointer (&priv->widgets, g_hash_table_unref);
 
   if (toplevel)
     {
-      priv->toplevel = g_object_ref (toplevel);
-      priv->widgets = g_hash_table_new (g_str_hash, g_str_equal);
-      gtk_container_forall (GTK_CONTAINER (toplevel), get_toplevel_widgets, intro);
+      priv->toplevel = (GtkWidget *) g_object_ref (toplevel);
+
+      for (l = priv->script; l && (node = l->data); l = g_list_next (l))
+        node->widget = toplevel_get_widget (priv->toplevel, node->widget_name);
+    }
+  else
+    {
+      for (l = priv->script; l && (node = l->data); l = g_list_next (l))
+        node->widget = NULL;
     }
 }
 
@@ -263,6 +317,9 @@ glade_intro_script_add (GladeIntro         *intro,
   node->text        = text;
   node->position    = position;
   node->delay       = delay * 1000;
+
+  if (priv->toplevel && widget)
+    node->widget = toplevel_get_widget (priv->toplevel, widget);
 
   priv->script = g_list_append (priv->script, node);
 }
@@ -353,11 +410,7 @@ script_play (gpointer data)
   if (!priv->current || !(node = priv->current->data))
     return G_SOURCE_REMOVE;
 
-  node->widget = NULL;
-
-  if (node->widget_name &&
-      (node->widget = g_hash_table_lookup (priv->widgets, node->widget_name)) &&
-      node->text)
+  if (node->widget && node->text)
     {
       /* Ensure the widget is visible */
       if (!gtk_widget_is_visible (node->widget))
@@ -372,7 +425,7 @@ script_play (gpointer data)
       gtk_style_context_add_class (context, "glade-intro-highlight");
 
       /* Create popover */
-      priv->popover = g_object_ref_sink (glade_intro_popover_new (data, node->text));
+      priv->popover = (GtkPopover *) g_object_ref_sink (glade_intro_popover_new (data, node->text));
       gtk_popover_set_relative_to (priv->popover, node->widget);
 
       if (node->position == GLADE_INTRO_BOTTOM)
