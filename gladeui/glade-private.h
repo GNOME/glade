@@ -44,6 +44,21 @@ GList *_glade_widget_peek_prop_refs (GladeWidget *widget);
 GladeCatalog *_glade_catalog_get_catalog (const gchar *name);
 GList        *_glade_catalog_tsort       (GList *catalogs);
 
+/* glade-project.c */
+
+void
+_glade_project_emit_add_signal_handler      (GladeWidget       *widget,
+                                             const GladeSignal *signal);
+void
+_glade_project_emit_remove_signal_handler   (GladeWidget       *widget,
+                                             const GladeSignal *signal);
+void
+_glade_project_emit_change_signal_handler   (GladeWidget       *widget,
+                                             const GladeSignal *old_signal,
+                                             const GladeSignal *new_signal);
+void
+_glade_project_emit_activate_signal_handler (GladeWidget       *widget,
+                                             const GladeSignal *signal);
 
 /* glade-project-properties.c */
 void

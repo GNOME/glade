@@ -180,6 +180,10 @@ enum
   TARGETS_CHANGED,
   LOAD_PROGRESS,
   WIDGET_VISIBILITY_CHANGED,
+  ADD_SIGNAL_HANDLER,
+  REMOVE_SIGNAL_HANDLER,
+  CHANGE_SIGNAL_HANDLER,
+  ACTIVATE_SIGNAL_HANDLER,
   LAST_SIGNAL
 };
 
@@ -951,6 +955,80 @@ glade_project_class_init (GladeProjectClass *klass)
                     0, NULL, NULL,
                     _glade_marshal_VOID__OBJECT_BOOLEAN,
                     G_TYPE_NONE, 2, GLADE_TYPE_WIDGET, G_TYPE_BOOLEAN);
+
+  /**
+   * GladeProject::add-signal-handler:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @gladewidget: the #GladeWidget
+   * @signal: the #GladeSignal that was added to @gladewidget.
+   */
+  glade_project_signals[ADD_SIGNAL_HANDLER] =
+      g_signal_new ("add-signal-handler",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL,
+                    _glade_marshal_VOID__OBJECT_OBJECT,
+                    G_TYPE_NONE,
+                    2,
+                    GLADE_TYPE_WIDGET,
+                    GLADE_TYPE_SIGNAL);
+
+  /**
+   * GladeProject::remove-signal-handler:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @gladewidget: the #GladeWidget
+   * @signal: the #GladeSignal that was removed from @gladewidget.
+   */
+  glade_project_signals[REMOVE_SIGNAL_HANDLER] =
+      g_signal_new ("remove-signal-handler",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                     NULL, NULL,
+                    _glade_marshal_VOID__OBJECT_OBJECT,
+                    G_TYPE_NONE,
+                    2,
+                    GLADE_TYPE_WIDGET,
+                    GLADE_TYPE_SIGNAL);
+
+  /**
+   * GladeProject::change-signal-handler:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @gladewidget: the #GladeWidget
+   * @old_signal: the old #GladeSignal that changed
+   * @new_signal: the new #GladeSignal
+   */
+  glade_project_signals[CHANGE_SIGNAL_HANDLER] =
+      g_signal_new ("change-signal-handler",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                     NULL, NULL,
+                    _glade_marshal_VOID__OBJECT_OBJECT_OBJECT,
+                    G_TYPE_NONE,
+                    3,
+                    GLADE_TYPE_WIDGET,
+                    GLADE_TYPE_SIGNAL,
+                    GLADE_TYPE_SIGNAL);
+
+  /**
+   * GladeProject::activate-signal-handler:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @gladewidget: the #GladeWidget
+   * @signal: the #GladeSignal that was activated
+   */
+  glade_project_signals[ACTIVATE_SIGNAL_HANDLER] =
+      g_signal_new ("activate-signal-handler",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                     NULL, NULL,
+                    _glade_marshal_VOID__OBJECT_OBJECT,
+                    G_TYPE_NONE,
+                    2,
+                    GLADE_TYPE_WIDGET,
+                    GLADE_TYPE_SIGNAL);
 
   glade_project_props[PROP_MODIFIED] =
     g_param_spec_boolean ("modified",
@@ -5383,3 +5461,53 @@ glade_project_command_delete (GladeProject *project)
   if (widgets)
     g_list_free (widgets);
 }
+
+/* Private */
+
+void
+_glade_project_emit_add_signal_handler (GladeWidget       *widget,
+                                        const GladeSignal *signal)
+{
+  GladeProject *project = glade_widget_get_project (widget);
+
+  if (project)
+    g_signal_emit (project, glade_project_signals[ADD_SIGNAL_HANDLER], 0,
+                   widget, signal);
+}
+
+void
+_glade_project_emit_remove_signal_handler (GladeWidget       *widget,
+                                           const GladeSignal *signal)
+{
+  GladeProject *project = glade_widget_get_project (widget);
+
+  if (project)
+    g_signal_emit (project, glade_project_signals[REMOVE_SIGNAL_HANDLER], 0,
+                   widget, signal);
+
+}
+
+void
+_glade_project_emit_change_signal_handler (GladeWidget       *widget,
+                                           const GladeSignal *old_signal,
+                                           const GladeSignal *new_signal)
+{
+  GladeProject *project = glade_widget_get_project (widget);
+
+  if (project)
+    g_signal_emit (project, glade_project_signals[CHANGE_SIGNAL_HANDLER], 0,
+                   widget, old_signal, new_signal);
+}
+
+void
+_glade_project_emit_activate_signal_handler (GladeWidget       *widget,
+                                             const GladeSignal *signal)
+{
+  GladeProject *project = glade_widget_get_project (widget);
+
+  if (project)
+    g_signal_emit (project, glade_project_signals[ACTIVATE_SIGNAL_HANDLER], 0,
+                   widget, signal);
+
+}
+

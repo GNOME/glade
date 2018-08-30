@@ -342,6 +342,7 @@ glade_widget_add_signal_handler (GladeWidget       *widget,
   new_signal_handler = glade_signal_clone (signal_handler);
   g_ptr_array_add (signals, new_signal_handler);
   g_signal_emit (widget, glade_widget_signals[ADD_SIGNAL_HANDLER], 0, new_signal_handler);
+  _glade_project_emit_add_signal_handler (widget, new_signal_handler);
 
   glade_project_verify_signal (widget, new_signal_handler);
 
@@ -388,6 +389,7 @@ glade_widget_remove_signal_handler (GladeWidget       *widget,
           break;
         }
     }
+  _glade_project_emit_remove_signal_handler (widget, signal_handler);
 }
 
 /**
@@ -444,10 +446,12 @@ glade_widget_change_signal_handler (GladeWidget       *widget,
 
           g_signal_emit (widget, glade_widget_signals[CHANGE_SIGNAL_HANDLER], 0, 
                          signal_handler_iter);
-
           break;
         }
     }
+  _glade_project_emit_change_signal_handler (widget,
+                                             old_signal_handler,
+                                             new_signal_handler);
 }
 
 static gboolean
@@ -1474,8 +1478,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
   /**
    * GladeWidget::change-signal-handler:
    * @gladewidget: the #GladeWidget which received the signal.
-   * @arg1: the old #GladeSignal
-   * @arg2: the new #GladeSignal
+   * @arg1: the #GladeSignal that changed
    */
   glade_widget_signals[CHANGE_SIGNAL_HANDLER] =
       g_signal_new ("change-signal-handler",
