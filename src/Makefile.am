@@ -24,6 +24,7 @@ BUILT_SOURCES = glade-resources.c glade-resources.h
 
 glade_SOURCES = \
 	glade-window.c \
+	glade-dbus.c \
 	glade-intro.c \
 	glade-resources.c \
 	glade-preferences.c \
@@ -33,6 +34,7 @@ glade_SOURCES = \
 
 noinst_HEADERS = \
 	glade-window.h \
+	glade-dbus.h \
 	glade-intro.h \
 	glade-resources.h \
 	glade-preferences.h \
@@ -67,4 +69,4 @@ UI_FILES = glade.glade \
 	glade-window.css \
 	glade-registration.css
 
-EXTRA_DIST = glade.rc.in glade-resources.gresource.xml $(UI_FILES)
+EXTRA_DIST = glade.rc.in glade-resources.gresource.xml glade-dbus.xml $(UI_FILES)

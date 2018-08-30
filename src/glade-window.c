@@ -30,6 +30,7 @@
 #include "glade-resources.h"
 #include "glade-preferences.h"
 #include "glade-registration.h"
+#include "glade-dbus.h"
 #include "glade-intro.h"
 
 #include <gladeui/glade.h>
@@ -404,6 +405,37 @@ static void
 project_targets_changed_cb (GladeProject *project, GladeWindow *window)
 {
   refresh_stack_title_for_project (window, project);
+}
+
+static void
+project_add_signal_handler_cb (GladeProject *project,
+                               GladeWidget  *widget,
+                               GladeSignal  *signal,
+                               GladeWindow  *window)
+{
+  glade_dbus_emit_handler_added (G_APPLICATION (window->priv->application),
+                                 widget, signal, NULL);
+}
+
+static void
+project_remove_signal_handler_cb (GladeProject *project,
+                                  GladeWidget  *widget,
+                                  GladeSignal  *signal,
+                                  GladeWindow  *window)
+{
+  glade_dbus_emit_handler_removed (G_APPLICATION (window->priv->application),
+                                   widget, signal, NULL);
+}
+
+static void
+project_change_signal_handler_cb (GladeProject *project,
+                                  GladeWidget  *widget,
+                                  GladeSignal  *old_signal,
+                                  GladeSignal  *new_signal,
+                                  GladeWindow  *window)
+{
+  glade_dbus_emit_handler_changed (G_APPLICATION (window->priv->application),
+                                   widget, old_signal, new_signal, NULL);
 }
 
 static inline void
@@ -1580,6 +1612,12 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
                     G_CALLBACK (project_selection_changed_cb), window);
   g_signal_connect (G_OBJECT (project), "targets-changed",
                     G_CALLBACK (project_targets_changed_cb), window);
+  g_signal_connect (G_OBJECT (project), "add-signal-handler",
+                    G_CALLBACK (project_add_signal_handler_cb), window);
+  g_signal_connect (G_OBJECT (project), "remove-signal-handler",
+                    G_CALLBACK (project_remove_signal_handler_cb), window);
+  g_signal_connect (G_OBJECT (project), "change-signal-handler",
+                    G_CALLBACK (project_change_signal_handler_cb), window);
   g_signal_connect (G_OBJECT (project), "changed",
                     G_CALLBACK (project_changed_cb), window);
 
@@ -1648,12 +1686,12 @@ on_redo_button_button_press_event (GtkWidget   *widget,
   return FALSE;
 }
 
-void
+GladeProject *
 glade_window_new_project (GladeWindow *window)
 {
   GladeProject *project;
 
-  g_return_if_fail (GLADE_IS_WINDOW (window));
+  g_return_val_if_fail (GLADE_IS_WINDOW (window), NULL);
 
   project = glade_project_new ();
   if (!project)
@@ -1661,9 +1699,11 @@ glade_window_new_project (GladeWindow *window)
       glade_util_ui_message (GTK_WIDGET (window),
                              GLADE_UI_ERROR, NULL,
                              _("Could not create a new project."));
-      return;
+      return NULL;
     }
   add_project (window, project, FALSE);
+
+  return project;
 }
 
 static void
@@ -2142,7 +2182,6 @@ glade_window_init (GladeWindow *window)
 static void
 glade_window_action_handler (GladeWindow *window, const gchar *name)
 {
-  GladeWindowPrivate *priv = window->priv;
   GAction *action;
 
   if ((action = GLADE_WINDOW_GET_ACTION (window, name)))
@@ -2383,10 +2422,22 @@ on_application_notify (GObject *gobject, GParamSpec *pspec)
 }
 
 static void
+on_glade_editor_signal_activated (GladeSignalEditor *signal_editor,
+                                  GladeSignal       *signal,
+                                  GladeWindow       *window)
+{
+  glade_dbus_emit_handler_activated (G_APPLICATION (window->priv->application),
+                                     glade_signal_editor_get_widget (signal_editor),
+                                     signal,
+                                     NULL);
+}
+
+static void
 glade_window_constructed (GObject *object)
 {
   GladeWindow *window = GLADE_WINDOW (object);
   GladeWindowPrivate *priv = window->priv;
+  GladeSignalEditor *signal_editor;
   gchar *version;
 
   /* Chain up... */
@@ -2422,6 +2473,10 @@ glade_window_constructed (GObject *object)
   /* GtkWindow events */
   g_signal_connect (G_OBJECT (window), "key-press-event",
                     G_CALLBACK (glade_utils_hijack_key_press), window);
+
+  g_object_get (priv->editor, "signal-editor", &signal_editor, NULL);
+  g_signal_connect (signal_editor, "signal-activated",
+                    G_CALLBACK (on_glade_editor_signal_activated), window);
 
   /* Load configuration, we need the list of extra catalog paths before creating
    * the GladeApp
@@ -2516,6 +2571,12 @@ glade_window_new (void)
   return g_object_new (GLADE_TYPE_WINDOW, NULL);
 }
 
+GladeProject *
+glade_window_get_active_project (GladeWindow *window)
+{
+  return get_active_project (window);
+}
+
 void
 glade_window_check_devhelp (GladeWindow *window)
 {
@@ -2578,3 +2639,4 @@ glade_window_registration_notify_user (GladeWindow *window)
                               /* translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again */
                               _("Go to Help -> Registration & User Survey and complete our survey!"));
 }
+

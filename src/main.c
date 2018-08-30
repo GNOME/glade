@@ -24,6 +24,7 @@
 #include <config.h>
 
 #include "glade-window.h"
+#include "glade-dbus.h"
 #include "glade-resources.h"
 
 #include <gladeui/glade.h>
@@ -99,6 +100,8 @@ activate (GApplication *application)
     glade_window_check_devhelp (window);
 
   gtk_widget_show (GTK_WIDGET (window));
+
+  glade_dbus_register (application);
 
   glade_window_registration_notify_user (window);
 }

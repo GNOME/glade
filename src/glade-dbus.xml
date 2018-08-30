@@ -1,0 +1,72 @@
+<!--
+  Copyright 2018 Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ -->
+
+<node xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+  <interface name='org.gnome.Glade'>
+
+    <!-- Methods -->
+    <method name='AddObject'>
+      <arg type='s' name='project-path'/>
+      <arg type='s' name='object-type'/>
+      <arg type='s' name='object-id'/>
+      <arg type='b' name='is-template'/>
+    </method>
+
+    <!-- Properties -->
+    <property name='Project' type='s' access='readwrite'/>
+
+    <!-- Signals -->
+    <signal name='HandlerAdded'>
+      <arg type='s' name='project-path' />
+      <arg type='s' name='object-type'/>
+      <arg type='s' name='object-id' />
+      <arg type='s' name='handler' />
+      <arg type='s' name='signal' />
+      <arg type='s' name='data' />
+      <arg type='b' name='swapped' />
+    </signal>
+
+    <signal name='HandlerRemoved'>
+      <arg type='s' name='project-path' />
+      <arg type='s' name='object-type'/>
+      <arg type='s' name='object-id' />
+      <arg type='s' name='handler' />
+      <arg type='s' name='signal' />
+    </signal>
+
+    <signal name='HandlerChanged'>
+      <arg type='s' name='project-path' />
+      <arg type='s' name='object-type'/>
+      <arg type='s' name='object-id' />
+      <arg type='s' name='handler' />
+      <arg type='s' name='new-handler' />
+      <arg type='s' name='signal' />
+      <arg type='s' name='data' />
+      <arg type='b' name='swapped' />
+    </signal>
+
+    <signal name='HandlerActivated'>
+      <arg type='s' name='project-path' />
+      <arg type='s' name='object-type'/>
+      <arg type='s' name='object-id' />
+      <arg type='s' name='handler' />
+      <arg type='s' name='signal' />
+    </signal>
+
+  </interface>
+</node>
