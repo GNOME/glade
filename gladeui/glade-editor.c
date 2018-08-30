@@ -65,6 +65,7 @@ enum
   PROP_SHOW_CLASS_FIELD,
   PROP_CLASS_FIELD,
   PROP_SHOW_BORDER,
+  PROP_SIGNAL_EDITOR,
   N_PROPERTIES
 };
 
@@ -199,6 +200,9 @@ glade_editor_get_property (GObject    *object,
       case PROP_SHOW_BORDER:
         g_value_set_boolean (value, gtk_notebook_get_show_border (GTK_NOTEBOOK (editor->priv->notebook)));
         break;
+      case PROP_SIGNAL_EDITOR:
+        g_value_set_object (value, editor->priv->signal_editor);
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -259,12 +263,20 @@ glade_editor_class_init (GladeEditorClass *klass)
                          _("The class field string"),
                          NULL,
                          G_PARAM_READABLE);
+
   properties[PROP_SHOW_BORDER] =
     g_param_spec_boolean ("show-boder",
                           _("Show Border"),
                           _("Whether the border should be shown"),
                           TRUE,
                           G_PARAM_READWRITE);
+
+  properties[PROP_SIGNAL_EDITOR] =
+    g_param_spec_object ("signal-editor",
+                         _("Signal Editor"),
+                         _("The signal editor used to edit signals"),
+                         GLADE_TYPE_SIGNAL_EDITOR,
+                         G_PARAM_READABLE);
   
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
