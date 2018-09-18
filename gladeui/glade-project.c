@@ -2027,7 +2027,9 @@ glade_project_load_internal (GladeProject *project)
 
       if (message)
         {
-          glade_util_ui_message (glade_app_get_window (), GLADE_UI_ERROR, NULL, "%s", message);
+          gchar *escaped = g_markup_escape_text (message, -1);
+          glade_util_ui_message (glade_app_get_window (), GLADE_UI_ERROR, NULL, "%s", escaped);
+          g_free (escaped);
           g_free (message);
         }
       else
