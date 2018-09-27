@@ -17,6 +17,9 @@
 <!ELEMENT glade-widget-class (post-create-function?,
 			      get-internal-child-function?,
 			      child-property-applies-function?,
+			      read-widget-function?,
+			      write-widget-function?,
+			      set-property-function?,
 			      properties?,
 			      children?,
 			      packing-defaults?)>
@@ -39,6 +42,7 @@
 
 <!ELEMENT property (spec?, 
 		    type?,
+		    parameter-spec?,
 		    tooltip?, 
 		    parameters?,
 		    set-function?,
@@ -74,6 +78,8 @@
                    construct-only   CDATA #IMPLIED
 		   translatable     CDATA #IMPLIED>
 
+<!ELEMENT parameter-spec (type?,
+		          value-type?)>
 <!ELEMENT set-function (#PCDATA)>
 <!ELEMENT get-function (#PCDATA)>
 <!ELEMENT spec (#PCDATA)>
@@ -86,6 +92,10 @@
 
 <!ATTLIST parameter key   CDATA #REQUIRED
                     value CDATA #REQUIRED>
+
+<!ELEMENT paremter-spec (type,
+			 value-type)>
+<!ELEMENT value-type (#PCDATA)>
 
 <!ELEMENT children (child+)>
 
@@ -113,6 +123,10 @@
 <!ELEMENT post-create-function (#PCDATA)>
 <!ELEMENT get-internal-child-function (#PCDATA)>
 <!ELEMENT child-property-applies-function (#PCDATA)>
+
+<!ELEMENT read-widget-function (#PCDATA)>
+<!ELEMENT write-widget-function (#PCDATA)>
+<!ELEMENT set-property-function (#PCDATA)>
 
 <!ELEMENT glade-widget-group (default-palette-state?, 
 			      glade-widget-class-ref+)>
