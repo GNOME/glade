@@ -93,7 +93,7 @@ glade_header_bar_editor_load (GladeEditable *editable,
 
       glade_widget_property_get (gwidget, "use-custom-title", &setting);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->use_custom_title_check), setting);
-      glade_widget_property_get (gwidget, "show-close-button", &setting);
+      glade_widget_property_get (gwidget, "show-tittle-buttons", &setting);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->show_decoration_check), setting);
     }
 }
@@ -202,7 +202,7 @@ show_decoration_toggled (GtkWidget            *widget,
       glade_command_set_property (property, NULL);
     }
 
-  property = glade_widget_get_property (gwidget, "show-close-button");
+  property = glade_widget_get_property (gwidget, "show-tittle-buttons");
   glade_command_set_property (property, show_decoration);
 
   glade_command_pop_group ();
