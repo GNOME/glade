@@ -684,8 +684,6 @@
           <!-- position needs to be always saved in case of using pack end -->
           <property id="position" weight="0" save-always="True"/>
           <property id="padding" transfer-on-paste="True" weight="0.5"/>
-          <property id="expand" transfer-on-paste="True" save-always="True"/>
-          <property id="fill" transfer-on-paste="True" save-always="True"/>
           <property id="pack-type" transfer-on-paste="True">
             <displayable-values>
               <!-- GtkPackType enumeration value -->
@@ -1077,9 +1075,6 @@
           </property>
         </properties>
         <packing-defaults>
-          <parent-class name="GtkVBox">
-            <child-property id="expand" default="false"/>
-          </parent-class>
         </packing-defaults>
       </glade-widget-class>
       
@@ -1153,14 +1148,10 @@
             </parameter-spec>
             <_tooltip>The position of the tool item in the toolbar</_tooltip>
           </property>
-          <property id="expand" transfer-on-paste="True" save-always="True"/>
           <property id="homogeneous" transfer-on-paste="True" save-always="True"/>
         </packing-properties>
         
         <packing-defaults>
-          <parent-class name="GtkVBox">
-            <child-property id="expand" default="false"/>
-          </parent-class>
         </packing-defaults>
       </glade-widget-class>
       
@@ -1208,7 +1199,6 @@
             </parameter-spec>
             <_tooltip>The position of the tool item group in the palette</_tooltip>
           </property>
-          <property id="expand" transfer-on-paste="True" save-always="True"/>
           <property id="exclusive" transfer-on-paste="True"/>
         </packing-properties>
       </glade-widget-class>
@@ -1263,8 +1253,6 @@
         </properties>
         
         <packing-properties>
-          <property id="expand" transfer-on-paste="True"/>
-          <property id="fill" transfer-on-paste="True"/>
           <property id="row-new" transfer-on-paste="True"/>
           <property id="homogeneous" transfer-on-paste="True"/>
         </packing-properties>
@@ -1687,7 +1675,7 @@
         <replace-child-function>glade_gtk_search_bar_replace_child</replace-child-function>
         <properties>
           <property id="search-mode-enabled" save="True" ignore="True"/>
-          <property id="show-close-button" save="True" ignore="True"/>
+          <property id="show-tittle-buttons" save="True" ignore="True"/>
         </properties>
 
       </glade-widget-class>
@@ -2355,8 +2343,6 @@
           <property id="x-options" transfer-on-paste="True">
             <displayable-values>
               <!-- GtkAttachOptions enumeration value -->
-              <value id="GTK_EXPAND" _name="Expand"/>
-              <!-- GtkAttachOptions enumeration value -->
               <value id="GTK_SHRINK" _name="Shrink"/>
               <!-- GtkAttachOptions enumeration value -->
               <value id="GTK_FILL" _name="Fill"/>
@@ -2543,7 +2529,7 @@
 	<property id="has-subtitle" _name="Reserve space for subtitle" custom-layout="True">
           <_tooltip>Keep the headerbar height the same as the subtitle changes dynamically.</_tooltip>
         </property>
-	<property id="show-close-button" custom-layout="True" needs-sync="True"/>
+	<property id="show-tittle-buttons" custom-layout="True" needs-sync="True"/>
 	<property id="spacing" custom-layout="True"/>
 	<property id="decoration-layout" custom-layout="True"/>
         <property id="decoration-layout-set" disabled="True"/>
@@ -2978,9 +2964,6 @@
       
       <glade-widget-class name="GtkSeparator" generic-name="separator" _title="Separator">
         <packing-defaults>
-          <parent-class name="GtkBox">
-            <child-property id="expand" default="false"/>
-          </parent-class>
         </packing-defaults>
       </glade-widget-class>
       <glade-widget-class name="GtkHSeparator" deprecated="True" generic-name="hseparator" _title="Horizontal Separator">
@@ -2988,9 +2971,6 @@
           <property id="orientation" disabled="True"/>
         </properties>
         <packing-defaults>
-          <parent-class name="GtkVBox">
-            <child-property id="expand" default="false"/>
-          </parent-class>
         </packing-defaults>
       </glade-widget-class>
       <glade-widget-class name="GtkVSeparator" deprecated="True" generic-name="vseparator" _title="Vertical Separator">
@@ -2998,9 +2978,6 @@
           <property id="orientation" disabled="True"/>
         </properties>
         <packing-defaults>
-          <parent-class name="GtkHBox">
-            <child-property id="expand" default="false"/>
-          </parent-class>
         </packing-defaults>
       </glade-widget-class>
       
@@ -3010,9 +2987,6 @@
           <property id="size" default="1" query="False"/>
         </properties>
         <packing-defaults>
-          <parent-class name="GtkVBox">
-            <child-property id="expand" default="false"/>
-          </parent-class>
         </packing-defaults>
       </glade-widget-class>
       

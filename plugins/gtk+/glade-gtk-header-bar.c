@@ -290,7 +290,7 @@ glade_gtk_header_bar_set_property (GladeWidgetAdaptor *adaptor,
 {
   if (!strcmp (id, "use-custom-title"))
     glade_gtk_header_bar_set_use_custom_title (object, g_value_get_boolean (value));
-  else if (!strcmp (id, "show-close-button"))
+  else if (!strcmp (id, "show-tittle-buttons"))
     {
       GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 
