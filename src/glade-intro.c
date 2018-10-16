@@ -244,8 +244,7 @@ find_widget_forall (GtkWidget *widget, gpointer user_data)
   if (data->widget)
     return;
 
-  if (g_strcmp0 (widget_get_name (widget), data->name) == 0 &&
-      gtk_widget_is_visible (widget))
+  if (g_strcmp0 (widget_get_name (widget), data->name) == 0)
     {
       data->widget = widget;
       return;
