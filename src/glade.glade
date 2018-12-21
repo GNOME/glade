@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.0 
+<!-- Generated with glade 3.22.1 
 
 Glade - A user interface designer for GTK+ and GNOME.
 Copyright (C) 2012-2017 Juan Pablo Ugarte
@@ -168,283 +168,6 @@ Author: Juan Pablo Ugarte
   </object>
   <template class="GladeWindow" parent="GtkWindow">
     <property name="can_focus">False</property>
-    <child>
-      <object class="GtkStack" id="stack">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkBox" id="start_page">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkImage">
-                <property name="name">glade-brand-image</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_top">64</property>
-                <property name="pixel_size">250</property>
-                <property name="icon_name">glade-brand-symbolic</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="name">glade-label</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Glade</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="version_label">
-                <property name="name">version-label</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="width_chars">32</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="name">page0</property>
-            <property name="title">page0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkPaned" id="center_paned">
-            <property name="height_request">380</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="position_set">True</property>
-            <property name="wide_handle">True</property>
-            <child>
-              <object class="GtkPaned" id="left_paned">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="position">150</property>
-                <property name="position_set">True</property>
-                <property name="wide_handle">True</property>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <object class="GtkStack" id="inspectors_stack">
-                        <property name="name">inspector</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_left">3</property>
-                        <property name="margin_right">3</property>
-                        <property name="margin_bottom">3</property>
-                        <property name="transition_duration">128</property>
-                        <property name="transition_type">crossfade</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToolbar" id="toolbar">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkToolButton" id="selector_button">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="action_name">app.pointer-mode</property>
-                            <property name="action_target">'select'</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">glade-selector</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="drag_resize_button">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="action_name">app.pointer-mode</property>
-                            <property name="action_target">'drag-resize'</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">glade-drag-resize</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="margin_edit_button">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="action_name">app.pointer-mode</property>
-                            <property name="action_target">'margin-edit'</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">glade-margin-edit</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="align_edit_button">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="action_name">app.pointer-mode</property>
-                            <property name="action_target">'align-edit'</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">glade-align-edit</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="resize">False</property>
-                    <property name="shrink">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkOverlay">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GladeAdaptorChooser" id="adaptor_chooser">
-                            <property name="name">adaptor-chooser</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="border_width">2</property>
-                            <property name="spacing">4</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparator">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkStack" id="view_stack">
-                            <property name="name">workspace</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="transition_duration">128</property>
-                            <property name="transition_type">crossfade</property>
-                            <signal name="notify::visible-child" handler="on_stack_visible_child_notify" swapped="no"/>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="index">-1</property>
-                      </packing>
-                    </child>
-                    <child type="overlay">
-                      <object class="GtkStatusbar" id="statusbar">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="valign">end</property>
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">2</property>
-                      </object>
-                      <packing>
-                        <property name="pass_through">True</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="resize">True</property>
-                    <property name="shrink">False</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="resize">False</property>
-                <property name="shrink">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GladeEditor" id="editor">
-                <property name="name">editor</property>
-                <property name="width_request">256</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="show_class_field">False</property>
-                <property name="show_boder">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="resize">False</property>
-                <property name="shrink">False</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="name">page1</property>
-            <property name="title">page1</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="headerbar">
         <property name="name">headerbar</property>
@@ -717,6 +440,277 @@ Author: Juan Pablo Ugarte
         </child>
       </object>
     </child>
+    <child>
+      <object class="GtkStack" id="stack">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkBox" id="start_page">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkImage">
+                <property name="name">glade-brand-image</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_top">64</property>
+                <property name="pixel_size">250</property>
+                <property name="icon_name">glade-brand-symbolic</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="name">glade-label</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Glade</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="version_label">
+                <property name="name">version-label</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="width_chars">32</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page0</property>
+            <property name="title">page0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkPaned" id="center_paned">
+            <property name="height_request">380</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="position_set">True</property>
+            <child>
+              <object class="GtkPaned" id="left_paned">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="position">150</property>
+                <property name="position_set">True</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkStack" id="inspectors_stack">
+                        <property name="name">inspector</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_left">3</property>
+                        <property name="margin_right">3</property>
+                        <property name="margin_bottom">3</property>
+                        <property name="transition_duration">128</property>
+                        <property name="transition_type">crossfade</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolbar" id="toolbar">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkToolButton" id="selector_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="action_name">app.pointer-mode</property>
+                            <property name="use_underline">True</property>
+                            <property name="icon_name">glade-selector</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="drag_resize_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="action_name">app.pointer-mode</property>
+                            <property name="use_underline">True</property>
+                            <property name="icon_name">glade-drag-resize</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="margin_edit_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="action_name">app.pointer-mode</property>
+                            <property name="use_underline">True</property>
+                            <property name="icon_name">glade-margin-edit</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="align_edit_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="action_name">app.pointer-mode</property>
+                            <property name="use_underline">True</property>
+                            <property name="icon_name">glade-align-edit</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="resize">False</property>
+                    <property name="shrink">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkOverlay">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GladeAdaptorChooser" id="adaptor_chooser">
+                            <property name="name">adaptor-chooser</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="border_width">2</property>
+                            <property name="spacing">4</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSeparator">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkStack" id="view_stack">
+                            <property name="name">workspace</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="transition_duration">128</property>
+                            <property name="transition_type">crossfade</property>
+                            <signal name="notify::visible-child" handler="on_stack_visible_child_notify" swapped="no"/>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="index">-1</property>
+                      </packing>
+                    </child>
+                    <child type="overlay">
+                      <object class="GtkStatusbar" id="statusbar">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="valign">end</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">2</property>
+                      </object>
+                      <packing>
+                        <property name="pass_through">True</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="resize">True</property>
+                    <property name="shrink">False</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">False</property>
+                <property name="shrink">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladeEditor" id="editor">
+                <property name="name">editor</property>
+                <property name="width_request">256</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="show_class_field">False</property>
+                <property name="show_boder">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">False</property>
+                <property name="shrink">False</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page1</property>
+            <property name="title">page1</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </template>
   <object class="GtkAboutDialog" id="about_dialog">
     <property name="can_focus">False</property>
@@ -762,6 +756,9 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
     <signal name="delete-event" handler="gtk_true" swapped="no"/>
     <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="response" handler="gtk_widget_hide" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
         <property name="can_focus">False</property>
@@ -780,9 +777,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
           </packing>
         </child>
       </object>
-    </child>
-    <child>
-      <placeholder/>
     </child>
   </object>
 </interface>
