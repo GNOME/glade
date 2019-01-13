@@ -257,12 +257,7 @@ CLEANFILES = $(BUILT_SOURCES)
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = \
-	--add-include-path=$(srcdir) \
-	--identifier-prefix=Glade \
-	--symbol-prefix=glade \
-	--pkg=gtk+-3.0 -I../ -I$(srcdir)/..
-
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)/.. -I../ -I$(srcdir)/..
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 if HAVE_INTROSPECTION
@@ -273,6 +268,11 @@ Gladeui_2_0_gir_INCLUDES = Gtk-3.0
 Gladeui_2_0_gir_CFLAGS = $(INCLUDES)
 Gladeui_2_0_gir_LIBS = libgladeui-2.la
 Gladeui_2_0_gir_FILES = $(introspection_sources)
+Gladeui_2_0_gir_EXPORT_PACKAGES = gladeui-2.0
+Gladeui_2_0_gir_SCANNERFLAGS = \
+	--c-include="gladeui/glade.h" \
+	--identifier-prefix=Glade \
+	--symbol-prefix=glade
 INTROSPECTION_GIRS += Gladeui-2.0.gir
 
 girdir = $(datadir)/gir-1.0
