@@ -14,16 +14,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2018-08-12 10:19+0000\n"
-"PO-Revision-Date: 2018-08-14 11:46+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2018-11-04 08:32+0000\n"
+"PO-Revision-Date: 2019-01-02 02:48+0200\n"
+"Last-Translator: sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-POOTLE-MTIME: 1420929039.000000\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
@@ -56,7 +56,7 @@ msgid ""
 "interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
 msgstr ""
 "Glade, GTK+ 3 araç takımı ve GNOME masaüstü ortamı için hızlı ve kolay "
-"kullanıcı arayüzü geliştirmeyi sağlayan bir RAD aracıdır. "
+"kullanıcı arayüzü geliştirmeyi sağlayan bir RAD aracıdır."
 
 #. To translators: AppData description second paragraph
 #: ../data/glade.appdata.xml.in.h:6
@@ -114,7 +114,7 @@ msgstr "'%s' kendiliğinden kaydedilirken hata"
 
 #: ../src/glade-window.c:719
 msgid "Open…"
-msgstr "Aç... "
+msgstr "Aç…"
 
 #: ../src/glade-window.c:753
 #, c-format
@@ -157,7 +157,7 @@ msgstr "'%s' projesi kaydedildi"
 
 #: ../src/glade-window.c:914
 msgid "Save As…"
-msgstr "Farklı Kaydet... "
+msgstr "Farklı Kaydet…"
 
 #: ../src/glade-window.c:978
 #, c-format
@@ -191,7 +191,7 @@ msgid "Close _without Saving"
 msgstr "_Kaydetmeden Kapat"
 
 #: ../src/glade-window.c:1078 ../src/glade-window.c:1756
-#: ../gladeui/glade-editor.c:779 ../gladeui/glade-editor.c:1135
+#: ../gladeui/glade-editor.c:791 ../gladeui/glade-editor.c:1147
 #: ../gladeui/glade-editor-property.c:1711
 #: ../gladeui/glade-editor-property.c:2020
 #: ../gladeui/glade-editor-property.c:2221
@@ -209,7 +209,7 @@ msgstr "_Kaydet"
 
 #: ../src/glade-window.c:1110
 msgid "Save…"
-msgstr "Kaydet... "
+msgstr "Kaydet…"
 
 #: ../src/glade-window.c:1663
 msgid "Could not create a new project."
@@ -471,10 +471,6 @@ msgid "Start/resume interactive UI introduction"
 msgstr "Etkileşimli kullanıcı arayüzü tanıtımını başlatın/devam ettirin"
 
 #: ../src/glade.glade.h:16
-#| msgid ""
-#| "Copyright © 2001-2006 Ximian, Inc.\n"
-#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-#| "Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -1679,50 +1675,58 @@ msgstr "Tasarım Görünümü"
 msgid "The GladeDesignView that contains this layout"
 msgstr "Bu yerleşimi içeren GladeDesignView"
 
-#: ../gladeui/glade-editor.c:236
+#: ../gladeui/glade-editor.c:240
 msgid "Show info"
 msgstr "Bilgi göster"
 
-#: ../gladeui/glade-editor.c:237
+#: ../gladeui/glade-editor.c:241
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "Yüklenen parçacık için bilgi düğmesinin gösterilmesi"
 
-#: ../gladeui/glade-editor.c:244 ../plugins/gtk+/gtk+.xml.in.h:1
+#: ../gladeui/glade-editor.c:248 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "Widget"
 msgstr "Parçacık"
 
-#: ../gladeui/glade-editor.c:245
+#: ../gladeui/glade-editor.c:249
 msgid "The currently loaded widget in this editor"
 msgstr "Bu düzenleyicide şu anda yüklü olan parçacık"
 
-#: ../gladeui/glade-editor.c:251
+#: ../gladeui/glade-editor.c:255
 msgid "Show Class Field"
 msgstr "Sınıf Alanını GÖster"
 
-#: ../gladeui/glade-editor.c:252
+#: ../gladeui/glade-editor.c:256
 msgid "Whether to show the class field at the top"
 msgstr "Sınıf alanı yukarda gösterilsin mi"
 
-#: ../gladeui/glade-editor.c:258
+#: ../gladeui/glade-editor.c:262
 msgid "Class Field"
 msgstr "Sınıf Alanı"
 
-#: ../gladeui/glade-editor.c:259
+#: ../gladeui/glade-editor.c:263
 msgid "The class field string"
 msgstr "Sınıf alan metni"
 
-#: ../gladeui/glade-editor.c:264
+#: ../gladeui/glade-editor.c:269
 msgid "Show Border"
 msgstr "Sınırı Göster"
 
-#: ../gladeui/glade-editor.c:265
+#: ../gladeui/glade-editor.c:270
 msgid "Whether the border should be shown"
 msgstr "Sınır gösterilmeli mi"
+
+#: ../gladeui/glade-editor.c:276
+msgid "Signal Editor"
+msgstr "Sinyal Düzenleyici"
+
+#: ../gladeui/glade-editor.c:277
+msgid "The signal editor used to edit signals"
+msgstr "Sinyalleri düzenlemek için kullanılacak düzenleyici"
 
 #. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
 #. * example: Window Properties - GtkWindow [window1]
 #.
-#: ../gladeui/glade-editor.c:325
+#: ../gladeui/glade-editor.c:337
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "%s Özellikleri - %s [%s]"
@@ -1730,12 +1734,12 @@ msgstr "%s Özellikleri - %s [%s]"
 #. translators: %s(Class Title) Properties - %s (ClassName)
 #. * example: Window Properties - GtkWindow
 #.
-#: ../gladeui/glade-editor.c:335
+#: ../gladeui/glade-editor.c:347
 #, c-format
 msgid "%s Properties - %s"
 msgstr "%s Özellikleri - %s"
 
-#: ../gladeui/glade-editor.c:349 ../gladeui/glade-widget.c:1381
+#: ../gladeui/glade-editor.c:361 ../gladeui/glade-widget.c:1385
 #: ../gladeui/glade-project-properties.ui.h:11
 #: ../plugins/gtk+/glade-gtk-action-group.c:188
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:365
@@ -1747,48 +1751,48 @@ msgstr "%s Özellikleri - %s"
 msgid "Properties"
 msgstr "Özellikler"
 
-#: ../gladeui/glade-editor.c:775
+#: ../gladeui/glade-editor.c:787
 #, c-format
 msgid "Create a %s"
 msgstr "Bir %s oluştur"
 
-#: ../gladeui/glade-editor.c:783
+#: ../gladeui/glade-editor.c:795
 msgid "Crea_te"
 msgstr "Oluş_tur"
 
-#: ../gladeui/glade-editor.c:891
+#: ../gladeui/glade-editor.c:903
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: ../gladeui/glade-editor.c:902 ../gladeui/glade-property-label.c:119
+#: ../gladeui/glade-editor.c:914 ../gladeui/glade-property-label.c:119
 msgid "Property"
 msgstr "Özellik"
 
-#: ../gladeui/glade-editor.c:933
+#: ../gladeui/glade-editor.c:945
 msgid "General"
 msgstr "Genel"
 
-#: ../gladeui/glade-editor.c:941
+#: ../gladeui/glade-editor.c:953
 msgid "Common"
 msgstr "Ortak"
 
-#: ../gladeui/glade-editor.c:949 ../gladeui/glade-editor.ui.h:5
+#: ../gladeui/glade-editor.c:961 ../gladeui/glade-editor.ui.h:5
 msgid "Accessibility"
 msgstr "Erişilebilirlik"
 
-#: ../gladeui/glade-editor.c:982
+#: ../gladeui/glade-editor.c:994
 msgid "(default)"
 msgstr "(öntanımlı)"
 
-#: ../gladeui/glade-editor.c:997
+#: ../gladeui/glade-editor.c:1009
 msgid "Select the properties that you want to reset to their default values"
 msgstr "Öntanımlı değerlere sıfırlamak istediğiniz özellikleri seçin"
 
-#: ../gladeui/glade-editor.c:1131
+#: ../gladeui/glade-editor.c:1143
 msgid "Reset Widget Properties"
 msgstr "Parçacık Özelliklerini Sıfırla"
 
-#: ../gladeui/glade-editor.c:1136 ../gladeui/glade-editor-property.c:1712
+#: ../gladeui/glade-editor.c:1148 ../gladeui/glade-editor-property.c:1712
 #: ../gladeui/glade-editor-property.c:2021
 #: ../gladeui/glade-editor-property.c:3170
 #: ../gladeui/glade-editor-property.c:3283
@@ -1799,25 +1803,25 @@ msgid "_OK"
 msgstr "_Tamam"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1148
+#: ../gladeui/glade-editor.c:1160
 msgid "_Properties:"
 msgstr "Ö_zellikler:"
 
-#: ../gladeui/glade-editor.c:1177
+#: ../gladeui/glade-editor.c:1189
 msgid "_Select All"
 msgstr "_Hepsini Seç"
 
-#: ../gladeui/glade-editor.c:1185
+#: ../gladeui/glade-editor.c:1197
 msgid "_Unselect All"
 msgstr "_Hepsinin Seçimini Kaldır"
 
 #. Description
-#: ../gladeui/glade-editor.c:1195
+#: ../gladeui/glade-editor.c:1207
 msgid "Property _Description:"
 msgstr "Özellik _Açıklaması:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1297
+#: ../gladeui/glade-editor.c:1309
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - %s Özellikleri"
@@ -1916,7 +1920,7 @@ msgstr "_Aç"
 
 #. GtkInputPurpose enumeration value
 #: ../gladeui/glade-editor-property.c:3088
-#: ../gladeui/glade-widget-adaptor.c:1449 ../gladeui/glade-widget.c:1345
+#: ../gladeui/glade-widget-adaptor.c:1449 ../gladeui/glade-widget.c:1349
 #: ../plugins/gtk+/gtk+.xml.in.h:549
 msgid "Name"
 msgstr "Ad"
@@ -1990,7 +1994,7 @@ msgstr "Sınıf Adı:"
 msgid "The object's unique identifier"
 msgstr "Nesnenin tekil tanımlayıcısı"
 
-#: ../gladeui/glade-editor-table.c:593 ../gladeui/glade-widget.c:1439
+#: ../gladeui/glade-editor-table.c:593 ../gladeui/glade-widget.c:1443
 msgid "Composite"
 msgstr "Birleşik"
 
@@ -1999,7 +2003,7 @@ msgid "Whether this widget is a composite template"
 msgstr "Bu parçacık bir birleşik şablon mu"
 
 #: ../gladeui/glade-inspector.c:196 ../gladeui/glade-project-properties.c:168
-#: ../gladeui/glade-widget.c:1374
+#: ../gladeui/glade-widget.c:1378
 msgid "Project"
 msgstr "Proje"
 
@@ -2236,112 +2240,112 @@ msgstr ""
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "--listen veya --filename belirtilmelidir.\n"
 
-#: ../gladeui/glade-project.c:958
+#: ../gladeui/glade-project.c:1036
 msgid "Whether project has been modified since it was last saved"
 msgstr "Projenin en son kaydedildiğinden beri değiştirilmiş olması"
 
-#: ../gladeui/glade-project.c:964
+#: ../gladeui/glade-project.c:1042
 msgid "Has Selection"
 msgstr "Seçim Var"
 
-#: ../gladeui/glade-project.c:965
+#: ../gladeui/glade-project.c:1043
 msgid "Whether project has a selection"
 msgstr "Projenin bir seçiminin olması"
 
-#: ../gladeui/glade-project.c:971
+#: ../gladeui/glade-project.c:1049
 msgid "Path"
 msgstr "Yol"
 
-#: ../gladeui/glade-project.c:972
+#: ../gladeui/glade-project.c:1050
 msgid "The filesystem path of the project"
 msgstr "Projenin dosya sistemi yolu"
 
-#: ../gladeui/glade-project.c:978
+#: ../gladeui/glade-project.c:1056
 msgid "Read Only"
 msgstr "Salt Okunur"
 
-#: ../gladeui/glade-project.c:979
+#: ../gladeui/glade-project.c:1057
 msgid "Whether project is read-only"
 msgstr "Projenin salt okunur olup olmayacağı"
 
-#: ../gladeui/glade-project.c:985
+#: ../gladeui/glade-project.c:1063
 msgid "Add Item"
 msgstr "Öge Ekle"
 
-#: ../gladeui/glade-project.c:986
+#: ../gladeui/glade-project.c:1064
 msgid "The current item to add to the project"
 msgstr "Projeye eklenecek geçerli öge"
 
-#: ../gladeui/glade-project.c:992
+#: ../gladeui/glade-project.c:1070
 msgid "Pointer Mode"
 msgstr "Belirteç Kipi"
 
-#: ../gladeui/glade-project.c:993
+#: ../gladeui/glade-project.c:1071
 msgid "The currently effective GladePointerMode"
 msgstr "Şu anda etkin olan GladePointerMode"
 
-#: ../gladeui/glade-project.c:1000
+#: ../gladeui/glade-project.c:1078
 msgid "Translation Domain"
 msgstr "Çeviri Alanı"
 
-#: ../gladeui/glade-project.c:1001
+#: ../gladeui/glade-project.c:1079
 msgid "The project translation domain"
 msgstr "Proje çeviri alanı"
 
-#: ../gladeui/glade-project.c:1007 ../gladeui/glade-widget.c:1397
+#: ../gladeui/glade-project.c:1085 ../gladeui/glade-widget.c:1401
 msgid "Template"
 msgstr "Şablom"
 
-#: ../gladeui/glade-project.c:1008
+#: ../gladeui/glade-project.c:1086
 msgid "The project's template widget, if any"
 msgstr "Eğer varsa, projenin şablon parçacığı"
 
-#: ../gladeui/glade-project.c:1014
+#: ../gladeui/glade-project.c:1092
 msgid "Resource Path"
 msgstr "Kaynak Yolu"
 
-#: ../gladeui/glade-project.c:1015
+#: ../gladeui/glade-project.c:1093
 msgid "Path to load images and resources in Glade's runtime"
 msgstr "Glade çalışma zamanında resimlerin ve kaynakların yükleneceği yol"
 
-#: ../gladeui/glade-project.c:1021 ../gladeui/glade-project-properties.ui.h:29
+#: ../gladeui/glade-project.c:1099 ../gladeui/glade-project-properties.ui.h:29
 msgid "License"
 msgstr "Lisans"
 
-#: ../gladeui/glade-project.c:1022
+#: ../gladeui/glade-project.c:1100
 msgid "License for this project, it will be added as a document level comment."
 msgstr "Projenin lisansı, belge düzeyinden açıklama metni olarak eklenecek."
 
-#: ../gladeui/glade-project.c:1028
+#: ../gladeui/glade-project.c:1106
 msgid "CSS Provider Path"
 msgstr "CSS Sağlayıcı Yolu"
 
-#: ../gladeui/glade-project.c:1029
+#: ../gladeui/glade-project.c:1107
 msgid "Path to use as the custom CSS provider for this project."
 msgstr "Bu proje için özel CSS sağlayıcı olarak kullanılacak yol."
 
-#: ../gladeui/glade-project.c:1126
+#: ../gladeui/glade-project.c:1204
 #, c-format
 msgid "(internal %s)"
 msgstr "(dahili %s)"
 
-#: ../gladeui/glade-project.c:1131
+#: ../gladeui/glade-project.c:1209
 #, c-format
 msgid "(%s child)"
 msgstr "(alt %s)"
 
-#: ../gladeui/glade-project.c:1133
+#: ../gladeui/glade-project.c:1211
 #, c-format
 msgid "(template)"
 msgstr "(şablon)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: ../gladeui/glade-project.c:1141
+#: ../gladeui/glade-project.c:1219
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%s / %s)"
 
-#: ../gladeui/glade-project.c:1502
+#: ../gladeui/glade-project.c:1580
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -2351,26 +2355,26 @@ msgstr ""
 "Gerekli kataloglar yok: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: ../gladeui/glade-project.c:1874
+#: ../gladeui/glade-project.c:1952
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s Gtk+ %d.%d sürümünü hedefliyor"
 
-#: ../gladeui/glade-project.c:1913
+#: ../gladeui/glade-project.c:1991
 msgid "Specially because there is an object that can not be build with type "
 msgstr "Özellikle tipte oluşturulamayacak bir nesne olduğundan "
 
-#: ../gladeui/glade-project.c:1918
+#: ../gladeui/glade-project.c:1996
 #, c-format
 msgid ""
 "Specially because there are %d objects that can not be build with types "
 msgstr "Özellikle tiplerle oluşturulamayacak %d nesne olduğundan "
 
-#: ../gladeui/glade-project.c:1925
+#: ../gladeui/glade-project.c:2003
 msgid " and "
 msgstr " ve "
 
-#: ../gladeui/glade-project.c:1943
+#: ../gladeui/glade-project.c:2021
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -2383,7 +2387,7 @@ msgstr ""
 "çalıştırabildiğinizden emin olun.\n"
 "%s"
 
-#: ../gladeui/glade-project.c:2004
+#: ../gladeui/glade-project.c:2082
 #, c-format
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
@@ -2394,7 +2398,7 @@ msgstr ""
 "\n"
 "Kendiliğinden kaydedilmiş sürümünü yüklemek ister misiniz?"
 
-#: ../gladeui/glade-project.c:2144
+#: ../gladeui/glade-project.c:2222
 #, c-format
 msgid "%s document properties"
 msgstr "%s belge özellikleri"
@@ -2407,23 +2411,23 @@ msgstr "%s belge özellikleri"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:3011
+#: ../gladeui/glade-project.c:3089
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Bu parça ilk defa %s %d.%d ile geliyor proje hedefleri %s %d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:3015
+#: ../gladeui/glade-project.c:3093
 #, c-format
 msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
 msgstr "[%s] '<b>%s</b>' nesne sınıfı %s %d.%d sürümünde tanıtıldı\n"
 
-#: ../gladeui/glade-project.c:3017
+#: ../gladeui/glade-project.c:3095
 msgid "This widget is deprecated"
 msgstr "Bu parçacık artık kullanılmıyor"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:3020
+#: ../gladeui/glade-project.c:3098
 #, c-format
 msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
 msgstr ""
@@ -2432,14 +2436,14 @@ msgstr ""
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:3025
+#: ../gladeui/glade-project.c:3103
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Bu özellik %s %d.%d içinde ilk defa geçiyor ancak proje hedefleri %s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:3029
+#: ../gladeui/glade-project.c:3107
 #, c-format
 msgid ""
 "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
@@ -2449,7 +2453,7 @@ msgstr ""
 "sürümünde tanıtıldı\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:3033
+#: ../gladeui/glade-project.c:3111
 #, c-format
 msgid ""
 "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was introduced "
@@ -2458,12 +2462,12 @@ msgstr ""
 "[%1$s] '<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' paketleme özelliği %4$s "
 "%5$d.%6$d sürümünde tanıtıldı\n"
 
-#: ../gladeui/glade-project.c:3036
+#: ../gladeui/glade-project.c:3114
 msgid "This property is deprecated"
 msgstr "Bu özellik artık kullanılmıyor"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:3039
+#: ../gladeui/glade-project.c:3117
 #, c-format
 msgid "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgstr ""
@@ -2472,13 +2476,13 @@ msgstr ""
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:3043
+#: ../gladeui/glade-project.c:3121
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Bu sinyal %s %d.%d sürümü ile geliyor ama proje %s %d.%d hedefliyor"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:3047
+#: ../gladeui/glade-project.c:3125
 #, c-format
 msgid ""
 "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
@@ -2487,79 +2491,79 @@ msgstr ""
 "[%1$s] '<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' sinyali %4$s %5$d.%6$d "
 "sürümünde tanıtıldı\n"
 
-#: ../gladeui/glade-project.c:3050
+#: ../gladeui/glade-project.c:3128
 msgid "This signal is deprecated"
 msgstr "Bu sinyal artık kullanılmıyor"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:3053
+#: ../gladeui/glade-project.c:3131
 #, c-format
 msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgstr ""
 "[%1$s] '<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' sinyali artık "
 "kullanılmıyor\n"
 
-#: ../gladeui/glade-project.c:3350
+#: ../gladeui/glade-project.c:3428
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: ../gladeui/glade-project.c:3367
+#: ../gladeui/glade-project.c:3445
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "\"%s\" projesinde hatalar var. Yine de kaydedilsin mi ?"
 
-#: ../gladeui/glade-project.c:3368
+#: ../gladeui/glade-project.c:3446
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 "\"%s\" projesi, kullanılmayan parçacıklar ve/veya sürüm uyumsuzlukları "
 "içeriyor."
 
-#: ../gladeui/glade-project.c:3393
+#: ../gladeui/glade-project.c:3471
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr "%s nesnesi bir sınıf şablonu ama bu gtk+ %d.%d ile desteklenmiyor"
 
-#: ../gladeui/glade-project.c:3408
+#: ../gladeui/glade-project.c:3486
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "%s nesnesi tanınmayan %s türünde\n"
 
-#: ../gladeui/glade-project.c:4874
+#: ../gladeui/glade-project.c:4952
 #, c-format
 msgid "Unsaved %i"
 msgstr "Kaydedilmemiş %i"
 
-#: ../gladeui/glade-project.c:5173 ../gladeui/glade-project.c:5224
-#: ../gladeui/glade-project.c:5381
+#: ../gladeui/glade-project.c:5251 ../gladeui/glade-project.c:5302
+#: ../gladeui/glade-project.c:5459
 msgid "No widget selected."
 msgstr "Hiçbir parçacık seçilmemiş."
 
-#: ../gladeui/glade-project.c:5189
+#: ../gladeui/glade-project.c:5267
 msgid "Unable to copy unrecognized widget type."
 msgstr "Tanınmayan parçacık türü kopyalanamıyor."
 
-#: ../gladeui/glade-project.c:5221
+#: ../gladeui/glade-project.c:5299
 msgid "Unable to cut unrecognized widget type"
 msgstr "Tanınmayan parçacık türü kesilemiyor"
 
-#: ../gladeui/glade-project.c:5273
+#: ../gladeui/glade-project.c:5351
 msgid "Unable to paste to the selected parent"
 msgstr "Seçilen üste yapıştırılamadı"
 
-#: ../gladeui/glade-project.c:5284
+#: ../gladeui/glade-project.c:5362
 msgid "Unable to paste to multiple widgets"
 msgstr "Çoklu parçacığa yapıştırılamadı"
 
-#: ../gladeui/glade-project.c:5294
+#: ../gladeui/glade-project.c:5372
 msgid "No widget on the clipboard"
 msgstr "Panoda parçacık yok"
 
-#: ../gladeui/glade-project.c:5339
+#: ../gladeui/glade-project.c:5417
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Bu taşıyıcıya yalnızca bir parçacık aynı anda yapıştırılabilir"
 
-#: ../gladeui/glade-project.c:5351
+#: ../gladeui/glade-project.c:5429
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Hedef taşıyıcıda yetersiz miktarda alan tutucu"
 
@@ -2727,7 +2731,7 @@ msgstr "Kullanıcı Verisi"
 msgid "The user data for this signal"
 msgstr "Bu sinyalin kullanıcı verisi"
 
-#: ../gladeui/glade-signal.c:203 ../gladeui/glade-widget.c:1429
+#: ../gladeui/glade-signal.c:203 ../gladeui/glade-widget.c:1433
 msgid "Support Warning"
 msgstr "Destek Uyarısı"
 
@@ -2766,7 +2770,7 @@ msgstr "Glade Parçacığı"
 
 #: ../gladeui/glade-signal-editor.c:1536
 msgid "The glade widget to edit signals"
-msgstr "Sinyallari düzenlenecek glade parçacığı"
+msgstr "Sinyalleri düzenlenecek glade parçacığı"
 
 #: ../gladeui/glade-utils.c:136 ../gladeui/glade-utils.c:168
 #, c-format
@@ -2826,7 +2830,7 @@ msgstr "GladeWidgetActionClass yapı belirteci"
 msgid "Whether this action is sensitive"
 msgstr "Bu eylemin hassas olup olmadığı"
 
-#: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1434
+#: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1438
 #: ../plugins/gtk+/gtk+.xml.in.h:935
 msgid "Visible"
 msgstr "Görünür"
@@ -2923,143 +2927,143 @@ msgstr "Sorgu"
 msgid "Whether the adaptor should query the use or not"
 msgstr "Adaptör kullanımı sorgulamalı mı"
 
-#: ../gladeui/glade-widget.c:1346
+#: ../gladeui/glade-widget.c:1350
 msgid "The name of the widget"
 msgstr "Parçacığın adı"
 
-#: ../gladeui/glade-widget.c:1350
+#: ../gladeui/glade-widget.c:1354
 msgid "Internal name"
 msgstr "Dahili ad"
 
-#: ../gladeui/glade-widget.c:1351
+#: ../gladeui/glade-widget.c:1355
 msgid "The internal name of the widget"
 msgstr "Parçacığın dahili adı"
 
-#: ../gladeui/glade-widget.c:1355
+#: ../gladeui/glade-widget.c:1359
 msgid "Anarchist"
 msgstr "Anarşist"
 
-#: ../gladeui/glade-widget.c:1356
+#: ../gladeui/glade-widget.c:1360
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "Bu karmaşık altʼın atasal alt mı yoksa anarşist alt mı olduğu"
 
-#: ../gladeui/glade-widget.c:1362
+#: ../gladeui/glade-widget.c:1366
 msgid "Object"
 msgstr "Nesne"
 
-#: ../gladeui/glade-widget.c:1363
+#: ../gladeui/glade-widget.c:1367
 msgid "The object associated"
 msgstr "Eşleştirilen nesne"
 
-#: ../gladeui/glade-widget.c:1368
+#: ../gladeui/glade-widget.c:1372
 msgid "Adaptor"
 msgstr "Adaptör"
 
-#: ../gladeui/glade-widget.c:1369
+#: ../gladeui/glade-widget.c:1373
 msgid "The class adaptor for the associated widget"
 msgstr "Eşleştirilen parçacık için sınıf adaptörü"
 
-#: ../gladeui/glade-widget.c:1375
+#: ../gladeui/glade-widget.c:1379
 msgid "The glade project that this widget belongs to"
 msgstr "Bu parçacığın ait olduğu glade projesi"
 
-#: ../gladeui/glade-widget.c:1382
+#: ../gladeui/glade-widget.c:1386
 msgid "A list of GladeProperties"
 msgstr "GladeProperties listesi"
 
 #. GtkResizeMode enumeration value
-#: ../gladeui/glade-widget.c:1386 ../plugins/gtk+/gtk+.xml.in.h:365
+#: ../gladeui/glade-widget.c:1390 ../plugins/gtk+/gtk+.xml.in.h:365
 msgid "Parent"
 msgstr "Üst"
 
-#: ../gladeui/glade-widget.c:1387
+#: ../gladeui/glade-widget.c:1391
 msgid "A pointer to the parenting GladeWidget"
 msgstr "Üstlük yapan GladeWidgetʼe belirteç"
 
-#: ../gladeui/glade-widget.c:1392
+#: ../gladeui/glade-widget.c:1396
 msgid "Internal Name"
 msgstr "Dahili Ad"
 
-#: ../gladeui/glade-widget.c:1393
+#: ../gladeui/glade-widget.c:1397
 msgid "A generic name prefix for internal widgets"
 msgstr "Dahili parçacıklar için genel ad öneki"
 
-#: ../gladeui/glade-widget.c:1398
+#: ../gladeui/glade-widget.c:1402
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Yeni parçacık için temel alınacak GladeWidget şablomu"
 
-#: ../gladeui/glade-widget.c:1403
+#: ../gladeui/glade-widget.c:1407
 msgid "Exact Template"
 msgstr "Asıl Şablom"
 
-#: ../gladeui/glade-widget.c:1405
+#: ../gladeui/glade-widget.c:1409
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr "Bir şablom kullanılırken tam bir kopyasının çıkartılıp çıkartılmaması"
 
-#: ../gladeui/glade-widget.c:1409
+#: ../gladeui/glade-widget.c:1413
 msgid "Reason"
 msgstr "Neden"
 
-#: ../gladeui/glade-widget.c:1410
+#: ../gladeui/glade-widget.c:1414
 msgid "A GladeCreateReason for this creation"
 msgstr "Bu yaratım için GladeCreateReason"
 
-#: ../gladeui/glade-widget.c:1417
+#: ../gladeui/glade-widget.c:1421
 msgid "Toplevel Width"
 msgstr "Üst Düzey Genişliği"
 
-#: ../gladeui/glade-widget.c:1418
+#: ../gladeui/glade-widget.c:1422
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "Üst düzey GladeDesignLayout içindeyken parçacığın genişliği"
 
-#: ../gladeui/glade-widget.c:1423
+#: ../gladeui/glade-widget.c:1427
 msgid "Toplevel Height"
 msgstr "Üst Düzey Yüksekliği"
 
-#: ../gladeui/glade-widget.c:1424
+#: ../gladeui/glade-widget.c:1428
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "Üst düzey GladeDesignLayout içindeyken parçacığın yüksekliği"
 
-#: ../gladeui/glade-widget.c:1430
+#: ../gladeui/glade-widget.c:1434
 msgid "A warning string about version mismatches"
 msgstr "Sürüm eşleşememeleri hakkında bir uyarı"
 
-#: ../gladeui/glade-widget.c:1435
+#: ../gladeui/glade-widget.c:1439
 msgid "Wether the widget is visible or not"
 msgstr "Parçacığın görünür olup olmaması"
 
-#: ../gladeui/glade-widget.c:1440
+#: ../gladeui/glade-widget.c:1444
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Bu parçacığın bir birleşik parçacığın şablonu olup olmadığı"
 
-#: ../gladeui/glade-widget.c:2746 ../plugins/gtk+/glade-gtk-widget.c:1032
+#: ../gladeui/glade-widget.c:2749 ../plugins/gtk+/glade-gtk-widget.c:1032
 #: ../plugins/gtk+/glade-gtk-widget.c:1096
 msgid "(unnamed)"
 msgstr "(adsız)"
 
-#: ../gladeui/glade-widget.c:4835
+#: ../gladeui/glade-widget.c:4838
 msgid "Template classes are only usable in GTK+ 3.10 and later."
 msgstr "Şablon sınıfları yalnızca GTK+ 3.10 ve sonrasında kullanılabilir."
 
-#: ../gladeui/glade-widget.c:4843
+#: ../gladeui/glade-widget.c:4846
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "Nesnenin tanımlanmayan %s türü var"
 
-#: ../gladeui/glade-widget.c:4909
+#: ../gladeui/glade-widget.c:4912
 msgid "Property has versioning problems: "
 msgstr "Özelliğin sürümleme problemleri var: "
 
-#: ../gladeui/glade-widget.c:4911
+#: ../gladeui/glade-widget.c:4914
 msgid "Some properties have versioning problems: "
 msgstr "Bazı özelliklerim sürümleme problemleri var: "
 
-#: ../gladeui/glade-widget.c:4931
+#: ../gladeui/glade-widget.c:4934
 msgid "Signal has versioning problems: "
 msgstr "Sinyalin sürümleme problemleri var: "
 
-#: ../gladeui/glade-widget.c:4933
+#: ../gladeui/glade-widget.c:4936
 msgid "Some signals have versioning problems: "
 msgstr "Bazı sinyallerin sürümleme problemi var: "
 
@@ -3273,7 +3277,7 @@ msgstr "Hızlandırıcı Tuş"
 
 #: ../plugins/gtk+/glade-accels.c:520
 msgid "Choose accelerator keys..."
-msgstr "Hızlandırıcı tuşları seç..."
+msgstr "Hızlandırıcı tuşları seç…"
 
 #: ../plugins/gtk+/glade-action-bar-editor.c:128
 #: ../plugins/gtk+/glade-box-editor.c:133
@@ -8065,7 +8069,7 @@ msgstr "İlerleme Çubuğu Öznitelikleri"
 
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:2
 msgid "Ellipsize Text:"
-msgstr "Metni Elipsleştir"
+msgstr "Metni Elipsleştir:"
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:1
 msgid "Tree View Attributes"
@@ -8120,7 +8124,7 @@ msgstr "Kaydırma Öznitelikleri"
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:4
 msgid "Policy:"
-msgstr "İlke"
+msgstr "İlke:"
 
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:1
 msgid "Scrollbar Attributes"
