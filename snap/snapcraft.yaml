@@ -14,14 +14,27 @@ description: |
   By using GtkBuilder, Glade XML files can be used in numerous programming
   languages including C, C++, C#, Vala, Java, Perl, Python, and others.
 
-grade: devel # must be 'stable' to release into candidate/stable channels
+grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
+base: core18
 
 plugs:
-    gnome-3-26-1604:
-      interface: content
-      target: $SNAP/gnome-platform
-      default-provider: gnome-3-26-1604:gnome-3-26-1604
+  gnome-3-28-1804:
+    interface: content
+    target: $SNAP/gnome-platform
+    default-provider: gnome-3-28-1804
+  gtk-3-themes:
+    interface: content
+    target: $SNAP/data-dir/themes
+    default-provider: gtk-common-themes
+  icon-themes:
+    interface: content
+    target: $SNAP/data-dir/icons
+    default-provider: gtk-common-themes
+  sound-themes:
+    interface: content
+    target: $SNAP/data-dir/sounds
+    default-provider: gtk-common-themes
 
 apps:
   glade:
@@ -37,16 +50,27 @@ apps:
     desktop: usr/share/applications/glade.desktop
 
 parts:
+  desktop-gnome-platform:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk3"]
+    build-packages:
+      - build-essential
+      - libgtk-3-dev
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
+
   glade:
-    build-attributes: [no-system-libraries]
     after: [desktop-gnome-platform]
     source: .
     source-type: git
     plugin: autotools
     configflags: [--disable-maintainer-mode, --prefix=/snap/glade/current/usr]
-    prepare:
+    override-build: |
       sed -i.bak -e 's|=glade$|=${SNAP}/meta/gui/glade.png|g' data/glade.desktop.in.in
-    install: |
+      snapcraftctl build
       mkdir -p $SNAPCRAFT_PART_INSTALL/meta/gui/
       cp ../src/data/icons/hicolor/256x256/apps/glade.png $SNAPCRAFT_PART_INSTALL/meta/gui/
     organize:
