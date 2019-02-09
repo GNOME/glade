@@ -33,6 +33,8 @@ AM_MAINTAINER_MODE([enable])
 # to make
 AM_SILENT_RULES([yes])
 
+AX_CHECK_ENABLE_DEBUG([yes],[GNOME_ENABLE_DEBUG])
+
 # Checks for programs
 AC_PROG_CC
 AC_PROG_INSTALL
@@ -78,10 +80,6 @@ fi
 AM_CONDITIONAL(GLADE_UNSTABLE, test "x$GLADE_UNSTABLE" = "xyes")
 
 # ================================================================
-
-GNOME_DEBUG_CHECK
-GNOME_COMPILE_WARNINGS([maximum])
-GNOME_MAINTAINER_MODE_DEFINES
 
 # For the plugins, we don't use the warning flags defined by GNOME_COMPILE_WARNINGS.
 # These flags include -Wmissing-prototypes, which we prefer not to use.
