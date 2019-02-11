@@ -1,5 +1,7 @@
 name: glade
 version: git
+version-script: |
+  echo $(git describe --tags | sed 's/GLADE_//g'|sed 's/_/./g')
 summary: Create or open user interface designs for GTK+ applications
 description: |
 
@@ -36,6 +38,12 @@ plugs:
     target: $SNAP/data-dir/sounds
     default-provider: gtk-common-themes
 
+slots:
+  # for GtkApplication registration
+  glade:
+    interface: dbus
+    bus: session
+    name: org.gnome.Glade
 apps:
   glade:
     command: desktop-launch glade
