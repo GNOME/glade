@@ -1,7 +1,7 @@
 # Glade Korean messages
 # This file is distributed under the same license as the glade package.
 #
-# Changwoo Ryu <cwryu@debian.org>, 2006-2018.
+# Changwoo Ryu <cwryu@debian.org>, 2006-2019.
 #
 # 새로 번역하시는 분은 아래 translator-credits에 추가하세요.
 #
@@ -20,10 +20,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-02-25 00:54+0000\n"
-"PO-Revision-Date: 2018-02-25 10:31+0900\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
+"POT-Creation-Date: 2019-02-17 07:44+0000\n"
+"PO-Revision-Date: 2019-02-23 16:44+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -32,7 +31,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
-#: ../src/main.c:42 ../src/glade.glade.h:6
+#: ../src/main.c:42 ../src/glade.glade.h:7
 msgid "Glade"
 msgstr "글레이드"
 
@@ -88,113 +87,113 @@ msgstr ""
 msgid "[Read Only]"
 msgstr "[읽기 전용]"
 
-#: ../src/glade-window.c:189
+#: ../src/glade-window.c:193
 msgid "User Interface Designer"
 msgstr "사용자 인터페이스 디자인 프로그램"
 
-#: ../src/glade-window.c:452 ../src/glade-window.c:459
+#: ../src/glade-window.c:456 ../src/glade-window.c:463
 msgid "the last action"
 msgstr "마지막 동작"
 
-#: ../src/glade-window.c:453
+#: ../src/glade-window.c:457
 #, c-format
 msgid "Undo: %s"
 msgstr "실행 취소: %s"
 
-#: ../src/glade-window.c:460
+#: ../src/glade-window.c:464
 #, c-format
 msgid "Redo: %s"
 msgstr "다시 실행: %s"
 
-#: ../src/glade-window.c:485
+#: ../src/glade-window.c:489
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "자동 저장: '%s'"
 
-#: ../src/glade-window.c:490
+#: ../src/glade-window.c:494
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "자동 저장에 오류: '%s'"
 
-#: ../src/glade-window.c:713
+#: ../src/glade-window.c:716
 msgid "Open…"
 msgstr "열기…"
 
-#: ../src/glade-window.c:747
+#: ../src/glade-window.c:750
 #, c-format
 msgid "Project %s is still loading."
 msgstr "아직 %s 프로젝트를 읽어들이는 중입니다."
 
-#: ../src/glade-window.c:766
+#: ../src/glade-window.c:769
 msgid "Failed to backup existing file, continue saving?"
 msgstr "기존 파일 백업에 실패했습니다. 계속 저장하시겠습니까?"
 
-#: ../src/glade-window.c:788
+#: ../src/glade-window.c:791
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "%s 파일을 저장하는데 실패했습니다: %s"
 
-#: ../src/glade-window.c:827
+#: ../src/glade-window.c:830
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "%s 파일의 내용이 읽어들인 뒤에 바뀌었습니다"
 
-#: ../src/glade-window.c:831
+#: ../src/glade-window.c:834
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "저장하면 외부에서 바뀐 내용을 전부 잃어버리게 됩니다. 그래도 저장하시겠습니"
 "까?"
 
-#: ../src/glade-window.c:836
+#: ../src/glade-window.c:839
 msgid "_Save Anyway"
 msgstr "그래도 저장(_S)"
 
-#: ../src/glade-window.c:844
+#: ../src/glade-window.c:847
 msgid "_Don't Save"
 msgstr "저장하지 않기(_D)"
 
-#: ../src/glade-window.c:877
+#: ../src/glade-window.c:880
 #, c-format
 msgid "Project '%s' saved"
 msgstr "`%s' 프로젝트를 저장했습니다"
 
-#: ../src/glade-window.c:908
+#: ../src/glade-window.c:911
 msgid "Save As…"
 msgstr "다른 이름으로 저장…"
 
-#: ../src/glade-window.c:972
+#: ../src/glade-window.c:975
 #, c-format
 msgid "Could not save the file %s"
 msgstr "%s 파일을 저장할 수 없습니다"
 
-#: ../src/glade-window.c:976
+#: ../src/glade-window.c:979
 msgid "You do not have the permissions necessary to save the file."
 msgstr "파일을 저장하는데 필요한 권한이 없습니다."
 
-#: ../src/glade-window.c:998
+#: ../src/glade-window.c:1001
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "%s 파일을 저장할 수 없습니다. 해당 경로로 다른 프로젝트가 열려 있습니다."
 
-#: ../src/glade-window.c:1026
+#: ../src/glade-window.c:1029
 msgid "No open projects to save"
 msgstr "저장할 열린 프로젝트가 하나도 없습니다"
 
-#: ../src/glade-window.c:1059
+#: ../src/glade-window.c:1062
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "닫기 전에 \"%s\" 프로젝트에 저장하시겠습니까?"
 
-#: ../src/glade-window.c:1067
+#: ../src/glade-window.c:1070
 msgid "Your changes will be lost if you don't save them."
 msgstr "저장하지 않으면 바뀐 사항을 잃어버리게 됩니다."
 
-#: ../src/glade-window.c:1071
+#: ../src/glade-window.c:1074
 msgid "Close _without Saving"
 msgstr "저장하지 않고 닫기(_W)"
 
-#: ../src/glade-window.c:1072 ../src/glade-window.c:1748
+#: ../src/glade-window.c:1075 ../src/glade-window.c:1751
 #: ../gladeui/glade-editor.c:779 ../gladeui/glade-editor.c:1135
 #: ../gladeui/glade-editor-property.c:1690
 #: ../gladeui/glade-editor-property.c:1997
@@ -207,156 +206,159 @@ msgstr "저장하지 않고 닫기(_W)"
 msgid "_Cancel"
 msgstr "취소(_C)"
 
-#: ../src/glade-window.c:1073 ../gladeui/glade-utils.c:486
+#: ../src/glade-window.c:1076 ../gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "저장(_S)"
 
-#: ../src/glade-window.c:1104
+#: ../src/glade-window.c:1107
 msgid "Save…"
 msgstr "저장…"
 
-#: ../src/glade-window.c:1655
+#: ../src/glade-window.c:1658
 msgid "Could not create a new project."
 msgstr "새 프로젝트를 만들 수 없습니다."
 
-#: ../src/glade-window.c:1716
+#: ../src/glade-window.c:1719
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "%s 프로젝트에 저장하지 않은 바뀐 사항이 있습니다"
 
-#: ../src/glade-window.c:1721
+#: ../src/glade-window.c:1724
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "다시 읽어들이면, 저장하지 않은 내용을 잃어버리게 됩니다. 그래도 다시 읽어들이"
 "겠습니까?"
 
-#: ../src/glade-window.c:1731
+#: ../src/glade-window.c:1734
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "%s 프로젝트 파일이 외부에서 바뀌었습니다"
 
-#: ../src/glade-window.c:1736
+#: ../src/glade-window.c:1739
 msgid "Do you want to reload the project?"
 msgstr "프로젝트를 다시 읽으시겠습니까?"
 
-#: ../src/glade-window.c:1742
+#: ../src/glade-window.c:1745
 msgid "_Reload"
 msgstr "다시 읽기(_R)"
 
-#: ../src/glade-window.c:2287
+#: ../src/glade-window.c:2303
 msgid "Hello, I will show you what's new in Glade"
 msgstr "안녕하세요. 글레이드의 새로운 기능을 소개합니다"
 
-#: ../src/glade-window.c:2288
+#: ../src/glade-window.c:2304
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "메뉴 모음과 도구 모음이 헤더 모음에 통합"
 
-#: ../src/glade-window.c:2290
+#: ../src/glade-window.c:2306
 msgid "You can open a project"
 msgstr "프로젝트를 열 수 있습니다"
 
-#: ../src/glade-window.c:2291
+#: ../src/glade-window.c:2307
 msgid "find recently used"
 msgstr "최근에 사용된 내용을 찾기"
 
-#: ../src/glade-window.c:2292
+#: ../src/glade-window.c:2308
 msgid "or create a new one"
 msgstr "아니면 새로 만들기"
 
-#: ../src/glade-window.c:2296
+#: ../src/glade-window.c:2312
 msgid "Undo"
 msgstr "실행 취소"
 
-#: ../src/glade-window.c:2297
+#: ../src/glade-window.c:2313
 msgid "Redo"
 msgstr "다시 실행"
 
-#: ../src/glade-window.c:2298
+#: ../src/glade-window.c:2314
 msgid "Project switcher"
 msgstr "프로젝트 전환"
 
-#: ../src/glade-window.c:2300
+#: ../src/glade-window.c:2316
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "저장 단추를 헤더 모음에서 직접 접근할 수 있습니다"
 
-#: ../src/glade-window.c:2301
+#: ../src/glade-window.c:2317
 msgid "just like Save As"
 msgstr "다른 이름으로 저장 단추와 마찬가지로"
 
-#: ../src/glade-window.c:2302
+#: ../src/glade-window.c:2318
 msgid "project properties"
 msgstr "프로젝트 속성"
 
-#: ../src/glade-window.c:2303
+#: ../src/glade-window.c:2319
 msgid "and less commonly used actions"
 msgstr "그리고 덜 자주 사용하는 작업"
 
-#: ../src/glade-window.c:2305
+#: ../src/glade-window.c:2321
 msgid "The object inspector took the palette's place"
 msgstr "오브젝트 검사가 팔레트 위치를 차지합니다"
 
-#: ../src/glade-window.c:2306
+#: ../src/glade-window.c:2322
 msgid "To free up space for the property editor"
 msgstr "속성 편집기에 필요한 공간을 확보합니다"
 
-#: ../src/glade-window.c:2308
+#: ../src/glade-window.c:2324
 msgid "The palette was replaced with a new object chooser"
 msgstr "팔레트는 새로운 오브젝트 선택 기능으로 바뀝니다"
 
-#: ../src/glade-window.c:2309
+#: ../src/glade-window.c:2325
 msgid "Where you can search all supported classes"
 msgstr "여기서 지원하는 모든 클래스를 검색할 수 있습니다"
 
-#: ../src/glade-window.c:2310
+#: ../src/glade-window.c:2326
 msgid "investigate GTK+ object groups"
 msgstr "GTK+ 오브젝트 그룹을 검사하고"
 
-#: ../src/glade-window.c:2311
+#: ../src/glade-window.c:2327
 msgid "and find classes introduced by other libraries"
 msgstr "그리고 다른 라이브러리에서 제공한 클래스를 찾아보세요"
 
-#: ../src/glade-window.c:2313
+#: ../src/glade-window.c:2329
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr "그럼 이제 대략적인 소개를 마쳤고, 새로운 작업 순서를 설명하겠습니다"
 
-#: ../src/glade-window.c:2315
+#: ../src/glade-window.c:2331
 msgid "First of all, create a new project"
 msgstr "먼저, 새 프로젝트를 만듭니다"
 
-#: ../src/glade-window.c:2316
+#: ../src/glade-window.c:2332
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
-msgstr "그리고 새 위젯 선택 창을 이용하거나 작업 공간에 마우스를 두 번 눌러 GtkWindow를 추가합니다"
+msgstr ""
+"그리고 새 위젯 선택 창을 이용하거나 작업 공간에 마우스를 두 번 눌러 GtkWindow"
+"를 추가합니다"
 
-#: ../src/glade-window.c:2317
+#: ../src/glade-window.c:2333
 msgid "Excellent!"
 msgstr "훌륭합니다!"
 
-#: ../src/glade-window.c:2318
+#: ../src/glade-window.c:2334
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
-msgstr "들어갈 칸이 있을 때 마우스를 두 번 눌러서 위젯을 만들 수 있는 것 아시나요?"
+msgstr ""
+"들어갈 칸이 있을 때 마우스를 두 번 눌러서 위젯을 만들 수 있는 것 아시나요?"
 
-#: ../src/glade-window.c:2319
+#: ../src/glade-window.c:2335
 msgid "Try adding a grid"
 msgstr "그리드를 추가하세요"
 
-#: ../src/glade-window.c:2320
+#: ../src/glade-window.c:2336
 msgid "and a button"
 msgstr "그리고 단추도 추가"
 
-#: ../src/glade-window.c:2322
+#: ../src/glade-window.c:2338
 msgid "Quite easy! Isn't it?"
 msgstr "참 쉽죠?"
 
-#: ../src/glade-window.c:2323
+#: ../src/glade-window.c:2339
 msgid "Enjoy!"
 msgstr "그럼 즐겁게 사용하세요!"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:2531
+#: ../src/glade-window.c:2548
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -365,16 +367,16 @@ msgstr ""
 "- 지금 설문을 하시겠습니까?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: ../src/glade-window.c:2535
+#: ../src/glade-window.c:2552
 msgid "If not, you can always find it in the Help menu."
 msgstr "지금 설문을 하지 않더라도, 도움말 메뉴에서 설문을 할 수 있습니다."
 
-#: ../src/glade-window.c:2537
+#: ../src/glade-window.c:2554
 msgid "_Do not show this dialog again"
 msgstr "이 대화창을 다시 표시하지 않기(_D)"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: ../src/glade-window.c:2558
+#: ../src/glade-window.c:2575
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr "도움말 -> 등록 및 사용자 설문 메뉴로 가서 설문 조사를 끝마치십시오!"
 
@@ -436,56 +438,52 @@ msgid "_Developer Reference"
 msgstr "개발자 참고서(_D)"
 
 #: ../src/glade.glade.h:4
+msgid "Interactive Intro"
+msgstr "대화식 소개"
+
+#: ../src/glade.glade.h:5
 msgid "Preferences"
 msgstr "기본 설정"
 
-#: ../src/glade.glade.h:5
+#: ../src/glade.glade.h:6
 msgid "About"
 msgstr "정보"
 
-#: ../src/glade.glade.h:7
-msgid "page0"
-msgstr "페이지0"
-
-#: ../src/glade.glade.h:8
-msgid "page1"
-msgstr "페이지1"
-
 #. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:9 ../plugins/gtk+/gtk+.xml.in.h:632
+#: ../src/glade.glade.h:8 ../plugins/gtk+/gtk+.xml.in.h:632
 msgid "Open"
 msgstr "열기"
 
-#: ../src/glade.glade.h:10
+#: ../src/glade.glade.h:9
 msgid "Open a project"
 msgstr "프로젝트를 엽니다"
 
-#: ../src/glade.glade.h:11
+#: ../src/glade.glade.h:10
 msgid "Create a new project"
 msgstr "새 프로젝트를 만듭니다"
 
-#: ../src/glade.glade.h:12
+#: ../src/glade.glade.h:11
 msgid "Edit project properties"
 msgstr "프로젝트 속성을 편집합니다"
 
 #. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:13 ../plugins/gtk+/gtk+.xml.in.h:630
+#: ../src/glade.glade.h:12 ../plugins/gtk+/gtk+.xml.in.h:630
 msgid "Save"
 msgstr "저장"
 
-#: ../src/glade.glade.h:14
+#: ../src/glade.glade.h:13
 msgid "Save the current project"
 msgstr "현재 프로젝트를 저장합니다"
 
-#: ../src/glade.glade.h:15
+#: ../src/glade.glade.h:14
 msgid "Save the current project with a different name"
 msgstr "현재 프로젝트를 다른 이름으로 저장합니다"
 
-#: ../src/glade.glade.h:16
+#: ../src/glade.glade.h:15
 msgid "Start/resume interactive UI introduction"
 msgstr "시작/계속 사용자 인터페이스 소개"
 
-#: ../src/glade.glade.h:17
+#: ../src/glade.glade.h:16
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -495,15 +493,15 @@ msgstr ""
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 
-#: ../src/glade.glade.h:20
+#: ../src/glade.glade.h:19
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+ 및 그놈 사용자 인터페이스 디자인 프로그램."
 
-#: ../src/glade.glade.h:21
+#: ../src/glade.glade.h:20
 msgid "Visit Glade web site"
 msgstr "글레이드 홈페이지 방문"
 
-#: ../src/glade.glade.h:22
+#: ../src/glade.glade.h:21
 msgid ""
 "Glade is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as \n"
@@ -535,7 +533,7 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
 "MA 02110-1301, USA."
 
-#: ../src/glade.glade.h:36
+#: ../src/glade.glade.h:35
 msgid "translator-credits"
 msgstr "류창우 <cwryu@debian.org>"
 
@@ -1541,120 +1539,120 @@ msgstr "설정: %2$s의 %1$s 값을 %3$s(으)로"
 msgid "Renaming %s to %s"
 msgstr "이름 바꾸기: %s의 이름을 %s(으)로"
 
-#: ../gladeui/glade-command.c:1241 ../gladeui/glade-command.c:1849
-#: ../gladeui/glade-command.c:1875 ../gladeui/glade-command.c:1977
-#: ../gladeui/glade-command.c:2019
+#: ../gladeui/glade-command.c:1241 ../gladeui/glade-command.c:1850
+#: ../gladeui/glade-command.c:1876 ../gladeui/glade-command.c:1978
+#: ../gladeui/glade-command.c:2020
 msgid "multiple"
 msgstr "여러 개"
 
-#: ../gladeui/glade-command.c:1385
+#: ../gladeui/glade-command.c:1386
 msgid "You cannot remove a widget internal to a composite widget."
 msgstr "결합 위젯의 위젯 내부를 지울 수 없습니다."
 
-#: ../gladeui/glade-command.c:1392
+#: ../gladeui/glade-command.c:1393
 #, c-format
 msgid "%s is locked by %s, edit %s first."
 msgstr "%s 위젯은 %s이(가) 잠갔습니다. 먼저 %s 편집을 하십시오."
 
-#: ../gladeui/glade-command.c:1408
+#: ../gladeui/glade-command.c:1409
 #, c-format
 msgid "Remove %s"
 msgstr "제거: %s"
 
-#: ../gladeui/glade-command.c:1411
+#: ../gladeui/glade-command.c:1412
 msgid "Remove multiple"
 msgstr "제거: 여러 개"
 
-#: ../gladeui/glade-command.c:1821
+#: ../gladeui/glade-command.c:1822
 #, c-format
 msgid "Create %s"
 msgstr "만들기: %s"
 
-#: ../gladeui/glade-command.c:1847
+#: ../gladeui/glade-command.c:1848
 #, c-format
 msgid "Delete %s"
 msgstr "삭제: %s"
 
-#: ../gladeui/glade-command.c:1873
+#: ../gladeui/glade-command.c:1874
 #, c-format
 msgid "Cut %s"
 msgstr "잘라내기: %s"
 
-#: ../gladeui/glade-command.c:1975
+#: ../gladeui/glade-command.c:1976
 #, c-format
 msgid "Paste %s"
 msgstr "붙여넣기: %s"
 
-#: ../gladeui/glade-command.c:2017
+#: ../gladeui/glade-command.c:2018
 #, c-format
 msgid "Drag %s and Drop to %s"
 msgstr "끌어놓기: %s을(를) %s에"
 
-#: ../gladeui/glade-command.c:2020
+#: ../gladeui/glade-command.c:2021
 msgid "root"
 msgstr "최상위"
 
-#: ../gladeui/glade-command.c:2144
+#: ../gladeui/glade-command.c:2145
 #, c-format
 msgid "Add signal handler %s"
 msgstr "시그널 핸들러 추가: %s"
 
-#: ../gladeui/glade-command.c:2145
+#: ../gladeui/glade-command.c:2146
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "시그널 핸들러 제거: %s"
 
-#: ../gladeui/glade-command.c:2146
+#: ../gladeui/glade-command.c:2147
 #, c-format
 msgid "Change signal handler %s"
 msgstr "시그널 핸들러 바꾸기: %s"
 
-#: ../gladeui/glade-command.c:2363
+#: ../gladeui/glade-command.c:2364
 #, c-format
 msgid "Setting i18n metadata"
 msgstr "국제화 메타데이터 설정"
 
-#: ../gladeui/glade-command.c:2480
+#: ../gladeui/glade-command.c:2481
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr "잠금: %s을(를) %s 위젯에"
 
-#: ../gladeui/glade-command.c:2521
+#: ../gladeui/glade-command.c:2522
 #, c-format
 msgid "Unlocking %s"
 msgstr "잠금 해제: %s"
 
-#: ../gladeui/glade-command.c:2643 ../gladeui/glade-command.c:2686
+#: ../gladeui/glade-command.c:2644 ../gladeui/glade-command.c:2687
 #, c-format
 msgid "Setting target version of '%s' to %d.%d"
 msgstr "설정: 목표 버전을 '%s'에서 %d.%d 버전으로"
 
-#: ../gladeui/glade-command.c:2839
+#: ../gladeui/glade-command.c:2840
 #, c-format
 msgid "Setting project's %s property"
 msgstr "설정: 프로젝트 %s 속성"
 
-#: ../gladeui/glade-command.c:2942
+#: ../gladeui/glade-command.c:2943
 #, c-format
 msgid "Setting resource path to '%s'"
 msgstr "설정: 리소스 경로를 '%s'(으)로"
 
-#: ../gladeui/glade-command.c:2973
+#: ../gladeui/glade-command.c:2974
 #, c-format
 msgid "Setting translation domain to '%s'"
 msgstr "설정: 번역 도메인을 '%s'(으)로"
 
-#: ../gladeui/glade-command.c:3008
+#: ../gladeui/glade-command.c:3009
 #, c-format
 msgid "Unsetting widget '%s' as template"
 msgstr "설정 해제: '%s' 위젯을 서식으로 설정하지 않음"
 
-#: ../gladeui/glade-command.c:3011
+#: ../gladeui/glade-command.c:3012
 #, c-format
 msgid "Setting widget '%s' as template"
 msgstr "설정: '%s' 위젯을 서식으로"
 
-#: ../gladeui/glade-command.c:3014
+#: ../gladeui/glade-command.c:3015
 msgid "Unsetting template"
 msgstr "설정 해제: 서식"
 
@@ -2432,7 +2430,8 @@ msgstr "이 위젯은 사용을 권장하지 않습니다"
 #: ../gladeui/glade-project.c:3019
 #, c-format
 msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
-msgstr "[%s] '<b>%s</b>' 오브젝트 클래스는 (버전 %s %d.%d) 사용을 권장하지 않습니다\n"
+msgstr ""
+"[%s] '<b>%s</b>' 오브젝트 클래스는 (버전 %s %d.%d) 사용을 권장하지 않습니다\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
@@ -2449,7 +2448,9 @@ msgstr ""
 msgid ""
 "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
 "%d.%d\n"
-msgstr "[%s] '<b>%s</b>' 속성은('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
+msgstr ""
+"[%s] '<b>%s</b>' 속성은('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처음 생"
+"겼습니다\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:3032
@@ -2457,7 +2458,9 @@ msgstr "[%s] '<b>%s</b>' 속성은('<b>%s</b>' 오브젝트 클래스) %s %d.%d 
 msgid ""
 "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was introduced "
 "in %s %d.%d\n"
-msgstr "[%s] '<b>%s</b>' 패킹 속성은 ('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
+msgstr ""
+"[%s] '<b>%s</b>' 패킹 속성은 ('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처"
+"음 생겼습니다\n"
 
 #: ../gladeui/glade-project.c:3035
 msgid "This property is deprecated"
@@ -2467,7 +2470,9 @@ msgstr "이 속성은 사용을 권장하지 않습니다"
 #: ../gladeui/glade-project.c:3038
 #, c-format
 msgid "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
-msgstr "[%s] '<b>%s</b>' 속성은 ('<b>%s</b>' 오브젝트 클래스) 사용을 권장하지 않습니다\n"
+msgstr ""
+"[%s] '<b>%s</b>' 속성은 ('<b>%s</b>' 오브젝트 클래스) 사용을 권장하지 않습니"
+"다\n"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
@@ -2484,7 +2489,9 @@ msgstr ""
 msgid ""
 "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
 "%d\n"
-msgstr "[%s] '<b>%s</b>' 시그널은 ('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처음 생겼습니다\n"
+msgstr ""
+"[%s] '<b>%s</b>' 시그널은 ('<b>%s</b>' 오브젝트 클래스) %s %d.%d 버전에 처음 "
+"생겼습니다\n"
 
 #: ../gladeui/glade-project.c:3049
 msgid "This signal is deprecated"
@@ -2494,7 +2501,9 @@ msgstr "이 시그널은 사용을 권장하지 않습니다"
 #: ../gladeui/glade-project.c:3052
 #, c-format
 msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
-msgstr "[%s] '<b>%s</b>' 시그널은 ('<b>%s</b>' 오브젝트 클래스) 사용을 권장하지 않습니다\n"
+msgstr ""
+"[%s] '<b>%s</b>' 시그널은 ('<b>%s</b>' 오브젝트 클래스) 사용을 권장하지 않습"
+"니다\n"
 
 #: ../gladeui/glade-project.c:3349
 msgid "Details"
@@ -2790,14 +2799,14 @@ msgstr "GtkBuilder 파일"
 msgid "All Glade Files"
 msgstr "모든 glade 파일"
 
-#: ../gladeui/glade-utils.c:1230
+#: ../gladeui/glade-utils.c:1232
 msgid "Could not show link:"
 msgstr "링크를 표시할 수 없습니다:"
 
 # 팝업 위치
 #. Reset the column
 #. GtkTextDirection enumeration value
-#: ../gladeui/glade-utils.c:1686 ../plugins/gtk+/glade-attributes.c:827
+#: ../gladeui/glade-utils.c:1688 ../plugins/gtk+/glade-attributes.c:827
 #: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "None"
 msgstr "없음"
@@ -3023,8 +3032,8 @@ msgstr "이 위젯이 보이는지 여부"
 msgid "Whether this widget is the template for a composite widget"
 msgstr "이 위젯이 결합 위젯의 서식인지 여부"
 
-#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1018
-#: ../plugins/gtk+/glade-gtk-widget.c:1081
+#: ../gladeui/glade-widget.c:2742 ../plugins/gtk+/glade-gtk-widget.c:1024
+#: ../plugins/gtk+/glade-gtk-widget.c:1087
 msgid "(unnamed)"
 msgstr "(이름 없음)"
 
@@ -3768,6 +3777,32 @@ msgstr "%s에서 열 제거"
 msgid "Remove Row on %s"
 msgstr "%s에서 행 제거"
 
+#. --------------------------------- Constants ------------------------------
+#: ../plugins/gtk+/glade-gtk.h:34
+msgid "This property does not apply unless Use Underline is set."
+msgstr "이 속성은 밑줄 사용이 설정되지 않으면 적용하지 않습니다."
+
+#: ../plugins/gtk+/glade-gtk.h:35
+msgid "Property not selected"
+msgstr "속성을 선택하지 않았습니다"
+
+#: ../plugins/gtk+/glade-gtk.h:36
+msgid "This property is only for use in dialog action buttons"
+msgstr "이 속성은 대화창 동작 단추에만 사용합니다"
+
+#: ../plugins/gtk+/glade-gtk.h:37
+msgid "This property is set to be controlled by an Action"
+msgstr "이 속성은 동작에 따라 움직이도록 설정됩니다"
+
+#: ../plugins/gtk+/glade-gtk.h:39
+#, c-format
+msgid "Only objects of type %s can be added to objects of type %s."
+msgstr "타입이 %s인 오브젝트만 타입이 %s인 오브젝트에 추가할 수 있습니다."
+
+#: ../plugins/gtk+/glade-gtk.h:41
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr "바로가기는 동작 그룹 안에서만 설정할 수 있습니다."
+
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
 msgstr "이 속성은 사용자 지정 제목 표시줄을 설정했을 때 적용하지 않습니다"
@@ -4054,28 +4089,28 @@ msgstr "헤더가 보이지 않음"
 msgid "Expanders are not shown"
 msgstr "확장을 표시하지 않음"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:836
+#: ../plugins/gtk+/glade-gtk-widget.c:842
 #, c-format
 msgid "Removing parent of %s"
 msgstr "%s의 상위 위젯 제거"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:895
+#: ../plugins/gtk+/glade-gtk-widget.c:901
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "추가: %s 상위 위젯을 %s에"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1030
+#: ../plugins/gtk+/glade-gtk-widget.c:1036
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "추가: %2$s 크기 그룹에 %1$s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1034
+#: ../plugins/gtk+/glade-gtk-widget.c:1040
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "추가: 새 크기 그룹에 %s"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk-widget.c:1101
+#: ../plugins/gtk+/glade-gtk-widget.c:1107
 msgid "New Size Group"
 msgstr "새 크기 그룹"
 
@@ -8311,203 +8346,3 @@ msgstr "클라이언트에서 창 꾸미기"
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
 msgstr "이 창에서 사용자 설정 제목 표시줄을 사용하는지 여부."
-
-#~ msgid "Activate '%s' %s"
-#~ msgstr "'%s' %s 활성화"
-
-#~ msgid "Activate '%s'"
-#~ msgstr "'%s' 활성화"
-
-#~ msgid "Requires:"
-#~ msgstr "필요:"
-
-#~ msgid "_Undo"
-#~ msgstr "실행 취소(_U)"
-
-#~ msgid "_Redo"
-#~ msgstr "다시 실행(_R)"
-
-#~ msgid "Close document"
-#~ msgstr "문서 닫기"
-
-#~ msgid "Palette"
-#~ msgstr "팔레트"
-
-#~ msgid "Inspector"
-#~ msgstr "검사"
-
-#~ msgid "Select"
-#~ msgstr "선택"
-
-#~ msgid "Select widgets in the workspace"
-#~ msgstr "작업 창의 위젯을 선택합니다"
-
-#~ msgid "Drag Resize"
-#~ msgstr "끌어서 크기 조정"
-
-#~ msgid "Drag and resize widgets in the workspace"
-#~ msgstr "작업 공간의 위젯을 끌어서 크기를 조정합니다"
-
-#~ msgid "Margin Edit"
-#~ msgstr "간격 편집"
-
-#~ msgid "Edit widget margins"
-#~ msgstr "위젯 간격 편집"
-
-#~ msgid "Alignment Edit"
-#~ msgstr "맞춤 편집"
-
-#~ msgid "Edit widget alignment"
-#~ msgstr "위젯 맞춤 편집"
-
-#~ msgid "Save _As"
-#~ msgstr "다른 이름으로 저장(_A)"
-
-#~ msgid "Close the current project"
-#~ msgstr "현재 프로젝트를 닫습니다"
-
-#~ msgid "Undo the last action"
-#~ msgstr "마지막 작업을 실행 취소합니다"
-
-#~ msgid "Redo the last action"
-#~ msgstr "마지막 작업을 다시 실행합니다"
-
-# GTK_SHADOW_OUT
-#~ msgid "Cut"
-#~ msgstr "잘라내기"
-
-#~ msgid "Cut the selection"
-#~ msgstr "선택한 부분을 잘라냅니다"
-
-#~ msgid "Copy"
-#~ msgstr "복사"
-
-#~ msgid "Copy the selection"
-#~ msgstr "선택한 부분을 복사합니다"
-
-#~ msgid "Paste"
-#~ msgstr "붙여넣기"
-
-#~ msgid "Paste the clipboard"
-#~ msgstr "클립보드 내용을 붙여넣습니다"
-
-#~ msgid "Delete the selection"
-#~ msgstr "선택한 부분을 지웁니다"
-
-#~ msgid "_Previous Project"
-#~ msgstr "이전 프로젝트(_P)"
-
-#~ msgid "Activate previous project"
-#~ msgstr "이전 프로젝트를 활성화합니다"
-
-#~ msgid "_Next Project"
-#~ msgstr "다음 프로젝트(_N)"
-
-#~ msgid "Activate next project"
-#~ msgstr "다음 프로젝트를 활성화합니다"
-
-#~ msgid "_Use Small Icons"
-#~ msgstr "작은 아이콘 사용(_U)"
-
-#~ msgid "Show items using small icons"
-#~ msgstr "작은 아이콘으로 항목을 표시합니다"
-
-#~ msgid "Dock _Palette"
-#~ msgstr "팔레트 붙이기(_P)"
-
-#~ msgid "Dock the palette into the main window"
-#~ msgstr "팔레트를 메인 창에 붙입니다"
-
-#~ msgid "Dock _Inspector"
-#~ msgstr "검사 붙이기(_I)"
-
-#~ msgid "Dock the inspector into the main window"
-#~ msgstr "검사를 메인 창에 붙입니다"
-
-#~ msgid "Dock Prop_erties"
-#~ msgstr "도크 속성(_E)"
-
-#~ msgid "Dock the editor into the main window"
-#~ msgstr "편집기를 메인 창에 붙입니다"
-
-#~ msgid "_Statusbar"
-#~ msgstr "상태 표시줄(_S)"
-
-#~ msgid "Show the statusbar"
-#~ msgstr "상태 표시줄 보이기"
-
-#~ msgid "Tool_bar"
-#~ msgstr "도구 모음(_B)"
-
-#~ msgid "Show the toolbar"
-#~ msgstr "도구 모음 보이기"
-
-#~ msgid "Project _Tabs"
-#~ msgstr "프로젝트 탭(_T)"
-
-#~ msgid "Show notebook tabs for loaded projects"
-#~ msgstr "읽어들인 프로젝트의 노트북 탭 보이기"
-
-#~ msgid "Text _beside icons"
-#~ msgstr "아이콘 옆에 텍스트(_B)"
-
-#~ msgid "Display items as text beside icons"
-#~ msgstr "아이콘 옆에 텍스트를 놓는 식으로 항목을 표시합니다"
-
-#~ msgid "_Icons only"
-#~ msgstr "아이콘만(_I)"
-
-#~ msgid "Display items as icons only"
-#~ msgstr "아이콘으로만 항목을 표시합니다"
-
-#~ msgid "_Text only"
-#~ msgstr "텍스트만(_T)"
-
-#~ msgid "Display items as text only"
-#~ msgstr "텍스트로만 항목을 표시합니다"
-
-#~ msgid "_Editor Header"
-#~ msgstr "편집기 헤더(_E)"
-
-#~ msgid "New"
-#~ msgstr "새로 만들기"
-
-#~ msgid "Quit"
-#~ msgstr "끝내기"
-
-#~ msgid "Quit the program"
-#~ msgstr "프로그램을 끝냅니다"
-
-#~ msgid "About this application"
-#~ msgstr "이 프로그램의 정보"
-
-#~ msgid "Display the developer reference manual"
-#~ msgstr "개발자 참고서 표시를 표시합니다"
-
-#~ msgid "Edit Glade preferences"
-#~ msgstr "글레이드 기본 설정 편집"
-
-#~ msgid "Open _Recent"
-#~ msgstr "최근 열기(_R)"
-
-#~ msgid "Help us improve Glade by registering and completing the user survey!"
-#~ msgstr "등록 및 사용자 설문으로 글레이드를 발전시키는데 도움을 주십시오!"
-
-#~ msgid "Palette _Appearance"
-#~ msgstr "팔레트 모양(_A)"
-
-#~ msgid "Hierarchy"
-#~ msgstr "계층 구조"
-
-# widget 분류
-#~ msgid "Control and Display"
-#~ msgstr "컨트롤 및 표시"
-
-#~ msgid "See Privacy Note"
-#~ msgstr "개인정보 보호 안내 보기"
-
-#~ msgid "Previewing %s - %s"
-#~ msgstr "%s 미리보기 - %s"
-
-#~ msgid "Previewing %s"
-#~ msgstr "미리보기: %s"
