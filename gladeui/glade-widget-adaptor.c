@@ -617,7 +617,7 @@ glade_widget_adaptor_constructor (GType                  type,
 
   /* Build decorations */
   if (!adaptor->priv->icon_name)
-    adaptor->priv->icon_name = g_strdup ("gtk-missing-image");
+    adaptor->priv->icon_name = g_strdup ("image-missing");
 
   /* Let it leek */
   if ((object_class = g_type_class_ref (adaptor->priv->type)))
