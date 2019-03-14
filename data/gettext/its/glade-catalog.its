@@ -2,6 +2,8 @@
 <its:rules xmlns:its="http://www.w3.org/2005/11/its"
            xmlns:gt="https://www.gnu.org/s/gettext/ns/its/extensions/1.0"
            version="2.0">
+  <its:translateRule selector="/glade-catalog" translate="no"/>
+
   <its:translateRule selector="/glade-catalog//glade-widget-class/@title" translate="yes"/>
   <its:translateRule selector="/glade-catalog//glade-widget-class//action/@name" translate="yes"/>
   <its:translateRule selector="/glade-catalog//glade-widget-class//property/@name" translate="yes"/>
