@@ -77,10 +77,10 @@ parts:
     plugin: autotools
     configflags: [--disable-maintainer-mode, --prefix=/snap/glade/current/usr]
     override-build: |
-      sed -i.bak -e 's|=glade$|=${SNAP}/meta/gui/glade.png|g' data/glade.desktop.in.in
+      sed -i.bak -e 's|=org.gnome.Glade$|=${SNAP}/meta/gui/org.gnome.Glade.svg|g' data/glade.desktop.in.in
       snapcraftctl build
       mkdir -p $SNAPCRAFT_PART_INSTALL/meta/gui/
-      cp ../src/data/icons/hicolor/256x256/apps/glade.png $SNAPCRAFT_PART_INSTALL/meta/gui/
+      cp ../src/data/icons/hicolor/scalable/apps/org.gnome.Glade.svg $SNAPCRAFT_PART_INSTALL/meta/gui/
     organize:
       snap/glade/current/usr: usr
     build-packages:
