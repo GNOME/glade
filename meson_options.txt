@@ -1,0 +1,9 @@
+option('gladeui', type: 'boolean', value: false, description: 'enable installation of the Gladeui catalog')
+option('python', type: 'feature', value: 'auto', description: 'enable installation of the python catalog')
+option('webkit2gtk', type: 'feature', value: 'auto', description: 'enable installation of the webkit2gtk catalog')
+
+option('mac_bundle', type: 'boolean', value: false, description: 'enable mac bundling')
+
+option('gtk_doc', type: 'boolean', value: false, description: 'build GTK Doc reference')
+option('introspection', type: 'boolean', value: true, description: 'build introspection support')
+option('man', type: 'boolean', value: true, description: 'build manual pages')
