@@ -261,14 +261,12 @@ endif
 
 # catalog data
 catalogsdir = $(pkgdatadir)/catalogs
-
-catalogs_in_files = gtk+.xml.in
+catalogs_DATA = gtk+.xml
 
 if HAVE_GTK_UNIX_PRINT
-catalogs_in_files += gtkunixprint.xml.in
+catalogs_DATA += gtkunixprint.xml
 endif
 
-catalogs_DATA = $(catalogs_in_files:.xml.in=.xml)
 
 BUILT_SOURCES = 		\
 	glade-gtk-marshallers.c \
@@ -335,13 +333,11 @@ UI_FILES = 				\
 EXTRA_DIST = 					\
 	$(UI_FILES)				\
 	glade-gtk-marshallers.list 		\
-	$(catalogs_in_files)			\
-	$(catalog_DATA)				\
+	$(catalogs_DATA)			\
 	glade-gtk-resources.gresource.xml
 
 CLEANFILES = 			\
-	$(BUILT_SOURCES)	\
-	$(catalog_DATA)
+	$(BUILT_SOURCES)
 
 #
 # Marshaller generation
