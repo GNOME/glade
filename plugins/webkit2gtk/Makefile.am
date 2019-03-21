@@ -30,11 +30,6 @@ endif
 
 # catalog data
 catalogsdir = $(pkgdatadir)/catalogs
+catalogs_DATA = webkit2gtk.xml
 
-catalogs_in_files = webkit2gtk.xml.in
-
-catalogs_DATA = $(catalogs_in_files:.xml.in=.xml)
-
-EXTRA_DIST =  $(catalogs_in_files) $(catalog_DATA)
-
-CLEANFILES = $(catalog_DATA)
+EXTRA_DIST =  $(catalogs_DATA)

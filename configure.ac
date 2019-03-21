@@ -352,12 +352,9 @@ plugins/gtk+/Makefile
 plugins/gtk+/icons/Makefile
 plugins/gtk+/icons/16x16/Makefile
 plugins/gtk+/icons/22x22/Makefile
-plugins/gtk+/gtk+.xml
-plugins/gtk+/gtkunixprint.xml
 plugins/python/Makefile
 plugins/gladeui/Makefile
 plugins/webkit2gtk/Makefile
-plugins/webkit2gtk/webkit2gtk.xml
 po/Makefile.in
 doc/Makefile
 doc/version.xml
