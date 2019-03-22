@@ -1,5 +1,3 @@
-subdir('icons')
-
 sources = files(
   'glade-about-dialog-editor.c',
   'glade-accels.c',
@@ -245,4 +243,18 @@ endif
 install_data(
   catalog_data,
   install_dir: glade_datadir / glade_catalogdir,
+)
+
+exclude_data = [
+  '16x16/actions/widget-gtk-custom.png',
+  '16x16/actions/widget-gtk-gtktextview.png',
+  '16x16/actions/widget-gtk-uimanager.png',
+  '22x22/actions/widget-gtk-custom.png',
+  '22x22/actions/widget-gtk-uimanager.png',
+]
+
+install_subdir(
+  'icons/hicolor',
+  exclude_files: exclude_data,
+  install_dir: glade_datadir / glade_pixmapdir,
 )
