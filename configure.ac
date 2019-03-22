@@ -321,7 +321,7 @@ AM_CONDITIONAL(BUILD_GLADEUI, test x"$enable_gladeui" = "xyes")
 dnl ================================================================
 dnl Testing environment
 dnl ================================================================
-GLADE_TEST_ENVIRONMENT='GLADE_TESTING=1 GLADE_CATALOG_SEARCH_PATH=$(top_srcdir)/plugins/gtk+ GLADE_MODULE_SEARCH_PATH=$(top_builddir)/plugins/gtk+/.libs GLADE_PIXMAP_DIR=$(top_srcdir)/data/icons GLADE_ICON_THEME_PATH=$(top_srcdir)/plugins/gtk+/icons/22x22'
+GLADE_TEST_ENVIRONMENT='GLADE_TESTING=1 GLADE_CATALOG_SEARCH_PATH=$(top_srcdir)/plugins/gtk+ GLADE_MODULE_SEARCH_PATH=$(top_builddir)/plugins/gtk+/.libs GLADE_PIXMAP_DIR=$(top_srcdir)/data/icons GLADE_ICON_THEME_PATH=$(top_srcdir)/plugins/gtk+/icons/hicolor/22x22/actions'
 AC_SUBST(GLADE_TEST_ENVIRONMENT)
 
 AC_SUBST([AM_CPPFLAGS])
@@ -335,13 +335,6 @@ data/gladeui-2.0.pc
 data/glade.desktop.in
 data/Makefile
 data/icons/Makefile
-data/icons/hicolor/Makefile
-data/icons/hicolor/scalable/Makefile
-data/icons/hicolor/scalable/apps/Makefile
-data/icons/hicolor/symbolic/Makefile
-data/icons/hicolor/symbolic/apps/Makefile
-data/gettext/Makefile
-data/gettext/its/Makefile
 gladeui/Makefile
 gladeui/gladeui.rc
 gladeui/glade-previewer.rc
@@ -350,8 +343,6 @@ src/glade.rc
 plugins/Makefile
 plugins/gtk+/Makefile
 plugins/gtk+/icons/Makefile
-plugins/gtk+/icons/16x16/Makefile
-plugins/gtk+/icons/22x22/Makefile
 plugins/python/Makefile
 plugins/gladeui/Makefile
 plugins/webkit2gtk/Makefile
