@@ -1,6 +1,15 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = hicolor
+scalableappicondir = $(datadir)/icons/hicolor/scalable/apps
+scalableappicon_DATA = \
+	hicolor/scalable/apps/org.gnome.Glade.svg \
+	$(NULL)
+
+symbolicappicondir = $(datadir)/icons/hicolor/symbolic/apps
+symbolicappicon_DATA = \
+	hicolor/symbolic/apps/org.gnome.Glade-symbolic.svg \
+	hicolor/symbolic/apps/glade-brand-symbolic.svg \
+	$(NULL)
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 
@@ -24,4 +33,8 @@ pixmaps_DATA = devhelp.png \
 	deprecated-22x22.png
 
 
-EXTRA_DIST = $(pixmaps_DATA) glade.ico
+EXTRA_DIST = \
+	$(scalableappicon_DATA) \
+	$(symbolicappicon_DATA) \
+	$(pixmaps_DATA) \
+	glade.ico
