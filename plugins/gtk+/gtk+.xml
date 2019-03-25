@@ -1738,7 +1738,7 @@
           <property id="always-show-image" since="3.6" custom-layout="True"/>
           <property id="receives-default" save-always="True"/>
           <property id="image" parentless-widget="True" create-type="GtkImage" custom-layout="True"/>
-          <property id="use-stock" visible="False" custom-layout="True"/>
+          <property id="use-stock" visible="False" custom-layout="True" deprecated="True"/>
           <property id="label" default="button" translatable="True" custom-layout="True" save="False"
                     multiline="True"/>
           <property id="use-underline" custom-layout="True"/>
@@ -1747,7 +1747,7 @@
           <property id="relief" custom-layout="True"/>
           <property id="focus-on-click" custom-layout="True"/>
 
-          <property id="stock" name="Stock Button" stock="True" save="False" custom-layout="True">
+          <property id="stock" name="Stock Button" stock="True" save="False" custom-layout="True" deprecated="True">
             <parameter-spec>
               <type>GParamString</type>
             </parameter-spec>
@@ -2271,7 +2271,7 @@
               <type>GParamInt</type>
             </parameter-spec>
           </property>
-          <property id="stock" stock-icon="True" custom-layout="True" default="gtk-missing-image"/>
+          <property id="stock" stock-icon="True" custom-layout="True" default="gtk-missing-image" deprecated="True"/>
           <property id="icon-name" name="Icon Name" themed-icon="True" custom-layout="True" />
           <property id="use-fallback" custom-layout="True"/>
           <property id="pixbuf" name="File Name" custom-layout="True"/>
