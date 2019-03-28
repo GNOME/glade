@@ -11,7 +11,14 @@ shared_module(
   kwargs: plugins_kwargs,
 )
 
-install_data(
-  'webkit2gtk.xml',
+catalog = 'webkit2gtk.xml'
+
+i18n.merge_file(
+  catalog,
+  input: catalog + '.in',
+  output: '@BASENAME@',
+  po_dir: po_dir,
+  data_dirs: its_dir,
+  install: true,
   install_dir: glade_datadir / glade_catalogdir,
 )
