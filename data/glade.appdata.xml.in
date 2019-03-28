@@ -44,6 +44,31 @@
   </kudos>
   <project_group>GNOME</project_group>
   <translation type="gettext">glade</translation>
+  <releases>
+    <release version="3.22.0" date="2018-03-12">
+      <description>
+        <p>
+          Glade 3.22.0
+        </p>
+        <ul>
+           <li>Fix bug 774994 &quot;in treeview columns editor contextual menu does nothing&quot;</li>
+	        <li>Simplified GladeBaseEditor</li>
+	        <li>Fix formatting / layout of project verification details (Daniel P. Berrange)</li>
+	        <li>Widge chooser: activate treeview with single click and enable Drag &amp; Drop</li>
+	        <li>Fix Design view selected state</li>
+	        <li>Fixes bug 793036 &quot;GtkCellRenderer Properties not loaded from glade file&quot; (peter Onion)</li>
+	        <li>Fix bug in action widgets response-id parsing on 32bits system</li>
+	        <li>Fix bug 772485 &quot;File Name property of GtkImage is copied to all other GtkImage&quot;</li>
+	        <li>GladeProject: always treat resource properties as relative</li>
+	        <li>Fix bug 793652 &quot;Crash when deleting a list&quot;</li>
+	        <li>Fix bug 793757 &quot;Gtk-CRITICAL **: _gtk_window_add_popover: assertion &apos;_gtk_widget_get_parent (popover) == NULL&apos; failed&quot;</li>
+	        <li>Add GDK_SUPER_MASK accelerator handling (Sebastian Stang)</li>
+	        <li>Fix bug #778537 &quot;ActionBar need placeholder&quot;</li>
+	        <li>Fix bug #794141 - Gtk.IconView disappeared from glade (Albfan)</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
     <content_attribute id="violence-fantasy">none</content_attribute>
