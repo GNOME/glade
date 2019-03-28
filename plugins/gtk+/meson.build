@@ -237,12 +237,19 @@ shared_module(
   kwargs: plugins_kwargs,
 )
 
-catalog_data = files('gtk+.xml')
+catalogs = ['gtk+.xml']
 if have_gtk_unix_print
-  catalog_data += files('gtkunixprint.xml')
+  catalogs += ['gtkunixprint.xml']
 endif
 
-install_data(
-  catalog_data,
-  install_dir: glade_datadir / glade_catalogdir,
-)
+foreach catalog: catalogs
+  i18n.merge_file(
+    catalog,
+    input: catalog + '.in',
+    output: '@BASENAME@',
+    po_dir: po_dir,
+    data_dirs: its_dir,
+    install: true,
+    install_dir: glade_datadir / glade_catalogdir,
+  )
+endforeach
