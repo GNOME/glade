@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V4.5//EN'
+                      'http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd' [
+
+<!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+<!ENTITY version SYSTEM "version.xml">
+]>
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>Glade User Interface Designer Reference Manual</title>
+    <releaseinfo>
+      for gladeui &version;.
+      This document attempts to describe how to use the Glade UI Designer core
+      library to integrate Glade into your application and how to integrate your
+      custom GTK+ derived widgets into the Glade UI Designer.
+      
+      The latest version of this documentation can be found on-line at
+      <ulink role="online-location" url="https://developer.gnome.org/gladeui/stable/">
+        https://developer.gnome.org/gladeui/stable
+      </ulink>.
+    </releaseinfo>
+  </bookinfo>
+
+  <part id="catalog">
+    <title>Adding your custom widgets</title>
+    <xi:include href="catalogintro.sgml"/>
+    <xi:include href="widgetclasses.sgml"/>
+    <xi:include href="properties.sgml"/>
+    <xi:include href="gladepython.sgml"/>
+  </part>
+
+  <part id="core">
+    <title>Glade Core</title>
+    <xi:include href="xml/glade-init.xml"/>
+    <xi:include href="xml/glade-catalog.xml"/>
+    <xi:include href="xml/glade-app.xml"/>
+    <xi:include href="xml/glade-project.xml"/>
+    <xi:include href="xml/glade-widget.xml"/>
+    <xi:include href="xml/glade-widget-adaptor.xml"/>
+    <xi:include href="xml/glade-widget-action.xml"/>
+    <xi:include href="xml/gw-action-class.xml"/>
+    <xi:include href="xml/glade-fixed.xml"/>
+    <xi:include href="xml/glade-property.xml"/>
+    <xi:include href="xml/glade-property-class.xml"/>
+    <xi:include href="xml/glade-command.xml"/>
+    <xi:include href="xml/glade-clipboard.xml"/>
+    <xi:include href="xml/glade-base-editor.xml"/>
+    <xi:include href="xml/glade-placeholder.xml"/>
+    <xi:include href="xml/glade-signal.xml"/>
+    <xi:include href="xml/glade-signal-class.xml"/>
+    <xi:include href="xml/glade-name-context.xml"/>
+    <xi:include href="xml/glade-xml-utils.xml"/>
+  </part>
+
+  <part id="dockables">
+    <title>Dockable Glade UI Widgets</title>
+    <xi:include href="xml/glade-editable.xml"/>
+    <xi:include href="xml/glade-editor.xml"/>
+    <xi:include href="xml/glade-editor-property.xml"/>
+    <xi:include href="xml/glade-palette.xml"/>
+    <xi:include href="xml/glade-clipboard-view.xml"/>
+    <xi:include href="xml/glade-inspector.xml"/>
+    <xi:include href="xml/glade-signal-editor.xml"/>
+    <xi:include href="xml/glade-previewer.xml"/>
+    <xi:include href="xml/glade-design-view.xml"/>
+    <xi:include href="xml/glade-preview.xml"/>
+    <xi:include href="xml/glade-adaptor-chooser.xml"/>
+    <xi:include href="xml/glade-property-label.xml"/>
+    <xi:include href="xml/glade-property-shell.xml"/>
+  </part>
+
+  <part id="misc">
+    <title>Miscellaneous utilities</title>
+    <xi:include href="xml/glade-cell-renderer-icon.xml"/>
+    <xi:include href="xml/glade-object-stub.xml"/>
+    <xi:include href="xml/glade-signal-model.xml"/>
+    <xi:include href="xml/glade-parameter.xml"/>
+    <xi:include href="xml/glade-utils.xml"/>
+  </part>
+
+  <index id="api-index-full">
+    <title>Index</title>
+    <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-deprecated" role="deprecated">
+    <title>Index of deprecated symbols</title>
+    <xi:include href="xml/api-index-deprecated.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
+</book>
