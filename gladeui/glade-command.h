@@ -29,7 +29,7 @@ typedef struct _GCSetPropData       GCSetPropData;
  * @new_value: The new #GValue to assign to @property
  * @old_value: The old #GValue of @property
  *
- * #GladeProperties can be set in a list as one command,
+ * #GladeProperty can be set in a list as one command,
  * for Undo purposes; we store the list of #GCSetPropData with
  * their old and new #GValue.
  */
@@ -124,7 +124,7 @@ void           glade_command_set_name      (GladeWidget       *glade_widget, con
 /************************ protection ******************************/
 
 void           glade_command_lock_widget   (GladeWidget   *widget, 
-                                            GladeWidget   *lock);
+                                            GladeWidget   *locked);
 
 void           glade_command_unlock_widget (GladeWidget   *widget);
 

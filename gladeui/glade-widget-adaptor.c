@@ -3110,17 +3110,17 @@ glade_widget_adaptor_get_by_type (GType type)
  **/
 GladeWidgetAdaptor *
 glade_widget_adaptor_from_pspec (GladeWidgetAdaptor *adaptor,
-                                 GParamSpec         *spec)
+                                 GParamSpec         *pspec)
 {
   GladeWidgetAdaptor *spec_adaptor;
-  GType spec_type = spec->owner_type;
+  GType spec_type = pspec->owner_type;
 
   if (!spec_type)
     return adaptor;
 
-  spec_adaptor = glade_widget_adaptor_get_by_type (spec->owner_type);
+  spec_adaptor = glade_widget_adaptor_get_by_type (pspec->owner_type);
 
-  g_return_val_if_fail (g_type_is_a (adaptor->priv->type, spec->owner_type), NULL);
+  g_return_val_if_fail (g_type_is_a (adaptor->priv->type, pspec->owner_type), NULL);
 
   while (spec_type && !spec_adaptor && spec_type != adaptor->priv->type)
     {
@@ -3496,7 +3496,7 @@ glade_widget_adaptor_verify_property (GladeWidgetAdaptor *adaptor,
 /**
  * glade_widget_adaptor_add_verify:
  * @adaptor:   A #GladeWidgetAdaptor
- * @parent: A #GObject container
+ * @container: A #GObject container
  * @child: A #GObject child
  * @user_feedback: whether a notification dialog should be
  * presented in the case that the child cannot not be added.
@@ -4127,6 +4127,7 @@ glade_widget_adaptor_action_activate (GladeWidgetAdaptor *adaptor,
 /**
  * glade_widget_adaptor_child_action_activate:
  * @adaptor:   A #GladeWidgetAdaptor
+ * @container: The #GObject container
  * @object:    The #GObject
  * @action_path: The action identifier in the action tree
  *

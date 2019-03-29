@@ -2246,7 +2246,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 /**
  * glade_project_load:
- * @path:
+ * @path: the path of the project to load
  * 
  * Opens a project at the given path.
  *

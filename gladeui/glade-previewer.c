@@ -810,12 +810,12 @@ on_handler_called (SignalData *data)
 
 /**
  * glade_previewer_connect_function:
- * @builder:
- * @object:
- * @signal_name:
- * @handler_name:
- * @connect_object:
- * @flags:
+ * @builder: a #GtkBuilder
+ * @object: the #GObject triggering the signal
+ * @signal_name: the name of the signal
+ * @handler_name: the name of the c function handling the signal
+ * @connect_object: the user_data #GObject to connect
+ * @flags: #GConnectFlags used in the connection
  * @window: a #GladePreviewer
  * 
  * Function that collects every signal handler in @builder and shows them
