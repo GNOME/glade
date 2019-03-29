@@ -255,9 +255,9 @@ glade_xml_get_value_int (GladeXmlNode *node_in, const gchar *name, gint *val)
  * @val: a pointer to an #int
  * 
  * This is a wrapper around glade_xml_get_value_int(), only it emits
- * a g_warning() if @node_in did not contain the requested tag
+ * a g_warning() if @node did not contain the requested tag
  * 
- * Returns:
+ * Returns: %FALSE if @name is not in @node
  **/
 gboolean
 glade_xml_get_value_int_required (GladeXmlNode *node,
@@ -579,13 +579,13 @@ glade_xml_search_child (GladeXmlNode *node_in, const gchar *name)
 
 /**
  * glade_xml_search_child_required:
- * @tree: 
- * @name: 
+ * @tree: A #GladeXmlNode
+ * @name: the name of the child
  * 
  * just a small wrapper arround glade_xml_search_child that displays
  * an error if the child was not found
  *
- * Return Value: 
+ * Returns: (nullable): the requested #GladeXmlNode
  **/
 GladeXmlNode *
 glade_xml_search_child_required (GladeXmlNode *node, const gchar *name)
@@ -686,7 +686,7 @@ glade_xml_context_new_from_path (const gchar *full_path,
 
 /**
  * glade_xml_context_free:
- * @context: 
+ * @context: An #GladeXmlContext
  * 
  * Similar to glade_xml_context_destroy but it also frees the document set in the context
  **/

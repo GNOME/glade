@@ -1724,7 +1724,7 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
  * glade_base_editor_new:
  * @container: a container this new editor will edit.
  * @main_editable: the custom #GladeEditable for @container, or %NULL
- * @... A NULL terminated list of gchar *, GType
+ * @...: A NULL terminated list of gchar *, GType
  *
  * Creates a new GladeBaseEditor with @container toplevel
  * support for all the object types indicated in the variable argument list.
@@ -1805,7 +1805,7 @@ glade_base_editor_new (GObject *container, GladeEditable *main_editable, ...)
  * glade_base_editor_append_types:
  * @editor: A #GladeBaseEditor
  * @parent_type: the parent type these child types will apply to
- * @... A NULL terminated list of gchar *, GType
+ * @...: A NULL terminated list of gchar *, GType
  *
  * Appends support for all the object types indicated in the variable argument list.
  * Argument List:
@@ -2037,7 +2037,7 @@ glade_base_editor_add_label (GladeBaseEditor *editor, gchar *str)
 /**
  * glade_base_editor_set_show_signal_editor:
  * @editor: a #GladeBaseEditor
- * @val:
+ * @val: whether to show the signal editor
  *
  * Shows/hide @editor 's signal editor
  */

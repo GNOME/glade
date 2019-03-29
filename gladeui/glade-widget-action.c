@@ -206,7 +206,7 @@ glade_widget_action_class_init (GladeWidgetActionClass *klass)
 /**
  * glade_widget_action_set_sensitive:
  * @action: a #GladeWidgetAction
- * @sensitive:
+ * @sensitive: the sensitivity to set
  *
  * Set whether or not this action is sensitive.
  *

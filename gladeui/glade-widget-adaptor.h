@@ -553,6 +553,7 @@ typedef void     (* GladeReadWidgetFunc) (GladeWidgetAdaptor *adaptor,
  * GladeWriteWidgetFunc:
  * @adaptor: A #GladeWidgetAdaptor
  * @widget: The #GladeWidget
+ * @context: The #GladeXmlContext
  * @node: The #GladeXmlNode
  *
  * This function is called to fill in @node from @widget.
@@ -775,7 +776,7 @@ GladeWidget          *glade_widget_adaptor_create_widget_real (gboolean         
 GladeWidgetAdaptor   *glade_widget_adaptor_get_by_name        (const gchar        *name);
 GladeWidgetAdaptor   *glade_widget_adaptor_get_by_type        (GType               type);
 GladeWidgetAdaptor   *glade_widget_adaptor_from_pspec         (GladeWidgetAdaptor *adaptor,
-                                                               GParamSpec         *spec);
+                                                               GParamSpec         *pspec);
 
 GladePropertyClass   *glade_widget_adaptor_get_property_class (GladeWidgetAdaptor *adaptor,
                                                                const gchar        *name);

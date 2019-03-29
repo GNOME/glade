@@ -568,7 +568,7 @@ catalogs_from_path (GList *catalogs, const gchar *path)
 
 /**
  * glade_catalog_add_path:
- * @path:
+ * @path: the new path containing catalogs
  * 
  * Adds a new path to the list of path to look catalogs for.
  */
@@ -583,10 +583,10 @@ glade_catalog_add_path (const gchar *path)
 
 /**
  * glade_catalog_remove_path:
- * @path:
+ * @path: (nullable): the new path containing catalogs or %NULL to remove all of them
  * 
  * Remove path from the list of path to look catalogs for.
- * NULL to remove all paths.
+ * %NULL to remove all paths.
  */
 void
 glade_catalog_remove_path (const gchar *path)
@@ -607,7 +607,7 @@ glade_catalog_remove_path (const gchar *path)
 /**
  * glade_catalog_get_extra_paths:
  *
- * Returns a list paths added by glade_catalog_add_path()
+ * Returns: (element-type utf8) (transfer none): a list paths added by glade_catalog_add_path()
  */
 const GList *
 glade_catalog_get_extra_paths (void)
@@ -623,7 +623,7 @@ glade_catalog_get_extra_paths (void)
  * then from glade_app_get_catalogs_dir() and finally from paths specified with
  * glade_catalog_add_path()
  *
- * Returns: the list of loaded GladeCatalog *
+ * Returns: (element-type GladeCatalog) (transfer none): the list of loaded GladeCatalog *
  */
 const GList *
 glade_catalog_load_all (void)

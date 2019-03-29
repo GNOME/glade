@@ -2215,6 +2215,7 @@ glade_property_class_match (GladePropertyClass *klass,
 /**
  * glade_property_class_void_value:
  * @klass: a #GladePropertyClass
+ * @value: a GValue of correct type for @klass
  *
  * Returns: Whether @value for this @klass is voided; a voided value
  *          can be a %NULL value for boxed or object type param specs.
