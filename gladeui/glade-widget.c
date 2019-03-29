@@ -536,6 +536,7 @@ glade_widget_event_impl (GladeWidget *gwidget, GdkEvent *event)
 
 /**
  * glade_widget_event:
+ * @gwidget: A #GladeWidget
  * @event: A #GdkEvent
  *
  * Feed an event to be handled on the project GladeWidget
@@ -1608,7 +1609,7 @@ glade_widget_set_default_packing_properties (GladeWidget *container,
     }
 }
 
-/**
+/*
  * When looking for an internal child we have to walk up the hierarchy...
  */
 static GObject *
@@ -2275,8 +2276,8 @@ glade_widget_accum_signal_foreach (const gchar *key,
  *
  * Compiles a list of #GladeSignal elements
  *
- * Returns: a newly allocated #GList of #GladeSignals, the caller
- * must call g_list_free() to free the list.
+ * Returns: (transfer container) (element-type GladeSignal):a newly allocated #GList of
+ * #GladeSignal, the caller must call g_list_free() to free the list.
  */
 GList *
 glade_widget_get_signal_list (GladeWidget *widget)
@@ -3924,10 +3925,11 @@ glade_widget_has_decendant (GladeWidget *widget, GType type)
 
 /**
  * glade_widget_replace:
+ * @parent: A #GladeWidget
  * @old_object: a #GObject
  * @new_object: a #GObject
  * 
- * Replaces a GObject with another GObject inside a GObject which
+ * Replaces a GObject with another GObject inside a #GladeWidget which
  * behaves as a container.
  *
  * Note that both GObjects must be owned by a GladeWidget.
@@ -4012,8 +4014,9 @@ glade_widget_read_child (GladeWidget *widget, GladeXmlNode *node)
 /**
  * glade_widget_read:
  * @project: a #GladeProject
- * @parent: The parent #GladeWidget or %NULL
+ * @parent: (nullable): The parent #GladeWidget or %NULL
  * @node: a #GladeXmlNode
+ * @internal: (nullable): the name of an internal child name
  *
  * Creates a new #GladeWidget from a XML node.
  *
@@ -4022,7 +4025,7 @@ glade_widget_read_child (GladeWidget *widget, GladeXmlNode *node)
  *
  * For example, with a GtkBin template Glade will GladeInstantiableGtkBin class
  *
- * Returns: a new #GladeWidget for @project, based on @node
+ * Returns: (transfer full): a new #GladeWidget for @project, based on @node
  */
 GladeWidget *
 glade_widget_read (GladeProject *project,
@@ -4196,7 +4199,7 @@ glade_widget_write_child (GladeWidget     *widget,
 /**
  * glade_widget_write_placeholder:
  * @parent: The parent #GladeWidget
- * @object: A #GladePlaceHolder
+ * @object: A #GladePlaceholder
  * @context: A #GladeXmlContext
  * @node: A #GladeXmlNode
  *

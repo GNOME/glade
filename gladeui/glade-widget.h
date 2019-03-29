@@ -74,7 +74,7 @@ GType                   glade_widget_get_type               (void);
 
 GladeWidget            *glade_widget_get_from_gobject       (gpointer          object);
 
-gboolean                glade_widget_add_verify             (GladeWidget      *parent,
+gboolean                glade_widget_add_verify             (GladeWidget      *widget,
                                                              GladeWidget      *child,
                                                              gboolean          user_feedback);
 
@@ -169,11 +169,11 @@ gboolean                glade_widget_set_pack_action_sensitive (GladeWidget *wid
 
 gboolean                glade_widget_set_action_visible     (GladeWidget *widget,
                                                              const gchar *action_path,
-                                                             gboolean     sensitive);
+                                                             gboolean     visible);
 
 gboolean                glade_widget_set_pack_action_visible (GladeWidget *widget,
                                                               const gchar *action_path,
-                                                              gboolean     sensitive);
+                                                              gboolean     visible);
 
 void                    glade_widget_write                  (GladeWidget     *widget,
                                                              GladeXmlContext *context,
@@ -225,6 +225,7 @@ G_DEPRECATED
 gboolean                glade_widget_depends                (GladeWidget      *widget,
                                                              GladeWidget      *other);
 
+G_DEPRECATED
 GdkDevice              *glade_widget_get_device_from_event  (GdkEvent *event);
 
 void                    glade_widget_ensure_name            (GladeWidget      *widget,

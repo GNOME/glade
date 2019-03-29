@@ -222,7 +222,7 @@ glade_signal_klass_init (GladeSignalKlass *klass)
 
 /**
  * glade_signal_new:
- * @name: a name for the signal
+ * @sig_class: a #GladeSignalClass
  * @handler: a handler function for the signal
  * @userdata: the userdata for this signal
  * @after: whether this handler should be called after the default emission phase

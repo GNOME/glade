@@ -59,11 +59,11 @@
 
 /**
  * glade_util_compose_get_type_func:
- * @name:
+ * @name: the name of the #GType - like 'GtkWidget' or a "get-type" function.
  *
  * TODO: write me
  *
- * Returns:
+ * Returns: the type function getter
  */
 static gchar *
 glade_util_compose_get_type_func (const gchar *name)
@@ -644,9 +644,6 @@ gtk_container_children_callback (GtkWidget *widget, gpointer client_data)
  * Use this to itterate over all children in a GtkContainer,
  * as it used _forall() instead of _foreach() (and the GTK+ version
  * of this function is simply not exposed).
- *
- * Note that glade_widget_class_get_children() is the high-level
- * abstraction and will usually end up calling this function.
  *
  * Returns: a #GList giving the contents of @container
  */
@@ -1565,8 +1562,6 @@ pclass_from_gtype (GType type)
  * @type: a #GType to convert with
  * @string: the string to convert
  * @project: the #GladeProject to look for formats of object names when needed
- * @widget: if the value is a gobject, this #GladeWidget will be used to look
- *          for an object in the same widget tree.
  *
  * Allocates and sets a #GValue of type @type
  * set to @string (using glade conversion routines) 
@@ -1710,8 +1705,8 @@ glade_utils_liststore_from_enum_type (GType enum_type, gboolean include_empty)
 /**
  * glade_utils_hijack_key_press:
  * @win: a #GtkWindow
- * event: the GdkEventKey 
- * user_data: unused
+ * @event: the #GdkEventKey
+ * @user_data: unused
  *
  * This function is meant to be attached to key-press-event of a toplevel,
  * it simply allows the window contents to treat key events /before/ 

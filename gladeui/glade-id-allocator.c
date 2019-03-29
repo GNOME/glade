@@ -103,11 +103,11 @@ first_set_bit (guint32 word)
 }
 
 /**
- * glade_id_allocator_alloc:
+ * glade_id_allocator_allocate:
  * @allocator: a #GladeIDAllocator
  *
  * TODO: write me
- * Returns:
+ * Returns: the id
  */
 guint
 glade_id_allocator_allocate (GladeIDAllocator *allocator)
@@ -142,8 +142,8 @@ glade_id_allocator_allocate (GladeIDAllocator *allocator)
 
 /**
  * glade_id_allocator_release:
- * @allocator:
- * @id:
+ * @allocator: a #GladeIDAllocator
+ * @id: the id given by glade_id_allocator_allocate()
  *
  * TODO: write me
  */
@@ -189,7 +189,7 @@ main (int argc, char **argv)
   for (iter = 0; iter < 10000; iter++)
     {
       for (i = 0; i < 1000; i++)
-        glade_id_allocator_alloc (allocator);
+        glade_id_allocator_allocate (allocator);
 
       for (i = 0; i < 1000; i++)
         glade_id_allocator_release (allocator, i);
