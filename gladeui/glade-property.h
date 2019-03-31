@@ -39,17 +39,17 @@ struct _GladePropertyKlass
   GObjectClass  parent_class;
 
   /* Class methods */
-  GladeProperty *         (* dup)                   (GladeProperty *, GladeWidget *);
-  gboolean                (* equals_value)          (GladeProperty *, const GValue *);
-  gboolean                (* set_value)             (GladeProperty *, const GValue *);
-  void                    (* get_value)             (GladeProperty *, GValue *);
-  void                    (* sync)                  (GladeProperty *);
-  void                    (* load)                  (GladeProperty *);
+  GladeProperty *         (* dup)                   (GladeProperty *template_prop, GladeWidget *widget);
+  gboolean                (* equals_value)          (GladeProperty *property, const GValue *value);
+  gboolean                (* set_value)             (GladeProperty *property, const GValue *value);
+  void                    (* get_value)             (GladeProperty *property, GValue *value);
+  void                    (* sync)                  (GladeProperty *property);
+  void                    (* load)                  (GladeProperty *property);
 
   /* Signals */
-  void             (* value_changed)         (GladeProperty *, GValue *, GValue *);
-  void             (* tooltip_changed)       (GladeProperty *, const gchar *, 
-                                              const gchar   *, const gchar *);
+  void             (* value_changed)         (GladeProperty *property, GValue *old_value, GValue *new_value);
+  void             (* tooltip_changed)       (GladeProperty *property, const gchar *tooltip, 
+                                              const gchar   *insensitive_tooltip, const gchar *support_warning);
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);
   void   (* glade_reserved3)   (void);

@@ -1658,7 +1658,8 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
    * Create a child widget here if something else must be done other than
    * calling glade_command_create() such as creating an intermediate parent.
    *
-   * Returns: the newly created #GladeWidget or NULL if child cant be created
+   * Returns: (transfer full) (nullable): the newly created #GladeWidget or
+   * %NULL if child cant be created
    */
   glade_base_editor_signals[SIGNAL_BUILD_CHILD] =
       g_signal_new ("build-child",
@@ -2077,7 +2078,7 @@ glade_base_editor_help (GtkButton *button, gchar *markup)
  *
  * This convenience function create a new dialog window and packs @editor in it.
  *
- * Returns: the newly created window
+ * Returns: (transfer full): the newly created window
  */
 GtkWidget *
 glade_base_editor_pack_new_window (GladeBaseEditor *editor,

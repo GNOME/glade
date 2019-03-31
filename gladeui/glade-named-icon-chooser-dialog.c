@@ -1729,10 +1729,10 @@ glade_named_icon_chooser_dialog_new_valist (const gchar *title,
 
 /**
  * glade_named_icon_chooser_dialog_new:
- * @title: Title of the dialog, or %NULL
- * @parent: Transient parent of the dialog, or %NULL,
- * @first_button_text: stock ID or text to go in the first button, or %NULL
- * @Varargs: response ID for the first button, then additional (button, id)
+ * @title: (nullable): Title of the dialog, or %NULL
+ * @parent: (nullable): Transient parent of the dialog, or %NULL,
+ * @first_button_text: (nullable): stock ID or text to go in the first button, or %NULL
+ * @...: response ID for the first button, then additional (button, id)
  *   pairs, ending with %NULL
  *
  * Creates a new #GladeNamedIconChooserDialog.  This function is analogous to

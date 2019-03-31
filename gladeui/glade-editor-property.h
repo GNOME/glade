@@ -83,10 +83,10 @@ struct _GladeEditorProperty
 struct _GladeEditorPropertyClass {
   GtkBoxClass  parent_class;
 
-  void        (* load)          (GladeEditorProperty *, GladeProperty *);
-  GtkWidget  *(* create_input)  (GladeEditorProperty *);
-  void        (* commit)        (GladeEditorProperty *, GValue *);
-  void       *(* changed)       (GladeEditorProperty *, GladeProperty *);
+  void        (* load)          (GladeEditorProperty *eprop, GladeProperty *property);
+  GtkWidget  *(* create_input)  (GladeEditorProperty *eprop);
+  void        (* commit)        (GladeEditorProperty *eprop, GValue *value);
+  void       *(* changed)       (GladeEditorProperty *eprop, GladeProperty *property);
 
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);

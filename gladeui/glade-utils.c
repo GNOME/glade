@@ -150,7 +150,7 @@ glade_util_get_type_from_name (const gchar *name, gboolean have_func)
  * glade_utils_get_pspec_from_funcname:
  * @funcname: the symbol name of a function to generate a #GParamSpec
  *
- * Returns: A #GParamSpec created by the delagate function
+ * Returns: (nullable) (transfer full): A #GParamSpec created by the delegate function
  *          specified by @funcname
  */
 GParamSpec *
@@ -461,8 +461,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * @parent: a parent #GtkWindow for the dialog
  * @action: a #GladeUtilFileDialogType to say if the dialog will open or save
  *
- * Returns: a "glade file" file chooser dialog. The caller is responsible 
- *          for showing the dialog
+ * Returns: (transfer full): a "glade file" file chooser dialog. The caller is
+ *          responsible for showing the dialog
  */
 GtkWidget *
 glade_util_file_dialog_new (const gchar *title,
@@ -645,7 +645,7 @@ gtk_container_children_callback (GtkWidget *widget, gpointer client_data)
  * as it used _forall() instead of _foreach() (and the GTK+ version
  * of this function is simply not exposed).
  *
- * Returns: a #GList giving the contents of @container
+ * Returns: (element-type GtkWidget) (transfer container): a #GList giving the contents of @container
  */
 GList *
 glade_util_container_get_all_children (GtkContainer *container)
@@ -774,10 +774,10 @@ glade_util_find_iter_by_widget (GtkTreeModel *model,
 }
 
 /**
- * glade_util_purify_list:
+ * glade_util_purify_list: (skip)
  * @list: A #GList
  *
- * Returns: A newly allocated version of @list with no 
+ * Returns: (transfer full): A newly allocated version of @list with no 
  *          duplicate data entries
  */
 GList *
@@ -795,11 +795,11 @@ glade_util_purify_list (GList * list)
 }
 
 /**
- * glade_util_added_in_list:
+ * glade_util_added_in_list: (skip)
  * @old_list: the old #GList
  * @new_list: the new #GList
  *
- * Returns: A newly allocated #GList of elements that
+ * Returns: (transfer full): A newly allocated #GList of elements that
  *          are in @new but not in @old
  *
  */
@@ -818,11 +818,11 @@ glade_util_added_in_list (GList *old_list, GList *new_list)
 }
 
 /**
- * glade_util_removed_from_list:
+ * glade_util_removed_from_list: (skip)
  * @old_list: the old #GList
  * @new_list: the new #GList
  *
- * Returns: A newly allocated #GList of elements that
+ * Returns: (transfer full): A newly allocated #GList of elements that
  *          are in @old no longer in @new
  *
  */
@@ -1069,7 +1069,7 @@ glade_util_have_devhelp (void)
  *
  * Creates an image displaying the devhelp icon.
  *
- * Returns: a #GtkImage
+ * Returns: (transfer full): a #GtkImage
  */
 GtkWidget *
 glade_util_get_devhelp_icon (GtkIconSize size)
@@ -1150,6 +1150,12 @@ glade_util_search_devhelp (const gchar *book,
     g_free (search_comm);
 }
 
+/**
+ * glade_util_get_placeholder_from_pointer:
+ * @container: a #GtkContainer
+ *
+ * Returns: (transfer none): a #GtkWidget
+ */
 GtkWidget *
 glade_util_get_placeholder_from_pointer (GtkContainer *container)
 {
@@ -1663,7 +1669,7 @@ glade_utils_string_from_value (const GValue *value)
  * Creates a liststore suitable for comboboxes and such to 
  * chose from a variety of types.
  *
- * Returns: A new #GtkListStore
+ * Returns: (transfer full): A new #GtkListStore
  */
 GtkListStore *
 glade_utils_liststore_from_enum_type (GType enum_type, gboolean include_empty)
@@ -1881,6 +1887,8 @@ draw_pointer (cairo_t *cr)
  *
  * Render an icon representing the pointer mode.
  * Best view with sizes bigger than GTK_ICON_SIZE_LARGE_TOOLBAR.
+ *
+ * Returns: (transfer full): the rendered #GdkPixbuf
  */ 
 GdkPixbuf *
 glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)

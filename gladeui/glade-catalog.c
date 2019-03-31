@@ -818,7 +818,7 @@ glade_catalog_get_minor_version (GladeCatalog *catalog)
  * glade_catalog_get_targets:
  * @catalog: a catalog object
  * 
- * Returns: the list of suitable version targets.
+ * Returns: (transfer none) (element-type GladeTargetableVersion): the list of suitable version targets.
  */
 GList *
 glade_catalog_get_targets (GladeCatalog *catalog)
@@ -832,7 +832,7 @@ glade_catalog_get_targets (GladeCatalog *catalog)
  * glade_catalog_get_widget_groups:
  * @catalog: a catalog object
  * 
- * Returns: the list of widget groups (palette)
+ * Returns: (transfer none) (element-type GladeWidgetGroup): the list of widget groups (palette)
  */
 GList *
 glade_catalog_get_widget_groups (GladeCatalog *catalog)
@@ -846,7 +846,7 @@ glade_catalog_get_widget_groups (GladeCatalog *catalog)
  * glade_catalog_get_adaptors:
  * @catalog: a catalog object
  * 
- * Returns: the list of widget class adaptors
+ * Returns: (transfer none) (element-type GladeWidgetAdaptor): the list of widget class adaptors
  */
 GList *
 glade_catalog_get_adaptors (GladeCatalog *catalog)
@@ -942,7 +942,7 @@ glade_widget_group_get_expanded (GladeWidgetGroup *group)
  * glade_widget_group_get_adaptors:
  * @group: a widget group
  * 
- * Returns: a list of class adaptors in the palette
+ * Returns: (transfer none) (element-type GladeWidgetAdaptor): a list of class adaptors in the palette
  */
 const GList *
 glade_widget_group_get_adaptors (GladeWidgetGroup *group)

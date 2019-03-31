@@ -50,10 +50,10 @@ struct _GladeCommandClass
 {
   GObjectClass parent_class;
 
-  gboolean (* execute)     (GladeCommand *this_cmd);
-  gboolean (* undo)        (GladeCommand *this_cmd);
-  gboolean (* unifies)     (GladeCommand *this_cmd, GladeCommand *other_cmd);
-  void     (* collapse)    (GladeCommand *this_cmd, GladeCommand *other_cmd);
+  gboolean (* execute)     (GladeCommand *command);
+  gboolean (* undo)        (GladeCommand *command);
+  gboolean (* unifies)     (GladeCommand *command, GladeCommand *other);
+  void     (* collapse)    (GladeCommand *command, GladeCommand *other);
 
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);

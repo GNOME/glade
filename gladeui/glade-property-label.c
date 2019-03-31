@@ -708,6 +708,12 @@ glade_property_label_set_property (GladePropertyLabel *label,
     }
 }
 
+/**
+ * glade_property_label_get_property:
+ * @label: a #GladePropertyLabel
+ *
+ * Returns: (transfer none): A #GladeProperty
+ */
 GladeProperty *
 glade_property_label_get_property (GladePropertyLabel *label)
 {

@@ -32,19 +32,19 @@ struct _GladeWidgetClass
 {
   GInitiallyUnownedClass parent_class;
 
-  void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
-  void         (*remove_child)            (GladeWidget *, GladeWidget *);
-  void         (*replace_child)           (GladeWidget *, GObject *, GObject *);
+  void         (*add_child)               (GladeWidget *parent, GladeWidget *child, gboolean at_mouse);
+  void         (*remove_child)            (GladeWidget *parent, GladeWidget *child);
+  void         (*replace_child)           (GladeWidget *parent, GObject *old_object, GObject *new_object);
 
-  void         (*add_signal_handler)      (GladeWidget *, GladeSignal *);
-  void         (*remove_signal_handler)   (GladeWidget *, GladeSignal *);
-  void         (*change_signal_handler)   (GladeWidget *, GladeSignal *);
+  void         (*add_signal_handler)      (GladeWidget *widget, GladeSignal *signal_handler);
+  void         (*remove_signal_handler)   (GladeWidget *widget, GladeSignal *signal_handler);
+  void         (*change_signal_handler)   (GladeWidget *widget, GladeSignal *new_signal_handler);
 
-  gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
-  gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
-  gint         (*motion_notify_event)     (GladeWidget *, GdkEvent *);
+  gint         (*button_press_event)      (GladeWidget *widget, GdkEvent *event);
+  gint         (*button_release_event)    (GladeWidget *widget, GdkEvent *event);
+  gint         (*motion_notify_event)     (GladeWidget *widget, GdkEvent *event);
 
-  gboolean     (*event)                   (GladeWidget *, GdkEvent *);
+  gboolean     (*event)                   (GladeWidget *gwidget, GdkEvent *event);
 
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);

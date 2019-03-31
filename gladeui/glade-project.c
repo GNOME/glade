@@ -2250,8 +2250,8 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
  * 
  * Opens a project at the given path.
  *
- * Returns: a new #GladeProject for the opened project on success, %NULL on 
- *          failure
+ * Returns: (transfer full) (nullable): a new #GladeProject for the opened project on success,
+ *          %NULL on failure
  */
 GladeProject *
 glade_project_load (const gchar *path)
@@ -2897,7 +2897,7 @@ sync_project_resource_path (GladeProject *project)
 }
 
 /**
- * glade_project_save:
+ * glade_project_save_verify:
  * @project: a #GladeProject
  * @path: location to save glade file
  * @flags: the #GladeVerifyFlags to warn about
@@ -3681,7 +3681,8 @@ glade_project_verify_project_for_ui (GladeProject *project)
  * 
  * Searches under @ancestor in @project looking for a #GladeWidget named @name.
  * 
- * Returns: a pointer to the widget, %NULL if the widget does not exist
+ * Returns: (transfer none) (nullable): a pointer to the widget,
+ * %NULL if the widget does not exist
  */
 GladeWidget *
 glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
@@ -3886,6 +3887,13 @@ glade_project_set_widget_name (GladeProject *project,
   glade_project_widget_changed (project, widget);
 }
 
+/**
+ * glade_project_check_reordered:
+ * @project: a #GladeProject
+ * @parent: the parent #GladeWidget
+ * @old_order: (element-type GObject): the old order to compare with
+ *
+ */
 void
 glade_project_check_reordered (GladeProject *project,
                                GladeWidget  *parent,
@@ -4265,6 +4273,12 @@ glade_project_set_template (GladeProject *project, GladeWidget *widget)
     }
 }
 
+/**
+ * glade_project_get_template:
+ * @project: a #GladeProject
+ * 
+ * Returns: (transfer none): a #GladeWidget
+ */
 GladeWidget *
 glade_project_get_template (GladeProject *project)
 {
@@ -4273,6 +4287,11 @@ glade_project_get_template (GladeProject *project)
   return project->priv->template;
 }
 
+/**
+ * glade_project_set_add_item:
+ * @project: a #GladeProject
+ * @adaptor: (transfer full): a #GladeWidgetAdaptor
+ */
 void
 glade_project_set_add_item (GladeProject *project, GladeWidgetAdaptor *adaptor)
 {
@@ -4290,6 +4309,12 @@ glade_project_set_add_item (GladeProject *project, GladeWidgetAdaptor *adaptor)
     }
 }
 
+/**
+ * glade_project_get_add_item:
+ * @project: a #GladeProject
+ * 
+ * Returns: (transfer none): a #GladeWidgetAdaptor
+ */
 GladeWidgetAdaptor *
 glade_project_get_add_item (GladeProject *project)
 {
@@ -4584,7 +4609,8 @@ glade_project_selection_set (GladeProject *project,
  * glade_project_selection_get:
  * @project: a #GladeProject
  *
- * Returns: a #GList containing the #GtkWidget items currently selected in @project
+ * Returns: (transfer none) (element-type GtkWidget): a #GList containing
+ * the #GtkWidget items currently selected in @project
  */
 GList *
 glade_project_selection_get (GladeProject *project)
@@ -4598,8 +4624,8 @@ glade_project_selection_get (GladeProject *project)
  * glade_project_required_libs:
  * @project: a #GladeProject
  *
- * Returns: a #GList of allocated strings which are the names
- * of the required catalogs for this project
+ * Returns: (transfer full) (element-type utf8): a #GList of allocated strings
+ * which are the names of the required catalogs for this project
  */
 GList *
 glade_project_required_libs (GladeProject *project)
@@ -4659,7 +4685,7 @@ glade_project_undo (GladeProject *project)
 }
 
 /**
- * glade_project_undo:
+ * glade_project_redo:
  * @project: a #GladeProject
  * 
  * Redoes a #GladeCommand in this project.
@@ -4677,7 +4703,7 @@ glade_project_redo (GladeProject *project)
  * 
  * Gets the next undo item on @project's command stack.
  *
- * Returns: the #GladeCommand
+ * Returns: (transfer none): the #GladeCommand
  */
 GladeCommand *
 glade_project_next_undo_item (GladeProject *project)
@@ -4692,7 +4718,7 @@ glade_project_next_undo_item (GladeProject *project)
  * 
  * Gets the next redo item on @project's command stack.
  *
- * Returns: the #GladeCommand
+ * Returns: (transfer none): the #GladeCommand
  */
 GladeCommand *
 glade_project_next_redo_item (GladeProject *project)
@@ -4795,7 +4821,7 @@ redo_item_activated (GtkMenuItem *item, GladeProject *project)
  *
  * Creates a menu of the undo items in the project stack
  *
- * Returns: A newly created menu
+ * Returns: (transfer full): A newly created menu
  */
 GtkWidget *
 glade_project_undo_items (GladeProject *project)
@@ -4833,7 +4859,7 @@ glade_project_undo_items (GladeProject *project)
  *
  * Creates a menu of the undo items in the project stack
  *
- * Returns: A newly created menu
+ * Returns: (transfer full): A newly created menu
  */
 GtkWidget *
 glade_project_redo_items (GladeProject *project)
@@ -4978,10 +5004,10 @@ glade_project_get_file_mtime (GladeProject *project)
 }
 
 /**
- * glade_projects_get_objects:
+ * glade_project_get_objects:
  * @project: a GladeProject
  *
- * Returns: List of all objects in this project
+ * Returns: (transfer none) (element-type GObject): List of all objects in this project
  */
 const GList *
 glade_project_get_objects (GladeProject *project)
@@ -5045,7 +5071,8 @@ glade_project_display_dependencies (GladeProject *project)
  * glade_project_toplevels:
  * @project: a #GladeProject
  *
- * Returns: a #GList containing the #GtkWidget toplevel items in @project
+ * Returns: (transfer none) (element-type GtkWidget): a #GList containing
+ * the #GtkWidget toplevel items in @project
  */
 GList *
 glade_project_toplevels (GladeProject *project)
