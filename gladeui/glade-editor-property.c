@@ -290,6 +290,12 @@ glade_editor_property_get_disable_check (GladeEditorProperty *eprop)
   return eprop->priv->disable_check;
 }
 
+/**
+ * glade_editor_property_get_item_label:
+ * @eprop: a #GladeEditorProperty
+ *
+ * Returns: (transfer none): the #GladePropertyLabel
+ */
 GtkWidget *
 glade_editor_property_get_item_label  (GladeEditorProperty *eprop)
 {
@@ -317,6 +323,12 @@ glade_editor_property_get_pclass (GladeEditorProperty *eprop)
   return eprop->priv->klass;
 }
 
+/**
+ * glade_editor_property_get_property:
+ * @eprop: a #GladeEditorProperty
+ *
+ * Returns: (transfer none): the #GladeProperty
+ */
 GladeProperty *
 glade_editor_property_get_property (GladeEditorProperty *eprop)
 {

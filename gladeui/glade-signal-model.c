@@ -190,13 +190,15 @@ glade_signal_model_class_init (GladeSignalModelClass *klass)
                                                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
 }
 
-/*
+/**
  * glade_signal_model_new:
- * @widget: The GladeWidget the signals belong to
+ * @widget: The #GladeWidget the signals belong to
  * @signals: The signals of the #GladeWidget
  *
- * Creates a new GladeSignalModel object to show and edit the
+ * Creates a new #GladeSignalModel object to show and edit the
  * signals of a widgets in a GtkTreeView
+ *
+ * Returns: (transfer full): a new #GladeSignalModel
  */
 
 GtkTreeModel *

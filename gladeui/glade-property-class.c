@@ -1205,6 +1205,11 @@ glade_property_class_is_visible (GladePropertyClass *klass)
   return klass->visible;
 }
 
+/**
+ * glade_property_class_set_adaptor:
+ * @property_class: A #GladePropertyClass
+ * @adaptor: (transfer full): A #GladeWidgetAdaptor
+ */
 void
 glade_property_class_set_adaptor (GladePropertyClass *property_class,
                                   GladeWidgetAdaptor *adaptor)
@@ -1214,6 +1219,12 @@ glade_property_class_set_adaptor (GladePropertyClass *property_class,
   property_class->adaptor = adaptor;
 }
 
+/**
+ * glade_property_class_get_adaptor:
+ * @property_class: A #GladePropertyClass
+ *
+ * Returns: (transfer none): The #GladeWidgetAdaptor associated with the @property_class
+ */
 GladeWidgetAdaptor *
 glade_property_class_get_adaptor (GladePropertyClass *property_class)
 {
@@ -1222,6 +1233,12 @@ glade_property_class_get_adaptor (GladePropertyClass *property_class)
   return property_class->adaptor;
 }
 
+/**
+ * glade_property_class_get_pspec:
+ * @property_class: A #GladePropertyClass
+ *
+ * Returns: (transfer none): The #GParamSpec associated with the @property_class
+ */
 GParamSpec *
 glade_property_class_get_pspec (GladePropertyClass *property_class)
 {
@@ -1230,6 +1247,11 @@ glade_property_class_get_pspec (GladePropertyClass *property_class)
   return property_class->pspec;
 }
 
+/**
+ * glade_property_class_set_pspec:
+ * @property_class: A #GladePropertyClass
+ * @pspec: (transfer full): A #GParamSpec
+ */
 void
 glade_property_class_set_pspec (GladePropertyClass *property_class,
                                 GParamSpec         *pspec)
@@ -1666,7 +1688,7 @@ gpc_read_displayable_values_from_node (GladeXmlNode       *node,
  *
  * Creates and appropriate GtkAdjustment for use in the editor
  *
- * Returns: An appropriate #GtkAdjustment for use in the Property editor
+ * Returns: (transfer full): An appropriate #GtkAdjustment for use in the Property editor
  */
 GtkAdjustment *
 glade_property_class_make_adjustment (GladePropertyClass *property_class)
@@ -2301,11 +2323,15 @@ glade_property_class_compare (GladePropertyClass *klass,
   return retval;
 }
 
-/*
-  This function assignes "weight" to each property in its natural order staring from 1.
-  If parent is 0 weight will be set for every GladePropertyClass in the list.
-  This function will not override weight if it is already set (weight >= 0.0)
-*/
+/**
+ * glade_property_class_set_weights:
+ * @properties: (element-type GladePropertyClass): a list of #GladePropertyClass
+ * @parent: the #GType of the parent
+ *
+ * This function assignes "weight" to each property in its natural order staring from 1.
+ * If parent is 0 weight will be set for every #GladePropertyClass in the list.
+ * This function will not override weight if it is already set (weight >= 0.0)
+ */
 void
 glade_property_class_set_weights (GList **properties, GType parent)
 {

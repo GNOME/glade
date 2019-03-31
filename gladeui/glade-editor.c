@@ -1320,7 +1320,7 @@ editor_widget_name_changed (GladeWidget *widget,
  * This convenience function creates a new dialog window to edit @widget
  * specifically.
  *
- * Returns: the newly created dialog window
+ * Returns: (transfer full): the newly created dialog window
  */
 GtkWidget *
 glade_editor_dialog_for_widget (GladeWidget *widget)

@@ -773,6 +773,12 @@ glade_design_view_class_init (GladeDesignViewClass *klass)
 
 /* Public API */
 
+/**
+ * glade_design_view_get_project:
+ * @view: A #GladeDesignView
+ *
+ * Returns: (transfer none): a #GladeProject
+ */
 GladeProject *
 glade_design_view_get_project (GladeDesignView *view)
 {
@@ -782,6 +788,12 @@ glade_design_view_get_project (GladeDesignView *view)
 
 }
 
+/**
+ * glade_design_view_new:
+ * @project: A #GladeProject
+ *
+ * Returns: (transfer full): a new #GladeDesignView
+ */
 GtkWidget *
 glade_design_view_new (GladeProject *project)
 {
@@ -794,6 +806,12 @@ glade_design_view_new (GladeProject *project)
   return GTK_WIDGET (view);
 }
 
+/**
+ * glade_design_view_get_from_project:
+ * @project: A #GladeProject
+ *
+ * Returns: (transfer none) (nullable): a #GladeDesignView
+ */
 GladeDesignView *
 glade_design_view_get_from_project (GladeProject *project)
 {

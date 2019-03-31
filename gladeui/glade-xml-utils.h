@@ -3,6 +3,7 @@
 #define __GLADE_XML_UTILS_H__
 
 #include <glib.h>
+#include <glib-object.h>
 #include <gmodule.h>
 
 
@@ -241,6 +242,7 @@ GladeXmlNode * glade_xml_node_prev_with_comments (GladeXmlNode *node_in);
 GladeXmlNode * glade_xml_node_get_children_with_comments (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_add_prev_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
 GladeXmlNode * glade_xml_node_add_next_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
+GType          glade_xml_node_get_type (void) G_GNUC_CONST;
 
 /* Document Operatons */
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);

@@ -131,6 +131,12 @@ glade_clipboard_get_has_selection (GladeClipboard *clipboard)
   return clipboard->priv->has_selection;
 }
 
+/**
+ * glade_clipboard_widgets:
+ * @clipboard: a #GladeClipboard
+ * 
+ * Returns: (element-type GladeWidget) (transfer none): a #GList of #GladeWidgets
+ */
 GList *
 glade_clipboard_widgets (GladeClipboard *clipboard)
 {
@@ -154,7 +160,7 @@ glade_clipboard_new (void)
 /**
  * glade_clipboard_add:
  * @clipboard: a #GladeClipboard
- * @widgets: a #GList of #GladeWidgets
+ * @widgets: (element-type GladeWidget): a #GList of #GladeWidgets
  * 
  * Adds @widgets to @clipboard.
  * This increases the reference count of each #GladeWidget in @widgets.

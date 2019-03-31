@@ -337,21 +337,21 @@ typedef gboolean (* GladeChildVerifyPropertyFunc) (GladeWidgetAdaptor *adaptor,
 /**
  * GladeAddChildVerifyFunc:
  * @adaptor: A #GladeWidgetAdaptor
- * @parent: A #GObject container
+ * @container: A #GObject container
  * @child: A #GObject child
  * @user_feedback: whether a notification dialog should be
  * presented in the case that the child cannot not be added.
  *
- * Checks whether @child can be added to @parent.
+ * Checks whether @child can be added to @container.
  *
  * If @user_feedback is %TRUE and @child cannot be
  * added then this shows a notification dialog to the user 
  * explaining why.
  *
- * Returns: whether @child can be added to @parent.
+ * Returns: whether @child can be added to @container.
  */
 typedef gboolean (* GladeAddChildVerifyFunc)      (GladeWidgetAdaptor *adaptor,
-                                                   GObject            *parent,
+                                                   GObject            *container,
                                                    GObject            *child,
                                                    gboolean            user_feedback);
 
@@ -370,25 +370,25 @@ typedef GList   *(* GladeGetChildrenFunc)         (GladeWidgetAdaptor *adaptor,
 /**
  * GladeAddChildFunc:
  * @adaptor: A #GladeWidgetAdaptor
- * @parent: A #GObject container
+ * @container: A #GObject parent container
  * @child: A #GObject child
  *
- * Called to add @child to @parent.
+ * Called to add @child to @container.
  */
 typedef void     (* GladeAddChildFunc)            (GladeWidgetAdaptor *adaptor,
-                                                   GObject            *parent,
+                                                   GObject            *container,
                                                    GObject            *child);
 
 /**
  * GladeRemoveChildFunc:
  * @adaptor: A #GladeWidgetAdaptor
- * @parent: A #GObject container
+ * @container: A #GObject parent container
  * @child: A #GObject child
  *
- * Called to remove @child from @parent.
+ * Called to remove @child from @container.
  */
 typedef void     (* GladeRemoveChildFunc)         (GladeWidgetAdaptor *adaptor,
-                                                   GObject            *parent,
+                                                   GObject            *container,
                                                    GObject            *child);
 
 /**
@@ -463,16 +463,16 @@ typedef void     (* GladePostCreateFunc)          (GladeWidgetAdaptor *adaptor,
 /**
  * GladeGetInternalFunc:
  * @adaptor: A #GladeWidgetAdaptor
- * @parent: A #GObject composite object
- * @name: A string identifier
+ * @object: A #GObject composite object
+ * @internal_name: A string identifier
  *
- * Called to lookup @child in composite object @parent by @name.
+ * Called to lookup child in composite @object parent by @internal_name.
  *
  * Returns: The specified internal widget.
  */
 typedef GObject *(* GladeGetInternalFunc)         (GladeWidgetAdaptor *adaptor,
-                                                   GObject            *parent,
-                                                   const gchar        *name);
+                                                   GObject            *object,
+                                                   const gchar        *internal_name);
 
 /**
  * GladeActionActivateFunc:

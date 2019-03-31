@@ -152,7 +152,6 @@ glade_editable_load (GladeEditable *editable, GladeWidget *widget)
   g_object_set_qdata (G_OBJECT (editable), glade_editable_loading_quark, GINT_TO_POINTER (FALSE));
 }
 
-
 /**
  * glade_editable_set_show_name:
  * @editable: A #GladeEditable
@@ -175,6 +174,12 @@ glade_editable_set_show_name (GladeEditable *editable, gboolean show_name)
     iface->set_show_name (editable, show_name);
 }
 
+/**
+ * glade_editable_loaded_widget:
+ * @editable: A #GladeEditable
+ *
+ * Returns: (transfer none) (nullable): a #GladeWidget or %NULL if the editable hasn't been loaded
+ */
 GladeWidget *
 glade_editable_loaded_widget (GladeEditable *editable)
 {

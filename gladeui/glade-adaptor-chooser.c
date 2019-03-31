@@ -273,6 +273,11 @@ glade_adaptor_chooser_class_init (GladeAdaptorChooserClass *klass)
 
 /* Public API */
 
+/**
+ * glade_adaptor_chooser_new:
+ *
+ * Returns: (transfer full): A new #GladeAdaptorChooser
+ */
 GtkWidget *
 glade_adaptor_chooser_new ()
 {
@@ -337,6 +342,12 @@ glade_adaptor_chooser_set_project (GladeAdaptorChooser *chooser,
   glade_adaptor_chooser_update_adaptor (chooser);
 }
 
+/**
+ * glade_adaptor_chooser_get_project:
+ * @chooser: a #GladeAdaptorChooser
+ *
+ * Returns: (transfer full): A #GladeProject
+ */
 GladeProject *
 glade_adaptor_chooser_get_project (GladeAdaptorChooser *chooser)
 {

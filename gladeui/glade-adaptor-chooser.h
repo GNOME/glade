@@ -34,9 +34,9 @@ G_DECLARE_FINAL_TYPE (GladeAdaptorChooser, glade_adaptor_chooser, GLADE, ADAPTOR
 
 GtkWidget    *glade_adaptor_chooser_new (void);
 
-void          glade_adaptor_chooser_set_project (GladeAdaptorChooser *bar,
+void          glade_adaptor_chooser_set_project (GladeAdaptorChooser *chooser,
                                                  GladeProject        *project);
-GladeProject *glade_adaptor_chooser_get_project (GladeAdaptorChooser *bar);
+GladeProject *glade_adaptor_chooser_get_project (GladeAdaptorChooser *chooser);
 
 G_END_DECLS
 

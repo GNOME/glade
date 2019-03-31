@@ -49,12 +49,12 @@ struct _GladeBaseEditorClass
 {
   GtkBoxClass parent_class;
 
-  void          (*child_selected)   (GladeBaseEditor *, GladeWidget *);
-  gboolean      (*change_type)      (GladeBaseEditor *, GladeWidget *, GType);
-  gchar *       (*get_display_name) (GladeBaseEditor *, GladeWidget *);
-  GladeWidget * (*build_child)      (GladeBaseEditor *, GladeWidget *, GType);
-  gboolean      (*delete_child)     (GladeBaseEditor *, GladeWidget *, GladeWidget *);
-  gboolean      (*move_child)       (GladeBaseEditor *, GladeWidget *, GladeWidget *);
+  void          (*child_selected)   (GladeBaseEditor *editor, GladeWidget *gchild);
+  gboolean      (*change_type)      (GladeBaseEditor *editor, GladeWidget *gchild, GType type);
+  gchar *       (*get_display_name) (GladeBaseEditor *editor, GladeWidget *gchild);
+  GladeWidget * (*build_child)      (GladeBaseEditor *editor, GladeWidget *parent, GType type);
+  gboolean      (*delete_child)     (GladeBaseEditor *editor, GladeWidget *parent, GladeWidget *gchild);
+  gboolean      (*move_child)       (GladeBaseEditor *editor, GladeWidget *gparent, GladeWidget *gchild);
 
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);

@@ -284,7 +284,7 @@ glade_signal_equal (const GladeSignal *sig1, const GladeSignal *sig2)
  * glade_signal_clone:
  * @signal: a #GladeSignal
  *
- * Returns: a new #GladeSignal with the same attributes as @signal
+ * Returns: (transfer full): a new #GladeSignal with the same attributes as @signal
  */
 GladeSignal *
 glade_signal_clone (const GladeSignal *signal)
@@ -369,7 +369,7 @@ glade_signal_write (GladeSignal     *signal,
  *
  * Reads and creates a ner #GladeSignal based on @node
  *
- * Returns: A newly created #GladeSignal
+ * Returns: (transfer full): A newly created #GladeSignal
  */
 GladeSignal *
 glade_signal_read (GladeXmlNode *node, GladeWidgetAdaptor *adaptor)

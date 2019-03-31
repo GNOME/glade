@@ -94,16 +94,16 @@ struct _GladeProjectClass
   GObjectClass parent_class;
 
   void          (*add_object)          (GladeProject *project,
-                                        GladeWidget  *widget);
+                                        GladeWidget  *object);
   void          (*remove_object)       (GladeProject *project,
-                                        GladeWidget  *widget);
+                                        GladeWidget  *object);
 
   void          (*undo)                (GladeProject *project);
   void          (*redo)                (GladeProject *project);
   GladeCommand *(*next_undo_item)      (GladeProject *project);
   GladeCommand *(*next_redo_item)      (GladeProject *project);
   void          (*push_undo)           (GladeProject *project,
-                                        GladeCommand *command);
+                                        GladeCommand *cmd);
 
   void          (*changed)             (GladeProject *project,
                                         GladeCommand *command,

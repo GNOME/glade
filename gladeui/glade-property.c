@@ -820,7 +820,7 @@ glade_property_new (GladePropertyClass *klass,
  * @template_prop: A #GladeProperty
  * @widget: A #GladeWidget
  *
- * Returns: A newly duplicated property based on the new widget
+ * Returns: (transfer full): A newly duplicated property based on the new widget
  */
 GladeProperty *
 glade_property_dup (GladeProperty *template_prop, GladeWidget *widget)
@@ -1607,6 +1607,11 @@ glade_property_make_string (GladeProperty *property)
                                                        property->priv->value);
 }
 
+/**
+ * glade_property_set_widget:
+ * @property: A #GladeProperty
+ * @widget: (transfer full): a #GladeWidget
+ */
 void
 glade_property_set_widget (GladeProperty *property,
                            GladeWidget   *widget)
@@ -1616,6 +1621,12 @@ glade_property_set_widget (GladeProperty *property,
   property->priv->widget = widget;
 }
 
+/**
+ * glade_property_get_widget:
+ * @property: A #GladeProperty
+ *
+ * Returns: (transfer none): a #GladeWidget
+ */
 GladeWidget *
 glade_property_get_widget (GladeProperty *property)
 {

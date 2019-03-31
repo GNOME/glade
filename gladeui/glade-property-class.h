@@ -19,8 +19,8 @@ G_BEGIN_DECLS
 
 /**
  * GLADE_PROPERTY_CLASS_IS_TYPE:
- * gpc: A #GladePropertyClass
- * type: The #GladeEditorPageType to query
+ * @gpc: A #GladePropertyClass
+ * @type: The #GladeEditorPageType to query
  *
  * Checks if @gpc is good to be loaded as @type
  */

@@ -514,9 +514,9 @@ glade_app_do_event (GdkEvent *event)
 /**
  * glade_app_config_save
  *
- * Saves the GKeyFile to "g_get_user_config_dir()/GLADE_CONFIG_FILENAME"
+ * Saves the #GKeyFile to "g_get_user_config_dir()/GLADE_CONFIG_FILENAME"
  *
- * Return 0 on success.
+ * Returns: 0 on success.
  */
 gint
 glade_app_config_save ()
@@ -626,6 +626,11 @@ glade_app_config_save ()
   return 0;
 }
 
+/**
+ * glade_app_get:
+ *
+ * Returns: (transfer none): the #GladeApp
+ */
 GladeApp *
 glade_app_get (void)
 {
@@ -637,6 +642,12 @@ glade_app_get (void)
   return singleton_app;
 }
 
+/**
+ * glade_app_set_window:
+ * @window: (transfer full): a #GtkWidget
+ *
+ * Set the window of the application
+ */
 void
 glade_app_set_window (GtkWidget *window)
 {
@@ -645,6 +656,12 @@ glade_app_set_window (GtkWidget *window)
   app->priv->window = window;
 }
 
+/**
+ * glade_app_get_catalog:
+ * @name: the name of the catalog
+ *
+ * Returns: (transfer none) (nullable): a #GladeCatalog or %NULL if none is found
+ */
 GladeCatalog *
 glade_app_get_catalog (const gchar *name)
 {
@@ -663,6 +680,16 @@ glade_app_get_catalog (const gchar *name)
   return NULL;
 }
 
+/**
+ * glade_app_get_catalog_version:
+ * @name: the name of the #GladeCatalog
+ * @major: (out) (optional): the major version
+ * @minor: (out) (optional): the minor version
+ *
+ * Returns: %TRUE if the catalog has been found. It is a programming error
+ * to call this function with an unexisting catalog, returns %FALSE in this
+ * case and throws a warning.
+ */
 gboolean
 glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor)
 {
@@ -678,6 +705,11 @@ glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor)
   return TRUE;
 }
 
+/**
+ * glade_app_get_catalogs:
+ *
+ * Returns: (transfer none) (element-type GladeCatalog): a list of #GladeCatalog
+ */
 GList *
 glade_app_get_catalogs (void)
 {
@@ -686,7 +718,11 @@ glade_app_get_catalogs (void)
   return app->priv->catalogs;
 }
 
-
+/**
+ * glade_app_get_window:
+ *
+ * Returns: (transfer none): a #GtkWidget
+ */
 GtkWidget *
 glade_app_get_window (void)
 {
@@ -694,16 +730,22 @@ glade_app_get_window (void)
   return app->priv->window;
 }
 
+/**
+ * glade_app_get_clipboard:
+ *
+ * Returns: (transfer none): a #GladeClipboard
+ */
 GladeClipboard *
 glade_app_get_clipboard (void)
 {
   GladeApp *app = glade_app_get ();
   return app->priv->clipboard;
 }
+
 /**
- * glade_app_get_catalogs:
+ * glade_app_get_projects:
  *
- * Return value: (element-type GladeCatalog): catalogs
+ * Returns: (element-type GladeCatalog) (transfer none): a list of #GladeCatalog
  */
 GList *
 glade_app_get_projects (void)
@@ -712,6 +754,11 @@ glade_app_get_projects (void)
   return app->priv->projects;
 }
 
+/**
+ * glade_app_get_config:
+ *
+ * Returns: (transfer full): a #GKeyFile
+ */
 GKeyFile *
 glade_app_get_config (void)
 {
@@ -759,7 +806,7 @@ glade_app_is_project_loaded (const gchar *project_path)
  *
  * Finds an open project with @path
  *
- * Returns: A #GladeProject, or NULL if no such open project was found
+ * Returns: (nullable) (transfer none): A #GladeProject, or NULL if no such open project was found
  */
 GladeProject *
 glade_app_get_project_by_path (const gchar *project_path)
@@ -792,6 +839,10 @@ glade_app_get_project_by_path (const gchar *project_path)
   return NULL;
 }
 
+/**
+ * glade_app_add_project:
+ * @project: the project to add to the #GladeApp
+ */
 void
 glade_app_add_project (GladeProject *project)
 {
@@ -809,6 +860,10 @@ glade_app_add_project (GladeProject *project)
   app->priv->projects = g_list_append (app->priv->projects, g_object_ref (project));
 }
 
+/**
+ * glade_app_remove_project:
+ * @project: the project to remove from the #GladeApp
+ */
 void
 glade_app_remove_project (GladeProject *project)
 {
@@ -826,8 +881,9 @@ glade_app_remove_project (GladeProject *project)
   g_object_unref (project);
 }
 
-/*
+/**
  * glade_app_set_accel_group:
+ * @accel_group: (transfer full): a #GtkAccelGroup to set
  *
  * Sets @accel_group to app.
  * The acceleration group will made available for editor dialog windows
@@ -844,18 +900,36 @@ glade_app_set_accel_group (GtkAccelGroup *accel_group)
   app->priv->accel_group = accel_group;
 }
 
+/**
+ * glade_app_get_accel_group:
+ *
+ * Returns: (transfer none): the #GtkAccelGroup
+ */
 GtkAccelGroup *
 glade_app_get_accel_group (void)
 {
   return glade_app_get ()->priv->accel_group;
 }
 
+/**
+ * glade_app_new:
+ *
+ * Returns: (transfer full): the #GladeApp
+ */
 GladeApp *
 glade_app_new (void)
 {
   return g_object_new (GLADE_TYPE_APP, NULL);
 }
 
+/**
+ * glade_app_search_docs:
+ * @book: the name of a book
+ * @page: the name of a page
+ * @search: the search query
+ *
+ * Searches for @book, @page and @search in the documentation.
+ */
 void
 glade_app_search_docs (const gchar *book,
                        const gchar *page, 

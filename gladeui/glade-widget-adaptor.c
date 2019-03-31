@@ -290,7 +290,11 @@ glade_widget_adaptor_get_parent_adaptor_by_type (GType adaptor_type)
   return NULL;
 }
 
-/* XXX DOCME
+/**
+ * glade_widget_adaptor_get_parent_adaptor:
+ * @adaptor: a #GladeWidgetAdaptor
+ *
+ * Returns: (transfer none): the parent #GladeWidgetAdaptor according to @adaptor type
  */
 GladeWidgetAdaptor *
 glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor)
@@ -1791,7 +1795,7 @@ glade_widget_adaptor_get_name (GladeWidgetAdaptor *adaptor)
  * glade_widget_adaptor_get_display_name
  * @adaptor: a #GladeWidgetAdaptor
  *
- * Returns the name of the adaptor without GWA_INSTANTIABLE_PREFIX
+ * Returns: the name of the adaptor without %GWA_INSTANTIABLE_PREFIX
  */
 G_CONST_RETURN gchar *
 glade_widget_adaptor_get_display_name (GladeWidgetAdaptor *adaptor)
@@ -1852,6 +1856,12 @@ glade_widget_adaptor_get_book (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->book;
 }
 
+/**
+ * glade_widget_adaptor_get_properties:
+ * @adaptor: A #GladeWidgetAdaptor
+ *
+ * Returns: (transfer none) (element-type GladePropertyClass): a list of #GladePropertyClass
+ */
 G_CONST_RETURN GList *
 glade_widget_adaptor_get_properties (GladeWidgetAdaptor *adaptor)
 {
@@ -1860,6 +1870,12 @@ glade_widget_adaptor_get_properties (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->properties;
 }
 
+/**
+ * glade_widget_adaptor_get_packing_props:
+ * @adaptor: A #GladeWidgetAdaptor
+ *
+ * Returns: (transfer none) (element-type GladePropertyClass): a list of #GladePropertyClass
+ */
 G_CONST_RETURN GList *
 glade_widget_adaptor_get_packing_props (GladeWidgetAdaptor *adaptor)
 {
@@ -1868,6 +1884,12 @@ glade_widget_adaptor_get_packing_props (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->packing_props;
 }
 
+/**
+ * glade_widget_adaptor_get_signals:
+ * @adaptor: A #GladeWidgetAdaptor
+ *
+ * Returns: (transfer none) (element-type GladeSignalClass): a list of #GladeSignalClass
+ */
 G_CONST_RETURN GList *
 glade_widget_adaptor_get_signals (GladeWidgetAdaptor *adaptor)
 {
@@ -1887,7 +1909,8 @@ accum_adaptor (gpointer key, GladeWidgetAdaptor *adaptor, GList **list)
  *
  * Compiles a list of all registered adaptors.
  *
- * Returns: A newly allocated #GList which must be freed with g_list_free()
+ * Returns: (transfer container) (element-type GladeWidgetAdaptor): A newly allocated #GList which
+ * must be freed with g_list_free()
  */
 GList *
 glade_widget_adaptor_list_adaptors (void)
@@ -2686,6 +2709,8 @@ generate_deprecated_icon (const gchar *icon_name)
  * the closest parent adaptor (parent class adapters must be creates/registerd
  * prior to child classes, otherwise inheritance wont work) and parses in
  * the relevent catalog info.
+ *
+ * Returns: (transfer full): a newly allocated #GladeWidgetAdaptor
  */
 GladeWidgetAdaptor *
 glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
@@ -2959,7 +2984,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
  * A convenienve function to create a #GladeWidget of the prescribed type
  * for internal widgets.
  *
- * Returns: a freshly created #GladeWidget wrapper object for the
+ * Returns: (transfer full): a freshly created #GladeWidget wrapper object for the
  *          @internal_object of name @internal_name
  */
 GladeWidget *
@@ -3013,7 +3038,24 @@ glade_widget_adaptor_create_internal (GladeWidget      *parent,
  * Note that the widget class must be fed twice; once as the
  * leading arg... and also as the property for the #GladeWidget
  *
- * this macro returns the newly created #GladeWidget
+ * Returns: (transfer full): the newly created #GladeWidget
+ */
+
+/**
+ * glade_widget_adaptor_create_widget_real:
+ * @query: whether to display query dialogs if
+ *         applicable to the class
+ * @first_property: the first property of @...
+ * @...: a %NULL terminated list of string/value pairs of #GladeWidget 
+ *       properties
+ *
+ * The macro glade_widget_adaptor_create_widget() uses this function
+ * glade_widget_adaptor_create_widget_real(@query, "adaptor", adaptor, @...)
+ *
+ * Use glade_widget_adaptor_create_widget() in C as this function is mostly
+ * available for languages where macros are not available.
+ *
+ * Returns: (transfer full): the newly created #GladeWidget
  */
 GladeWidget *
 glade_widget_adaptor_create_widget_real (gboolean     query,
@@ -3065,8 +3107,8 @@ glade_widget_adaptor_create_widget_real (gboolean     query,
  * glade_widget_adaptor_get_by_name:
  * @name: name of the widget class (for instance: GtkButton)
  *
- * Returns: an existing #GladeWidgetAdaptor with the name equaling @name,
- *          or %NULL if such a class doesn't exist
+ * Returns: (transfer none) (nullable): an existing #GladeWidgetAdaptor with the
+ *          name equaling @name, or %NULL if such a class doesn't exist
  **/
 GladeWidgetAdaptor *
 glade_widget_adaptor_get_by_name (const gchar *name)
@@ -3084,8 +3126,8 @@ glade_widget_adaptor_get_by_name (const gchar *name)
  * glade_widget_adaptor_get_by_type:
  * @type: the #GType of an object class
  *
- * Returns: an existing #GladeWidgetAdaptor with the type equaling @type,
- *          or %NULL if such a class doesn't exist
+ * Returns: (transfer none) (nullable): an existing #GladeWidgetAdaptor with the
+ *          type equaling @type, or %NULL if such a class doesn't exist
  **/
 GladeWidgetAdaptor *
 glade_widget_adaptor_get_by_type (GType type)
@@ -3105,7 +3147,7 @@ glade_widget_adaptor_get_by_type (GType type)
  * this function will search for the specific parent adaptor class which
  * originally introduced @pspec.
  *
- * Returns: the closest #GladeWidgetAdaptor in the ancestry to @adaptor
+ * Returns: (transfer none): the closest #GladeWidgetAdaptor in the ancestry to @adaptor
  *          which is responsable for introducing @pspec.
  **/
 GladeWidgetAdaptor *
@@ -3273,7 +3315,7 @@ glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
  * a #GladeWidget of the said @adaptor. (provided for language 
  * bindings that may need to construct a wrapper object).
  *
- * Returns: A newly created #GObject
+ * Returns: (transfer full): A newly created #GObject
  */
 GObject *
 glade_widget_adaptor_construct_object (GladeWidgetAdaptor *adaptor,
@@ -3381,7 +3423,7 @@ glade_widget_adaptor_post_create (GladeWidgetAdaptor *adaptor,
  *
  * Retrieves the internal object @internal_name from @object
  *
- * Returns: The internal #GObject
+ * Returns: (transfer none) (nullable): The internal #GObject
  */
 GObject *
 glade_widget_adaptor_get_internal_child (GladeWidgetAdaptor *adaptor,
@@ -3580,7 +3622,7 @@ glade_widget_adaptor_remove (GladeWidgetAdaptor *adaptor,
  *
  * Lists the children of @container.
  *
- * Returns: A #GList of children
+ * Returns: (transfer container) (element-type GObject): A #GList of children
  */
 GList *
 glade_widget_adaptor_get_children (GladeWidgetAdaptor *adaptor,
@@ -4057,7 +4099,7 @@ glade_widget_adaptor_pack_action_remove (GladeWidgetAdaptor *adaptor,
  *
  * Create a list of actions.
  *
- * Returns: a new list of GladeWidgetAction.
+ * Returns: (transfer full) (element-type GladeWidgetAction): a new list of GladeWidgetAction.
  */
 GList *
 glade_widget_adaptor_actions_new (GladeWidgetAdaptor *adaptor)
@@ -4083,7 +4125,7 @@ glade_widget_adaptor_actions_new (GladeWidgetAdaptor *adaptor)
  *
  * Create a list of packing actions.
  *
- * Returns: a new list of GladeWidgetAction.
+ * Returns: (transfer full) (element-type GladeWidgetAction): a new list of GladeWidgetAction.
  */
 GList *
 glade_widget_adaptor_pack_actions_new (GladeWidgetAdaptor *adaptor)
@@ -4159,7 +4201,7 @@ glade_widget_adaptor_child_action_activate (GladeWidgetAdaptor *adaptor,
  * This delagate function is used to create dynamically customized
  * submenus. Called only for actions that dont have children.
  *
- * Returns: A newly created #GtkMenu or %NULL
+ * Returns: (transfer full) (nullable): A newly created #GtkMenu or %NULL
  */
 GtkWidget *
 glade_widget_adaptor_action_submenu (GladeWidgetAdaptor *adaptor,
@@ -4331,7 +4373,7 @@ glade_widget_adaptor_write_child (GladeWidgetAdaptor *adaptor,
  * 
  * Creates a GladeEditorProperty to edit @klass
  *
- * Returns: A newly created #GladeEditorProperty
+ * Returns: (transfer full): A newly created #GladeEditorProperty
  */
 GladeEditorProperty *
 glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
@@ -4364,7 +4406,7 @@ glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
  * 
  * Creates a #GladeEditorProperty to edit #GladePropertyClass @name in @adaptor
  *
- * Returns: A newly created #GladeEditorProperty
+ * Returns: (transfer full): A newly created #GladeEditorProperty
  */
 GladeEditorProperty *
 glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
@@ -4422,7 +4464,7 @@ glade_widget_adaptor_string_from_value (GladeWidgetAdaptor *adaptor,
  * 
  * Looks up signal class @name on @adaptor.
  *
- * Returns: a #GladeSignalClass or %NULL
+ * Returns: (nullable) (transfer none): a #GladeSignalClass or %NULL
  */
 GladeSignalClass *
 glade_widget_adaptor_get_signal_class (GladeWidgetAdaptor *adaptor,
@@ -4454,7 +4496,7 @@ glade_widget_adaptor_get_signal_class (GladeWidgetAdaptor *adaptor,
  * editor page is layed out (note that editor widgets are created
  * on demand and not at startup).
  *
- * Returns: A new #GladeEditable widget
+ * Returns: (transfer full): A new #GladeEditable widget
  */
 GladeEditable *
 glade_widget_adaptor_create_editable (GladeWidgetAdaptor *adaptor,

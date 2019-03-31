@@ -686,7 +686,12 @@ glade_palette_new (void)
   return GTK_WIDGET (palette);
 }
 
-
+/**
+ * glade_palette_get_project:
+ * @palette: a #GladePalette
+ *
+ * Returns: (transfer none): a #GladeProject
+ */
 GladeProject *
 glade_palette_get_project (GladePalette *palette)
 {
@@ -884,7 +889,7 @@ glade_palette_get_show_selector_button (GladePalette *palette)
  * glade_palette_get_tool_palette:
  * @palette: a #GladePalette
  *
- * Returns: the GtkToolPalette associated to this palette.
+ * Returns: (transfer none): the GtkToolPalette associated to this palette.
  */
 GtkToolPalette *
 glade_palette_get_tool_palette (GladePalette *palette)

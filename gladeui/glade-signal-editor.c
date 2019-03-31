@@ -1198,6 +1198,12 @@ glade_signal_editor_devhelp_cell_data_func (GtkTreeViewColumn *column,
     }
 }
 
+/**
+ * glade_signal_editor_get_widget:
+ * @editor: a #GladeSignalEditor
+ *
+ * Returns: (transfer none): a #GladeWidget
+ */
 GladeWidget*
 glade_signal_editor_get_widget (GladeSignalEditor *editor)
 {
@@ -1475,6 +1481,7 @@ glade_signal_editor_class_init (GladeSignalEditorClass *klass)
   /**
    * GladeSignalEditor::signal-activated:
    * @signal_editor: the object which received the signal
+   * @signal: the #GladeSignal that is activated
    *
    * Emitted when a item is activated in the GladeInspector.
    */
@@ -1492,11 +1499,10 @@ glade_signal_editor_class_init (GladeSignalEditorClass *klass)
    * GladeSignalEditor::callback-suggestions:
    * @editor: the object which received the signal
    * @signal: the #GladeSignal that needs callbacks suggestions
-   * @suggestions: Return
    *
    * Emitted when the editor needs to show a list of callbacks suggestions to the user.
    * 
-   * Returns wheter or not the event was handled.
+   * Returns: (transfer full): an array of string suggestions
    */
   glade_signal_editor_signals[CALLBACK_SUGGESTIONS] =
     g_signal_new ("callback-suggestions",
@@ -1512,11 +1518,10 @@ glade_signal_editor_class_init (GladeSignalEditorClass *klass)
    * GladeSignalEditor::detail-suggestions:
    * @editor: the object which received the signal
    * @signal: the #GladeSignal that needs callbacks suggestions
-   * @suggestions: Return
    *
    * Emitted when the editor needs to show a list of detail suggestions to the user.
    * 
-   * Returns wheter or not the event was handled.
+   * Returns: (transfer full): an array of string suggestions
    */
   glade_signal_editor_signals[DETAIL_SUGGESTIONS] =
     g_signal_new ("detail-suggestions",
@@ -1526,8 +1531,7 @@ glade_signal_editor_class_init (GladeSignalEditorClass *klass)
                   _glade_strv_handled_accumulator,
                   NULL, _glade_marshal_BOXED__OBJECT,
                   G_TYPE_STRV, 1,
-                  GLADE_TYPE_SIGNAL);   
-  
+                  GLADE_TYPE_SIGNAL);
 
   g_object_class_install_property (object_class,
                                    PROP_GLADE_WIDGET,

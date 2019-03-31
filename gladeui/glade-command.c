@@ -1791,14 +1791,14 @@ glade_command_add_remove_collapse (GladeCommand *this_cmd,
 /**
  * glade_command_create:
  * @adaptor: A #GladeWidgetAdaptor
- * @parent: (allow-none): the parent #GladeWidget to add the new widget to.
- * @placeholder: (allow-none): the placeholder which will be substituted by the widget
+ * @parent: (nullable): the parent #GladeWidget to add the new widget to.
+ * @placeholder: (nullable): the placeholder which will be substituted by the widget
  * @project: the project his widget belongs to.
  *
  * Creates a new widget using @adaptor and put in place of the @placeholder
  * in the @project
  *
- * Returns: the newly created widget.
+ * Returns: (transfer full): the newly created widget.
  */
 GladeWidget *
 glade_command_create (GladeWidgetAdaptor *adaptor,

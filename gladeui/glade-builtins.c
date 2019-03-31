@@ -359,6 +359,11 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   return etype;
 }
 
+/**
+ * glade_standard_stock_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing a list of builtin stock item
+ */
 GParamSpec *
 glade_standard_stock_spec (void)
 {
@@ -367,6 +372,11 @@ glade_standard_stock_spec (void)
                             GLADE_TYPE_STOCK, 0, G_PARAM_READWRITE);
 }
 
+/**
+ * glade_standard_stock_image_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing a list of builtin stock image
+ */
 GParamSpec *
 glade_standard_stock_image_spec (void)
 {
@@ -481,6 +491,11 @@ glade_param_objects_get_type (void)
   return objects_type;
 }
 
+/**
+ * glade_param_spec_objects:
+ *
+ * Returns: (transfer full): a #GParamSpec describing a list of #GObject
+ */
 GParamSpec *
 glade_param_spec_objects (const gchar * name,
                           const gchar * nick,
@@ -508,9 +523,14 @@ glade_param_spec_objects_get_type (GladeParamSpecObjects * pspec)
   return pspec->type;
 }
 
-/* This was developed for the purpose of holding a list
+/**
+ * glade_standard_objects_spec:
+ *
+ * This was developed for the purpose of holding a list
  * of 'targets' in an AtkRelation (we are setting it up
  * as a property)
+ *
+ * Returns: (transfer full): a #GParamSpec describing a list of #GObject
  */
 GParamSpec *
 glade_standard_objects_spec (void)
@@ -520,7 +540,11 @@ glade_standard_objects_spec (void)
                                    G_TYPE_OBJECT, G_PARAM_READWRITE);
 }
 
-/* Pixbuf Type */
+/**
+ * glade_standard_pixbuf_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing a #GdkPixbuf
+ */
 GParamSpec *
 glade_standard_pixbuf_spec (void)
 {
@@ -530,7 +554,11 @@ glade_standard_pixbuf_spec (void)
                               G_PARAM_READWRITE);
 }
 
-/* GdkColor */
+/**
+ * glade_standard_gdkcolor_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing a #GdkColor
+ */
 GParamSpec *
 glade_standard_gdkcolor_spec (void)
 {
@@ -542,6 +570,12 @@ glade_standard_gdkcolor_spec (void)
 /****************************************************************
  *                    Basic types follow                        *
  ****************************************************************/
+
+/**
+ * glade_standard_int_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing an int
+ */
 GParamSpec *
 glade_standard_int_spec (void)
 {
@@ -550,6 +584,11 @@ glade_standard_int_spec (void)
                            G_MININT, G_MAXINT, 0, G_PARAM_READWRITE);
 }
 
+/**
+ * glade_standard_uint_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing an uint
+ */
 GParamSpec *
 glade_standard_uint_spec (void)
 {
@@ -558,6 +597,11 @@ glade_standard_uint_spec (void)
                             0, G_MAXUINT, 0, G_PARAM_READWRITE);
 }
 
+/**
+ * glade_standard_string_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing a string
+ */
 GParamSpec *
 glade_standard_string_spec (void)
 {
@@ -565,6 +609,11 @@ glade_standard_string_spec (void)
                               _("An entry"), "", G_PARAM_READWRITE);
 }
 
+/**
+ * glade_standard_strv_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing an array of strings
+ */
 GParamSpec *
 glade_standard_strv_spec (void)
 {
@@ -572,6 +621,11 @@ glade_standard_strv_spec (void)
                              "String array", G_TYPE_STRV, G_PARAM_READWRITE);
 }
 
+/**
+ * glade_standard_float_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing a float
+ */
 GParamSpec *
 glade_standard_float_spec (void)
 {
@@ -580,6 +634,11 @@ glade_standard_float_spec (void)
                              0.0F, G_MAXFLOAT, 0.0F, G_PARAM_READWRITE);
 }
 
+/**
+ * glade_standard_boolean_spec:
+ *
+ * Returns: (transfer full): a #GParamSpec describing a boolean
+ */
 GParamSpec *
 glade_standard_boolean_spec (void)
 {
