@@ -65,6 +65,7 @@ struct _GladeXmlContext
   xmlNsPtr ns;
 };
 
+G_DEFINE_BOXED_TYPE(GladeXmlNode, glade_xml_node, glade_xml_node_copy, glade_xml_node_delete);
 
 /* This is used inside for loops so that we skip xml comments 
  * <!-- i am a comment ->
@@ -508,6 +509,15 @@ glade_xml_get_property_version (GladeXmlNode *node_in,
   return TRUE;
 }
 
+/**
+ * glade_xml_get_property_targetable_versions:
+ * @node_in: a #GladeXmlNode
+ * @name: a property name
+ *
+ * Get the list of targetable versions for a property
+ *
+ * Returns: (element-type GladeTargetableVersion) (transfer full): a list of #GladeTargetableVersion
+ */
 GList *
 glade_xml_get_property_targetable_versions (GladeXmlNode *node_in,
                                             const gchar  *name)

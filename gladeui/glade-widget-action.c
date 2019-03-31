@@ -54,6 +54,7 @@ struct _GladeWidgetActionPrivate
 static GParamSpec *properties[N_PROPERTIES];
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladeWidgetAction, glade_widget_action, G_TYPE_OBJECT);
+G_DEFINE_BOXED_TYPE (GWActionClass, glade_widget_action_class, glade_widget_action_class_clone, glade_widget_action_class_free);
 
 static void
 glade_widget_action_init (GladeWidgetAction *object)
@@ -247,6 +248,12 @@ glade_widget_action_get_visible (GladeWidgetAction *action)
   return action->priv->visible;
 }
 
+/**
+ * glade_widget_action_get_children:
+ * @action: a #GladeWidgetAction
+ *
+ * Returns: (transfer none) (element-type GWActionClass): a list of #GWActionClass
+ */
 GList *
 glade_widget_action_get_children (GladeWidgetAction *action)
 {

@@ -1064,9 +1064,9 @@ glade_inspector_set_project (GladeInspector *inspector, GladeProject *project)
  * glade_inspector_get_project:
  * @inspector: a #GladeInspector
  * 
- * Note that the method does not ref the returned #GladeProject. 
+ * Note that the method does not ref the returned #GladeProject.
  *
- * Returns: A #GladeProject
+ * Returns: (transfer none): A #GladeProject
  */
 GladeProject *
 glade_inspector_get_project (GladeInspector *inspector)
@@ -1082,7 +1082,7 @@ glade_inspector_get_project (GladeInspector *inspector)
  * 
  * Returns the selected items in the inspector. 
  *
- * Returns: A #GList
+ * Returns: (transfer container) (element-type GladeWidget): A #GList of #GladeWidget
  */
 GList *
 glade_inspector_get_selected_items (GladeInspector *inspector)
@@ -1123,7 +1123,7 @@ glade_inspector_get_selected_items (GladeInspector *inspector)
  * 
  * Creates a new #GladeInspector
  * 
- * Returns: a new #GladeInspector
+ * Returns: (transfer full): a new #GladeInspector
  */
 GtkWidget *
 glade_inspector_new (void)
@@ -1137,7 +1137,7 @@ glade_inspector_new (void)
  *
  * Creates a new #GladeInspector with @project
  * 
- * Returns: a new #GladeInspector
+ * Returns: (transfer full): a new #GladeInspector
  */
 GtkWidget *
 glade_inspector_new_with_project (GladeProject *project)

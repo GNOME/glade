@@ -633,7 +633,7 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 /**
  * glade_placeholder_new:
  * 
- * Returns: a new #GladePlaceholder cast as a #GtkWidget
+ * Returns: (transfer full): a new #GladePlaceholder
  */
 GtkWidget *
 glade_placeholder_new (void)
@@ -641,6 +641,12 @@ glade_placeholder_new (void)
   return g_object_new (GLADE_TYPE_PLACEHOLDER, NULL);
 }
 
+/**
+ * glade_placeholder_get_project:
+ * @placeholder: a #GladePlaceholder
+ * 
+ * Returns: (transfer none) (nullable): a #GladeProject
+ */
 GladeProject *
 glade_placeholder_get_project (GladePlaceholder *placeholder)
 {
@@ -649,6 +655,12 @@ glade_placeholder_get_project (GladePlaceholder *placeholder)
   return parent ? glade_widget_get_project (parent) : NULL;
 }
 
+/**
+ * glade_placeholder_get_parent:
+ * @placeholder: a #GladePlaceholder
+ * 
+ * Returns: (transfer none) (nullable): a #GladeProject
+ */
 GladeWidget *
 glade_placeholder_get_parent (GladePlaceholder *placeholder)
 {
@@ -666,6 +678,12 @@ glade_placeholder_get_parent (GladePlaceholder *placeholder)
   return parent;
 }
 
+/**
+ * glade_placeholder_packing_actions:
+ * @placeholder: a #GladePlaceholder
+ * 
+ * Returns: (transfer none) (element-type GladeWidgetAction): a list of #GladeWidgetAction
+ */
 GList *
 glade_placeholder_packing_actions (GladePlaceholder *placeholder)
 {

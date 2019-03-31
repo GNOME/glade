@@ -193,19 +193,6 @@ glade_object_stub_get_property (GObject    *object,
     }
 }
 
-static GType
-glade_xml_node_get_type (void)
-{
-  static GType type = 0;
-
-  if (type) return type;
-
-  type = g_boxed_type_register_static ("GladeXmlNode",
-                                       (GBoxedCopyFunc) glade_xml_node_copy,
-                                       (GBoxedFreeFunc) glade_xml_node_delete);
-  return type;
-}
-
 static void
 glade_object_stub_class_init (GladeObjectStubClass *klass)
 {

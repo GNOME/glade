@@ -720,7 +720,8 @@ glade_widget_build_object (GladeWidget      *widget,
 /**
  * glade_widget_dup_properties:
  * @dest_widget: the widget we are copying properties for
- * @template_props: the #GladeProperty list to copy
+ * @template_props: (element-type GladeProperty): the
+ * #GladeProperty list to copy
  * @as_load: whether to behave as if loading the project
  * @copy_parentless: whether to copy reffed widgets at all
  * @exact: whether to copy reffed widgets exactly
@@ -728,7 +729,8 @@ glade_widget_build_object (GladeWidget      *widget,
  * Copies a list of properties, if @as_load is specified, then
  * properties that are not saved to the glade file are ignored.
  *
- * Returns: A newly allocated #GList of new #GladeProperty objects.
+ * Returns: (transfer full) (element-type GladeProperty): A newly
+ * allocated #GList of new #GladeProperty objects.
  */
 GList *
 glade_widget_dup_properties (GladeWidget *dest_widget,
@@ -2055,6 +2057,12 @@ _glade_widget_peek_prop_refs (GladeWidget *widget)
 /*******************************************************************************
                                      API
  *******************************************************************************/
+/**
+ * glade_widget_get_from_gobject:
+ * @object: A #GObject containing the widget
+ *
+ * Returns: (transfer none): a #GladeWidget
+ */
 GladeWidget *
 glade_widget_get_from_gobject (gpointer object)
 {
@@ -2189,6 +2197,12 @@ glade_widget_remove_prop_ref (GladeWidget *widget, GladeProperty *property)
     }
 }
 
+/**
+ * glade_widget_list_prop_refs:
+ * @widget: A #GladeWidget
+ *
+ * Returns: (transfer container) (element-type GladeProperty): a list of #GladeProperty
+ */
 GList *
 glade_widget_list_prop_refs (GladeWidget *widget)
 {
@@ -2205,6 +2219,12 @@ glade_widget_has_prop_refs (GladeWidget *widget)
   return widget->priv->prop_refs != NULL;
 }
 
+/**
+ * glade_widget_get_parentless_widget_ref:
+ * @widget: A #GladeWidget
+ *
+ * Returns: (transfer none): a #GladeProperty
+ */
 GladeProperty *
 glade_widget_get_parentless_widget_ref (GladeWidget *widget)
 {
@@ -2226,7 +2246,12 @@ glade_widget_get_parentless_widget_ref (GladeWidget *widget)
   return NULL;
 }
 
-
+/**
+ * glade_widget_get_parentless_reffed_widgets:
+ * @widget: A #GladeWidget
+ *
+ * Returns: (transfer container) (element-type GladeProperty): a list of #GladeProperty
+ */
 GList *
 glade_widget_get_parentless_reffed_widgets (GladeWidget *widget)
 {
@@ -2276,7 +2301,7 @@ glade_widget_accum_signal_foreach (const gchar *key,
  *
  * Compiles a list of #GladeSignal elements
  *
- * Returns: (transfer container) (element-type GladeSignal):a newly allocated #GList of
+ * Returns: (transfer container) (element-type GladeSignal): a newly allocated #GList of
  * #GladeSignal, the caller must call g_list_free() to free the list.
  */
 GList *
@@ -2466,7 +2491,7 @@ glade_widget_remove_child (GladeWidget *parent, GladeWidget *child)
  * (this is used to maintain names & signals in Cut/Paste context
  * as opposed to Copy/Paste contexts).
  *
- * Returns: The newly created #GladeWidget
+ * Returns: (transfer full): The newly created #GladeWidget
  */
 GladeWidget *
 glade_widget_dup (GladeWidget *template_widget, gboolean exact)
@@ -2683,7 +2708,7 @@ glade_widget_rebuild (GladeWidget *gwidget)
  * @widget: a #GladeWidget
  * @signal_name: the name of the signal
  *
- * Returns: A #GPtrArray of #GladeSignal for @signal_name
+ * Returns: (transfer none) (element-type GladeSignal): A #GPtrArray of #GladeSignal for @signal_name
  */
 GPtrArray *
 glade_widget_list_signal_handlers (GladeWidget *widget, const gchar *signal_name)     /* array of GladeSignal* */
@@ -2852,7 +2877,7 @@ glade_widget_get_internal (GladeWidget *widget)
  * glade_widget_get_adaptor:
  * @widget: a #GladeWidget
  *
- * Returns: the #GladeWidgetAdaptor of @widget
+ * Returns: (transfer none): the #GladeWidgetAdaptor of @widget
  */
 GladeWidgetAdaptor *
 glade_widget_get_adaptor (GladeWidget *widget)
@@ -2882,7 +2907,7 @@ glade_widget_set_project (GladeWidget *widget, GladeProject *project)
  * glade_widget_get_project:
  * @widget: a #GladeWidget
  * 
- * Returns: the #GladeProject that @widget belongs to
+ * Returns: (transfer none): the #GladeProject that @widget belongs to
  */
 GladeProject *
 glade_widget_get_project (GladeWidget *widget)
@@ -2912,7 +2937,7 @@ glade_widget_in_project (GladeWidget *widget)
  * @widget: a #GladeWidget
  * @id_property: a string naming a #GladeProperty
  *
- * Returns: the #GladeProperty in @widget named @id_property
+ * Returns: (transfer none) (nullable): the #GladeProperty in @widget named @id_property
  */
 GladeProperty *
 glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
@@ -2934,7 +2959,7 @@ glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
  * @widget: a #GladeWidget
  * @id_property: a string naming a #GladeProperty
  *
- * Returns: the #GladeProperty in @widget named @id_property
+ * Returns: (transfer none) (nullable): the #GladeProperty in @widget named @id_property
  */
 GladeProperty *
 glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
@@ -3656,7 +3681,7 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
  * glade_widget_get_object:
  * @widget: a #GladeWidget
  *
- * Returns: the #GObject associated with @widget
+ * Returns: (transfer none): the #GObject associated with @widget
  */
 GObject *
 glade_widget_get_object (GladeWidget *widget)
@@ -3669,7 +3694,7 @@ glade_widget_get_object (GladeWidget *widget)
  * glade_widget_get_parent:
  * @widget: A #GladeWidget
  *
- * Returns: The parenting #GladeWidget
+ * Returns: (transfer none): The parenting #GladeWidget
  */
 GladeWidget *
 glade_widget_get_parent (GladeWidget *widget)
@@ -3681,7 +3706,7 @@ glade_widget_get_parent (GladeWidget *widget)
 /**
  * glade_widget_set_parent:
  * @widget: A #GladeWidget
- * @parent: the parenting #GladeWidget (or %NULL)
+ * @parent: (nullable): the parenting #GladeWidget (or %NULL)
  *
  * sets the parenting #GladeWidget
  */
@@ -3722,7 +3747,7 @@ glade_widget_set_parent (GladeWidget *widget, GladeWidget *parent)
  *
  * Finds a child widget named @name.
  *
- * Returns: The child of widget or NULL if it was not found.
+ * Returns: (nullable) (transfer none): The child of widget or %NULL if it was not found.
  */
 GladeWidget *
 glade_widget_find_child (GladeWidget *widget, const gchar *name)
@@ -3760,7 +3785,7 @@ glade_widget_find_child (GladeWidget *widget, const gchar *name)
  *
  * Fetches any wrapped children of @widget.
  *
- * Returns: The children of widget
+ * Returns: (transfer container) (element-type GObject): The children of widget
  *
  * <note><para>This differs from a direct call to glade_widget_adaptor_get_children() as
  * it only returns children which have an associated GladeWidget. This function will
@@ -3797,7 +3822,7 @@ glade_widget_get_children (GladeWidget *widget)
  * glade_widget_get_toplevel:
  * @widget: A #GladeWidget
  *
- * Returns: The toplevel #GladeWidget in the hierarchy (or @widget)
+ * Returns: (transfer none): The toplevel #GladeWidget in the hierarchy (or @widget)
  */
 GladeWidget *
 glade_widget_get_toplevel (GladeWidget *widget)
@@ -4427,8 +4452,8 @@ glade_widget_write (GladeWidget     *widget,
  * Determines whether @widget is somewhere inside @ancestor, possibly with
  * intermediate containers.
  *
- * Return value: %TRUE if @ancestor contains @widget as a child,
- *    grandchild, great grandchild, etc.
+ * Returns: %TRUE if @ancestor contains @widget as a child, grandchild,
+ * great grandchild, etc.
  **/
 gboolean
 glade_widget_is_ancestor (GladeWidget *widget, GladeWidget *ancestor)
@@ -4457,7 +4482,7 @@ glade_widget_is_ancestor (GladeWidget *widget, GladeWidget *ancestor)
  * A widget is dependent on another widget.
  * It does not take into account for children dependencies.
  *
- * Return value: %TRUE if @widget depends on @other.
+ * Returns: %TRUE if @widget depends on @other.
  *
  * Deprecated: 3.18 
  **/
@@ -4473,7 +4498,7 @@ glade_widget_depends (GladeWidget *widget, GladeWidget *other)
  * 
  * Currently only motion and button events are handled (see IS_GLADE_WIDGET_EVENT)
  * 
- * Returns: the asociated GdkDevice for this glade widget event.
+ * Returns: (transfer none): the asociated #GdkDevice for this glade widget event.
  *
  * Deprecated: use gdk_event_get_device() instead.
  */
@@ -4590,7 +4615,7 @@ glade_widget_action_lookup (GList *actions, const gchar *path)
  *
  * Returns a #GladeWidgetAction object indentified by @action_path.
  *
- * Returns: the action or NULL if not found.
+ * Returns: (transfer none) (nullable): the action or %NULL if not found.
  */
 GladeWidgetAction *
 glade_widget_get_action (GladeWidget *widget, const gchar *action_path)
@@ -4608,7 +4633,7 @@ glade_widget_get_action (GladeWidget *widget, const gchar *action_path)
  *
  * Returns a #GladeWidgetAction object indentified by @action_path.
  *
- * Returns: the action or NULL if not found.
+ * Returns: (transfer none) (nullable): the action or %NULL if not found.
  */
 GladeWidgetAction *
 glade_widget_get_pack_action (GladeWidget *widget, const gchar *action_path)
@@ -4619,7 +4644,12 @@ glade_widget_get_pack_action (GladeWidget *widget, const gchar *action_path)
   return glade_widget_action_lookup (widget->priv->packing_actions, action_path);
 }
 
-
+/**
+ * glade_widget_get_actions:
+ * @widget: a #GladeWidget
+ *
+ * Returns: (transfer none) (element-type GladeWidgetAction): the list of #GladeWidgetAction
+ */
 GList *
 glade_widget_get_actions (GladeWidget *widget)
 {
@@ -4628,6 +4658,12 @@ glade_widget_get_actions (GladeWidget *widget)
   return widget->priv->actions;
 }
 
+/**
+ * glade_widget_get_pack_actions:
+ * @widget: a #GladeWidget
+ *
+ * Returns: (transfer none) (element-type GladeWidgetAction): the list of #GladeWidgetAction
+ */
 GList *
 glade_widget_get_pack_actions (GladeWidget *widget)
 {
@@ -4635,7 +4671,6 @@ glade_widget_get_pack_actions (GladeWidget *widget)
 
   return widget->priv->packing_actions;
 }
-
 
 /**
  * glade_widget_set_action_sensitive:
@@ -4757,7 +4792,7 @@ glade_widget_set_pack_action_visible (GladeWidget *widget,
  * This is a convenience function to create a GladeEditorProperty corresponding
  * to @property
  *
- * Returns: A newly created and connected GladeEditorProperty
+ * Returns: (transfer full): A newly created and connected GladeEditorProperty
  */
 GladeEditorProperty *
 glade_widget_create_editor_property (GladeWidget *widget,
@@ -4984,7 +5019,6 @@ glade_widget_support_warning (GladeWidget *widget)
  * Sets @locked to be in a locked up state
  * spoken for by @widget, locked widgets cannot
  * be removed from the project until unlocked.
- *
  */
 void
 glade_widget_lock (GladeWidget *widget, GladeWidget *locked)
@@ -5003,7 +5037,6 @@ glade_widget_lock (GladeWidget *widget, GladeWidget *locked)
  *
  * Unlocks @widget so that it can be removed
  * from the project again
- *
  */
 void
 glade_widget_unlock (GladeWidget *widget)
@@ -5021,7 +5054,15 @@ glade_widget_unlock (GladeWidget *widget)
   widget->priv->lock = NULL;
 }
 
-
+/**
+ * glade_widget_get_locker:
+ * @widget: A #GladeWidget
+ *
+ * Get the current locked widget, locked widgets cannot
+ * be removed from the project until unlocked
+ *
+ * Returns: (transfer none) (nullable): a #GladeWidget or %NULL if none is locked
+ */
 GladeWidget *
 glade_widget_get_locker (GladeWidget *widget)
 {
@@ -5030,6 +5071,12 @@ glade_widget_get_locker (GladeWidget *widget)
   return widget->priv->lock;
 }
 
+/**
+ * glade_widget_list_locked_widgets:
+ * @widget: A #GladeWidget
+ *
+ * Returns: (transfer container) (element-type GladeWidget): the list of #GladeWidget
+ */
 GList *
 glade_widget_list_locked_widgets (GladeWidget *widget)
 {
@@ -5044,7 +5091,6 @@ glade_widget_list_locked_widgets (GladeWidget *widget)
  * @widget: A #GladeWidget
  *
  * Notifies that support metadata has changed on the widget.
- *
  */
 void
 glade_widget_support_changed (GladeWidget *widget)
@@ -5058,7 +5104,7 @@ glade_widget_support_changed (GladeWidget *widget)
  * glade_widget_get_signal_model:
  * @widget: A #GladeWidget
  * 
- * Returns: a GtkTreeModel that can be used to view the widget's signals.
+ * Returns: (transfer none): a GtkTreeModel that can be used to view the widget's signals.
  *          The signal model is owned by the #GladeWidget.
  */
 GtkTreeModel *
@@ -5072,6 +5118,12 @@ glade_widget_get_signal_model (GladeWidget *widget)
         return widget->priv->signal_model;
 }
 
+/**
+ * glade_widget_get_properties:
+ * @widget: A #GladeWidget
+ *
+ * Returns: (transfer none) (element-type GladeProperty): the list of #GladeProperty
+ */
 GList *
 glade_widget_get_properties (GladeWidget *widget)
 {
@@ -5080,6 +5132,12 @@ glade_widget_get_properties (GladeWidget *widget)
   return widget->priv->properties;
 }
 
+/**
+ * glade_widget_get_packing_properties:
+ * @widget: A #GladeWidget
+ *
+ * Returns: (transfer none) (element-type GladeProperty): the list of #GladeProperty
+ */
 GList *
 glade_widget_get_packing_properties (GladeWidget *widget)
 {

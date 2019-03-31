@@ -100,6 +100,12 @@ glade_signal_class_update_from_node (GladeSignalClass *signal_class,
                                     signal_class->deprecated);
 }
 
+/**
+ * glade_signal_class_get_adaptor:
+ * @signal_class: a #GladeSignalClass
+ *
+ * Returns: (transfer none): a #GladeWidgetAdaptor
+ */
 GladeWidgetAdaptor *
 glade_signal_class_get_adaptor (const GladeSignalClass *signal_class)
 {
