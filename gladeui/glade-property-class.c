@@ -230,6 +230,7 @@ glade_property_class_new (GladeWidgetAdaptor *adaptor,
   property_class->transfer_on_paste = FALSE;
   property_class->weight = -1.0;
   property_class->parentless_widget = FALSE;
+  property_class->create_type = NULL;
 
   /* Initialize property versions & deprecated to adaptor */
   property_class->version_since_major = GWA_VERSION_SINCE_MAJOR (adaptor);
@@ -285,6 +286,10 @@ glade_property_class_clone (GladePropertyClass *property_class,
       g_value_copy (property_class->orig_def, clone->orig_def);
     }
 
+  if (property_class->create_type) {
+    clone->create_type = g_strdup (property_class->create_type);
+  }
+
   return clone;
 }
 
@@ -302,22 +307,23 @@ glade_property_class_free (GladePropertyClass * property_class)
 
   g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
 
-  g_free (property_class->id);
-  g_free (property_class->tooltip);
-  g_free (property_class->name);
+  g_clear_pointer (&property_class->id, g_free);
+  g_clear_pointer (&property_class->name, g_free);
+  g_clear_pointer (&property_class->tooltip, g_free);
   if (property_class->orig_def)
     {
       if (G_VALUE_TYPE (property_class->orig_def) != 0)
         g_value_unset (property_class->orig_def);
-      g_free (property_class->orig_def);
+      g_clear_pointer (&property_class->orig_def, g_free);
     }
   if (property_class->def)
     {
       if (G_VALUE_TYPE (property_class->def) != 0)
         g_value_unset (property_class->def);
-      g_free (property_class->def);
+      g_clear_pointer (&property_class->def, g_free);
     }
 
+  g_clear_pointer (&property_class->create_type, g_free);
   g_slice_free (GladePropertyClass, property_class);
 }
 
@@ -2160,8 +2166,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
   if ((buf = glade_xml_get_property_string
        (node, GLADE_TAG_CREATE_TYPE)) != NULL)
     {
-      if (klass->create_type)
-        g_free (klass->create_type);
+      g_clear_pointer (&klass->create_type, g_free);
       klass->create_type = buf;
     }
 
