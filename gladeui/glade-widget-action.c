@@ -342,13 +342,15 @@ void
 glade_widget_action_class_free (GWActionClass *action)
 {
   if (action->actions)
-    g_list_foreach (action->actions, (GFunc) glade_widget_action_class_free,
-                    NULL);
+    {
+      g_list_free_full (action->actions, (GDestroyNotify) glade_widget_action_class_free);
+      action->actions = NULL;
+    }
 
   /* Dont free id since it points into path directly */
-  g_free (action->path);
-  g_free (action->label);
-  g_free (action->stock);
+  g_clear_pointer (&action->path, g_free);
+  g_clear_pointer (&action->label, g_free);
+  g_clear_pointer (&action->stock, g_free);
 
   g_slice_free (GWActionClass, action);
 }
