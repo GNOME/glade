@@ -689,44 +689,34 @@ glade_widget_adaptor_constructor (GType                  type,
 static void
 gwa_packing_default_free (GladePackingDefault *def)
 {
-  g_free (def->id);
-  g_free (def->value);
+  g_clear_pointer (&def->id, g_free);
+  g_clear_pointer (&def->value, g_free);
+  g_free (def);
 }
 
 static void
 gwa_child_packing_free (GladeChildPacking *packing)
 {
-  g_free (packing->parent_name);
+  g_clear_pointer (&packing->parent_name, g_free);
 
-  g_list_foreach (packing->packing_defaults,
-                  (GFunc) gwa_packing_default_free, NULL);
-  g_list_free (packing->packing_defaults);
+  g_list_free_full (packing->packing_defaults,
+                    (GDestroyNotify) gwa_packing_default_free);
+  packing->packing_defaults = NULL;
+  g_free (packing);
 }
 
 static void
 gwa_glade_internal_child_free (GladeInternalChild *child)
 {
-  g_free (child->name);
-
+  g_clear_pointer (&child->name, g_free);
   if (child->children)
     {
-      g_list_foreach (child->children, (GFunc) gwa_glade_internal_child_free, NULL);
-      g_list_free (child->children);
+      g_list_free_full (child->children,
+                        (GDestroyNotify) gwa_glade_internal_child_free);
+      child->children = NULL;
     }
-  
-  g_slice_free (GladeInternalChild, child);
-}
 
-static void
-gwa_internal_children_free (GladeWidgetAdaptor *adaptor)
-{
-  if (adaptor->priv->internal_children)
-    {
-      g_list_foreach (adaptor->priv->internal_children,
-                      (GFunc) gwa_glade_internal_child_free, NULL);
-      g_list_free (adaptor->priv->internal_children);
-      adaptor->priv->internal_children = NULL;
-    }
+  g_slice_free (GladeInternalChild, child);
 }
 
 static void
@@ -735,60 +725,55 @@ glade_widget_adaptor_finalize (GObject *object)
   GladeWidgetAdaptor *adaptor = GLADE_WIDGET_ADAPTOR (object);
 
   /* Free properties and signals */
-  g_list_foreach (adaptor->priv->properties, (GFunc) glade_property_class_free, NULL);
-  g_list_free (adaptor->priv->properties);
+  g_list_free_full (adaptor->priv->properties,
+                    (GDestroyNotify) glade_property_class_free);
+  adaptor->priv->properties = NULL;
 
-  g_list_foreach (adaptor->priv->packing_props, (GFunc) glade_property_class_free,
-                  NULL);
-  g_list_free (adaptor->priv->packing_props);
+  g_list_free_full (adaptor->priv->packing_props,
+                    (GDestroyNotify) glade_property_class_free);
+  adaptor->priv->packing_props = NULL;
 
-  /* Be careful, this list holds GladeSignalClass* not GladeSignal,
-   * thus g_free is enough as all members are const */
-  g_list_foreach (adaptor->priv->signals, (GFunc) g_free, NULL);
-  g_list_free (adaptor->priv->signals);
-
+  g_list_free_full (adaptor->priv->signals,
+                    (GDestroyNotify) glade_signal_class_free);
+  adaptor->priv->signals = NULL;
 
   /* Free child packings */
-  g_list_foreach (adaptor->priv->child_packings,
-                  (GFunc) gwa_child_packing_free, NULL);
-  g_list_free (adaptor->priv->child_packings);
+  g_list_free_full (adaptor->priv->child_packings,
+                    (GDestroyNotify) gwa_child_packing_free);
+  adaptor->priv->child_packings = NULL;
 
-  if (adaptor->priv->book)
-    g_free (adaptor->priv->book);
-  if (adaptor->priv->catalog)
-    g_free (adaptor->priv->catalog);
-  if (adaptor->priv->special_child_type)
-    g_free (adaptor->priv->special_child_type);
+  g_clear_pointer (&adaptor->priv->book, g_free);
+  g_clear_pointer (&adaptor->priv->catalog, g_free);
+  g_clear_pointer (&adaptor->priv->special_child_type, g_free);
 
-  if (adaptor->priv->cursor != NULL)
-    g_object_unref (adaptor->priv->cursor);
+  g_clear_object (&adaptor->priv->cursor);
 
-  if (adaptor->priv->name)
-    g_free (adaptor->priv->name);
-  if (adaptor->priv->generic_name)
-    g_free (adaptor->priv->generic_name);
-  if (adaptor->priv->title)
-    g_free (adaptor->priv->title);
-  if (adaptor->priv->icon_name)
-    g_free (adaptor->priv->icon_name);
-  if (adaptor->priv->missing_icon)
-    g_free (adaptor->priv->missing_icon);
+  g_clear_pointer (&adaptor->priv->name, g_free);
+  g_clear_pointer (&adaptor->priv->generic_name, g_free);
+  g_clear_pointer (&adaptor->priv->title, g_free);
+  g_clear_pointer (&adaptor->priv->icon_name, g_free);
+  g_clear_pointer (&adaptor->priv->missing_icon, g_free);
 
   if (adaptor->priv->actions)
     {
-      g_list_foreach (adaptor->priv->actions,
-                      (GFunc) glade_widget_action_class_free, NULL);
-      g_list_free (adaptor->priv->actions);
+      g_list_free_full (adaptor->priv->actions,
+                        (GDestroyNotify) glade_widget_action_class_free);
+      adaptor->priv->actions = NULL;
     }
 
   if (adaptor->priv->packing_actions)
     {
-      g_list_foreach (adaptor->priv->packing_actions,
-                      (GFunc) glade_widget_action_class_free, NULL);
-      g_list_free (adaptor->priv->packing_actions);
+      g_list_free_full (adaptor->priv->packing_actions,
+                        (GDestroyNotify) glade_widget_action_class_free);
+      adaptor->priv->packing_actions = NULL;
     }
 
-  gwa_internal_children_free (adaptor);
+  if (adaptor->priv->internal_children)
+    {
+      g_list_free_full (adaptor->priv->internal_children,
+                        (GDestroyNotify) gwa_glade_internal_child_free);
+      adaptor->priv->internal_children = NULL;
+    }
 
   G_OBJECT_CLASS (glade_widget_adaptor_parent_class)->finalize (object);
 }
@@ -818,28 +803,23 @@ glade_widget_adaptor_real_set_property (GObject      *object,
         adaptor->priv->type = g_value_get_gtype (value);
         break;
       case PROP_TITLE:
-        if (adaptor->priv->title)
-          g_free (adaptor->priv->title);
+        g_clear_pointer (&adaptor->priv->title, g_free);
         adaptor->priv->title = g_value_dup_string (value);
         break;
       case PROP_GENERIC_NAME:
-        if (adaptor->priv->generic_name)
-          g_free (adaptor->priv->generic_name);
+        g_clear_pointer (&adaptor->priv->generic_name, g_free);
         adaptor->priv->generic_name = g_value_dup_string (value);
         break;
       case PROP_CATALOG:
         /* assume once (construct-only) */
-        g_free (adaptor->priv->catalog);
         adaptor->priv->catalog = g_value_dup_string (value);
         break;
       case PROP_BOOK:
         /* assume once (construct-only) */
-        g_free (adaptor->priv->book);
         adaptor->priv->book = g_value_dup_string (value);
         break;
       case PROP_SPECIAL_TYPE:
         /* assume once (construct-only) */ 
-        g_free (adaptor->priv->special_child_type);
         adaptor->priv->special_child_type = g_value_dup_string (value);
         break;
       case PROP_QUERY:
