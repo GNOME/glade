@@ -18,12 +18,12 @@ $(appdata_DATA): $(appdata_in_files)
 	$(AM_V_GEN) $(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
 
 its_filesdir = $(datadir)/gettext/its
-its_files = \
+its_files_DATA = \
 	gettext/its/glade-catalog.its \
 	gettext/its/glade-catalog.loc
 
 EXTRA_DIST = 				\
-	$(its_files)		        \
+	$(its_files_DATA)	        \
 	$(appdata_in_files)		\
 	$(desktop_in_files)		\
 	gladeui-2.0.pc.in
