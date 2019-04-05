@@ -926,7 +926,7 @@ glade_command_set_properties (GladeProperty *property,
       g_assert (G_IS_VALUE (nvalue));
 
       sdata = g_new (GCSetPropData, 1);
-      sdata->property = g_object_ref (G_OBJECT (prop));
+      sdata->property = g_object_ref (GLADE_PROPERTY (prop));
       sdata->old_value = g_new0 (GValue, 1);
       sdata->new_value = g_new0 (GValue, 1);
       g_value_init (sdata->old_value, G_VALUE_TYPE (ovalue));
@@ -1260,7 +1260,7 @@ glade_command_add (GList            *widgets,
       adaptor = glade_widget_get_adaptor (widget);
 
       /* Widget */
-      cdata->widget = g_object_ref (G_OBJECT (widget));
+      cdata->widget = g_object_ref (GLADE_WIDGET (widget));
 
       /* Parentless ref */
       if ((cdata->reffed =
@@ -1426,7 +1426,7 @@ glade_command_remove (GList *widgets)
       widget = list->data;
 
       cdata = g_new0 (CommandData, 1);
-      cdata->widget = g_object_ref (G_OBJECT (widget));
+      cdata->widget = g_object_ref (GLADE_WIDGET (widget));
       cdata->parent = glade_widget_get_parent (widget);
 
       if ((cdata->reffed =

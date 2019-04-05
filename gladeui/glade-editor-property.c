@@ -1628,9 +1628,9 @@ glade_eprop_named_icon_changed_common (GladeEditorProperty *eprop,
   /* Here we try not to modify the project state by not 
    * modifying a null value for an unchanged property.
    */
-  if (prop_text == NULL && text && text[0] == '\0')
+  if (prop_text == NULL && text && *text == '\0')
     g_value_set_string (val, NULL);
-  else if (text == NULL && prop_text && prop_text == '\0')
+  else if (text == NULL && prop_text && *prop_text == '\0')
     g_value_set_string (val, "");
   else
     g_value_set_string (val, text);
@@ -1808,7 +1808,7 @@ text_buffer_get_text (GtkTextBuffer *buffer)
   gtk_text_buffer_get_bounds (buffer, &start, &end);
   retval = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
 
-  if (retval && retval[0] == '\0')
+  if (retval && *retval == '\0')
     {
       g_free (retval);
       return NULL;
@@ -1951,9 +1951,9 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
       /* Here we try not to modify the project state by not 
        * modifying a null value for an unchanged property.
        */
-      if (prop_text == NULL && text && text[0] == '\0')
+      if (prop_text == NULL && text && *text == '\0')
         g_value_set_string (val, NULL);
-      else if (text == NULL && prop_text && prop_text == '\0')
+      else if (text == NULL && prop_text && *prop_text == '\0')
         g_value_set_string (val, "");
       else
         g_value_set_string (val, text);
@@ -3384,7 +3384,6 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
           GValue *value;
           GObject *new_object, *old_object = NULL;
           GladeWidget *new_widget;
-          const gchar *current_name;
 
           glade_project_selection_set (project, 
                                        glade_widget_get_object (widget),
@@ -3436,7 +3435,6 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
     }
   else if (res == GLADE_RESPONSE_CREATE)
     {
-      GValue *value;
       GladeWidget *new_widget;
 
       /* translators: Creating 'a widget' for 'a property' of 'a widget' */
