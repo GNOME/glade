@@ -80,6 +80,7 @@ endforeach
 config_h.set('GLADE_MAJOR_VERSION', glade_major_version)
 config_h.set('GLADE_MINOR_VERSION', glade_minor_version)
 config_h.set('GLADE_MICRO_VERSION', glade_micro_version)
+config_h.set('GDK_VERSION_MIN_REQUIRED', '(G_ENCODE_VERSION (3, 0))')
 config_h.set('ENABLE_NLS', true)
 
 # compiler flags
