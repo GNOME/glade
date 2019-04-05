@@ -775,7 +775,7 @@ glade_util_find_iter_by_widget (GtkTreeModel *model,
 
 /**
  * glade_util_purify_list: (skip)
- * @list: A #GList
+ * @list: (transfer full): A #GList
  *
  * Returns: (transfer full): A newly allocated version of @list with no 
  *          duplicate data entries
@@ -799,7 +799,7 @@ glade_util_purify_list (GList * list)
  * @old_list: the old #GList
  * @new_list: the new #GList
  *
- * Returns: (transfer full): A newly allocated #GList of elements that
+ * Returns: (transfer container): A newly allocated #GList of elements that
  *          are in @new but not in @old
  *
  */
@@ -822,7 +822,7 @@ glade_util_added_in_list (GList *old_list, GList *new_list)
  * @old_list: the old #GList
  * @new_list: the new #GList
  *
- * Returns: (transfer full): A newly allocated #GList of elements that
+ * Returns: (transfer container): A newly allocated #GList of elements that
  *          are in @old no longer in @new
  *
  */
@@ -848,54 +848,19 @@ glade_util_removed_from_list (GList *old_list, GList *new_list)
  * Returns: an absolute path to the specified file or directory
  *          that contains no ".." or "." components (this does
  *          not call readlink like realpath() does).
- *
- * Note: on some systems; I think its possible that we dont have
- *       permission to execute in the directory in which the glade
- *       file resides; I decided finally to do it this way anyway
- *       since libc's realpath() does exactly the same.
  */
 gchar *
 glade_util_canonical_path (const gchar *path)
 {
-  gchar *orig_dir, *dirname, *basename, *direct_dir, *direct_name = NULL;
+  GFile *file;
+  gchar *direct_name;
 
   g_return_val_if_fail (path != NULL, NULL);
 
-  basename = g_path_get_basename (path);
+  file = g_file_new_for_path (path);
+  direct_name = g_file_get_path (file);
 
-  if ((orig_dir = g_get_current_dir ()) != NULL)
-    {
-      if ((dirname = g_path_get_dirname (path)) != NULL)
-        {
-          if (g_chdir (dirname) == 0)
-            {
-              if ((direct_dir = g_get_current_dir ()) != NULL)
-                {
-                  direct_name = g_build_filename (direct_dir, basename, NULL);
-                  g_free (direct_dir);
-                }
-              else
-                g_warning ("g_path");
-
-              if (g_chdir (orig_dir) != 0)
-                g_warning ("Unable to chdir back to %s directory (%s)",
-                           orig_dir, g_strerror (errno));
-
-            }
-          else
-            g_warning ("Unable to chdir to %s directory (%s)",
-                       dirname, g_strerror (errno));
-
-          g_free (dirname);
-        }
-      else
-        g_warning ("Unable to get directory component of %s\n", path);
-      g_free (orig_dir);
-    }
-
-  if (basename)
-    g_free (basename);
-
+  g_object_unref (file);
   return direct_name;
 }
 
