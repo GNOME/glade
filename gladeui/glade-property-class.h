@@ -164,6 +164,8 @@ void                glade_property_class_set_weights             (GList **proper
 
 void                glade_property_class_load_defaults_from_spec (GladePropertyClass *property_class);
 
+guint               glade_property_class_make_flags_from_string  (GType               type,
+                                                                  const char         *string);
 G_END_DECLS
 
 #endif /* __GLADE_PROPERTY_CLASS_H__ */

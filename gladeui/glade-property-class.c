@@ -615,7 +615,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
 
 /* This is copied exactly from libglade. I've just renamed the function.
  */
-static guint
+guint
 glade_property_class_make_flags_from_string (GType type, const char *string)
 {
   GFlagsClass *fclass;
