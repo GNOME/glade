@@ -140,26 +140,27 @@ refresh_title (GladeWindow *window)
   if (GLADE_WINDOW_ACTIVE_VIEW (window))
     {
       GladeProject *project = glade_design_view_get_project (GLADE_WINDOW_ACTIVE_VIEW (window));
-      gchar *title, *name = NULL;
+      gchar *title;
       GList *p;
 
       gtk_header_bar_set_custom_title (window->priv->headerbar, NULL);
 
-      name = glade_project_get_name (project);
-
+      title = glade_project_get_name (project);
       if (glade_project_get_modified (project))
-        name = g_strdup_printf ("*%s", name);
-      else
-        name = g_strdup (name);
+        {
+          gchar *old_title = g_steal_pointer (&title);
+          title = g_strdup_printf ("*%s", old_title);
+          g_free (old_title);
+        }
 
       if (glade_project_get_readonly (project) != FALSE)
-        title = g_strdup_printf ("%s %s", name, READONLY_INDICATOR);
-      else
-        title = g_strdup_printf ("%s", name);
+        {
+          gchar *old_title = g_steal_pointer (&title);
+          title = g_strdup_printf ("%s %s", old_title, READONLY_INDICATOR);
+        }
 
       gtk_header_bar_set_title (window->priv->headerbar, title);
       g_free (title);
-      g_free (name);
 
       if ((p = glade_app_get_projects ()) && g_list_next (p))
         gtk_header_bar_set_custom_title (window->priv->headerbar, window->priv->project_switcher);
