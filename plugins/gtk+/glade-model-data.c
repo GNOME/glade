@@ -534,7 +534,7 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
   GtkListStore *store = NULL;
   GladeModelData *iter_data;
   GNode *data_tree = NULL, *iter_node, *row_node;
-  GArray *gtypes = g_array_new (FALSE, TRUE, sizeof (GType));
+  GArray *gtypes = NULL;
   GtkTreeIter iter;
   gint column_num, row_num;
   GType index_type = G_TYPE_INT, string_type = G_TYPE_STRING, pointer_type = G_TYPE_POINTER;
@@ -546,6 +546,7 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
     return NULL;
 
   /* Generate store with tailored column types */
+  gtypes = g_array_new (FALSE, TRUE, sizeof (GType));
   g_array_append_val (gtypes, index_type);
   for (iter_node = data_tree->children->children; iter_node;
        iter_node = iter_node->next)
