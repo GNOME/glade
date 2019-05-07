@@ -2900,6 +2900,10 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
    */
   if (adaptor->priv->type != adaptor->priv->real_type)
     {
+      if (adaptor->priv->signals)
+        g_list_free_full (adaptor->priv->signals,
+                          (GDestroyNotify) glade_signal_class_free);
+
       adaptor->priv->signals = gwa_list_signals (adaptor, adaptor->priv->real_type);
 
       gwa_update_properties_from_type (adaptor, adaptor->priv->real_type,
@@ -2912,6 +2916,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
   if (adaptor->priv->generic_name == NULL)
     adaptor->priv->generic_name = g_strdup ("widget");
 
+  g_clear_pointer (&adaptor->priv->catalog, g_free);
   adaptor->priv->catalog = g_strdup (glade_catalog_get_name (catalog));
 
   if (glade_catalog_get_book (catalog))

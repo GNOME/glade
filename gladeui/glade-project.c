@@ -1961,6 +1961,7 @@ glade_project_check_target_version (GladeProject *project)
   GtkWidget *dialog;
   GString *text;
   GList *l;
+  gchar *project_name;
 
   glade_project_get_target_version (project, "gtk+", &major, &minor);
     
@@ -2010,12 +2011,14 @@ glade_project_check_target_version (GladeProject *project)
   else 
     text = NULL;
 
+  project_name = glade_project_get_name (project);
   dialog = gtk_message_dialog_new (GTK_WINDOW (glade_app_get_window ()),
                                    GTK_DIALOG_DESTROY_WITH_PARENT,
                                    GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
                                    PROJECT_TARGET_DIALOG_TITLE_FMT,
-                                   glade_project_get_name (project),
+                                   project_name,
                                    major, minor);
+  g_free (project_name);
 
   gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
                                             _("But this version of Glade is for GTK+ 3 only.\n"

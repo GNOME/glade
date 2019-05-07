@@ -523,6 +523,8 @@ glade_signal_model_get_path (GtkTreeModel *model, GtkTreeIter *iter)
               break;
             }
         }
+
+      g_list_free (signals);
       return gtk_tree_path_new_from_indices (index0, index1, -1);
     }
   else if (widget)
@@ -663,12 +665,10 @@ glade_signal_model_iter_next_signal (GladeSignalModel *sig_model,
       glade_signal_model_create_signal_iter (sig_model, widget,
                                              next_handler,
                                              iter);
-      g_list_free (signal);
       return TRUE;
     }
   else
     {
-      g_list_free (signal);
       return FALSE;
     }
 }
@@ -703,7 +703,9 @@ glade_signal_model_iter_next (GtkTreeModel *model, GtkTreeIter *iter)
                                                  glade_signal_class_get_name (sig_class));
       if (glade_signal_model_is_dummy_handler (sig_model, handler))
         {
-          return glade_signal_model_iter_next_signal (sig_model, widget, iter, signal);
+          gboolean ret = glade_signal_model_iter_next_signal (sig_model, widget, iter, signal);
+          g_list_free (signals);
+          return ret;
         }
       else if (handlers)
         {
@@ -730,7 +732,9 @@ glade_signal_model_iter_next (GtkTreeModel *model, GtkTreeIter *iter)
             }
           else
             {
-              return glade_signal_model_iter_next_signal (sig_model, widget, iter, signal);
+              gboolean ret = glade_signal_model_iter_next_signal (sig_model, widget, iter, signal);
+              g_list_free (signals);
+              return ret;
             }
         }
       else

@@ -161,13 +161,12 @@ static gchar *
 glade_xml_get_value (xmlNodePtr node, const gchar *name)
 {
   xmlNodePtr child;
-  gchar *ret = NULL;
 
   for (child = node->children; child; child = child->next)
     if (!xmlStrcmp (child->name, BAD_CAST (name)))
-      ret = claim_string (xmlNodeGetContent (child));
+      return claim_string (xmlNodeGetContent (child));
 
-  return ret;
+  return NULL;
 }
 
 /**

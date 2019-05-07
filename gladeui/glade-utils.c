@@ -1050,6 +1050,8 @@ glade_util_have_devhelp (void)
             }
           else
             g_warning ("devhelp had bad return code: '%d'", ret);
+
+          g_free (ptr);
         }
       else
         {

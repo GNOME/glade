@@ -2921,12 +2921,13 @@ glade_eprop_object_populate_view_real (GtkTreeStore *model,
 
           if (good_type || has_decendant)
             {
+              gchar *prop_name = glade_eprop_object_name (widget_name, model, parent_iter);
               gtk_tree_store_append (model, &iter, parent_iter);
               gtk_tree_store_set
                   (model, &iter,
                    OBJ_COLUMN_WIDGET, widget,
                    OBJ_COLUMN_WIDGET_NAME,
-                   glade_eprop_object_name (widget_name, model, parent_iter),
+                   prop_name,
                    OBJ_COLUMN_WIDGET_CLASS, glade_widget_adaptor_get_title (adaptor),
                    /* Selectable if its a compatible type and
                     * its not itself.
@@ -2935,6 +2936,7 @@ glade_eprop_object_populate_view_real (GtkTreeStore *model,
                    good_type && !search_list (exception_widgets, widget),
                    OBJ_COLUMN_SELECTED,
                    good_type && search_list (selected_widgets, widget), -1);
+              g_free (prop_name);
             }
 
           if (has_decendant &&
