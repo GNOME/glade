@@ -115,7 +115,9 @@ main (int   argc,
 	  /* FIXME: The same goes for assistant */
 	  !g_type_is_a (adaptor_type, GTK_TYPE_ASSISTANT) &&
 	  /* FIXME: GtkPopoverMenu gives a few warnings */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_POPOVER_MENU))
+	  !g_type_is_a (adaptor_type, GTK_TYPE_POPOVER_MENU) &&
+	  /* FIXME: GtkFileChooserNative is hard to test here */
+	  !g_type_is_a (adaptor_type, GTK_TYPE_FILE_CHOOSER_NATIVE))
 	{
 	  gchar *test_path = g_strdup_printf ("/CreateWidget/%s", glade_widget_adaptor_get_name (adaptor));
 
