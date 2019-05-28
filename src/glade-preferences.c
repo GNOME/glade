@@ -24,26 +24,6 @@
 #include <gladeui/glade-utils.h>
 
 #define CONFIG_GROUP "Preferences"
-#define CONFIG_KEY_CATALOG_PATHS "catalog-paths"
-
-#define CONFIG_GROUP_LOAD_SAVE      "Load and Save"
-#define CONFIG_KEY_BACKUP           "backup"
-#define CONFIG_KEY_AUTOSAVE         "autosave"
-#define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
-
-#define CONFIG_GROUP_SAVE_WARNINGS  "Save Warnings"
-#define CONFIG_KEY_VERSIONING       "versioning"
-#define CONFIG_KEY_DEPRECATIONS     "deprecations"
-#define CONFIG_KEY_UNRECOGNIZED     "unrecognized"
-
-/* Default preference values */
-#define DEFAULT_BACKUP              TRUE
-#define DEFAULT_AUTOSAVE            TRUE
-#define DEFAULT_AUTOSAVE_SECONDS    5
-#define DEFAULT_WARN_VERSIONS       TRUE
-#define DEFAULT_WARN_DEPRECATIONS   FALSE
-#define DEFAULT_WARN_UNRECOGNIZED   TRUE
-
 enum {
   COLUMN_PATH = 0,
   COLUMN_CANONICAL_PATH
@@ -62,8 +42,17 @@ struct _GladePreferencesPrivate
   GtkWidget *versioning_toggle;
   GtkWidget *deprecations_toggle;
   GtkWidget *unrecognized_toggle;
+
+  GladeSettings *settings;
 };
 
+enum
+{
+  PROP_SETTINGS = 1,
+  N_PROPERTIES
+};
+
+static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladePreferences, glade_preferences, GTK_TYPE_DIALOG);
 
@@ -169,6 +158,110 @@ catalog_selection_changed (GtkTreeSelection *selection,
   gtk_widget_set_sensitive (preferences->priv->remove_catalog_button, selected);
 }
 
+static gboolean
+glade_preferences_transform_to (GBinding     *binding,
+                                const GValue *from_value,
+                                GValue       *to_value,
+                                gpointer      user_data)
+{
+  GladeVerifyFlags flag = (GladeVerifyFlags) user_data;
+  g_value_set_boolean (to_value, g_value_get_flags (from_value) & flag);
+  return TRUE;
+}
+
+static gboolean
+glade_preferences_transform_from (GBinding     *binding,
+                                  const GValue *from_value,
+                                  GValue       *to_value,
+                                  gpointer      user_data)
+{
+  GladeVerifyFlags flag = (GladeVerifyFlags) user_data;
+  GladeVerifyFlags previous_flags = glade_settings_get_verify_flags (GLADE_SETTINGS (g_binding_get_source (binding)));
+
+  if (g_value_get_boolean (from_value))
+    g_value_set_flags (to_value, previous_flags | flag);
+  else
+    g_value_set_flags (to_value, previous_flags & ~flag);
+
+  return TRUE;
+}
+
+static void
+glade_preferences_set_settings (GladePreferences *self,
+                                GladeSettings    *settings)
+{
+  const GList *paths, *l;
+
+  self->priv->settings = settings;
+  g_object_bind_property (settings, "backup", self->priv->create_backups_toggle, "active", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
+  g_object_bind_property (settings, "autosave", self->priv->autosave_spin, "sensitive", G_BINDING_SYNC_CREATE);
+  g_object_bind_property (settings, "autosave", self->priv->autosave_toggle, "active", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
+  g_object_bind_property (settings, "autosave-seconds", self->priv->autosave_spin, "value", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
+  g_object_bind_property_full (settings, "verify-flags", self->priv->versioning_toggle, "active", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE,
+                               glade_preferences_transform_to, glade_preferences_transform_from, (void *)GLADE_VERIFY_VERSIONS, NULL);
+  g_object_bind_property_full (settings, "verify-flags", self->priv->deprecations_toggle, "active", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE,
+                               glade_preferences_transform_to, glade_preferences_transform_from, (void *)GLADE_VERIFY_DEPRECATIONS, NULL);
+  g_object_bind_property_full (settings, "verify-flags", self->priv->unrecognized_toggle, "active", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE,
+                               glade_preferences_transform_to, glade_preferences_transform_from, (void *)GLADE_VERIFY_UNRECOGNIZED, NULL);
+
+  paths = glade_catalog_get_extra_paths ();
+  gtk_list_store_clear (GTK_LIST_STORE (self->priv->catalog_path_store));
+  for (l = paths; l != NULL; l = l->next)
+    {
+      const gchar *path = (const gchar *)(l->data);
+      gchar *display = glade_utils_replace_home_dir_with_tilde (path);
+      GtkTreeIter iter;
+
+      gtk_list_store_append (GTK_LIST_STORE (self->priv->catalog_path_store), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (self->priv->catalog_path_store), &iter,
+                          COLUMN_PATH, display,
+                          COLUMN_CANONICAL_PATH, path,
+                          -1);
+
+      g_free (display);
+    }
+}
+
+static void
+glade_preferences_set_property (GObject      *object,
+                                guint         property_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
+{
+  GladePreferences *self = GLADE_PREFERENCES (object);
+
+  switch (property_id)
+    {
+    case PROP_SETTINGS:
+      glade_preferences_set_settings (self, GLADE_SETTINGS (g_value_get_object (value)));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+glade_preferences_get_property (GObject    *object,
+                                guint       property_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
+{
+  GladePreferences *self = GLADE_PREFERENCES (object);
+
+  switch (property_id)
+    {
+    case PROP_SETTINGS:
+      g_value_set_object (value, self->priv->settings);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
 /********************************************************
  *                  Class/Instance Init                 *
  ********************************************************/
@@ -184,6 +277,21 @@ static void
 glade_preferences_class_init (GladePreferencesClass *klass)
 {
   GtkWidgetClass *widget_class;
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->set_property = glade_preferences_set_property;
+  object_class->get_property = glade_preferences_get_property;
+
+  obj_properties[PROP_SETTINGS] =
+    g_param_spec_object ("settings",
+                         "Settings",
+                         "Settings object.",
+                         GLADE_TYPE_SETTINGS,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class,
+                                     N_PROPERTIES,
+                                     obj_properties);
 
   widget_class  = GTK_WIDGET_CLASS (klass);
 
@@ -216,167 +324,9 @@ glade_preferences_class_init (GladePreferencesClass *klass)
  *                         API                          *
  ********************************************************/
 GtkWidget *
-glade_preferences_new (void)
+glade_preferences_new (GladeSettings *settings)
 {
-  return g_object_new (GLADE_TYPE_PREFERENCES, NULL);
-}
-
-void
-glade_preferences_save (GladePreferences *prefs,
-			GKeyFile         *config)
-{
-  GtkTreeModel *model = prefs->priv->catalog_path_store;
-  GString *string = g_string_new ("");
-  GtkTreeIter iter;
-  gboolean valid;
-
-  valid = gtk_tree_model_get_iter_first (model, &iter);
-  while (valid)
-    {
-      gchar *path;
-
-      gtk_tree_model_get (model, &iter, COLUMN_CANONICAL_PATH, &path, -1);
-
-      valid = gtk_tree_model_iter_next (model, &iter);
-      
-      g_string_append (string, path);
-      if (valid) g_string_append (string, ":");
-      
-      g_free (path);
-    }
-  
-  g_key_file_set_string (config, CONFIG_GROUP, CONFIG_KEY_CATALOG_PATHS, string->str);
-
-  /* Load and save */
-  g_key_file_set_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP,
-			  glade_preferences_backup (prefs));
-  g_key_file_set_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE,
-			  glade_preferences_autosave (prefs));
-  g_key_file_set_integer (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS,
-			  glade_preferences_autosave_seconds (prefs));
-
-  /* Warnings */
-  g_key_file_set_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_VERSIONING,
-			  glade_preferences_warn_versioning (prefs));
-  g_key_file_set_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_DEPRECATIONS,
-			  glade_preferences_warn_deprecations (prefs));
-  g_key_file_set_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_UNRECOGNIZED,
-			  glade_preferences_warn_unrecognized (prefs));
-
-  g_string_free (string, TRUE);
-}
-
-void
-glade_preferences_load (GladePreferences *prefs,
-			GKeyFile         *config)
-{
-  gboolean backups = DEFAULT_BACKUP;
-  gboolean autosave = DEFAULT_AUTOSAVE;
-  gboolean warn_versioning = DEFAULT_WARN_VERSIONS;
-  gboolean warn_deprecations = DEFAULT_WARN_DEPRECATIONS;
-  gboolean warn_unrecognized = DEFAULT_WARN_UNRECOGNIZED;
-  gint autosave_seconds = DEFAULT_AUTOSAVE_SECONDS;
-  gchar *string;
-
-  string = g_key_file_get_string (config, CONFIG_GROUP, CONFIG_KEY_CATALOG_PATHS, NULL);
-
-  if (string && g_strcmp0 (string, ""))
-    {
-      gchar **paths, **path;
-
-      gtk_list_store_clear (GTK_LIST_STORE (prefs->priv->catalog_path_store));
-      glade_catalog_remove_path (NULL);
-
-      paths = g_strsplit (string, ":", -1);
-
-      path = paths;
-      do
-        {
-	  GtkTreeIter iter;
-	  gchar *canonical, *display;
-
-	  canonical = glade_util_canonical_path (*path);
-	  display   = glade_utils_replace_home_dir_with_tilde (canonical);
-
-          glade_catalog_add_path (canonical);
-
-	  gtk_list_store_append (GTK_LIST_STORE (prefs->priv->catalog_path_store), &iter);
-	  gtk_list_store_set (GTK_LIST_STORE (prefs->priv->catalog_path_store), &iter,
-			      COLUMN_PATH, display,
-			      COLUMN_CANONICAL_PATH, canonical,
-			      -1);
-	  g_free (display);
-	  g_free (canonical);
-
-        } while (*++path);
-
-      g_strfreev (paths);
-    }
-
-  /* Load and save */
-  if (g_key_file_has_key (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP, NULL))
-    backups = g_key_file_get_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP, NULL);
-
-  if (g_key_file_has_key (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE, NULL))
-    autosave = g_key_file_get_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE, NULL);
-
-  if (g_key_file_has_key (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS, NULL))
-    autosave_seconds = g_key_file_get_integer (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS, NULL);
-
-  /* Warnings */
-  if (g_key_file_has_key (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_VERSIONING, NULL))
-    warn_versioning = g_key_file_get_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_VERSIONING, NULL);
-
-  if (g_key_file_has_key (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_DEPRECATIONS, NULL))
-    warn_deprecations = g_key_file_get_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_DEPRECATIONS, NULL);
-
-  if (g_key_file_has_key (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_UNRECOGNIZED, NULL))
-    warn_unrecognized = g_key_file_get_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_UNRECOGNIZED, NULL);
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->create_backups_toggle), backups);
-  gtk_widget_set_sensitive (prefs->priv->autosave_spin, autosave);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->autosave_toggle), autosave);
-  gtk_spin_button_set_value (GTK_SPIN_BUTTON (prefs->priv->autosave_spin), autosave_seconds);
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->versioning_toggle), warn_versioning);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->deprecations_toggle), warn_deprecations);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->unrecognized_toggle), warn_unrecognized);
-
-  g_free (string);
-}
-
-gboolean
-glade_preferences_backup (GladePreferences *prefs)
-{
-  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->create_backups_toggle));
-}
-
-gboolean
-glade_preferences_autosave (GladePreferences *prefs)
-{
-  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->autosave_toggle));
-}
-
-gint
-glade_preferences_autosave_seconds (GladePreferences *prefs)
-{
-  return (gint)gtk_spin_button_get_value (GTK_SPIN_BUTTON (prefs->priv->autosave_spin));
-}
-
-gboolean
-glade_preferences_warn_versioning (GladePreferences *prefs)
-{
-  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->versioning_toggle));
-}
-
-gboolean
-glade_preferences_warn_deprecations (GladePreferences *prefs)
-{
-  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->deprecations_toggle));
-}
-
-gboolean
-glade_preferences_warn_unrecognized (GladePreferences *prefs)
-{
-  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->unrecognized_toggle));
+  return g_object_new (GLADE_TYPE_PREFERENCES,
+                       "settings", settings,
+                       NULL);
 }
