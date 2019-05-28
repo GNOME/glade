@@ -71,12 +71,14 @@ typedef enum
 
 /**
  * GladeVerifyFlags:
+ * @GLADE_VERIFY_NONE: No verification
  * @GLADE_VERIFY_VERSIONS: Verify version mismatches
  * @GLADE_VERIFY_DEPRECATIONS: Verify deprecations
  * @GLADE_VERIFY_UNRECOGNIZED: Verify unrecognized types
  *
  */
 typedef enum {
+  GLADE_VERIFY_NONE          = 0,
   GLADE_VERIFY_VERSIONS      = (1 << 0),
   GLADE_VERIFY_DEPRECATIONS  = (1 << 1),
   GLADE_VERIFY_UNRECOGNIZED  = (1 << 2)
