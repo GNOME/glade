@@ -24,6 +24,7 @@
 #define __GLADE_PREFERENCES_H__
 
 #include <gtk/gtk.h>
+#include "glade-settings.h"
 
 G_BEGIN_DECLS
 
@@ -52,20 +53,7 @@ struct _GladePreferencesClass
 };
 
 GType             glade_preferences_get_type         (void) G_GNUC_CONST;
-GtkWidget        *glade_preferences_new              (void);
-
-void              glade_preferences_save             (GladePreferences *prefs,
-						      GKeyFile         *config);
-void              glade_preferences_load             (GladePreferences *prefs,
-						      GKeyFile         *config);
-
-gboolean          glade_preferences_backup           (GladePreferences *prefs);
-gboolean          glade_preferences_autosave         (GladePreferences *prefs);
-gint              glade_preferences_autosave_seconds (GladePreferences *prefs);
-
-gboolean          glade_preferences_warn_versioning  (GladePreferences *prefs);
-gboolean          glade_preferences_warn_deprecations(GladePreferences *prefs);
-gboolean          glade_preferences_warn_unrecognized(GladePreferences *prefs);
+GtkWidget        *glade_preferences_new              (GladeSettings *settings);
 
 G_END_DECLS
 

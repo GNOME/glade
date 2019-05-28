@@ -3,6 +3,7 @@ sources = files(
   'glade-intro.c',
   'glade-preferences.c',
   'glade-registration.c',
+  'glade-settings.c',
   'glade-window.c',
   'main.c',
 )

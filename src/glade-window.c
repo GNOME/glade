@@ -30,6 +30,7 @@
 #include "glade-resources.h"
 #include "glade-preferences.h"
 #include "glade-registration.h"
+#include "glade-settings.h"
 #include "glade-intro.h"
 
 #include <gladeui/glade.h>
@@ -90,7 +91,7 @@ struct _GladeWindowPrivate
   GtkHeaderBar *headerbar;
   GtkWidget *project_switcher ;
   GtkWindow *about_dialog;
-  GladePreferences *preferences;
+  GladeSettings *settings;
 
   GtkWidget *start_page;
   GtkLabel  *version_label;
@@ -509,10 +510,10 @@ project_queue_autosave (GladeWindow *window, GladeProject *project)
 {
   if (glade_project_get_path (project) != NULL &&
       glade_project_get_modified (project) &&
-      glade_preferences_autosave (window->priv->preferences))
+      glade_settings_autosave (window->priv->settings))
     {
       guint autosave_id =
-        g_timeout_add_seconds (glade_preferences_autosave_seconds (window->priv->preferences),
+        g_timeout_add_seconds (glade_settings_autosave_seconds (window->priv->settings),
                                autosave_project, project);
 
       g_object_set_data_full (G_OBJECT (project), "glade-autosave-id",
@@ -762,10 +763,10 @@ static gboolean
 do_save (GladeWindow *window, GladeProject *project, const gchar *path)
 {
   GError *error = NULL;
-  GladeVerifyFlags verify_flags = 0;
+  GladeVerifyFlags verify_flags = glade_settings_get_verify_flags (window->priv->settings);
   gchar *display_path = g_strdup (path);
 
-  if (glade_preferences_backup (window->priv->preferences) &&
+  if (glade_settings_backup (window->priv->settings) &&
       !glade_project_backup (project, path, NULL))
     {
       if (!glade_util_ui_message (GTK_WIDGET (window),
@@ -776,13 +777,6 @@ do_save (GladeWindow *window, GladeProject *project, const gchar *path)
           return FALSE;
         }
     }
-
-  if (glade_preferences_warn_versioning (window->priv->preferences))
-    verify_flags |= GLADE_VERIFY_VERSIONS;
-  if (glade_preferences_warn_deprecations (window->priv->preferences))
-    verify_flags |= GLADE_VERIFY_DEPRECATIONS;
-  if (glade_preferences_warn_unrecognized (window->priv->preferences))
-    verify_flags |= GLADE_VERIFY_UNRECOGNIZED;
 
   if (!glade_project_save_verify (project, path, verify_flags, &error))
     {
@@ -1477,7 +1471,14 @@ on_preferences_action_activate (GSimpleAction *action,
                                 gpointer       data)
 {
   GladeWindow *window = data;
-  gtk_widget_show (GTK_WIDGET (window->priv->preferences));
+  GladeWindowPrivate *priv = window->priv;
+  GtkWidget *preferences = glade_preferences_new (priv->settings);
+
+  gtk_window_set_transient_for (GTK_WINDOW (preferences), GTK_WINDOW (window));
+  gtk_widget_show (preferences);
+
+  gtk_dialog_run (GTK_DIALOG (preferences));
+  gtk_widget_destroy (preferences);
 }
 
 static void
@@ -1925,7 +1926,7 @@ glade_window_config_save (GladeWindow * window)
   save_paned_position (config, window->priv->center_paned, "center_pane");
   save_paned_position (config, window->priv->left_paned, "left_pane");
 
-  glade_preferences_save (window->priv->preferences, config);
+  glade_settings_save (window->priv->settings, config);
 
   glade_app_config_save ();
 }
@@ -2119,15 +2120,8 @@ glade_window_init (GladeWindow *window)
 
   priv->default_path = NULL;
 
-  /* Init preferences first, this has to be done before anything initializes
-   * the real GladeApp, so that catalog paths are loaded correctly before we
-   * continue.
-   *
-   * This should be fixed so that dynamic addition of catalogs at runtime
-   * is supported.
-   */
-  priv->preferences = (GladePreferences *)glade_preferences_new ();
-  glade_preferences_load (window->priv->preferences, glade_app_get_config ());
+  priv->settings = glade_settings_new ();
+  glade_settings_load (priv->settings, glade_app_get_config ());
 
   /* We need this for the icons to be available */
   glade_init ();
@@ -2143,7 +2137,6 @@ glade_window_init (GladeWindow *window)
 static void
 glade_window_action_handler (GladeWindow *window, const gchar *name)
 {
-  GladeWindowPrivate *priv = window->priv;
   GAction *action;
 
   if ((action = GLADE_WINDOW_GET_ACTION (window, name)))
