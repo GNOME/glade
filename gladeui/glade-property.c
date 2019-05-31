@@ -1322,7 +1322,7 @@ glade_property_write (GladeProperty   *property,
                   if (binding_flags)
                     {
                       gchar *old_flags = g_steal_pointer (&binding_flags);
-                      binding_flags = g_strdup_printf ("%s | %s", old_flags, flags_value.value_nick);
+                      binding_flags = g_strdup_printf ("%s|%s", old_flags, flags_value.value_nick);
                       g_free (old_flags);
                     }
                   else
