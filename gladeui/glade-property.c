@@ -113,6 +113,18 @@ struct _GladePropertyPrivate {
   
   gint      syncing;  /* Avoid recursion while synchronizing object with value */
   gint      sync_tolerance;
+
+  gchar         *bind_source;   /* A pointer to the GladeWidget that this
+                                 * GladeProperty is bound to
+                                 */
+
+  gchar         *bind_property; /* The name of the property from the source
+                                 * that is bound to this property
+                                 */
+
+  GBindingFlags  bind_flags;    /* The flags used in g_object_bind_property() to bind
+                                 * this property
+                                 */
 };
 
 enum
@@ -1148,6 +1160,7 @@ glade_property_read (GladeProperty *property,
   gchar /* *id, *name, */  * value;
   gint translatable = FALSE;
   gchar *comment = NULL, *context = NULL;
+  gchar *bind_flags = NULL;
 
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -1189,6 +1202,12 @@ glade_property_read (GladeProperty *property,
   comment = glade_xml_get_property_string (prop, GLADE_TAG_COMMENT);
   context = glade_xml_get_property_string (prop, GLADE_TAG_CONTEXT);
 
+  property->priv->bind_source = glade_xml_get_property_string (prop, GLADE_TAG_BIND_SOURCE);
+  property->priv->bind_property = glade_xml_get_property_string (prop, GLADE_TAG_BIND_PROPERTY);
+  bind_flags = glade_xml_get_property_string (prop, GLADE_TAG_BIND_FLAGS);
+  if (bind_flags)
+    property->priv->bind_flags = glade_property_class_make_flags_from_string (G_TYPE_BINDING_FLAGS, bind_flags);
+
   glade_property_i18n_set_translatable (property, translatable);
   glade_property_i18n_set_comment (property, comment);
   glade_property_i18n_set_context (property, context);
@@ -1196,6 +1215,7 @@ glade_property_read (GladeProperty *property,
   g_free (comment);
   g_free (context);
   g_free (value);
+  g_free (bind_flags);
 }
 
 
@@ -1215,6 +1235,10 @@ glade_property_write (GladeProperty   *property,
   GladeXmlNode *prop_node;
   gchar *name, *value;
   gboolean save_always;
+  gchar *binding_flags = NULL;
+  GFlagsClass *flags_class;
+  GFlagsValue flags_value;
+  guint i;
 
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (node != NULL);
@@ -1229,10 +1253,10 @@ glade_property_write (GladeProperty   *property,
   save_always = (glade_property_class_save_always (property->priv->klass) || property->priv->save_always);
   save_always = save_always || (glade_property_class_optional (property->priv->klass) && property->priv->enabled);
 
-  /* Skip properties that are default by original pspec default
+  /* Skip properties that are default by original pspec default and that have no bound property
    * (excepting those that specified otherwise).
    */
-  if (!save_always && glade_property_original_default (property))
+  if (!save_always && glade_property_original_default (property) && !property->priv->bind_source)
     return;
 
   /* Escape our string and save with underscores */
@@ -1273,6 +1297,47 @@ glade_property_write (GladeProperty   *property,
         glade_xml_node_set_property_string (prop_node,
                                             GLADE_TAG_COMMENT,
                                             property->priv->i18n_comment);
+    }
+
+  if (property->priv->bind_source)
+    {
+      glade_xml_node_set_property_string (prop_node,
+                                          GLADE_TAG_BIND_SOURCE,
+                                          property->priv->bind_source);
+      if (property->priv->bind_property)
+        glade_xml_node_set_property_string (prop_node,
+                                            GLADE_TAG_BIND_PROPERTY,
+                                            property->priv->bind_property);
+      if (property->priv->bind_flags != G_BINDING_DEFAULT)
+        {
+          flags_class = G_FLAGS_CLASS (g_type_class_ref (G_TYPE_BINDING_FLAGS));
+          for (i = 0; i < flags_class->n_values; i++)
+            {
+              flags_value = flags_class->values[i];
+              if (flags_value.value == 0)
+                continue;
+
+              if ((flags_value.value & property->priv->bind_flags) != 0)
+                {
+                  if (binding_flags)
+                    {
+                      gchar *old_flags = g_steal_pointer (&binding_flags);
+                      binding_flags = g_strdup_printf ("%s|%s", old_flags, flags_value.value_nick);
+                      g_free (old_flags);
+                    }
+                  else
+                    {
+                      binding_flags = g_strdup (flags_value.value_nick);
+                    }
+                }
+            }
+
+          g_type_class_unref (flags_class);
+          glade_xml_node_set_property_string (prop_node,
+                                              GLADE_TAG_BIND_FLAGS,
+                                              binding_flags);
+          g_free (binding_flags);
+        }
     }
   g_free (name);
   g_free (value);

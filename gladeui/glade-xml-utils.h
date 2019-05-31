@@ -187,6 +187,9 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_TAG_IMPORTANT                       "important"
 #define GLADE_TAG_CREATE_TYPE                     "create-type"
 #define GLADE_TAG_TEMPLATE_PREFIX                 "template-prefix"
+#define GLADE_TAG_BIND_SOURCE                     "bind-source"
+#define GLADE_TAG_BIND_PROPERTY                   "bind-property"
+#define GLADE_TAG_BIND_FLAGS                      "bind-flags"
 
 
 /* search child */
