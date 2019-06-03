@@ -40,8 +40,10 @@
 #include "glade-placeholder.h"
 #include "glade-project.h"
 
-struct _GladeClipboardPrivate
+struct _GladeClipboard
 {
+  GObject parent_instance;
+
   GList     *widgets;       /* A list of GladeWidget's on the clipboard */
   gboolean   has_selection; /* TRUE if clipboard has selection */
 };
@@ -55,7 +57,7 @@ enum
 
 static GParamSpec *properties[N_PROPERTIES];
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeClipboard, glade_clipboard, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GladeClipboard, glade_clipboard, G_TYPE_OBJECT);
 
 static void
 glade_project_get_property (GObject    *object,
@@ -68,7 +70,7 @@ glade_project_get_property (GObject    *object,
   switch (prop_id)
     {
       case PROP_HAS_SELECTION:
-        g_value_set_boolean (value, clipboard->priv->has_selection);
+        g_value_set_boolean (value, clipboard->has_selection);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -99,19 +101,17 @@ glade_clipboard_class_init (GladeClipboardClass * klass)
 static void
 glade_clipboard_init (GladeClipboard *clipboard)
 {
-  clipboard->priv = glade_clipboard_get_instance_private (clipboard);
-
-  clipboard->priv->widgets = NULL;
-  clipboard->priv->has_selection = FALSE;
+  clipboard->widgets = NULL;
+  clipboard->has_selection = FALSE;
 }
 
 static void
 glade_clipboard_set_has_selection (GladeClipboard *clipboard,
                                    gboolean        has_selection)
 {
-  if (clipboard->priv->has_selection != has_selection)
+  if (clipboard->has_selection != has_selection)
     {
-      clipboard->priv->has_selection = has_selection;
+      clipboard->has_selection = has_selection;
       g_object_notify_by_pspec (G_OBJECT (clipboard), properties[PROP_HAS_SELECTION]);
     }
 
@@ -128,7 +128,7 @@ glade_clipboard_get_has_selection (GladeClipboard *clipboard)
 {
   g_return_val_if_fail (GLADE_IS_CLIPBOARD (clipboard), FALSE);
 
-  return clipboard->priv->has_selection;
+  return clipboard->has_selection;
 }
 
 /**
@@ -142,8 +142,7 @@ glade_clipboard_widgets (GladeClipboard *clipboard)
 {
   g_return_val_if_fail (GLADE_IS_CLIPBOARD (clipboard), NULL);
 
-
-  return clipboard->priv->widgets;
+  return clipboard->widgets;
 }
 
 /**
@@ -181,8 +180,8 @@ glade_clipboard_add (GladeClipboard *clipboard, GList *widgets)
   for (list = widgets; list && list->data; list = list->next)
     {
       widget = list->data;
-      clipboard->priv->widgets =
-          g_list_prepend (clipboard->priv->widgets, g_object_ref_sink (G_OBJECT (widget)));
+      clipboard->widgets =
+          g_list_prepend (clipboard->widgets, g_object_ref_sink (G_OBJECT (widget)));
     }
 
   glade_clipboard_set_has_selection (clipboard, TRUE);
@@ -197,20 +196,9 @@ glade_clipboard_add (GladeClipboard *clipboard, GList *widgets)
 void
 glade_clipboard_clear (GladeClipboard *clipboard)
 {
-  GladeWidget *widget;
-  GList *list;
-
   g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
 
-  for (list = clipboard->priv->widgets; list && list->data; list = list->next)
-    {
-      widget = list->data;
-
-      g_object_unref (G_OBJECT (widget));
-    }
-
-  clipboard->priv->widgets = 
-    (g_list_free (clipboard->priv->widgets), NULL);
+  clipboard->widgets = (g_list_free_full (clipboard->widgets, g_object_unref), NULL);
 
   glade_clipboard_set_has_selection (clipboard, FALSE);
 }
