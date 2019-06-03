@@ -451,7 +451,7 @@ glade_editor_property_constructed (GObject *object)
   if (glade_property_class_optional (eprop->priv->klass))
     {
       eprop->priv->check = gtk_check_button_new ();
-      gtk_button_set_focus_on_click (GTK_BUTTON (eprop->priv->check), FALSE);
+      gtk_widget_set_focus_on_click (eprop->priv->check, FALSE);
 
       if (!eprop->priv->disable_check)
         gtk_widget_show (eprop->priv->check);
@@ -1440,6 +1440,7 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
   GladeEPropColor *eprop_color = GLADE_EPROP_COLOR (eprop);
   GParamSpec *pspec;
   GdkColor *color;
+  PangoColor *pango_color;
   GdkRGBA *rgba;
   gchar *text;
 
@@ -1467,6 +1468,29 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
               copy.red   = color->red   / 65535.0;
               copy.green = color->green / 65535.0;
               copy.blue  = color->blue  / 65535.0;
+              copy.alpha = 1.0;
+
+              gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (eprop_color->cbutton), &copy);
+            }
+          else
+            {
+              GdkRGBA black = { 0, };
+
+              /* Manually fill it with black for an NULL value.
+               */
+              if (gdk_rgba_parse (&black, "Black"))
+                gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (eprop_color->cbutton), &black);
+            }
+        }
+      else if (pspec->value_type == PANGO_TYPE_COLOR)
+        {
+          if ((pango_color = g_value_get_boxed (glade_property_inline_value (property))) != NULL)
+            {
+              GdkRGBA copy;
+
+              copy.red   = pango_color->red   / 65535.0;
+              copy.green = pango_color->green / 65535.0;
+              copy.blue  = pango_color->blue  / 65535.0;
               copy.alpha = 1.0;
 
               gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (eprop_color->cbutton), &copy);
@@ -1516,6 +1540,16 @@ glade_eprop_color_changed (GtkWidget *button, GladeEditorProperty *eprop)
   if (pspec->value_type == GDK_TYPE_COLOR)
     {
       GdkColor color = { 0, };
+
+      color.red   = (gint16) (rgba.red * 65535);
+      color.green = (gint16) (rgba.green * 65535);
+      color.blue  = (gint16) (rgba.blue * 65535);
+
+      g_value_set_boxed (&value, &color);
+    }
+  else if (pspec->value_type == PANGO_TYPE_COLOR)
+    {
+      PangoColor color = { 0, };
 
       color.red   = (gint16) (rgba.red * 65535);
       color.green = (gint16) (rgba.green * 65535);
@@ -1630,7 +1664,7 @@ glade_eprop_named_icon_changed_common (GladeEditorProperty *eprop,
    */
   if (prop_text == NULL && text && text[0] == '\0')
     g_value_set_string (val, NULL);
-  else if (text == NULL && prop_text && prop_text == '\0')
+  else if (text == NULL && prop_text && prop_text[0] == '\0')
     g_value_set_string (val, "");
   else
     g_value_set_string (val, text);
@@ -1953,7 +1987,7 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
        */
       if (prop_text == NULL && text && text[0] == '\0')
         g_value_set_string (val, NULL);
-      else if (text == NULL && prop_text && prop_text == '\0')
+      else if (text == NULL && prop_text && prop_text[0] == '\0')
         g_value_set_string (val, "");
       else
         g_value_set_string (val, text);
@@ -2033,10 +2067,6 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
                                         _("_OK"), GTK_RESPONSE_OK, NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL, -1);
 
   _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
   content_area =  gtk_dialog_get_content_area (GTK_DIALOG (dialog));
@@ -2234,10 +2264,6 @@ glade_editor_property_show_resource_dialog (GladeProject *project,
                                    _("_Open"), GTK_RESPONSE_OK, NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL, -1);
 
   _glade_util_dialog_set_hig (GTK_DIALOG (dialog));
 
@@ -2671,7 +2697,7 @@ glade_eprop_check_create_input (GladeEditorProperty *eprop)
   gtk_widget_show (label);
   
   eprop_check->button = gtk_check_button_new ();
-  gtk_button_set_focus_on_click (GTK_BUTTON (eprop_check->button), FALSE);
+  gtk_widget_set_focus_on_click (eprop_check->button, FALSE);
 
   gtk_container_add (GTK_CONTAINER (eprop_check->button), label);
 
@@ -3183,11 +3209,6 @@ glade_editor_property_show_object_dialog (GladeProject *project,
                                         _("C_lear"), GLADE_RESPONSE_CLEAR,
                                         _("_OK"), GTK_RESPONSE_OK, NULL);
 
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           GLADE_RESPONSE_CLEAR, -1);
-
   gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
@@ -3296,12 +3317,6 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
                                             _("_New"), GLADE_RESPONSE_CREATE,
                                             _("_OK"), GTK_RESPONSE_OK, NULL);
       g_free (title);
-
-      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                               GTK_RESPONSE_OK,
-                                               GLADE_RESPONSE_CREATE,
-                                               GTK_RESPONSE_CANCEL,
-                                               GLADE_RESPONSE_CLEAR, -1);
     }
   else
     {
@@ -3312,11 +3327,6 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
                                             _("C_lear"), GLADE_RESPONSE_CLEAR,
                                             _("_OK"), GTK_RESPONSE_OK, NULL);
       g_free (title);
-
-      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                               GTK_RESPONSE_OK,
-                                               GTK_RESPONSE_CANCEL,
-                                               GLADE_RESPONSE_CLEAR, -1);
     }
 
   gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
@@ -3386,7 +3396,6 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
           GValue *value;
           GObject *new_object, *old_object = NULL;
           GladeWidget *new_widget;
-          const gchar *current_name;
 
           glade_project_selection_set (project, 
                                        glade_widget_get_object (widget),
@@ -3438,7 +3447,6 @@ glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
     }
   else if (res == GLADE_RESPONSE_CREATE)
     {
-      GValue *value;
       GladeWidget *new_widget;
 
       /* translators: Creating 'a widget' for 'a property' of 'a widget' */

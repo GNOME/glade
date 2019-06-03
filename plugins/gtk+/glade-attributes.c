@@ -435,7 +435,7 @@ type_from_attr_type (PangoAttrType type)
       case PANGO_ATTR_UNDERLINE_COLOR:
       case PANGO_ATTR_STRIKETHROUGH_COLOR:
         /* boxed colours */
-        return GDK_TYPE_COLOR;
+        return PANGO_TYPE_COLOR;
 
         /* PangoAttrShape */
       case PANGO_ATTR_SHAPE:
@@ -459,7 +459,7 @@ glade_gtk_string_from_attr (GladeAttribute *gattr)
   gchar *ret = NULL;
   gint ival;
   gdouble fval;
-  GdkColor *color;
+  PangoColor *color;
 
   switch (gattr->type)
     {
@@ -517,7 +517,7 @@ glade_gtk_string_from_attr (GladeAttribute *gattr)
       case PANGO_ATTR_STRIKETHROUGH_COLOR:
         /* boxed colours */
         color = g_value_get_boxed (&(gattr->value));
-        ret = gdk_color_to_string (color);
+        ret = pango_color_to_string (color);
         break;
 
         /* PangoAttrShape */
@@ -540,7 +540,7 @@ GladeAttribute *
 glade_gtk_attribute_from_string (PangoAttrType type, const gchar *strval)
 {
   GladeAttribute *gattr;
-  GdkColor color;
+  PangoColor color;
 
   gattr = g_new0 (GladeAttribute, 1);
   gattr->type = type;
@@ -597,9 +597,9 @@ glade_gtk_attribute_from_string (PangoAttrType type, const gchar *strval)
       case PANGO_ATTR_UNDERLINE_COLOR:
       case PANGO_ATTR_STRIKETHROUGH_COLOR:
         /* boxed colours */
-        if (gdk_color_parse (strval, &color))
+        if (pango_color_parse (&color, strval))
           {
-            g_value_init (&(gattr->value), GDK_TYPE_COLOR);
+            g_value_init (&(gattr->value), PANGO_TYPE_COLOR);
             g_value_set_boxed (&(gattr->value), &color);
           }
         else
@@ -736,7 +736,7 @@ value_icon_activate (GtkCellRendererToggle *cell_renderer,
         if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_OK)
           {
             gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (dialog), &color);
-            /* Use GdkColor string format */
+            /* Use PangoColor string format */
             if (((guint8)(color.red * 0xFF)) * 0x101 == (guint16)(color.red * 0xFFFF) &&
                 ((guint8)(color.green * 0xFF)) * 0x101 == (guint16)(color.green * 0xFFFF) &&
                 ((guint8)(color.blue * 0xFF)) * 0x101 == (guint16)(color.blue * 0xFFFF))
