@@ -126,7 +126,7 @@ glade_icon_factory_editor_new (GladeWidgetAdaptor *adaptor,
 {
   GladeIconFactoryEditor *factory_editor;
   GladeEditorProperty *eprop;
-  GtkWidget *label, *alignment, *frame, *vbox;
+  GtkWidget *label, *description_label, *vbox;
 
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
   g_return_val_if_fail (GLADE_IS_EDITABLE (embed), NULL);
@@ -134,37 +134,33 @@ glade_icon_factory_editor_new (GladeWidgetAdaptor *adaptor,
   factory_editor = g_object_new (GLADE_TYPE_ICON_FACTORY_EDITOR, NULL);
   factory_editor->embed = GTK_WIDGET (embed);
 
-  /* Pack the parent on top... */
-  gtk_box_pack_start (GTK_BOX (factory_editor), GTK_WIDGET (embed), FALSE,
-                      FALSE, 0);
-
   /* Label item in frame label widget on top... */
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "sources", FALSE,
                                                  TRUE);
   factory_editor->properties =
       g_list_prepend (factory_editor->properties, eprop);
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_label_widget (GTK_FRAME (frame), glade_editor_property_get_item_label (eprop));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-  gtk_box_pack_start (GTK_BOX (factory_editor), frame, FALSE, FALSE, 12);
 
-  /* Alignment/Vbox in frame... */
-  alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
-  gtk_container_add (GTK_CONTAINER (frame), alignment);
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_add (GTK_CONTAINER (alignment), vbox);
+  label = glade_editor_property_get_item_label (eprop);
 
   /* Add descriptive label */
-  label = gtk_label_new (_("First add a stock name in the entry below, "
-                           "then add and define sources for that icon "
-                           "in the treeview."));
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 8);
+  description_label = gtk_label_new (_("First add a stock name in the entry below, "
+                                       "then add and define sources for that icon "
+                                       "in the treeview."));
+  gtk_label_set_line_wrap (GTK_LABEL (description_label), TRUE);
+  gtk_label_set_line_wrap_mode (GTK_LABEL (description_label), PANGO_WRAP_WORD);
 
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (eprop), FALSE, FALSE, 8);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_box_set_spacing (GTK_BOX (vbox), 6);
+
+  gtk_container_add (GTK_CONTAINER (vbox), label);
+  gtk_container_add (GTK_CONTAINER (vbox), description_label);
+  gtk_container_add (GTK_CONTAINER (vbox), GTK_WIDGET (eprop));
+  gtk_widget_set_margin_top (vbox, 6);
+
+  /* Pack the parent on top... */
+  gtk_container_add (GTK_CONTAINER (factory_editor), GTK_WIDGET (embed));
+  gtk_container_add (GTK_CONTAINER (factory_editor), vbox);
 
   gtk_widget_show_all (GTK_WIDGET (factory_editor));
 
