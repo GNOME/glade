@@ -61,8 +61,10 @@ enum
   LAST_SIGNAL
 };
 
-struct _GladeAppPrivate
+struct _GladeApp
 {
+  GObject parent_instance;
+
   GtkWidget *window;
 
   GladeClipboard *clipboard;    /* See glade-clipboard */
@@ -88,7 +90,7 @@ static gchar *lib_dir = NULL;
 static GladeApp *singleton_app = NULL;
 static gboolean check_initialised = FALSE;
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeApp, glade_app, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GladeApp, glade_app, G_TYPE_OBJECT);
 
 /*****************************************************************
  *                    GObjectClass                               *
@@ -119,40 +121,31 @@ glade_app_constructor (GType                  type,
 
 
 static void
-glade_app_dispose (GObject *app)
+glade_app_dispose (GObject *gobject)
 {
-  GladeAppPrivate *priv = GLADE_APP (app)->priv;
+  GladeApp *self = GLADE_APP (gobject);
 
-  if (priv->clipboard)
-    {
-      g_object_unref (priv->clipboard);
-      priv->clipboard = NULL;
-    }
+  g_clear_object (&self->clipboard);
   /* FIXME: Remove projects */
+  g_clear_pointer (&self->config, g_key_file_unref);
 
-  if (priv->config)
-    {
-      g_key_file_free (priv->config);
-      priv->config = NULL;
-    }
-
-  G_OBJECT_CLASS (glade_app_parent_class)->dispose (app);
+  G_OBJECT_CLASS (glade_app_parent_class)->dispose (gobject);
 }
 
 static void
-glade_app_finalize (GObject *app)
+glade_app_finalize (GObject *gobject)
 {
-  g_free (catalogs_dir);
-  g_free (modules_dir);
-  g_free (pixmaps_dir);
-  g_free (locale_dir);
-  g_free (bin_dir);
-  g_free (lib_dir);
+  g_clear_pointer (&catalogs_dir, g_free);
+  g_clear_pointer (&modules_dir, g_free);
+  g_clear_pointer (&pixmaps_dir, g_free);
+  g_clear_pointer (&locale_dir, g_free);
+  g_clear_pointer (&bin_dir, g_free);
+  g_clear_pointer (&lib_dir, g_free);
 
   singleton_app = NULL;
   check_initialised = FALSE;
 
-  G_OBJECT_CLASS (glade_app_parent_class)->finalize (app);
+  G_OBJECT_CLASS (glade_app_parent_class)->finalize (gobject);
 }
 
 /* build package paths at runtime */
@@ -363,7 +356,6 @@ static void
 glade_app_init (GladeApp *app)
 {
   static gboolean initialized = FALSE;
-  GladeAppPrivate *priv = app->priv = glade_app_get_instance_private (app);
 
   singleton_app = app;
 
@@ -393,16 +385,16 @@ glade_app_init (GladeApp *app)
       initialized = TRUE;
     }
 
-  priv->accel_group = NULL;
+  app->accel_group = NULL;
 
   /* Initialize app objects */
-  priv->catalogs = (GList *) glade_catalog_load_all ();
+  app->catalogs = (GList *) glade_catalog_load_all ();
 
   /* Create clipboard */
-  priv->clipboard = glade_clipboard_new ();
+  app->clipboard = glade_clipboard_new ();
 
   /* Load the configuration file */
-  priv->config = g_key_file_ref (glade_app_get_config ());
+  app->config = g_key_file_ref (glade_app_get_config ());
 }
 
 static void
@@ -427,9 +419,9 @@ glade_app_class_init (GladeAppClass *klass)
   /**
    * GladeApp::doc-search:
    * @gladeeditor: the #GladeEditor which received the signal.
-   * @arg1: the (#gchar *) book to search or %NULL
-   * @arg2: the (#gchar *) page to search or %NULL
-   * @arg3: the (#gchar *) search string or %NULL
+   * @book: (nullable): the (#gchar *) book to search or %NULL
+   * @page: (nullable): the (#gchar *) page to search or %NULL
+   * @search: (nullable): the (#gchar *) search string or %NULL
    *
    * Emitted when the glade core requests that a doc-search be performed.
    */
@@ -457,7 +449,7 @@ glade_app_class_init (GladeAppClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL,
                   _glade_marshal_VOID__OBJECT,
-                  G_TYPE_NONE, 1, G_TYPE_OBJECT);  
+                  G_TYPE_NONE, 1, GLADE_TYPE_SIGNAL_EDITOR);
 
   /**
    * GladeApp::widget-adaptor-registered:
@@ -472,7 +464,7 @@ glade_app_class_init (GladeAppClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL,
                   _glade_marshal_VOID__OBJECT,
-                  G_TYPE_NONE, 1, G_TYPE_OBJECT);
+                  G_TYPE_NONE, 1, GLADE_TYPE_WIDGET_ADAPTOR);
 
   gdk_event_handler_set (glade_app_event_handler, NULL, NULL);
 }
@@ -570,7 +562,7 @@ glade_app_config_save ()
   if ((channel = g_io_channel_new_file (filename, "w", &error)) != NULL)
     {
       if ((data =
-           g_key_file_to_data (app->priv->config, &size, &error)) != NULL)
+           g_key_file_to_data (app->config, &size, &error)) != NULL)
         {
 
           /* Implement loop here */
@@ -653,7 +645,7 @@ glade_app_set_window (GtkWidget *window)
 {
   GladeApp *app = glade_app_get ();
 
-  app->priv->window = window;
+  app->window = window;
 }
 
 /**
@@ -671,7 +663,7 @@ glade_app_get_catalog (const gchar *name)
 
   g_return_val_if_fail (name && name[0], NULL);
 
-  for (list = app->priv->catalogs; list; list = list->next)
+  for (list = app->catalogs; list; list = list->next)
     {
       catalog = list->data;
       if (!strcmp (glade_catalog_get_name (catalog), name))
@@ -715,7 +707,7 @@ glade_app_get_catalogs (void)
 {
   GladeApp *app = glade_app_get ();
 
-  return app->priv->catalogs;
+  return app->catalogs;
 }
 
 /**
@@ -727,7 +719,7 @@ GtkWidget *
 glade_app_get_window (void)
 {
   GladeApp *app = glade_app_get ();
-  return app->priv->window;
+  return app->window;
 }
 
 /**
@@ -739,7 +731,7 @@ GladeClipboard *
 glade_app_get_clipboard (void)
 {
   GladeApp *app = glade_app_get ();
-  return app->priv->clipboard;
+  return app->clipboard;
 }
 
 /**
@@ -751,7 +743,7 @@ GList *
 glade_app_get_projects (void)
 {
   GladeApp *app = glade_app_get ();
-  return app->priv->projects;
+  return app->projects;
 }
 
 /**
@@ -788,7 +780,7 @@ glade_app_is_project_loaded (const gchar *project_path)
 
   app = glade_app_get ();
 
-  for (list = app->priv->projects; list; list = list->next)
+  for (list = app->projects; list; list = list->next)
     {
       GladeProject *cur_project = GLADE_PROJECT (list->data);
 
@@ -822,7 +814,7 @@ glade_app_get_project_by_path (const gchar *project_path)
 
   canonical_path = glade_util_canonical_path (project_path);
 
-  for (l = app->priv->projects; l; l = l->next)
+  for (l = app->projects; l; l = l->next)
     {
       GladeProject *project = (GladeProject *) l->data;
 
@@ -853,11 +845,11 @@ glade_app_add_project (GladeProject *project)
   app = glade_app_get ();
 
   /* If the project was previously loaded, don't re-load */
-  if (g_list_find (app->priv->projects, project) != NULL)
+  if (g_list_find (app->projects, project) != NULL)
     return;
 
   /* Take a reference for GladeApp here... */
-  app->priv->projects = g_list_append (app->priv->projects, g_object_ref (project));
+  app->projects = g_list_append (app->projects, g_object_ref (project));
 }
 
 /**
@@ -872,7 +864,7 @@ glade_app_remove_project (GladeProject *project)
 
   app = glade_app_get ();
 
-  app->priv->projects = g_list_remove (app->priv->projects, project);
+  app->projects = g_list_remove (app->projects, project);
 
   /* Its safe to just release the project as the project emits a
    * "close" signal and everyone is responsable for cleaning up at
@@ -897,7 +889,7 @@ glade_app_set_accel_group (GtkAccelGroup *accel_group)
 
   app = glade_app_get ();
 
-  app->priv->accel_group = accel_group;
+  app->accel_group = accel_group;
 }
 
 /**
@@ -908,7 +900,7 @@ glade_app_set_accel_group (GtkAccelGroup *accel_group)
 GtkAccelGroup *
 glade_app_get_accel_group (void)
 {
-  return glade_app_get ()->priv->accel_group;
+  return glade_app_get ()->accel_group;
 }
 
 /**
@@ -924,9 +916,9 @@ glade_app_new (void)
 
 /**
  * glade_app_search_docs:
- * @book: the name of a book
- * @page: the name of a page
- * @search: the search query
+ * @book: (nullable): the name of a book
+ * @page: (nullable): the name of a page
+ * @search: (nullable): the search query
  *
  * Searches for @book, @page and @search in the documentation.
  */
