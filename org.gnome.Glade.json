@@ -17,9 +17,10 @@
         "--filesystem=host",
         "--device=dri",
         "--filesystem=xdg-run/dconf",
-        "--filesystem=~/.config/dconf:ro",
+        "--filesystem=~/.config/dconf:rw",
         "--talk-name=ca.desrt.dconf",
-        "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
+        "--talk-name=org.gtk.vfs.*"
     ],
     "build-options" : {
         "cflags" : "-O2 -g",
