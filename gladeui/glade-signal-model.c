@@ -86,10 +86,10 @@ glade_signal_model_create_widget_list (GladeSignalModel *sig_model)
       GladeSignalClass *signal = (GladeSignalClass *) list->data;
 
       if (!g_list_find_custom (sig_model->priv->widgets, 
-                               (gpointer) glade_signal_class_get_type (signal), (GCompareFunc) strcmp))
+                               (gpointer) glade_signal_class_get_object_type_name (signal), (GCompareFunc) strcmp))
         {
           sig_model->priv->widgets = 
-            g_list_prepend (sig_model->priv->widgets, (gpointer) glade_signal_class_get_type (signal));
+            g_list_prepend (sig_model->priv->widgets, (gpointer) glade_signal_class_get_object_type_name (signal));
         }
     }
   sig_model->priv->widgets = g_list_reverse (sig_model->priv->widgets);
@@ -324,7 +324,7 @@ glade_signal_model_create_signal_list (GladeSignalModel *sig_model,
        signals = g_list_next (signals))
     {
       GladeSignalClass *sig_class = signals->data;
-      if (g_str_equal (glade_signal_class_get_type (sig_class), widget_type))
+      if (g_str_equal (glade_signal_class_get_object_type_name (sig_class), widget_type))
         {
           widget_signals = g_list_append (widget_signals, sig_class);
         }
@@ -342,7 +342,7 @@ on_glade_signal_model_added (GladeWidget       *widget,
   const GladeSignalClass *sig_class = glade_signal_get_class (signal);
 
   glade_signal_model_create_signal_iter (model,
-                                         glade_signal_class_get_type (sig_class),
+                                         glade_signal_class_get_object_type_name (sig_class),
                                          signal, 
                                          &iter);
   path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &iter);
@@ -362,7 +362,7 @@ on_glade_signal_model_removed (GladeWidget       *widget,
   const GladeSignalClass *sig_class = glade_signal_get_class (signal);
   
   glade_signal_model_create_signal_iter (model,
-                                         glade_signal_class_get_type (sig_class),
+                                         glade_signal_class_get_object_type_name (sig_class),
                                          signal, 
                                          &iter);
   path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &iter);
@@ -381,7 +381,7 @@ on_glade_signal_model_changed (GladeWidget *widget,
   const GladeSignalClass *sig_class = glade_signal_get_class (signal);
   
   glade_signal_model_create_signal_iter (model,
-                                         glade_signal_class_get_type (sig_class),
+                                         glade_signal_class_get_object_type_name (sig_class),
                                          signal, 
                                          &iter);
   path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &iter);

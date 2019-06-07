@@ -228,7 +228,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       if (glade_widget_adaptor_get_object_type (adaptor) == type_action ||
           g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), type_action))
         {
-          if (g_strcmp0 (glade_signal_class_get_type (sclass), "GtkAction") != 0 ||
+          if (g_strcmp0 (glade_signal_class_get_object_type_name (sclass), "GtkAction") != 0 ||
               g_strcmp0 (glade_signal_class_get_name (sclass), "activate") != 0)
             continue;
         }
@@ -237,17 +237,17 @@ G_GNUC_END_IGNORE_DEPRECATIONS
         continue;
 
       if (g_list_find_custom (eprop_accel->parent_iters,
-                              glade_signal_class_get_type (sclass),
+                              glade_signal_class_get_object_type_name (sclass),
                               (GCompareFunc) eprop_find_iter) == NULL)
         {
           gtk_tree_store_append (model, &iter, NULL);
           gtk_tree_store_set (model, &iter,
-                              ACCEL_COLUMN_SIGNAL, glade_signal_class_get_type (sclass),
+                              ACCEL_COLUMN_SIGNAL, glade_signal_class_get_object_type_name (sclass),
                               ACCEL_COLUMN_WEIGHT, PANGO_WEIGHT_BOLD,
                               ACCEL_COLUMN_VISIBLE, FALSE, -1);
 
           parent_tab = g_new0 (GladeEpropIterTab, 1);
-          parent_tab->name = glade_signal_class_get_type (sclass);
+          parent_tab->name = glade_signal_class_get_object_type_name (sclass);
           parent_tab->iter = gtk_tree_iter_copy (&iter);
 
           eprop_accel->parent_iters =
@@ -265,7 +265,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       if (glade_widget_adaptor_get_object_type (adaptor) == type_action ||
           g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), type_action))
         {
-          if (g_strcmp0 (glade_signal_class_get_type (sclass), "GtkAction") != 0 ||
+          if (g_strcmp0 (glade_signal_class_get_object_type_name (sclass), "GtkAction") != 0 ||
               g_strcmp0 (glade_signal_class_get_name (sclass), "activate") != 0)
             continue;
         }
@@ -274,7 +274,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
         continue;
 
       if ((found = g_list_find_custom (eprop_accel->parent_iters,
-                                       glade_signal_class_get_type (sclass),
+                                       glade_signal_class_get_object_type_name (sclass),
                                        (GCompareFunc) eprop_find_iter)) != NULL)
         {
           parent_tab = found->data;
