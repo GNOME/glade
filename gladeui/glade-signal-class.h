@@ -57,7 +57,7 @@ void                  glade_signal_class_update_from_node         (GladeSignalCl
 
 GladeWidgetAdaptor   *glade_signal_class_get_adaptor              (const GladeSignalClass   *signal_class);
 G_CONST_RETURN gchar *glade_signal_class_get_name                 (const GladeSignalClass   *signal_class);
-G_CONST_RETURN gchar *glade_signal_class_get_type                 (const GladeSignalClass   *signal_class);
+G_CONST_RETURN gchar *glade_signal_class_get_object_type_name     (const GladeSignalClass   *signal_class);
 GSignalFlags          glade_signal_class_get_flags                (const GladeSignalClass   *signal_class);
 
 void                  glade_signal_class_set_since                (GladeSignalClass   *signal_class,
