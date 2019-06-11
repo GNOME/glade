@@ -128,7 +128,7 @@ glade_gtk_action_widgets_write_responses (GladeWidget     *widget,
       glade_xml_node_append_child (node, widget_node);
 
       str =
-          glade_property_class_make_string_from_gvalue (glade_property_get_class (property),
+          glade_property_def_make_string_from_gvalue (glade_property_get_def (property),
                                                         glade_property_inline_value (property));
 
       glade_xml_node_set_property_string (widget_node, GLADE_TAG_RESPONSE, str);

@@ -306,6 +306,6 @@ glade_gtk_treeview_set_property (GladeWidgetAdaptor *adaptor,
         glade_widget_property_set_sensitive (widget, "expander-column", FALSE, _("Expanders are not shown"));
     }
 
-  if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
+  if (GPC_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }

@@ -25,11 +25,11 @@
 #endif
 
 /**
- * SECTION:glade-property-class
- * @Title: GladePropertyClass
- * @Short_Description: Property Class-wide metadata.
+ * SECTION:glade-property-def
+ * @Title: GladePropertyDef
+ * @Short_Description: Property Definition metadata.
  *
- * #GladePropertyClass is a structure based on a #GParamSpec and parameters
+ * #GladePropertyDef is a structure based on a #GParamSpec and parameters
  * from the Glade catalog files and describes how properties are to be handled
  * in Glade; it also provides an interface to convert #GValue to strings and
  * va_lists etc (back and forth).
@@ -42,7 +42,7 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-property.h"
-#include "glade-property-class.h"
+#include "glade-property-def.h"
 #include "glade-editor-property.h"
 #include "glade-displayable-values.h"
 #include "glade-debug.h"
@@ -56,7 +56,7 @@
 #define FLOATING_PAGE_SIZE         0.00F
 
 
-struct _GladePropertyClass
+struct _GladePropertyDef
 {
   GladeWidgetAdaptor *adaptor; /* The GladeWidgetAdaptor that this property class
                                 * was created for.
@@ -154,7 +154,7 @@ struct _GladePropertyClass
                          * this property will by synced with virtual properties.
                          */
 
-  guint is_modified : 1; /* If true, this property_class has been "modified" from the
+  guint is_modified : 1; /* If true, this property_def has been "modified" from the
                           * the standard property by a xml file. */
 
   guint themed_icon : 1; /* Some GParamSpecString properties reffer to icon names
@@ -188,147 +188,141 @@ struct _GladePropertyClass
                        */
 };
 
+G_DEFINE_BOXED_TYPE (GladePropertyDef, glade_property_def, glade_property_def_clone, glade_property_def_free)
+
 /**
- * glade_property_class_new:
+ * glade_property_def_new:
  * @adaptor: The #GladeWidgetAdaptor to create this property for
  * @id: the id for the new property class
  *
- * Returns: a new #GladePropertyClass
+ * Returns: a new #GladePropertyDef
  */
-GladePropertyClass *
-glade_property_class_new (GladeWidgetAdaptor *adaptor, 
+GladePropertyDef *
+glade_property_def_new (GladeWidgetAdaptor *adaptor, 
                           const gchar        *id)
 {
-  GladePropertyClass *property_class;
+  GladePropertyDef *property_def;
 
-  property_class = g_slice_new0 (GladePropertyClass);
-  property_class->adaptor = adaptor;
-  property_class->pspec = NULL;
-  property_class->id = g_strdup (id);
-  property_class->name = NULL;
-  property_class->tooltip = NULL;
-  property_class->def = NULL;
-  property_class->orig_def = NULL;
-  property_class->query = FALSE;
-  property_class->optional = FALSE;
-  property_class->optional_default = FALSE;
-  property_class->is_modified = FALSE;
-  property_class->common = FALSE;
-  property_class->packing = FALSE;
-  property_class->atk = FALSE;
-  property_class->visible = TRUE;
-  property_class->custom_layout = FALSE;
-  property_class->save = TRUE;
-  property_class->save_always = FALSE;
-  property_class->ignore = FALSE;
-  property_class->needs_sync = FALSE;
-  property_class->themed_icon = FALSE;
-  property_class->stock = FALSE;
-  property_class->stock_icon = FALSE;
-  property_class->translatable = FALSE;
-  property_class->virt = TRUE;
-  property_class->transfer_on_paste = FALSE;
-  property_class->weight = -1.0;
-  property_class->parentless_widget = FALSE;
-  property_class->create_type = NULL;
+  property_def = g_slice_new0 (GladePropertyDef);
+  property_def->adaptor = adaptor;
+  property_def->pspec = NULL;
+  property_def->id = g_strdup (id);
+  property_def->name = NULL;
+  property_def->tooltip = NULL;
+  property_def->def = NULL;
+  property_def->orig_def = NULL;
+  property_def->query = FALSE;
+  property_def->optional = FALSE;
+  property_def->optional_default = FALSE;
+  property_def->is_modified = FALSE;
+  property_def->common = FALSE;
+  property_def->packing = FALSE;
+  property_def->atk = FALSE;
+  property_def->visible = TRUE;
+  property_def->custom_layout = FALSE;
+  property_def->save = TRUE;
+  property_def->save_always = FALSE;
+  property_def->ignore = FALSE;
+  property_def->needs_sync = FALSE;
+  property_def->themed_icon = FALSE;
+  property_def->stock = FALSE;
+  property_def->stock_icon = FALSE;
+  property_def->translatable = FALSE;
+  property_def->virt = TRUE;
+  property_def->transfer_on_paste = FALSE;
+  property_def->weight = -1.0;
+  property_def->parentless_widget = FALSE;
+  property_def->create_type = NULL;
 
   /* Initialize property versions & deprecated to adaptor */
-  property_class->version_since_major = GWA_VERSION_SINCE_MAJOR (adaptor);
-  property_class->version_since_minor = GWA_VERSION_SINCE_MINOR (adaptor);
-  property_class->deprecated          = GWA_DEPRECATED (adaptor);
+  property_def->version_since_major = GWA_VERSION_SINCE_MAJOR (adaptor);
+  property_def->version_since_minor = GWA_VERSION_SINCE_MINOR (adaptor);
+  property_def->deprecated          = GWA_DEPRECATED (adaptor);
 
-  return property_class;
+  return property_def;
 }
 
 /**
- * glade_property_class_clone:
- * @property_class: a #GladePropertyClass
- * @reset_version: whether the introduction version should be reset in the clone
+ * glade_property_def_clone:
+ * @property_def: a #GladePropertyDef
  *
- * Returns: a new #GladePropertyClass cloned from @property_class
+ * Returns: (transfer full): a new #GladePropertyDef cloned from @property_def
  */
-GladePropertyClass *
-glade_property_class_clone (GladePropertyClass *property_class,
-                            gboolean            reset_version)
+GladePropertyDef *
+glade_property_def_clone (GladePropertyDef *property_def)
 {
-  GladePropertyClass *clone;
+  GladePropertyDef *clone;
 
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  clone = g_new0 (GladePropertyClass, 1);
+  clone = g_new0 (GladePropertyDef, 1);
 
   /* copy ints over */
-  memcpy (clone, property_class, sizeof (GladePropertyClass));
-
-  if (reset_version)
-    {
-      clone->version_since_major = 0;
-      clone->version_since_minor = 0;
-    }
+  memcpy (clone, property_def, sizeof (GladePropertyDef));
 
   /* Make sure we own our strings */
-  clone->pspec = property_class->pspec;
+  clone->pspec = property_def->pspec;
   clone->id = g_strdup (clone->id);
   clone->name = g_strdup (clone->name);
   clone->tooltip = g_strdup (clone->tooltip);
 
-  if (G_IS_VALUE (property_class->def))
+  if (G_IS_VALUE (property_def->def))
     {
       clone->def = g_new0 (GValue, 1);
-      g_value_init (clone->def, property_class->pspec->value_type);
-      g_value_copy (property_class->def, clone->def);
+      g_value_init (clone->def, property_def->pspec->value_type);
+      g_value_copy (property_def->def, clone->def);
     }
 
-  if (G_IS_VALUE (property_class->orig_def))
+  if (G_IS_VALUE (property_def->orig_def))
     {
       clone->orig_def = g_new0 (GValue, 1);
-      g_value_init (clone->orig_def, property_class->pspec->value_type);
-      g_value_copy (property_class->orig_def, clone->orig_def);
+      g_value_init (clone->orig_def, property_def->pspec->value_type);
+      g_value_copy (property_def->orig_def, clone->orig_def);
     }
 
-  if (property_class->create_type)
-    clone->create_type = g_strdup (property_class->create_type);
+  if (property_def->create_type)
+    clone->create_type = g_strdup (property_def->create_type);
 
   return clone;
 }
 
 /**
- * glade_property_class_free:
- * @property_class: a #GladePropertyClass
+ * glade_property_def_free:
+ * @property_def: a #GladePropertyDef
  *
- * Frees @klass and its associated memory.
+ * Frees @property_def and its associated memory.
  */
 void
-glade_property_class_free (GladePropertyClass * property_class)
+glade_property_def_free (GladePropertyDef *property_def)
 {
-  if (property_class == NULL)
+  if (property_def == NULL)
     return;
 
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  g_clear_pointer (&property_class->id, g_free);
-  g_clear_pointer (&property_class->name, g_free);
-  g_clear_pointer (&property_class->tooltip, g_free);
-  if (property_class->orig_def)
+  g_clear_pointer (&property_def->id, g_free);
+  g_clear_pointer (&property_def->name, g_free);
+  g_clear_pointer (&property_def->tooltip, g_free);
+  if (property_def->orig_def)
     {
-      if (G_VALUE_TYPE (property_class->orig_def) != 0)
-        g_value_unset (property_class->orig_def);
-      g_clear_pointer (&property_class->orig_def, g_free);
+      if (G_VALUE_TYPE (property_def->orig_def) != 0)
+        g_value_unset (property_def->orig_def);
+      g_clear_pointer (&property_def->orig_def, g_free);
     }
-  if (property_class->def)
+  if (property_def->def)
     {
-      if (G_VALUE_TYPE (property_class->def) != 0)
-        g_value_unset (property_class->def);
-      g_clear_pointer (&property_class->def, g_free);
+      if (G_VALUE_TYPE (property_def->def) != 0)
+        g_value_unset (property_def->def);
+      g_clear_pointer (&property_def->def, g_free);
     }
 
-  g_clear_pointer (&property_class->create_type, g_free);
-  g_slice_free (GladePropertyClass, property_class);
+  g_clear_pointer (&property_def->create_type, g_free);
+  g_slice_free (GladePropertyDef, property_def);
 }
 
 
 GValue *
-glade_property_class_get_default_from_spec (GParamSpec * spec)
+glade_property_def_get_default_from_spec (GParamSpec * spec)
 {
   GValue *value;
   value = g_new0 (GValue, 1);
@@ -339,7 +333,7 @@ glade_property_class_get_default_from_spec (GParamSpec * spec)
 
 
 static gchar *
-glade_property_class_make_string_from_enum (GType etype, gint eval)
+glade_property_def_make_string_from_enum (GType etype, gint eval)
 {
   GEnumClass *eclass;
   gchar *string = NULL;
@@ -359,7 +353,7 @@ glade_property_class_make_string_from_enum (GType etype, gint eval)
 }
 
 static gchar *
-glade_property_class_make_string_from_flags (GladePropertyClass * klass,
+glade_property_def_make_string_from_flags (GladePropertyDef * property_def,
                                              guint fvals, gboolean displayables)
 {
   GFlagsClass *fclass;
@@ -368,7 +362,7 @@ glade_property_class_make_string_from_flags (GladePropertyClass * klass,
   gchar *retval;
 
   g_return_val_if_fail ((fclass =
-                         g_type_class_ref (klass->pspec->value_type)) != NULL,
+                         g_type_class_ref (property_def->pspec->value_type)) != NULL,
                         NULL);
 
   string = g_string_new ("");
@@ -380,7 +374,7 @@ glade_property_class_make_string_from_flags (GladePropertyClass * klass,
       fvals &= ~fvalue->value;
 
       if (displayables)
-        val_str = glade_get_displayable_value (klass->pspec->value_type,
+        val_str = glade_get_displayable_value (property_def->pspec->value_type,
                                                fvalue->value_name);
 
       if (string->str[0])
@@ -402,8 +396,8 @@ glade_property_class_make_string_from_flags (GladePropertyClass * klass,
 }
 
 static gchar *
-glade_property_class_make_string_from_object (GladePropertyClass *
-                                              property_class, GObject * object)
+glade_property_def_make_string_from_object (GladePropertyDef *property_def,
+                                            GObject          *object)
 {
   GladeWidget *gwidget;
   gchar *string = NULL, *filename;
@@ -411,12 +405,12 @@ glade_property_class_make_string_from_object (GladePropertyClass *
   if (!object)
     return NULL;
 
-  if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
+  if (property_def->pspec->value_type == GDK_TYPE_PIXBUF)
     {
       if ((filename = g_object_get_data (object, "GladeFileName")) != NULL)
         string = g_strdup (filename);
     }
-  else if (property_class->pspec->value_type == G_TYPE_FILE)
+  else if (property_def->pspec->value_type == G_TYPE_FILE)
     {
       if ((filename = g_object_get_data (object, "GladeFileURI")) != NULL)
         string = g_strdup (filename);
@@ -431,8 +425,8 @@ glade_property_class_make_string_from_object (GladePropertyClass *
 }
 
 static gchar *
-glade_property_class_make_string_from_objects (GladePropertyClass *
-                                               property_class, GList * objects)
+glade_property_def_make_string_from_objects (GladePropertyDef *
+                                               property_def, GList * objects)
 {
   GObject *object;
   GList *list;
@@ -443,7 +437,7 @@ glade_property_class_make_string_from_objects (GladePropertyClass *
       object = list->data;
 
       obj_str =
-          glade_property_class_make_string_from_object (property_class, object);
+          glade_property_def_make_string_from_object (property_def, object);
 
       if (string == NULL)
         string = obj_str;
@@ -479,15 +473,15 @@ glade_dtostr (double number, gdouble epsilon)
 }
 
 /**
- * glade_property_class_make_string_from_gvalue:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_make_string_from_gvalue:
+ * @property_def: A #GladePropertyDef
  * @value: A #GValue
  *
  * Returns: A newly allocated string representation of @value
  */
 gchar *
-glade_property_class_make_string_from_gvalue (GladePropertyClass *
-                                              property_class,
+glade_property_def_make_string_from_gvalue (GladePropertyDef *
+                                              property_def,
                                               const GValue * value)
 {
   gchar *string = NULL, **strv;
@@ -496,19 +490,19 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
   GdkRGBA *rgba;
   GList *objects;
 
-  if (G_IS_PARAM_SPEC_ENUM (property_class->pspec))
+  if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
     {
       gint eval = g_value_get_enum (value);
-      string = glade_property_class_make_string_from_enum
-          (property_class->pspec->value_type, eval);
+      string = glade_property_def_make_string_from_enum
+          (property_def->pspec->value_type, eval);
     }
-  else if (G_IS_PARAM_SPEC_FLAGS (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_FLAGS (property_def->pspec))
     {
       guint flags = g_value_get_flags (value);
-      string = glade_property_class_make_string_from_flags
-          (property_class, flags, FALSE);
+      string = glade_property_def_make_string_from_flags
+          (property_def, flags, FALSE);
     }
-  else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
     {
       GValueArray *value_array = g_value_get_boxed (value);
 
@@ -528,87 +522,87 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
           g_string_free (gstring, FALSE);
         }
     }
-  else if (G_IS_PARAM_SPEC_BOXED (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_BOXED (property_def->pspec))
     {
-      if (property_class->pspec->value_type == GDK_TYPE_COLOR)
+      if (property_def->pspec->value_type == GDK_TYPE_COLOR)
         {
           color = g_value_get_boxed (value);
           if (color)
             string = g_strdup_printf ("#%04x%04x%04x",
                                       color->red, color->green, color->blue);
         }
-      else if (property_class->pspec->value_type == GDK_TYPE_RGBA)
+      else if (property_def->pspec->value_type == GDK_TYPE_RGBA)
         {
           rgba = g_value_get_boxed (value);
           if (rgba)
             string = gdk_rgba_to_string (rgba);
         }
-      else if (property_class->pspec->value_type == G_TYPE_STRV)
+      else if (property_def->pspec->value_type == G_TYPE_STRV)
         {
           strv = g_value_get_boxed (value);
           if (strv)
             string = g_strjoinv ("\n", strv);
         }
     }
-  else if (G_IS_PARAM_SPEC_INT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_INT (property_def->pspec))
     string = g_strdup_printf ("%d", g_value_get_int (value));
-  else if (G_IS_PARAM_SPEC_UINT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UINT (property_def->pspec))
     string = g_strdup_printf ("%u", g_value_get_uint (value));
-  else if (G_IS_PARAM_SPEC_LONG (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_LONG (property_def->pspec))
     string = g_strdup_printf ("%ld", g_value_get_long (value));
-  else if (G_IS_PARAM_SPEC_ULONG (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_ULONG (property_def->pspec))
     string = g_strdup_printf ("%lu", g_value_get_ulong (value));
-  else if (G_IS_PARAM_SPEC_INT64 (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_INT64 (property_def->pspec))
     string = g_strdup_printf ("%" G_GINT64_FORMAT, g_value_get_int64 (value));
-  else if (G_IS_PARAM_SPEC_UINT64 (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UINT64 (property_def->pspec))
     string = g_strdup_printf ("%" G_GUINT64_FORMAT, g_value_get_uint64 (value));
-  else if (G_IS_PARAM_SPEC_FLOAT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_FLOAT (property_def->pspec))
     string = glade_dtostr (g_value_get_float (value),
-                           ((GParamSpecFloat *)property_class->pspec)->epsilon);
-  else if (G_IS_PARAM_SPEC_DOUBLE (property_class->pspec))
+                           ((GParamSpecFloat *)property_def->pspec)->epsilon);
+  else if (G_IS_PARAM_SPEC_DOUBLE (property_def->pspec))
     string = glade_dtostr (g_value_get_double (value),
-                           ((GParamSpecDouble *)property_class->pspec)->epsilon);
-  else if (G_IS_PARAM_SPEC_STRING (property_class->pspec))
+                           ((GParamSpecDouble *)property_def->pspec)->epsilon);
+  else if (G_IS_PARAM_SPEC_STRING (property_def->pspec))
     {
       string = g_value_dup_string (value);
     }
-  else if (G_IS_PARAM_SPEC_CHAR (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_CHAR (property_def->pspec))
     string = g_strdup_printf ("%c", g_value_get_schar (value));
-  else if (G_IS_PARAM_SPEC_UCHAR (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UCHAR (property_def->pspec))
     string = g_strdup_printf ("%c", g_value_get_uchar (value));
-  else if (G_IS_PARAM_SPEC_UNICHAR (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UNICHAR (property_def->pspec))
     {
       int len;
       string = g_malloc (7);
       len = g_unichar_to_utf8 (g_value_get_uint (value), string);
       string[len] = '\0';
     }
-  else if (G_IS_PARAM_SPEC_BOOLEAN (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_BOOLEAN (property_def->pspec))
     string = g_strdup_printf ("%s", g_value_get_boolean (value) ?
                               GLADE_TAG_TRUE : GLADE_TAG_FALSE);
-  else if (G_IS_PARAM_SPEC_VARIANT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_VARIANT (property_def->pspec))
     {
       GVariant *variant;
 
       if ((variant = g_value_get_variant (value)))
         string = g_variant_print (variant, TRUE);
     }
-  else if (G_IS_PARAM_SPEC_OBJECT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_OBJECT (property_def->pspec))
     {
       object = g_value_get_object (value);
       string =
-          glade_property_class_make_string_from_object (property_class, object);
+          glade_property_def_make_string_from_object (property_def, object);
     }
-  else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_class->pspec))
+  else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_def->pspec))
     {
       objects = g_value_get_boxed (value);
       string =
-          glade_property_class_make_string_from_objects (property_class,
+          glade_property_def_make_string_from_objects (property_def,
                                                          objects);
     }
   else
     g_critical ("Unsupported pspec type %s (value -> string)",
-                g_type_name (G_PARAM_SPEC_TYPE (property_class->pspec)));
+                g_type_name (G_PARAM_SPEC_TYPE (property_def->pspec)));
 
   return string;
 }
@@ -616,7 +610,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
 /* This is copied exactly from libglade. I've just renamed the function.
  */
 guint
-glade_property_class_make_flags_from_string (GType type, const char *string)
+glade_property_def_make_flags_from_string (GType type, const char *string)
 {
   GFlagsClass *fclass;
   gchar *endptr, *prevptr;
@@ -699,7 +693,7 @@ glade_property_class_make_flags_from_string (GType type, const char *string)
 /* This is copied exactly from libglade. I've just renamed the function.
  */
 static gint
-glade_property_class_make_enum_from_string (GType type, const char *string)
+glade_property_def_make_enum_from_string (GType type, const char *string)
 {
   GEnumClass *eclass;
   GEnumValue *ev;
@@ -723,8 +717,8 @@ glade_property_class_make_enum_from_string (GType type, const char *string)
 }
 
 static GObject *
-glade_property_class_make_object_from_string (GladePropertyClass *
-                                              property_class,
+glade_property_def_make_object_from_string (GladePropertyDef *
+                                              property_def,
                                               const gchar * string,
                                               GladeProject * project)
 {
@@ -734,7 +728,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *
   if (string == NULL || project == NULL)
     return NULL;
 
-  if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
+  if (property_def->pspec->value_type == GDK_TYPE_PIXBUF)
     {
       GdkPixbuf *pixbuf;
 
@@ -761,7 +755,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *
 
       g_free (fullpath);
     }
-  else if (property_class->pspec->value_type == G_TYPE_FILE)
+  else if (property_def->pspec->value_type == G_TYPE_FILE)
     {
       GFile *file;
 
@@ -785,8 +779,8 @@ glade_property_class_make_object_from_string (GladePropertyClass *
 }
 
 static GList *
-glade_property_class_make_objects_from_string (GladePropertyClass *
-                                               property_class,
+glade_property_def_make_objects_from_string (GladePropertyDef *
+                                               property_def,
                                                const gchar * string,
                                                GladeProject * project)
 {
@@ -800,7 +794,7 @@ glade_property_class_make_objects_from_string (GladePropertyClass *
       for (i = 0; split[i]; i++)
         {
           if ((object = 
-               glade_property_class_make_object_from_string (property_class, 
+               glade_property_def_make_object_from_string (property_def, 
                                                              split[i], 
                                                              project)) != NULL)
             objects = g_list_prepend (objects, object);
@@ -811,16 +805,16 @@ glade_property_class_make_objects_from_string (GladePropertyClass *
 }
 
 /**
- * glade_property_class_make_gvalue_from_string:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_make_gvalue_from_string:
+ * @property_def: A #GladePropertyDef
  * @string: a string representation of this property
  * @project: the #GladeProject that the property should be resolved for
  *
- * Returns: A #GValue created based on the @property_class
+ * Returns: A #GValue created based on the @property_def
  *          and @string criteria.
  */
 GValue *
-glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
+glade_property_def_make_gvalue_from_string (GladePropertyDef *property_def,
                                               const gchar        *string,
                                               GladeProject       *project)
 {
@@ -829,21 +823,21 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
   GdkColor color = { 0, };
   GdkRGBA rgba = { 0, };
 
-  g_value_init (value, property_class->pspec->value_type);
+  g_value_init (value, property_def->pspec->value_type);
 
-  if (G_IS_PARAM_SPEC_ENUM (property_class->pspec))
+  if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
     {
-      gint eval = glade_property_class_make_enum_from_string
-          (property_class->pspec->value_type, string);
+      gint eval = glade_property_def_make_enum_from_string
+          (property_def->pspec->value_type, string);
       g_value_set_enum (value, eval);
     }
-  else if (G_IS_PARAM_SPEC_FLAGS (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_FLAGS (property_def->pspec))
     {
-      guint flags = glade_property_class_make_flags_from_string
-          (property_class->pspec->value_type, string);
+      guint flags = glade_property_def_make_flags_from_string
+          (property_def->pspec->value_type, string);
       g_value_set_flags (value, flags);
     }
-  else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
     {
       GValueArray *value_array;
       GValue str_value = { 0, };
@@ -868,55 +862,55 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
       g_value_take_boxed (value, value_array);
       g_strfreev (strv);
     }
-  else if (G_IS_PARAM_SPEC_BOXED (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_BOXED (property_def->pspec))
     {
-      if (property_class->pspec->value_type == GDK_TYPE_COLOR)
+      if (property_def->pspec->value_type == GDK_TYPE_COLOR)
         {
           if (gdk_color_parse (string, &color))
             g_value_set_boxed (value, &color);
           else
             g_warning ("could not parse colour name `%s'", string);
         }
-      else if (property_class->pspec->value_type == GDK_TYPE_RGBA)
+      else if (property_def->pspec->value_type == GDK_TYPE_RGBA)
         {
           if (gdk_rgba_parse (&rgba, string))
             g_value_set_boxed (value, &rgba);
           else
             g_warning ("could not parse rgba colour name `%s'", string);
         }
-      else if (property_class->pspec->value_type == G_TYPE_STRV)
+      else if (property_def->pspec->value_type == G_TYPE_STRV)
         {
           strv = g_strsplit (string, "\n", 0);
           g_value_take_boxed (value, strv);
         }
     }
-  else if (G_IS_PARAM_SPEC_VARIANT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_VARIANT (property_def->pspec))
     g_value_take_variant (value, g_variant_parse (NULL, string, NULL, NULL, NULL));
-  else if (G_IS_PARAM_SPEC_INT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_INT (property_def->pspec))
     g_value_set_int (value, g_ascii_strtoll (string, NULL, 10));
-  else if (G_IS_PARAM_SPEC_UINT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UINT (property_def->pspec))
     g_value_set_uint (value, g_ascii_strtoull (string, NULL, 10));
-  else if (G_IS_PARAM_SPEC_LONG (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_LONG (property_def->pspec))
     g_value_set_long (value, g_ascii_strtoll (string, NULL, 10));
-  else if (G_IS_PARAM_SPEC_ULONG (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_ULONG (property_def->pspec))
     g_value_set_ulong (value, g_ascii_strtoull (string, NULL, 10));
-  else if (G_IS_PARAM_SPEC_INT64 (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_INT64 (property_def->pspec))
     g_value_set_int64 (value, g_ascii_strtoll (string, NULL, 10));
-  else if (G_IS_PARAM_SPEC_UINT64 (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UINT64 (property_def->pspec))
     g_value_set_uint64 (value, g_ascii_strtoull (string, NULL, 10));
-  else if (G_IS_PARAM_SPEC_FLOAT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_FLOAT (property_def->pspec))
     g_value_set_float (value, (float) g_ascii_strtod (string, NULL));
-  else if (G_IS_PARAM_SPEC_DOUBLE (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_DOUBLE (property_def->pspec))
     g_value_set_double (value, g_ascii_strtod (string, NULL));
-  else if (G_IS_PARAM_SPEC_STRING (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_STRING (property_def->pspec))
     g_value_set_string (value, string);
-  else if (G_IS_PARAM_SPEC_CHAR (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_CHAR (property_def->pspec))
     g_value_set_schar (value, string[0]);
-  else if (G_IS_PARAM_SPEC_UCHAR (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UCHAR (property_def->pspec))
     g_value_set_uchar (value, string[0]);
-  else if (G_IS_PARAM_SPEC_UNICHAR (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UNICHAR (property_def->pspec))
     g_value_set_uint (value, g_utf8_get_char (string));
-  else if (G_IS_PARAM_SPEC_BOOLEAN (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_BOOLEAN (property_def->pspec))
     {
       gboolean val;
       if (glade_utils_boolean_from_string (string, &val))
@@ -925,104 +919,104 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
         g_value_set_boolean (value, val);
 
     }
-  else if (G_IS_PARAM_SPEC_OBJECT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_OBJECT (property_def->pspec))
     {
       GObject *object = 
-        glade_property_class_make_object_from_string (property_class, string, project);
+        glade_property_def_make_object_from_string (property_def, string, project);
       g_value_set_object (value, object);
     }
-  else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_class->pspec))
+  else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_def->pspec))
     {
       GList *objects = 
-        glade_property_class_make_objects_from_string (property_class, string, project);
+        glade_property_def_make_objects_from_string (property_def, string, project);
       g_value_take_boxed (value, objects);
     }
   else
     g_critical ("Unsupported pspec type %s (string -> value)",
-                g_type_name (G_PARAM_SPEC_TYPE (property_class->pspec)));
+                g_type_name (G_PARAM_SPEC_TYPE (property_def->pspec)));
 
   return value;
 }
 
 /**
- * glade_property_class_make_gvalue_from_vl:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_make_gvalue_from_vl:
+ * @property_def: A #GladePropertyDef
  * @vl: a #va_list holding one argument of the correct type
- *      specified by @property_class
+ *      specified by @property_def
  *
- * Returns: A #GValue created based on the @property_class
+ * Returns: A #GValue created based on the @property_def
  *          and a @vl arg of the correct type.
  */
 GValue *
-glade_property_class_make_gvalue_from_vl (GladePropertyClass * klass,
-                                          va_list vl)
+glade_property_def_make_gvalue_from_vl (GladePropertyDef *property_def,
+                                        va_list           vl)
 {
   GValue *value;
 
-  g_return_val_if_fail (klass != NULL, NULL);
+  g_return_val_if_fail (property_def != NULL, NULL);
 
   value = g_new0 (GValue, 1);
-  g_value_init (value, klass->pspec->value_type);
+  g_value_init (value, property_def->pspec->value_type);
 
-  if (G_IS_PARAM_SPEC_ENUM (klass->pspec))
+  if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
     g_value_set_enum (value, va_arg (vl, gint));
-  else if (G_IS_PARAM_SPEC_FLAGS (klass->pspec))
+  else if (G_IS_PARAM_SPEC_FLAGS (property_def->pspec))
     g_value_set_flags (value, va_arg (vl, gint));
-  else if (G_IS_PARAM_SPEC_INT (klass->pspec))
+  else if (G_IS_PARAM_SPEC_INT (property_def->pspec))
     g_value_set_int (value, va_arg (vl, gint));
-  else if (G_IS_PARAM_SPEC_UINT (klass->pspec))
+  else if (G_IS_PARAM_SPEC_UINT (property_def->pspec))
     g_value_set_uint (value, va_arg (vl, guint));
-  else if (G_IS_PARAM_SPEC_LONG (klass->pspec))
+  else if (G_IS_PARAM_SPEC_LONG (property_def->pspec))
     g_value_set_long (value, va_arg (vl, glong));
-  else if (G_IS_PARAM_SPEC_ULONG (klass->pspec))
+  else if (G_IS_PARAM_SPEC_ULONG (property_def->pspec))
     g_value_set_ulong (value, va_arg (vl, gulong));
-  else if (G_IS_PARAM_SPEC_INT64 (klass->pspec))
+  else if (G_IS_PARAM_SPEC_INT64 (property_def->pspec))
     g_value_set_int64 (value, va_arg (vl, gint64));
-  else if (G_IS_PARAM_SPEC_UINT64 (klass->pspec))
+  else if (G_IS_PARAM_SPEC_UINT64 (property_def->pspec))
     g_value_set_uint64 (value, va_arg (vl, guint64));
-  else if (G_IS_PARAM_SPEC_FLOAT (klass->pspec))
+  else if (G_IS_PARAM_SPEC_FLOAT (property_def->pspec))
     g_value_set_float (value, (gfloat) va_arg (vl, gdouble));
-  else if (G_IS_PARAM_SPEC_DOUBLE (klass->pspec))
+  else if (G_IS_PARAM_SPEC_DOUBLE (property_def->pspec))
     g_value_set_double (value, va_arg (vl, gdouble));
-  else if (G_IS_PARAM_SPEC_STRING (klass->pspec))
+  else if (G_IS_PARAM_SPEC_STRING (property_def->pspec))
     g_value_set_string (value, va_arg (vl, gchar *));
-  else if (G_IS_PARAM_SPEC_CHAR (klass->pspec))
+  else if (G_IS_PARAM_SPEC_CHAR (property_def->pspec))
     g_value_set_schar (value, (gchar) va_arg (vl, gint));
-  else if (G_IS_PARAM_SPEC_UCHAR (klass->pspec))
+  else if (G_IS_PARAM_SPEC_UCHAR (property_def->pspec))
     g_value_set_uchar (value, (guchar) va_arg (vl, guint));
-  else if (G_IS_PARAM_SPEC_UNICHAR (klass->pspec))
+  else if (G_IS_PARAM_SPEC_UNICHAR (property_def->pspec))
     g_value_set_uint (value, va_arg (vl, gunichar));
-  else if (G_IS_PARAM_SPEC_BOOLEAN (klass->pspec))
+  else if (G_IS_PARAM_SPEC_BOOLEAN (property_def->pspec))
     g_value_set_boolean (value, va_arg (vl, gboolean));
-  else if (G_IS_PARAM_SPEC_OBJECT (klass->pspec))
+  else if (G_IS_PARAM_SPEC_OBJECT (property_def->pspec))
     g_value_set_object (value, va_arg (vl, gpointer));
   else if (G_VALUE_HOLDS_BOXED (value))
     g_value_set_boxed (value, va_arg (vl, gpointer));
   else
     g_critical ("Unsupported pspec type %s (vl -> string)",
-                g_type_name (G_PARAM_SPEC_TYPE (klass->pspec)));
+                g_type_name (G_PARAM_SPEC_TYPE (property_def->pspec)));
 
   return value;
 }
 
 /**
- * glade_property_class_make_gvalue:
- * @klass: A #GladePropertyClass
- * @...: an argument of the correct type specified by @property_class
+ * glade_property_def_make_gvalue:
+ * @property_def: A #GladePropertyDef
+ * @...: an argument of the correct type specified by @property_def
  *
- * Returns: A #GValue created based on the @property_class
+ * Returns: A #GValue created based on the @property_def
  *          and the provided argument.
  */
 GValue *
-glade_property_class_make_gvalue (GladePropertyClass * klass, ...)
+glade_property_def_make_gvalue (GladePropertyDef * property_def, ...)
 {
   GValue *value;
   va_list vl;
 
-  g_return_val_if_fail (klass != NULL, NULL);
+  g_return_val_if_fail (property_def != NULL, NULL);
 
-  va_start (vl, klass);
-  value = glade_property_class_make_gvalue_from_vl (klass, vl);
+  va_start (vl, property_def);
+  value = glade_property_def_make_gvalue_from_vl (property_def, vl);
   va_end (vl);
 
   return value;
@@ -1030,67 +1024,67 @@ glade_property_class_make_gvalue (GladePropertyClass * klass, ...)
 
 
 /**
- * glade_property_class_set_vl_from_gvalue:
- * @klass: A #GladePropertyClass
+ * glade_property_def_set_vl_from_gvalue:
+ * @property_def: A #GladePropertyDef
  * @value: A #GValue to set
  * @vl: a #va_list holding one argument of the correct type
- *      specified by @klass
+ *      specified by @property_def
  * 
  *
- * Sets @vl from @value based on @klass criteria.
+ * Sets @vl from @value based on @property_def criteria.
  */
 void
-glade_property_class_set_vl_from_gvalue (GladePropertyClass * klass,
+glade_property_def_set_vl_from_gvalue (GladePropertyDef * property_def,
                                          GValue * value, va_list vl)
 {
-  g_return_if_fail (klass != NULL);
+  g_return_if_fail (property_def != NULL);
   g_return_if_fail (value != NULL);
 
   /* The argument is a pointer of the specified type, cast the pointer and assign
    * the value using the proper g_value_get_ variation.
    */
-  if (G_IS_PARAM_SPEC_ENUM (klass->pspec))
+  if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
     *(gint *) (va_arg (vl, gint *)) = g_value_get_enum (value);
-  else if (G_IS_PARAM_SPEC_FLAGS (klass->pspec))
+  else if (G_IS_PARAM_SPEC_FLAGS (property_def->pspec))
     *(gint *) (va_arg (vl, gint *)) = g_value_get_flags (value);
-  else if (G_IS_PARAM_SPEC_INT (klass->pspec))
+  else if (G_IS_PARAM_SPEC_INT (property_def->pspec))
     *(gint *) (va_arg (vl, gint *)) = g_value_get_int (value);
-  else if (G_IS_PARAM_SPEC_UINT (klass->pspec))
+  else if (G_IS_PARAM_SPEC_UINT (property_def->pspec))
     *(guint *) (va_arg (vl, guint *)) = g_value_get_uint (value);
-  else if (G_IS_PARAM_SPEC_LONG (klass->pspec))
+  else if (G_IS_PARAM_SPEC_LONG (property_def->pspec))
     *(glong *) (va_arg (vl, glong *)) = g_value_get_long (value);
-  else if (G_IS_PARAM_SPEC_ULONG (klass->pspec))
+  else if (G_IS_PARAM_SPEC_ULONG (property_def->pspec))
     *(gulong *) (va_arg (vl, gulong *)) = g_value_get_ulong (value);
-  else if (G_IS_PARAM_SPEC_INT64 (klass->pspec))
+  else if (G_IS_PARAM_SPEC_INT64 (property_def->pspec))
     *(gint64 *) (va_arg (vl, gint64 *)) = g_value_get_int64 (value);
-  else if (G_IS_PARAM_SPEC_UINT64 (klass->pspec))
+  else if (G_IS_PARAM_SPEC_UINT64 (property_def->pspec))
     *(guint64 *) (va_arg (vl, guint64 *)) = g_value_get_uint64 (value);
-  else if (G_IS_PARAM_SPEC_FLOAT (klass->pspec))
+  else if (G_IS_PARAM_SPEC_FLOAT (property_def->pspec))
     *(gfloat *) (va_arg (vl, gdouble *)) = g_value_get_float (value);
-  else if (G_IS_PARAM_SPEC_DOUBLE (klass->pspec))
+  else if (G_IS_PARAM_SPEC_DOUBLE (property_def->pspec))
     *(gdouble *) (va_arg (vl, gdouble *)) = g_value_get_double (value);
-  else if (G_IS_PARAM_SPEC_STRING (klass->pspec))
+  else if (G_IS_PARAM_SPEC_STRING (property_def->pspec))
     *(gchar **) (va_arg (vl, gchar *)) = (gchar *) g_value_get_string (value);
-  else if (G_IS_PARAM_SPEC_CHAR (klass->pspec))
+  else if (G_IS_PARAM_SPEC_CHAR (property_def->pspec))
     *(gchar *) (va_arg (vl, gint *)) = g_value_get_schar (value);
-  else if (G_IS_PARAM_SPEC_UCHAR (klass->pspec))
+  else if (G_IS_PARAM_SPEC_UCHAR (property_def->pspec))
     *(guchar *) (va_arg (vl, guint *)) = g_value_get_uchar (value);
-  else if (G_IS_PARAM_SPEC_UNICHAR (klass->pspec))
+  else if (G_IS_PARAM_SPEC_UNICHAR (property_def->pspec))
     *(guint *) (va_arg (vl, gunichar *)) = g_value_get_uint (value);
-  else if (G_IS_PARAM_SPEC_BOOLEAN (klass->pspec))
+  else if (G_IS_PARAM_SPEC_BOOLEAN (property_def->pspec))
     *(gboolean *) (va_arg (vl, gboolean *)) = g_value_get_boolean (value);
-  else if (G_IS_PARAM_SPEC_OBJECT (klass->pspec))
+  else if (G_IS_PARAM_SPEC_OBJECT (property_def->pspec))
     *(gpointer *) (va_arg (vl, gpointer *)) = g_value_get_object (value);
   else if (G_VALUE_HOLDS_BOXED (value))
     *(gpointer *) (va_arg (vl, gpointer *)) = g_value_get_boxed (value);
   else
     g_critical ("Unsupported pspec type %s (string -> vl)",
-                g_type_name (G_PARAM_SPEC_TYPE (klass->pspec)));
+                g_type_name (G_PARAM_SPEC_TYPE (property_def->pspec)));
 }
 
 /**
- * glade_property_class_get_from_gvalue:
- * @klass: A #GladePropertyClass
+ * glade_property_def_get_from_gvalue:
+ * @property_def: A #GladePropertyDef
  * @value: A #GValue to set
  * @...: a return location of the correct type
  * 
@@ -1098,16 +1092,16 @@ glade_property_class_set_vl_from_gvalue (GladePropertyClass * klass,
  * Assignes the provided return location to @value
  */
 void
-glade_property_class_get_from_gvalue (GladePropertyClass *klass,
+glade_property_def_get_from_gvalue (GladePropertyDef *property_def,
                                       GValue             *value,
                                       ...)
 {
   va_list vl;
 
-  g_return_if_fail (klass != NULL);
+  g_return_if_fail (property_def != NULL);
 
   va_start (vl, value);
-  glade_property_class_set_vl_from_gvalue (klass, value, vl);
+  glade_property_def_set_vl_from_gvalue (property_def, value, vl);
   va_end (vl);
 }
 
@@ -1115,13 +1109,13 @@ glade_property_class_get_from_gvalue (GladePropertyClass *klass,
 /* "need_adaptor": An evil trick to let us create pclasses without
  * adaptors and editors.
  */
-GladePropertyClass *
-glade_property_class_new_from_spec_full (GladeWidgetAdaptor *adaptor,
+GladePropertyDef *
+glade_property_def_new_from_spec_full (GladeWidgetAdaptor *adaptor,
                                          GParamSpec         *spec,
                                          gboolean            need_adaptor)
 {
   GObjectClass *gtk_widget_class;
-  GladePropertyClass *property_class;
+  GladePropertyDef *property_def;
   GladeEditorProperty *eprop = NULL;
 
   g_return_val_if_fail (spec != NULL, NULL);
@@ -1130,20 +1124,20 @@ glade_property_class_new_from_spec_full (GladeWidgetAdaptor *adaptor,
   /* Only properties that are _new_from_spec() are 
    * not virtual properties
    */
-  property_class = glade_property_class_new (adaptor, spec->name);
-  property_class->virt = FALSE;
-  property_class->pspec = spec;
+  property_def = glade_property_def_new (adaptor, spec->name);
+  property_def->virt = FALSE;
+  property_def->pspec = spec;
 
   /* We only use the writable properties */
   if ((spec->flags & G_PARAM_WRITABLE) == 0)
     goto failed;
 
-  property_class->name = g_strdup (g_param_spec_get_nick (spec));
+  property_def->name = g_strdup (g_param_spec_get_nick (spec));
 
   /* Register only editable properties.
    */
   if (need_adaptor && !(eprop = glade_widget_adaptor_create_eprop
-                       (GLADE_WIDGET_ADAPTOR (adaptor), property_class, FALSE)))
+                       (GLADE_WIDGET_ADAPTOR (adaptor), property_def, FALSE)))
     goto failed;
 
   /* Just created it to see if it was supported.... destroy now... */
@@ -1155,429 +1149,438 @@ glade_property_class_new_from_spec_full (GladeWidgetAdaptor *adaptor,
    */
   if (g_object_class_find_property (gtk_widget_class,
                                     g_param_spec_get_name (spec)) != NULL)
-    property_class->common = TRUE;
+    property_def->common = TRUE;
 
   /* Flag the construct only properties */
   if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
-    property_class->construct_only = TRUE;
+    property_def->construct_only = TRUE;
 
-  if (!property_class->id || !property_class->name)
+  if (!property_def->id || !property_def->name)
     {
       g_critical ("No name or id for "
-                  "glade_property_class_new_from_spec, failed.");
+                  "glade_property_def_new_from_spec, failed.");
       goto failed;
     }
 
-  property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
-  property_class->orig_def = glade_property_class_get_default_from_spec (spec);
-  property_class->def = glade_property_class_get_default_from_spec (spec);
+  property_def->tooltip = g_strdup (g_param_spec_get_blurb (spec));
+  property_def->orig_def = glade_property_def_get_default_from_spec (spec);
+  property_def->def = glade_property_def_get_default_from_spec (spec);
 
   g_type_class_unref (gtk_widget_class);
-  return property_class;
+  return property_def;
 
 failed:
-  glade_property_class_free (property_class);
+  glade_property_def_free (property_def);
   g_type_class_unref (gtk_widget_class);
   return NULL;
 }
 
 /**
- * glade_property_class_new_from_spec:
+ * glade_property_def_new_from_spec:
  * @adaptor: A generic pointer (i.e. a #GladeWidgetClass)
  * @spec: A #GParamSpec
  *
- * Returns: a newly created #GladePropertyClass based on @spec
+ * Returns: a newly created #GladePropertyDef based on @spec
  *          or %NULL if its unsupported.
  */
-GladePropertyClass *
-glade_property_class_new_from_spec (GladeWidgetAdaptor *adaptor, GParamSpec *spec)
+GladePropertyDef *
+glade_property_def_new_from_spec (GladeWidgetAdaptor *adaptor, GParamSpec *spec)
 {
-  return glade_property_class_new_from_spec_full (adaptor, spec, TRUE);
+  return glade_property_def_new_from_spec_full (adaptor, spec, TRUE);
 }
 
 /**
- * glade_property_class_is_visible:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_is_visible:
+ * @property_def: A #GladePropertyDef
  *
  *
  * Returns: whether or not to show this property in the editor
  */
 gboolean
-glade_property_class_is_visible (GladePropertyClass *klass)
+glade_property_def_is_visible (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return klass->visible;
+  return property_def->visible;
 }
 
 /**
- * glade_property_class_set_adaptor:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_set_adaptor:
+ * @property_def: A #GladePropertyDef
  * @adaptor: (transfer full): A #GladeWidgetAdaptor
  */
 void
-glade_property_class_set_adaptor (GladePropertyClass *property_class,
+glade_property_def_set_adaptor (GladePropertyDef *property_def,
                                   GladeWidgetAdaptor *adaptor)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  property_class->adaptor = adaptor;
+  property_def->adaptor = adaptor;
 }
 
 /**
- * glade_property_class_get_adaptor:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_get_adaptor:
+ * @property_def: A #GladePropertyDef
  *
- * Returns: (transfer none): The #GladeWidgetAdaptor associated with the @property_class
+ * Returns: (transfer none): The #GladeWidgetAdaptor associated with the @property_def
  */
 GladeWidgetAdaptor *
-glade_property_class_get_adaptor (GladePropertyClass *property_class)
+glade_property_def_get_adaptor (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  return property_class->adaptor;
+  return property_def->adaptor;
 }
 
 /**
- * glade_property_class_get_pspec:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_get_pspec:
+ * @property_def: A #GladePropertyDef
  *
- * Returns: (transfer none): The #GParamSpec associated with the @property_class
+ * Returns: (transfer none): The #GParamSpec associated with the @property_def
  */
 GParamSpec *
-glade_property_class_get_pspec (GladePropertyClass *property_class)
+glade_property_def_get_pspec (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  return property_class->pspec;
+  return property_def->pspec;
 }
 
 /**
- * glade_property_class_set_pspec:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_set_pspec:
+ * @property_def: A #GladePropertyDef
  * @pspec: (transfer full): A #GParamSpec
  */
 void
-glade_property_class_set_pspec (GladePropertyClass *property_class,
+glade_property_def_set_pspec (GladePropertyDef *property_def,
                                 GParamSpec         *pspec)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  property_class->pspec = pspec;
+  property_def->pspec = pspec;
 }
 
 void
-glade_property_class_set_is_packing (GladePropertyClass *property_class,
+glade_property_def_set_is_packing (GladePropertyDef *property_def,
                                      gboolean            is_packing)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  property_class->packing = is_packing;
+  property_def->packing = is_packing;
 }
 
 gboolean
-glade_property_class_get_is_packing (GladePropertyClass *property_class)
+glade_property_def_get_is_packing (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->packing;
+  return property_def->packing;
 }
 
 gboolean
-glade_property_class_save (GladePropertyClass *property_class)
+glade_property_def_save (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->save;
+  return property_def->save;
 }
 
 gboolean
-glade_property_class_save_always (GladePropertyClass *property_class)
+glade_property_def_save_always (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->save_always;
+  return property_def->save_always;
 }
 
 void
-glade_property_class_set_virtual (GladePropertyClass *property_class,
+glade_property_def_set_virtual (GladePropertyDef *property_def,
                                   gboolean            value)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  property_class->virt = value;
+  property_def->virt = value;
 }
 
 gboolean
-glade_property_class_get_virtual (GladePropertyClass *property_class)
+glade_property_def_get_virtual (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->virt;
+  return property_def->virt;
 }
 
 void
-glade_property_class_set_ignore (GladePropertyClass *property_class,
+glade_property_def_set_ignore (GladePropertyDef *property_def,
                                  gboolean            ignore)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  property_class->ignore = ignore;
+  property_def->ignore = ignore;
 }
 
 gboolean
-glade_property_class_get_ignore (GladePropertyClass *property_class)
+glade_property_def_get_ignore (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->ignore;
+  return property_def->ignore;
 }
 
 /**
- * glade_property_class_is_object:
- * @property_class: A #GladePropertyClass
+ * glade_property_def_is_object:
+ * @property_def: A #GladePropertyDef
  *
  * Returns: whether or not this is an object property 
  * that refers to another object in this project.
  */
 gboolean
-glade_property_class_is_object (GladePropertyClass *klass)
+glade_property_def_is_object (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return (GLADE_IS_PARAM_SPEC_OBJECTS (klass->pspec) ||
-          (G_IS_PARAM_SPEC_OBJECT (klass->pspec) &&
-           klass->pspec->value_type != GDK_TYPE_PIXBUF &&
-           klass->pspec->value_type != G_TYPE_FILE));
+  return (GLADE_IS_PARAM_SPEC_OBJECTS (property_def->pspec) ||
+          (G_IS_PARAM_SPEC_OBJECT (property_def->pspec) &&
+           property_def->pspec->value_type != GDK_TYPE_PIXBUF &&
+           property_def->pspec->value_type != G_TYPE_FILE));
 }
 
 void
-glade_property_class_set_name (GladePropertyClass  *property_class,
+glade_property_def_set_name (GladePropertyDef  *property_def,
                                const gchar         *name)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  g_free (property_class->name);
-  property_class->name = g_strdup (name);
+  g_free (property_def->name);
+  property_def->name = g_strdup (name);
 }
 
 G_CONST_RETURN gchar *
-glade_property_class_get_name (GladePropertyClass *property_class)
+glade_property_def_get_name (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  return property_class->name;
+  return property_def->name;
 }
 
 void
-glade_property_class_set_tooltip (GladePropertyClass *property_class,
+glade_property_def_set_tooltip (GladePropertyDef *property_def,
                                   const gchar        *tooltip)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  g_free (property_class->tooltip);
-  property_class->tooltip = g_strdup (tooltip);
+  g_free (property_def->tooltip);
+  property_def->tooltip = g_strdup (tooltip);
 }
 
 G_CONST_RETURN gchar *
-glade_property_class_get_tooltip (GladePropertyClass *property_class)
+glade_property_def_get_tooltip (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  return property_class->tooltip;
+  return property_def->tooltip;
 }
 
 void
-glade_property_class_set_construct_only (GladePropertyClass *property_class,
+glade_property_def_set_construct_only (GladePropertyDef *property_def,
                                          gboolean            construct_only)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
 
-  property_class->construct_only = construct_only;
+  property_def->construct_only = construct_only;
 }
 
 gboolean
-glade_property_class_get_construct_only (GladePropertyClass *property_class)
+glade_property_def_get_construct_only (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->construct_only;
+  return property_def->construct_only;
 }
 
 G_CONST_RETURN GValue *
-glade_property_class_get_default (GladePropertyClass *property_class)
+glade_property_def_get_default (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  return property_class->def;
+  return property_def->def;
 }
 
 G_CONST_RETURN GValue *
-glade_property_class_get_original_default (GladePropertyClass *property_class)
+glade_property_def_get_original_default (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  return property_class->orig_def;
+  return property_def->orig_def;
 }
 
 gboolean
-glade_property_class_translatable (GladePropertyClass *property_class)
+glade_property_def_translatable (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->translatable;
+  return property_def->translatable;
 }
 
 gboolean
-glade_property_class_needs_sync (GladePropertyClass *property_class)
+glade_property_def_needs_sync (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->needs_sync;
+  return property_def->needs_sync;
 }
 
 gboolean
-glade_property_class_query (GladePropertyClass *property_class)
+glade_property_def_query (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->query;
+  return property_def->query;
 }
 
 gboolean
-glade_property_class_atk (GladePropertyClass *property_class)
+glade_property_def_atk (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->atk;
+  return property_def->atk;
 }
 
 gboolean
-glade_property_class_common (GladePropertyClass *property_class)
+glade_property_def_common (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->common;
+  return property_def->common;
 }
 
 gboolean
-glade_property_class_parentless_widget (GladePropertyClass *property_class)
+glade_property_def_parentless_widget (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->parentless_widget;
+  return property_def->parentless_widget;
 }
 
 gboolean
-glade_property_class_optional (GladePropertyClass *property_class)
+glade_property_def_optional (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->optional;
+  return property_def->optional;
 }
 
 gboolean
-glade_property_class_optional_default (GladePropertyClass *property_class)
+glade_property_def_optional_default (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->optional_default;
+  return property_def->optional_default;
 }
 
 gboolean
-glade_property_class_multiline (GladePropertyClass *property_class)
+glade_property_def_multiline (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->multiline;
+  return property_def->multiline;
 }
 
 gboolean
-glade_property_class_stock (GladePropertyClass *property_class)
+glade_property_def_stock (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->stock;
+  return property_def->stock;
 }
 
 gboolean
-glade_property_class_stock_icon (GladePropertyClass *property_class)
+glade_property_def_stock_icon (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->stock_icon;
+  return property_def->stock_icon;
 }
 
 gboolean
-glade_property_class_transfer_on_paste (GladePropertyClass *property_class)
+glade_property_def_transfer_on_paste (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->transfer_on_paste;
+  return property_def->transfer_on_paste;
 }
 
 gboolean
-glade_property_class_custom_layout (GladePropertyClass *property_class)
+glade_property_def_custom_layout (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->custom_layout;
+  return property_def->custom_layout;
 }
 
 gdouble
-glade_property_class_weight (GladePropertyClass *property_class)
+glade_property_def_weight (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), -1.0);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), -1.0);
 
-  return property_class->weight;
+  return property_def->weight;
 }
 
 G_CONST_RETURN gchar *
-glade_property_class_create_type (GladePropertyClass *property_class)
+glade_property_def_create_type (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  return property_class->create_type;
+  return property_def->create_type;
 }
 
 guint16
-glade_property_class_since_major (GladePropertyClass *property_class)
+glade_property_def_since_major (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), 0);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), 0);
 
-  return property_class->version_since_major;
+  return property_def->version_since_major;
 }
 
 guint16
-glade_property_class_since_minor (GladePropertyClass *property_class)
+glade_property_def_since_minor (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), 0);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), 0);
 
-  return property_class->version_since_minor;
+  return property_def->version_since_minor;
+}
+
+void
+_glade_property_def_reset_version (GladePropertyDef *property_def)
+{
+  g_return_if_fail (GLADE_IS_PROPERTY_DEF (property_def));
+
+  property_def->version_since_major = 0;
+  property_def->version_since_minor = 0;
 }
 
 gboolean
-glade_property_class_deprecated (GladePropertyClass *property_class)
+glade_property_def_deprecated (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->deprecated;
+  return property_def->deprecated;
 }
 
 G_CONST_RETURN gchar *
-glade_property_class_id (GladePropertyClass *property_class)
+glade_property_def_id (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
 
-  return property_class->id;
+  return property_def->id;
 }
 
 gboolean
-glade_property_class_themed_icon (GladePropertyClass *property_class)
+glade_property_def_themed_icon (GladePropertyDef *property_def)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  return property_class->themed_icon;
+  return property_def->themed_icon;
 }
 
 /**
@@ -1590,16 +1593,16 @@ glade_property_class_themed_icon (GladePropertyClass *property_class)
  */
 static void
 gpc_read_displayable_values_from_node (GladeXmlNode       *node,
-                                       GladePropertyClass *klass,
+                                       GladePropertyDef *property_def,
                                        const gchar        *domain)
 {
-  gpointer the_class = g_type_class_ref (klass->pspec->value_type);
+  gpointer the_class = g_type_class_ref (property_def->pspec->value_type);
   GladeXmlNode *child;
   GEnumValue *enum_values = NULL;
   GFlagsValue *flags_values = NULL;
   gint n_values, registered_values = 0;
 
-  if (G_IS_PARAM_SPEC_ENUM (klass->pspec))
+  if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
     {
       GEnumClass *eclass = the_class;
       enum_values = eclass->values;
@@ -1639,34 +1642,34 @@ gpc_read_displayable_values_from_node (GladeXmlNode       *node,
       for (i = 0; i < n_values; i++)
         {
           /* is it a match ?? */
-          if ((G_IS_PARAM_SPEC_ENUM (klass->pspec) &&
+          if ((G_IS_PARAM_SPEC_ENUM (property_def->pspec) &&
                (strcmp (id, enum_values[i].value_name) == 0 ||
                 strcmp (id, enum_values[i].value_nick) == 0)) ||
-              (G_IS_PARAM_SPEC_FLAGS (klass->pspec) &&
+              (G_IS_PARAM_SPEC_FLAGS (property_def->pspec) &&
                (strcmp (id, flags_values[i].value_name) == 0 ||
                 strcmp (id, flags_values[i].value_nick) == 0)))
             {
               registered_values++;
 
-              if (G_IS_PARAM_SPEC_ENUM (klass->pspec))
+              if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
                 {
                   enum_val = &enum_values[i];
-                  glade_register_displayable_value (klass->pspec->value_type,
+                  glade_register_displayable_value (property_def->pspec->value_type,
                                                     enum_val->value_nick,
                                                     domain, name);
                   if (disabled)
-                    glade_displayable_value_set_disabled (klass->pspec->value_type,
+                    glade_displayable_value_set_disabled (property_def->pspec->value_type,
                                                           enum_val->value_nick,
                                                           TRUE);
                 }
               else
                 {
                   flags_val = &flags_values[i];
-                  glade_register_displayable_value (klass->pspec->value_type,
+                  glade_register_displayable_value (property_def->pspec->value_type,
                                                     flags_val->value_nick,
                                                     domain, name);
                   if (disabled)
-                    glade_displayable_value_set_disabled (klass->pspec->value_type,
+                    glade_displayable_value_set_disabled (property_def->pspec->value_type,
                                                           flags_val->value_nick,
                                                           TRUE);
                 }
@@ -1681,88 +1684,88 @@ gpc_read_displayable_values_from_node (GladeXmlNode       *node,
   if (n_values != registered_values)
     g_message ("%d missing displayable value for %s::%s",
                n_values - registered_values,
-               glade_widget_adaptor_get_name (klass->adaptor), klass->id);
+               glade_widget_adaptor_get_name (property_def->adaptor), property_def->id);
 
   g_type_class_unref (the_class);
 
 }
 
 /**
- * glade_property_class_make_adjustment:
- * @property_class: a pointer to the property class
+ * glade_property_def_make_adjustment:
+ * @property_def: a pointer to the property class
  *
  * Creates and appropriate GtkAdjustment for use in the editor
  *
  * Returns: (transfer full): An appropriate #GtkAdjustment for use in the Property editor
  */
 GtkAdjustment *
-glade_property_class_make_adjustment (GladePropertyClass *property_class)
+glade_property_def_make_adjustment (GladePropertyDef *property_def)
 {
   GtkAdjustment *adjustment;
   gdouble min = 0, max = 0, def = 0;
   gboolean float_range = FALSE;
 
-  g_return_val_if_fail (property_class != NULL, NULL);
-  g_return_val_if_fail (property_class->pspec != NULL, NULL);
+  g_return_val_if_fail (property_def != NULL, NULL);
+  g_return_val_if_fail (property_def->pspec != NULL, NULL);
 
-  if (G_IS_PARAM_SPEC_INT (property_class->pspec))
+  if (G_IS_PARAM_SPEC_INT (property_def->pspec))
     {
-      min = (gdouble) ((GParamSpecInt *) property_class->pspec)->minimum;
-      max = (gdouble) ((GParamSpecInt *) property_class->pspec)->maximum;
-      def = (gdouble) ((GParamSpecInt *) property_class->pspec)->default_value;
+      min = (gdouble) ((GParamSpecInt *) property_def->pspec)->minimum;
+      max = (gdouble) ((GParamSpecInt *) property_def->pspec)->maximum;
+      def = (gdouble) ((GParamSpecInt *) property_def->pspec)->default_value;
     }
-  else if (G_IS_PARAM_SPEC_UINT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UINT (property_def->pspec))
     {
-      min = (gdouble) ((GParamSpecUInt *) property_class->pspec)->minimum;
-      max = (gdouble) ((GParamSpecUInt *) property_class->pspec)->maximum;
-      def = (gdouble) ((GParamSpecUInt *) property_class->pspec)->default_value;
+      min = (gdouble) ((GParamSpecUInt *) property_def->pspec)->minimum;
+      max = (gdouble) ((GParamSpecUInt *) property_def->pspec)->maximum;
+      def = (gdouble) ((GParamSpecUInt *) property_def->pspec)->default_value;
     }
-  else if (G_IS_PARAM_SPEC_LONG (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_LONG (property_def->pspec))
     {
-      min = (gdouble) ((GParamSpecLong *) property_class->pspec)->minimum;
-      max = (gdouble) ((GParamSpecLong *) property_class->pspec)->maximum;
-      def = (gdouble) ((GParamSpecLong *) property_class->pspec)->default_value;
+      min = (gdouble) ((GParamSpecLong *) property_def->pspec)->minimum;
+      max = (gdouble) ((GParamSpecLong *) property_def->pspec)->maximum;
+      def = (gdouble) ((GParamSpecLong *) property_def->pspec)->default_value;
     }
-  else if (G_IS_PARAM_SPEC_ULONG (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_ULONG (property_def->pspec))
     {
-      min = (gdouble) ((GParamSpecULong *) property_class->pspec)->minimum;
-      max = (gdouble) ((GParamSpecULong *) property_class->pspec)->maximum;
+      min = (gdouble) ((GParamSpecULong *) property_def->pspec)->minimum;
+      max = (gdouble) ((GParamSpecULong *) property_def->pspec)->maximum;
       def =
-          (gdouble) ((GParamSpecULong *) property_class->pspec)->default_value;
+          (gdouble) ((GParamSpecULong *) property_def->pspec)->default_value;
     }
-  else if (G_IS_PARAM_SPEC_INT64 (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_INT64 (property_def->pspec))
     {
-      min = (gdouble) ((GParamSpecInt64 *) property_class->pspec)->minimum;
-      max = (gdouble) ((GParamSpecInt64 *) property_class->pspec)->maximum;
+      min = (gdouble) ((GParamSpecInt64 *) property_def->pspec)->minimum;
+      max = (gdouble) ((GParamSpecInt64 *) property_def->pspec)->maximum;
       def =
-          (gdouble) ((GParamSpecInt64 *) property_class->pspec)->default_value;
+          (gdouble) ((GParamSpecInt64 *) property_def->pspec)->default_value;
     }
-  else if (G_IS_PARAM_SPEC_UINT64 (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_UINT64 (property_def->pspec))
     {
-      min = (gdouble) ((GParamSpecUInt64 *) property_class->pspec)->minimum;
-      max = (gdouble) ((GParamSpecUInt64 *) property_class->pspec)->maximum;
+      min = (gdouble) ((GParamSpecUInt64 *) property_def->pspec)->minimum;
+      max = (gdouble) ((GParamSpecUInt64 *) property_def->pspec)->maximum;
       def =
-          (gdouble) ((GParamSpecUInt64 *) property_class->pspec)->default_value;
+          (gdouble) ((GParamSpecUInt64 *) property_def->pspec)->default_value;
     }
-  else if (G_IS_PARAM_SPEC_FLOAT (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_FLOAT (property_def->pspec))
     {
       float_range = TRUE;
-      min = ((GParamSpecFloat *) property_class->pspec)->minimum;
-      max = ((GParamSpecFloat *) property_class->pspec)->maximum;
-      def = ((GParamSpecFloat *) property_class->pspec)->default_value;
+      min = ((GParamSpecFloat *) property_def->pspec)->minimum;
+      max = ((GParamSpecFloat *) property_def->pspec)->maximum;
+      def = ((GParamSpecFloat *) property_def->pspec)->default_value;
     }
-  else if (G_IS_PARAM_SPEC_DOUBLE (property_class->pspec))
+  else if (G_IS_PARAM_SPEC_DOUBLE (property_def->pspec))
     {
       float_range = TRUE;
-      min = (gdouble) ((GParamSpecDouble *) property_class->pspec)->minimum;
-      max = (gdouble) ((GParamSpecDouble *) property_class->pspec)->maximum;
+      min = (gdouble) ((GParamSpecDouble *) property_def->pspec)->minimum;
+      max = (gdouble) ((GParamSpecDouble *) property_def->pspec)->maximum;
       def =
-          (gdouble) ((GParamSpecDouble *) property_class->pspec)->default_value;
+          (gdouble) ((GParamSpecDouble *) property_def->pspec)->default_value;
     }
   else
     {
       g_critical ("Can't make adjustment for pspec type %s",
-                  g_type_name (G_PARAM_SPEC_TYPE (property_class->pspec)));
+                  g_type_name (G_PARAM_SPEC_TYPE (property_def->pspec)));
     }
 
   adjustment = (GtkAdjustment *) gtk_adjustment_new (def, min, max,
@@ -1780,8 +1783,8 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 
 
 static GParamSpec *
-glade_property_class_parse_specifications (GladePropertyClass *klass,
-                                           GladeXmlNode       *spec_node)
+glade_property_def_parse_specifications (GladePropertyDef *property_def,
+                                         GladeXmlNode     *spec_node)
 {
   gchar *string;
   GType spec_type = 0, value_type = 0;
@@ -1954,35 +1957,35 @@ glade_property_class_parse_specifications (GladePropertyClass *klass,
 
 
 /**
- * glade_property_class_update_from_node:
+ * glade_property_def_update_from_node:
  * @node: the property node
  * @object_type: the #GType of the owning object
- * @property_class: a pointer to the property class
+ * @property_def_ref: (inout) (nullable): a pointer to the property class
  * @domain: the domain to translate catalog strings from
  *
- * Updates the @property_class with the contents of the node in the xml
+ * Updates the @property_def_ref with the contents of the node in the xml
  * file. Only the values found in the xml file are overridden.
  *
- * Returns: %TRUE on success. @property_class is set to NULL if the property
+ * Returns: %TRUE on success. @property_def_ref is set to NULL if the property
  *          has Disabled="TRUE".
  */
 gboolean
-glade_property_class_update_from_node (GladeXmlNode        *node,
-                                       GType                object_type,
-                                       GladePropertyClass **property_class,
-                                       const gchar         *domain)
+glade_property_def_update_from_node (GladeXmlNode      *node,
+                                     GType              object_type,
+                                     GladePropertyDef **property_def_ref,
+                                     const gchar       *domain)
 {
-  GladePropertyClass *klass;
+  GladePropertyDef *property_def;
   GParamSpec *pspec = NULL;
   gchar *buf, *translated;
   GladeXmlNode *child, *spec_node;
 
-  g_return_val_if_fail (property_class != NULL, FALSE);
+  g_return_val_if_fail (property_def_ref != NULL, FALSE);
 
   /* for code cleanliness... */
-  klass = *property_class;
+  property_def = *property_def_ref;
 
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
   g_return_val_if_fail (glade_xml_node_verify (node, GLADE_TAG_PROPERTY),
                         FALSE);
 
@@ -1996,15 +1999,15 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
     {
       /* Its easier for us to keep disabled properties around and
        * only virtually disable them */
-      klass->query = FALSE;
-      klass->ignore = TRUE;
-      klass->save = FALSE;
-      klass->visible = FALSE;
+      property_def->query = FALSE;
+      property_def->ignore = TRUE;
+      property_def->save = FALSE;
+      property_def->visible = FALSE;
     }
 
   if ((spec_node =
        glade_xml_search_child (node, GLADE_TAG_SPECIFICATIONS)) != NULL)
-    pspec = glade_property_class_parse_specifications (klass, spec_node);
+    pspec = glade_property_def_parse_specifications (property_def, spec_node);
   else if ((buf = glade_xml_get_value_string (node, GLADE_TAG_SPEC)) != NULL)
     {
       pspec = glade_utils_get_pspec_from_funcname (buf);
@@ -2014,76 +2017,76 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
   /* ... get the tooltip from the pspec ... */
   if (pspec != NULL)
     {
-      klass->pspec = pspec;
+      property_def->pspec = pspec;
 
       /* Make sure we can tell properties apart by there 
        * owning class.
        */
-      klass->pspec->owner_type = object_type;
+      property_def->pspec->owner_type = object_type;
 
       /* We overrode the pspec, now it *is* a virtual property. */
-      klass->virt = TRUE;
+      property_def->virt = TRUE;
 
-      if (strcmp (g_param_spec_get_blurb (klass->pspec), "dummy") != 0)
+      if (strcmp (g_param_spec_get_blurb (property_def->pspec), "dummy") != 0)
         {
-          g_free (klass->tooltip);
-          klass->tooltip = g_strdup (g_param_spec_get_blurb (klass->pspec));
+          g_free (property_def->tooltip);
+          property_def->tooltip = g_strdup (g_param_spec_get_blurb (property_def->pspec));
         }
 
-      if (klass->name == NULL ||
-          strcmp (g_param_spec_get_nick (klass->pspec), "dummy") != 0)
+      if (property_def->name == NULL ||
+          strcmp (g_param_spec_get_nick (property_def->pspec), "dummy") != 0)
         {
-          g_free (klass->name);
-          klass->name = g_strdup (g_param_spec_get_nick (klass->pspec));
+          g_free (property_def->name);
+          property_def->name = g_strdup (g_param_spec_get_nick (property_def->pspec));
         }
 
-      if (klass->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
-        klass->construct_only = TRUE;
+      if (property_def->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+        property_def->construct_only = TRUE;
 
-      if (klass->orig_def)
+      if (property_def->orig_def)
         {
-          g_value_unset (klass->orig_def);
-          g_free (klass->orig_def);
+          g_value_unset (property_def->orig_def);
+          g_free (property_def->orig_def);
         }
-      klass->orig_def =
-          glade_property_class_get_default_from_spec (klass->pspec);
+      property_def->orig_def =
+          glade_property_def_get_default_from_spec (property_def->pspec);
 
-      if (klass->def)
+      if (property_def->def)
         {
-          g_value_unset (klass->def);
-          g_free (klass->def);
+          g_value_unset (property_def->def);
+          g_free (property_def->def);
         }
-      klass->def = glade_property_class_get_default_from_spec (klass->pspec);
+      property_def->def = glade_property_def_get_default_from_spec (property_def->pspec);
 
     }
-  else if (!klass->pspec)
+  else if (!property_def->pspec)
     {
       /* If catalog file didn't specify a pspec function
        * and this property isn't found by introspection
        * we simply delete it from the list always.
        */
-      glade_property_class_free (klass);
-      *property_class = NULL;
+      glade_property_def_free (property_def);
+      *property_def_ref = NULL;
       return TRUE;
     }
 
   /* Get the default */
   if ((buf = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT)) != NULL)
     {
-      if (klass->def)
+      if (property_def->def)
         {
-          g_value_unset (klass->def);
-          g_free (klass->def);
+          g_value_unset (property_def->def);
+          g_free (property_def->def);
         }
-      klass->def =
-          glade_property_class_make_gvalue_from_string (klass, buf, NULL);
+      property_def->def =
+          glade_property_def_make_gvalue_from_string (property_def, buf, NULL);
 
-      if (klass->virt)
+      if (property_def->virt)
         {
-          g_value_unset (klass->orig_def);
-          g_free (klass->orig_def);
-          klass->orig_def =
-            glade_property_class_make_gvalue_from_string (klass, buf, NULL);
+          g_value_unset (property_def->orig_def);
+          g_free (property_def->orig_def);
+          property_def->orig_def =
+            glade_property_def_make_gvalue_from_string (property_def, buf, NULL);
         }
 
       g_free (buf);
@@ -2092,124 +2095,124 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
   /* If needed, update the name... */
   if ((buf = glade_xml_get_property_string (node, GLADE_TAG_NAME)) != NULL)
     {
-      g_free (klass->name);
+      g_free (property_def->name);
 
       translated = dgettext (domain, buf);
       if (buf != translated)
         {
           /* translated is owned by gettext */
-          klass->name = g_strdup (translated);
+          property_def->name = g_strdup (translated);
           g_free (buf);
         }
       else
         {
-          klass->name = buf;
+          property_def->name = buf;
         }
     }
 
   /* ...and the tooltip */
   if ((buf = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP)) != NULL)
     {
-      g_free (klass->tooltip);
+      g_free (property_def->tooltip);
 
       translated = dgettext (domain, buf);
       if (buf != translated)
         {
           /* translated is owned by gettext */
-          klass->tooltip = g_strdup (translated);
+          property_def->tooltip = g_strdup (translated);
           g_free (buf);
         }
       else
         {
-          klass->tooltip = buf;
+          property_def->tooltip = buf;
         }
     }
 
-  klass->multiline =
+  property_def->multiline =
       glade_xml_get_property_boolean (node, GLADE_TAG_MULTILINE,
-                                      klass->multiline);
-  klass->construct_only =
+                                      property_def->multiline);
+  property_def->construct_only =
       glade_xml_get_property_boolean (node, GLADE_TAG_CONSTRUCT_ONLY,
-                                      klass->construct_only);
-  klass->translatable =
+                                      property_def->construct_only);
+  property_def->translatable =
       glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE,
-                                      klass->translatable);
-  klass->common =
-      glade_xml_get_property_boolean (node, GLADE_TAG_COMMON, klass->common);
-  klass->optional =
+                                      property_def->translatable);
+  property_def->common =
+      glade_xml_get_property_boolean (node, GLADE_TAG_COMMON, property_def->common);
+  property_def->optional =
       glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL,
-                                      klass->optional);
-  klass->query =
-      glade_xml_get_property_boolean (node, GLADE_TAG_QUERY, klass->query);
-  klass->save =
-      glade_xml_get_property_boolean (node, GLADE_TAG_SAVE, klass->save);
-  klass->visible =
-      glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE, klass->visible);
-  klass->custom_layout =
+                                      property_def->optional);
+  property_def->query =
+      glade_xml_get_property_boolean (node, GLADE_TAG_QUERY, property_def->query);
+  property_def->save =
+      glade_xml_get_property_boolean (node, GLADE_TAG_SAVE, property_def->save);
+  property_def->visible =
+      glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE, property_def->visible);
+  property_def->custom_layout =
       glade_xml_get_property_boolean (node, GLADE_TAG_CUSTOM_LAYOUT,
-                                      klass->custom_layout);
-  klass->ignore =
-      glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE, klass->ignore);
-  klass->needs_sync =
+                                      property_def->custom_layout);
+  property_def->ignore =
+      glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE, property_def->ignore);
+  property_def->needs_sync =
       glade_xml_get_property_boolean (node, GLADE_TAG_NEEDS_SYNC,
-                                      klass->needs_sync);
-  klass->themed_icon =
+                                      property_def->needs_sync);
+  property_def->themed_icon =
       glade_xml_get_property_boolean (node, GLADE_TAG_THEMED_ICON,
-                                      klass->themed_icon);
-  klass->stock =
-      glade_xml_get_property_boolean (node, GLADE_TAG_STOCK, klass->stock);
-  klass->stock_icon =
+                                      property_def->themed_icon);
+  property_def->stock =
+      glade_xml_get_property_boolean (node, GLADE_TAG_STOCK, property_def->stock);
+  property_def->stock_icon =
       glade_xml_get_property_boolean (node, GLADE_TAG_STOCK_ICON,
-                                      klass->stock_icon);
-  klass->weight =
-      glade_xml_get_property_double (node, GLADE_TAG_WEIGHT, klass->weight);
-  klass->transfer_on_paste =
+                                      property_def->stock_icon);
+  property_def->weight =
+      glade_xml_get_property_double (node, GLADE_TAG_WEIGHT, property_def->weight);
+  property_def->transfer_on_paste =
       glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE,
-                                      klass->transfer_on_paste);
-  klass->save_always =
+                                      property_def->transfer_on_paste);
+  property_def->save_always =
       glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS,
-                                      klass->save_always);
-  klass->parentless_widget =
+                                      property_def->save_always);
+  property_def->parentless_widget =
       glade_xml_get_property_boolean (node, GLADE_TAG_PARENTLESS_WIDGET,
-                                      klass->parentless_widget);
+                                      property_def->parentless_widget);
 
 
   glade_xml_get_property_version (node, GLADE_TAG_VERSION_SINCE,
-                                  &klass->version_since_major, 
-                                  &klass->version_since_minor);
+                                  &property_def->version_since_major, 
+                                  &property_def->version_since_minor);
 
-  klass->deprecated =
+  property_def->deprecated =
     glade_xml_get_property_boolean (node,
                                     GLADE_TAG_DEPRECATED,
-                                    klass->deprecated);
+                                    property_def->deprecated);
 
 
   if ((buf = glade_xml_get_property_string
        (node, GLADE_TAG_CREATE_TYPE)) != NULL)
     {
-      g_clear_pointer (&klass->create_type, g_free);
-      klass->create_type = buf;
+      g_clear_pointer (&property_def->create_type, g_free);
+      property_def->create_type = buf;
     }
 
   /* If this property's value is an enumeration or flag then we try to get the displayable values */
-  if ((G_IS_PARAM_SPEC_ENUM (klass->pspec) ||
-       G_IS_PARAM_SPEC_FLAGS (klass->pspec)) &&
+  if ((G_IS_PARAM_SPEC_ENUM (property_def->pspec) ||
+       G_IS_PARAM_SPEC_FLAGS (property_def->pspec)) &&
       (child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES)))
-    gpc_read_displayable_values_from_node (child, klass, domain);
+    gpc_read_displayable_values_from_node (child, property_def, domain);
 
   /* Right now allowing the backend to specify that some properties
    * go in the atk tab, ideally this shouldnt be needed.
    */
-  klass->atk =
-      glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, klass->atk);
+  property_def->atk =
+      glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, property_def->atk);
 
-  if (klass->optional)
-    klass->optional_default =
+  if (property_def->optional)
+    property_def->optional_default =
         glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT,
-                                        klass->optional_default);
+                                        property_def->optional_default);
 
   /* notify that we changed the property class */
-  klass->is_modified = TRUE;
+  property_def->is_modified = TRUE;
 
   return TRUE;
 }
@@ -2217,44 +2220,44 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 
 
 /**
- * glade_property_class_match:
- * @klass: a #GladePropertyClass
- * @comp: a #GladePropertyClass
+ * glade_property_def_match:
+ * @property_def: a #GladePropertyDef
+ * @comp: a #GladePropertyDef
  *
- * Returns: whether @klass and @comp are a match or not
+ * Returns: whether @property_def and @comp are a match or not
  *          (properties in seperate decendant heirarchies that
  *           have the same name are not matches).
  */
 gboolean
-glade_property_class_match (GladePropertyClass *klass,
-                            GladePropertyClass *comp)
+glade_property_def_match (GladePropertyDef *property_def,
+                          GladePropertyDef *comp)
 {
-  g_return_val_if_fail (klass != NULL, FALSE);
+  g_return_val_if_fail (property_def != NULL, FALSE);
   g_return_val_if_fail (comp != NULL, FALSE);
 
-  return (strcmp (klass->id, comp->id) == 0 &&
-          klass->packing == comp->packing &&
-          klass->pspec->owner_type == comp->pspec->owner_type);
+  return (strcmp (property_def->id, comp->id) == 0 &&
+          property_def->packing == comp->packing &&
+          property_def->pspec->owner_type == comp->pspec->owner_type);
 }
 
 
 /**
- * glade_property_class_void_value:
- * @klass: a #GladePropertyClass
- * @value: a GValue of correct type for @klass
+ * glade_property_def_void_value:
+ * @property_def: a #GladePropertyDef
+ * @value: a GValue of correct type for @property_def
  *
- * Returns: Whether @value for this @klass is voided; a voided value
+ * Returns: Whether @value for this @property_def is voided; a voided value
  *          can be a %NULL value for boxed or object type param specs.
  */
 gboolean
-glade_property_class_void_value (GladePropertyClass *klass, GValue *value)
+glade_property_def_void_value (GladePropertyDef *property_def, GValue *value)
 {
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), FALSE);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), FALSE);
 
-  if (G_IS_PARAM_SPEC_OBJECT (klass->pspec) &&
+  if (G_IS_PARAM_SPEC_OBJECT (property_def->pspec) &&
       g_value_get_object (value) == NULL)
     return TRUE;
-  else if (G_IS_PARAM_SPEC_BOXED (klass->pspec) &&
+  else if (G_IS_PARAM_SPEC_BOXED (property_def->pspec) &&
            g_value_get_boxed (value) == NULL)
     return TRUE;
 
@@ -2262,24 +2265,24 @@ glade_property_class_void_value (GladePropertyClass *klass, GValue *value)
 }
 
 /**
- * glade_property_class_compare:
- * @klass: a #GladePropertyClass
- * @value1: a GValue of correct type for @klass
- * @value2: a GValue of correct type for @klass
+ * glade_property_def_compare:
+ * @property_def: a #GladePropertyDef
+ * @value1: a GValue of correct type for @property_def
+ * @value2: a GValue of correct type for @property_def
  *
- * Compares value1 with value2 according to @klass.
+ * Compares value1 with value2 according to @property_def.
  *
  * Returns: -1, 0 or +1, if value1 is found to be less than,
  * equal to or greater than value2, respectively.
  */
 gint
-glade_property_class_compare (GladePropertyClass *klass,
-                              const GValue       *value1,
-                              const GValue       *value2)
+glade_property_def_compare (GladePropertyDef *property_def,
+                            const GValue     *value1,
+                            const GValue     *value2)
 {
   gint retval;
 
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), -1);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), -1);
 
   /* GLib does not know how to compare a boxed real value */
   if (G_VALUE_HOLDS_BOXED (value1) || G_VALUE_HOLDS_BOXED (value2))
@@ -2292,9 +2295,9 @@ glade_property_class_compare (GladePropertyClass *klass,
        * NOTE: We could add a pclass option to use the string compare vs. boxed compare...
        */
       val1 =
-          glade_widget_adaptor_string_from_value (klass->adaptor, klass, value1);
+          glade_widget_adaptor_string_from_value (property_def->adaptor, property_def, value1);
       val2 =
-          glade_widget_adaptor_string_from_value (klass->adaptor, klass, value2);
+          glade_widget_adaptor_string_from_value (property_def->adaptor, property_def, value2);
 
       if (val1 && val2)
         retval = strcmp (val1, val2);
@@ -2306,7 +2309,7 @@ glade_property_class_compare (GladePropertyClass *klass,
     }
   else
     {
-      if (G_IS_PARAM_SPEC_STRING (klass->pspec))
+      if (G_IS_PARAM_SPEC_STRING (property_def->pspec))
         {
           const gchar *value_str1, *value_str2;
 
@@ -2321,64 +2324,64 @@ glade_property_class_compare (GladePropertyClass *klass,
           else if (value_str2 == NULL && value_str1 && value_str1[0] == '\0')
             return 0;
         }
-      retval = g_param_values_cmp (klass->pspec, value1, value2);
+      retval = g_param_values_cmp (property_def->pspec, value1, value2);
     }
 
   return retval;
 }
 
 /**
- * glade_property_class_set_weights:
- * @properties: (element-type GladePropertyClass): a list of #GladePropertyClass
+ * glade_property_def_set_weights:
+ * @properties: (element-type GladePropertyDef): a list of #GladePropertyDef
  * @parent: the #GType of the parent
  *
  * This function assignes "weight" to each property in its natural order staring from 1.
- * If parent is 0 weight will be set for every #GladePropertyClass in the list.
+ * If parent is 0 weight will be set for every #GladePropertyDef in the list.
  * This function will not override weight if it is already set (weight >= 0.0)
  */
 void
-glade_property_class_set_weights (GList **properties, GType parent)
+glade_property_def_set_weights (GList **properties, GType parent)
 {
   gint normal = 0, common = 0, packing = 0;
   GList *l;
 
   for (l = *properties; l && l->data; l = g_list_next (l))
     {
-      GladePropertyClass *klass = l->data;
+      GladePropertyDef *property_def = l->data;
 
-      if (klass->visible &&
-          (parent) ? parent == klass->pspec->owner_type : TRUE && !klass->atk)
+      if (property_def->visible &&
+          (parent) ? parent == property_def->pspec->owner_type : TRUE && !property_def->atk)
         {
           /* Use a different counter for each tab (common, packing and normal) */
-          if (klass->common)
+          if (property_def->common)
             common++;
-          else if (klass->packing)
+          else if (property_def->packing)
             packing++;
           else
             normal++;
 
           /* Skip if it is already set */
-          if (klass->weight >= 0.0)
+          if (property_def->weight >= 0.0)
             continue;
 
           /* Special-casing weight of properties for seperate tabs */
-          if (klass->common)
-            klass->weight = common;
-          else if (klass->packing)
-            klass->weight = packing;
+          if (property_def->common)
+            property_def->weight = common;
+          else if (property_def->packing)
+            property_def->weight = packing;
           else
-            klass->weight = normal;
+            property_def->weight = normal;
         }
     }
 }
 
 void
-glade_property_class_load_defaults_from_spec (GladePropertyClass *property_class)
+glade_property_def_load_defaults_from_spec (GladePropertyDef *property_def)
 {
-  property_class->orig_def =
-    glade_property_class_get_default_from_spec (property_class->pspec);
+  property_def->orig_def =
+    glade_property_def_get_default_from_spec (property_def->pspec);
   
-  property_class->def =
-    glade_property_class_get_default_from_spec (property_class->pspec);
+  property_def->def =
+    glade_property_def_get_default_from_spec (property_def->pspec);
 }
 

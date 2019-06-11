@@ -143,26 +143,26 @@ glade_gtk_store_set_property (GladeWidgetAdaptor *adaptor,
 
 GladeEditorProperty *
 glade_gtk_store_create_eprop (GladeWidgetAdaptor *adaptor,
-                              GladePropertyClass *klass,
+                              GladePropertyDef   *def,
                               gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   /* chain up.. */
   if (pspec->value_type == GLADE_TYPE_COLUMN_TYPE_LIST)
     eprop = g_object_new (GLADE_TYPE_EPROP_COLUMN_TYPES,
-                          "property-class", klass,
+                          "property-def", def,
                           "use-command", use_command, NULL);
   else if (pspec->value_type == GLADE_TYPE_MODEL_DATA_TREE)
     eprop = g_object_new (GLADE_TYPE_EPROP_MODEL_DATA,
-                          "property-class", klass,
+                          "property-def", def,
                           "use-command", use_command, NULL);
   else
     eprop = GWA_GET_CLASS
-        (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
+        (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
   return eprop;
 }
 
@@ -246,13 +246,13 @@ glade_gtk_store_create_editable (GladeWidgetAdaptor *adaptor,
 
 gchar *
 glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
-                                   GladePropertyClass *klass,
+                                   GladePropertyDef   *def,
                                    const GValue       *value)
 {
   GString *string;
   GParamSpec *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_COLUMN_TYPE_LIST)
     {
@@ -320,7 +320,7 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
     }
   else
     return GWA_GET_CLASS
-        (G_TYPE_OBJECT)->string_from_value (adaptor, klass, value);
+        (G_TYPE_OBJECT)->string_from_value (adaptor, def, value);
 }
 
 static void

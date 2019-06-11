@@ -1,19 +1,19 @@
 <refentry id="properties" revision="8 Feb 2006">
   <refmeta>
-    <refentrytitle>Property Class Definitions</refentrytitle>
+    <refentrytitle>Property Definitions</refentrytitle>
     <refmiscinfo>Glade UI</refmiscinfo>
   </refmeta>
   <refnamediv>
-    <refname>Property Classes</refname>
+    <refname>Property Definitions</refname>
     <refpurpose>
-How to augment or define a #GladePropertyClass
+How to augment or define a #GladePropertyDef
     </refpurpose>
   </refnamediv>
 
   <refsect1>
-    <title>Property Class Configuration</title>
+    <title>Property Definition Configuration</title>
     <para>
-Properties are introspected at load time and loaded into #GladePropertyClass structures.
+Properties are introspected at load time and loaded into #GladePropertyDef structures.
 The behaviour of properties can be modified by the catalog and fake properties can be added
 for editing purposes. Here is an example of the xml form:
       <programlisting><![CDATA[...

@@ -41,9 +41,9 @@ typedef struct
   GladeCellRendererEditor *editor;
 
   GtkWidget *attributes_check;
-  GladePropertyClass *pclass;
-  GladePropertyClass *attr_pclass;
-  GladePropertyClass *use_attr_pclass;
+  GladePropertyDef *pdef;
+  GladePropertyDef *attr_pdef;
+  GladePropertyDef *use_attr_pdef;
 
   GtkWidget *use_prop_label;
   GtkWidget *use_attr_label;
@@ -101,7 +101,7 @@ glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
           CheckTab *tab = l->data;
           gboolean use_attr = FALSE;
 
-          glade_widget_property_get (widget, glade_property_class_id (tab->use_attr_pclass), &use_attr);
+          glade_widget_property_get (widget, glade_property_def_id (tab->use_attr_pdef), &use_attr);
           gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tab->attributes_check), use_attr);
 
           if (use_attr)
@@ -190,17 +190,17 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
 
       glade_command_push_group (_("Setting %s to use the %s property as an attribute"),
                                 glade_widget_get_name (gwidget),
-                                glade_property_class_id (tab->pclass));
+                                glade_property_def_id (tab->pdef));
 
 
       property =
-          glade_widget_get_property (gwidget, glade_property_class_id (tab->pclass));
+          glade_widget_get_property (gwidget, glade_property_def_id (tab->pdef));
       glade_property_get_default (property, &value);
       glade_command_set_property_value (property, &value);
       g_value_unset (&value);
 
       property =
-          glade_widget_get_property (gwidget, glade_property_class_id (tab->use_attr_pclass));
+          glade_widget_get_property (gwidget, glade_property_def_id (tab->use_attr_pdef));
       glade_command_set_property (property, TRUE);
 
       glade_command_pop_group ();
@@ -211,16 +211,16 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
     {
       glade_command_push_group (_("Setting %s to use the %s property directly"),
                                 glade_widget_get_name (gwidget),
-                                glade_property_class_id (tab->pclass));
+                                glade_property_def_id (tab->pdef));
 
       property =
-          glade_widget_get_property (gwidget, glade_property_class_id (tab->attr_pclass));
+          glade_widget_get_property (gwidget, glade_property_def_id (tab->attr_pdef));
       glade_property_get_default (property, &value);
       glade_command_set_property_value (property, &value);
       g_value_unset (&value);
 
       property =
-          glade_widget_get_property (gwidget, glade_property_class_id (tab->use_attr_pclass));
+          glade_widget_get_property (gwidget, glade_property_def_id (tab->use_attr_pdef));
       glade_command_set_property (property, FALSE);
 
       glade_command_pop_group ();
@@ -233,17 +233,17 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
 }
 
 static gint
-property_class_comp (gconstpointer a, gconstpointer b)
+property_def_comp (gconstpointer a, gconstpointer b)
 {
-  GladePropertyClass *ca = (GladePropertyClass *)a, *cb = (GladePropertyClass *)b;
+  GladePropertyDef *ca = (GladePropertyDef *)a, *cb = (GladePropertyDef *)b;
   GParamSpec *pa, *pb;
 
-  pa = glade_property_class_get_pspec (ca);
-  pb = glade_property_class_get_pspec (cb);
+  pa = glade_property_def_get_pspec (ca);
+  pb = glade_property_def_get_pspec (cb);
 
   if (pa->owner_type == pb->owner_type)
     {
-      gdouble result = glade_property_class_weight (ca) - glade_property_class_weight (cb);
+      gdouble result = glade_property_def_weight (ca) - glade_property_def_weight (cb);
       /* Avoid cast to int */
       if (result < 0.0)
         return -1;
@@ -255,9 +255,9 @@ property_class_comp (gconstpointer a, gconstpointer b)
   else
     {
       if (g_type_is_a (pa->owner_type, pb->owner_type))
-        return (glade_property_class_common (ca) || glade_property_class_get_is_packing (ca)) ? 1 : -1;
+        return (glade_property_def_common (ca) || glade_property_def_get_is_packing (ca)) ? 1 : -1;
       else
-        return (glade_property_class_common (ca) || glade_property_class_get_is_packing (ca)) ? -1 : 1;
+        return (glade_property_def_common (ca) || glade_property_def_get_is_packing (ca)) ? -1 : 1;
     }
 }
 
@@ -269,15 +269,15 @@ get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
 
   for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
     {
-      GladePropertyClass *klass = l->data;
+      GladePropertyDef *def = l->data;
 
-      if (GLADE_PROPERTY_CLASS_IS_TYPE (klass, type) &&
-          (glade_property_class_is_visible (klass)))
+      if (GLADE_PROPERTY_DEF_IS_TYPE (def, type) &&
+          (glade_property_def_is_visible (def)))
         {
-          list = g_list_prepend (list, klass);
+          list = g_list_prepend (list, def);
         }
     }
-  return g_list_sort (list, property_class_comp);
+  return g_list_sort (list, property_def_comp);
 }
 
 
@@ -287,7 +287,7 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 {
   GladeCellRendererEditor *renderer_editor;
   GladeEditorProperty *eprop;
-  GladePropertyClass *pclass, *attr_pclass, *use_attr_pclass;
+  GladePropertyDef *pdef, *attr_pdef, *use_attr_pdef;
   GList *list, *sorted;
   GtkWidget *hbox_left, *hbox_right, *grid;
   gchar *str;
@@ -320,32 +320,32 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
       gchar *attr_name;
       gchar *use_attr_name;
 
-      pclass = list->data;
+      pdef = list->data;
 
       /* "stock-size" is a normal property, but we virtualize it to use the GtkIconSize enumeration */
-      if (glade_property_class_get_virtual (pclass) &&
-          strcmp (glade_property_class_id (pclass), "stock-size") != 0)
+      if (glade_property_def_get_virtual (pdef) &&
+          strcmp (glade_property_def_id (pdef), "stock-size") != 0)
         continue;
 
-      attr_name = g_strdup_printf ("attr-%s", glade_property_class_id (pclass));
-      use_attr_name = g_strdup_printf ("use-attr-%s", glade_property_class_id (pclass));
+      attr_name = g_strdup_printf ("attr-%s", glade_property_def_id (pdef));
+      use_attr_name = g_strdup_printf ("use-attr-%s", glade_property_def_id (pdef));
 
-      attr_pclass =
-          glade_widget_adaptor_get_property_class (adaptor, attr_name);
-      use_attr_pclass =
-          glade_widget_adaptor_get_property_class (adaptor, use_attr_name);
+      attr_pdef =
+          glade_widget_adaptor_get_property_def (adaptor, attr_name);
+      use_attr_pdef =
+          glade_widget_adaptor_get_property_def (adaptor, use_attr_name);
 
-      if (attr_pclass && use_attr_pclass)
+      if (attr_pdef && use_attr_pdef)
         {
           CheckTab *tab = g_new0 (CheckTab, 1);
           GParamSpec *pspec;
 
-          pspec = glade_property_class_get_pspec (pclass);
+          pspec = glade_property_def_get_pspec (pdef);
 
           tab->editor = renderer_editor;
-          tab->pclass = pclass;
-          tab->attr_pclass = attr_pclass;
-          tab->use_attr_pclass = use_attr_pclass;
+          tab->pdef = pdef;
+          tab->attr_pdef = attr_pdef;
+          tab->use_attr_pdef = use_attr_pdef;
 
           /* Label appearance... */
           hbox_left = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -354,7 +354,7 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 
           tab->attributes_check = gtk_check_button_new ();
           str = g_strdup_printf (_("Retrieve %s from model (type %s)"),
-                                 glade_property_class_get_name (pclass),
+                                 glade_property_def_get_name (pdef),
                                  g_type_name (pspec->value_type));
           gtk_widget_set_tooltip_text (tab->attributes_check, str);
           g_free (str);
@@ -363,7 +363,7 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
                               FALSE, 4);
 
           /* Edit property */
-          eprop = glade_widget_adaptor_create_eprop (adaptor, pclass, TRUE);
+          eprop = glade_widget_adaptor_create_eprop (adaptor, pdef, TRUE);
           gtk_box_pack_start (GTK_BOX (hbox_left), glade_editor_property_get_item_label (eprop), TRUE,
                               TRUE, 4);
           gtk_box_pack_start (GTK_BOX (hbox_right), GTK_WIDGET (eprop), FALSE,
@@ -376,7 +376,7 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 
           /* Edit attribute */
           eprop =
-              glade_widget_adaptor_create_eprop (adaptor, attr_pclass, TRUE);
+              glade_widget_adaptor_create_eprop (adaptor, attr_pdef, TRUE);
           gtk_box_pack_start (GTK_BOX (hbox_right), GTK_WIDGET (eprop), FALSE,
                               FALSE, 4);
           renderer_editor->properties =
@@ -584,7 +584,7 @@ glade_eprop_cell_attribute_create_input (GladeEditorProperty * eprop)
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
-  adjustment = glade_property_class_make_adjustment (glade_editor_property_get_pclass (eprop));
+  adjustment = glade_property_def_make_adjustment (glade_editor_property_get_property_def (eprop));
   eprop_attribute->spin = gtk_spin_button_new (adjustment, 1.0, 0);
 
   eprop_attribute->columns =

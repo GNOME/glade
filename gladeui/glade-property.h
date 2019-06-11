@@ -22,8 +22,8 @@ typedef enum {
   GLADE_STATE_SUPPORT_DISABLED    = (1 << 2)
 } GladePropertyState;
 
-/* A GladeProperty is an instance of a GladePropertyClass.
- * There will be one GladePropertyClass for "GtkLabel->label" but one
+/* A GladeProperty is an instance of a GladePropertyDef.
+ * There will be one GladePropertyDef for "GtkLabel->label" but one
  * GladeProperty for each GtkLabel in the GladeProject.
  */
 struct _GladeProperty
@@ -61,7 +61,7 @@ struct _GladePropertyKlass
 
 GType                   glade_property_get_type              (void) G_GNUC_CONST;
 
-GladeProperty          *glade_property_new                   (GladePropertyClass *klass,
+GladeProperty          *glade_property_new                   (GladePropertyDef   *def,
                                                               GladeWidget        *widget,
                                                               GValue             *value);
 
@@ -121,7 +121,7 @@ void                    glade_property_write                 (GladeProperty     
                                                               GladeXmlContext    *context,
                                                               GladeXmlNode       *node);
 
-GladePropertyClass     *glade_property_get_class             (GladeProperty      *property);
+GladePropertyDef       *glade_property_get_def               (GladeProperty      *property);
 
 void                    glade_property_set_sensitive         (GladeProperty      *property,
                                                               gboolean            sensitive,

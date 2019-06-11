@@ -36,10 +36,10 @@ GList       *glade_string_list_append            (GList         *list,
 
 gchar       *glade_string_list_to_string         (GList         *list);
 
-GladeEditorProperty *glade_eprop_string_list_new (GladePropertyClass *pclass,
-                                                  gboolean            use_command,
-                                                  gboolean            translatable,
-                                                  gboolean            with_id);
+GladeEditorProperty *glade_eprop_string_list_new (GladePropertyDef *pdef,
+                                                  gboolean          use_command,
+                                                  gboolean          translatable,
+                                                  gboolean          with_id);
 
 G_END_DECLS
 

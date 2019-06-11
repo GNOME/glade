@@ -103,7 +103,7 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
                                    GtkWidget          *new_widget)
 {
   GParamSpec **param_spec;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   GValue *value;
   guint nproperties;
   guint i;
@@ -134,10 +134,10 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
        */
       if (GLADE_IS_PLACEHOLDER (new_widget))
         {
-          pclass = glade_widget_adaptor_get_pack_property_class
+          pdef = glade_widget_adaptor_get_pack_property_def
               (adaptor, param_spec[i]->name);
 
-          if (pclass && glade_property_class_transfer_on_paste (pclass))
+          if (pdef && glade_property_def_transfer_on_paste (pdef))
             continue;
         }
 

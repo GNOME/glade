@@ -429,13 +429,13 @@ glade_eprop_enum_int_set_property (GObject      *object,
 }
 
 GladeEditorProperty *
-glade_eprop_enum_int_new (GladePropertyClass *pclass,
+glade_eprop_enum_int_new (GladePropertyDef   *pdef,
                           GType               type,
                           gboolean            use_command)
 {
   GladeEditorProperty *eprop = 
     g_object_new (GLADE_TYPE_EPROP_ENUM_INT, 
-                  "property-class", pclass,
+                  "property-def", pdef,
                   "use-command", use_command,
                   "type", type,
                   NULL);

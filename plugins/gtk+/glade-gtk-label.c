@@ -495,12 +495,12 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
 
 gchar *
 glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
-                                   GladePropertyClass *klass,
+                                   GladePropertyDef   *def,
                                    const GValue       *value)
 {
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_ATTR_GLIST)
     {
@@ -523,30 +523,30 @@ glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
     }
   else
     return GWA_GET_CLASS
-        (GTK_TYPE_WIDGET)->string_from_value (adaptor, klass, value);
+        (GTK_TYPE_WIDGET)->string_from_value (adaptor, def, value);
 }
 
 
 GladeEditorProperty *
 glade_gtk_label_create_eprop (GladeWidgetAdaptor *adaptor,
-                              GladePropertyClass *klass,
+                              GladePropertyDef   *def,
                               gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   /* chain up.. */
   if (pspec->value_type == GLADE_TYPE_ATTR_GLIST)
     {
       eprop = g_object_new (GLADE_TYPE_EPROP_ATTRS,
-                            "property-class", klass,
+                            "property-def", def,
                             "use-command", use_command, NULL);
     }
   else
     eprop = GWA_GET_CLASS
-        (GTK_TYPE_WIDGET)->create_eprop (adaptor, klass, use_command);
+        (GTK_TYPE_WIDGET)->create_eprop (adaptor, def, use_command);
   return eprop;
 }
 

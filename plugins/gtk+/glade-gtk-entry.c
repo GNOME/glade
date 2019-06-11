@@ -211,7 +211,7 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
       GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (GPC_VERSION_CHECK
-           (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
+           (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
 
@@ -246,7 +246,7 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
       property = glade_widget_get_property (widget, "buffer");
 
       /* Only default to the buffer setting if the project version supports it. */
-      if (GPC_VERSION_CHECK (glade_property_get_class (property), target_major, target_minor))
+      if (GPC_VERSION_CHECK (glade_property_get_def (property), target_major, target_minor))
         {
           glade_widget_property_set (widget, "use-entry-buffer", TRUE);
           glade_property_sync (property);

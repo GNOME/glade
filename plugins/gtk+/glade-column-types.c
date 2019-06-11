@@ -61,13 +61,13 @@ column_types_store_populate_enums_flags (GtkListStore * store, gboolean enums)
   for (list = adaptors; list; list = list->next)
     {
       GladeWidgetAdaptor *adaptor = list->data;
-      GladePropertyClass *pclass;
+      GladePropertyDef   *pdef;
       GParamSpec         *pspec;
 
       for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
         {
-          pclass = l->data;
-          pspec  = glade_property_class_get_pspec (pclass);
+          pdef = l->data;
+          pspec  = glade_property_def_get_pspec (pdef);
 
           /* special case out a few of these... */
           if (strcmp (g_type_name (pspec->value_type),

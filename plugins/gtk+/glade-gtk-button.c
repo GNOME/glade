@@ -188,8 +188,8 @@ glade_gtk_button_post_create (GladeWidgetAdaptor *adaptor,
 static inline gboolean
 glade_gtk_lock_button_is_own_property (GladeProperty *property)
 {
-  GladePropertyClass *klass = glade_property_get_class (property);
-  GParamSpec *spec = glade_property_class_get_pspec (klass);
+  GladePropertyDef *def = glade_property_get_def (property);
+  GParamSpec *spec = glade_property_def_get_pspec (def);
   return (spec->owner_type == GTK_TYPE_LOCK_BUTTON);
 }
 
@@ -238,7 +238,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
                                                         id, value);
       glade_gtk_sync_use_appearance (widget);
     }
-  else if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
+  else if (GPC_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 
   /* GtkLockButton hides itself after setting a property so we need to make sure
@@ -327,18 +327,18 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 
 GladeEditorProperty *
 glade_gtk_button_create_eprop (GladeWidgetAdaptor *adaptor,
-                               GladePropertyClass *klass, 
+                               GladePropertyDef   *def, 
                                gboolean            use_command)
 {
   GladeEditorProperty *eprop;
 
-  if (strcmp (glade_property_class_id(klass), "response-id")==0)
+  if (strcmp (glade_property_def_id(def), "response-id")==0)
     {
-      eprop = glade_eprop_enum_int_new (klass, GTK_TYPE_RESPONSE_TYPE, use_command);
+      eprop = glade_eprop_enum_int_new (def, GTK_TYPE_RESPONSE_TYPE, use_command);
     }
   else
     eprop = GWA_GET_CLASS
-        (GTK_TYPE_WIDGET)->create_eprop (adaptor, klass, use_command);
+        (GTK_TYPE_WIDGET)->create_eprop (adaptor, def, use_command);
 
   return eprop;
 }

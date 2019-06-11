@@ -30,6 +30,7 @@
 
 #include "glade-widget.h"
 #include "glade-project-properties.h"
+#include "glade-property-def.h"
 
 G_BEGIN_DECLS
 
@@ -75,6 +76,10 @@ _glade_project_properties_get_license_data (GladeProjectProperties *props,
                                             gchar **description,
                                             gchar **copyright,
                                             gchar **authors);
+
+/* glade-property-def.c */
+void
+_glade_property_def_reset_version (GladePropertyDef *property_def);
 
 /* glade-utils.c */
 

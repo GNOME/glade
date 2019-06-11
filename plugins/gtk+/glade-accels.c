@@ -202,9 +202,9 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
 {
   GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
   GladeSignalDef *sdef;
-  GladePropertyClass *pclass = glade_editor_property_get_pclass (eprop);
+  GladePropertyDef   *pdef = glade_editor_property_get_property_def (eprop);
   GladeProperty      *property = glade_editor_property_get_property (eprop);
-  GladeWidgetAdaptor *adaptor = glade_property_class_get_adaptor (pclass);
+  GladeWidgetAdaptor *adaptor = glade_property_def_get_adaptor (pdef);
   GtkTreeStore *model = (GtkTreeStore *) gtk_tree_view_get_model (view);
   GtkTreeIter iter;
   GladeEpropIterTab *parent_tab;
@@ -343,15 +343,15 @@ accel_edited (GtkCellRendererAccel * accel,
   gboolean key_was_set;
   GtkTreeIter iter, parent_iter, new_iter;
   gchar *accel_text;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   GladeWidgetAdaptor *adaptor;
   gboolean is_action;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GType type_action = GTK_TYPE_ACTION;
 G_GNUC_END_IGNORE_DEPRECATIONS
 
-  pclass = glade_editor_property_get_pclass (GLADE_EDITOR_PROPERTY (eprop_accel));
-  adaptor = glade_property_class_get_adaptor (pclass);
+  pdef = glade_editor_property_get_property_def (GLADE_EDITOR_PROPERTY (eprop_accel));
+  adaptor = glade_property_def_get_adaptor (pdef);
 
   if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
                                             &iter, path_string))

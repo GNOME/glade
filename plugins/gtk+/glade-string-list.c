@@ -757,14 +757,14 @@ glade_eprop_string_list_create_input (GladeEditorProperty *eprop)
 }
 
 GladeEditorProperty *
-glade_eprop_string_list_new (GladePropertyClass *pclass,
+glade_eprop_string_list_new (GladePropertyDef   *pdef,
                              gboolean            use_command,
                              gboolean            translatable,
                              gboolean            with_id)
 {
   GladeEditorProperty *eprop = 
     g_object_new (GLADE_TYPE_EPROP_STRING_LIST, 
-                  "property-class", pclass,
+                  "property-def", pdef,
                   "use-command", use_command,
                   NULL);
 
