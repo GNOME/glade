@@ -46,6 +46,6 @@ glade_gtk_recent_chooser_menu_set_property (GladeWidgetAdaptor *adaptor,
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);
 
-  if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
+  if (GPC_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_MENU)->set_property (adaptor, object, id, value);
 }

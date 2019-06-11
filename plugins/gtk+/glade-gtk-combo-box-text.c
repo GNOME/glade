@@ -60,33 +60,33 @@ glade_gtk_combo_box_text_post_create (GladeWidgetAdaptor *adaptor,
 
 GladeEditorProperty *
 glade_gtk_combo_box_text_create_eprop (GladeWidgetAdaptor *adaptor,
-                                       GladePropertyClass *klass, 
-                                       gboolean use_command)
+                                       GladePropertyDef   *def, 
+                                       gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_STRING_LIST)
     {
-      eprop = glade_eprop_string_list_new (klass, use_command, TRUE, TRUE);
+      eprop = glade_eprop_string_list_new (def, use_command, TRUE, TRUE);
     }
   else
     eprop = GWA_GET_CLASS
-        (GTK_TYPE_WIDGET)->create_eprop (adaptor, klass, use_command);
+        (GTK_TYPE_WIDGET)->create_eprop (adaptor, def, use_command);
 
   return eprop;
 }
 
 gchar *
 glade_gtk_combo_box_text_string_from_value (GladeWidgetAdaptor *adaptor,
-                                            GladePropertyClass *klass,
+                                            GladePropertyDef   *def,
                                             const GValue       *value)
 {
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_STRING_LIST)
     {
@@ -96,7 +96,7 @@ glade_gtk_combo_box_text_string_from_value (GladeWidgetAdaptor *adaptor,
     }
   else
     return GWA_GET_CLASS
-        (GTK_TYPE_COMBO_BOX)->string_from_value (adaptor, klass, value);
+        (GTK_TYPE_COMBO_BOX)->string_from_value (adaptor, def, value);
 }
 
 void

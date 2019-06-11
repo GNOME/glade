@@ -2,7 +2,7 @@
 #define _GLADE_WIDGET_ADAPTOR_H_
 
 #include <gladeui/glade-xml-utils.h>
-#include <gladeui/glade-property-class.h>
+#include <gladeui/glade-property-def.h>
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-signal-class.h>
 #include <gladeui/glade-catalog.h>
@@ -237,7 +237,7 @@ typedef GladeWidget * (* GladeCreateWidgetFunc) (GladeWidgetAdaptor *adaptor,
  * This delagate function is used to apply the property value on
  * the runtime object.
  *
- * Sets @value on @object for a given #GladePropertyClass
+ * Sets @value on @object for a given #GladePropertyDef
  */
 typedef void     (* GladeSetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
                                               GObject            *object,
@@ -251,7 +251,7 @@ typedef void     (* GladeSetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
  * @property_name: The property identifier
  * @value: The #GValue
  *
- * Gets @value on @object for a given #GladePropertyClass
+ * Gets @value on @object for a given #GladePropertyDef
  */
 typedef void     (* GladeGetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
                                               GObject            *object,
@@ -568,7 +568,7 @@ typedef void     (* GladeWriteWidgetFunc) (GladeWidgetAdaptor *adaptor,
 /**
  * GladeCreateEPropFunc:
  * @adaptor: A #GladeWidgetAdaptor
- * @klass: The #GladePropertyClass to be edited
+ * @def: The #GladePropertyDef to be edited
  * @use_command: whether to use the GladeCommand interface
  * to commit property changes
  * 
@@ -577,13 +577,13 @@ typedef void     (* GladeWriteWidgetFunc) (GladeWidgetAdaptor *adaptor,
  * Returns: A newly created #GladeEditorProperty
  */
 typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adaptor,
-                                                       GladePropertyClass *klass,
+                                                       GladePropertyDef   *def,
                                                        gboolean            use_command);
 
 /**
  * GladeStringFromValueFunc:
  * @adaptor: A #GladeWidgetAdaptor
- * @klass: The #GladePropertyClass 
+ * @def: The #GladePropertyDef 
  * @value: The #GValue to convert to a string
  * 
  * For normal properties this is used to serialize
@@ -594,7 +594,7 @@ typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adapt
  * Returns: A newly allocated string representation of @value
  */
 typedef gchar   *(* GladeStringFromValueFunc) (GladeWidgetAdaptor *adaptor,
-                                               GladePropertyClass *klass,
+                                               GladePropertyDef   *def,
                                                const GValue       *value);
 
 
@@ -778,10 +778,10 @@ GladeWidgetAdaptor   *glade_widget_adaptor_get_by_type        (GType            
 GladeWidgetAdaptor   *glade_widget_adaptor_from_pspec         (GladeWidgetAdaptor *adaptor,
                                                                GParamSpec         *pspec);
 
-GladePropertyClass   *glade_widget_adaptor_get_property_class (GladeWidgetAdaptor *adaptor,
+GladePropertyDef     *glade_widget_adaptor_get_property_def   (GladeWidgetAdaptor *adaptor,
                                                                const gchar        *name);
-GladePropertyClass   *glade_widget_adaptor_get_pack_property_class (GladeWidgetAdaptor *adaptor,
-                                                                    const gchar        *name);
+GladePropertyDef     *glade_widget_adaptor_get_pack_property_def (GladeWidgetAdaptor *adaptor,
+                                                                  const gchar        *name);
 
 GParameter           *glade_widget_adaptor_default_params     (GladeWidgetAdaptor *adaptor,
                                                                gboolean            construct,
@@ -901,7 +901,7 @@ void                  glade_widget_adaptor_write_child        (GladeWidgetAdapto
                                                                GladeXmlNode       *node);
 
 GladeEditorProperty  *glade_widget_adaptor_create_eprop       (GladeWidgetAdaptor *adaptor,
-                                                               GladePropertyClass *klass,
+                                                               GladePropertyDef   *def,
                                                                gboolean            use_command);
 GladeEditorProperty  *glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
                                                                  const gchar        *property_id,
@@ -909,7 +909,7 @@ GladeEditorProperty  *glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdap
                                                                  gboolean            use_command);
 
 gchar                *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor *adaptor,
-                                                               GladePropertyClass *klass,
+                                                               GladePropertyDef   *def,
                                                                const GValue       *value);
 GladeEditable        *glade_widget_adaptor_create_editable    (GladeWidgetAdaptor *adaptor,
                                                                GladeEditorPageType type);

@@ -578,15 +578,15 @@ static void
 glade_popup_property_docs_cb (GtkMenuItem *item, GladeProperty *property)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
-  GladePropertyClass *pclass;
+  GladePropertyDef   *pdef;
   GParamSpec         *pspec;
   gchar              *search;
 
-  pclass       = glade_property_get_class (property);
-  pspec        = glade_property_class_get_pspec (pclass);
-  prop_adaptor = glade_property_class_get_adaptor (pclass);
+  pdef         = glade_property_get_def (property);
+  pspec        = glade_property_def_get_pspec (pdef);
+  prop_adaptor = glade_property_def_get_adaptor (pdef);
   adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
-  search       = g_strdup_printf ("The \"%s\" property", glade_property_class_id (pclass));
+  search       = g_strdup_printf ("The \"%s\" property", glade_property_def_id (pdef));
 
   glade_app_search_docs (glade_widget_adaptor_get_book (adaptor),
                          g_type_name (pspec->owner_type), search);
@@ -599,15 +599,15 @@ glade_popup_property_pop (GladeProperty *property, GdkEventButton *event)
 {
 
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
-  GladePropertyClass *pclass;
+  GladePropertyDef   *pdef;
   GParamSpec         *pspec;
   GtkWidget *popup_menu;
   gint button;
   gint event_time;
 
-  pclass       = glade_property_get_class (property);
-  pspec        = glade_property_class_get_pspec (pclass);
-  prop_adaptor = glade_property_class_get_adaptor (pclass);
+  pdef         = glade_property_get_def (property);
+  pspec        = glade_property_def_get_pspec (pdef);
+  prop_adaptor = glade_property_def_get_adaptor (pdef);
   adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
 
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
@@ -617,7 +617,7 @@ glade_popup_property_pop (GladeProperty *property, GdkEventButton *event)
   glade_popup_append_item (popup_menu, _("Set default value"), TRUE,
                            glade_popup_clear_property_cb, property);
 
-  if (!glade_property_class_get_virtual (pclass) &&
+  if (!glade_property_def_get_virtual (pdef) &&
       glade_widget_adaptor_get_book (adaptor) &&
       glade_util_have_devhelp ())
     {

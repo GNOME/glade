@@ -116,7 +116,7 @@ void                 glade_editor_property_set_disable_check  (GladeEditorProper
 gboolean             glade_editor_property_get_disable_check  (GladeEditorProperty *eprop);
 
 GtkWidget           *glade_editor_property_get_item_label     (GladeEditorProperty *eprop);
-GladePropertyClass  *glade_editor_property_get_pclass         (GladeEditorProperty *eprop);
+GladePropertyDef    *glade_editor_property_get_property_def   (GladeEditorProperty *eprop);
 GladeProperty       *glade_editor_property_get_property       (GladeEditorProperty *eprop);
 gboolean             glade_editor_property_loading            (GladeEditorProperty *eprop);
 

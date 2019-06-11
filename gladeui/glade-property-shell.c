@@ -355,7 +355,7 @@ glade_property_shell_load (GladeEditable *editable,
       /* Need to rebuild the internal editor */
       if (priv->adaptor != adaptor)
         {
-          GladePropertyClass *pclass = NULL;
+          GladePropertyDef *pdef = NULL;
           GladeEditorProperty *eprop = NULL;
 
           priv->adaptor = adaptor;
@@ -363,18 +363,18 @@ glade_property_shell_load (GladeEditable *editable,
           if (adaptor)
             {
               if (priv->packing)
-                pclass = glade_widget_adaptor_get_pack_property_class (priv->adaptor,
-                                                                       priv->property_name);
+                pdef = glade_widget_adaptor_get_pack_property_def (priv->adaptor,
+                                                                   priv->property_name);
               else
-                pclass = glade_widget_adaptor_get_property_class (priv->adaptor,
-                                                                  priv->property_name);
+                pdef = glade_widget_adaptor_get_property_def (priv->adaptor,
+                                                              priv->property_name);
             }
 
           /* Be forgiving, allow usage of properties that wont work, so that
            * some editors can include properties for subclasses, and hide
            * those properties if they're not applicable
            */
-          if (pclass == NULL)
+          if (pdef == NULL)
             {
               priv->property_editor = NULL;
             }
@@ -382,7 +382,7 @@ glade_property_shell_load (GladeEditable *editable,
           else if (g_type_is_a (priv->editor_type, GLADE_TYPE_EDITOR_PROPERTY))
             {
               eprop = g_object_new (priv->editor_type,
-                                    "property-class", pclass,
+                                    "property-def", pdef,
                                     "use-command", priv->use_command,
                                     NULL);
             }

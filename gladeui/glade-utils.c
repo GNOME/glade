@@ -37,7 +37,7 @@
 #include "glade-widget.h"
 #include "glade-widget-adaptor.h"
 #include "glade-property.h"
-#include "glade-property-class.h"
+#include "glade-property-def.h"
 #include "glade-clipboard.h"
 #include "glade-private.h"
 
@@ -1407,11 +1407,11 @@ glade_utils_flags_string_from_value_displayable (GType flags_type, gint value)
 }
 
 
-/* A hash table of generically created property classes for
+/* A hash table of generically created property definitions for
  * fundamental types, so we can easily use glade's conversion
  * system without using properties (only GTypes)
  */
-static GHashTable *generic_property_classes = NULL;
+static GHashTable *generic_property_definitions = NULL;
 
 
 static gboolean
@@ -1427,20 +1427,20 @@ utils_gtype_hash (gconstpointer v)
 }
 
 
-static GladePropertyClass *
-pclass_from_gtype (GType type)
+static GladePropertyDef *
+pdef_from_gtype (GType type)
 {
-  GladePropertyClass *property_class = NULL;
+  GladePropertyDef *property_def = NULL;
   GParamSpec *pspec = NULL;
 
-  if (!generic_property_classes)
-    generic_property_classes =
+  if (!generic_property_definitions)
+    generic_property_definitions =
         g_hash_table_new_full (utils_gtype_hash, utils_gtype_equal, g_free,
-                               (GDestroyNotify) glade_property_class_free);
+                               (GDestroyNotify) glade_property_def_free);
 
-  property_class = g_hash_table_lookup (generic_property_classes, &type);
+  property_def = g_hash_table_lookup (generic_property_definitions, &type);
 
-  if (!property_class)
+  if (!property_def)
     {
       /* Support enum and flag types, and a hardcoded list of fundamental types */
       if (type == G_TYPE_CHAR)
@@ -1508,16 +1508,16 @@ pclass_from_gtype (GType type)
 
       if (pspec)
         {
-          if ((property_class =
-               glade_property_class_new_from_spec_full (NULL, pspec,
+          if ((property_def =
+               glade_property_def_new_from_spec_full (NULL, pspec,
                                                         FALSE)) != NULL)
             {
               /* XXX If we ever free the hash table, property classes wont touch
                * the allocated pspecs, so they would theoretically be leaked.
                */
-              g_hash_table_insert (generic_property_classes,
+              g_hash_table_insert (generic_property_definitions,
                                    g_memdup (&type, sizeof (GType)),
-                                   property_class);
+                                   property_def);
             }
           else
             g_warning ("Unable to create property class for type %s",
@@ -1527,7 +1527,7 @@ pclass_from_gtype (GType type)
         g_warning ("No generic conversion support for type %s",
                    g_type_name (type));
     }
-  return property_class;
+  return property_def;
 }
 
 /**
@@ -1546,13 +1546,13 @@ glade_utils_value_from_string (GType type,
                                const gchar *string,
                                GladeProject *project)
 {
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
 
   g_return_val_if_fail (type != G_TYPE_INVALID, NULL);
   g_return_val_if_fail (string != NULL, NULL);
 
-  if ((pclass = pclass_from_gtype (type)) != NULL)
-    return glade_property_class_make_gvalue_from_string (pclass, string, project);
+  if ((pdef = pdef_from_gtype (type)) != NULL)
+    return glade_property_def_make_gvalue_from_string (pdef, string, project);
 
   return NULL;
 }
@@ -1617,12 +1617,12 @@ glade_utils_boolean_from_string (const gchar *string, gboolean *value)
 gchar *
 glade_utils_string_from_value (const GValue *value)
 {
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
 
   g_return_val_if_fail (value != NULL, NULL);
 
-  if ((pclass = pclass_from_gtype (G_VALUE_TYPE (value))) != NULL)
-    return glade_property_class_make_string_from_gvalue (pclass, value);
+  if ((pdef = pdef_from_gtype (G_VALUE_TYPE (value))) != NULL)
+    return glade_property_def_make_string_from_gvalue (pdef, value);
 
   return NULL;
 }

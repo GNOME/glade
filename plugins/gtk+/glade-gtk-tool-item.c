@@ -67,7 +67,7 @@ glade_gtk_tool_item_set_property (GladeWidgetAdaptor *adaptor,
   GladeProperty *property = glade_widget_get_property (gwidget, id);
 
   if (GPC_VERSION_CHECK
-      (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
+      (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
                                                       value);
 }

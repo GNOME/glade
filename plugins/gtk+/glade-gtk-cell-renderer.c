@@ -60,7 +60,7 @@ glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor,
                                           GObject            *object,
                                           GladeCreateReason   reason)
 {
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   GladeProperty *property;
   GladeWidget *widget;
   const GList *l;
@@ -69,11 +69,11 @@ glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor,
 
   for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
     {
-      pclass = l->data;
+      pdef = l->data;
 
-      if (strncmp (glade_property_class_id (pclass), "use-attr-", strlen ("use-attr-")) == 0)
+      if (strncmp (glade_property_def_id (pdef), "use-attr-", strlen ("use-attr-")) == 0)
         {
-          property = glade_widget_get_property (widget, glade_property_class_id (pclass));
+          property = glade_widget_get_property (widget, glade_property_def_id (pdef));
           glade_property_sync (property);
         }
     }
@@ -83,18 +83,18 @@ glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor,
 
 GladeEditorProperty *
 glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
-                                      GladePropertyClass *klass,
+                                      GladePropertyDef   *def,
                                       gboolean            use_command)
 {
   GladeEditorProperty *eprop;
 
-  if (strncmp (glade_property_class_id (klass), "attr-", strlen ("attr-")) == 0)
+  if (strncmp (glade_property_def_id (def), "attr-", strlen ("attr-")) == 0)
     eprop = g_object_new (GLADE_TYPE_EPROP_CELL_ATTRIBUTE,
-                          "property-class", klass,
+                          "property-def", def,
                           "use-command", use_command, NULL);
   else
     eprop = GWA_GET_CLASS
-        (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
+        (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
   return eprop;
 }
 
@@ -212,7 +212,7 @@ glade_gtk_cell_renderer_write_properties (GladeWidget     *widget,
                                           GladeXmlNode    *node)
 {
   GladeProperty *property, *prop;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   gchar *attr_name;
   GList *l;
   static gint attr_len = 0;
@@ -223,17 +223,17 @@ glade_gtk_cell_renderer_write_properties (GladeWidget     *widget,
   for (l = glade_widget_get_properties (widget); l; l = l->next)
     {
       property = l->data;
-      pclass   = glade_property_get_class (property);
+      pdef   = glade_property_get_def (property);
 
-      if (strncmp (glade_property_class_id (pclass), "attr-", attr_len) == 0)
+      if (strncmp (glade_property_def_id (pdef), "attr-", attr_len) == 0)
         {
           gchar *use_attr_str;
           gboolean use_attr = FALSE;
 
-          use_attr_str = g_strdup_printf ("use-%s", glade_property_class_id (pclass));
+          use_attr_str = g_strdup_printf ("use-%s", glade_property_def_id (pdef));
           glade_widget_property_get (widget, use_attr_str, &use_attr);
 
-          attr_name = (gchar *)&glade_property_class_id (pclass)[attr_len];
+          attr_name = (gchar *)&glade_property_def_id (pdef)[attr_len];
           prop = glade_widget_get_property (widget, attr_name);
 
           if (!use_attr && prop)
@@ -290,16 +290,16 @@ glade_gtk_cell_renderer_parse_finished (GladeProject *project,
   for (l = glade_widget_get_properties (widget); l; l = l->next)
     {
       GladeProperty *switch_prop;
-      GladePropertyClass *pclass;
+      GladePropertyDef *pdef;
 
       property = l->data;
-      pclass   = glade_property_get_class (property);
+      pdef     = glade_property_get_def (property);
 
-      if (strncmp (glade_property_class_id (pclass), "attr-", attr_len) != 0 &&
-          strncmp (glade_property_class_id (pclass), "use-attr-", use_attr_len) != 0 &&
+      if (strncmp (glade_property_def_id (pdef), "attr-", attr_len) != 0 &&
+          strncmp (glade_property_def_id (pdef), "use-attr-", use_attr_len) != 0 &&
           (switch_prop =
            glade_gtk_cell_renderer_attribute_switch (widget,
-                                                     glade_property_class_id (pclass))) != NULL)
+                                                     glade_property_def_id (pdef))) != NULL)
         {
           if (glade_property_original_default (property))
             glade_property_set (switch_prop, TRUE);
@@ -350,7 +350,7 @@ glade_gtk_cell_renderer_sync_attributes (GObject *object)
   GladeWidget *parent;
   GladeWidget *gmodel;
   GladeProperty *property;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   gchar *attr_prop_name;
   GList *l, *column_list = NULL;
   gint columns = 0;
@@ -386,20 +386,20 @@ glade_gtk_cell_renderer_sync_attributes (GObject *object)
   for (l = glade_widget_get_properties (widget); l; l = l->next)
     {
       property = l->data;
-      pclass   = glade_property_get_class (property);
+      pdef     = glade_property_get_def (property);
 
-      if (strncmp (glade_property_class_id (pclass), "attr-", attr_len) == 0)
+      if (strncmp (glade_property_def_id (pdef), "attr-", attr_len) == 0)
         {
           gint column = g_value_get_int (glade_property_inline_value (property));
 
-          attr_prop_name = (gchar *)&glade_property_class_id (pclass)[attr_len];
+          attr_prop_name = (gchar *)&glade_property_def_id (pdef)[attr_len];
 
           if (column >= 0 && column < columns)
             {
               GladeColumnType *column_type =
                   (GladeColumnType *) g_list_nth_data (column_list, column);
               GType column_gtype = g_type_from_name (column_type->type_name);
-              GParamSpec *pspec = glade_property_class_get_pspec (pclass);
+              GParamSpec *pspec = glade_property_def_get_pspec (pdef);
 
               if (column_gtype &&
                   g_value_type_transformable (column_gtype, pspec->value_type))

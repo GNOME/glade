@@ -454,15 +454,15 @@ glade_editor_table_attach (GladeEditorTable * table,
 static gint
 property_class_comp (gconstpointer a, gconstpointer b)
 {
-  GladePropertyClass *ca = (GladePropertyClass *)a, *cb = (GladePropertyClass *)b;
+  GladePropertyDef *ca = (GladePropertyDef *)a, *cb = (GladePropertyDef *)b;
   GParamSpec *pa, *pb;
   const gchar *name_a, *name_b;
 
-  pa = glade_property_class_get_pspec (ca);
-  pb = glade_property_class_get_pspec (cb);
+  pa = glade_property_def_get_pspec (ca);
+  pb = glade_property_def_get_pspec (cb);
 
-  name_a = glade_property_class_id (ca);
-  name_b = glade_property_class_id (cb);
+  name_a = glade_property_def_id (ca);
+  name_b = glade_property_def_id (cb);
 
   /* Special case for the 'name' property, it *always* comes first. */
   if (strcmp (name_a, "name") == 0)
@@ -472,7 +472,7 @@ property_class_comp (gconstpointer a, gconstpointer b)
   /* Properties of the same class are sorted in the same level */
   else if (pa->owner_type == pb->owner_type)
     {
-      gdouble result = glade_property_class_weight (ca) - glade_property_class_weight (cb);
+      gdouble result = glade_property_def_weight (ca) - glade_property_def_weight (cb);
       /* Avoid cast to int */
       if (result < 0.0)
         return -1;
@@ -485,9 +485,9 @@ property_class_comp (gconstpointer a, gconstpointer b)
   else
     {
       if (g_type_is_a (pa->owner_type, pb->owner_type))
-        return (glade_property_class_common (ca) || glade_property_class_get_is_packing (ca)) ? 1 : -1;
+        return (glade_property_def_common (ca) || glade_property_def_get_is_packing (ca)) ? 1 : -1;
       else
-        return (glade_property_class_common (ca) || glade_property_class_get_is_packing (ca)) ? -1 : 1;
+        return (glade_property_def_common (ca) || glade_property_def_get_is_packing (ca)) ? -1 : 1;
     }
 }
 
@@ -504,18 +504,18 @@ get_sorted_properties (GladeWidgetAdaptor *adaptor, GladeEditorPageType type)
 
   for (l = properties; l; l = g_list_next (l))
     {
-      GladePropertyClass *klass = l->data;
+      GladePropertyDef *def = l->data;
 
       /* Collect properties in our domain, query dialogs are allowed editor 
        * invisible (or custom-layout) properties, allow adaptors to filter
        * out properties from the GladeEditorTable using the "custom-layout" attribute.
        */
-      if (GLADE_PROPERTY_CLASS_IS_TYPE (klass, type) &&
+      if (GLADE_PROPERTY_DEF_IS_TYPE (def, type) &&
           (type == GLADE_PAGE_QUERY || 
-           (!glade_property_class_custom_layout (klass) &&
-            glade_property_class_is_visible (klass))))
+           (!glade_property_def_custom_layout (def) &&
+            glade_property_def_is_visible (def))))
         {
-          list = g_list_prepend (list, klass);
+          list = g_list_prepend (list, def);
         }
 
     }
@@ -523,19 +523,19 @@ get_sorted_properties (GladeWidgetAdaptor *adaptor, GladeEditorPageType type)
 }
 
 static GladeEditorProperty *
-append_item (GladeEditorTable   *table,
-             GladePropertyClass *klass,
-             gboolean            from_query_dialog)
+append_item (GladeEditorTable *table,
+             GladePropertyDef *def,
+             gboolean          from_query_dialog)
 {
   GladeEditorProperty *property;
   GtkWidget *label;
 
   if (!(property = glade_widget_adaptor_create_eprop
-        (glade_property_class_get_adaptor (klass), klass, from_query_dialog == FALSE)))
+        (glade_property_def_get_adaptor (def), def, from_query_dialog == FALSE)))
     {
       g_critical ("Unable to create editor for property '%s' of class '%s'",
-                  glade_property_class_id (klass), 
-                  glade_widget_adaptor_get_name (glade_property_class_get_adaptor (klass)));
+                  glade_property_def_id (def), 
+                  glade_widget_adaptor_get_name (glade_property_def_get_adaptor (def)));
       return NULL;
     }
 
@@ -559,15 +559,15 @@ append_items (GladeEditorTable   *table,
               GladeEditorPageType type)
 {
   GladeEditorProperty *property;
-  GladePropertyClass *property_class;
+  GladePropertyDef *property_def;
   GList *list, *sorted_list;
 
   sorted_list = get_sorted_properties (adaptor, type);
   for (list = sorted_list; list != NULL; list = list->next)
     {
-      property_class = (GladePropertyClass *) list->data;
+      property_def = (GladePropertyDef *) list->data;
 
-      property = append_item (table, property_class, type == GLADE_PAGE_QUERY);
+      property = append_item (table, property_def, type == GLADE_PAGE_QUERY);
       table->priv->properties = g_list_prepend (table->priv->properties, property);
     }
   g_list_free (sorted_list);

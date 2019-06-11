@@ -262,7 +262,7 @@ glade_gtk_cell_renderer_write_attributes (GladeWidget     *widget,
                                           GladeXmlNode    *node)
 {
   GladeProperty *property;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   GladeXmlNode *attrs_node;
   gchar *attr_name;
   GList *l;
@@ -276,22 +276,22 @@ glade_gtk_cell_renderer_write_attributes (GladeWidget     *widget,
   for (l = glade_widget_get_properties (widget); l; l = l->next)
     {
       property = l->data;
-      pclass   = glade_property_get_class (property);
+      pdef     = glade_property_get_def (property);
 
-      if (strncmp (glade_property_class_id (pclass), "attr-", attr_len) == 0)
+      if (strncmp (glade_property_def_id (pdef), "attr-", attr_len) == 0)
         {
           GladeXmlNode *attr_node;
           gchar *column_str, *use_attr_str;
           gboolean use_attr = FALSE;
 
-          use_attr_str = g_strdup_printf ("use-%s", glade_property_class_id (pclass));
+          use_attr_str = g_strdup_printf ("use-%s", glade_property_def_id (pdef));
           glade_widget_property_get (widget, use_attr_str, &use_attr);
 
           if (use_attr && g_value_get_int (glade_property_inline_value (property)) >= 0)
             {
               column_str =
                   g_strdup_printf ("%d", g_value_get_int (glade_property_inline_value (property)));
-              attr_name = (gchar *)&glade_property_class_id (pclass)[attr_len];
+              attr_name = (gchar *)&glade_property_def_id (pdef)[attr_len];
 
               attr_node = glade_xml_node_new (context, GLADE_TAG_ATTRIBUTE);
               glade_xml_node_append_child (attrs_node, attr_node);

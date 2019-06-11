@@ -71,8 +71,8 @@ static gint
 get_prop_precision (GladeWidget *widget, gchar *property)
 {
   GladeProperty *prop = glade_widget_get_property (widget, property);
-  GladePropertyClass *klass = glade_property_get_class (prop);
-  GParamSpec *pspec = glade_property_class_get_pspec (klass);
+  GladePropertyDef *def = glade_property_get_def (prop);
+  GParamSpec *pspec = glade_property_def_get_pspec (def);
   GValue value = G_VALUE_INIT;
 
   glade_property_get_value (prop, &value);
