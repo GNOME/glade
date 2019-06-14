@@ -83,7 +83,7 @@ struct _GladeWidgetAdaptorPrivate
                                      * of properties for each type - this association is
                                      * managed on the GladePropertyClass proper.
                                      */
-  GList       *signals;              /* List of GladeSignalClass objects */
+  GList       *signals;              /* List of GladeSignalDef objects */
   GList       *child_packings;       /* Default packing property values */
   GList       *actions;              /* A list of GWActionClass */
   GList       *packing_actions;      /* A list of GWActionClass for child objects */
@@ -314,18 +314,18 @@ glade_widget_adaptor_has_internal_children (GladeWidgetAdaptor *adaptor)
 static gint
 gwa_signal_comp (gpointer a, gpointer b)
 {
-  GladeSignalClass *signal_a = a, *signal_b = b;
+  GladeSignalDef *signal_a = a, *signal_b = b;
 
-  return strcmp (glade_signal_class_get_name (signal_b), 
-                 glade_signal_class_get_name (signal_a));
+  return strcmp (glade_signal_def_get_name (signal_b), 
+                 glade_signal_def_get_name (signal_a));
 }
 
 static gint
 gwa_signal_find_comp (gpointer a, gpointer b)
 {
-  GladeSignalClass *signal = a;
+  GladeSignalDef *signal = a;
   gchar *name = b;
-  return strcmp (name, glade_signal_class_get_name (signal));
+  return strcmp (name, glade_signal_def_get_name (signal));
 }
 
 static void
@@ -333,7 +333,7 @@ gwa_add_signals (GladeWidgetAdaptor *adaptor, GList **signals, GType type)
 {
   guint               count, *sig_ids, num_signals;
   GladeWidgetAdaptor *type_adaptor;
-  GladeSignalClass   *signal;
+  GladeSignalDef     *signal;
   GList              *list = NULL;
 
   type_adaptor = glade_widget_adaptor_get_by_type (type);
@@ -342,7 +342,7 @@ gwa_add_signals (GladeWidgetAdaptor *adaptor, GList **signals, GType type)
 
   for (count = 0; count < num_signals; count++)
     {
-      signal = glade_signal_class_new (type_adaptor ? 
+      signal = glade_signal_def_new (type_adaptor ? 
                                        type_adaptor : adaptor,
                                        type, sig_ids[count]);
 
@@ -534,7 +534,7 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
 {
   GladeWidgetAdaptor *parent_adaptor;
   GList *list, *node;
-  GladeSignalClass *signal, *parent_signal;
+  GladeSignalDef *signal, *parent_signal;
 
   if ((parent_adaptor = gwa_get_parent_adaptor (adaptor)) != NULL)
     {
@@ -543,7 +543,7 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
           signal = list->data;
 
           if ((node = g_list_find_custom (parent_adaptor->priv->signals, 
-                                          glade_signal_class_get_name (signal),
+                                          glade_signal_def_get_name (signal),
                                           (GCompareFunc) gwa_signal_find_comp)) != NULL)
             {
               parent_signal = node->data;
@@ -555,13 +555,13 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
                */
               if (strcmp (adaptor->priv->catalog,
                           parent_adaptor->priv->catalog))
-                glade_signal_class_set_since (signal, 0, 0);
+                glade_signal_def_set_since (signal, 0, 0);
               else
-                glade_signal_class_set_since (signal, 
-                                              glade_signal_class_since_major (parent_signal),
-                                              glade_signal_class_since_minor (parent_signal));
+                glade_signal_def_set_since (signal, 
+                                            glade_signal_def_since_major (parent_signal),
+                                            glade_signal_def_since_minor (parent_signal));
 
-              glade_signal_class_set_deprecated (signal, glade_signal_class_deprecated (parent_signal));
+              glade_signal_def_set_deprecated (signal, glade_signal_def_deprecated (parent_signal));
             }
         }
     }
@@ -734,7 +734,7 @@ glade_widget_adaptor_finalize (GObject *object)
   adaptor->priv->packing_props = NULL;
 
   g_list_free_full (adaptor->priv->signals,
-                    (GDestroyNotify) glade_signal_class_free);
+                    (GDestroyNotify) glade_signal_def_free);
   adaptor->priv->signals = NULL;
 
   /* Free child packings */
@@ -1871,7 +1871,7 @@ glade_widget_adaptor_get_packing_props (GladeWidgetAdaptor *adaptor)
  * glade_widget_adaptor_get_signals:
  * @adaptor: A #GladeWidgetAdaptor
  *
- * Returns: (transfer none) (element-type GladeSignalClass): a list of #GladeSignalClass
+ * Returns: (transfer none) (element-type GladeSignalDef): a list of #GladeSignalDef
  */
 G_CONST_RETURN GList *
 glade_widget_adaptor_get_signals (GladeWidgetAdaptor *adaptor)
@@ -2380,10 +2380,10 @@ gwa_set_signals_from_node (GladeWidgetAdaptor *adaptor,
                            GladeXmlNode       *node,
                            const gchar        *domain)
 {
-  GladeXmlNode     *child;
-  GladeSignalClass *signal;
-  GList            *list;
-  gchar            *id;
+  GladeXmlNode   *child;
+  GladeSignalDef *signal;
+  GList          *list;
+  gchar          *id;
 
   for (child = glade_xml_node_get_children (node);
        child; child = glade_xml_node_next (child))
@@ -2400,7 +2400,7 @@ gwa_set_signals_from_node (GladeWidgetAdaptor *adaptor,
         {
           signal = list->data;
 
-          glade_signal_class_update_from_node (signal, child, domain);
+          glade_signal_def_update_from_node (signal, child, domain);
         }
       g_free (id);
     }
@@ -2902,7 +2902,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
     {
       if (adaptor->priv->signals)
         g_list_free_full (adaptor->priv->signals,
-                          (GDestroyNotify) glade_signal_class_free);
+                          (GDestroyNotify) glade_signal_def_free);
 
       adaptor->priv->signals = gwa_list_signals (adaptor, adaptor->priv->real_type);
 
@@ -4446,20 +4446,20 @@ glade_widget_adaptor_string_from_value (GladeWidgetAdaptor *adaptor,
 
 
 /**
- * glade_widget_adaptor_get_signal_class:
+ * glade_widget_adaptor_get_signal_def:
  * @adaptor: A #GladeWidgetAdaptor
  * @name: the name of the signal class.
  * 
  * Looks up signal class @name on @adaptor.
  *
- * Returns: (nullable) (transfer none): a #GladeSignalClass or %NULL
+ * Returns: (nullable) (transfer none): a #GladeSignalDef or %NULL
  */
-GladeSignalClass *
-glade_widget_adaptor_get_signal_class (GladeWidgetAdaptor *adaptor,
-                                       const gchar        *name)
+GladeSignalDef *
+glade_widget_adaptor_get_signal_def (GladeWidgetAdaptor *adaptor,
+                                     const gchar        *name)
 {
   GList *list;
-  GladeSignalClass *signal;
+  GladeSignalDef *signal;
 
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -4467,7 +4467,7 @@ glade_widget_adaptor_get_signal_class (GladeWidgetAdaptor *adaptor,
   for (list = adaptor->priv->signals; list; list = list->next)
     {
       signal = list->data;
-      if (!strcmp (glade_signal_class_get_name (signal), name))
+      if (!strcmp (glade_signal_def_get_name (signal), name))
         return signal;
     }
 

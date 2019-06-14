@@ -4262,10 +4262,10 @@ signal_compare (GladeSignal *signal_a, GladeSignal *signal_b)
 {
   const gchar *handler_a;
   const gchar *handler_b;
-  const GladeSignalClass *class_a;
-  const GladeSignalClass *class_b;
-  const gchar *class_name_a;
-  const gchar *class_name_b;
+  const GladeSignalDef *def_a;
+  const GladeSignalDef *def_b;
+  const gchar *def_name_a;
+  const gchar *def_name_b;
   const gchar *detail_a;
   const gchar *detail_b;
   const gchar *data_a;
@@ -4279,13 +4279,13 @@ signal_compare (GladeSignal *signal_a, GladeSignal *signal_b)
   data_a    = glade_signal_get_userdata (signal_a);
   data_b    = glade_signal_get_userdata (signal_b);
 
-  class_a   = glade_signal_get_class (signal_a);
-  class_b   = glade_signal_get_class (signal_b);
-  class_name_a = glade_signal_class_get_name (class_a);
-  class_name_b = glade_signal_class_get_name (class_b);
+  def_a   = glade_signal_get_def (signal_a);
+  def_b   = glade_signal_get_def (signal_b);
+  def_name_a = glade_signal_def_get_name (def_a);
+  def_name_b = glade_signal_def_get_name (def_b);
 
   /* By signal name ... */
-  comparison = g_strcmp0 (class_name_a, class_name_b);
+  comparison = g_strcmp0 (def_name_a, def_name_b);
   if (comparison != 0)
     return comparison;
 

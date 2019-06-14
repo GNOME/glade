@@ -1788,20 +1788,20 @@ static void
 glade_project_introspect_signal_versions (GladeSignal *signal, 
                                           VersionData *data)
 {
-  GladeSignalClass   *signal_class;
+  GladeSignalDef     *signal_def;
   GladeWidgetAdaptor *adaptor;
   gchar              *catalog = NULL;
   gboolean            is_gtk_adaptor = FALSE;
 
-  signal_class =
-    glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (data->widget), 
-                                           glade_signal_get_name (signal));
+  signal_def =
+    glade_widget_adaptor_get_signal_def (glade_widget_get_adaptor (data->widget), 
+                                         glade_signal_get_name (signal));
 
   /*  unknown signal... can it happen ? */
-  if (!signal_class) 
+  if (!signal_def) 
     return;
 
-  adaptor = glade_signal_class_get_adaptor (signal_class);
+  adaptor = glade_signal_def_get_adaptor (signal_def);
 
   /* Check if the signal comes from a GTK+ widget class */
   g_object_get (adaptor, "catalog", &catalog, NULL);
@@ -1810,10 +1810,10 @@ glade_project_introspect_signal_versions (GladeSignal *signal,
   g_free (catalog);
 
   if (is_gtk_adaptor && 
-      !GSC_VERSION_CHECK (signal_class, data->major, data->minor))
+      !GSC_VERSION_CHECK (signal_def, data->major, data->minor))
     {
-      data->major = glade_signal_class_since_major (signal_class);
-      data->minor = glade_signal_class_since_minor (signal_class);
+      data->major = glade_signal_def_since_major (signal_def);
+      data->minor = glade_signal_def_since_minor (signal_def);
     }
 }
 
@@ -3258,20 +3258,20 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
                                       gboolean         forwidget,
                                       GladeVerifyFlags flags)
 {
-  GladeSignalClass   *signal_class;
+  GladeSignalDef     *signal_def;
   GladeWidgetAdaptor *adaptor;
   gint                target_major, target_minor;
   gchar              *catalog;
   GladeProject       *project;
 
-  signal_class =
-      glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (widget),
-                                             glade_signal_get_name (signal));
+  signal_def =
+      glade_widget_adaptor_get_signal_def (glade_widget_get_adaptor (widget),
+                                           glade_signal_get_name (signal));
 
-  if (!signal_class)
+  if (!signal_def)
     return;
 
-  adaptor = glade_signal_class_get_adaptor (signal_class);
+  adaptor = glade_signal_def_get_adaptor (signal_def);
   project = glade_widget_get_project (widget);
 
   if (!project)
@@ -3282,7 +3282,7 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
                                             &target_major, &target_minor);
 
   if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
-      !GSC_VERSION_CHECK (signal_class, target_major, target_minor))
+      !GSC_VERSION_CHECK (signal_def, target_major, target_minor))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s not avalable in version %d.%d\n",
                                    glade_signal_get_name (signal),
@@ -3295,8 +3295,8 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
 
           warning = g_strdup_printf (SIGNAL_VERSION_CONFLICT_MSGFMT,
                                      catalog,
-                                     glade_signal_class_since_major (signal_class),
-                                     glade_signal_class_since_minor (signal_class),
+                                     glade_signal_def_since_major (signal_def),
+                                     glade_signal_def_since_minor (signal_def),
                                      catalog, target_major, target_minor);
           glade_signal_set_support_warning (signal, warning);
           g_free (warning);
@@ -3308,11 +3308,11 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
                                 glade_signal_get_name (signal),
                                 glade_widget_adaptor_get_title (adaptor),
                                 catalog,
-                                glade_signal_class_since_major (signal_class),
-                                glade_signal_class_since_minor (signal_class));
+                                glade_signal_def_since_major (signal_def),
+                                glade_signal_def_since_minor (signal_def));
     }
   else if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
-           glade_signal_class_deprecated (signal_class))
+           glade_signal_def_deprecated (signal_def))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s is deprecated\n",
                                    glade_signal_get_name (signal),
