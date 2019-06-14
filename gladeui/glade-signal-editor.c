@@ -226,7 +226,7 @@ on_handler_edited (GtkCellRendererText *renderer,
                               -1);
                         
           /* Add a new signal handler */
-          new_signal = glade_signal_new (glade_signal_get_class (signal),
+          new_signal = glade_signal_new (glade_signal_get_def (signal),
                                          handler, NULL, FALSE, FALSE);
           glade_signal_set_detail (new_signal, glade_signal_get_detail (signal));
           glade_command_add_signal (self->priv->widget, new_signal);
@@ -612,7 +612,7 @@ glade_signal_editor_devhelp (GtkCellRenderer *cell,
   GtkTreeModel             *model = priv->model;
   GtkTreeIter               iter;
   GladeWidgetAdaptor       *adaptor;
-  const GladeSignalClass   *signal_class;
+  const GladeSignalDef     *signal_def;
   GladeSignal              *signal;
   gchar                    *book;
   gchar                    *search;
@@ -623,8 +623,8 @@ glade_signal_editor_devhelp (GtkCellRenderer *cell,
   gtk_tree_model_get (model, &iter,
                       GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
                       -1);
-  signal_class = glade_signal_get_class (signal);
-  adaptor = glade_signal_class_get_adaptor (signal_class);
+  signal_def = glade_signal_get_def (signal);
+  adaptor = glade_signal_def_get_adaptor (signal_def);
   g_object_get (adaptor, "book", &book, NULL);
 
   search = g_strdup_printf ("The %s signal", glade_signal_get_name (signal));
@@ -747,12 +747,12 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
   signals = glade_widget_get_signal_list (widget);
   for (l = signals; l; l = l->next)
     {
-      GladeSignal            *signal = l->data;
-      const GladeSignalClass *signal_class;
-      GladeWidgetAdaptor     *adaptor;
+      GladeSignal          *signal = l->data;
+      const GladeSignalDef *signal_def;
+      GladeWidgetAdaptor   *adaptor;
 
-      signal_class = glade_signal_get_class (signal);
-      adaptor = glade_signal_class_get_adaptor (signal_class);
+      signal_def = glade_signal_get_def (signal);
+      adaptor = glade_signal_def_get_adaptor (signal_def);
 
       if (!g_list_find (adaptors, adaptor))
         adaptors = g_list_prepend (adaptors, adaptor);
@@ -1024,7 +1024,7 @@ glade_signal_editor_detail_cell_data_func (GtkTreeViewColumn *column,
                       GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
                       -1);
   if (signal &&
-      (glade_signal_class_get_flags (glade_signal_get_class (signal)) & G_SIGNAL_DETAILED))
+      (glade_signal_def_get_flags (glade_signal_get_def (signal)) & G_SIGNAL_DETAILED))
     {
       GdkRGBA color;
       gboolean dummy;
@@ -1179,8 +1179,8 @@ glade_signal_editor_devhelp_cell_data_func (GtkTreeViewColumn *column,
                       -1);
   if (signal)
     {
-      const GladeSignalClass *class = glade_signal_get_class (signal);
-      GladeWidgetAdaptor *adaptor = glade_signal_class_get_adaptor (class);
+      const GladeSignalDef *def = glade_signal_get_def (signal);
+      GladeWidgetAdaptor *adaptor = glade_signal_def_get_adaptor (def);
       gchar *book;
 
       g_object_get (adaptor, "book", &book, NULL);

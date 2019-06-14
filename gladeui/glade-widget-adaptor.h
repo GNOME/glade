@@ -4,7 +4,7 @@
 #include <gladeui/glade-xml-utils.h>
 #include <gladeui/glade-property-class.h>
 #include <gladeui/glade-editor-property.h>
-#include <gladeui/glade-signal-class.h>
+#include <gladeui/glade-signal-def.h>
 #include <gladeui/glade-catalog.h>
 #include <gladeui/glade-editable.h>
 #include <glib-object.h>
@@ -913,7 +913,7 @@ gchar                *glade_widget_adaptor_string_from_value  (GladeWidgetAdapto
                                                                const GValue       *value);
 GladeEditable        *glade_widget_adaptor_create_editable    (GladeWidgetAdaptor *adaptor,
                                                                GladeEditorPageType type);
-GladeSignalClass     *glade_widget_adaptor_get_signal_class   (GladeWidgetAdaptor *adaptor,
+GladeSignalDef       *glade_widget_adaptor_get_signal_def     (GladeWidgetAdaptor *adaptor,
                                                                const gchar        *name);
 GladeWidgetAdaptor   *glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor);
 

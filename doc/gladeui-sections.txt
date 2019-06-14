@@ -303,7 +303,7 @@ glade_widget_adaptor_get_object_type
 glade_widget_adaptor_get_packing_props
 glade_widget_adaptor_get_parent_adaptor
 glade_widget_adaptor_get_properties
-glade_widget_adaptor_get_signal_class
+glade_widget_adaptor_get_signal_def
 glade_widget_adaptor_get_signals
 glade_widget_adaptor_get_title
 glade_widget_adaptor_has_internal_children
@@ -491,7 +491,7 @@ glade_signal_read
 glade_signal_write
 glade_signal_editor_enable_dnd
 glade_signal_get_after
-glade_signal_get_class
+glade_signal_get_def
 glade_signal_get_detail
 glade_signal_get_handler
 glade_signal_get_name
@@ -517,23 +517,24 @@ glade_signal_get_type
 </SECTION>
 
 <SECTION>
-<FILE>glade-signal-class</FILE>
-<TITLE>GladeSignalClass</TITLE>
-GladeSignalClass
-glade_signal_class_new
-glade_signal_class_free
-glade_signal_class_update_from_node
-glade_signal_class_get_adaptor
-glade_signal_class_get_flags
-glade_signal_class_get_name
-glade_signal_class_get_type
-glade_signal_class_set_deprecated
-glade_signal_class_deprecated
-glade_signal_class_set_since
-glade_signal_class_since_major
-glade_signal_class_since_minor
+<FILE>glade-signal-def</FILE>
+<TITLE>GladeSignalDef</TITLE>
+GladeSignalDef
+glade_signal_def_new
+glade_signal_def_free
+glade_signal_def_update_from_node
+glade_signal_def_get_adaptor
+glade_signal_def_get_flags
+glade_signal_def_get_name
+glade_signal_def_set_deprecated
+glade_signal_def_deprecated
+glade_signal_def_set_since
+glade_signal_def_since_major
+glade_signal_def_since_minor
 <SUBSECTION Standard>
-GLADE_SIGNAL_CLASS
+GLADE_SIGNAL_DEF
+GLADE_TYPE_SIGNAL_DEF
+glade_signal_def_get_type
 </SECTION>
 
 <SECTION>

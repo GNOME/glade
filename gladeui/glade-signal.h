@@ -2,7 +2,7 @@
 #define __GLADE_SIGNAL_H__
 
 #include <glib.h>
-#include <gladeui/glade-signal-class.h>
+#include <gladeui/glade-signal-def.h>
 #include <gladeui/glade-widget-adaptor.h>
 
 G_BEGIN_DECLS
@@ -36,7 +36,7 @@ struct _GladeSignalKlass {
 
 GType                 glade_signal_get_type            (void) G_GNUC_CONST;
 
-GladeSignal          *glade_signal_new                 (const GladeSignalClass *sig_class,
+GladeSignal          *glade_signal_new                 (const GladeSignalDef *sig_def,
                                                         const gchar        *handler,
                                                         const gchar        *userdata,
                                                         gboolean            after,
@@ -51,7 +51,7 @@ void                  glade_signal_write               (GladeSignal        *sign
                                                         GladeXmlNode       *node);
 
 G_CONST_RETURN gchar *glade_signal_get_name            (const GladeSignal  *signal);
-G_CONST_RETURN GladeSignalClass *glade_signal_get_class (const GladeSignal * signal);
+G_CONST_RETURN GladeSignalDef *glade_signal_get_def    (const GladeSignal * signal);
 void                  glade_signal_set_detail          (GladeSignal        *signal,
                                                         const gchar        *detail);
 G_CONST_RETURN gchar *glade_signal_get_detail          (const GladeSignal  *signal);
