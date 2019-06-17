@@ -85,8 +85,8 @@ struct _GladeWidgetAdaptorPrivate
                                      */
   GList       *signals;              /* List of GladeSignalDef objects */
   GList       *child_packings;       /* Default packing property values */
-  GList       *actions;              /* A list of GWActionClass */
-  GList       *packing_actions;      /* A list of GWActionClass for child objects */
+  GList       *actions;              /* A list of GladeWidgetActionDef */
+  GList       *packing_actions;      /* A list of GladeWidgetActionDef for child objects */
   GList       *internal_children;    /* A list of GladeInternalChild */
   gchar       *catalog;              /* The name of the widget catalog this class
                                       * was declared by.
@@ -661,7 +661,7 @@ glade_widget_adaptor_constructor (GType                  type,
         {
           for (l = parent_adaptor->priv->actions; l; l = g_list_next (l))
             {
-              GWActionClass *child = glade_widget_action_class_clone (l->data);
+              GladeWidgetActionDef *child = glade_widget_action_def_clone (l->data);
               adaptor->priv->actions = g_list_prepend (adaptor->priv->actions, child);
             }
           adaptor->priv->actions = g_list_reverse (adaptor->priv->actions);
@@ -671,7 +671,7 @@ glade_widget_adaptor_constructor (GType                  type,
         {
           for (l = parent_adaptor->priv->packing_actions; l; l = g_list_next (l))
             {
-              GWActionClass *child = glade_widget_action_class_clone (l->data);
+              GladeWidgetActionDef *child = glade_widget_action_def_clone (l->data);
               adaptor->priv->packing_actions =
                   g_list_prepend (adaptor->priv->packing_actions, child);
             }
@@ -757,14 +757,14 @@ glade_widget_adaptor_finalize (GObject *object)
   if (adaptor->priv->actions)
     {
       g_list_free_full (adaptor->priv->actions,
-                        (GDestroyNotify) glade_widget_action_class_free);
+                        (GDestroyNotify) glade_widget_action_def_free);
       adaptor->priv->actions = NULL;
     }
 
   if (adaptor->priv->packing_actions)
     {
       g_list_free_full (adaptor->priv->packing_actions,
-                        (GDestroyNotify) glade_widget_action_class_free);
+                        (GDestroyNotify) glade_widget_action_def_free);
       adaptor->priv->packing_actions = NULL;
     }
 
@@ -3892,14 +3892,14 @@ gwa_action_path_get_id (const gchar *action_path)
     return action_path;
 }
 
-static GWActionClass *
+static GladeWidgetActionDef *
 gwa_action_lookup (GList *actions, const gchar *action_id)
 {
   GList *l;
 
   for (l = actions; l; l = g_list_next (l))
     {
-      GWActionClass *action = l->data;
+      GladeWidgetActionDef *action = l->data;
       if (strcmp (action->id, action_id) == 0)
         return action;
     }
@@ -3907,11 +3907,11 @@ gwa_action_lookup (GList *actions, const gchar *action_id)
   return NULL;
 }
 
-static GWActionClass *
+static GladeWidgetActionDef *
 gwa_action_get_last_group (GList *actions, const gchar *action_path)
 {
   gchar **tokens = g_strsplit (action_path, "/", 0);
-  GWActionClass *group = NULL;
+  GladeWidgetActionDef *group = NULL;
   gint i;
 
   for (i = 0; tokens[i] && tokens[i + 1]; i++)
@@ -3935,7 +3935,7 @@ glade_widget_adaptor_action_add_real (GList       **list,
                                       const gchar  *stock, 
                                       gboolean      important)
 {
-  GWActionClass *action, *group;
+  GladeWidgetActionDef *action, *group;
   const gchar *id;
 
   id = gwa_action_path_get_id (action_path);
@@ -3951,14 +3951,14 @@ glade_widget_adaptor_action_add_real (GList       **list,
   if ((action = gwa_action_lookup (*list, id)) == NULL)
     {
       /* New Action */
-      action = glade_widget_action_class_new (action_path);
+      action = glade_widget_action_def_new (action_path);
 
       *list = g_list_append (*list, action);
     }
 
-  glade_widget_action_class_set_label (action, label);
-  glade_widget_action_class_set_stock (action, stock);
-  glade_widget_action_class_set_important (action, important);
+  glade_widget_action_def_set_label (action, label);
+  glade_widget_action_def_set_stock (action, stock);
+  glade_widget_action_def_set_important (action, important);
 
   return TRUE;
 }
@@ -4023,7 +4023,7 @@ static gboolean
 glade_widget_adaptor_action_remove_real (GList **list,
                                          const gchar *action_path)
 {
-  GWActionClass *action, *group;
+  GladeWidgetActionDef *action, *group;
   const gchar *id;
 
   id = gwa_action_path_get_id (action_path);
@@ -4036,7 +4036,7 @@ glade_widget_adaptor_action_remove_real (GList **list,
 
   *list = g_list_remove (*list, action);
 
-  glade_widget_action_class_free (action);
+  glade_widget_action_def_free (action);
 
   return TRUE;
 }
@@ -4098,9 +4098,9 @@ glade_widget_adaptor_actions_new (GladeWidgetAdaptor *adaptor)
 
   for (l = adaptor->priv->actions; l; l = g_list_next (l))
     {
-      GWActionClass *action = l->data;
-      GObject       *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
-                                         "class", action, NULL);
+      GladeWidgetActionDef *action = l->data;
+      GObject              *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
+                                                "definition", action, NULL);
 
       list = g_list_prepend (list, GLADE_WIDGET_ACTION (obj));
     }
@@ -4124,9 +4124,9 @@ glade_widget_adaptor_pack_actions_new (GladeWidgetAdaptor *adaptor)
 
   for (l = adaptor->priv->packing_actions; l; l = g_list_next (l))
     {
-      GWActionClass *action = l->data;
-      GObject *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
-                                   "class", action, NULL);
+      GladeWidgetActionDef *action = l->data;
+      GObject              *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
+                                                "definition", action, NULL);
 
       list = g_list_prepend (list, GLADE_WIDGET_ACTION (obj));
     }

@@ -237,10 +237,10 @@ glade_popup_action_populate_menu_real (GtkWidget   *menu,
 
   for (list = actions; list; list = g_list_next (list))
     {
-      GladeWidgetAction *action = list->data;
-      GWActionClass     *aclass = glade_widget_action_get_class (action);
-      GList             *children = glade_widget_action_get_children (action);
-      GtkWidget         *submenu = NULL;
+      GladeWidgetAction    *action = list->data;
+      GladeWidgetActionDef *adef = glade_widget_action_get_def (action);
+      GList                *children = glade_widget_action_get_children (action);
+      GtkWidget            *submenu = NULL;
 
       if (!glade_widget_action_get_visible (action))
         continue;
@@ -256,12 +256,12 @@ glade_popup_action_populate_menu_real (GtkWidget   *menu,
       else
         submenu = glade_widget_adaptor_action_submenu (glade_widget_get_adaptor (gwidget),
                                                        glade_widget_get_object (gwidget),
-                                                       aclass->path);
+                                                       adef->path);
 
 
-      item = glade_popup_append_item (menu, aclass->label, TRUE,
+      item = glade_popup_append_item (menu, adef->label, TRUE,
                                       (children) ? NULL : callback,
-                                      (children) ? NULL : aclass->path);
+                                      (children) ? NULL : adef->path);
 
       g_object_set_data (G_OBJECT (item), "gwa-data", data);
 
@@ -302,10 +302,10 @@ glade_popup_action_populate_menu (GtkWidget         *menu,
 
   if (action)
     {
-      GWActionClass *aclass = glade_widget_action_get_class (action);
-      GList         *children = glade_widget_action_get_children (action);
+      GladeWidgetActionDef *adef = glade_widget_action_get_def (action);
+      GList                *children = glade_widget_action_get_children (action);
       
-      if (glade_widget_get_action (widget, aclass->path) &&
+      if (glade_widget_get_action (widget, adef->path) &&
           glade_widget_action_get_visible (action))
         return glade_popup_action_populate_menu_real (menu,
                                                       widget,
@@ -314,7 +314,7 @@ glade_popup_action_populate_menu (GtkWidget         *menu,
                                                       (glade_popup_menuitem_activated),
                                                       widget);
 
-      if (glade_widget_get_pack_action (widget, aclass->path) &&
+      if (glade_widget_get_pack_action (widget, adef->path) &&
           glade_widget_action_get_visible (action))
         return glade_popup_action_populate_menu_real (menu,
                                                       glade_widget_get_parent

@@ -32,13 +32,14 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_ACTION(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_WIDGET_ACTION))
 #define GLADE_IS_WIDGET_ACTION_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET_ACTION))
 #define GLADE_WIDGET_ACTION_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET_ACTION, GladeWidgetActionClass))
+#define GLADE_TYPE_WIDGET_ACTION_DEF         glade_widget_action_def_get_type ()
 
 typedef struct _GladeWidgetActionClass   GladeWidgetActionClass;
 typedef struct _GladeWidgetAction        GladeWidgetAction;
 typedef struct _GladeWidgetActionPrivate GladeWidgetActionPrivate;
-typedef struct _GWActionClass            GWActionClass;
+typedef struct _GladeWidgetActionDef     GladeWidgetActionDef;
 
-struct _GWActionClass
+struct _GladeWidgetActionDef
 {
   const gchar    *id;     /* The identifier of this action in the action tree */
   gchar          *path;   /* Full action path  */
@@ -68,27 +69,28 @@ struct _GladeWidgetActionClass
 };
 
 
-GType          glade_widget_action_get_type      (void) G_GNUC_CONST;
+GType                 glade_widget_action_get_type      (void) G_GNUC_CONST;
 
-void           glade_widget_action_set_sensitive (GladeWidgetAction *action,
-                                                  gboolean           sensitive);
-gboolean       glade_widget_action_get_sensitive (GladeWidgetAction *action);
-void           glade_widget_action_set_visible   (GladeWidgetAction *action,
-                                                  gboolean           visible);
-gboolean       glade_widget_action_get_visible   (GladeWidgetAction *action);
-GList         *glade_widget_action_get_children  (GladeWidgetAction *action);
-GWActionClass *glade_widget_action_get_class     (GladeWidgetAction *action);
+void                  glade_widget_action_set_sensitive (GladeWidgetAction *action,
+                                                         gboolean           sensitive);
+gboolean              glade_widget_action_get_sensitive (GladeWidgetAction *action);
+void                  glade_widget_action_set_visible   (GladeWidgetAction *action,
+                                                         gboolean           visible);
+gboolean              glade_widget_action_get_visible   (GladeWidgetAction *action);
+GList                *glade_widget_action_get_children  (GladeWidgetAction *action);
+GladeWidgetActionDef *glade_widget_action_get_def       (GladeWidgetAction *action);
 
 
-GWActionClass *glade_widget_action_class_new           (const gchar   *path);
-GWActionClass *glade_widget_action_class_clone         (GWActionClass *action);
-void           glade_widget_action_class_free          (GWActionClass *action);
-void           glade_widget_action_class_set_label     (GWActionClass *action,
-                                                        const gchar   *label);
-void           glade_widget_action_class_set_stock     (GWActionClass *action,
-                                                        const gchar   *stock);
-void           glade_widget_action_class_set_important (GWActionClass *action,
-                                                        gboolean       important);
+GType                 glade_widget_action_def_get_type      (void) G_GNUC_CONST;
+GladeWidgetActionDef *glade_widget_action_def_new           (const gchar          *path);
+GladeWidgetActionDef *glade_widget_action_def_clone         (GladeWidgetActionDef *action);
+void                  glade_widget_action_def_free          (GladeWidgetActionDef *action);
+void                  glade_widget_action_def_set_label     (GladeWidgetActionDef *action,
+                                                             const gchar          *label);
+void                  glade_widget_action_def_set_stock     (GladeWidgetActionDef *action,
+                                                             const gchar          *stock);
+void                  glade_widget_action_def_set_important (GladeWidgetActionDef *action,
+                                                             gboolean              important);
 
 
 G_END_DECLS

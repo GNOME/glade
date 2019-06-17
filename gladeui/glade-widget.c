@@ -4592,15 +4592,15 @@ glade_widget_action_lookup (GList *actions, const gchar *path)
 
   for (l = actions; l; l = g_list_next (l))
     {
-      GladeWidgetAction *action   = l->data;
-      GWActionClass     *aclass   = glade_widget_action_get_class (action);
-      GList             *children = glade_widget_action_get_children (action);
+      GladeWidgetAction    *action   = l->data;
+      GladeWidgetActionDef *adef     = glade_widget_action_get_def (action);
+      GList                *children = glade_widget_action_get_children (action);
 
-      if (strcmp (aclass->path, path) == 0)
+      if (strcmp (adef->path, path) == 0)
         return action;
 
       if (children &&
-          g_str_has_prefix (path, aclass->path) &&
+          g_str_has_prefix (path, adef->path) &&
           (action = glade_widget_action_lookup (children, path)))
         return action;
     }
