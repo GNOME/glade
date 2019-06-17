@@ -37,7 +37,7 @@ enum
 {
   PROP_0,
 
-  PROP_CLASS,
+  PROP_DEFINITION,
   PROP_SENSITIVE,
   PROP_VISIBLE,
   N_PROPERTIES
@@ -45,16 +45,16 @@ enum
 
 struct _GladeWidgetActionPrivate
 {
-  GWActionClass *klass;     /* The action class */
-  GList         *actions;   /* List of actions */
-  guint          sensitive : 1; /* If this action is sensitive or not */
-  guint          visible   : 1; /* If this action is visible or not */
+  GladeWidgetActionDef *def;           /* The action class */
+  GList                *actions;       /* List of actions */
+  guint                 sensitive : 1; /* If this action is sensitive or not */
+  guint                 visible   : 1; /* If this action is visible or not */
 };
 
 static GParamSpec *properties[N_PROPERTIES];
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladeWidgetAction, glade_widget_action, G_TYPE_OBJECT);
-G_DEFINE_BOXED_TYPE (GWActionClass, glade_widget_action_class, glade_widget_action_class_clone, glade_widget_action_class_free);
+G_DEFINE_BOXED_TYPE (GladeWidgetActionDef, glade_widget_action_def, glade_widget_action_def_clone, glade_widget_action_def_free);
 
 static void
 glade_widget_action_init (GladeWidgetAction *object)
@@ -94,17 +94,17 @@ glade_widget_action_constructor (GType                  type,
 
   action = GLADE_WIDGET_ACTION (object);
 
-  if (action->priv->klass == NULL)
+  if (action->priv->def == NULL)
     {
-      g_warning ("GladeWidgetAction constructed without class property");
+      g_warning ("GladeWidgetAction constructed without definition property");
       return object;
     }
 
-  for (l = action->priv->klass->actions; l; l = g_list_next (l))
+  for (l = action->priv->def->actions; l; l = g_list_next (l))
     {
-      GWActionClass *action_class = l->data;
+      GladeWidgetActionDef *action_def = l->data;
       GObject *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
-                                   "class", action_class,
+                                   "definition", action_def,
                                    NULL);
 
       action->priv->actions = g_list_prepend (action->priv->actions,
@@ -128,8 +128,8 @@ glade_widget_action_set_property (GObject      *object,
 
   switch (prop_id)
     {
-      case PROP_CLASS:
-        action->priv->klass = g_value_get_pointer (value);
+      case PROP_DEFINITION:
+        action->priv->def = g_value_get_pointer (value);
         break;
       case PROP_SENSITIVE:
         glade_widget_action_set_sensitive (action, g_value_get_boolean (value));
@@ -155,8 +155,8 @@ glade_widget_action_get_property (GObject    *object,
 
   switch (prop_id)
     {
-      case PROP_CLASS:
-        g_value_set_pointer (value, action->priv->klass);
+      case PROP_DEFINITION:
+        g_value_set_pointer (value, action->priv->def);
         break;
       case PROP_SENSITIVE:
         g_value_set_boolean (value, action->priv->sensitive);
@@ -180,10 +180,10 @@ glade_widget_action_class_init (GladeWidgetActionClass *klass)
   object_class->set_property = glade_widget_action_set_property;
   object_class->get_property = glade_widget_action_get_property;
 
-  properties[PROP_CLASS] =
-    g_param_spec_pointer ("class",
-                          _("class"),
-                          _("GladeWidgetActionClass structure pointer"),
+  properties[PROP_DEFINITION] =
+    g_param_spec_pointer ("definition",
+                          _("Definition"),
+                          _("GladeWidgetActionDef structure pointer"),
                           G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE);
 
   properties[PROP_SENSITIVE] =
@@ -252,7 +252,7 @@ glade_widget_action_get_visible (GladeWidgetAction *action)
  * glade_widget_action_get_children:
  * @action: a #GladeWidgetAction
  *
- * Returns: (transfer none) (element-type GWActionClass): a list of #GWActionClass
+ * Returns: (transfer none) (element-type GladeWidgetActionDef): a list of #GladeWidgetActionDef
  */
 GList *
 glade_widget_action_get_children (GladeWidgetAction *action)
@@ -262,16 +262,16 @@ glade_widget_action_get_children (GladeWidgetAction *action)
   return action->priv->actions;
 }
 
-GWActionClass *
-glade_widget_action_get_class (GladeWidgetAction *action)
+GladeWidgetActionDef *
+glade_widget_action_get_def (GladeWidgetAction *action)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ACTION (action), NULL);
 
-  return action->priv->klass;
+  return action->priv->def;
 }
 
 /***************************************************************
- *                         GWActionClass                       *
+ *                     GladeWidgetActionDef                    *
  ***************************************************************/
 static const gchar *
 gwa_action_path_get_id (const gchar *action_path)
@@ -285,17 +285,17 @@ gwa_action_path_get_id (const gchar *action_path)
 }
 
 /**
- * glade_widget_action_class_new:
+ * glade_widget_action_def_new:
  * @path: the action path
  *
- * Returns: a newlly created #GWActionClass for @path.
+ * Returns: a newlly created #GladeWidgetActionDef for @path.
  */
-GWActionClass *
-glade_widget_action_class_new (const gchar *path)
+GladeWidgetActionDef *
+glade_widget_action_def_new (const gchar *path)
 {
-  GWActionClass *action;
+  GladeWidgetActionDef *action;
 
-  action = g_slice_new0 (GWActionClass);
+  action = g_slice_new0 (GladeWidgetActionDef);
   action->path = g_strdup (path);
   action->id   = gwa_action_path_get_id (action->path);
 
@@ -303,27 +303,27 @@ glade_widget_action_class_new (const gchar *path)
 }
 
 /**
- * glade_widget_action_class_clone:
- * @action: a GWActionClass
+ * glade_widget_action_def_clone:
+ * @action: a GladeWidgetActionDef
  *
  * Returns: a newlly allocated copy of @action.
  */
-GWActionClass *
-glade_widget_action_class_clone (GWActionClass *action)
+GladeWidgetActionDef *
+glade_widget_action_def_clone (GladeWidgetActionDef *action)
 {
-  GWActionClass *copy;
+  GladeWidgetActionDef *copy;
   GList *l;
 
   g_return_val_if_fail (action != NULL, NULL);
 
-  copy = glade_widget_action_class_new (action->path);
+  copy = glade_widget_action_def_new (action->path);
   copy->label = g_strdup (action->label);
   copy->stock = g_strdup (action->stock);
   copy->important = action->important;
 
   for (l = action->actions; l; l = g_list_next (l))
     {
-      GWActionClass *child = glade_widget_action_class_clone (l->data);
+      GladeWidgetActionDef *child = glade_widget_action_def_clone (l->data);
       copy->actions = g_list_prepend (copy->actions, child);
     }
 
@@ -333,17 +333,17 @@ glade_widget_action_class_clone (GWActionClass *action)
 }
 
 /**
- * glade_widegt_action_class_free:
- * @action: a GWActionClass
+ * glade_widget_action_def_free:
+ * @action: a GladeWidgetActionDef
  *
- * Frees a GWActionClass.
+ * Frees a GladeWidgetActionDef.
  */
 void
-glade_widget_action_class_free (GWActionClass *action)
+glade_widget_action_def_free (GladeWidgetActionDef *action)
 {
   if (action->actions)
     {
-      g_list_free_full (action->actions, (GDestroyNotify) glade_widget_action_class_free);
+      g_list_free_full (action->actions, (GDestroyNotify) glade_widget_action_def_free);
       action->actions = NULL;
     }
 
@@ -352,28 +352,28 @@ glade_widget_action_class_free (GWActionClass *action)
   g_clear_pointer (&action->label, g_free);
   g_clear_pointer (&action->stock, g_free);
 
-  g_slice_free (GWActionClass, action);
+  g_slice_free (GladeWidgetActionDef, action);
 }
 
 void
-glade_widget_action_class_set_label (GWActionClass *action,
-                                     const gchar   *label)
+glade_widget_action_def_set_label (GladeWidgetActionDef *action,
+                                   const gchar   *label)
 {
   g_free (action->label);
   action->label = g_strdup (label);
 }
 
 void
-glade_widget_action_class_set_stock (GWActionClass *action,
-                                     const gchar   *stock)
+glade_widget_action_def_set_stock (GladeWidgetActionDef *action,
+                                   const gchar   *stock)
 {
   g_free (action->stock);
   action->stock = g_strdup (stock);
 }
 
 void
-glade_widget_action_class_set_important (GWActionClass *action,
-                                         gboolean       important)
+glade_widget_action_def_set_important (GladeWidgetActionDef *action,
+                                       gboolean       important)
 {
   action->important = important;
 }

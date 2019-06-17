@@ -222,13 +222,13 @@ update_default_path (GladeWindow *window, const gchar *filename)
 static void
 activate_action (GtkToolButton *toolbutton, GladeWidgetAction *action)
 {
-  GladeWidget   *widget;
-  GWActionClass *aclass = glade_widget_action_get_class (action);
+  GladeWidget          *widget;
+  GladeWidgetActionDef *adef = glade_widget_action_get_def (action);
 
   if ((widget = g_object_get_data (G_OBJECT (toolbutton), "glade-widget")))
     glade_widget_adaptor_action_activate (glade_widget_get_adaptor (widget),
                                           glade_widget_get_object (widget), 
-                                          aclass->path);
+                                          adef->path);
 }
 
 static void
@@ -277,10 +277,10 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
 
   for (l = actions; l; l = g_list_next (l))
     {
-      GladeWidgetAction *action = l->data;
-      GWActionClass     *aclass = glade_widget_action_get_class (action);
+      GladeWidgetAction    *action = l->data;
+      GladeWidgetActionDef *adef   = glade_widget_action_get_def (action);
 
-      if (!aclass->important || !glade_widget_action_get_visible (action))
+      if (!adef->important || !glade_widget_action_get_visible (action))
         continue;
 
       if (glade_widget_action_get_children (action))
@@ -289,12 +289,12 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
           continue;
         }
 
-      item = gtk_tool_button_new (NULL, aclass->label);
+      item = gtk_tool_button_new (NULL, adef->label);
       gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item),
-                                     (aclass->stock) ? aclass->stock : "system-run");
+                                     (adef->stock) ? adef->stock : "system-run");
 
-      if (aclass->label)
-        gtk_widget_set_tooltip_text (GTK_WIDGET (item), aclass->label);
+      if (adef->label)
+        gtk_widget_set_tooltip_text (GTK_WIDGET (item), adef->label);
 
       g_object_set_data (G_OBJECT (item), "glade-widget", widget);
 
