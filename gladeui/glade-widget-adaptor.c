@@ -2586,6 +2586,7 @@ generate_type (const char *name, const char *parent_name)
   retval = g_type_register_static (parent_type,
                                    (new_name) ? new_name : name, type_info, 0);
 
+  g_free (type_info);
   g_free (new_name);
 
   return retval;

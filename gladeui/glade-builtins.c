@@ -244,7 +244,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   g_slist_free (gsi_list_list);
 
   stock_prefixs_done = TRUE;
-  g_slist_free (stock_list);
+  g_slist_free_full (stock_list, g_free);
 
   return values;
 }
