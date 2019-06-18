@@ -257,7 +257,7 @@ glade_signal_def_since_minor (GladeSignalDef *signal_def)
 }
 
 /**
- * glade_signal_def_deprecated:
+ * glade_signal_def_set_deprecated:
  * @signal_def: a #GladeSignalDef
  * @deprecated: %TRUE if the signal is deprecated
  *
