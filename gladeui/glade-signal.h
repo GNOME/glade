@@ -9,13 +9,13 @@ G_BEGIN_DECLS
 
 #define GLADE_TYPE_SIGNAL            (glade_signal_get_type())
 #define GLADE_SIGNAL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_SIGNAL, GladeSignal))
-#define GLADE_SIGNAL_KLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_SIGNAL, GladeSignalKlass))
+#define GLADE_SIGNAL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_SIGNAL, GladeSignalClass))
 #define GLADE_IS_SIGNAL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_SIGNAL))
-#define GLADE_IS_SIGNAL_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_SIGNAL))
-#define GLADE_SIGNAL_GET_KLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_SIGNAL, GladeSignalKlass))
+#define GLADE_IS_SIGNAL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_SIGNAL))
+#define GLADE_SIGNAL_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_SIGNAL, GladeSignalClass))
 
 typedef struct _GladeSignal         GladeSignal;
-typedef struct _GladeSignalKlass    GladeSignalKlass;
+typedef struct _GladeSignalClass    GladeSignalClass;
 typedef struct _GladeSignalPrivate  GladeSignalPrivate;
 
 struct _GladeSignal {
@@ -24,7 +24,7 @@ struct _GladeSignal {
   GladeSignalPrivate *priv;
 };
 
-struct _GladeSignalKlass {
+struct _GladeSignalClass {
   GObjectClass object_class;
 
   void   (* glade_reserved1)   (void);
