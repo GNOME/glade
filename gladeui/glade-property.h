@@ -7,12 +7,12 @@ G_BEGIN_DECLS
 
 #define GLADE_TYPE_PROPERTY            (glade_property_get_type())
 #define GLADE_PROPERTY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROPERTY, GladeProperty))
-#define GLADE_PROPERTY_KLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROPERTY, GladePropertyKlass))
+#define GLADE_PROPERTY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROPERTY, GladePropertyClass))
 #define GLADE_IS_PROPERTY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROPERTY))
-#define GLADE_IS_PROPERTY_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROPERTY))
-#define GLADE_PROPERTY_GET_KLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_PROPERTY, GladePropertyKlass))
+#define GLADE_IS_PROPERTY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROPERTY))
+#define GLADE_PROPERTY_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_PROPERTY, GladePropertyClass))
 
-typedef struct _GladePropertyKlass   GladePropertyKlass;
+typedef struct _GladePropertyClass   GladePropertyClass;
 typedef struct _GladePropertyPrivate GladePropertyPrivate;
 
 typedef enum {
@@ -34,7 +34,7 @@ struct _GladeProperty
 };
 
 
-struct _GladePropertyKlass
+struct _GladePropertyClass
 {
   GObjectClass  parent_class;
 
