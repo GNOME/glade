@@ -34,8 +34,8 @@
  * a #GladeProperty to interface with, #GladeProperty provides a means
  * to handle properties in the runtime environment.
  * 
- * A #GladeProperty can be seen as an instance of a #GladePropertyClass, 
- * the #GladePropertyClass describes how a #GladeProperty will function.
+ * A #GladeProperty can be seen as an instance of a #GladePropertyDef, 
+ * the #GladePropertyDef describes how a #GladeProperty will function.
  */
 
 #include <stdio.h>
@@ -47,7 +47,7 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-property.h"
-#include "glade-property-class.h"
+#include "glade-property-def.h"
 #include "glade-project.h"
 #include "glade-widget-adaptor.h"
 #include "glade-debug.h"
@@ -57,7 +57,7 @@
 
 struct _GladePropertyPrivate {
 
-  GladePropertyClass *klass;     /* A pointer to the GladeProperty that this
+  GladePropertyDef   *def;       /* A pointer to the GladeProperty that this
                                   * setting specifies
                                   */
   GladeWidget        *widget;    /* A pointer to the GladeWidget that this
@@ -162,7 +162,7 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
   GladeProperty *property;
 
   property = g_object_new (GLADE_TYPE_PROPERTY,
-                           "class", template_prop->priv->klass,
+                           "class", template_prop->priv->def,
                            "i18n-translatable", template_prop->priv->i18n_translatable, 
                            "i18n-context", template_prop->priv->i18n_context, 
                            "i18n-comment", template_prop->priv->i18n_comment, 
@@ -173,9 +173,9 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
   g_value_init (property->priv->value, template_prop->priv->value->g_type);
 
   /* Cannot duplicate parentless_widget property */
-  if (glade_property_class_parentless_widget (template_prop->priv->klass))
+  if (glade_property_def_parentless_widget (template_prop->priv->def))
     {
-      if (!G_IS_PARAM_SPEC_OBJECT (glade_property_class_get_pspec (template_prop->priv->klass)))
+      if (!G_IS_PARAM_SPEC_OBJECT (glade_property_def_get_pspec (template_prop->priv->def)))
         g_warning ("Parentless widget property should be of object type");
 
       g_value_set_object (property->priv->value, NULL);
@@ -196,7 +196,7 @@ static gboolean
 glade_property_equals_value_impl (GladeProperty *property,
                                   const GValue  *value)
 {
-  return !glade_property_class_compare (property->priv->klass, property->priv->value,
+  return !glade_property_def_compare (property->priv->def, property->priv->value,
                                         value);
 }
 
@@ -210,7 +210,7 @@ glade_property_update_prop_refs (GladeProperty *property,
   GObject *old_object, *new_object;
   GList *old_list, *new_list, *list, *removed, *added;
 
-  if (GLADE_IS_PARAM_SPEC_OBJECTS (glade_property_class_get_pspec (property->priv->klass)))
+  if (GLADE_IS_PARAM_SPEC_OBJECTS (glade_property_def_get_pspec (property->priv->def)))
     {
       /* Make our own copies incase we're walking an
        * unstable list
@@ -269,17 +269,17 @@ glade_property_verify (GladeProperty *property, const GValue *value)
 
   parent = glade_widget_get_parent (property->priv->widget);
 
-  if (glade_property_class_get_is_packing (property->priv->klass) && parent)
+  if (glade_property_def_get_is_packing (property->priv->def) && parent)
     ret =
       glade_widget_adaptor_child_verify_property (glade_widget_get_adaptor (parent),
                                                   glade_widget_get_object (parent),
                                                   glade_widget_get_object (property->priv->widget),
-                                                  glade_property_class_id (property->priv->klass), 
+                                                  glade_property_def_id (property->priv->def), 
                                                   value);
-  else if (!glade_property_class_get_is_packing (property->priv->klass))
+  else if (!glade_property_def_get_is_packing (property->priv->def))
     ret = glade_widget_adaptor_verify_property (glade_widget_get_adaptor (property->priv->widget),
                                                 glade_widget_get_object (property->priv->widget),
-                                                glade_property_class_id (property->priv->klass), value);
+                                                glade_property_def_id (property->priv->def), value);
 
   return ret;
 }
@@ -293,7 +293,7 @@ glade_property_fix_state (GladeProperty *property)
    * they are optional and enabled, optional enabled properties
    * are saved regardless of default value
    */
-  if (glade_property_class_optional (property->priv->klass))
+  if (glade_property_def_optional (property->priv->def))
     {
       if (glade_property_get_enabled (property))
         property->priv->state |= GLADE_STATE_CHANGED;
@@ -331,16 +331,16 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
   if (glade_get_debug_flags () & GLADE_DEBUG_PROPERTIES)
     {
       g_print ("PROPERTY: Setting %s property %s on %s ",
-               glade_property_class_get_is_packing (property->priv->klass) ? "packing" : "normal",
-               glade_property_class_id (property->priv->klass),
+               glade_property_def_get_is_packing (property->priv->def) ? "packing" : "normal",
+               glade_property_def_id (property->priv->def),
                property->priv->widget ? glade_widget_get_name (property->priv->widget) : "unknown");
 
       gchar *str1 =
-        glade_widget_adaptor_string_from_value (glade_property_class_get_adaptor (property->priv->klass),
-                                                property->priv->klass, property->priv->value);
+        glade_widget_adaptor_string_from_value (glade_property_def_get_adaptor (property->priv->def),
+                                                property->priv->def, property->priv->value);
       gchar *str2 =
-        glade_widget_adaptor_string_from_value (glade_property_class_get_adaptor (property->priv->klass),
-                                                property->priv->klass, value);
+        glade_widget_adaptor_string_from_value (glade_property_def_get_adaptor (property->priv->def),
+                                                property->priv->def, value);
       g_print ("from %s to %s\n", str1, str2);
       g_free (str1);
       g_free (str2);
@@ -350,7 +350,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
   if (!g_value_type_compatible (G_VALUE_TYPE (property->priv->value), G_VALUE_TYPE (value)))
     {
       g_warning ("Trying to assign an incompatible value to property %s\n",
-                 glade_property_class_id (property->priv->klass));
+                 glade_property_def_id (property->priv->def));
       return FALSE;
     }
 
@@ -372,7 +372,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
    * (before assigning the value)
    */
   if (property->priv->widget && changed &&
-      glade_property_class_is_object (property->priv->klass))
+      glade_property_def_is_object (property->priv->def))
     glade_property_update_prop_refs (property, property->priv->value, value);
 
   /* Check pre-changed warning state */
@@ -409,7 +409,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
     }
 
   /* Special case parentless widget properties */
-  if (glade_property_class_parentless_widget (property->priv->klass))
+  if (glade_property_def_parentless_widget (property->priv->def))
     {
       GladeWidget *gobj;
       GObject *obj;
@@ -432,7 +432,7 @@ glade_property_get_value_impl (GladeProperty *property, GValue *value)
 {
   GParamSpec *pspec;
 
-  pspec = glade_property_class_get_pspec (property->priv->klass);
+  pspec = glade_property_def_get_pspec (property->priv->def);
 
   g_value_init (value, pspec->value_type);
   g_value_copy (property->priv->value, value);
@@ -442,7 +442,7 @@ static void
 glade_property_sync_impl (GladeProperty *property)
 {
   GladePropertyPrivate *priv = property->priv;
-  GladePropertyClass *klass = priv->klass;
+  GladePropertyDef *def = priv->def;
   const GValue *value;
   const gchar *id;
 
@@ -451,21 +451,21 @@ glade_property_sync_impl (GladeProperty *property)
    */
   if (/* the class can be NULL during object,
        * construction this is just a temporary state */
-       klass == NULL ||
+       def == NULL ||
        /* explicit "never sync" flag */
-       glade_property_class_get_ignore (klass) ||
+       glade_property_def_get_ignore (def) ||
        /* recursion guards */
        priv->syncing >= priv->sync_tolerance ||
        /* No widget owns this property yet */
        priv->widget == NULL)
     return;
 
-  id = glade_property_class_id (klass);
+  id = glade_property_def_id (def);
 
   /* Only the properties from widget->properties should affect the runtime widget.
    * (other properties may be used for convenience in the plugin).
    */
-  if ((glade_property_class_get_is_packing (klass) &&
+  if ((glade_property_def_get_is_packing (def) &&
        !glade_widget_get_pack_property (priv->widget, id))
       || !glade_widget_get_property (priv->widget, id))
     return;
@@ -473,27 +473,27 @@ glade_property_sync_impl (GladeProperty *property)
   priv->syncing++;
 
   /* optional properties that are disabled get the default runtime value */
-  value = (priv->enabled) ? priv->value : glade_property_class_get_default (klass);
+  value = (priv->enabled) ? priv->value : glade_property_def_get_default (def);
 
   /* In the case of construct_only, the widget instance must be rebuilt
    * to apply the property
    */
-  if (glade_property_class_get_construct_only (klass) && priv->syncing == 1)
+  if (glade_property_def_get_construct_only (def) && priv->syncing == 1)
     {
       /* Virtual properties can be construct only, in which
        * case they are allowed to trigger a rebuild, and in
        * the process are allowed to get "synced" after the
        * instance is rebuilt.
        */
-      if (glade_property_class_get_virtual (klass))
+      if (glade_property_def_get_virtual (def))
         priv->sync_tolerance++;
 
       glade_widget_rebuild (priv->widget);
 
-      if (glade_property_class_get_virtual (klass))
+      if (glade_property_def_get_virtual (def))
         priv->sync_tolerance--;
     }
-  else if (glade_property_class_get_is_packing (klass))
+  else if (glade_property_def_get_is_packing (def))
     glade_widget_child_set_property (glade_widget_get_parent (priv->widget),
                                      priv->widget, id, value);
   else
@@ -509,21 +509,21 @@ glade_property_load_impl (GladeProperty *property)
   GObjectClass *oclass;
   GParamSpec *pspec;
 
-  pspec = glade_property_class_get_pspec (property->priv->klass);
+  pspec = glade_property_def_get_pspec (property->priv->def);
 
   if (property->priv->widget == NULL ||
-      glade_property_class_get_virtual (property->priv->klass) ||
-      glade_property_class_get_is_packing (property->priv->klass) ||
-      glade_property_class_get_ignore (property->priv->klass) ||
+      glade_property_def_get_virtual (property->priv->def) ||
+      glade_property_def_get_is_packing (property->priv->def) ||
+      glade_property_def_get_ignore (property->priv->def) ||
       !(pspec->flags & G_PARAM_READABLE) || G_IS_PARAM_SPEC_OBJECT (pspec))
     return;
 
   object = glade_widget_get_object (property->priv->widget);
   oclass = G_OBJECT_GET_CLASS (object);
 
-  if (g_object_class_find_property (oclass, glade_property_class_id (property->priv->klass)))
+  if (g_object_class_find_property (oclass, glade_property_def_id (property->priv->def)))
     glade_widget_object_get_property (property->priv->widget, 
-                                      glade_property_class_id (property->priv->klass),
+                                      glade_property_def_id (property->priv->def),
                                       property->priv->value);
 }
 
@@ -541,7 +541,7 @@ glade_property_set_real_property (GObject      *object,
   switch (prop_id)
     {
       case PROP_CLASS:
-        property->priv->klass = g_value_get_pointer (value);
+        property->priv->def = g_value_get_pointer (value);
         break;
       case PROP_ENABLED:
         glade_property_set_enabled (property, g_value_get_boolean (value));
@@ -579,7 +579,7 @@ glade_property_get_real_property (GObject    *object,
   switch (prop_id)
     {
       case PROP_CLASS:
-        g_value_set_pointer (value, property->priv->klass);
+        g_value_set_pointer (value, property->priv->def);
         break;
       case PROP_ENABLED:
         g_value_set_boolean (value, glade_property_get_enabled (property));
@@ -674,7 +674,7 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
   properties[PROP_CLASS] =
     g_param_spec_pointer ("class",
                           _("Class"),
-                          _("The GladePropertyClass for this property"),
+                          _("The GladePropertyDef for this property"),
                           G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
 
   properties[PROP_ENABLED] =
@@ -786,7 +786,7 @@ glade_property_get_type (void)
  *******************************************************************************/
 /**
  * glade_property_new:
- * @klass: A #GladePropertyClass defining this property
+ * @def: A #GladePropertyDef defining this property
  * @widget: The #GladeWidget this property is created for
  * @value: The initial #GValue of the property or %NULL
  *         (the #GladeProperty will assume ownership of @value)
@@ -798,26 +798,26 @@ glade_property_get_type (void)
  * Returns: The newly created #GladeProperty
  */
 GladeProperty *
-glade_property_new (GladePropertyClass *klass,
-                    GladeWidget        *widget,
-                    GValue             *value)
+glade_property_new (GladePropertyDef *def,
+                    GladeWidget      *widget,
+                    GValue           *value)
 {
   GladeProperty *property;
 
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (def), NULL);
 
   property = (GladeProperty *) g_object_new (GLADE_TYPE_PROPERTY, NULL);
-  property->priv->klass = klass;
+  property->priv->def = def;
   property->priv->widget = widget;
   property->priv->value = value;
 
-  if (glade_property_class_optional (klass))
-    property->priv->enabled = glade_property_class_optional_default (klass);
+  if (glade_property_def_optional (def))
+    property->priv->enabled = glade_property_def_optional_default (def);
 
   if (property->priv->value == NULL)
     {
       const GValue *orig_def =
-        glade_property_class_get_original_default (klass);
+        glade_property_def_get_original_default (def);
 
       property->priv->value = g_new0 (GValue, 1);
       g_value_init (property->priv->value, orig_def->g_type);
@@ -849,9 +849,9 @@ glade_property_reset_common (GladeProperty *property, gboolean original)
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   
   if (original)
-    value = glade_property_class_get_original_default (property->priv->klass);
+    value = glade_property_def_get_original_default (property->priv->def);
   else
-    value = glade_property_class_get_default (property->priv->klass);
+    value = glade_property_def_get_default (property->priv->def);
 
   GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
 }
@@ -888,9 +888,9 @@ glade_property_default_common (GladeProperty *property, gboolean orig)
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 
   if (orig)
-    value = glade_property_class_get_original_default (property->priv->klass);
+    value = glade_property_def_get_original_default (property->priv->def);
   else
-    value = glade_property_class_get_default (property->priv->klass);
+    value = glade_property_def_get_default (property->priv->def);
 
   return GLADE_PROPERTY_GET_KLASS (property)->equals_value (property, value);
 }
@@ -948,7 +948,7 @@ glade_property_equals_va_list (GladeProperty *property, va_list vl)
 
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 
-  value = glade_property_class_make_gvalue_from_vl (property->priv->klass, vl);
+  value = glade_property_def_make_gvalue_from_vl (property->priv->def, vl);
 
   ret = GLADE_PROPERTY_GET_KLASS (property)->equals_value (property, value);
 
@@ -1011,7 +1011,7 @@ glade_property_set_va_list (GladeProperty *property, va_list vl)
 
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 
-  value = glade_property_class_make_gvalue_from_vl (property->priv->klass, vl);
+  value = glade_property_def_make_gvalue_from_vl (property->priv->def, vl);
 
   success = GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
 
@@ -1073,9 +1073,9 @@ glade_property_get_default (GladeProperty *property, GValue *value)
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (value != NULL);
 
-  pspec = glade_property_class_get_pspec (property->priv->klass);
+  pspec = glade_property_def_get_pspec (property->priv->def);
   g_value_init (value, pspec->value_type);
-  g_value_copy (glade_property_class_get_default (property->priv->klass), value);
+  g_value_copy (glade_property_def_get_default (property->priv->def), value);
 }
 
 /**
@@ -1089,7 +1089,7 @@ void
 glade_property_get_va_list (GladeProperty *property, va_list vl)
 {
   g_return_if_fail (GLADE_IS_PROPERTY (property));
-  glade_property_class_set_vl_from_gvalue (property->priv->klass, property->priv->value,
+  glade_property_def_set_vl_from_gvalue (property->priv->def, property->priv->value,
                                            vl);
 }
 
@@ -1177,7 +1177,7 @@ glade_property_read (GladeProperty *property,
    */
   property->priv->enabled = TRUE;
   
-  if (glade_property_class_is_object (property->priv->klass))
+  if (glade_property_def_is_object (property->priv->def))
     {
       /* we must synchronize this directly after loading this project
        * (i.e. lookup the actual objects after they've been parsed and
@@ -1189,7 +1189,7 @@ glade_property_read (GladeProperty *property,
   else
     {
       gvalue = 
-        glade_property_class_make_gvalue_from_string (property->priv->klass, value, project);
+        glade_property_def_make_gvalue_from_string (property->priv->def, value, project);
 
       GLADE_PROPERTY_GET_KLASS (property)->set_value (property, gvalue);
 
@@ -1206,7 +1206,7 @@ glade_property_read (GladeProperty *property,
   property->priv->bind_property = glade_xml_get_property_string (prop, GLADE_TAG_BIND_PROPERTY);
   bind_flags = glade_xml_get_property_string (prop, GLADE_TAG_BIND_FLAGS);
   if (bind_flags)
-    property->priv->bind_flags = glade_property_class_make_flags_from_string (G_TYPE_BINDING_FLAGS, bind_flags);
+    property->priv->bind_flags = glade_property_def_make_flags_from_string (G_TYPE_BINDING_FLAGS, bind_flags);
 
   glade_property_i18n_set_translatable (property, translatable);
   glade_property_i18n_set_comment (property, comment);
@@ -1250,8 +1250,8 @@ glade_property_write (GladeProperty   *property,
     return;
 
   /* There can be a couple of reasons to forcefully save a property */
-  save_always = (glade_property_class_save_always (property->priv->klass) || property->priv->save_always);
-  save_always = save_always || (glade_property_class_optional (property->priv->klass) && property->priv->enabled);
+  save_always = (glade_property_def_save_always (property->priv->def) || property->priv->save_always);
+  save_always = save_always || (glade_property_def_optional (property->priv->def) && property->priv->enabled);
 
   /* Skip properties that are default by original pspec default and that have no bound property
    * (excepting those that specified otherwise).
@@ -1260,12 +1260,12 @@ glade_property_write (GladeProperty   *property,
     return;
 
   /* Escape our string and save with underscores */
-  name = g_strdup (glade_property_class_id (property->priv->klass));
+  name = g_strdup (glade_property_def_id (property->priv->def));
   glade_util_replace (name, '-', '_');
 
   /* convert the value of this property to a string */
   if (!(value = glade_widget_adaptor_string_from_value
-        (glade_property_class_get_adaptor (property->priv->klass), property->priv->klass,
+        (glade_property_def_get_adaptor (property->priv->def), property->priv->def,
          property->priv->value)))
     /* make sure we keep the empty string, also... upcomming
      * funcs that may not like NULL.
@@ -1281,7 +1281,7 @@ glade_property_write (GladeProperty   *property,
   glade_xml_set_content (prop_node, value);
 
   /* i18n stuff */
-  if (glade_property_class_translatable (property->priv->klass))
+  if (glade_property_def_translatable (property->priv->def))
     {
       if (property->priv->i18n_translatable)
         glade_xml_node_set_property_string (prop_node,
@@ -1362,7 +1362,7 @@ glade_property_add_object (GladeProperty *property, GObject *object)
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (G_IS_OBJECT (object));
 
-  pspec = glade_property_class_get_pspec (property->priv->klass);
+  pspec = glade_property_def_get_pspec (property->priv->def);
 
   g_return_if_fail (GLADE_IS_PARAM_SPEC_OBJECTS (pspec) ||
                     G_IS_PARAM_SPEC_OBJECT (pspec));
@@ -1405,7 +1405,7 @@ glade_property_remove_object (GladeProperty *property, GObject *object)
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (G_IS_OBJECT (object));
 
-  pspec = glade_property_class_get_pspec (property->priv->klass);
+  pspec = glade_property_def_get_pspec (property->priv->def);
 
   g_return_if_fail (GLADE_IS_PARAM_SPEC_OBJECTS (pspec) ||
                     G_IS_PARAM_SPEC_OBJECT (pspec));
@@ -1432,12 +1432,20 @@ glade_property_remove_object (GladeProperty *property, GObject *object)
     }
 }
 
-GladePropertyClass *
-glade_property_get_class (GladeProperty *property)
+/**
+ * glade_property_get_def:
+ * @property: a #GladeProperty
+ *
+ * Get the #GladePropertyDef this property was created for.
+ *
+ * Returns: (transfer none): a #GladePropertyDef
+ */
+GladePropertyDef *
+glade_property_get_def (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
 
-  return property->priv->klass;
+  return property->priv->def;
 }
 
 
@@ -1521,7 +1529,7 @@ glade_property_set_sensitive (GladeProperty *property,
       g_signal_emit (G_OBJECT (property),
                      glade_property_signals[TOOLTIP_CHANGED],
                      0,
-                     glade_property_class_get_tooltip (property->priv->klass),
+                     glade_property_def_get_tooltip (property->priv->def),
                      property->priv->insensitive_tooltip, 
                      property->priv->support_warning);
     }
@@ -1564,7 +1572,7 @@ glade_property_set_support_warning (GladeProperty *property,
   g_signal_emit (G_OBJECT (property),
                  glade_property_signals[TOOLTIP_CHANGED],
                  0,
-                 glade_property_class_get_tooltip (property->priv->klass),
+                 glade_property_def_get_tooltip (property->priv->def),
                  property->priv->insensitive_tooltip, 
                  property->priv->support_warning);
 
@@ -1668,7 +1676,7 @@ glade_property_make_string (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
 
-  return glade_property_class_make_string_from_gvalue (property->priv->klass, 
+  return glade_property_def_make_string_from_gvalue (property->priv->def, 
                                                        property->priv->value);
 }
 

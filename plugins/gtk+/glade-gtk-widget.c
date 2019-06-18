@@ -87,7 +87,7 @@ static void
 glade_gtk_parse_atk_relation (GladeProperty *property, GladeXmlNode *node)
 {
   GladeXmlNode *prop;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   gchar *type, *target, *id, *tmp;
   gchar *string = NULL;
 
@@ -110,10 +110,10 @@ glade_gtk_parse_atk_relation (GladeProperty *property, GladeXmlNode *node)
           continue;
         }
 
-      id     = glade_util_read_prop_name (type);
-      pclass = glade_property_get_class (property);
+      id   = glade_util_read_prop_name (type);
+      pdef = glade_property_get_def (property);
 
-      if (!strcmp (id, glade_property_class_id (pclass)))
+      if (!strcmp (id, glade_property_def_id (pdef)))
         {
           if (string == NULL)
             string = g_strdup (target);
@@ -206,8 +206,8 @@ glade_gtk_parse_atk_props (GladeWidget *widget, GladeXmlNode *node)
             }
 
           /* Set the parsed value on the property ... */
-          gvalue = glade_property_class_make_gvalue_from_string
-            (glade_property_get_class (property), value, glade_widget_get_project (widget));
+          gvalue = glade_property_def_make_gvalue_from_string
+            (glade_property_get_def (property), value, glade_widget_get_project (widget));
           glade_property_set_value (property, gvalue);
           g_value_unset (gvalue);
           g_free (gvalue);
@@ -349,13 +349,13 @@ glade_gtk_widget_write_atk_property (GladeProperty   *property,
 
   if (value && value[0])
     {
-      GladePropertyClass *pclass = glade_property_get_class (property);
+      GladePropertyDef *pdef = glade_property_get_def (property);
       GladeXmlNode *prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_PROPERTY);
 
       glade_xml_node_append_child (node, prop_node);
 
       glade_xml_node_set_property_string (prop_node,
-                                          GLADE_TAG_NAME, glade_property_class_id (pclass));
+                                          GLADE_TAG_NAME, glade_property_def_id (pdef));
 
       glade_xml_set_content (prop_node, value);
 
@@ -437,26 +437,26 @@ glade_gtk_widget_write_atk_relation (GladeProperty   *property,
                                      GladeXmlNode    *node)
 {
   GladeXmlNode *prop_node;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   gchar *value, **split;
   gint i;
 
   if ((value = glade_widget_adaptor_string_from_value
-       (glade_property_class_get_adaptor (glade_property_get_class (property)),
-        glade_property_get_class (property), glade_property_inline_value (property))) != NULL)
+       (glade_property_def_get_adaptor (glade_property_get_def (property)),
+        glade_property_get_def (property), glade_property_inline_value (property))) != NULL)
     {
       if ((split = g_strsplit (value, GPC_OBJECT_DELIMITER, 0)) != NULL)
         {
           for (i = 0; split[i] != NULL; i++)
             {
-              pclass = glade_property_get_class (property);
+              pdef = glade_property_get_def (property);
 
               prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_RELATION);
               glade_xml_node_append_child (node, prop_node);
 
               glade_xml_node_set_property_string (prop_node,
                                                   GLADE_TAG_A11Y_TYPE,
-                                                  glade_property_class_id (pclass));
+                                                  glade_property_def_id (pdef));
               glade_xml_node_set_property_string (prop_node,
                                                   GLADE_TAG_A11Y_TARGET,
                                                   split[i]);
@@ -494,13 +494,13 @@ glade_gtk_widget_write_atk_action (GladeProperty   *property,
 
   if (value && value[0])
     {
-      GladePropertyClass *pclass = glade_property_get_class (property);
+      GladePropertyDef *pdef = glade_property_get_def (property);
       GladeXmlNode *prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_ACTION);
       glade_xml_node_append_child (node, prop_node);
 
       glade_xml_node_set_property_string (prop_node,
                                           GLADE_TAG_A11Y_ACTION_NAME,
-                                          &glade_property_class_id (pclass)[4]);
+                                          &glade_property_def_id (pdef)[4]);
       glade_xml_node_set_property_string (prop_node,
                                           GLADE_TAG_A11Y_DESC, value);
     }
@@ -623,24 +623,24 @@ glade_gtk_widget_write_widget_after (GladeWidgetAdaptor *adaptor,
 
 GladeEditorProperty *
 glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
-                               GladePropertyClass *klass,
+                               GladePropertyDef   *def,
                                gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   /* chain up.. */
   if (pspec->value_type == GLADE_TYPE_ACCEL_GLIST)
     eprop = g_object_new (GLADE_TYPE_EPROP_ACCEL,
-                          "property-class", klass,
+                          "property-def", def,
                           "use-command", use_command, NULL);
   else if (pspec->value_type == GLADE_TYPE_STRING_LIST)
-    eprop = glade_eprop_string_list_new (klass, use_command, FALSE, FALSE);
+    eprop = glade_eprop_string_list_new (def, use_command, FALSE, FALSE);
   else
     eprop = GWA_GET_CLASS
-        (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
+        (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
 
   return eprop;
 }
@@ -662,12 +662,12 @@ glade_gtk_widget_create_editable (GladeWidgetAdaptor *adaptor,
 
 gchar *
 glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
-                                    GladePropertyClass *klass,
+                                    GladePropertyDef   *def,
                                     const GValue       *value)
 {
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_ACCEL_GLIST)
     return glade_accels_make_string (g_value_get_boxed (value));
@@ -679,7 +679,7 @@ glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
     }
   else
     return GWA_GET_CLASS
-        (G_TYPE_OBJECT)->string_from_value (adaptor, klass, value);
+        (G_TYPE_OBJECT)->string_from_value (adaptor, def, value);
 }
 
 static void
@@ -797,9 +797,9 @@ create_command_property_list (GladeWidget *gnew, GList *saved_props)
   for (l = saved_props; l; l = l->next)
     {
       GladeProperty *property = l->data;
-      GladePropertyClass *pclass = glade_property_get_class (property);
+      GladePropertyDef *pdef = glade_property_get_def (property);
       GladeProperty *orig_prop =
-        glade_widget_get_pack_property (gnew, glade_property_class_id (pclass));
+        glade_widget_get_pack_property (gnew, glade_property_def_id (pdef));
       GCSetPropData *pdata = g_new0 (GCSetPropData, 1);
 
       pdata->property = orig_prop;

@@ -580,10 +580,10 @@ glade_property_label_set_custom_tooltip (GladePropertyLabel *label,
 
       if (priv->property)
         {
-          GladePropertyClass *pclass = glade_property_get_class (priv->property);
+          GladePropertyDef *pdef = glade_property_get_def (priv->property);
 
           glade_property_label_tooltip_cb
-            (priv->property, glade_property_class_get_tooltip (pclass),
+            (priv->property, glade_property_def_get_tooltip (pdef),
              glade_propert_get_insensitive_tooltip (priv->property),
              glade_property_get_support_warning (priv->property), label);
         }
@@ -648,7 +648,7 @@ glade_property_label_set_property (GladePropertyLabel *label,
       /* Connect new */
       if (priv->property)
         {
-          GladePropertyClass *pclass = glade_property_get_class (priv->property);
+          GladePropertyDef *pdef = glade_property_get_def (priv->property);
 
           priv->tooltip_id =
             g_signal_connect (G_OBJECT (priv->property),
@@ -676,7 +676,7 @@ glade_property_label_set_property (GladePropertyLabel *label,
           /* Load initial tooltips
            */
           glade_property_label_tooltip_cb
-            (property, glade_property_class_get_tooltip (pclass),
+            (property, glade_property_def_get_tooltip (pdef),
              glade_propert_get_insensitive_tooltip (property),
              glade_property_get_support_warning (property), label);
 
@@ -692,14 +692,14 @@ glade_property_label_set_property (GladePropertyLabel *label,
             {
               if (priv->append_colon)
                 {
-                  gchar *text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
+                  gchar *text = g_strdup_printf ("%s:", glade_property_def_get_name (pdef));
                   gtk_label_set_text (GTK_LABEL (priv->label), text);
                   g_free (text);
                 }
               else
                 {
                   gtk_label_set_text (GTK_LABEL (priv->label),
-                                      glade_property_class_get_name (pclass));
+                                      glade_property_def_get_name (pdef));
                 }
             }
         }

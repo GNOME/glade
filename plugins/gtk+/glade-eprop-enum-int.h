@@ -22,9 +22,9 @@ typedef struct {
   GladeEditorPropertyClass eprop_class;
 } GladeEPropEnumIntClass;
 
-GladeEditorProperty *glade_eprop_enum_int_new (GladePropertyClass *pclass,
-                                               GType               type,
-                                               gboolean            use_command);
+GladeEditorProperty *glade_eprop_enum_int_new (GladePropertyDef *pdef,
+                                               GType             type,
+                                               gboolean          use_command);
 
 G_END_DECLS
 

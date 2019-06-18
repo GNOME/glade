@@ -953,7 +953,7 @@ glade_xml_load_sym_from_node (GladeXmlNode *node_in,
        * plenty of dialog boxes.  Ideally, we should collect these errors, 
        * and show all of them at the end of the load process.
        *
-       * I dont know who wrote the above in glade-property-class.c, but
+       * I dont know who wrote the above in glade-property-def.c, but
        * its a good point... makeing a bugzilla entry.
        *  -Tristan
        *

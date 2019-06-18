@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 #include <gladeui/glade-xml-utils.h>
-#include <gladeui/glade-property-class.h>
+#include <gladeui/glade-property-def.h>
 #include <gladeui/glade-property.h>
 
 G_BEGIN_DECLS

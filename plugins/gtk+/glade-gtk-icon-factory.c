@@ -426,13 +426,13 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 gchar *
 glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
-                                          GladePropertyClass *klass,
+                                          GladePropertyDef   *def,
                                           const GValue       *value)
 {
   GString *string;
   GParamSpec *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_ICON_SOURCES)
     {
@@ -448,27 +448,27 @@ glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
     }
   else
     return GWA_GET_CLASS
-        (G_TYPE_OBJECT)->string_from_value (adaptor, klass, value);
+        (G_TYPE_OBJECT)->string_from_value (adaptor, def, value);
 }
 
 
 GladeEditorProperty *
 glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
-                                     GladePropertyClass *klass,
+                                     GladePropertyDef   *def,
                                      gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_ICON_SOURCES)
     eprop = g_object_new (GLADE_TYPE_EPROP_ICON_SOURCES,
-                          "property-class", klass,
+                          "property-def", def,
                           "use-command", use_command, NULL);
   else
     eprop = GWA_GET_CLASS
-        (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
+        (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
   return eprop;
 }
 

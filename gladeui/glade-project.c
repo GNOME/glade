@@ -1212,12 +1212,12 @@ glade_project_model_get_value (GtkTreeModel *model,
           else if ((ref_prop = 
                     glade_widget_get_parentless_widget_ref (widget)) != NULL)
             {
-              GladePropertyClass *pclass     = glade_property_get_class (ref_prop);
-              GladeWidget        *ref_widget = glade_property_get_widget (ref_prop);
+              GladePropertyDef *pdef       = glade_property_get_def (ref_prop);
+              GladeWidget      *ref_widget = glade_property_get_widget (ref_prop);
 
               /* translators: refers to a property named '%s' of widget '%s' */
               str = g_strdup_printf (_("(%s of %s)"), 
-                                     glade_property_class_get_name (pclass),
+                                     glade_property_def_get_name (pdef),
                                      glade_widget_get_name (ref_widget));
             }
 
@@ -1389,19 +1389,19 @@ glade_project_fix_object_props (GladeProject *project)
 
       for (ll = glade_widget_get_properties (gwidget); ll; ll = ll->next)
         {
-          GladePropertyClass *klass;
+          GladePropertyDef *def;
 
           property = GLADE_PROPERTY (ll->data);
-          klass    = glade_property_get_class (property);
+          def      = glade_property_get_def (property);
 
-          if (glade_property_class_is_object (klass) &&
+          if (glade_property_def_is_object (def) &&
               (txt = g_object_get_data (G_OBJECT (property),
                                         "glade-loaded-object")) != NULL)
             {
               /* Parse the object list and set the property to it
                * (this magicly works for both objects & object lists)
                */
-              value = glade_property_class_make_gvalue_from_string (klass, txt, project);
+              value = glade_property_def_make_gvalue_from_string (def, txt, project);
 
               glade_property_set_value (property, value);
 
@@ -1598,12 +1598,12 @@ update_project_for_resource_path (GladeProject *project)
 
       for (list = glade_widget_get_properties (widget); list; list = list->next)
         {
-          GladePropertyClass *klass;
-          GParamSpec         *pspec;
+          GladePropertyDef *def;
+          GParamSpec       *pspec;
 
           property = list->data;
-          klass    = glade_property_get_class (property);
-          pspec    = glade_property_class_get_pspec (klass);
+          def      = glade_property_get_def (property);
+          pspec    = glade_property_def_get_pspec (def);
 
           /* XXX We should have a "resource" flag on properties that need
            * to be loaded from the resource path, but that would require
@@ -1617,7 +1617,7 @@ update_project_for_resource_path (GladeProject *project)
               gchar  *string;
 
               string = glade_property_make_string (property);
-              value  = glade_property_class_make_gvalue_from_string (klass, string, project);
+              value  = glade_property_def_make_gvalue_from_string (def, string, project);
 
               glade_property_set_value (property, value);
 
@@ -1851,7 +1851,7 @@ glade_project_introspect_gtk_version (GladeProject *project)
       for (l = glade_widget_get_properties (widget); l; l = l->next)
         {
           GladeProperty *property = l->data;
-          GladePropertyClass *pclass = glade_property_get_class (property);
+          GladePropertyDef   *pdef = glade_property_get_def (property);
           GladeWidgetAdaptor *prop_adaptor, *adaptor;
           GParamSpec         *pspec;
 
@@ -1860,8 +1860,8 @@ glade_project_introspect_gtk_version (GladeProject *project)
             continue;
 
           /* Check if this property originates from a GTK+ widget class */
-          pspec        = glade_property_class_get_pspec (pclass);
-          prop_adaptor = glade_property_class_get_adaptor (pclass);
+          pspec        = glade_property_def_get_pspec (pdef);
+          prop_adaptor = glade_property_def_get_adaptor (pdef);
           adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
 
           catalog = NULL;
@@ -1873,10 +1873,10 @@ glade_project_introspect_gtk_version (GladeProject *project)
 
           /* Check GTK+ property class versions */
           if (is_gtk_adaptor &&
-              !GPC_VERSION_CHECK (pclass, target_major, target_minor))
+              !GPC_VERSION_CHECK (pdef, target_major, target_minor))
             {
-              target_major = glade_property_class_since_major (pclass);
-              target_minor = glade_property_class_since_minor (pclass);
+              target_major = glade_property_def_since_major (pdef);
+              target_minor = glade_property_def_since_minor (pdef);
             }
         }
 
@@ -2464,14 +2464,14 @@ glade_project_widget_hard_depends (GladeWidget *widget, GladeWidget *another)
 
   for (l = _glade_widget_peek_prop_refs (another); l; l = g_list_next (l))
     {
-      GladePropertyClass *klass;
+      GladePropertyDef *def;
       
       /* If one of the properties that reference @another is
        * owned by @widget then @widget depends on @another
        */
       if (glade_property_get_widget (l->data) == widget &&
-          (klass = glade_property_get_class (l->data)) &&
-          glade_property_class_get_construct_only (klass))
+          (def = glade_property_get_def (l->data)) &&
+          glade_property_def_get_construct_only (def))
         return TRUE;
     }
 
@@ -2830,9 +2830,9 @@ update_project_resource_path (GladeProject *project, gchar *path)
 
       for (list = glade_widget_get_properties (widget); list; list = list->next)
         {
-          GladeProperty      *property = list->data;
-          GladePropertyClass *klass = glade_property_get_class (property);
-          GParamSpec         *pspec = glade_property_class_get_pspec (klass);
+          GladeProperty    *property = list->data;
+          GladePropertyDef *def      = glade_property_get_def (property);
+          GParamSpec       *pspec    = glade_property_def_get_pspec (def);
 
           if (pspec->value_type == GDK_TYPE_PIXBUF)
             {
@@ -2873,9 +2873,9 @@ sync_project_resource_path (GladeProject *project)
 
       for (list = glade_widget_get_properties (widget); list; list = list->next)
         {
-          GladeProperty      *property = list->data;
-          GladePropertyClass *klass = glade_property_get_class (property);
-          GParamSpec         *pspec = glade_property_class_get_pspec (klass);
+          GladeProperty    *property = list->data;
+          GladePropertyDef *def      = glade_property_get_def (property);
+          GParamSpec       *pspec    = glade_property_def_get_pspec (def);
 
           if (pspec->value_type == GDK_TYPE_PIXBUF)
             {
@@ -2888,9 +2888,9 @@ sync_project_resource_path (GladeProject *project)
                 continue;
 
               filename = g_object_get_data (pixbuf, "GladeFileName");
-              value = glade_property_class_make_gvalue_from_string (klass,
-                                                                    filename,
-                                                                    project);
+              value = glade_property_def_make_gvalue_from_string (def,
+                                                                  filename,
+                                                                  project);
               glade_property_set_value (property, value);
               g_value_unset (value);
               g_free (value);
@@ -3145,7 +3145,7 @@ glade_project_verify_property_internal (GladeProject    *project,
                                         GladeVerifyFlags flags)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
-  GladePropertyClass *pclass;
+  GladePropertyDef   *pdef;
   GParamSpec         *pspec;
   gint target_major, target_minor;
   gchar *catalog, *tooltip;
@@ -3158,9 +3158,9 @@ glade_project_verify_property_internal (GladeProject    *project,
   if (!forwidget && (glade_property_get_state (property) & GLADE_STATE_CHANGED) == 0)
     return;
 
-  pclass       = glade_property_get_class (property);
-  pspec        = glade_property_class_get_pspec (pclass);
-  prop_adaptor = glade_property_class_get_adaptor (pclass);
+  pdef         = glade_property_get_def (property);
+  pspec        = glade_property_def_get_pspec (pdef);
+  prop_adaptor = glade_property_def_get_adaptor (pdef);
   adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
 
   g_object_get (adaptor, "catalog", &catalog, NULL);
@@ -3168,10 +3168,10 @@ glade_project_verify_property_internal (GladeProject    *project,
                                             &target_major, &target_minor);
 
   if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
-      !GPC_VERSION_CHECK (pclass, target_major, target_minor))
+      !GPC_VERSION_CHECK (pdef, target_major, target_minor))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Property '%s' of adaptor %s not available in version %d.%d\n",
-                                   glade_property_class_id (pclass),
+                                   glade_property_def_id (pclass),
                                    glade_widget_adaptor_get_name (adaptor),
                                    target_major, target_minor));
 
@@ -3179,8 +3179,8 @@ glade_project_verify_property_internal (GladeProject    *project,
         {
           tooltip = g_strdup_printf (PROP_VERSION_CONFLICT_MSGFMT,
                                      catalog,
-                                     glade_property_class_since_major (pclass),
-                                     glade_property_class_since_minor (pclass),
+                                     glade_property_def_since_major (pdef),
+                                     glade_property_def_since_minor (pdef),
                                      catalog, target_major, target_minor);
 
           glade_property_set_support_warning (property, FALSE, tooltip);
@@ -3188,21 +3188,21 @@ glade_project_verify_property_internal (GladeProject    *project,
         }
       else
         g_string_append_printf (string,
-                                glade_property_class_get_is_packing (pclass) ?
+                                glade_property_def_get_is_packing (pdef) ?
                                 PACK_PROP_VERSION_CONFLICT_FMT :
                                   PROP_VERSION_CONFLICT_FMT,
                                   path_name,
-                                  glade_property_class_get_name (pclass),
+                                  glade_property_def_get_name (pdef),
                                   glade_widget_adaptor_get_title (adaptor),
                                   catalog,
-                                  glade_property_class_since_major (pclass),
-                                  glade_property_class_since_minor (pclass));
+                                  glade_property_def_since_major (pdef),
+                                  glade_property_def_since_minor (pdef));
     }
   else if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
-           glade_property_class_deprecated (pclass))
+           glade_property_def_deprecated (pdef))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Property '%s' of adaptor %s is deprecated\n",
-                                   glade_property_class_id (pclass),
+                                   glade_property_def_id (pdef),
                                    glade_widget_adaptor_get_name (adaptor)));
 
       if (forwidget)
@@ -3211,7 +3211,7 @@ glade_project_verify_property_internal (GladeProject    *project,
         g_string_append_printf (string,
                                 PROP_DEPRECATED_FMT,
                                 path_name,
-                                glade_property_class_get_name (pclass),
+                                glade_property_def_get_name (pdef),
                                 glade_widget_adaptor_get_title (adaptor));
     }
   else if (forwidget)

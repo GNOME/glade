@@ -35,7 +35,6 @@
 #include "glade.h"
 #include "glade-widget-adaptor.h"
 #include "glade-xml-utils.h"
-#include "glade-property-class.h"
 #include "glade-signal.h"
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
@@ -69,19 +68,19 @@ struct _GladeWidgetAdaptorPrivate
   gchar       *missing_icon;        /* the name of the missing icon if it was not found */
 
   gchar       *title;               /* Translated class name used in the UI */
-  GList       *properties;          /* List of GladePropertyClass objects.
+  GList       *properties;          /* List of GladePropertyDef objects.
                                      * [see glade-property.h] this list contains
                                      * properties about the widget that we are going
                                      * to modify. Like "title", "label", "rows" .
                                      * Each property creates an input in the propety
                                      * editor.
                                      */
-  GList       *packing_props;       /* List of GladePropertyClass objects that describe
+  GList       *packing_props;       /* List of GladePropertyDef objects that describe
                                      * properties for child objects packing definition -
                                      * note there may be more than one type of child supported
                                      * by a widget and thus they may have different sets
                                      * of properties for each type - this association is
-                                     * managed on the GladePropertyClass proper.
+                                     * managed on the GladePropertyDef proper.
                                      */
   GList       *signals;              /* List of GladeSignalDef objects */
   GList       *child_packings;       /* Default packing property values */
@@ -398,11 +397,13 @@ gwa_clone_parent_properties (GladeWidgetAdaptor *adaptor, gboolean is_packing)
 
       for (list = proplist; list; list = list->next)
         {
-          GladePropertyClass *pclass = glade_property_class_clone (list->data, reset_version);
+          GladePropertyDef *pdef = glade_property_def_clone (list->data);
+          if (reset_version)
+            _glade_property_def_reset_version (pdef);
 
-          glade_property_class_set_adaptor (pclass, adaptor);
+          glade_property_def_set_adaptor (pdef, adaptor);
 
-          properties = g_list_prepend (properties, pclass);
+          properties = g_list_prepend (properties, pdef);
         }
     }
 
@@ -416,7 +417,7 @@ gwa_setup_introspected_props_from_pspecs (GladeWidgetAdaptor *adaptor,
                                           gboolean            is_packing)
 {
   GladeWidgetAdaptor *parent_adaptor = gwa_get_parent_adaptor (adaptor);
-  GladePropertyClass *property_class;
+  GladePropertyDef *property_def;
   gint i;
   GList *list = NULL;
 
@@ -425,15 +426,15 @@ gwa_setup_introspected_props_from_pspecs (GladeWidgetAdaptor *adaptor,
       if (parent_adaptor == NULL ||
           /* Dont create it if it already exists */
           (!is_packing &&
-           !glade_widget_adaptor_get_property_class (parent_adaptor,
-                                                     specs[i]->name)) ||
+           !glade_widget_adaptor_get_property_def (parent_adaptor,
+                                                   specs[i]->name)) ||
           (is_packing &&
-           !glade_widget_adaptor_get_pack_property_class (parent_adaptor,
-                                                          specs[i]->name)))
+           !glade_widget_adaptor_get_pack_property_def (parent_adaptor,
+                                                        specs[i]->name)))
         {
-          if ((property_class =
-               glade_property_class_new_from_spec (adaptor, specs[i])) != NULL)
-            list = g_list_prepend (list, property_class);
+          if ((property_def =
+               glade_property_def_new_from_spec (adaptor, specs[i])) != NULL)
+            list = g_list_prepend (list, property_def);
         }
     }
 
@@ -479,7 +480,7 @@ gwa_setup_properties (GladeWidgetAdaptor *adaptor,
   if (is_packing)
     {
       /* We have to mark packing properties from GladeWidgetAdaptor
-       * because GladePropertyClass doesnt have a valid parent GType
+       * because GladePropertyDef doesnt have a valid parent GType
        * to introspect it.
        *
        * (which could be used to call gtk_container_class_find_child_property()
@@ -487,9 +488,9 @@ gwa_setup_properties (GladeWidgetAdaptor *adaptor,
        */
       for (l = adaptor->priv->packing_props; l; l = l->next)
         {
-          GladePropertyClass *property_class = l->data;
+          GladePropertyDef *property_def = l->data;
 
-          glade_property_class_set_is_packing (property_class, TRUE);
+          glade_property_def_set_is_packing (property_def, TRUE);
         }
     }
 }
@@ -726,11 +727,11 @@ glade_widget_adaptor_finalize (GObject *object)
 
   /* Free properties and signals */
   g_list_free_full (adaptor->priv->properties,
-                    (GDestroyNotify) glade_property_class_free);
+                    (GDestroyNotify) glade_property_def_free);
   adaptor->priv->properties = NULL;
 
   g_list_free_full (adaptor->priv->packing_props,
-                    (GDestroyNotify) glade_property_class_free);
+                    (GDestroyNotify) glade_property_def_free);
   adaptor->priv->packing_props = NULL;
 
   g_list_free_full (adaptor->priv->signals,
@@ -1063,10 +1064,10 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor *adaptor,
   /* Write the properties */
   for (props = glade_widget_get_properties (widget); props; props = props->next)
     {
-      GladeProperty      *property = props->data;
-      GladePropertyClass *klass = glade_property_get_class (property);
+      GladeProperty    *property = props->data;
+      GladePropertyDef *def = glade_property_get_def (property);
 
-      if (glade_property_class_save (klass) && 
+      if (glade_property_def_save (def) && 
           glade_property_get_enabled (property))
         glade_property_write (GLADE_PROPERTY (props->data), context, node);
     }
@@ -1185,10 +1186,10 @@ glade_widget_adaptor_object_write_child (GladeWidgetAdaptor *adaptor,
 
   for (props = glade_widget_get_packing_properties (widget); props; props = props->next)
     {
-      GladeProperty      *property = props->data;
-      GladePropertyClass *klass = glade_property_get_class (property);
+      GladeProperty    *property = props->data;
+      GladePropertyDef *def = glade_property_get_def (property);
 
-      if (glade_property_class_save (klass) && 
+      if (glade_property_def_save (def) && 
           glade_property_get_enabled (property))
         glade_property_write (GLADE_PROPERTY (props->data),
                               context, packing_node);
@@ -1265,28 +1266,28 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
 
 static GladeEditorProperty *
 glade_widget_adaptor_object_create_eprop (GladeWidgetAdaptor *adaptor,
-                                          GladePropertyClass *klass,
+                                          GladePropertyDef   *def,
                                           gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
   GType                type = 0;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   /* Find the right type of GladeEditorProperty for this
-   * GladePropertyClass.
+   * GladePropertyDef.
    */
   if ((type = glade_widget_adaptor_get_eprop_type (pspec)) == 0)
     return NULL;
 
   /* special case for string specs that denote themed application icons. */
-  if (glade_property_class_themed_icon (klass))
+  if (glade_property_def_themed_icon (def))
     type = GLADE_TYPE_EPROP_NAMED_ICON;
 
   /* Create and return the correct type of GladeEditorProperty */
   eprop = g_object_new (type,
-                        "property-class", klass,
+                        "property-def", def,
                         "use-command", use_command, NULL);
 
   return eprop;
@@ -1294,10 +1295,10 @@ glade_widget_adaptor_object_create_eprop (GladeWidgetAdaptor *adaptor,
 
 static gchar *
 glade_widget_adaptor_object_string_from_value (GladeWidgetAdaptor *adaptor,
-                                               GladePropertyClass *klass,
+                                               GladePropertyDef   *def,
                                                const GValue       *value)
 {
-  return glade_property_class_make_string_from_gvalue (klass, value);
+  return glade_property_def_make_string_from_gvalue (def, value);
 }
 
 static GladeEditable *
@@ -1843,7 +1844,7 @@ glade_widget_adaptor_get_book (GladeWidgetAdaptor *adaptor)
  * glade_widget_adaptor_get_properties:
  * @adaptor: A #GladeWidgetAdaptor
  *
- * Returns: (transfer none) (element-type GladePropertyClass): a list of #GladePropertyClass
+ * Returns: (transfer none) (element-type GladePropertyDef): a list of #GladePropertyDef
  */
 G_CONST_RETURN GList *
 glade_widget_adaptor_get_properties (GladeWidgetAdaptor *adaptor)
@@ -1857,7 +1858,7 @@ glade_widget_adaptor_get_properties (GladeWidgetAdaptor *adaptor)
  * glade_widget_adaptor_get_packing_props:
  * @adaptor: A #GladeWidgetAdaptor
  *
- * Returns: (transfer none) (element-type GladePropertyClass): a list of #GladePropertyClass
+ * Returns: (transfer none) (element-type GladePropertyDef): a list of #GladePropertyDef
  */
 G_CONST_RETURN GList *
 glade_widget_adaptor_get_packing_props (GladeWidgetAdaptor *adaptor)
@@ -2061,7 +2062,7 @@ gwa_update_properties_from_node (GladeWidgetAdaptor *adaptor,
     {
       gchar *id;
       GList *list;
-      GladePropertyClass *property_class;
+      GladePropertyDef *property_def;
       gboolean updated;
 
       if (!glade_xml_node_verify (child, GLADE_TAG_PROPERTY))
@@ -2078,34 +2079,34 @@ gwa_update_properties_from_node (GladeWidgetAdaptor *adaptor,
       /* find the property in our list, if not found append a new property */
       for (list = *properties; list && list->data; list = list->next)
         {
-          property_class = GLADE_PROPERTY_CLASS (list->data);
-          if (glade_property_class_id (property_class) != NULL &&
-              g_ascii_strcasecmp (id, glade_property_class_id (property_class)) == 0)
+          property_def = GLADE_PROPERTY_DEF (list->data);
+          if (glade_property_def_id (property_def) != NULL &&
+              g_ascii_strcasecmp (id, glade_property_def_id (property_def)) == 0)
             break;
         }
 
       if (list)
         {
-          property_class = GLADE_PROPERTY_CLASS (list->data);
+          property_def = GLADE_PROPERTY_DEF (list->data);
         }
       else
         {
-          property_class = glade_property_class_new (adaptor, id);
+          property_def = glade_property_def_new (adaptor, id);
 
           /* When creating new virtual packing properties,
            * make sure we mark them as such here. 
            */
           if (is_packing)
-            glade_property_class_set_is_packing (property_class, TRUE);
+            glade_property_def_set_is_packing (property_def, TRUE);
 
-          *properties = g_list_append (*properties, property_class);
+          *properties = g_list_append (*properties, property_def);
           list = g_list_last (*properties);
         }
 
-      if ((updated = glade_property_class_update_from_node (child, 
-                                                            adaptor->priv->type, 
-                                                            &property_class, 
-                                                            domain)) == FALSE)
+      if ((updated = glade_property_def_update_from_node (child, 
+                                                          adaptor->priv->type,
+                                                          &property_def,
+                                                          domain)) == FALSE)
         {
           g_warning ("failed to update %s property of %s from xml",
                      id, adaptor->priv->name);
@@ -2114,7 +2115,7 @@ gwa_update_properties_from_node (GladeWidgetAdaptor *adaptor,
         }
 
       /* if this pointer was set to null, its a property we dont handle. */
-      if (!property_class)
+      if (!property_def)
         *properties = g_list_delete_link (*properties, list);
 
       g_free (id);
@@ -2269,24 +2270,24 @@ gwa_update_properties_from_type (GladeWidgetAdaptor *adaptor,
 
   for (i = 0; i < n_specs; i++)
     {
-      GladePropertyClass *property_class;
+      GladePropertyDef *property_def;
       GList *list;
 
       /* find the property in our list, if not found append a new property */
       for (list = *properties; list && list->data; list = list->next)
         {
-          property_class = GLADE_PROPERTY_CLASS (list->data);
-          if (glade_property_class_id (property_class) != NULL &&
-              g_ascii_strcasecmp (specs[i]->name, glade_property_class_id (property_class)) == 0)
+          property_def = GLADE_PROPERTY_DEF (list->data);
+          if (glade_property_def_id (property_def) != NULL &&
+              g_ascii_strcasecmp (specs[i]->name, glade_property_def_id (property_def)) == 0)
             break;
         }
 
       if (list == NULL && (specs[i]->flags & G_PARAM_WRITABLE) &&
           (spec = pspec_dup (specs[i])))
         {
-          property_class = glade_property_class_new (adaptor, spec->name);
+          property_def = glade_property_def_new (adaptor, spec->name);
 
-          glade_property_class_set_pspec (property_class, spec);
+          glade_property_def_set_pspec (property_def, spec);
 
           /* Make sure we can tell properties apart by there 
            * owning class.
@@ -2294,19 +2295,19 @@ gwa_update_properties_from_type (GladeWidgetAdaptor *adaptor,
           spec->owner_type = adaptor->priv->type;
 
           /* Disable properties by default since the does not really implement them */
-          glade_property_class_set_virtual (property_class, TRUE);
-          glade_property_class_set_ignore (property_class, TRUE);
+          glade_property_def_set_virtual (property_def, TRUE);
+          glade_property_def_set_ignore (property_def, TRUE);
 
-          glade_property_class_set_tooltip (property_class, g_param_spec_get_blurb (spec));
-          glade_property_class_set_name (property_class, g_param_spec_get_nick (spec));
+          glade_property_def_set_tooltip (property_def, g_param_spec_get_blurb (spec));
+          glade_property_def_set_name (property_def, g_param_spec_get_nick (spec));
 
           if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
-            glade_property_class_set_construct_only (property_class, TRUE);
+            glade_property_def_set_construct_only (property_def, TRUE);
 
-          glade_property_class_load_defaults_from_spec (property_class);
-          glade_property_class_set_is_packing (property_class, is_packing);
+          glade_property_def_load_defaults_from_spec (property_def);
+          glade_property_def_set_is_packing (property_def, is_packing);
 
-          *properties = g_list_append (*properties, property_class);
+          *properties = g_list_append (*properties, property_def);
         }
     }
 
@@ -2530,11 +2531,11 @@ gwa_displayable_values_check (GladeWidgetAdaptor *adaptor, gboolean packing)
 
   for (l = p; l; l = g_list_next (l))
     {
-      GladePropertyClass *klass = l->data;
-      GParamSpec         *pspec = glade_property_class_get_pspec (klass);
+      GladePropertyDef *def = l->data;
+      GParamSpec       *pspec = glade_property_def_get_pspec (def);
 
       if (adaptor->priv->type == pspec->owner_type && 
-          glade_property_class_is_visible (klass) &&
+          glade_property_def_is_visible (def) &&
           (G_IS_PARAM_SPEC_ENUM (pspec) ||
            G_IS_PARAM_SPEC_FLAGS (pspec)) &&
           !glade_type_has_displayable_values (pspec->value_type) &&
@@ -2545,7 +2546,7 @@ gwa_displayable_values_check (GladeWidgetAdaptor *adaptor, gboolean packing)
           if (g_getenv (GLADE_ENV_TESTING) == NULL)
             g_message ("No displayable values for %sproperty %s::%s",
                        (packing) ? "child " : "", adaptor->priv->name, 
-                       glade_property_class_id (klass));
+                       glade_property_def_id (def));
         }
     }
 }
@@ -2941,8 +2942,8 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
   for (parent_type = adaptor->priv->type;
        parent_type != 0; parent_type = g_type_parent (parent_type))
     {
-      glade_property_class_set_weights (&adaptor->priv->properties, parent_type);
-      glade_property_class_set_weights (&adaptor->priv->packing_props, parent_type);
+      glade_property_def_set_weights (&adaptor->priv->properties, parent_type);
+      glade_property_def_set_weights (&adaptor->priv->packing_props, parent_type);
     }
 
   gwa_displayable_values_check (adaptor, FALSE);
@@ -3165,52 +3166,51 @@ glade_widget_adaptor_from_pspec (GladeWidgetAdaptor *adaptor,
 }
 
 /**
- * glade_widget_adaptor_get_property_class:
+ * glade_widget_adaptor_get_property_def:
  * @adaptor: a #GladeWidgetAdaptor
  * @name: a string
  *
- * Retrieves the #GladePropertyClass for @name in @adaptor
+ * Retrieves the #GladePropertyDef for @name in @adaptor
  *
- * Returns: A #GladePropertyClass object
+ * Returns: (transfer none) (nullable): A #GladePropertyDef object
  */
-GladePropertyClass *
-glade_widget_adaptor_get_property_class (GladeWidgetAdaptor *adaptor,
-                                         const gchar        *name)
+GladePropertyDef *
+glade_widget_adaptor_get_property_def (GladeWidgetAdaptor *adaptor,
+                                       const gchar        *name)
 {
   GList *list;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
 
   for (list = adaptor->priv->properties; list && list->data; list = list->next)
     {
-      pclass = list->data;
-      if (strcmp (glade_property_class_id (pclass), name) == 0)
-        return pclass;
+      pdef = list->data;
+      if (strcmp (glade_property_def_id (pdef), name) == 0)
+        return pdef;
     }
   return NULL;
 }
 
 /**
- * glade_widget_adaptor_get_pack_property_class:
+ * glade_widget_adaptor_get_pack_property_def:
  * @adaptor: a #GladeWidgetAdaptor
  * @name: a string
  *
- * Retrieves the #GladePropertyClass for @name in 
- * @adaptor's child properties
+ * Retrieves the #GladePropertyDef for @name in  @adaptor's child properties
  * 
- * Returns: A #GladePropertyClass object
+ * Returns: (transfer none) (nullable): A #GladePropertyDef object
  */
-GladePropertyClass *
-glade_widget_adaptor_get_pack_property_class (GladeWidgetAdaptor *adaptor,
-                                              const gchar        *name)
+GladePropertyDef *
+glade_widget_adaptor_get_pack_property_def (GladeWidgetAdaptor *adaptor,
+                                            const gchar        *name)
 {
   GList *list;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
 
   for (list = adaptor->priv->packing_props; list && list->data; list = list->next)
     {
-      pclass = list->data;
-      if (strcmp (glade_property_class_id (pclass), name) == 0)
-        return pclass;
+      pdef = list->data;
+      if (strcmp (glade_property_def_id (pdef), name) == 0)
+        return pdef;
     }
   return NULL;
 }
@@ -3221,7 +3221,8 @@ glade_widget_adaptor_get_pack_property_class (GladeWidgetAdaptor *adaptor,
  * @construct: whether to return construct params or not construct params
  * @n_params: return location if any defaults are specified for this class.
  * 
- * Returns: A list of params for use in g_object_newv ()
+ * Returns: (array length=n_params) (element-type GParameter) (transfer full):
+ * A list of params for use in g_object_newv ()
  */
 GParameter *
 glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
@@ -3231,7 +3232,7 @@ glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
   GArray *params;
   GObjectClass *oclass;
   GParamSpec **pspec;
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   guint n_props, i;
 
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -3247,15 +3248,14 @@ glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
     {
       GParameter parameter = { 0, };
 
-      pclass = glade_widget_adaptor_get_property_class
-          (adaptor, pspec[i]->name);
+      pdef = glade_widget_adaptor_get_property_def (adaptor, pspec[i]->name);
 
       /* Ignore properties based on some criteria
        */
-      if (pclass == NULL ||     /* Unaccounted for in the builder */
-          glade_property_class_get_virtual (pclass) || /* should not be set before 
-                                                          GladeWidget wrapper exists */
-          glade_property_class_get_ignore (pclass))    /* Catalog explicitly ignores the object */
+      if (pdef == NULL ||     /* Unaccounted for in the builder */
+          glade_property_def_get_virtual (pdef) || /* should not be set before 
+                                                      GladeWidget wrapper exists */
+          glade_property_def_get_ignore (pdef))    /* Catalog explicitly ignores the object */
         continue;
 
       if (construct &&
@@ -3267,7 +3267,7 @@ glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
         continue;
 
 
-      if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class_get_default (pclass)),
+      if (g_value_type_compatible (G_VALUE_TYPE (glade_property_def_get_default (pdef)),
                                    pspec[i]->value_type) == FALSE)
         {
           g_critical ("Type mismatch on %s property of %s",
@@ -3276,13 +3276,13 @@ glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
         }
 
       if (g_param_values_cmp (pspec[i], 
-                              glade_property_class_get_default (pclass), 
-                              glade_property_class_get_original_default (pclass)) == 0)
+                              glade_property_def_get_default (pdef), 
+                              glade_property_def_get_original_default (pdef)) == 0)
         continue;
 
       parameter.name = pspec[i]->name;  /* These are not copied/freed */
       g_value_init (&parameter.value, pspec[i]->value_type);
-      g_value_copy (glade_property_class_get_default (pclass), &parameter.value);
+      g_value_copy (glade_property_def_get_default (pdef), &parameter.value);
 
       g_array_append_val (params, parameter);
     }
@@ -3802,7 +3802,7 @@ glade_widget_adaptor_replace_child (GladeWidgetAdaptor *adaptor,
 gboolean
 glade_widget_adaptor_query (GladeWidgetAdaptor *adaptor)
 {
-  GladePropertyClass *pclass;
+  GladePropertyDef *pdef;
   GList *l;
 
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
@@ -3812,9 +3812,9 @@ glade_widget_adaptor_query (GladeWidgetAdaptor *adaptor)
 
   for (l = adaptor->priv->properties; l; l = l->next)
     {
-      pclass = l->data;
+      pdef = l->data;
 
-      if (glade_property_class_query (pclass))
+      if (glade_property_def_query (pdef))
         return TRUE;
     }
 
@@ -4355,29 +4355,29 @@ glade_widget_adaptor_write_child (GladeWidgetAdaptor *adaptor,
 /**
  * glade_widget_adaptor_create_eprop:
  * @adaptor: A #GladeWidgetAdaptor
- * @klass: The #GladePropertyClass to be edited
+ * @def: The #GladePropertyDef to be edited
  * @use_command: whether to use the GladeCommand interface
  * to commit property changes
  * 
- * Creates a GladeEditorProperty to edit @klass
+ * Creates a GladeEditorProperty to edit @def
  *
  * Returns: (transfer full): A newly created #GladeEditorProperty
  */
 GladeEditorProperty *
 glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
-                                   GladePropertyClass *klass,
+                                   GladePropertyDef   *def,
                                    gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (def), NULL);
 
   eprop = GLADE_WIDGET_ADAPTOR_GET_CLASS
-      (adaptor)->create_eprop (adaptor, klass, use_command);
+      (adaptor)->create_eprop (adaptor, def, use_command);
 
   /* XXX we really need to print a g_error() here, exept we are
    * now using this func to test for unsupported properties
-   * at init time from glade-property-class */
+   * at init time from glade-property-def */
 
   return eprop;
 }
@@ -4387,12 +4387,12 @@ glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
 /**
  * glade_widget_adaptor_create_eprop_by_name:
  * @adaptor: A #GladeWidgetAdaptor
- * @property_id: the string if of the coresponding #GladePropertyClass to be edited
+ * @property_id: the string if of the coresponding #GladePropertyDef to be edited
  * @packing: whether this reffers to a packing property
  * @use_command: whether to use the GladeCommand interface
  * to commit property changes
  * 
- * Creates a #GladeEditorProperty to edit #GladePropertyClass @name in @adaptor
+ * Creates a #GladeEditorProperty to edit #GladePropertyDef @name in @adaptor
  *
  * Returns: (transfer full): A newly created #GladeEditorProperty
  */
@@ -4402,26 +4402,26 @@ glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
                                            gboolean            packing,
                                            gboolean            use_command)
 {
-  GladePropertyClass *klass;
+  GladePropertyDef *def;
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
   g_return_val_if_fail (property_id && property_id[0], NULL);
 
   if (packing)
-    klass = glade_widget_adaptor_get_pack_property_class (adaptor, property_id);
+    def = glade_widget_adaptor_get_pack_property_def (adaptor, property_id);
   else
-    klass = glade_widget_adaptor_get_property_class (adaptor, property_id);
+    def = glade_widget_adaptor_get_property_def (adaptor, property_id);
 
-  g_return_val_if_fail (klass != NULL, NULL);
+  g_return_val_if_fail (def != NULL, NULL);
 
   return GLADE_WIDGET_ADAPTOR_GET_CLASS
-      (adaptor)->create_eprop (adaptor, klass, use_command);
+      (adaptor)->create_eprop (adaptor, def, use_command);
 }
 
 
 /**
  * glade_widget_adaptor_string_from_value:
  * @adaptor: A #GladeWidgetAdaptor
- * @klass: The #GladePropertyClass 
+ * @def: The #GladePropertyDef
  * @value: The #GValue to convert to a string
  * 
  * For normal properties this is used to serialize
@@ -4432,15 +4432,15 @@ glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
  */
 gchar *
 glade_widget_adaptor_string_from_value (GladeWidgetAdaptor *adaptor,
-                                        GladePropertyClass *klass,
+                                        GladePropertyDef *def,
                                         const GValue       *value)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), NULL);
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (def), NULL);
   g_return_val_if_fail (value != NULL, NULL);
 
   return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->string_from_value (adaptor,
-                                                                      klass,
+                                                                      def,
                                                                       value);
 }
 

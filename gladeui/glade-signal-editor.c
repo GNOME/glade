@@ -291,12 +291,12 @@ glade_signal_editor_detail_suggestions (GladeSignalEditor *editor,
 
       for (i = 0, l = properties; l; l = g_list_next (l))
         {
-          GladePropertyClass *prop = l->data;
+          GladePropertyDef *pdef = l->data;
 
-          if (!glade_property_class_is_visible (prop) || 
-              glade_property_class_get_virtual (prop)) continue;
+          if (!glade_property_def_is_visible (pdef) || 
+              glade_property_def_get_virtual (pdef)) continue;
 
-          suggestions[i++] = g_strdup (glade_property_class_id (prop));
+          suggestions[i++] = g_strdup (glade_property_def_id (pdef));
         }
       
       suggestions[i] = NULL;

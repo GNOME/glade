@@ -223,7 +223,7 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
   else if (!strcmp (id, "label"))
     glade_gtk_menu_item_set_label (object, value);
   else if (GPC_VERSION_CHECK
-           (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
+           (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
                                                       value);
 }

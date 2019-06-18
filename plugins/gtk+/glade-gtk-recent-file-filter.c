@@ -133,33 +133,33 @@ glade_gtk_filter_write_strings (GladeWidget     *widget,
 
 GladeEditorProperty *
 glade_gtk_recent_file_filter_create_eprop (GladeWidgetAdaptor *adaptor,
-                                           GladePropertyClass *klass, 
+                                           GladePropertyDef   *def, 
                                            gboolean            use_command)
 {
   GladeEditorProperty *eprop;
   GParamSpec          *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_STRING_LIST)
     {
-      eprop = glade_eprop_string_list_new (klass, use_command, FALSE, FALSE);
+      eprop = glade_eprop_string_list_new (def, use_command, FALSE, FALSE);
     }
   else
     eprop = GWA_GET_CLASS
-        (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
+        (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
 
   return eprop;
 }
 
 gchar *
 glade_gtk_recent_file_filter_string_from_value (GladeWidgetAdaptor *adaptor,
-                                                GladePropertyClass *klass,
+                                                GladePropertyDef   *def,
                                                 const GValue       *value)
 {
   GParamSpec *pspec;
 
-  pspec = glade_property_class_get_pspec (klass);
+  pspec = glade_property_def_get_pspec (def);
 
   if (pspec->value_type == GLADE_TYPE_STRING_LIST)
     {
@@ -169,7 +169,7 @@ glade_gtk_recent_file_filter_string_from_value (GladeWidgetAdaptor *adaptor,
     }
   else
     return GWA_GET_CLASS
-        (G_TYPE_OBJECT)->string_from_value (adaptor, klass, value);
+        (G_TYPE_OBJECT)->string_from_value (adaptor, def, value);
 }
 
 void
