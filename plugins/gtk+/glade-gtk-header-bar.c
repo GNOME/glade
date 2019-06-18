@@ -263,7 +263,7 @@ glade_gtk_header_bar_set_use_custom_title (GObject *object,
       for (l = list; l; l = l->next)
         {
           GladeWidgetAction *gwa = l->data;
-          if (!strcmp (glade_widget_action_get_class (gwa)->id, "remove_slot"))
+          if (!strcmp (glade_widget_action_get_def (gwa)->id, "remove_slot"))
             glade_widget_action_set_visible (gwa, FALSE);
         }
     }

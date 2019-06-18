@@ -1485,7 +1485,7 @@ GLADE_ENUM_DATA_TAG
 <TITLE>GladeWidgetAction</TITLE>
 GladeWidgetAction
 glade_widget_action_get_children
-glade_widget_action_get_class
+glade_widget_action_get_def
 glade_widget_action_set_sensitive
 glade_widget_action_get_sensitive
 glade_widget_action_get_visible
@@ -1502,16 +1502,18 @@ GladeWidgetActionPrivate
 </SECTION>
 
 <SECTION>
-<FILE>gw-action-class</FILE>
-<TITLE>GWActionClass</TITLE>
-GWActionClass
-glade_widget_action_class_new
-glade_widget_action_class_free
-glade_widget_action_class_clone
-glade_widget_action_class_set_important
-glade_widget_action_class_set_label
-glade_widget_action_class_set_stock
+<FILE>glade-widget-action-def</FILE>
+<TITLE>GladeWidgetActionDef</TITLE>
+GladeWidgetActionDef
+glade_widget_action_def_new
+glade_widget_action_def_free
+glade_widget_action_def_clone
+glade_widget_action_def_set_important
+glade_widget_action_def_set_label
+glade_widget_action_def_set_stock
 <SUBSECTION Standard>
+GLADE_WIDGET_ACTION_DEF
+glade_widget_action_def_get_type
 </SECTION>
 
 <SECTION>
