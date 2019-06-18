@@ -127,6 +127,8 @@ struct _GladePropertyPrivate {
                                  */
 };
 
+G_DEFINE_TYPE_WITH_PRIVATE (GladeProperty, glade_property, G_TYPE_OBJECT)
+
 enum
 {
   VALUE_CHANGED,
@@ -150,8 +152,6 @@ enum
 
 static GParamSpec *properties[N_PROPERTIES];
 static guint glade_property_signals[LAST_SIGNAL] = { 0 };
-
-static GObjectClass *glade_property_parent_class = NULL;
 
 /*******************************************************************************
                            GladeProperty class methods
@@ -388,7 +388,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
   g_value_reset (property->priv->value);
   g_value_copy (value, property->priv->value);
 
-  GLADE_PROPERTY_GET_KLASS (property)->sync (property);
+  GLADE_PROPERTY_GET_CLASS (property)->sync (property);
 
   glade_property_fix_state (property);
 
@@ -647,13 +647,9 @@ glade_property_init (GladeProperty *property)
 }
 
 static void
-glade_property_klass_init (GladePropertyKlass * prop_class)
+glade_property_class_init (GladePropertyClass * prop_class)
 {
-  GObjectClass *object_class;
-  g_return_if_fail (prop_class != NULL);
-
-  glade_property_parent_class = g_type_class_peek_parent (prop_class);
-  object_class = G_OBJECT_CLASS (prop_class);
+  GObjectClass *object_class = G_OBJECT_CLASS (prop_class);
 
   /* GObjectClass */
   object_class->set_property = glade_property_set_real_property;
@@ -736,7 +732,7 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
       g_signal_new ("value-changed",
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GladePropertyKlass,
+                    G_STRUCT_OFFSET (GladePropertyClass,
                                      value_changed),
                     NULL, NULL,
                     _glade_marshal_VOID__POINTER_POINTER,
@@ -746,39 +742,12 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
       g_signal_new ("tooltip-changed",
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GladePropertyKlass,
+                    G_STRUCT_OFFSET (GladePropertyClass,
                                      tooltip_changed),
                     NULL, NULL,
                     _glade_marshal_VOID__STRING_STRING_STRING,
                     G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_STRING,
                     G_TYPE_STRING);
-
-  g_type_class_add_private (prop_class, sizeof (GladePropertyPrivate));
-}
-
-GType
-glade_property_get_type (void)
-{
-  static GType property_type = 0;
-
-  if (!property_type)
-    {
-      static const GTypeInfo property_info = {
-        sizeof (GladePropertyKlass),    /* Klass is our class */
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) glade_property_klass_init,
-        (GClassFinalizeFunc) NULL,
-        NULL,                   /* class_data */
-        sizeof (GladeProperty),
-        0,                      /* n_preallocs */
-        (GInstanceInitFunc) glade_property_init,
-      };
-      property_type =
-          g_type_register_static (G_TYPE_OBJECT,
-                                  "GladeProperty", &property_info, 0);
-    }
-  return property_type;
 }
 
 /*******************************************************************************
@@ -838,7 +807,7 @@ GladeProperty *
 glade_property_dup (GladeProperty *template_prop, GladeWidget *widget)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (template_prop), NULL);
-  return GLADE_PROPERTY_GET_KLASS (template_prop)->dup (template_prop, widget);
+  return GLADE_PROPERTY_GET_CLASS (template_prop)->dup (template_prop, widget);
 }
 
 static void
@@ -853,7 +822,7 @@ glade_property_reset_common (GladeProperty *property, gboolean original)
   else
     value = glade_property_def_get_default (property->priv->def);
 
-  GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
+  GLADE_PROPERTY_GET_CLASS (property)->set_value (property, value);
 }
 
 /**
@@ -892,7 +861,7 @@ glade_property_default_common (GladeProperty *property, gboolean orig)
   else
     value = glade_property_def_get_default (property->priv->def);
 
-  return GLADE_PROPERTY_GET_KLASS (property)->equals_value (property, value);
+  return GLADE_PROPERTY_GET_CLASS (property)->equals_value (property, value);
 }
 
 /**
@@ -930,7 +899,7 @@ gboolean
 glade_property_equals_value (GladeProperty *property, const GValue *value)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
-  return GLADE_PROPERTY_GET_KLASS (property)->equals_value (property, value);
+  return GLADE_PROPERTY_GET_CLASS (property)->equals_value (property, value);
 }
 
 /**
@@ -950,7 +919,7 @@ glade_property_equals_va_list (GladeProperty *property, va_list vl)
 
   value = glade_property_def_make_gvalue_from_vl (property->priv->def, vl);
 
-  ret = GLADE_PROPERTY_GET_KLASS (property)->equals_value (property, value);
+  ret = GLADE_PROPERTY_GET_CLASS (property)->equals_value (property, value);
 
   g_value_unset (value);
   g_free (value);
@@ -993,7 +962,7 @@ glade_property_set_value (GladeProperty *property, const GValue *value)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
   g_return_val_if_fail (value != NULL, FALSE);
-  return GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
+  return GLADE_PROPERTY_GET_CLASS (property)->set_value (property, value);
 }
 
 /**
@@ -1013,7 +982,7 @@ glade_property_set_va_list (GladeProperty *property, va_list vl)
 
   value = glade_property_def_make_gvalue_from_vl (property->priv->def, vl);
 
-  success = GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
+  success = GLADE_PROPERTY_GET_CLASS (property)->set_value (property, value);
 
   g_value_unset (value);
   g_free (value);
@@ -1055,7 +1024,7 @@ glade_property_get_value (GladeProperty *property, GValue *value)
 {
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (value != NULL);
-  GLADE_PROPERTY_GET_KLASS (property)->get_value (property, value);
+  GLADE_PROPERTY_GET_CLASS (property)->get_value (property, value);
 }
 
 /**
@@ -1122,7 +1091,7 @@ void
 glade_property_sync (GladeProperty *property)
 {
   g_return_if_fail (GLADE_IS_PROPERTY (property));
-  GLADE_PROPERTY_GET_KLASS (property)->sync (property);
+  GLADE_PROPERTY_GET_CLASS (property)->sync (property);
 }
 
 /**
@@ -1135,7 +1104,7 @@ void
 glade_property_load (GladeProperty *property)
 {
   g_return_if_fail (GLADE_IS_PROPERTY (property));
-  GLADE_PROPERTY_GET_KLASS (property)->load (property);
+  GLADE_PROPERTY_GET_CLASS (property)->load (property);
 }
 
 /**
@@ -1191,7 +1160,7 @@ glade_property_read (GladeProperty *property,
       gvalue = 
         glade_property_def_make_gvalue_from_string (property->priv->def, value, project);
 
-      GLADE_PROPERTY_GET_KLASS (property)->set_value (property, gvalue);
+      GLADE_PROPERTY_GET_CLASS (property)->set_value (property, gvalue);
 
       g_value_unset (gvalue);
       g_free (gvalue);

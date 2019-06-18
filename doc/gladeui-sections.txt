@@ -510,12 +510,12 @@ glade_signal_set_userdata
 <SUBSECTION Standard>
 GLADE_SIGNAL
 GLADE_IS_SIGNAL
-GLADE_IS_SIGNAL_KLASS
+GLADE_IS_SIGNAL_CLASS
 GLADE_TYPE_SIGNAL
-GladeSignalKlass
+GladeSignalClass
 GladeSignalPrivate
-GLADE_SIGNAL_GET_KLASS
-GLADE_SIGNAL_KLASS
+GLADE_SIGNAL_GET_CLASS
+GLADE_SIGNAL_CLASS
 glade_signal_get_type
 </SECTION>
 
@@ -524,11 +524,13 @@ glade_signal_get_type
 <TITLE>GladeSignalDef</TITLE>
 GladeSignalDef
 glade_signal_def_new
+glade_signal_def_clone
 glade_signal_def_free
 glade_signal_def_update_from_node
 glade_signal_def_get_adaptor
 glade_signal_def_get_flags
 glade_signal_def_get_name
+glade_signal_def_get_object_type_name
 glade_signal_def_set_deprecated
 glade_signal_def_deprecated
 glade_signal_def_set_since
@@ -1036,10 +1038,10 @@ GLADE_PROPERTY
 GLADE_IS_PROPERTY
 GLADE_TYPE_PROPERTY
 glade_property_get_type
-GLADE_PROPERTY_KLASS
-GLADE_IS_PROPERTY_KLASS
-GLADE_PROPERTY_GET_KLASS
-GladePropertyKlass
+GLADE_PROPERTY_CLASS
+GLADE_IS_PROPERTY_CLASS
+GLADE_PROPERTY_GET_CLASS
+GladePropertyClass
 GladePropertyPrivate
 glade_property_state_get_type
 GLADE_TYPE_PROPERTY_STATE
@@ -1512,6 +1514,7 @@ glade_widget_action_def_set_important
 glade_widget_action_def_set_label
 glade_widget_action_def_set_stock
 <SUBSECTION Standard>
+GLADE_TYPE_WIDGET_ACTION_DEF
 GLADE_WIDGET_ACTION_DEF
 glade_widget_action_def_get_type
 </SECTION>

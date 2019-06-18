@@ -55,16 +55,7 @@ enum {
   N_PROPERTIES
 };
 
-/* We need these defines because GladeSignalClass is another object type!
- * So we use GladeSignalKlass as the class name for GladeSignal
- */
-#define GladeSignalClass GladeSignalKlass
-#define glade_signal_class_init glade_signal_klass_init
-
 G_DEFINE_TYPE_WITH_PRIVATE (GladeSignal, glade_signal, G_TYPE_OBJECT)
-
-#undef GladeSignalClass
-#undef glade_signal_class_init
 
 static GParamSpec *properties[N_PROPERTIES];
 
@@ -162,12 +153,9 @@ glade_signal_init (GladeSignal *signal)
 }
 
 static void
-glade_signal_klass_init (GladeSignalKlass *klass)
+glade_signal_class_init (GladeSignalClass *klass)
 {
-  GObjectClass *object_class;
-
-  object_class = G_OBJECT_CLASS (klass);
-  glade_signal_parent_class = g_type_class_peek_parent (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->set_property = glade_signal_set_property;
   object_class->get_property = glade_signal_get_property;
