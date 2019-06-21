@@ -120,7 +120,7 @@ glade_gtk_parse_atk_relation (GladeProperty *property, GladeXmlNode *node)
           else
             {
               tmp = g_strdup_printf ("%s%s%s", string,
-                                     GPC_OBJECT_DELIMITER, target);
+                                     GLADE_PROPERTY_DEF_OBJECT_DELIMITER, target);
               string = (g_free (string), tmp);
             }
 
@@ -445,7 +445,7 @@ glade_gtk_widget_write_atk_relation (GladeProperty   *property,
        (glade_property_def_get_adaptor (glade_property_get_def (property)),
         glade_property_get_def (property), glade_property_inline_value (property))) != NULL)
     {
-      if ((split = g_strsplit (value, GPC_OBJECT_DELIMITER, 0)) != NULL)
+      if ((split = g_strsplit (value, GLADE_PROPERTY_DEF_OBJECT_DELIMITER, 0)) != NULL)
         {
           for (i = 0; split[i] != NULL; i++)
             {
@@ -800,7 +800,7 @@ create_command_property_list (GladeWidget *gnew, GList *saved_props)
       GladePropertyDef *pdef = glade_property_get_def (property);
       GladeProperty *orig_prop =
         glade_widget_get_pack_property (gnew, glade_property_def_id (pdef));
-      GCSetPropData *pdata = g_new0 (GCSetPropData, 1);
+      GladeCommandSetPropData *pdata = g_new0 (GladeCommandSetPropData, 1);
 
       pdata->property = orig_prop;
       pdata->old_value = g_new0 (GValue, 1);

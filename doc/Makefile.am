@@ -61,6 +61,7 @@ IGNORE_HFILES=\
 	glade.h \
 	glade-design-layout.h \
 	glade-popup.h \
+	glade-private.h \
 	glade-gtk.h \
 	glade-palette-expander.h \
 	glade-palette-item.h \

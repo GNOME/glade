@@ -1101,7 +1101,7 @@ static void
 glade_editor_reset_properties (GList *props)
 {
   GList *list, *sdata_list = NULL;
-  GCSetPropData *sdata;
+  GladeCommandSetPropData *sdata;
   GladeProperty *prop;
   GladeWidget   *widget;
   GladeProject *project = NULL;
@@ -1112,7 +1112,7 @@ glade_editor_reset_properties (GList *props)
       widget  = glade_property_get_widget (prop);
       project = glade_widget_get_project (widget);
 
-      sdata = g_new (GCSetPropData, 1);
+      sdata = g_new (GladeCommandSetPropData, 1);
       sdata->property = prop;
 
       sdata->old_value = g_new0 (GValue, 1);

@@ -444,7 +444,7 @@ glade_property_def_make_string_from_objects (GladePropertyDef *
       else if (obj_str != NULL)
         {
           tmp =
-              g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER, obj_str);
+              g_strdup_printf ("%s%s%s", string, GLADE_PROPERTY_DEF_OBJECT_DELIMITER, obj_str);
           string = (g_free (string), tmp);
           g_free (obj_str);
         }
@@ -789,7 +789,7 @@ glade_property_def_make_objects_from_string (GladePropertyDef *
   gchar **split;
   guint i;
 
-  if ((split = g_strsplit (string, GPC_OBJECT_DELIMITER, 0)) != NULL)
+  if ((split = g_strsplit (string, GLADE_PROPERTY_DEF_OBJECT_DELIMITER, 0)) != NULL)
     {
       for (i = 0; split[i]; i++)
         {

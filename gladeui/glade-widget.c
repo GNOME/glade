@@ -954,7 +954,7 @@ glade_widget_constructor (GType                  type,
   glade_widget_verify (gwidget);
 
   if (g_str_has_prefix (glade_widget_adaptor_get_name (gwidget->priv->adaptor),
-                        GWA_INSTANTIABLE_PREFIX))
+                        GLADE_WIDGET_ADAPTOR_INSTANTIABLE_PREFIX))
     glade_widget_set_is_composite (gwidget, TRUE);
 
   return ret_obj;
@@ -4109,7 +4109,7 @@ glade_widget_read (GladeProject *project,
           /* Check if there is an instantiable version for this abstract class */
           if (G_TYPE_IS_ABSTRACT (template_type))
             {
-              gchar *instantiable = g_strconcat (GWA_INSTANTIABLE_PREFIX,
+              gchar *instantiable = g_strconcat (GLADE_WIDGET_ADAPTOR_INSTANTIABLE_PREFIX,
                                                  template_parent,
                                                  NULL);
               if (glade_util_get_type_from_name (instantiable, FALSE))

@@ -83,7 +83,7 @@ glade_gtk_entry_buffer_set_property (GladeWidgetAdaptor * adaptor,
                                          gwidget);
 
     }
-  else if (GPC_VERSION_CHECK
+  else if (GLADE_PROPERTY_DEF_VERSION_CHECK
            (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }

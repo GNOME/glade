@@ -1873,7 +1873,7 @@ glade_project_introspect_gtk_version (GladeProject *project)
 
           /* Check GTK+ property class versions */
           if (is_gtk_adaptor &&
-              !GPC_VERSION_CHECK (pdef, target_major, target_minor))
+              !GLADE_PROPERTY_DEF_VERSION_CHECK (pdef, target_major, target_minor))
             {
               target_major = glade_property_def_since_major (pdef);
               target_minor = glade_property_def_since_minor (pdef);
@@ -3168,7 +3168,7 @@ glade_project_verify_property_internal (GladeProject    *project,
                                             &target_major, &target_minor);
 
   if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
-      !GPC_VERSION_CHECK (pdef, target_major, target_minor))
+      !GLADE_PROPERTY_DEF_VERSION_CHECK (pdef, target_major, target_minor))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Property '%s' of adaptor %s not available in version %d.%d\n",
                                    glade_property_def_id (pclass),

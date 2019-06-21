@@ -238,7 +238,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
                                                         id, value);
       glade_gtk_sync_use_appearance (widget);
     }
-  else if (GPC_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
+  else if (GLADE_PROPERTY_DEF_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 
   /* GtkLockButton hides itself after setting a property so we need to make sure

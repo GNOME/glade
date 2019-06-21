@@ -121,7 +121,7 @@ glade_gtk_window_read_accel_groups (GladeWidget *widget, GladeXmlNode *node)
           else if (group_name != NULL)
             {
               tmp =
-                  g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER,
+                  g_strdup_printf ("%s%s%s", string, GLADE_PROPERTY_DEF_OBJECT_DELIMITER,
                                    group_name);
               string = (g_free (string), tmp);
               g_free (group_name);

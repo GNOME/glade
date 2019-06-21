@@ -812,7 +812,7 @@ glade_gtk_box_configure_end (GladeFixed * fixed,
 
           if (bchild == gbchild->widget)
             {
-              GCSetPropData *prop_data = g_new0 (GCSetPropData, 1);
+              GladeCommandSetPropData *prop_data = g_new0 (GladeCommandSetPropData, 1);
               prop_data->property =
                   glade_widget_get_pack_property (gchild, "position");
 

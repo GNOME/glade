@@ -64,6 +64,6 @@ glade_gtk_scale_set_property (GladeWidgetAdaptor *adaptor,
         }
     }
 
-  if (GPC_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
+  if (GLADE_PROPERTY_DEF_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
