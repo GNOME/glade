@@ -21,19 +21,20 @@ G_BEGIN_DECLS
 typedef struct _GladeCommand        GladeCommand;
 typedef struct _GladeCommandClass   GladeCommandClass;
 typedef struct _GladeCommandPrivate GladeCommandPrivate;
-typedef struct _GCSetPropData       GCSetPropData;
+
+typedef struct _GladeCommandSetPropData GladeCommandSetPropData;
 
 /**
- * GCSetPropData
+ * GladeCommandSetPropData
  * @property: A #GladeProperty to set
  * @new_value: The new #GValue to assign to @property
  * @old_value: The old #GValue of @property
  *
  * #GladeProperty can be set in a list as one command,
- * for Undo purposes; we store the list of #GCSetPropData with
+ * for Undo purposes; we store the list of #GladeCommandSetPropData with
  * their old and new #GValue.
  */
-struct _GCSetPropData {
+struct _GladeCommandSetPropData {
   GladeProperty *property;
   GValue        *new_value;
   GValue        *old_value;
@@ -114,7 +115,7 @@ void           glade_command_set_properties      (GladeProperty *property,
                                                   ...);
 
 void           glade_command_set_properties_list (GladeProject  *project, 
-                                                  GList         *props); /* list of GCSetPropData */
+                                                  GList         *props); /* list of GladeCommandSetPropData */
 
 /************************** name ******************************/
 

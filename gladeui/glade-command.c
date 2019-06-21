@@ -574,7 +574,7 @@ glade_command_set_property_execute (GladeCommand *cmd)
   for (l = me->sdata; l; l = l->next)
     {
       GValue            new_value = { 0, };
-      GCSetPropData    *sdata = l->data;
+      GladeCommandSetPropData    *sdata = l->data;
       GladePropertyDef *pdef = glade_property_get_def (sdata->property);
       GladeWidget      *widget = glade_property_get_widget (sdata->property);
 
@@ -661,7 +661,7 @@ glade_command_set_property_finalize (GObject *obj)
 
   for (l = me->sdata; l; l = l->next)
     {
-      GCSetPropData *sdata = l->data;
+      GladeCommandSetPropData *sdata = l->data;
 
       if (sdata->property)
         g_object_unref (G_OBJECT (sdata->property));
@@ -686,7 +686,7 @@ glade_command_set_property_unifies (GladeCommand *this_cmd,
 {
   GladeCommandSetProperty *cmd1, *cmd2;
   GladePropertyDef *pdef1, *pdef2;
-  GCSetPropData *pdata1, *pdata2;
+  GladeCommandSetPropData *pdata1, *pdata2;
   GladeWidget *widget1, *widget2;
   GList *list, *l;
 
@@ -755,7 +755,7 @@ glade_command_set_property_collapse (GladeCommand *this_cmd,
                                      GladeCommand *other_cmd)
 {
   GladeCommandSetProperty *cmd1, *cmd2;
-  GCSetPropData *pdata1, *pdata2;
+  GladeCommandSetPropData *pdata1, *pdata2;
   GladePropertyDef *pdef1, *pdef2;
   GList *list, *l;
 
@@ -778,7 +778,7 @@ glade_command_set_property_collapse (GladeCommand *this_cmd,
 
           if (glade_property_def_match (pdef1, pdef2))
             {
-              /* Merge the GCSetPropData structs manually here
+              /* Merge the GladeCommandSetPropData structs manually here
                */
               g_value_copy (pdata2->new_value, pdata1->new_value);
               break;
@@ -798,7 +798,7 @@ glade_command_set_property_collapse (GladeCommand *this_cmd,
 static gchar *
 glade_command_set_property_description (GladeCommandSetProperty *me)
 {
-  GCSetPropData *sdata;
+  GladeCommandSetPropData *sdata;
   gchar *description = NULL;
   gchar *value_name;
   GladePropertyDef *pdef;
@@ -846,7 +846,7 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 {
   GladeCommandSetProperty *me;
   GladeCommand *cmd;
-  GCSetPropData *sdata;
+  GladeCommandSetPropData *sdata;
   GList *list;
   gboolean success;
   gboolean multiple;
@@ -894,7 +894,7 @@ glade_command_set_properties (GladeProperty *property,
                               const GValue *new_value,
                               ...)
 {
-  GCSetPropData *sdata;
+  GladeCommandSetPropData *sdata;
   GladeProperty *prop;
   GladeWidget   *widget;
   GladeProject  *project;
@@ -905,7 +905,7 @@ glade_command_set_properties (GladeProperty *property,
   g_return_if_fail (GLADE_IS_PROPERTY (property));
 
   /* Add first set */
-  sdata = g_new (GCSetPropData, 1);
+  sdata = g_new (GladeCommandSetPropData, 1);
   sdata->property = property;
   sdata->old_value = g_new0 (GValue, 1);
   sdata->new_value = g_new0 (GValue, 1);
@@ -925,7 +925,7 @@ glade_command_set_properties (GladeProperty *property,
       g_assert (G_IS_VALUE (ovalue));
       g_assert (G_IS_VALUE (nvalue));
 
-      sdata = g_new (GCSetPropData, 1);
+      sdata = g_new (GladeCommandSetPropData, 1);
       sdata->property = g_object_ref (GLADE_PROPERTY (prop));
       sdata->old_value = g_new0 (GValue, 1);
       sdata->new_value = g_new0 (GValue, 1);

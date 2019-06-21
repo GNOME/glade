@@ -216,8 +216,7 @@ GWA_GET_OCLASS
 GWA_SCROLLABLE_WIDGET
 GLADE_VALID_CREATE_REASON
 GLADE_TYPE_CREATE_REASON
-GWA_INSTANTIABLE_PREFIX
-GWA_INSTANTIABLE_PREFIX_LEN
+GLADE_WIDGET_ADAPTOR_INSTANTIABLE_PREFIX
 GladeWidgetAdaptor
 GladeActionActivateFunc
 GladeActionSubmenuFunc
@@ -377,8 +376,6 @@ GladeDesignViewPrivate
 
 <SECTION>
 <FILE>glade-property-def</FILE>
-GPC_OBJECT_DELIMITER
-GPC_PROPERTY_NAMELEN
 <TITLE>GladePropertyDef</TITLE>
 GladePropertyDef
 glade_property_def_new
@@ -443,6 +440,7 @@ glade_property_def_themed_icon
 glade_property_def_transfer_on_paste
 glade_property_def_translatable
 glade_property_def_weight
+GLADE_PROPERTY_DEF_OBJECT_DELIMITER
 <SUBSECTION Standard>
 GLADE_TYPE_PROPERTY_DEF
 glade_property_def_get_type
@@ -1133,7 +1131,7 @@ GladePreviewerPrivate
 <SECTION>
 <FILE>glade-command</FILE>
 <TITLE>GladeCommand</TITLE>
-GCSetPropData
+GladeCommandSetPropData
 GladeCommand
 glade_command_push_group
 glade_command_pop_group
@@ -1246,7 +1244,7 @@ GLADE_TYPE_UTIL_FILE_DIALOG_TYPE
 GWA_VERSION_CHECK
 GWA_VERSION_SINCE_MAJOR
 GWA_VERSION_SINCE_MINOR
-GPC_VERSION_CHECK
+GLADE_PROPERTY_DEF_VERSION_CHECK
 GSC_VERSION_CHECK
 GWA_DEPRECATED
 GWA_DEPRECATED_SINCE_CHECK

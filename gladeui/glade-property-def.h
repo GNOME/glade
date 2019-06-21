@@ -36,7 +36,7 @@ G_BEGIN_DECLS
    ((type) == GLADE_PAGE_QUERY   && glade_property_def_query (gpc)))
 
 /**
- * GPC_VERSION_CHECK:
+ * GLADE_PROPERTY_DEF_VERSION_CHECK:
  * @def: A #GladePropertyDef
  * @major_version: The major version to check
  * @minor_version: The minor version to check
@@ -44,14 +44,13 @@ G_BEGIN_DECLS
  * Evaluates to %TRUE if @def is available in its owning library version-@major_verion.@minor_version.
  *
  */
-#define GPC_VERSION_CHECK(def, major_version, minor_version)                          \
+#define GLADE_PROPERTY_DEF_VERSION_CHECK(def, major_version, minor_version)       \
   ((glade_property_def_since_major (GLADE_PROPERTY_DEF (def)) == major_version) ? \
    (glade_property_def_since_minor (GLADE_PROPERTY_DEF (def)) <= minor_version) : \
    (glade_property_def_since_major (GLADE_PROPERTY_DEF (def)) <= major_version))
 
 
-#define GPC_OBJECT_DELIMITER ", "
-#define GPC_PROPERTY_NAMELEN 512  /* Enough space for a property name I think */
+#define GLADE_PROPERTY_DEF_OBJECT_DELIMITER ", "
 
 typedef struct _GladePropertyDef GladePropertyDef;
 

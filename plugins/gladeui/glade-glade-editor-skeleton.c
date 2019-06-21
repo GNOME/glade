@@ -59,7 +59,7 @@ glade_glade_editor_skeleton_read_widget (GladeWidgetAdaptor *adaptor,
           else if (widget_name != NULL)
             {
               tmp =
-                  g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER,
+                  g_strdup_printf ("%s%s%s", string, GLADE_PROPERTY_DEF_OBJECT_DELIMITER,
                                    widget_name);
               string = (g_free (string), tmp);
               g_free (widget_name);

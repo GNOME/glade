@@ -56,7 +56,7 @@ glade_gtk_size_group_read_widgets (GladeWidget *widget, GladeXmlNode *node)
           else if (widget_name != NULL)
             {
               tmp =
-                  g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER,
+                  g_strdup_printf ("%s%s%s", string, GLADE_PROPERTY_DEF_OBJECT_DELIMITER,
                                    widget_name);
               string = (g_free (string), tmp);
               g_free (widget_name);

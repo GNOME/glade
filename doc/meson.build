@@ -15,6 +15,7 @@ private_headers = [
   'glade-palette-item.h',
   'glade-named-icon-chooser-dialog.h',
   'glade-palette-box.h',
+  'glade-private.h',
 ]
 
 content_files = files(

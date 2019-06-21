@@ -177,11 +177,11 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
 #define GLADE_VALID_CREATE_REASON(reason) (reason >= 0 && reason < GLADE_CREATE_REASONS)
 
 /**
- * GWA_INSTANTIABLE_PREFIX:
+ * GLADE_WIDGET_ADAPTOR_INSTANTIABLE_PREFIX:
  *
  * Class prefix used for abstract classes (ie GtkBin -> GladeInstantiableGtkBin)
  */
-#define GWA_INSTANTIABLE_PREFIX "GladeInstantiable"
+#define GLADE_WIDGET_ADAPTOR_INSTANTIABLE_PREFIX "GladeInstantiable"
 
 /**
  * GladeCreateReason:
