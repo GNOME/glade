@@ -1,6 +1,8 @@
-private_headers = [
+private_doc_headers = [
   'glade-builtins.h',
   'glade-debug.h',
+  'glade-design-private.h',
+  'glade-drag.h',
   'glade-accumulators.h',
   'glade-marshallers.h',
   'glade-paths.h',
@@ -39,7 +41,7 @@ gnome.gtkdoc(
   main_xml: gladeui_name + '-docs.xml',
   module_version: gladeui_major_version.to_string(),
   src_dir: gladeui_inc,
-  ignore_headers: private_headers,
+  ignore_headers: private_doc_headers,
   include_directories: top_inc,
   dependencies: libgladeui_dep,
   content_files: content_files,
