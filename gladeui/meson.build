@@ -56,6 +56,12 @@ headers = files(
   'glade-xml-utils.h',
 )
 
+private_headers = files(
+  'glade-drag.h',
+  'glade-private.h',
+  'glade-design-private.h',
+)
+
 install_headers(
   headers,
   subdir: 'lib@0@/@1@'.format(gladeui_libname, gladeui_name),
@@ -195,7 +201,7 @@ endif
 libgladeui = shared_library(
   '@0@-@1@'.format(gladeui_name, gladeui_major_version),
   version: gladeui_libversion,
-  sources: sources + enum_sources + marshal_sources,
+  sources: sources + enum_sources + marshal_sources + private_headers + headers,
   include_directories: top_inc,
   dependencies: deps + private_deps,
   c_args: common_c_flags,
