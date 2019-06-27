@@ -1959,7 +1959,7 @@ glade_project_check_target_version (GladeProject *project)
   gint unknown_objects;
   gint major, minor;
   GtkWidget *dialog;
-  GString *text;
+  GString *text = NULL;
   GList *l;
   gchar *project_name;
 
@@ -1986,30 +1986,27 @@ glade_project_check_target_version (GladeProject *project)
   if (unknown_objects)
     {
       GList *classes = g_hash_table_get_keys (unknown_classes);
-
-      if (unknown_objects == 1)
-        {
-          text = g_string_new (_("Specially because there is an object that can not be build with type "));
-        }
-      else
-        {
-          text = g_string_new ("");
-          g_string_printf (text, _("Specially because there are %d objects that can not be build with types "),
-                           unknown_objects);
-        }
+      GString *missing_types = g_string_new (NULL);
+      text = g_string_new (NULL);
 
       for (l = classes; l; l = g_list_next (l))
         {
-          if (g_list_previous (l))
-            g_string_append (text, (g_list_next (l)) ? ", " : _(" and "));
-          
-          g_string_append (text, l->data);
+          if (g_list_previous (l)) {
+            g_string_append_printf (missing_types, _(", %s"), (const gchar *)l->data);
+          } else
+            g_string_append (missing_types, l->data);
         }
 
       g_list_free (classes);
+
+      g_string_printf (text,
+                       ngettext ("Especially because there is %d object that can not be built with type: %s",
+                                 "Especially because there are %d objects that can not be built with types: %s", unknown_objects),
+                       unknown_objects,
+                       missing_types->str);
+
+      g_string_free (missing_types, TRUE);
     }
-  else 
-    text = NULL;
 
   project_name = glade_project_get_name (project);
   dialog = gtk_message_dialog_new (GTK_WINDOW (glade_app_get_window ()),
