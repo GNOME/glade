@@ -176,7 +176,7 @@ if enable_mac_integration
   endif
 endif
 
-if glade_windows
+if glade_system == 'windows'
   rc = configure_file(
     input: 'glade.rc.in',
     output: '@BASELINE@',
@@ -255,7 +255,7 @@ sources = files(
 )
 
 ldflags = []
-if glade_windows
+if glade_system == 'windows'
   rc = configure_file(
     input: 'glade-previewer.rc.in',
     output: '@BASELINE@',

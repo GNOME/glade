@@ -40,7 +40,7 @@ gladeui_age = 5
 gladeui_current_minus_age = gladeui_current - gladeui_age
 gladeui_libversion = '@0@.@1@.@2@'.format(gladeui_current_minus_age, gladeui_age, gladeui_revision)
 
-glade_windows = host_machine.system() == 'windows'
+glade_system = host_machine.system()
 glade_debug = get_option('buildtype').contains('debug')
 
 glade_unstable = glade_minor_version.is_odd()
@@ -151,7 +151,7 @@ if enable_mac_integration
   endif
 endif
 
-if glade_windows
+if glade_system == 'windows'
   rc_conf = configuration_data()
   rc_conf.set('GLADE_MAJOR_VERSION', glade_major_version)
   rc_conf.set('GLADE_MINOR_VERSION', glade_minor_version)
