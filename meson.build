@@ -151,6 +151,9 @@ if enable_mac_integration
   endif
 endif
 
+# Check for osx
+config_h.set('PLATFORM_OSX', glade_system == 'darwin')
+
 if glade_system == 'windows'
   rc_conf = configuration_data()
   rc_conf.set('GLADE_MAJOR_VERSION', glade_major_version)
