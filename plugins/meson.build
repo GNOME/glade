@@ -1,5 +1,5 @@
 ldflags = []
-if glade_windows
+if glade_system == 'windows'
   ldflags += cc.get_supported_link_arguments('-no-undefined')
 endif
 

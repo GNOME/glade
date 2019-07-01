@@ -32,7 +32,7 @@ deps = [
 ]
 
 ldflags = []
-if glade_windows
+if glade_system == 'windows'
   rc = configure_file(
     input: 'glade.rc.in',
     output: '@BASELINE@',
