@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2019-06-25 16:10+0000\n"
-"PO-Revision-Date: 2019-06-26 10:52+0200\n"
+"POT-Creation-Date: 2019-06-27 10:27+0000\n"
+"PO-Revision-Date: 2019-07-02 11:48+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -427,7 +427,6 @@ msgid "Preferences"
 msgstr "Preferencias"
 
 #: src/glade.glade:139
-#| msgid "Glade"
 msgid "About Glade"
 msgstr "Acerca de Glade"
 
@@ -2363,24 +2362,26 @@ msgstr ""
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s usa GTK+ %d.%d"
 
-#: gladeui/glade-project.c:1992
-msgid "Specially because there is an object that can not be build with type "
-msgstr ""
-"Especialmente porque existe un objeto que no se puede construir con el tipo "
-
-#: gladeui/glade-project.c:1997
+#: gladeui/glade-project.c:1995
 #, c-format
+msgid ", %s"
+msgstr ", %s"
+
+#: gladeui/glade-project.c:2003
+#, c-format
+#| msgid ""
+#| "Specially because there is an object that can not be build with type "
 msgid ""
-"Specially because there are %d objects that can not be build with types "
-msgstr ""
-"Especialmente porque existen %d objetos que no se pueden construir con los "
-"tipos "
+"Especially because there is %d object that can not be built with type: %s"
+msgid_plural ""
+"Especially because there are %d objects that can not be built with types: %s"
+msgstr[0] ""
+"Especialmente porque existe %d objeto que no se puede construir con el tipo "
+msgstr[1] ""
+"Especialmente porque existen %d objetos que no se pueden construir con el "
+"tipo: %s"
 
-#: gladeui/glade-project.c:2004
-msgid " and "
-msgstr " y "
-
-#: gladeui/glade-project.c:2024
+#: gladeui/glade-project.c:2021
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -2393,7 +2394,7 @@ msgstr ""
 "widgets obsoletos.\n"
 "%s"
 
-#: gladeui/glade-project.c:2085
+#: gladeui/glade-project.c:2082
 #, c-format
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
@@ -2404,7 +2405,7 @@ msgstr ""
 "\n"
 "¿Quiere cargar la versión autoguardada en su lugar?"
 
-#: gladeui/glade-project.c:2227
+#: gladeui/glade-project.c:2224
 #, c-format
 msgid "%s document properties"
 msgstr "Propiedades del documento %s"
@@ -2417,7 +2418,7 @@ msgstr "Propiedades del documento %s"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3094
+#: gladeui/glade-project.c:3091
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2425,24 +2426,24 @@ msgstr ""
 "%d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3098
+#: gladeui/glade-project.c:3095
 #, c-format
 msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
 msgstr "[%s] La clase del objeto «<b>%s</b>» se introdujo en %s %d.%d\n"
 
-#: gladeui/glade-project.c:3100
+#: gladeui/glade-project.c:3097
 msgid "This widget is deprecated"
 msgstr "Este widget está obsoleto"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3103
+#: gladeui/glade-project.c:3100
 #, c-format
 msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
 msgstr "[%s] La clase del objeto «<b>%s</b>» de %s %d.%d está obsoleta\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3108
+#: gladeui/glade-project.c:3105
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2450,7 +2451,7 @@ msgstr ""
 "%s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3112
+#: gladeui/glade-project.c:3109
 #, c-format
 msgid ""
 "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
@@ -2460,7 +2461,7 @@ msgstr ""
 "en %s %d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3116
+#: gladeui/glade-project.c:3113
 #, c-format
 msgid ""
 "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was introduced "
@@ -2469,12 +2470,12 @@ msgstr ""
 "[%s] La propiedad de empaquetado «<b>%s</b>» de la clase del objeto «<b>%s</"
 "b>» se introdujo en %s %d.%d\n"
 
-#: gladeui/glade-project.c:3119
+#: gladeui/glade-project.c:3116
 msgid "This property is deprecated"
 msgstr "Esta propiedad está obsoleta"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3122
+#: gladeui/glade-project.c:3119
 #, c-format
 msgid "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgstr ""
@@ -2483,7 +2484,7 @@ msgstr ""
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3126
+#: gladeui/glade-project.c:3123
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2491,7 +2492,7 @@ msgstr ""
 "%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3130
+#: gladeui/glade-project.c:3127
 #, c-format
 msgid ""
 "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
@@ -2500,78 +2501,78 @@ msgstr ""
 "[%s] La señal «<b>%s</b>» de la clase de objeto «<b>%s</b>» se introdujo en "
 "%s %d.%d\n"
 
-#: gladeui/glade-project.c:3133
+#: gladeui/glade-project.c:3130
 msgid "This signal is deprecated"
 msgstr "La señal está obsoleta"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3136
+#: gladeui/glade-project.c:3133
 #, c-format
 msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgstr ""
 "[%s] La señal «<b>%s</b>» de la clase de objeto «<b>%s</b>» está obsoleta\n"
 
-#: gladeui/glade-project.c:3433
+#: gladeui/glade-project.c:3430
 msgid "Details"
 msgstr "Detalles"
 
-#: gladeui/glade-project.c:3450
+#: gladeui/glade-project.c:3447
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "El proyecto «%s» tiene errores. ¿Guardarlo de todas formas?"
 
-#: gladeui/glade-project.c:3451
+#: gladeui/glade-project.c:3448
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 "El proyecto «%s» tiene widgets obsoletos y/o inconsistencias entre versiones."
 
-#: gladeui/glade-project.c:3476
+#: gladeui/glade-project.c:3473
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr ""
 "El objeto %s es una plantilla de clase, pero no está soportado en GTK+ %d.%d"
 
-#: gladeui/glade-project.c:3491
+#: gladeui/glade-project.c:3488
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "El objeto %s tiene un tipo %s no reconocido\n"
 
-#: gladeui/glade-project.c:4983
+#: gladeui/glade-project.c:4980
 #, c-format
 msgid "Unsaved %i"
 msgstr "Sin guardar %i"
 
-#: gladeui/glade-project.c:5283 gladeui/glade-project.c:5334
-#: gladeui/glade-project.c:5491
+#: gladeui/glade-project.c:5280 gladeui/glade-project.c:5331
+#: gladeui/glade-project.c:5488
 msgid "No widget selected."
 msgstr "No hay ningún widget seleccionado."
 
-#: gladeui/glade-project.c:5299
+#: gladeui/glade-project.c:5296
 msgid "Unable to copy unrecognized widget type."
 msgstr "No se pudo copiar el tipo de widget no reconocido."
 
-#: gladeui/glade-project.c:5331
+#: gladeui/glade-project.c:5328
 msgid "Unable to cut unrecognized widget type"
 msgstr "No se pudo cortar el tipo de widget no reconocido."
 
-#: gladeui/glade-project.c:5383
+#: gladeui/glade-project.c:5380
 msgid "Unable to paste to the selected parent"
 msgstr "Imposible pegar al padre seleccionado"
 
-#: gladeui/glade-project.c:5394
+#: gladeui/glade-project.c:5391
 msgid "Unable to paste to multiple widgets"
 msgstr "Imposible pegar múltiples widgets"
 
-#: gladeui/glade-project.c:5404
+#: gladeui/glade-project.c:5401
 msgid "No widget on the clipboard"
 msgstr "No hay ningún widget en el portapapeles"
 
-#: gladeui/glade-project.c:5449
+#: gladeui/glade-project.c:5446
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Sólo se puede pegar un widget cada vez en este contenedor"
 
-#: gladeui/glade-project.c:5461
+#: gladeui/glade-project.c:5458
 msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 "Cantidad insuficiente de lugares de colocación en el contenedor destino"
@@ -8109,6 +8110,15 @@ msgstr "Configuración de WebKit"
 #: plugins/webkit2gtk/webkit2gtk.xml:36
 msgid "WebKit2GTK+ Widgets"
 msgstr "Widgets de WebKit2GTK+"
+
+#~ msgid ""
+#~ "Specially because there are %d objects that can not be build with types "
+#~ msgstr ""
+#~ "Especialmente porque existen %d objetos que no se pueden construir con "
+#~ "los tipos "
+
+#~ msgid " and "
+#~ msgstr " y "
 
 #~ msgid "About"
 #~ msgstr "Acerca de"
