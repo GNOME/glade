@@ -77,7 +77,8 @@ glade_popup_widget_add_cb (GtkMenuItem *item, RootAddData *data)
 static void
 glade_popup_root_add_cb (GtkMenuItem *item, RootAddData *data)
 {
-  glade_command_create (data->adaptor, NULL, NULL, data->project);
+  if (glade_command_create (data->adaptor, NULL, NULL, data->project))
+    glade_project_set_add_item (data->project, NULL);
 }
 
 static void
