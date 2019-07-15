@@ -203,6 +203,10 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 
       GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object,
                                                      id, value);
+
+      /* Set icon size back to what it should be */
+      if (!strcmp (id, "icon-name") || !strcmp (id, "stock"))
+        glade_property_sync (glade_widget_get_property (widget, "icon-size"));
     }
 }
 
