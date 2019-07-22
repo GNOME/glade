@@ -176,22 +176,6 @@ if enable_mac_integration
   endif
 endif
 
-if glade_system == 'windows'
-  rc = configure_file(
-    input: 'glade.rc.in',
-    output: '@BASELINE@',
-    configuration: rc_conf,
-  )
-
-  sources += windows.compile_resources(rc)
-
-  ldflags += cc.get_supported_link_arguments([
-    # gmodule-export-2.0 on windows does not include -export-dynamic flag
-    '-export-dynamic',
-    '-no-undefined',
-  ])
-endif
-
 libgladeui = shared_library(
   '@0@-@1@'.format(gladeui_name, gladeui_major_version),
   version: gladeui_libversion,
