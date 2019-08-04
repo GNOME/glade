@@ -558,19 +558,28 @@ glade_design_view_drag_motion (GtkWidget *widget,
 
       if (drag_target)
         {
-          GladeWidget *gwidget;
+          _GladeDrag *gwidget = NULL;
 
-          if (GLADE_IS_PLACEHOLDER (drag_target))
-            drag = GLADE_DRAG (drag_target);
-          else if ((gwidget = glade_widget_get_from_gobject (drag_target)))
-            {
-              while (gwidget && !_glade_drag_can_drop (GLADE_DRAG (gwidget),
-                                                       xx, yy, priv->drag_data))
-                gwidget = glade_widget_get_parent (gwidget);
+          if (GLADE_IS_PLACEHOLDER (drag_target)) {
+              gwidget = (_GladeDrag *) drag_target;
+          } else if (GLADE_IS_WIDGET (drag_target)) {
+              gwidget = (_GladeDrag *) glade_widget_get_from_gobject ((GladeWidget *) drag_target);
+          }
 
-              if (gwidget)
-                drag = GLADE_DRAG (gwidget);
+          while (gwidget && !_glade_drag_can_drop (gwidget,
+                                                   xx, yy, priv->drag_data)) {
+            if (GLADE_IS_WIDGET (gwidget)) {
+              gwidget = (_GladeDrag *) glade_widget_get_parent ((GladeWidget *) gwidget);
+            } else if (GLADE_IS_PLACEHOLDER (gwidget)) {
+              gwidget = (_GladeDrag *) glade_placeholder_get_parent ((GladePlaceholder *) gwidget);
+            } else {
+              gwidget = NULL;
             }
+          }
+
+          if (gwidget) {
+            drag = GLADE_DRAG (gwidget);
+          }
         }
     }
   else if (_glade_drag_can_drop (GLADE_DRAG (widget), x, y, priv->drag_data))
