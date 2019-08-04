@@ -42,6 +42,9 @@ gladeui_libversion = '@0@.@1@.@2@'.format(gladeui_current_minus_age, gladeui_age
 
 glade_system = host_machine.system()
 glade_debug = get_option('buildtype').contains('debug')
+if glade_debug
+  add_project_arguments('-DGLADE_ENABLE_DEBUG', language : 'c')
+endif
 
 glade_unstable = glade_minor_version.is_odd()
 
