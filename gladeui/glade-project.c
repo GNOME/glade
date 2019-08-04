@@ -3168,7 +3168,7 @@ glade_project_verify_property_internal (GladeProject    *project,
       !GLADE_PROPERTY_DEF_VERSION_CHECK (pdef, target_major, target_minor))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Property '%s' of adaptor %s not available in version %d.%d\n",
-                                   glade_property_def_id (pclass),
+                                   glade_property_def_id (pdef),
                                    glade_widget_adaptor_get_name (adaptor),
                                    target_major, target_minor));
 
