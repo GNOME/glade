@@ -60,8 +60,8 @@ void                  glade_signal_def_update_from_node         (GladeSignalDef 
                                                                  const gchar          *domain);
 
 GladeWidgetAdaptor   *glade_signal_def_get_adaptor              (const GladeSignalDef *signal_def);
-G_CONST_RETURN gchar *glade_signal_def_get_name                 (const GladeSignalDef *signal_def);
-G_CONST_RETURN gchar *glade_signal_def_get_object_type_name     (const GladeSignalDef *signal_def);
+const gchar *glade_signal_def_get_name                 (const GladeSignalDef *signal_def);
+const gchar *glade_signal_def_get_object_type_name     (const GladeSignalDef *signal_def);
 GSignalFlags          glade_signal_def_get_flags                (const GladeSignalDef *signal_def);
 
 void                  glade_signal_def_set_since                (GladeSignalDef       *signal_def,

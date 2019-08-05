@@ -71,7 +71,7 @@ void                  glade_command_push_group           (const gchar       *fmt
 void                  glade_command_pop_group            (void);
 gint                  glade_command_get_group_depth      (void);
 
-G_CONST_RETURN gchar *glade_command_description          (GladeCommand      *command);
+const gchar *glade_command_description          (GladeCommand      *command);
 gint                  glade_command_group_id             (GladeCommand      *command);
 gboolean              glade_command_execute              (GladeCommand      *command);
 gboolean              glade_command_undo                 (GladeCommand      *command);

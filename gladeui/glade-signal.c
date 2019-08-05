@@ -413,7 +413,7 @@ glade_signal_read (GladeXmlNode *node, GladeWidgetAdaptor *adaptor)
   return signal;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_signal_get_name (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
@@ -421,7 +421,7 @@ glade_signal_get_name (const GladeSignal *signal)
   return glade_signal_def_get_name (signal->priv->def);
 }
 
-G_CONST_RETURN GladeSignalDef *
+const GladeSignalDef *
 glade_signal_get_def (const GladeSignal *signal)
 {
         return signal->priv->def;
@@ -441,7 +441,7 @@ glade_signal_set_detail (GladeSignal *signal, const gchar *detail)
     }
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_signal_get_detail (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
@@ -464,7 +464,7 @@ glade_signal_set_handler (GladeSignal *signal, const gchar *handler)
     }
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_signal_get_handler (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
@@ -487,7 +487,7 @@ glade_signal_set_userdata (GladeSignal *signal, const gchar *userdata)
     }
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_signal_get_userdata (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
@@ -553,7 +553,7 @@ glade_signal_set_support_warning (GladeSignal *signal,
     }
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_signal_get_support_warning (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);

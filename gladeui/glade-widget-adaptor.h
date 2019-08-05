@@ -407,6 +407,7 @@ typedef void     (* GladeReplaceChildFunc)        (GladeWidgetAdaptor *adaptor,
                                                    GObject            *new_obj);
 
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /**
  * GladeConstructObjectFunc:
  * @adaptor: A #GladeWidgetAdaptor
@@ -423,6 +424,7 @@ typedef void     (* GladeReplaceChildFunc)        (GladeWidgetAdaptor *adaptor,
 typedef GObject *(* GladeConstructObjectFunc)     (GladeWidgetAdaptor *adaptor,
                                                    guint               n_parameters,
                                                    GParameter         *parameters);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * GladeDestroyObjectFunc:
@@ -741,17 +743,17 @@ struct _GladeWidgetAdaptorClass
 GType                 glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
 
 GType                 glade_widget_adaptor_get_object_type  (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN gchar *glade_widget_adaptor_get_name         (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN gchar *glade_widget_adaptor_get_generic_name (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN gchar *glade_widget_adaptor_get_display_name (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN gchar *glade_widget_adaptor_get_title        (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN gchar *glade_widget_adaptor_get_icon_name    (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN gchar *glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN gchar *glade_widget_adaptor_get_catalog      (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN gchar *glade_widget_adaptor_get_book         (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN GList *glade_widget_adaptor_get_properties   (GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN GList *glade_widget_adaptor_get_packing_props(GladeWidgetAdaptor   *adaptor);
-G_CONST_RETURN GList *glade_widget_adaptor_get_signals      (GladeWidgetAdaptor   *adaptor);
+const gchar *glade_widget_adaptor_get_name         (GladeWidgetAdaptor   *adaptor);
+const gchar *glade_widget_adaptor_get_generic_name (GladeWidgetAdaptor   *adaptor);
+const gchar *glade_widget_adaptor_get_display_name (GladeWidgetAdaptor   *adaptor);
+const gchar *glade_widget_adaptor_get_title        (GladeWidgetAdaptor   *adaptor);
+const gchar *glade_widget_adaptor_get_icon_name    (GladeWidgetAdaptor   *adaptor);
+const gchar *glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor   *adaptor);
+const gchar *glade_widget_adaptor_get_catalog      (GladeWidgetAdaptor   *adaptor);
+const gchar *glade_widget_adaptor_get_book         (GladeWidgetAdaptor   *adaptor);
+const GList *glade_widget_adaptor_get_properties   (GladeWidgetAdaptor   *adaptor);
+const GList *glade_widget_adaptor_get_packing_props(GladeWidgetAdaptor   *adaptor);
+const GList *glade_widget_adaptor_get_signals      (GladeWidgetAdaptor   *adaptor);
 
 GList                *glade_widget_adaptor_list_adaptors    (void);
 
@@ -783,12 +785,14 @@ GladePropertyDef     *glade_widget_adaptor_get_property_def   (GladeWidgetAdapto
 GladePropertyDef     *glade_widget_adaptor_get_pack_property_def (GladeWidgetAdaptor *adaptor,
                                                                   const gchar        *name);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GParameter           *glade_widget_adaptor_default_params     (GladeWidgetAdaptor *adaptor,
                                                                gboolean            construct,
                                                                guint              *n_params);
 GObject              *glade_widget_adaptor_construct_object   (GladeWidgetAdaptor *adaptor,
                                                                guint               n_parameters,
                                                                GParameter         *parameters);
+G_GNUC_END_IGNORE_DEPRECATIONS
 void                  glade_widget_adaptor_destroy_object     (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object);
 void                  glade_widget_adaptor_post_create        (GladeWidgetAdaptor *adaptor,
@@ -845,7 +849,7 @@ void                  glade_widget_adaptor_replace_child      (GladeWidgetAdapto
                                                                GObject            *new_obj);
 gboolean              glade_widget_adaptor_query              (GladeWidgetAdaptor *adaptor);
 
-G_CONST_RETURN gchar *glade_widget_adaptor_get_packing_default(GladeWidgetAdaptor *child_adaptor,
+const gchar *glade_widget_adaptor_get_packing_default(GladeWidgetAdaptor *child_adaptor,
                                                                GladeWidgetAdaptor *container_adaptor,
                                                                const gchar        *id);
 gboolean              glade_widget_adaptor_is_container       (GladeWidgetAdaptor *adaptor);

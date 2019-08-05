@@ -50,17 +50,17 @@ void                  glade_signal_write               (GladeSignal        *sign
                                                         GladeXmlContext    *context,
                                                         GladeXmlNode       *node);
 
-G_CONST_RETURN gchar *glade_signal_get_name            (const GladeSignal  *signal);
-G_CONST_RETURN GladeSignalDef *glade_signal_get_def    (const GladeSignal * signal);
+const gchar *glade_signal_get_name            (const GladeSignal  *signal);
+const GladeSignalDef *glade_signal_get_def    (const GladeSignal * signal);
 void                  glade_signal_set_detail          (GladeSignal        *signal,
                                                         const gchar        *detail);
-G_CONST_RETURN gchar *glade_signal_get_detail          (const GladeSignal  *signal);
+const gchar *glade_signal_get_detail          (const GladeSignal  *signal);
 void                  glade_signal_set_handler         (GladeSignal        *signal,
                                                         const gchar        *handler);
-G_CONST_RETURN gchar *glade_signal_get_handler         (const GladeSignal  *signal);
+const gchar *glade_signal_get_handler         (const GladeSignal  *signal);
 void                  glade_signal_set_userdata        (GladeSignal        *signal,
                                                         const gchar        *userdata);
-G_CONST_RETURN gchar *glade_signal_get_userdata        (const GladeSignal  *signal);
+const gchar *glade_signal_get_userdata        (const GladeSignal  *signal);
 void                  glade_signal_set_after           (GladeSignal        *signal,
                                                         gboolean            after);
 gboolean              glade_signal_get_after           (const GladeSignal  *signal);
@@ -69,7 +69,7 @@ void                  glade_signal_set_swapped         (GladeSignal        *sign
 gboolean              glade_signal_get_swapped         (const GladeSignal  *signal);
 void                  glade_signal_set_support_warning (GladeSignal        *signal,
                                                         const gchar        *support_warning);
-G_CONST_RETURN gchar *glade_signal_get_support_warning (const GladeSignal  *signal);
+const gchar *glade_signal_get_support_warning (const GladeSignal  *signal);
 
 G_END_DECLS
 

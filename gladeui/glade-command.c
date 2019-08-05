@@ -198,7 +198,7 @@ typedef struct {                                                     \
 static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
 
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_command_description (GladeCommand *command)
 {
   g_return_val_if_fail (GLADE_IS_COMMAND (command), NULL);

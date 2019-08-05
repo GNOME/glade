@@ -86,17 +86,17 @@ void                   glade_property_def_set_ignore              (GladeProperty
 gboolean               glade_property_def_get_ignore              (GladePropertyDef   *property_def);
 void                   glade_property_def_set_name                (GladePropertyDef   *property_def,
                                                                    const gchar        *name);
-G_CONST_RETURN gchar  *glade_property_def_get_name                (GladePropertyDef   *property_def);
+const gchar  *glade_property_def_get_name                (GladePropertyDef   *property_def);
 void                   glade_property_def_set_tooltip             (GladePropertyDef   *property_def,
                                                                    const gchar        *tooltip);
-G_CONST_RETURN gchar  *glade_property_def_get_tooltip             (GladePropertyDef   *property_def);
-G_CONST_RETURN gchar  *glade_property_def_id                      (GladePropertyDef   *property_def);
+const gchar  *glade_property_def_get_tooltip             (GladePropertyDef   *property_def);
+const gchar  *glade_property_def_id                      (GladePropertyDef   *property_def);
 gboolean               glade_property_def_themed_icon             (GladePropertyDef   *property_def);
 void                   glade_property_def_set_construct_only      (GladePropertyDef   *property_def,
                                                                    gboolean            construct_only);
 gboolean               glade_property_def_get_construct_only      (GladePropertyDef   *property_def);
-G_CONST_RETURN GValue *glade_property_def_get_default             (GladePropertyDef   *property_def);
-G_CONST_RETURN GValue *glade_property_def_get_original_default    (GladePropertyDef   *property_def);
+const GValue *glade_property_def_get_default             (GladePropertyDef   *property_def);
+const GValue *glade_property_def_get_original_default    (GladePropertyDef   *property_def);
 gboolean               glade_property_def_translatable            (GladePropertyDef   *property_def);
 gboolean               glade_property_def_needs_sync              (GladePropertyDef   *property_def);
 
@@ -113,7 +113,7 @@ gboolean               glade_property_def_transfer_on_paste       (GladeProperty
 gboolean               glade_property_def_custom_layout           (GladePropertyDef   *property_def);
 gdouble                glade_property_def_weight                  (GladePropertyDef   *property_def);
 
-G_CONST_RETURN gchar  *glade_property_def_create_type             (GladePropertyDef   *property_def);
+const gchar  *glade_property_def_create_type             (GladePropertyDef   *property_def);
 
 guint16                glade_property_def_since_major             (GladePropertyDef   *property_def);
 guint16                glade_property_def_since_minor             (GladePropertyDef   *property_def);
