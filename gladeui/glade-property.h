@@ -126,12 +126,12 @@ GladePropertyDef       *glade_property_get_def               (GladeProperty     
 void                    glade_property_set_sensitive         (GladeProperty      *property,
                                                               gboolean            sensitive,
                                                               const gchar        *reason);
-G_CONST_RETURN gchar   *glade_propert_get_insensitive_tooltip(GladeProperty      *property);
+const gchar   *glade_propert_get_insensitive_tooltip(GladeProperty      *property);
 
 void                    glade_property_set_support_warning   (GladeProperty      *property,
                                                               gboolean            disable,
                                                               const gchar        *reason);
-G_CONST_RETURN gchar   *glade_property_get_support_warning   (GladeProperty      *property);
+const gchar   *glade_property_get_support_warning   (GladeProperty      *property);
 
 gboolean                glade_property_warn_usage            (GladeProperty      *property);
 
@@ -163,12 +163,12 @@ GladePropertyState      glade_property_get_state             (GladeProperty     
 void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
                                                               const gchar        *str);
 
-G_CONST_RETURN gchar   *glade_property_i18n_get_comment      (GladeProperty      *property);
+const gchar   *glade_property_i18n_get_comment      (GladeProperty      *property);
 
 void                    glade_property_i18n_set_context      (GladeProperty      *property, 
                                                               const gchar        *str);
 
-G_CONST_RETURN gchar   *glade_property_i18n_get_context      (GladeProperty      *property);
+const gchar   *glade_property_i18n_get_context      (GladeProperty      *property);
 
 void                    glade_property_i18n_set_translatable (GladeProperty      *property,
                                                               gboolean            translatable);

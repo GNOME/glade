@@ -1355,7 +1355,7 @@ glade_property_def_set_name (GladePropertyDef  *property_def,
   property_def->name = g_strdup (name);
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_property_def_get_name (GladePropertyDef *property_def)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
@@ -1373,7 +1373,7 @@ glade_property_def_set_tooltip (GladePropertyDef *property_def,
   property_def->tooltip = g_strdup (tooltip);
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_property_def_get_tooltip (GladePropertyDef *property_def)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
@@ -1398,7 +1398,7 @@ glade_property_def_get_construct_only (GladePropertyDef *property_def)
   return property_def->construct_only;
 }
 
-G_CONST_RETURN GValue *
+const GValue *
 glade_property_def_get_default (GladePropertyDef *property_def)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
@@ -1406,7 +1406,7 @@ glade_property_def_get_default (GladePropertyDef *property_def)
   return property_def->def;
 }
 
-G_CONST_RETURN GValue *
+const GValue *
 glade_property_def_get_original_default (GladePropertyDef *property_def)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
@@ -1526,7 +1526,7 @@ glade_property_def_weight (GladePropertyDef *property_def)
   return property_def->weight;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_property_def_create_type (GladePropertyDef *property_def)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);
@@ -1567,7 +1567,7 @@ glade_property_def_deprecated (GladePropertyDef *property_def)
   return property_def->deprecated;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_property_def_id (GladePropertyDef *property_def)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), NULL);

@@ -2768,7 +2768,7 @@ glade_widget_get_name (GladeWidget *widget)
  * string if the widget is not intended to be serialized
  * with an ID (i.e. the user did not provide a name).
  */
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_get_display_name (GladeWidget *widget)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -2868,7 +2868,7 @@ glade_widget_set_internal (GladeWidget *widget, const gchar *internal)
  *
  * Returns: the internal name of @widget
  */
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_get_internal (GladeWidget *widget)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -5005,7 +5005,7 @@ glade_widget_set_support_warning (GladeWidget *widget, const gchar *warning)
   g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_SUPPORT_WARNING]);
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_support_warning (GladeWidget *widget)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);

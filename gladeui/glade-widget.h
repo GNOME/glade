@@ -350,8 +350,8 @@ gchar                  *glade_widget_pack_property_string   (GladeWidget      *w
 void                    glade_widget_set_name               (GladeWidget      *widget,
                                                              const gchar      *name);
  
-G_CONST_RETURN gchar   *glade_widget_get_name               (GladeWidget      *widget);
-G_CONST_RETURN gchar   *glade_widget_get_display_name       (GladeWidget      *widget);
+const gchar   *glade_widget_get_name               (GladeWidget      *widget);
+const gchar   *glade_widget_get_display_name       (GladeWidget      *widget);
 gboolean                glade_widget_has_name               (GladeWidget      *widget);
 
 void                    glade_widget_set_is_composite       (GladeWidget      *widget,
@@ -362,7 +362,7 @@ gboolean                glade_widget_get_is_composite       (GladeWidget      *w
 void                    glade_widget_set_internal           (GladeWidget      *widget,
                                                              const gchar      *internal);
  
-G_CONST_RETURN gchar   *glade_widget_get_internal           (GladeWidget      *widget);
+const gchar   *glade_widget_get_internal           (GladeWidget      *widget);
 
 GObject                *glade_widget_get_object             (GladeWidget      *widget);
 
@@ -395,7 +395,7 @@ void                    glade_widget_pop_superuser          (void);
 void                    glade_widget_verify                 (GladeWidget      *widget);
 void                    glade_widget_set_support_warning    (GladeWidget      *widget,
                                                              const gchar      *warning);
-G_CONST_RETURN gchar   *glade_widget_support_warning        (GladeWidget      *widget);
+const gchar   *glade_widget_support_warning        (GladeWidget      *widget);
 
 void                    glade_widget_lock                   (GladeWidget      *widget,
                                                              GladeWidget      *locked);

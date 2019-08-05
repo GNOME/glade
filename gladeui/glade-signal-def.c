@@ -164,7 +164,7 @@ glade_signal_def_get_adaptor (const GladeSignalDef *signal_def)
  *
  * Returns: the name of the signal
  */
-G_CONST_RETURN gchar *
+const gchar *
 glade_signal_def_get_name (const GladeSignalDef *signal_def)
 {
   g_return_val_if_fail (signal_def != NULL, NULL);
@@ -180,7 +180,7 @@ glade_signal_def_get_name (const GladeSignalDef *signal_def)
  *
  * Returns: the type name of the signal
  */
-G_CONST_RETURN gchar *
+const gchar *
 glade_signal_def_get_object_type_name (const GladeSignalDef *signal_def)
 {
   g_return_val_if_fail (signal_def != NULL, NULL);

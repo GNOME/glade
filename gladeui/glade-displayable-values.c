@@ -146,7 +146,7 @@ glade_type_has_displayable_values (GType type)
   return has;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_get_displayable_value (GType type, const gchar *value)
 {
   ValueTab *tab;
@@ -160,7 +160,7 @@ glade_get_displayable_value (GType type, const gchar *value)
 }
 
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_get_value_from_displayable (GType type, const gchar *displayable)
 {
   ValueTab *tab;

@@ -1430,7 +1430,7 @@ glade_property_i18n_set_comment (GladeProperty *property, const gchar *str)
   g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_I18N_COMMENT]);
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_property_i18n_get_comment (GladeProperty * property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
@@ -1448,7 +1448,7 @@ glade_property_i18n_set_context (GladeProperty *property, const gchar *str)
   g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_I18N_CONTEXT]);
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_property_i18n_get_context (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
@@ -1505,7 +1505,7 @@ glade_property_set_sensitive (GladeProperty *property,
   g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_SENSITIVE]);
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_propert_get_insensitive_tooltip (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
@@ -1555,7 +1555,7 @@ glade_property_set_support_warning (GladeProperty *property,
     glade_widget_verify (property->priv->widget);
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_property_get_support_warning (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);

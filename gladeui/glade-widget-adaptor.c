@@ -1769,7 +1769,7 @@ glade_widget_adaptor_get_object_type (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->type;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_name (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1783,7 +1783,7 @@ glade_widget_adaptor_get_name (GladeWidgetAdaptor *adaptor)
  *
  * Returns: the name of the adaptor without %GLADE_WIDGET_ADAPTOR_INSTANTIABLE_PREFIX
  */
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_display_name (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1794,7 +1794,7 @@ glade_widget_adaptor_get_display_name (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->name;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_generic_name (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1802,7 +1802,7 @@ glade_widget_adaptor_get_generic_name (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->generic_name;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_title (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1810,7 +1810,7 @@ glade_widget_adaptor_get_title (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->title;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_icon_name (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1818,7 +1818,7 @@ glade_widget_adaptor_get_icon_name (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->icon_name;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1826,7 +1826,7 @@ glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->missing_icon;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_catalog (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1834,7 +1834,7 @@ glade_widget_adaptor_get_catalog (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->catalog;
 }
 
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_book (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1848,7 +1848,7 @@ glade_widget_adaptor_get_book (GladeWidgetAdaptor *adaptor)
  *
  * Returns: (transfer none) (element-type GladePropertyDef): a list of #GladePropertyDef
  */
-G_CONST_RETURN GList *
+const GList *
 glade_widget_adaptor_get_properties (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1862,7 +1862,7 @@ glade_widget_adaptor_get_properties (GladeWidgetAdaptor *adaptor)
  *
  * Returns: (transfer none) (element-type GladePropertyDef): a list of #GladePropertyDef
  */
-G_CONST_RETURN GList *
+const GList *
 glade_widget_adaptor_get_packing_props (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -1876,7 +1876,7 @@ glade_widget_adaptor_get_packing_props (GladeWidgetAdaptor *adaptor)
  *
  * Returns: (transfer none) (element-type GladeSignalDef): a list of #GladeSignalDef
  */
-G_CONST_RETURN GList *
+const GList *
 glade_widget_adaptor_get_signals (GladeWidgetAdaptor *adaptor)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -3837,7 +3837,7 @@ glade_widget_adaptor_query (GladeWidgetAdaptor *adaptor)
  *
  * Returns: a string representing the default value for @property_id
  */
-G_CONST_RETURN gchar *
+const gchar *
 glade_widget_adaptor_get_packing_default (GladeWidgetAdaptor *child_adaptor,
                                           GladeWidgetAdaptor *container_adaptor,
                                           const gchar        *id)
