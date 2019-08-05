@@ -1831,7 +1831,7 @@ glade_widget_extract_children (GladeWidget *gwidget)
           else
             {
               /* need to handle placeholders by hand here */
-              extract->placeholder = g_object_ref (child);
+              extract->placeholder = g_object_ref (GTK_WIDGET (child));
               glade_widget_adaptor_remove (gwidget->priv->adaptor,
                                            gwidget->priv->object, child);
             }
