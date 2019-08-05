@@ -407,6 +407,7 @@ typedef void     (* GladeReplaceChildFunc)        (GladeWidgetAdaptor *adaptor,
                                                    GObject            *new_obj);
 
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /**
  * GladeConstructObjectFunc:
  * @adaptor: A #GladeWidgetAdaptor
@@ -423,6 +424,7 @@ typedef void     (* GladeReplaceChildFunc)        (GladeWidgetAdaptor *adaptor,
 typedef GObject *(* GladeConstructObjectFunc)     (GladeWidgetAdaptor *adaptor,
                                                    guint               n_parameters,
                                                    GParameter         *parameters);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * GladeDestroyObjectFunc:
@@ -783,12 +785,14 @@ GladePropertyDef     *glade_widget_adaptor_get_property_def   (GladeWidgetAdapto
 GladePropertyDef     *glade_widget_adaptor_get_pack_property_def (GladeWidgetAdaptor *adaptor,
                                                                   const gchar        *name);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GParameter           *glade_widget_adaptor_default_params     (GladeWidgetAdaptor *adaptor,
                                                                gboolean            construct,
                                                                guint              *n_params);
 GObject              *glade_widget_adaptor_construct_object   (GladeWidgetAdaptor *adaptor,
                                                                guint               n_parameters,
                                                                GParameter         *parameters);
+G_GNUC_END_IGNORE_DEPRECATIONS
 void                  glade_widget_adaptor_destroy_object     (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object);
 void                  glade_widget_adaptor_post_create        (GladeWidgetAdaptor *adaptor,

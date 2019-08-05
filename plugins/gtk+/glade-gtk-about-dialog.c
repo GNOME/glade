@@ -27,6 +27,7 @@
 
 #include "glade-gtk.h"
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GObject *
 glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
                                          guint               n_parameters,
@@ -67,6 +68,7 @@ glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
   g_free (new_params);
   return retval;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 void
 glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor *adaptor,

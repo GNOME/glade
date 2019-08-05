@@ -569,6 +569,7 @@ glade_widget_event (GladeWidget *gwidget, GdkEvent *event)
                       GObjectClass & Object Construction
  *******************************************************************************/
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /*
  * This function creates new GObject parameters based on the GType of the 
  * GladeWidgetAdaptor and its default values.
@@ -716,6 +717,7 @@ glade_widget_build_object (GladeWidget      *widget,
 
   return object;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * glade_widget_dup_properties:

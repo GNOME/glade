@@ -896,6 +896,7 @@ glade_widget_adaptor_object_create_widget (GladeWidgetAdaptor *adaptor,
                                             first_property_name, var_args));
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static GObject *
 glade_widget_adaptor_object_construct_object (GladeWidgetAdaptor *adaptor,
                                               guint               n_parameters,
@@ -903,6 +904,7 @@ glade_widget_adaptor_object_construct_object (GladeWidgetAdaptor *adaptor,
 {
   return g_object_newv (adaptor->priv->type, n_parameters, parameters);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 glade_widget_adaptor_object_destroy_object (GladeWidgetAdaptor *adaptor,
@@ -3216,6 +3218,7 @@ glade_widget_adaptor_get_pack_property_def (GladeWidgetAdaptor *adaptor,
   return NULL;
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /**
  * glade_widget_class_default_params:
  * @adaptor: a #GladeWidgetAdaptor
@@ -3317,6 +3320,7 @@ glade_widget_adaptor_construct_object (GladeWidgetAdaptor *adaptor,
                                                                      n_parameters,
                                                                      parameters);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * glade_widget_adaptor_destroy_object:
