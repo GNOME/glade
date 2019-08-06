@@ -344,7 +344,7 @@ glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
   g_signal_connect_object (button, "drag-data-get",
                            G_CALLBACK (glade_palette_drag_data_get), adaptor, 0);
 
-  gtk_drag_source_set (button, GDK_BUTTON1_MASK, _glade_dnd_get_target (), 1, 0);
+  gtk_drag_source_set (button, GDK_BUTTON1_MASK, _glade_dnd_get_target (), 1, GDK_ACTION_MOVE | GDK_ACTION_COPY);
 
   gtk_widget_show (item);
 

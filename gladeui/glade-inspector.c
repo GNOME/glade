@@ -602,7 +602,7 @@ glade_inspector_init (GladeInspector *inspector)
   /* Set it as a drag source */
   gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW (priv->view),
                                           GDK_BUTTON1_MASK,
-                                          _glade_dnd_get_target (), 1, 0);
+                                          _glade_dnd_get_target (), 1, GDK_ACTION_MOVE | GDK_ACTION_COPY);
 
   g_signal_connect (G_OBJECT (priv->view), "row-activated",
                     G_CALLBACK (item_activated_cb), inspector);

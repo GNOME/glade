@@ -461,7 +461,7 @@ _glade_adaptor_chooser_widget_constructed (GObject *object)
                                        chooser, NULL);
   /* Enable Drag & Drop */
   gtk_tree_view_enable_model_drag_source (priv->treeview, GDK_BUTTON1_MASK,
-                                          _glade_dnd_get_target (), 1, 0);
+                                          _glade_dnd_get_target (), 1, GDK_ACTION_MOVE | GDK_ACTION_COPY);
   g_signal_connect_after (priv->treeview, "drag-begin",
                           G_CALLBACK (glade_adaptor_chooser_widget_drag_begin),
                           NULL);

@@ -446,7 +446,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
       if (target == NULL)
         target = gtk_target_list_new (_glade_dnd_get_target (), 1);
 
-      gtk_drag_begin_with_coordinates (widget, target, 0, 1, (GdkEvent*)ev, x, y);
+      gtk_drag_begin_with_coordinates (widget, target, GDK_ACTION_MOVE | GDK_ACTION_COPY, 1, (GdkEvent*)ev, x, y);
       return TRUE;
     }
 
