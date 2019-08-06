@@ -225,7 +225,20 @@ glade_gtk_listbox_set_property (GladeWidgetAdaptor *adaptor,
           g_object_set_data (G_OBJECT (child), "special-child-type", "placeholder");
         }
       else
-        child = NULL;
+        {
+          child = glade_listbox_get_placeholder (GTK_LIST_BOX (object));
+          if (child)
+            {
+              GladeProject *project = glade_widget_get_project (glade_widget_get_from_gobject (object));
+              /* Assign selection first */
+              if (glade_project_is_selected
+                  (project, child) == FALSE)
+                glade_project_selection_set (project, child, FALSE);
+
+              glade_project_command_delete (project);
+            }
+          child = NULL;
+        }
       gtk_list_box_set_placeholder (GTK_LIST_BOX (object), child);
     }
   else
