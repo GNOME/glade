@@ -55,17 +55,21 @@ struct _GladeXmlNode
 
 struct _GladeXmlDoc
 {
-  xmlDoc doc;
+  xmlDocPtr doc;
+  gint reference_count;
 };
 
 struct _GladeXmlContext
 {
   GladeXmlDoc *doc;
-  gboolean freedoc;
   xmlNsPtr ns;
 };
 
 G_DEFINE_BOXED_TYPE(GladeXmlNode, glade_xml_node, glade_xml_node_copy, glade_xml_node_delete);
+G_DEFINE_BOXED_TYPE(GladeXmlDoc, glade_xml_doc, glade_xml_doc_ref, glade_xml_doc_unref);
+G_DEFINE_BOXED_TYPE(GladeXmlContext, glade_xml_context, glade_xml_context_copy, glade_xml_context_free);
+
+static GladeXmlDoc *glade_xml_doc_new_from_doc (xmlDocPtr docptr);
 
 /* This is used inside for loops so that we skip xml comments 
  * <!-- i am a comment ->
@@ -612,40 +616,67 @@ glade_xml_search_child_required (GladeXmlNode *node, const gchar *name)
 
 /* --------------------------- Parse Context ----------------------------*/
 
+/*
+ * glade_xml_context_new_from_xml_namespace:
+ * @doc: (transfer full): a #GladeXmlDoc
+ * @ns: (nullable): a #xmlNs
+ *
+ * Returns: (transfer full): a new #GladeXmlContext
+ */
 static GladeXmlContext *
-glade_xml_context_new_real (GladeXmlDoc *doc, gboolean freedoc, xmlNsPtr ns)
+glade_xml_context_new_from_xml_namespace (GladeXmlDoc *doc, xmlNsPtr ns)
 {
   GladeXmlContext *context = g_new0 (GladeXmlContext, 1);
 
   context->doc = doc;
-  context->freedoc = freedoc;
   context->ns = ns;
 
   return context;
 }
 
+/**
+ * glade_xml_context_new:
+ * @doc: (transfer full): a #GladeXmlDoc
+ * @name_space: (nullable): unused argument
+ *
+ * Returns: (transfer full): a new #GladeXmlContext
+ */
 GladeXmlContext *
 glade_xml_context_new (GladeXmlDoc *doc, const gchar *name_space)
 {
   /* We are not using the namespace now */
-  return glade_xml_context_new_real (doc, TRUE, NULL);
+  return glade_xml_context_new_from_xml_namespace (doc, NULL);
 }
 
-void
-glade_xml_context_destroy (GladeXmlContext * context)
+/**
+ * glade_xml_context_copy:
+ * @context: a #GladeXmlDoc
+ *
+ * Returns: (transfer full): a copy of the given #GladeXmlContext
+ */
+GladeXmlContext *
+glade_xml_context_copy (GladeXmlContext *context)
 {
-  g_return_if_fail (context != NULL);
-  if (context->freedoc)
-    xmlFreeDoc ((xmlDoc *) context->doc);
-  g_free (context);
+  return glade_xml_context_new_from_xml_namespace (glade_xml_doc_ref (context->doc), context->ns);
 }
 
+/**
+ * glade_xml_context_new_from_path:
+ * @full_path: the path to the XML file
+ * @nspace: (nullable): the expected namespace
+ * @root_name: (nullable): the expected root name
+ *
+ * Creates a new #GladeXmlContext from the given path.
+ *
+ * Returns: (transfer full) (nullable): a new #GladeXmlContext or %NULL on failure
+ */
 GladeXmlContext *
 glade_xml_context_new_from_path (const gchar *full_path,
                                  const gchar *nspace,
                                  const gchar *root_name)
 {
   GladeXmlContext *context;
+  GladeXmlDoc *glade_doc;
   xmlDocPtr doc;
   xmlNsPtr name_space;
   xmlNodePtr root;
@@ -688,7 +719,8 @@ glade_xml_context_new_from_path (const gchar *full_path,
       return NULL;
     }
 
-  context = glade_xml_context_new_real ((GladeXmlDoc *) doc, TRUE, name_space);
+  glade_doc = glade_xml_doc_new_from_doc (doc);
+  context = glade_xml_context_new_from_xml_namespace (glade_doc, name_space);
 
   return context;
 }
@@ -697,16 +729,15 @@ glade_xml_context_new_from_path (const gchar *full_path,
  * glade_xml_context_free:
  * @context: An #GladeXmlContext
  * 
- * Similar to glade_xml_context_destroy but it also frees the document set in the context
+ * Frees the memory allocated by #GladeXmlContext.
  **/
 void
 glade_xml_context_free (GladeXmlContext *context)
 {
-  g_return_if_fail (context != NULL);
-  if (context->doc)
-    xmlFreeDoc ((xmlDocPtr) context->doc);
-  context->doc = NULL;
+  if (!context)
+    return;
 
+  g_clear_pointer (&context->doc, glade_xml_doc_unref);
   g_free (context);
 }
 
@@ -740,7 +771,7 @@ glade_xml_node_new (GladeXmlContext *context, const gchar *name)
   g_return_val_if_fail (context != NULL, NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
-  return (GladeXmlNode *) xmlNewDocNode ((xmlDocPtr) context->doc, context->ns,
+  return (GladeXmlNode *) xmlNewDocNode (context->doc->doc, context->ns,
                                          BAD_CAST (name), NULL);
 }
 
@@ -750,7 +781,7 @@ glade_xml_node_new_comment (GladeXmlContext *context, const gchar *comment)
   g_return_val_if_fail (context != NULL, NULL);
   g_return_val_if_fail (comment != NULL, NULL);
 
-  return (GladeXmlNode *) xmlNewDocComment ((xmlDocPtr) context->doc,
+  return (GladeXmlNode *) xmlNewDocComment (context->doc->doc,
                                             BAD_CAST (comment));
 }
 
@@ -772,12 +803,28 @@ glade_xml_node_delete (GladeXmlNode *node)
   xmlFreeNode ((xmlNodePtr) node);
 }
 
+/**
+ * glade_xml_context_get_doc:
+ * @context: a #GladeXmlContext
+ *
+ * Get the #GladeXmlDoc this @context refers to.
+ *
+ * Returns: (transfer none): the #GladeXmlDoc that the @context refers to
+ */
 GladeXmlDoc *
 glade_xml_context_get_doc (GladeXmlContext *context)
 {
   return context->doc;
 }
 
+/**
+ * glade_xml_dump_from_context:
+ * @context: a #GladeXmlContext
+ *
+ * Dump the XML string from the context.
+ *
+ * Returns: the XML string, free the allocated memory with g_free() after use
+ */
 gchar *
 glade_xml_dump_from_context (GladeXmlContext *context)
 {
@@ -787,7 +834,7 @@ glade_xml_dump_from_context (GladeXmlContext *context)
   int size;
 
   doc = glade_xml_context_get_doc (context);
-  xmlDocDumpFormatMemory (&(doc->doc), &string, &size, 1);
+  xmlDocDumpFormatMemory (doc->doc, &string, &size, 1);
 
   text = claim_string (string);
 
@@ -874,52 +921,98 @@ glade_xml_node_get_name (GladeXmlNode *node_in)
   return CAST_BAD (node->name);
 }
 
+static GladeXmlDoc *
+glade_xml_doc_new_from_doc (xmlDocPtr docptr)
+{
+  GladeXmlDoc *doc = g_new (GladeXmlDoc, 1);
+  doc->doc = docptr;
+  doc->reference_count = 1;
+
+  return doc;
+}
+
+/**
+ * glade_xml_doc_new:
+ *
+ * Creates a new #GladeXmlDoc.
+ *
+ * Returns: (transfer full): a new #GladeXmlDoc
+ */
 GladeXmlDoc *
 glade_xml_doc_new (void)
 {
-  xmlDocPtr xml_doc = xmlNewDoc (BAD_CAST ("1.0"));
+  return glade_xml_doc_new_from_doc (xmlNewDoc (BAD_CAST ("1.0")));
+}
 
-  return (GladeXmlDoc *) xml_doc;
+/**
+ * glade_xml_doc_ref:
+ * @doc: a #GladeXmlDoc
+ *
+ * Increases the reference of the #GladeXmlDoc.
+ *
+ * Returns: (transfer full): the given #GladeXmlDoc
+ */
+GladeXmlDoc *
+glade_xml_doc_ref (GladeXmlDoc *doc)
+{
+  g_return_val_if_fail (doc != NULL, NULL);
+
+  g_atomic_int_inc (&doc->reference_count);
+  return doc;
+}
+
+/**
+ * glade_xml_doc_unref:
+ * @doc: a #GladeXmlDoc
+ *
+ * Decreases the reference of the #GladeXmlDoc.
+ */
+void
+glade_xml_doc_unref (GladeXmlDoc *doc)
+{
+  if (!doc)
+    return;
+
+  if (g_atomic_int_dec_and_test (&doc->reference_count))
+    {
+      g_clear_pointer (&doc->doc, xmlFreeDoc);
+      g_free (doc);
+    }
 }
 
 void
 glade_xml_doc_set_root (GladeXmlDoc *doc_in, GladeXmlNode *node_in)
 {
   xmlNodePtr node = (xmlNodePtr) node_in;
-  xmlDocPtr doc = (xmlDocPtr) doc_in;
 
-  xmlDocSetRootElement (doc, node);
+  g_return_if_fail (doc_in != NULL);
+
+  xmlDocSetRootElement (doc_in->doc, node);
 }
 
 gint
 glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path)
 {
-  xmlDocPtr doc = (xmlDocPtr) doc_in;
+  g_return_val_if_fail (doc_in != NULL, 0);
 
   xmlKeepBlanksDefault (0);
-  return xmlSaveFormatFileEnc (full_path, doc, "UTF-8", 1);
-}
-
-void
-glade_xml_doc_free (GladeXmlDoc *doc_in)
-{
-  xmlDocPtr doc = (xmlDocPtr) doc_in;
-
-  xmlFreeDoc (doc);
+  return xmlSaveFormatFileEnc (full_path, doc_in->doc, "UTF-8", 1);
 }
 
 /**
  * glade_xml_doc_get_root:
  * @doc: a #GladeXmlDoc
  *
- * Returns: the #GladeXmlNode that is the document root of @doc
+ * Returns: (transfer none): the #GladeXmlNode that is the document root of @doc
  */
 GladeXmlNode *
 glade_xml_doc_get_root (GladeXmlDoc *doc)
 {
   xmlNodePtr node;
 
-  node = xmlDocGetRootElement ((xmlDocPtr) (doc));
+  g_return_val_if_fail (doc != NULL, NULL);
+
+  node = xmlDocGetRootElement (doc->doc);
 
   return (GladeXmlNode *) node;
 }
@@ -974,7 +1067,7 @@ glade_xml_load_sym_from_node (GladeXmlNode *node_in,
 GladeXmlNode *
 glade_xml_doc_new_comment (GladeXmlDoc *doc, const gchar *comment)
 {
-  return (GladeXmlNode *) xmlNewDocComment ((xmlDocPtr) (doc), BAD_CAST (comment));
+  return (GladeXmlNode *) xmlNewDocComment (doc->doc, BAD_CAST (comment));
 }
 
 GladeXmlNode *
