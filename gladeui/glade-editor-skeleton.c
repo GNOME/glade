@@ -40,6 +40,8 @@ static void      glade_editor_skeleton_editable_init   (GladeEditableIface *ifac
 /* GtkBuildableIface */
 static void      glade_editor_skeleton_buildable_init  (GtkBuildableIface *iface);
 
+typedef struct _GladeEditorSkeletonPrivate GladeEditorSkeletonPrivate;
+
 struct _GladeEditorSkeletonPrivate
 {
   GSList *editors;
@@ -58,7 +60,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeEditorSkeleton, glade_editor_skeleton, GTK_TYPE_BO
 static void
 glade_editor_skeleton_init (GladeEditorSkeleton *skeleton)
 {
-  skeleton->priv = glade_editor_skeleton_get_instance_private (skeleton);
+  
 }
 
 static void
@@ -76,7 +78,7 @@ static void
 glade_editor_skeleton_dispose (GObject *object)
 {
   GladeEditorSkeleton *skeleton = GLADE_EDITOR_SKELETON (object);
-  GladeEditorSkeletonPrivate *priv = skeleton->priv;
+  GladeEditorSkeletonPrivate *priv = glade_editor_skeleton_get_instance_private (skeleton);
 
   if (priv->editors)
     {
@@ -95,7 +97,7 @@ glade_editor_skeleton_load (GladeEditable *editable,
                             GladeWidget   *widget)
 {
   GladeEditorSkeleton *skeleton = GLADE_EDITOR_SKELETON (editable);
-  GladeEditorSkeletonPrivate *priv = skeleton->priv;
+  GladeEditorSkeletonPrivate *priv = glade_editor_skeleton_get_instance_private (skeleton);
   GSList *l;
 
   /* Chain up to default implementation */
@@ -113,7 +115,7 @@ static void
 glade_editor_skeleton_set_show_name (GladeEditable *editable, gboolean show_name)
 {
   GladeEditorSkeleton *skeleton = GLADE_EDITOR_SKELETON (editable);
-  GladeEditorSkeletonPrivate *priv = skeleton->priv;
+  GladeEditorSkeletonPrivate *priv = glade_editor_skeleton_get_instance_private (skeleton);
   GSList *l;
 
   for (l = priv->editors; l; l = l->next)
@@ -254,12 +256,10 @@ void
 glade_editor_skeleton_add_editor (GladeEditorSkeleton *skeleton,
                                   GladeEditable       *editor)
 {
-  GladeEditorSkeletonPrivate *priv;
+  GladeEditorSkeletonPrivate *priv = glade_editor_skeleton_get_instance_private (skeleton);
 
   g_return_if_fail (GLADE_IS_EDITOR_SKELETON (skeleton));
   g_return_if_fail (GLADE_IS_EDITABLE (editor));
-
-  priv = skeleton->priv;
 
   g_object_ref (editor);
   priv->editors = g_slist_prepend (priv->editors, editor);

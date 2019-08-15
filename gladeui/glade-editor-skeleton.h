@@ -27,31 +27,13 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_EDITOR_SKELETON            (glade_editor_skeleton_get_type ())
-#define GLADE_EDITOR_SKELETON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EDITOR_SKELETON, GladeEditorSkeleton))
-#define GLADE_EDITOR_SKELETON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EDITOR_SKELETON, GladeEditorSkeletonClass))
-#define GLADE_IS_EDITOR_SKELETON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EDITOR_SKELETON))
-#define GLADE_IS_EDITOR_SKELETON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EDITOR_SKELETON))
-#define GLADE_EDITOR_SKELETON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_EDITOR_SKELETON, GladeEditorSkeletonClass))
-
-typedef struct _GladeEditorSkeleton             GladeEditorSkeleton;
-typedef struct _GladeEditorSkeletonClass        GladeEditorSkeletonClass;
-typedef struct _GladeEditorSkeletonPrivate      GladeEditorSkeletonPrivate;
-
-struct _GladeEditorSkeleton
-{
-  /*< private >*/
-  GtkBox box;
-
-  GladeEditorSkeletonPrivate *priv;
-};
+#define GLADE_TYPE_EDITOR_SKELETON glade_editor_skeleton_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeEditorSkeleton, glade_editor_skeleton, GLADE, EDITOR_SKELETON, GtkBox)
 
 struct _GladeEditorSkeletonClass
 {
   GtkBoxClass parent_class;
 };
-
-GType          glade_editor_skeleton_get_type          (void) G_GNUC_CONST;
 
 GtkWidget     *glade_editor_skeleton_new               (void);
 void           glade_editor_skeleton_add_editor        (GladeEditorSkeleton *skeleton,
