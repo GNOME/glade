@@ -250,19 +250,22 @@ GType          glade_xml_node_get_type (void) G_GNUC_CONST;
 /* Document Operatons */
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);
 GladeXmlDoc *  glade_xml_doc_new (void);
+GladeXmlDoc *  glade_xml_doc_ref (GladeXmlDoc *doc);
+void           glade_xml_doc_unref (GladeXmlDoc *doc);
 void           glade_xml_doc_set_root (GladeXmlDoc *doc, GladeXmlNode *node);
-void           glade_xml_doc_free (GladeXmlDoc *doc_in);
 gint           glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path);
 GladeXmlNode * glade_xml_doc_new_comment (GladeXmlDoc *doc, const gchar *comment);
+GType          glade_xml_doc_get_type (void) G_GNUC_CONST;
 
 /* Parse Context */
 GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, const gchar *name_space);
-void              glade_xml_context_destroy (GladeXmlContext *context);
+GladeXmlContext * glade_xml_context_copy    (GladeXmlContext *context);
 void              glade_xml_context_free    (GladeXmlContext *context);
 GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
                                                    const gchar *nspace,
                                                    const gchar *root_name);
 GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
+GType             glade_xml_context_get_type (void) G_GNUC_CONST;
 
 /* Dumps an xml string from a context */
 gchar * glade_xml_dump_from_context (GladeXmlContext *context);
@@ -271,6 +274,10 @@ gboolean        glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
                                               GModule          *module,
                                               gchar            *tagname,
                                               gpointer         *sym_location);
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GladeXmlDoc, glade_xml_doc_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GladeXmlContext, glade_xml_context_free)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GladeXmlNode, glade_xml_node_delete)
 
 G_END_DECLS
 
