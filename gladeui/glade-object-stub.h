@@ -28,29 +28,8 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_OBJECT_STUB             (glade_object_stub_get_type ())
-#define GLADE_OBJECT_STUB(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_OBJECT_STUB, GladeObjectStub))
-#define GLADE_OBJECT_STUB_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_OBJECT_STUB, GladeObjectStubClass))
-#define GLADE_IS_OBJECT_STUB(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_OBJECT_STUB))
-#define GLADE_IS_OBJECT_STUB_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_OBJECT_STUB))
-#define GLADE_OBJECT_STUB_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_OBJECT_STUB, GladeObjectStubClass))
-
-typedef struct _GladeObjectStubClass GladeObjectStubClass;
-typedef struct _GladeObjectStub GladeObjectStub;
-typedef struct _GladeObjectStubPrivate GladeObjectStubPrivate;
-
-struct _GladeObjectStubClass
-{
-  GtkInfoBarClass parent_class;
-};
-
-struct _GladeObjectStub
-{
-  GtkInfoBar parent_instance;
-  GladeObjectStubPrivate *priv;
-};
-
-GType glade_object_stub_get_type (void) G_GNUC_CONST;
+#define GLADE_TYPE_OBJECT_STUB glade_object_stub_get_type ()
+G_DECLARE_FINAL_TYPE (GladeObjectStub, glade_object_stub, GLADE, OBJECT_STUB, GtkInfoBar)
 
 G_END_DECLS
 
