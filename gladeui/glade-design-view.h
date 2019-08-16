@@ -32,36 +32,15 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_DESIGN_VIEW              (glade_design_view_get_type ())
-#define GLADE_DESIGN_VIEW(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_DESIGN_VIEW, GladeDesignView))
-#define GLADE_DESIGN_VIEW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_DESIGN_VIEW, GladeDesignViewClass))
-#define GLADE_IS_DESIGN_VIEW(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_DESIGN_VIEW))
-#define GLADE_IS_DESIGN_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_DESIGN_VIEW))
-#define GLADE_DESIGN_VIEW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_DESIGN_VIEW, GladeDesignViewClass))
-
-typedef struct _GladeDesignView         GladeDesignView;
-typedef struct _GladeDesignViewPrivate  GladeDesignViewPrivate;
-typedef struct _GladeDesignViewClass    GladeDesignViewClass;
-
-struct _GladeDesignView
-{
-  GtkBox parent_instance;
-
-  GladeDesignViewPrivate *priv;
-};
+#define GLADE_TYPE_DESIGN_VIEW glade_design_view_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeDesignView, glade_design_view, GLADE, DESIGN_VIEW, GtkBox)
 
 struct _GladeDesignViewClass
 {
   GtkBoxClass parent_class;
 
-  void   (* glade_reserved1)   (void);
-  void   (* glade_reserved2)   (void);
-  void   (* glade_reserved3)   (void);
-  void   (* glade_reserved4)   (void);
+  gpointer padding[4];
 };
-
-
-GType              glade_design_view_get_type         (void) G_GNUC_CONST;
 
 GtkWidget         *glade_design_view_new              (GladeProject *project);
 
