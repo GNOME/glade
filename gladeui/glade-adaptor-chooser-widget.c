@@ -38,7 +38,8 @@ enum
   N_COLUMN
 };
 
-struct _GladeAdaptorChooserWidgetPrivate
+typedef struct __GladeAdaptorChooserWidgetPrivate _GladeAdaptorChooserWidgetPrivate;
+struct __GladeAdaptorChooserWidgetPrivate
 {
   GtkTreeView        *treeview;
   GtkListStore       *store;
