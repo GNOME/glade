@@ -26,7 +26,7 @@
 
 #include "glade-box-editor.h"
 
-static void glade_box_editor_editable_init (GladeEditableIface * iface);
+static void glade_box_editor_editable_init (GladeEditableInterface * iface);
 static void glade_box_editor_grab_focus (GtkWidget * widget);
 static void use_center_child_toggled (GtkWidget *widget, GladeBoxEditor * box_editor);
 
@@ -37,7 +37,7 @@ struct _GladeBoxEditorPrivate
   GtkWidget *use_center_child;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeBoxEditor, glade_box_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeBoxEditor)
@@ -95,7 +95,7 @@ glade_box_editor_load (GladeEditable *editable,
 }
 
 static void
-glade_box_editor_editable_init (GladeEditableIface * iface)
+glade_box_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

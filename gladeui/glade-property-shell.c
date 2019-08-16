@@ -43,8 +43,8 @@ static void      glade_property_shell_get_real_property (GObject       *object,
                                                          GValue        *value,
                                                          GParamSpec    *pspec);
 
-/* GladeEditableIface */
-static void      glade_property_shell_editable_init     (GladeEditableIface *iface);
+/* GladeEditableInterface */
+static void      glade_property_shell_editable_init     (GladeEditableInterface *iface);
 
 struct _GladePropertyShellPrivate
 {
@@ -82,7 +82,7 @@ enum
 
 static guint glade_property_shell_signals[LAST_SIGNAL] = { 0, };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladePropertyShell, glade_property_shell, GTK_TYPE_BOX,
                          G_ADD_PRIVATE (GladePropertyShell)
@@ -270,7 +270,7 @@ glade_property_shell_get_real_property (GObject    *object,
 }
 
 /*******************************************************************************
- *                            GladeEditableIface                               *                               
+ *                          GladeEditableInterface                             *
  *******************************************************************************/
 static void
 propagate_pre_commit (GladeEditorProperty *property,
@@ -412,7 +412,7 @@ glade_property_shell_set_show_name (GladeEditable *editable, gboolean show_name)
 }
 
 static void
-glade_property_shell_editable_init (GladeEditableIface *iface)
+glade_property_shell_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 

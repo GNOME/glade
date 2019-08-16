@@ -26,7 +26,7 @@
 
 #include "glade-header-bar-editor.h"
 
-static void glade_header_bar_editor_editable_init (GladeEditableIface * iface);
+static void glade_header_bar_editor_editable_init (GladeEditableInterface * iface);
 static void glade_header_bar_editor_grab_focus    (GtkWidget          * widget);
 
 static void use_custom_title_toggled (GtkWidget *widget, GladeHeaderBarEditor * editor);
@@ -39,7 +39,7 @@ struct _GladeHeaderBarEditorPrivate
   GtkWidget *show_decoration_check;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeHeaderBarEditor, glade_header_bar_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeHeaderBarEditor)
@@ -99,7 +99,7 @@ glade_header_bar_editor_load (GladeEditable *editable,
 }
 
 static void
-glade_header_bar_editor_editable_init (GladeEditableIface * iface)
+glade_header_bar_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

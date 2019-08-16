@@ -51,7 +51,7 @@ static void glade_editor_table_set_property  (GObject      *object,
                                               const GValue *value,
                                               GParamSpec   *pspec);
 
-static void glade_editor_table_editable_init (GladeEditableIface *iface);
+static void glade_editor_table_editable_init (GladeEditableInterface *iface);
 static void glade_editor_table_realize       (GtkWidget *widget);
 static void glade_editor_table_grab_focus    (GtkWidget *widget);
 
@@ -447,7 +447,7 @@ glade_editor_table_set_show_name (GladeEditable *editable, gboolean show_name)
 }
 
 static void
-glade_editor_table_editable_init (GladeEditableIface *iface)
+glade_editor_table_editable_init (GladeEditableInterface *iface)
 {
   iface->load = glade_editor_table_load;
   iface->set_show_name = glade_editor_table_set_show_name;

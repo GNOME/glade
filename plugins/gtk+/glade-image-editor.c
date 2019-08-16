@@ -26,7 +26,7 @@
 
 #include "glade-image-editor.h"
 
-static void glade_image_editor_editable_init (GladeEditableIface * iface);
+static void glade_image_editor_editable_init (GladeEditableInterface * iface);
 static void glade_image_editor_grab_focus (GtkWidget * widget);
 
 static void stock_toggled    (GtkWidget *widget, GladeImageEditor * image_editor);
@@ -44,7 +44,7 @@ struct _GladeImageEditorPrivate
   GtkWidget *file_radio;     /* Create the image from filename (libglade only) */
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeImageEditor, glade_image_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeImageEditor)
@@ -119,7 +119,7 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_image_editor_editable_init (GladeEditableIface * iface)
+glade_image_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

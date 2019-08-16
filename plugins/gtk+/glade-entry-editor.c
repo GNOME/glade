@@ -27,7 +27,7 @@
 #include "glade-entry-editor.h"
 #include "glade-image-editor.h" // For GladeImageEditMode
 
-static void glade_entry_editor_editable_init (GladeEditableIface *iface);
+static void glade_entry_editor_editable_init (GladeEditableInterface *iface);
 static void glade_entry_editor_grab_focus    (GtkWidget          *widget);
 
 /* Callbacks */
@@ -78,7 +78,7 @@ struct _GladeEntryEditorPrivate
 #define TOOLTIP_TEXT_NAME(primary)    ((primary) ? "primary-icon-tooltip-text"    : "secondary-icon-tooltip-text")
 #define TOOLTIP_CONTROL_NAME(primary) ((primary) ? "glade-primary-tooltip-markup" : "glade-secondary-tooltip-markup")
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeEntryEditor, glade_entry_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeEntryEditor)
@@ -212,7 +212,7 @@ glade_entry_editor_set_show_name (GladeEditable * editable, gboolean show_name)
 }
 
 static void
-glade_entry_editor_editable_init (GladeEditableIface * iface)
+glade_entry_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

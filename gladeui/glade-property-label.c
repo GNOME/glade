@@ -47,8 +47,8 @@ static void      glade_property_label_get_real_property (GObject         *object
 static gint      glade_property_label_button_press      (GtkWidget       *widget,
                                                          GdkEventButton  *event);
 
-/* GladeEditableIface */
-static void      glade_property_label_editable_init     (GladeEditableIface *iface);
+/* GladeEditableInterface */
+static void      glade_property_label_editable_init     (GladeEditableInterface *iface);
 
 struct _GladePropertyLabelPrivate
 {
@@ -81,7 +81,7 @@ enum {
   PROP_CUSTOM_TOOLTIP,
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladePropertyLabel, glade_property_label, GTK_TYPE_EVENT_BOX,
                          G_ADD_PRIVATE (GladePropertyLabel)
@@ -259,7 +259,7 @@ glade_property_label_get_real_property (GObject    *object,
 }
 
 /*******************************************************************************
- *                            GladeEditableIface                               *                               
+ *                          GladeEditableInterface                             *
  *******************************************************************************/
 static void
 glade_property_label_load (GladeEditable *editable,
@@ -295,7 +295,7 @@ glade_property_label_set_show_name (GladeEditable *editable, gboolean show_name)
 }
 
 static void
-glade_property_label_editable_init (GladeEditableIface *iface)
+glade_property_label_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 
