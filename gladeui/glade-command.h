@@ -10,17 +10,8 @@
 
 G_BEGIN_DECLS
 
-
-#define GLADE_TYPE_COMMAND            (glade_command_get_type ())
-#define GLADE_COMMAND(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_COMMAND, GladeCommand))
-#define GLADE_COMMAND_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_COMMAND, GladeCommandClass))
-#define GLADE_IS_COMMAND(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_COMMAND))
-#define GLADE_IS_COMMAND_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_COMMAND))
-#define GLADE_COMMAND_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_COMMAND, GladeCommandClass))
-
-typedef struct _GladeCommand        GladeCommand;
-typedef struct _GladeCommandClass   GladeCommandClass;
-typedef struct _GladeCommandPrivate GladeCommandPrivate;
+#define GLADE_TYPE_COMMAND glade_command_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeCommand, glade_command, GLADE, COMMAND, GObject)
 
 typedef struct _GladeCommandSetPropData GladeCommandSetPropData;
 
@@ -40,13 +31,6 @@ struct _GladeCommandSetPropData {
   GValue        *old_value;
 };
 
-struct _GladeCommand
-{
-  GObject parent;
-
-  GladeCommandPrivate *priv;
-};
-
 struct _GladeCommandClass
 {
   GObjectClass parent_class;
@@ -56,22 +40,15 @@ struct _GladeCommandClass
   gboolean (* unifies)     (GladeCommand *command, GladeCommand *other);
   void     (* collapse)    (GladeCommand *command, GladeCommand *other);
 
-  void   (* glade_reserved1)   (void);
-  void   (* glade_reserved2)   (void);
-  void   (* glade_reserved3)   (void);
-  void   (* glade_reserved4)   (void);
+  gpointer padding[4];
 };
-
-
-
-GType                 glade_command_get_type             (void);
 
 void                  glade_command_push_group           (const gchar       *fmt,
                                                           ...) G_GNUC_PRINTF (1, 2);
 void                  glade_command_pop_group            (void);
 gint                  glade_command_get_group_depth      (void);
 
-const gchar *glade_command_description          (GladeCommand      *command);
+const gchar          *glade_command_description          (GladeCommand      *command);
 gint                  glade_command_group_id             (GladeCommand      *command);
 gboolean              glade_command_execute              (GladeCommand      *command);
 gboolean              glade_command_undo                 (GladeCommand      *command);
