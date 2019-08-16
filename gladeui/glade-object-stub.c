@@ -27,10 +27,12 @@
 #include "glade-object-stub.h"
 #include "glade-project.h"
 
-struct _GladeObjectStubPrivate
+struct _GladeObjectStub
 {
+  GtkInfoBar parent_instance;
+
   GtkLabel *label;
-  
+
   gchar *type;
   GladeXmlNode *node;
 };
@@ -44,7 +46,7 @@ enum
 };
 
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeObjectStub, glade_object_stub, GTK_TYPE_INFO_BAR);
+G_DEFINE_TYPE (GladeObjectStub, glade_object_stub, GTK_TYPE_INFO_BAR);
 
 #define RESPONSE_DELETE 1
 #define RESPONSE_DELETE_ALL 2
@@ -81,58 +83,54 @@ on_infobar_response (GladeObjectStub *stub, gint response_id)
 }
 
 static void
-glade_object_stub_init (GladeObjectStub *object)
+glade_object_stub_init (GladeObjectStub *self)
 {
-  GladeObjectStubPrivate *priv = glade_object_stub_get_instance_private (object);
   GtkWidget *label = gtk_label_new (NULL);
 
-  object->priv = priv;
-  priv->type = NULL;
-  priv->node = NULL;
+  self->type = NULL;
+  self->node = NULL;
   
-  priv->label = GTK_LABEL (label);
-  gtk_label_set_line_wrap (priv->label, TRUE);
+  self->label = GTK_LABEL (label);
+  gtk_label_set_line_wrap (self->label, TRUE);
   
-  gtk_container_add (GTK_CONTAINER (gtk_info_bar_get_content_area (GTK_INFO_BAR (object))), label);
+  gtk_container_add (GTK_CONTAINER (gtk_info_bar_get_content_area (GTK_INFO_BAR (self))), label);
 
-  gtk_info_bar_add_button (GTK_INFO_BAR (object),
+  gtk_info_bar_add_button (GTK_INFO_BAR (self),
                            _("Delete"), RESPONSE_DELETE);
-  gtk_info_bar_add_button (GTK_INFO_BAR (object),
+  gtk_info_bar_add_button (GTK_INFO_BAR (self),
                            _("Delete All"), RESPONSE_DELETE_ALL);
   
-  g_signal_connect (object, "response", G_CALLBACK (on_infobar_response), NULL);
+  g_signal_connect (self, "response", G_CALLBACK (on_infobar_response), NULL);
 }
 
 static void
 glade_object_stub_finalize (GObject *object)
 {
-  GladeObjectStubPrivate *priv = GLADE_OBJECT_STUB (object)->priv;
+  GladeObjectStub *self = (GladeObjectStub *) object;
 
-  g_free (priv->type);
-  
-  if (priv->node) glade_xml_node_delete (priv->node);
+  g_clear_pointer (&self->type, g_free);
+  g_clear_pointer (&self->node, glade_xml_node_delete);
 
   G_OBJECT_CLASS (glade_object_stub_parent_class)->finalize (object);
 }
 
 static void
-glade_object_stub_refresh_text (GladeObjectStub *stub)
+glade_object_stub_refresh_text (GladeObjectStub *self)
 {
-  GladeObjectStubPrivate *priv = stub->priv;
   gchar *markup;
   GType type;
 
-  if (priv->type == NULL) return;
+  if (self->type == NULL) return;
 
-  type = g_type_from_name (priv->type);
+  type = g_type_from_name (self->type);
 
   if ((type != G_TYPE_INVALID && (!G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_ABSTRACT (type))))
-    markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create uninstantiable object with type %s", priv->type);
+    markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create uninstantiable object with type %s", self->type);
   else
-    markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create object with type %s", priv->type);
+    markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create object with type %s", self->type);
   
-  gtk_label_set_markup (priv->label, markup);
-  gtk_info_bar_set_message_type (GTK_INFO_BAR (stub), GTK_MESSAGE_WARNING);
+  gtk_label_set_markup (self->label, markup);
+  gtk_info_bar_set_message_type (GTK_INFO_BAR (self), GTK_MESSAGE_WARNING);
   g_free (markup);
 }
 
@@ -142,24 +140,20 @@ glade_object_stub_set_property (GObject      *object,
                                 const GValue *value,
                                 GParamSpec   *pspec)
 {
-  GladeObjectStubPrivate *priv;
-  GladeObjectStub *stub;
-  
+  GladeObjectStub *self = (GladeObjectStub *) object;
+
   g_return_if_fail (GLADE_IS_OBJECT_STUB (object));
 
-  stub = GLADE_OBJECT_STUB (object);
-  priv = stub->priv;
-  
   switch (prop_id)
     {
       case PROP_OBJECT_TYPE:
-        g_free (priv->type);
-        priv->type = g_value_dup_string (value);
-        glade_object_stub_refresh_text (stub);
+        g_free (self->type);
+        self->type = g_value_dup_string (value);
+        glade_object_stub_refresh_text (self);
         break;
       case PROP_XML_NODE:
-        if (priv->node) glade_xml_node_delete (priv->node);
-        priv->node = g_value_dup_boxed (value);
+        if (self->node) glade_xml_node_delete (self->node);
+        self->node = g_value_dup_boxed (value);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -173,19 +167,17 @@ glade_object_stub_get_property (GObject    *object,
                                 GValue     *value,
                                 GParamSpec *pspec)
 {
-  GladeObjectStubPrivate *priv;
+  GladeObjectStub *self = (GladeObjectStub *) object;
   
   g_return_if_fail (GLADE_IS_OBJECT_STUB (object));
 
-  priv = GLADE_OBJECT_STUB (object)->priv;
-  
   switch (prop_id)
     {
       case PROP_OBJECT_TYPE:
-        g_value_set_string (value, priv->type);
+        g_value_set_string (value, self->type);
         break;
       case PROP_XML_NODE:
-        g_value_set_boxed (value, priv->node);
+        g_value_set_boxed (value, self->node);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
