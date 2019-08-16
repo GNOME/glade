@@ -1177,7 +1177,7 @@ failed:
 
 /**
  * glade_property_def_new_from_spec:
- * @adaptor: A generic pointer (i.e. a #GladeWidgetClass)
+ * @adaptor: A generic pointer (i.e. a #GladeWidgetAdaptor)
  * @spec: A #GParamSpec
  *
  * Returns: a newly created #GladePropertyDef based on @spec

@@ -3090,7 +3090,7 @@ glade_eprop_object_view (gboolean radio)
 
   model = (GtkTreeModel *) gtk_tree_store_new (OBJ_NUM_COLUMNS, G_TYPE_OBJECT,  /* The GladeWidget  */
                                                G_TYPE_STRING,   /* The GladeWidget's name */
-                                               G_TYPE_STRING,   /* The GladeWidgetClass title */
+                                               G_TYPE_STRING,   /* The GladeWidgetAdaptor title */
                                                G_TYPE_BOOLEAN,  /* Whether this row is selected or not */
                                                G_TYPE_BOOLEAN); /* Whether this GladeWidget is 
                                                                  * of an acceptable type and 
