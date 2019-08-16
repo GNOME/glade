@@ -407,7 +407,7 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 /***************************************************************************
  *                             Editor Property                             *
  ***************************************************************************/
-typedef struct
+struct _GladeEPropCellAttribute
 {
   GladeEditorProperty parent_instance;
 
@@ -415,14 +415,10 @@ typedef struct
 
   GtkWidget *spin;
   GtkWidget *combo;
-} GladeEPropCellAttribute;
+};
 
-GLADE_MAKE_EPROP (GladeEPropCellAttribute, glade_eprop_cell_attribute)
-#define GLADE_EPROP_CELL_ATTRIBUTE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_CELL_ATTRIBUTE, GladeEPropCellAttribute))
-#define GLADE_EPROP_CELL_ATTRIBUTE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_CELL_ATTRIBUTE, GladeEPropCellAttributeClass))
-#define GLADE_IS_EPROP_CELL_ATTRIBUTE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_CELL_ATTRIBUTE))
-#define GLADE_IS_EPROP_CELL_ATTRIBUTE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_CELL_ATTRIBUTE))
-#define GLADE_EPROP_CELL_ATTRIBUTE_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_CELL_ATTRIBUTE, GladeEPropCellAttributeClass))
+GLADE_MAKE_EPROP (GladeEPropCellAttribute, glade_eprop_cell_attribute, GLADE, EPROP_CELL_ATTRIBUTE)
+
 static void
 glade_eprop_cell_attribute_finalize (GObject *object)
 {
