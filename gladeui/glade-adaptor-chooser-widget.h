@@ -28,16 +28,8 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_ADAPTOR_CHOOSER_WIDGET           (_glade_adaptor_chooser_widget_get_type ())
-#define GLADE_ADAPTOR_CHOOSER_WIDGET(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_ADAPTOR_CHOOSER_WIDGET, _GladeAdaptorChooserWidget))
-#define GLADE_ADAPTOR_CHOOSER_WIDGET_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_ADAPTOR_CHOOSER_WIDGET, _GladeAdaptorChooserWidgetClass))
-#define GLADE_IS_ADAPTOR_CHOOSER_WIDGET(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_ADAPTOR_CHOOSER_WIDGET))
-#define GLADE_IS_ADAPTOR_CHOOSER_WIDGET_CLASS(klass)(G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_ADAPTOR_CHOOSER_WIDGET))
-#define GLADE_ADAPTOR_CHOOSER_WIDGET_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_ADAPTOR_CHOOSER_WIDGET, _GladeAdaptorChooserWidgetClass))
-
-typedef struct _GladeAdaptorChooserWidgetClass   _GladeAdaptorChooserWidgetClass;
-typedef struct _GladeAdaptorChooserWidget        _GladeAdaptorChooserWidget;
-typedef struct _GladeAdaptorChooserWidgetPrivate _GladeAdaptorChooserWidgetPrivate;
+#define GLADE_TYPE_ADAPTOR_CHOOSER_WIDGET _glade_adaptor_chooser_widget_get_type ()
+G_DECLARE_DERIVABLE_TYPE (_GladeAdaptorChooserWidget, _glade_adaptor_chooser_widget, GLADE, ADAPTOR_CHOOSER_WIDGET, GtkBox)
 
 typedef enum
 {
@@ -47,17 +39,10 @@ typedef enum
   GLADE_ADAPTOR_CHOOSER_WIDGET_SKIP_DEPRECATED = 1 << 3
 } _GladeAdaptorChooserWidgetFlags;
 
-struct _GladeAdaptorChooserWidgetClass
+struct __GladeAdaptorChooserWidgetClass
 {
   GtkBoxClass parent_class;
 };
-
-struct _GladeAdaptorChooserWidget
-{
-  GtkBox parent_instance;
-};
-
-GType _glade_adaptor_chooser_widget_get_type (void) G_GNUC_CONST;
 
 GtkWidget *_glade_adaptor_chooser_widget_new (_GladeAdaptorChooserWidgetFlags  flags,
                                               GladeProject                    *project);
