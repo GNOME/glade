@@ -27,23 +27,8 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_NAMED_ICON_CHOOSER_DIALOG              (glade_named_icon_chooser_dialog_get_type ())
-#define GLADE_NAMED_ICON_CHOOSER_DIALOG(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_NAMED_ICON_CHOOSER_DIALOG, GladeNamedIconChooserDialog))
-#define GLADE_IS_NAMED_ICON_CHOOSER_DIALOG(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_NAMED_ICON_CHOOSER_DIALOG))
-#define GLADE_NAMED_ICON_CHOOSER_DIALOG_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_NAMED_ICON_CHOOSER_DIALOG, GladeNamedIconChooserDialogClass))
-#define GLADE_IS_NAMED_ICON_CHOOSER_DIALOG_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_NAMED_ICON_CHOOSER_DIALOG))
-#define GLADE_NAMED_ICON_CHOOSER_DIALOG_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_NAMED_ICON_CHOOSER_DIALOG, GladeNamedIconChooserDialogClass))
-
-typedef struct _GladeNamedIconChooserDialog        GladeNamedIconChooserDialog;
-typedef struct _GladeNamedIconChooserDialogPrivate GladeNamedIconChooserDialogPrivate;
-typedef struct _GladeNamedIconChooserDialogClass   GladeNamedIconChooserDialogClass;
-
-struct _GladeNamedIconChooserDialog
-{
-  GtkDialog parent_instance;
-  
-  GladeNamedIconChooserDialogPrivate *priv;
-};
+#define GLADE_TYPE_NAMED_ICON_CHOOSER_DIALOG glade_named_icon_chooser_dialog_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeNamedIconChooserDialog, glade_named_icon_chooser_dialog, GLADE, NAMED_ICON_CHOOSER_DIALOG, GtkDialog)
 
 struct _GladeNamedIconChooserDialogClass
 {
@@ -53,13 +38,8 @@ struct _GladeNamedIconChooserDialogClass
 
   void  (* selection_changed)   (GladeNamedIconChooserDialog *dialog);
 
-  void   (* glade_reserved1)   (void);
-  void   (* glade_reserved2)   (void);
-  void   (* glade_reserved3)   (void);
-  void   (* glade_reserved4)   (void);
+  gpointer padding[4];
 };
-
-GType       glade_named_icon_chooser_dialog_get_type       (void) G_GNUC_CONST;
 
 GtkWidget  *glade_named_icon_chooser_dialog_new            (const gchar      *title,
                                                             GtkWindow        *parent,

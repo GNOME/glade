@@ -65,7 +65,7 @@ enum
   LAST_SIGNAL
 };
 
-struct _GladeNamedIconChooserDialogPrivate
+typedef struct _GladeNamedIconChooserDialogPrivate
 {
   GtkWidget *icons_view;
   GtkTreeModel *filter_model;   /* filtering model  */
@@ -94,7 +94,7 @@ struct _GladeNamedIconChooserDialogPrivate
   GtkWidget *last_focus_widget;
 
   gboolean icons_loaded;        /* whether the icons have been loaded into the model */
-};
+} GladeNamedIconChooserDialogPrivate;
 
 static GHashTable *standard_icon_quarks = NULL;
 
@@ -141,15 +141,16 @@ G_DEFINE_TYPE_WITH_PRIVATE (GladeNamedIconChooserDialog,
 static void
 entry_set_name (GladeNamedIconChooserDialog *dialog, const gchar *name)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   /* Must disable completion before setting text, in order to avoid
    * spurious warnings (possible GTK+ bug).
    */
-  gtk_entry_set_completion (GTK_ENTRY (dialog->priv->entry), NULL);
+  gtk_entry_set_completion (GTK_ENTRY (priv->entry), NULL);
 
-  gtk_entry_set_text (GTK_ENTRY (dialog->priv->entry), name);
+  gtk_entry_set_text (GTK_ENTRY (priv->entry), name);
 
-  gtk_entry_set_completion (GTK_ENTRY (dialog->priv->entry),
-                            dialog->priv->entry_completion);
+  gtk_entry_set_completion (GTK_ENTRY (priv->entry),
+                            priv->entry_completion);
 }
 
 static GtkIconTheme *
@@ -187,7 +188,8 @@ check_entry_text (GladeNamedIconChooserDialog *dialog,
                   gboolean                    *is_wellformed_ret,
                   gboolean                    *is_empty_ret)
 {
-  if (strlen (gtk_entry_get_text (GTK_ENTRY (dialog->priv->entry))) == 0)
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
+  if (strlen (gtk_entry_get_text (GTK_ENTRY (priv->entry))) == 0)
     {
       *name_ret = NULL;
       *is_wellformed_ret = TRUE;
@@ -199,10 +201,10 @@ check_entry_text (GladeNamedIconChooserDialog *dialog,
   *is_empty_ret = FALSE;
 
   *is_wellformed_ret =
-      is_well_formed (gtk_entry_get_text (GTK_ENTRY (dialog->priv->entry)));
+      is_well_formed (gtk_entry_get_text (GTK_ENTRY (priv->entry)));
 
   if (*is_wellformed_ret)
-    *name_ret = g_strdup (gtk_entry_get_text (GTK_ENTRY (dialog->priv->entry)));
+    *name_ret = g_strdup (gtk_entry_get_text (GTK_ENTRY (priv->entry)));
   else
     *name_ret = NULL;
 }
@@ -259,6 +261,7 @@ void
 glade_named_icon_chooser_dialog_set_icon_name (GladeNamedIconChooserDialog *dialog, 
                                                const gchar                 *name)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   ForEachFuncData *data;
   gboolean located_in_theme;
 
@@ -267,7 +270,7 @@ glade_named_icon_chooser_dialog_set_icon_name (GladeNamedIconChooserDialog *dial
 
   if (name == NULL)
     {
-      gtk_tree_selection_unselect_all (dialog->priv->selection);
+      gtk_tree_selection_unselect_all (priv->selection);
       entry_set_name (dialog, "");
       return;
     }
@@ -279,7 +282,7 @@ glade_named_icon_chooser_dialog_set_icon_name (GladeNamedIconChooserDialog *dial
   if (located_in_theme)
     {
 
-      if (dialog->priv->icons_loaded && dialog->priv->filter_model)
+      if (priv->icons_loaded && priv->filter_model)
         {
 
           data = g_slice_new0 (ForEachFuncData);
@@ -290,7 +293,7 @@ glade_named_icon_chooser_dialog_set_icon_name (GladeNamedIconChooserDialog *dial
           data->do_cursor = TRUE;
           data->dialog = dialog;
 
-          gtk_tree_model_foreach (dialog->priv->filter_model,
+          gtk_tree_model_foreach (priv->filter_model,
                                   scan_for_name_func, data);
 
           g_free (data->name);
@@ -299,7 +302,7 @@ glade_named_icon_chooser_dialog_set_icon_name (GladeNamedIconChooserDialog *dial
         }
       else
         {
-          dialog->priv->pending_select_name = g_strdup (name);
+          priv->pending_select_name = g_strdup (name);
         }
 
       /* selecting a treeview row will set the entry text,
@@ -311,7 +314,7 @@ glade_named_icon_chooser_dialog_set_icon_name (GladeNamedIconChooserDialog *dial
   else if (is_well_formed (name))
     {
 
-      gtk_tree_selection_unselect_all (dialog->priv->selection);
+      gtk_tree_selection_unselect_all (priv->selection);
 
       entry_set_name (dialog, name);
     }
@@ -325,6 +328,7 @@ gboolean
 glade_named_icon_chooser_dialog_set_context (GladeNamedIconChooserDialog *dialog,
                                              const gchar                 *name)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   ForEachFuncData *data;
 
   g_return_val_if_fail (GLADE_IS_NAMED_ICON_CHOOSER_DIALOG (dialog), FALSE);
@@ -342,7 +346,7 @@ glade_named_icon_chooser_dialog_set_context (GladeNamedIconChooserDialog *dialog
   data->do_cursor = FALSE;
   data->dialog = dialog;
 
-  gtk_tree_model_foreach (GTK_TREE_MODEL (dialog->priv->contexts_store),
+  gtk_tree_model_foreach (GTK_TREE_MODEL (priv->contexts_store),
                           (GtkTreeModelForeachFunc) scan_for_context_func,
                           data);
 
@@ -355,6 +359,7 @@ glade_named_icon_chooser_dialog_set_context (GladeNamedIconChooserDialog *dialog
 gchar *
 glade_named_icon_chooser_dialog_get_context (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkTreeSelection *sel;
   GtkTreeIter iter;
   gchar *context_name;
@@ -362,12 +367,12 @@ glade_named_icon_chooser_dialog_get_context (GladeNamedIconChooserDialog *dialog
   g_return_val_if_fail (GLADE_IS_NAMED_ICON_CHOOSER_DIALOG (dialog), NULL);
 
   sel =
-      gtk_tree_view_get_selection (GTK_TREE_VIEW (dialog->priv->contexts_view));
+      gtk_tree_view_get_selection (GTK_TREE_VIEW (priv->contexts_view));
 
   if (gtk_tree_selection_get_selected (sel, NULL, &iter))
     {
 
-      gtk_tree_model_get (GTK_TREE_MODEL (dialog->priv->contexts_store), &iter,
+      gtk_tree_model_get (GTK_TREE_MODEL (priv->contexts_store), &iter,
                           CONTEXTS_NAME_COLUMN, &context_name, -1);
 
       /* if context_name is NULL, then it is the 'all categories' special context */
@@ -383,11 +388,12 @@ glade_named_icon_chooser_dialog_get_context (GladeNamedIconChooserDialog *dialog
 static gchar *
 get_icon_name_from_selection (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkTreeIter iter;
   GtkTreeModel *model;
   gchar *name;
 
-  if (!gtk_tree_selection_get_selected (dialog->priv->selection, &model, &iter))
+  if (!gtk_tree_selection_get_selected (priv->selection, &model, &iter))
     return NULL;
 
   gtk_tree_model_get (model, &iter, ICONS_NAME_COLUMN, &name, -1);
@@ -398,6 +404,7 @@ get_icon_name_from_selection (GladeNamedIconChooserDialog *dialog)
 gchar *
 glade_named_icon_chooser_dialog_get_icon_name (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkWidget *current_focus;
   gchar *name;
 
@@ -405,7 +412,7 @@ glade_named_icon_chooser_dialog_get_icon_name (GladeNamedIconChooserDialog *dial
 
   current_focus = gtk_window_get_focus (GTK_WINDOW (dialog));
 
-  if (current_focus == dialog->priv->icons_view)
+  if (current_focus == priv->icons_view)
     {
 
     view:
@@ -415,7 +422,7 @@ glade_named_icon_chooser_dialog_get_icon_name (GladeNamedIconChooserDialog *dial
         goto entry;
 
     }
-  else if (current_focus == dialog->priv->entry)
+  else if (current_focus == priv->entry)
     {
       gboolean is_wellformed, is_empty;
     entry:
@@ -425,11 +432,11 @@ glade_named_icon_chooser_dialog_get_icon_name (GladeNamedIconChooserDialog *dial
         return NULL;
 
     }
-  else if (dialog->priv->last_focus_widget == dialog->priv->icons_view)
+  else if (priv->last_focus_widget == priv->icons_view)
     {
       goto view;
     }
-  else if (dialog->priv->last_focus_widget == dialog->priv->entry)
+  else if (priv->last_focus_widget == priv->entry)
     {
       goto entry;
     }
@@ -541,31 +548,33 @@ contexts_row_activated_cb (GtkTreeView                 *view,
                            GtkTreeViewColumn           *column,
                            GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkTreeIter iter;
   GtkTreePath *path;
 
-  if (gtk_tree_model_get_iter_first (dialog->priv->filter_model, &iter))
+  if (gtk_tree_model_get_iter_first (priv->filter_model, &iter))
     {
 
-      gtk_tree_selection_select_iter (dialog->priv->selection, &iter);
+      gtk_tree_selection_select_iter (priv->selection, &iter);
 
-      path = gtk_tree_model_get_path (dialog->priv->filter_model, &iter);
+      path = gtk_tree_model_get_path (priv->filter_model, &iter);
 
-      gtk_tree_selection_select_path (dialog->priv->selection, path);
+      gtk_tree_selection_select_path (priv->selection, path);
 
-      gtk_tree_view_scroll_to_point (GTK_TREE_VIEW (dialog->priv->icons_view),
+      gtk_tree_view_scroll_to_point (GTK_TREE_VIEW (priv->icons_view),
                                      -1, 0);
 
       gtk_tree_path_free (path);
 
     }
-  gtk_widget_grab_focus (dialog->priv->icons_view);
+  gtk_widget_grab_focus (priv->icons_view);
 }
 
 static void
 contexts_selection_changed_cb (GtkTreeSelection            *selection,
                                GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkTreeIter iter;
   GtkTreeModel *model;
   gboolean retval;
@@ -578,9 +587,9 @@ contexts_selection_changed_cb (GtkTreeSelection            *selection,
 
       gtk_tree_model_get (model, &iter, CONTEXTS_ID_COLUMN, &context_id, -1);
 
-      dialog->priv->context_id = context_id;
+      priv->context_id = context_id;
 
-      if (!dialog->priv->filter_model)
+      if (!priv->filter_model)
         return;
 
       filter_icons_model (dialog);
@@ -611,15 +620,16 @@ row_separator_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer unused)
 static GtkWidget *
 create_contexts_view (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkTreeView *view;
   GtkTreeViewColumn *column;
   GtkTreePath *path;
 
-  dialog->priv->contexts_store = populate_icon_contexts_model ();
+  priv->contexts_store = populate_icon_contexts_model ();
 
   view =
       GTK_TREE_VIEW (gtk_tree_view_new_with_model
-                     (GTK_TREE_MODEL (dialog->priv->contexts_store)));
+                     (GTK_TREE_MODEL (priv->contexts_store)));
 
   column = gtk_tree_view_column_new_with_attributes (NULL,
                                                      gtk_cell_renderer_text_new
@@ -656,23 +666,24 @@ create_contexts_view (GladeNamedIconChooserDialog *dialog)
 static void
 filter_icons_model (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
 
   set_busy_cursor (dialog, TRUE);
 
-  g_object_ref (dialog->priv->filter_model);
-  gtk_tree_view_set_model (GTK_TREE_VIEW (dialog->priv->icons_view), NULL);
-  gtk_entry_completion_set_model (dialog->priv->entry_completion, NULL);
+  g_object_ref (priv->filter_model);
+  gtk_tree_view_set_model (GTK_TREE_VIEW (priv->icons_view), NULL);
+  gtk_entry_completion_set_model (priv->entry_completion, NULL);
 
   gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER
-                                  (dialog->priv->filter_model));
+                                  (priv->filter_model));
 
-  gtk_tree_view_set_model (GTK_TREE_VIEW (dialog->priv->icons_view),
-                           dialog->priv->filter_model);
-  gtk_entry_completion_set_model (dialog->priv->entry_completion,
-                                  GTK_TREE_MODEL (dialog->priv->icons_store));
-  gtk_entry_completion_set_text_column (dialog->priv->entry_completion,
+  gtk_tree_view_set_model (GTK_TREE_VIEW (priv->icons_view),
+                           priv->filter_model);
+  gtk_entry_completion_set_model (priv->entry_completion,
+                                  GTK_TREE_MODEL (priv->icons_store));
+  gtk_entry_completion_set_text_column (priv->entry_completion,
                                         ICONS_NAME_COLUMN);
-  g_object_unref (dialog->priv->filter_model);
+  g_object_unref (priv->filter_model);
 
   set_busy_cursor (dialog, FALSE);
 }
@@ -682,6 +693,7 @@ filter_visible_func (GtkTreeModel                *model,
                      GtkTreeIter                 *iter,
                      GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   gboolean standard;
   gint context_id;
 
@@ -689,11 +701,11 @@ filter_visible_func (GtkTreeModel                *model,
                       ICONS_CONTEXT_COLUMN, &context_id,
                       ICONS_STANDARD_COLUMN, &standard, -1);
 
-  if (dialog->priv->context_id == -1)
-    return (dialog->priv->settings_list_standard) ? TRUE && standard : TRUE;
+  if (priv->context_id == -1)
+    return (priv->settings_list_standard) ? TRUE && standard : TRUE;
 
-  if (context_id == dialog->priv->context_id)
-    return (dialog->priv->settings_list_standard) ? TRUE && standard : TRUE;
+  if (context_id == priv->context_id)
+    return (priv->settings_list_standard) ? TRUE && standard : TRUE;
   else
     return FALSE;
 }
@@ -726,9 +738,10 @@ scan_for_context_func (GtkTreeModel *model,
                        gpointer      user_data)
 {
   ForEachFuncData *data = (ForEachFuncData *) user_data;
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (data->dialog);
   GtkTreeSelection *selection =
       gtk_tree_view_get_selection (GTK_TREE_VIEW
-                                   (data->dialog->priv->contexts_view));
+                                   (priv->contexts_view));
   gchar *name = NULL;
 
   gtk_tree_model_get (model, iter, CONTEXTS_NAME_COLUMN, &name, -1);
@@ -742,10 +755,9 @@ scan_for_context_func (GtkTreeModel *model,
 
       if (data->do_activate)
         gtk_tree_view_row_activated (GTK_TREE_VIEW
-                                     (data->dialog->priv->contexts_view), path,
+                                     (priv->contexts_view), path,
                                      gtk_tree_view_get_column (GTK_TREE_VIEW
-                                                               (data->dialog->
-                                                                priv->
+                                                               (priv->
                                                                 contexts_view),
                                                                0));
 
@@ -756,7 +768,7 @@ scan_for_context_func (GtkTreeModel *model,
 
       if (data->do_cursor)
         gtk_tree_view_set_cursor (GTK_TREE_VIEW
-                                  (data->dialog->priv->contexts_view), path,
+                                  (priv->contexts_view), path,
                                   NULL, FALSE);
 
       g_free (name);
@@ -776,6 +788,7 @@ scan_for_name_func (GtkTreeModel *model,
                     gpointer      user_data)
 {
   ForEachFuncData *data = (ForEachFuncData *) user_data;
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (data->dialog);
   gchar *name = NULL;
 
   gtk_tree_model_get (model, iter, ICONS_NAME_COLUMN, &name, -1);
@@ -789,21 +802,20 @@ scan_for_name_func (GtkTreeModel *model,
 
       if (data->do_activate)
         gtk_tree_view_row_activated (GTK_TREE_VIEW
-                                     (data->dialog->priv->icons_view), path,
+                                     (priv->icons_view), path,
                                      gtk_tree_view_get_column (GTK_TREE_VIEW
-                                                               (data->dialog->
-                                                                priv->
+                                                               (priv->
                                                                 icons_view),
                                                                0));
 
       if (data->do_select)
-        gtk_tree_selection_select_path (data->dialog->priv->selection, path);
+        gtk_tree_selection_select_path (priv->selection, path);
       else
-        gtk_tree_selection_unselect_path (data->dialog->priv->selection, path);
+        gtk_tree_selection_unselect_path (priv->selection, path);
 
       if (data->do_cursor)
         gtk_tree_view_set_cursor (GTK_TREE_VIEW
-                                  (data->dialog->priv->icons_view), path, NULL,
+                                  (priv->icons_view), path, NULL,
                                   FALSE);
 
       g_free (name);
@@ -819,44 +831,45 @@ scan_for_name_func (GtkTreeModel *model,
 static void
 centre_selected_row (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GList *l;
 
-  g_assert (dialog->priv->icons_store != NULL);
-  g_assert (dialog->priv->selection != NULL);
+  g_assert (priv->icons_store != NULL);
+  g_assert (priv->selection != NULL);
 
-  l = gtk_tree_selection_get_selected_rows (dialog->priv->selection, NULL);
+  l = gtk_tree_selection_get_selected_rows (priv->selection, NULL);
 
   if (l)
     {
       g_assert (gtk_widget_get_mapped (GTK_WIDGET (dialog)));
       g_assert (gtk_widget_get_visible (GTK_WIDGET (dialog)));
 
-      gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (dialog->priv->icons_view),
+      gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (priv->icons_view),
                                     (GtkTreePath *) l->data,
                                     NULL, TRUE, 0.5, 0.0);
 
-/*                gtk_tree_view_set_cursor (GTK_TREE_VIEW (dialog->priv->icons_view),
+/*                gtk_tree_view_set_cursor (GTK_TREE_VIEW (priv->icons_view),
                                             (GtkTreePath *) l->data,
                                             0,
                                             FALSE);
                                          
-                gtk_widget_grab_focus (dialog->priv->icons_view);
+                gtk_widget_grab_focus (priv->icons_view);
 */
-      g_list_foreach (l, (GFunc) gtk_tree_path_free, NULL);
-      g_list_free (l);
+      g_list_free_full (l, (GDestroyNotify) gtk_tree_path_free);
     }
 }
 
 static void
 select_first_row (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkTreePath *path;
 
-  if (!dialog->priv->filter_model)
+  if (!priv->filter_model)
     return;
 
   path = gtk_tree_path_new_from_indices (0, -1);
-  gtk_tree_view_set_cursor (GTK_TREE_VIEW (dialog->priv->icons_view), path,
+  gtk_tree_view_set_cursor (GTK_TREE_VIEW (priv->icons_view), path,
                             NULL, FALSE);
   gtk_tree_path_free (path);
 }
@@ -864,33 +877,34 @@ select_first_row (GladeNamedIconChooserDialog *dialog)
 static void
 pending_select_name_process (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   ForEachFuncData *data;
 
-  g_assert (dialog->priv->icons_store != NULL);
-  g_assert (dialog->priv->selection != NULL);
+  g_assert (priv->icons_store != NULL);
+  g_assert (priv->selection != NULL);
 
-  if (dialog->priv->pending_select_name)
+  if (priv->pending_select_name)
     {
 
       data = g_slice_new0 (ForEachFuncData);
 
-      data->name = dialog->priv->pending_select_name;
+      data->name = priv->pending_select_name;
       data->do_select = TRUE;
       data->do_activate = FALSE;
       data->dialog = dialog;
 
-      gtk_tree_model_foreach (dialog->priv->filter_model,
+      gtk_tree_model_foreach (priv->filter_model,
                               scan_for_name_func, data);
 
-      g_free (dialog->priv->pending_select_name);
-      dialog->priv->pending_select_name = NULL;
+      g_free (priv->pending_select_name);
+      priv->pending_select_name = NULL;
 
       g_slice_free (ForEachFuncData, data);
 
     }
   else
     {
-      if (strlen (gtk_entry_get_text (GTK_ENTRY (dialog->priv->entry))) == 0)
+      if (strlen (gtk_entry_get_text (GTK_ENTRY (priv->entry))) == 0)
         {
           select_first_row (dialog);
         }
@@ -917,7 +931,8 @@ is_standard_icon_name (const gchar *icon_name)
 static void
 cleanup_after_load (GladeNamedIconChooserDialog *dialog)
 {
-  dialog->priv->load_id = 0;
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
+  priv->load_id = 0;
 
   pending_select_name_process (dialog);
 
@@ -927,30 +942,31 @@ cleanup_after_load (GladeNamedIconChooserDialog *dialog)
 static void
 chooser_set_model (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
 
   /* filter model */
-  dialog->priv->filter_model =
-      gtk_tree_model_filter_new (GTK_TREE_MODEL (dialog->priv->icons_store),
+  priv->filter_model =
+      gtk_tree_model_filter_new (GTK_TREE_MODEL (priv->icons_store),
                                  NULL);
 
   gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER
-                                          (dialog->priv->filter_model),
+                                          (priv->filter_model),
                                           (GtkTreeModelFilterVisibleFunc)
                                           filter_visible_func, dialog, NULL);
 
-  gtk_tree_view_set_model (GTK_TREE_VIEW (dialog->priv->icons_view),
-                           dialog->priv->filter_model);
-  g_object_unref (dialog->priv->filter_model);
+  gtk_tree_view_set_model (GTK_TREE_VIEW (priv->icons_view),
+                           priv->filter_model);
+  g_object_unref (priv->filter_model);
 
-  gtk_entry_completion_set_model (dialog->priv->entry_completion,
-                                  GTK_TREE_MODEL (dialog->priv->icons_store));
-  gtk_entry_completion_set_text_column (dialog->priv->entry_completion,
+  gtk_entry_completion_set_model (priv->entry_completion,
+                                  GTK_TREE_MODEL (priv->icons_store));
+  gtk_entry_completion_set_text_column (priv->entry_completion,
                                         ICONS_NAME_COLUMN);
 
-  gtk_tree_view_set_search_column (GTK_TREE_VIEW (dialog->priv->icons_view),
+  gtk_tree_view_set_search_column (GTK_TREE_VIEW (priv->icons_view),
                                    ICONS_NAME_COLUMN);
 
-  dialog->priv->icons_loaded = TRUE;
+  priv->icons_loaded = TRUE;
 }
 
 typedef struct
@@ -968,7 +984,8 @@ icon_data_compare (IconData *a, IconData *b)
 static gboolean
 reload_icons (GladeNamedIconChooserDialog *dialog)
 {
-  GtkListStore *store = dialog->priv->icons_store;
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
+  GtkListStore *store = priv->icons_store;
   GtkTreeIter iter;
   guint i;
   GList *l, *icons = NULL;
@@ -978,7 +995,7 @@ reload_icons (GladeNamedIconChooserDialog *dialog)
     {
 
       GList *icons_in_context =
-          gtk_icon_theme_list_icons (dialog->priv->icon_theme,
+          gtk_icon_theme_list_icons (priv->icon_theme,
                                      standard_contexts[i].name);
 
       for (l = icons_in_context; l; l = l->next)
@@ -1025,18 +1042,19 @@ reload_icons (GladeNamedIconChooserDialog *dialog)
 static void
 change_icon_theme (GladeNamedIconChooserDialog *dialog)
 {
-  if (dialog->priv->icon_theme == NULL)
-    dialog->priv->icon_theme = get_icon_theme_for_widget (GTK_WIDGET (dialog));
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
+  if (priv->icon_theme == NULL)
+    priv->icon_theme = get_icon_theme_for_widget (GTK_WIDGET (dialog));
 
-  gtk_tree_view_set_model (GTK_TREE_VIEW (dialog->priv->icons_view), NULL);
-  gtk_list_store_clear (dialog->priv->icons_store);
+  gtk_tree_view_set_model (GTK_TREE_VIEW (priv->icons_view), NULL);
+  gtk_list_store_clear (priv->icons_store);
 
   set_busy_cursor (dialog, TRUE);
 
-  dialog->priv->load_id = g_idle_add_full (G_PRIORITY_HIGH_IDLE + 300,
-                                           (GSourceFunc) reload_icons,
-                                           dialog,
-                                           (GDestroyNotify) cleanup_after_load);
+  priv->load_id = g_idle_add_full (G_PRIORITY_HIGH_IDLE + 300,
+                                   (GSourceFunc) reload_icons,
+                                   dialog,
+                                   (GDestroyNotify) cleanup_after_load);
 
 }
 
@@ -1061,6 +1079,7 @@ glade_named_icon_chooser_dialog_screen_changed (GtkWidget *widget,
 static GtkWidget *
 create_icons_view (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkTreeView *view;
   GtkTreeViewColumn *column;
   GtkCellRenderer *pixbuf_renderer, *text_renderer;
@@ -1116,7 +1135,7 @@ create_icons_view (GladeNamedIconChooserDialog *dialog)
   gtk_tree_selection_set_mode (gtk_tree_view_get_selection (view),
                                GTK_SELECTION_BROWSE);
 
-  dialog->priv->selection = gtk_tree_view_get_selection (view);
+  priv->selection = gtk_tree_view_get_selection (view);
 
   gtk_tree_view_set_rules_hint (view, TRUE);
 
@@ -1129,9 +1148,10 @@ create_icons_view (GladeNamedIconChooserDialog *dialog)
 static void
 button_toggled (GtkToggleButton *button, GladeNamedIconChooserDialog *dialog)
 {
-  dialog->priv->settings_list_standard = gtk_toggle_button_get_active (button);
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
+  priv->settings_list_standard = gtk_toggle_button_get_active (button);
 
-  if (dialog->priv->filter_model != NULL)
+  if (priv->filter_model != NULL)
     filter_icons_model (dialog);
 }
 
@@ -1179,12 +1199,13 @@ glade_named_icon_chooser_dialog_show_all (GtkWidget *widget)
 static void
 glade_named_icon_chooser_dialog_set_focus (GtkWindow *window, GtkWidget *focus)
 {
+  GladeNamedIconChooserDialog *dialog = GLADE_NAMED_ICON_CHOOSER_DIALOG (window);
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
 
   GTK_WINDOW_CLASS (glade_named_icon_chooser_dialog_parent_class)->
       set_focus (window, focus);
 
-  GLADE_NAMED_ICON_CHOOSER_DIALOG (window)->priv->last_focus_widget =
-      gtk_window_get_focus (window);
+  priv->last_focus_widget = gtk_window_get_focus (window);
 }
 
 static void
@@ -1192,12 +1213,9 @@ glade_named_icon_chooser_dialog_finalize (GObject *object)
 {
   GladeNamedIconChooserDialog *dialog =
       GLADE_NAMED_ICON_CHOOSER_DIALOG (object);
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
 
-  if (dialog->priv->pending_select_name)
-    {
-      g_free (dialog->priv->pending_select_name);
-      dialog->priv->pending_select_name = NULL;
-    }
+  g_clear_pointer (&priv->pending_select_name, g_free);
 
   G_OBJECT_CLASS (glade_named_icon_chooser_dialog_parent_class)->
     finalize (object);
@@ -1208,15 +1226,16 @@ glade_named_icon_chooser_dialog_map (GtkWidget *widget)
 {
   GladeNamedIconChooserDialog *dialog =
       GLADE_NAMED_ICON_CHOOSER_DIALOG (widget);
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
 
   GTK_WIDGET_CLASS (glade_named_icon_chooser_dialog_parent_class)->map (widget);
 
   settings_load (dialog);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dialog->priv->button),
-                                dialog->priv->settings_list_standard);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->button),
+                                priv->settings_list_standard);
 
-  gtk_widget_grab_focus (dialog->priv->icons_view);
+  gtk_widget_grab_focus (priv->icons_view);
 }
 
 static void
@@ -1239,15 +1258,16 @@ glade_named_icon_chooser_dialog_draw (GtkWidget *widget, cairo_t *cr)
 {
   GladeNamedIconChooserDialog *dialog =
       GLADE_NAMED_ICON_CHOOSER_DIALOG (widget);
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   gboolean retval;
 
   retval =
       GTK_WIDGET_CLASS (glade_named_icon_chooser_dialog_parent_class)->
       draw (widget, cr);
-  if (!dialog->priv->icons_loaded)
+  if (!priv->icons_loaded)
     {
       change_icon_theme (GLADE_NAMED_ICON_CHOOSER_DIALOG (widget));
-      dialog->priv->icons_loaded = TRUE;
+      priv->icons_loaded = TRUE;
     }
 
   return retval;
@@ -1347,6 +1367,7 @@ selection_changed_cb (GladeNamedIconChooserDialog *dialog)
 static void
 glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GtkWidget *contents;
   GtkWidget *hbox;
   GtkWidget *vbox;
@@ -1356,14 +1377,12 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
   GtkWidget *content_area;
   GtkSizeGroup *group;
 
-  dialog->priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
-
-  dialog->priv->filter_model = NULL;
-  dialog->priv->icons_store = NULL;
-  dialog->priv->context_id = -1;
-  dialog->priv->pending_select_name = NULL;
-  dialog->priv->last_focus_widget = NULL;
-  dialog->priv->icons_loaded = FALSE;
+  priv->filter_model = NULL;
+  priv->icons_store = NULL;
+  priv->context_id = -1;
+  priv->pending_select_name = NULL;
+  priv->last_focus_widget = NULL;
+  priv->icons_loaded = FALSE;
 
 
   gtk_window_set_title (GTK_WINDOW (dialog), _("Named Icon Chooser"));
@@ -1398,40 +1417,40 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
   gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_widget_show (label);
 
-  dialog->priv->entry = gtk_entry_new ();
-  gtk_entry_set_activates_default (GTK_ENTRY (dialog->priv->entry), TRUE);
-  gtk_entry_set_width_chars (GTK_ENTRY (dialog->priv->entry), 40);
-  g_object_set (G_OBJECT (dialog->priv->entry), "truncate-multiline", TRUE,
+  priv->entry = gtk_entry_new ();
+  gtk_entry_set_activates_default (GTK_ENTRY (priv->entry), TRUE);
+  gtk_entry_set_width_chars (GTK_ENTRY (priv->entry), 40);
+  g_object_set (G_OBJECT (priv->entry), "truncate-multiline", TRUE,
                 NULL);
-  g_signal_connect (G_OBJECT (dialog->priv->entry), "changed",
+  g_signal_connect (G_OBJECT (priv->entry), "changed",
                     G_CALLBACK (changed_text_handler), dialog);
-  g_signal_connect (G_OBJECT (dialog->priv->entry), "insert-text",
+  g_signal_connect (G_OBJECT (priv->entry), "insert-text",
                     G_CALLBACK (insert_text_handler), dialog);
-  gtk_widget_show (dialog->priv->entry);
+  gtk_widget_show (priv->entry);
 
-  dialog->priv->entry_completion = gtk_entry_completion_new ();
-  gtk_entry_set_completion (GTK_ENTRY (dialog->priv->entry),
-                            dialog->priv->entry_completion);
-  gtk_entry_completion_set_popup_completion (dialog->priv->entry_completion,
+  priv->entry_completion = gtk_entry_completion_new ();
+  gtk_entry_set_completion (GTK_ENTRY (priv->entry),
+                            priv->entry_completion);
+  gtk_entry_completion_set_popup_completion (priv->entry_completion,
                                              FALSE);
-  gtk_entry_completion_set_inline_completion (dialog->priv->entry_completion,
+  gtk_entry_completion_set_inline_completion (priv->entry_completion,
                                               TRUE);
 
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), dialog->priv->entry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), priv->entry);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_widget_show (hbox);
 
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), dialog->priv->entry, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), priv->entry, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (contents), hbox, FALSE, FALSE, 6);
 
   hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_paned_set_position (GTK_PANED (hpaned), 150);
   gtk_widget_show (hpaned);
 
-  dialog->priv->contexts_view = create_contexts_view (dialog);
-  dialog->priv->icons_view = create_icons_view (dialog);
+  priv->contexts_view = create_contexts_view (dialog);
+  priv->icons_view = create_icons_view (dialog);
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
@@ -1440,7 +1459,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 
   label = gtk_label_new_with_mnemonic (_("C_ontexts:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label),
-                                 dialog->priv->contexts_view);
+                                 priv->contexts_view);
   gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_size_group_add_widget (group, label);
   gtk_widget_show (label);
@@ -1453,7 +1472,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
   gtk_widget_show (sw);
 
-  gtk_container_add (GTK_CONTAINER (sw), dialog->priv->contexts_view);
+  gtk_container_add (GTK_CONTAINER (sw), priv->contexts_view);
   gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
   gtk_paned_pack1 (GTK_PANED (hpaned), vbox, FALSE, FALSE);
 
@@ -1462,7 +1481,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
   gtk_widget_show (vbox);
 
   label = gtk_label_new_with_mnemonic (_("Icon Na_mes:"));
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), dialog->priv->icons_view);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), priv->icons_view);
   gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_size_group_add_widget (group, label);
   gtk_widget_show (label);
@@ -1475,7 +1494,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
   gtk_widget_show (sw);
 
-  gtk_container_add (GTK_CONTAINER (sw), dialog->priv->icons_view);
+  gtk_container_add (GTK_CONTAINER (sw), priv->icons_view);
   gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
   gtk_paned_pack2 (GTK_PANED (hpaned), vbox, TRUE, FALSE);
 
@@ -1484,22 +1503,22 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 
   g_object_unref (G_OBJECT (group));
 
-  dialog->priv->button =
+  priv->button =
       gtk_check_button_new_with_mnemonic (_("_List standard icons only"));
-  gtk_widget_show (dialog->priv->button);
+  gtk_widget_show (priv->button);
 
-  g_signal_connect (dialog->priv->button, "toggled",
+  g_signal_connect (priv->button, "toggled",
                     G_CALLBACK (button_toggled), dialog);
 
-  gtk_box_pack_start (GTK_BOX (contents), dialog->priv->button, FALSE, FALSE,
+  gtk_box_pack_start (GTK_BOX (contents), priv->button, FALSE, FALSE,
                       0);
   gtk_box_pack_start (GTK_BOX (content_area), contents, TRUE, TRUE, 0);
 
   /* underlying model */
-  dialog->priv->icons_store = gtk_list_store_new (ICONS_N_COLUMNS,
-                                                  G_TYPE_UINT,
-                                                  G_TYPE_BOOLEAN,
-                                                  G_TYPE_STRING);
+  priv->icons_store = gtk_list_store_new (ICONS_N_COLUMNS,
+                                          G_TYPE_UINT,
+                                          G_TYPE_BOOLEAN,
+                                          G_TYPE_STRING);
 }
 
 static void
@@ -1591,6 +1610,7 @@ get_config_dirname (void)
 static void
 settings_load (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GKeyFile *keyfile;
   gboolean success, boolean_value;
   gchar *filename;
@@ -1606,7 +1626,7 @@ settings_load (GladeNamedIconChooserDialog *dialog)
   if (!success)
     {
 
-      dialog->priv->settings_list_standard = DEFAULT_SETTING_LIST_STANDARD_ONLY;
+      priv->settings_list_standard = DEFAULT_SETTING_LIST_STANDARD_ONLY;
 
       g_clear_error (&error);
       g_key_file_free (keyfile);
@@ -1619,12 +1639,12 @@ settings_load (GladeNamedIconChooserDialog *dialog)
                                           "ListStandardOnly", &error);
   if (error)
     {
-      dialog->priv->settings_list_standard = DEFAULT_SETTING_LIST_STANDARD_ONLY;
+      priv->settings_list_standard = DEFAULT_SETTING_LIST_STANDARD_ONLY;
       g_clear_error (&error);
     }
   else
     {
-      dialog->priv->settings_list_standard = boolean_value;
+      priv->settings_list_standard = boolean_value;
     }
 
   g_key_file_free (keyfile);
@@ -1634,6 +1654,7 @@ settings_load (GladeNamedIconChooserDialog *dialog)
 static GKeyFile *
 settings_to_keyfile (GladeNamedIconChooserDialog *dialog)
 {
+  GladeNamedIconChooserDialogPrivate *priv = glade_named_icon_chooser_dialog_get_instance_private (dialog);
   GKeyFile *keyfile;
   gchar *filename;
 
@@ -1648,7 +1669,7 @@ settings_to_keyfile (GladeNamedIconChooserDialog *dialog)
   g_key_file_set_boolean (keyfile,
                           "Named Icon Chooser",
                           "ListStandardOnly",
-                          dialog->priv->settings_list_standard);
+                          priv->settings_list_standard);
 
   return keyfile;
 }
