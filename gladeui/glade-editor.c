@@ -659,7 +659,7 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
                                    priv->widget_name_id);
     }
 
-  /* Load the GladeWidgetClass */
+  /* Load the GladeWidgetAdaptor */
   adaptor = widget ? glade_widget_get_adaptor (widget) : NULL;
   if (priv->loaded_adaptor != adaptor || adaptor == NULL)
     glade_editor_load_widget_class (editor, adaptor);
