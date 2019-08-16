@@ -34,8 +34,8 @@
 /* GObjectClass */
 static void      glade_editor_skeleton_dispose        (GObject *object);
 
-/* GladeEditableIface */
-static void      glade_editor_skeleton_editable_init   (GladeEditableIface *iface);
+/* GladeEditableInterface */
+static void      glade_editor_skeleton_editable_init   (GladeEditableInterface *iface);
 
 /* GtkBuildableIface */
 static void      glade_editor_skeleton_buildable_init  (GtkBuildableIface *iface);
@@ -47,7 +47,7 @@ struct _GladeEditorSkeletonPrivate
   GSList *editors;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 static GtkBuildableIface  *parent_buildable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorSkeleton, glade_editor_skeleton, GTK_TYPE_BOX,
@@ -90,7 +90,7 @@ glade_editor_skeleton_dispose (GObject *object)
 }
 
 /*******************************************************************************
- *                            GladeEditableIface                               *                               
+ *                          GladeEditableInterface                             *
  *******************************************************************************/
 static void
 glade_editor_skeleton_load (GladeEditable *editable,
@@ -127,7 +127,7 @@ glade_editor_skeleton_set_show_name (GladeEditable *editable, gboolean show_name
 }
 
 static void
-glade_editor_skeleton_editable_init (GladeEditableIface *iface)
+glade_editor_skeleton_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 

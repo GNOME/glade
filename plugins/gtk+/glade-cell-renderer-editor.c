@@ -30,7 +30,7 @@
 
 static void glade_cell_renderer_editor_finalize (GObject * object);
 
-static void glade_cell_renderer_editor_editable_init (GladeEditableIface *
+static void glade_cell_renderer_editor_editable_init (GladeEditableInterface *
                                                       iface);
 
 static void glade_cell_renderer_editor_grab_focus (GtkWidget * widget);
@@ -51,7 +51,7 @@ typedef struct
   GtkWidget *use_attr_eprop;
 } CheckTab;
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeCellRendererEditor, glade_cell_renderer_editor,
                          GTK_TYPE_BOX,
@@ -134,7 +134,7 @@ glade_cell_renderer_editor_set_show_name (GladeEditable * editable,
 }
 
 static void
-glade_cell_renderer_editor_editable_init (GladeEditableIface * iface)
+glade_cell_renderer_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 

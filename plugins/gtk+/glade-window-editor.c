@@ -25,7 +25,7 @@
 
 #include "glade-window-editor.h"
 
-static void glade_window_editor_editable_init (GladeEditableIface *iface);
+static void glade_window_editor_editable_init (GladeEditableInterface *iface);
 static void glade_window_editor_grab_focus (GtkWidget *widget);
 
 /* Callbacks */
@@ -45,7 +45,7 @@ struct _GladeWindowEditorPrivate {
   GtkWidget *hide_titlebar_editor;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeWindowEditor, glade_window_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeWindowEditor)
@@ -119,7 +119,7 @@ glade_window_editor_load (GladeEditable *editable,
 }
 
 static void
-glade_window_editor_editable_init (GladeEditableIface *iface)
+glade_window_editor_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

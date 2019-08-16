@@ -29,11 +29,11 @@
 
 static void glade_image_item_editor_finalize (GObject *object);
 
-static void glade_image_item_editor_editable_init (GladeEditableIface *iface);
+static void glade_image_item_editor_editable_init (GladeEditableInterface *iface);
 
 static void glade_image_item_editor_grab_focus (GtkWidget *widget);
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeImageItemEditor, glade_image_item_editor, GTK_TYPE_BOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
@@ -121,7 +121,7 @@ glade_image_item_editor_set_show_name (GladeEditable *editable,
 }
 
 static void
-glade_image_item_editor_editable_init (GladeEditableIface *iface)
+glade_image_item_editor_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 

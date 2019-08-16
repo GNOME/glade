@@ -25,7 +25,7 @@
 
 #include "glade-action-editor.h"
 
-static void glade_action_editor_editable_init (GladeEditableIface * iface);
+static void glade_action_editor_editable_init (GladeEditableInterface * iface);
 static void glade_action_editor_grab_focus (GtkWidget * widget);
 
 struct _GladeActionEditorPrivate {
@@ -42,7 +42,7 @@ struct _GladeActionEditorPrivate {
   GtkWidget *radio_value_editor;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeActionEditor, glade_action_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeActionEditor)
@@ -115,7 +115,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-glade_action_editor_editable_init (GladeEditableIface * iface)
+glade_action_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

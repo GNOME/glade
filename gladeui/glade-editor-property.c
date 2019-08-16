@@ -111,9 +111,9 @@ struct _GladeEditorPropertyPrivate
   guint               disable_check : 1; /* Whether to explicitly disable the optional check button */
 };
 
-static void glade_editor_property_editable_init (GladeEditableIface *iface);
+static void glade_editor_property_editable_init (GladeEditableInterface *iface);
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorProperty, glade_editor_property, GTK_TYPE_BOX,
                          G_ADD_PRIVATE (GladeEditorProperty)
@@ -122,7 +122,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeEditorProperty, glade_editor_property, GTK_TYPE_BO
 
 
 /*******************************************************************************
- *                            GladeEditableIface                               *                               
+ *                          GladeEditableInterface                             *
  *******************************************************************************/
 static void
 glade_editor_property_editable_load (GladeEditable   *editable,
@@ -140,7 +140,7 @@ glade_editor_property_set_show_name (GladeEditable *editable, gboolean show_name
 }
 
 static void
-glade_editor_property_editable_init (GladeEditableIface *iface)
+glade_editor_property_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 

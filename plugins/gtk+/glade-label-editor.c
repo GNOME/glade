@@ -29,10 +29,10 @@
 /* GtkWidgetClass */
 static void glade_label_editor_grab_focus    (GtkWidget          *widget);
 
-/* GladeEditableIface */
+/* GladeEditableInterface */
 static void glade_label_editor_load          (GladeEditable      *editable,
                                               GladeWidget        *widget);
-static void glade_label_editor_editable_init (GladeEditableIface *iface);
+static void glade_label_editor_editable_init (GladeEditableInterface *iface);
 
 /* Callbacks */
 static void attributes_toggled (GtkWidget *widget, GladeLabelEditor *label_editor);
@@ -58,7 +58,7 @@ struct _GladeLabelEditorPrivate
   GtkWidget *wrap_mode_radio;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeLabelEditor, glade_label_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeLabelEditor)
@@ -176,7 +176,7 @@ glade_label_editor_load (GladeEditable *editable, GladeWidget *widget)
 }
 
 static void
-glade_label_editor_editable_init (GladeEditableIface *iface)
+glade_label_editor_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 
