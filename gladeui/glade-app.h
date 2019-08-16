@@ -29,12 +29,8 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_APP            (glade_app_get_type())
-#define GLADE_APP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_APP, GladeApp))
-#define GLADE_APP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_APP, GladeAppClass))
-#define GLADE_IS_APP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_APP))
-#define GLADE_IS_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_APP))
-#define GLADE_APP_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_APP, GladeAppClass))
+#define GLADE_TYPE_APP glade_app_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeApp, glade_app, GLADE, APP, GObject)
 
 #define GLADE_ENV_CATALOG_PATH     "GLADE_CATALOG_SEARCH_PATH"
 #define GLADE_ENV_MODULE_PATH      "GLADE_MODULE_SEARCH_PATH"
@@ -43,31 +39,14 @@ G_BEGIN_DECLS
 #define GLADE_ENV_ICON_THEME_PATH  "GLADE_ICON_THEME_PATH"
 #define GLADE_ENV_BUNDLED          "GLADE_BUNDLED"
 
-typedef struct _GladeApp         GladeApp;
-typedef struct _GladeAppPrivate  GladeAppPrivate;
-typedef struct _GladeAppClass    GladeAppClass;
-
-struct _GladeApp
-{
-  GObject parent_instance;
-
-  GladeAppPrivate *priv;
-};
-
 struct _GladeAppClass
 {
   GObjectClass parent_class;
 
-  void   (* glade_reserved1)   (void);
-  void   (* glade_reserved2)   (void);
-  void   (* glade_reserved3)   (void);
-  void   (* glade_reserved4)   (void);
-  void   (* glade_reserved5)   (void);
-  void   (* glade_reserved6)   (void);
+  gpointer padding[6];
 };
 
 void               glade_init                     (void);
-GType              glade_app_get_type             (void) G_GNUC_CONST;
 
 GladeApp*          glade_app_new                  (void);
 GladeApp*          glade_app_get                  (void);
