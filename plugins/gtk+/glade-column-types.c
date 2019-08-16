@@ -225,7 +225,7 @@ glade_column_type_list_get_type (void)
 }
 
 /**************************** GladeEditorProperty *****************************/
-typedef struct
+struct _GladeEPropColumnTypes
 {
   GladeEditorProperty parent_instance;
 
@@ -241,15 +241,12 @@ typedef struct
 
   GtkTreeViewColumn *name_column;
   GtkTreeViewColumn *type_column;
-} GladeEPropColumnTypes;
+};
 
-GLADE_MAKE_EPROP (GladeEPropColumnTypes, glade_eprop_column_types)
-#define GLADE_EPROP_COLUMN_TYPES(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_COLUMN_TYPES, GladeEPropColumnTypes))
-#define GLADE_EPROP_COLUMN_TYPES_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_COLUMN_TYPES, GladeEPropColumnTypesClass))
-#define GLADE_IS_EPROP_COLUMN_TYPES(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_COLUMN_TYPES))
-#define GLADE_IS_EPROP_COLUMN_TYPES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_COLUMN_TYPES))
-#define GLADE_EPROP_COLUMN_TYPES_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_COLUMN_TYPES, GladeEPropColumnTypesClass))
-     static void glade_eprop_column_types_finalize (GObject * object)
+GLADE_MAKE_EPROP (GladeEPropColumnTypes, glade_eprop_column_types, GLADE, EPROP_COLUMN_TYPES)
+
+static void
+glade_eprop_column_types_finalize (GObject * object)
 {
   /* Chain up */
   GObjectClass *parent_class =

@@ -154,7 +154,7 @@ glade_string_list_to_string (GList *list)
 /**************************************************************
  *              GladeEditorProperty stuff here
  **************************************************************/
-typedef struct
+struct _GladeEPropStringList
 {
   GladeEditorProperty parent_instance;
 
@@ -170,7 +170,7 @@ typedef struct
   guint  changed_id;
   guint  update_id;
   GList *pending_string_list;
-} GladeEPropStringList;
+};
 
 enum
 {
@@ -181,9 +181,7 @@ enum
   NUM_COLUMNS
 };
 
-GLADE_MAKE_EPROP (GladeEPropStringList, glade_eprop_string_list)
-#define GLADE_EPROP_STRING_LIST(obj)                                        \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_STRING_LIST, GladeEPropStringList))
+GLADE_MAKE_EPROP (GladeEPropStringList, glade_eprop_string_list, GLADE, EPROP_STRING_LIST)
 
 static void
 glade_eprop_string_list_finalize (GObject *object)
