@@ -27,23 +27,8 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_BASE_EDITOR         (glade_base_editor_get_type ())
-#define GLADE_BASE_EDITOR(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_TYPE_BASE_EDITOR, GladeBaseEditor))
-#define GLADE_BASE_EDITOR_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), GLADE_TYPE_BASE_EDITOR, GladeBaseEditorClass))
-#define GLADE_IS_BASE_EDITOR(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_TYPE_BASE_EDITOR))
-#define GLADE_IS_BASE_EDITOR_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_TYPE_BASE_EDITOR))
-#define GLADE_BASE_EDITOR_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_TYPE_BASE_EDITOR, GladeBaseEditorClass))
-
-typedef struct _GladeBaseEditor        GladeBaseEditor;
-typedef struct _GladeBaseEditorPrivate GladeBaseEditorPrivate;
-typedef struct _GladeBaseEditorClass   GladeBaseEditorClass;
-
-struct _GladeBaseEditor
-{
-  GtkBox parent;
-
-  GladeBaseEditorPrivate *priv;
-};
+#define GLADE_TYPE_BASE_EDITOR glade_base_editor_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeBaseEditor, glade_base_editor, GLADE, BASE_EDITOR, GtkBox)
 
 struct _GladeBaseEditorClass
 {
@@ -56,16 +41,8 @@ struct _GladeBaseEditorClass
   gboolean      (*delete_child)     (GladeBaseEditor *editor, GladeWidget *parent, GladeWidget *gchild);
   gboolean      (*move_child)       (GladeBaseEditor *editor, GladeWidget *gparent, GladeWidget *gchild);
 
-  void   (* glade_reserved1)   (void);
-  void   (* glade_reserved2)   (void);
-  void   (* glade_reserved3)   (void);
-  void   (* glade_reserved4)   (void);
-  void   (* glade_reserved5)   (void);
-  void   (* glade_reserved6)   (void);
+  gpointer padding[6];
 };
-
-
-GType                glade_base_editor_get_type               (void);
 
 GladeBaseEditor     *glade_base_editor_new                    (GObject *container,
                                                                GladeEditable *main_editable,
