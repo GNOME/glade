@@ -27,24 +27,8 @@
 
 G_BEGIN_DECLS
 
-
-#define GLADE_TYPE_CELL_RENDERER_ICON                   (glade_cell_renderer_icon_get_type ())
-#define GLADE_CELL_RENDERER_ICON(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIcon))
-#define GLADE_CELL_RENDERER_ICON_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIconClass))
-#define GLADE_IS_CELL_RENDERER_ICON(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_CELL_RENDERER_ICON))
-#define GLADE_IS_CELL_RENDERER_ICON_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_CELL_RENDERER_ICON))
-#define GLADE_CELL_RENDERER_ICON_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIconClass))
-
-typedef struct _GladeCellRendererIcon        GladeCellRendererIcon;
-typedef struct _GladeCellRendererIconClass   GladeCellRendererIconClass;
-typedef struct _GladeCellRendererIconPrivate GladeCellRendererIconPrivate;
-
-struct _GladeCellRendererIcon
-{
-  GtkCellRendererPixbuf parent;
-
-  GladeCellRendererIconPrivate *priv;
-};
+#define GLADE_TYPE_CELL_RENDERER_ICON glade_cell_renderer_icon_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeCellRendererIcon, glade_cell_renderer_icon, GLADE, CELL_RENDERER_ICON, GtkCellRendererPixbuf)
 
 struct _GladeCellRendererIconClass
 {
@@ -54,7 +38,6 @@ struct _GladeCellRendererIconClass
                      const gchar           *path);
 };
 
-GType            glade_cell_renderer_icon_get_type       (void) G_GNUC_CONST;
 GtkCellRenderer *glade_cell_renderer_icon_new            (void);
 
 gboolean        glade_cell_renderer_icon_get_active      (GladeCellRendererIcon *icon);
