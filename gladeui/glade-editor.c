@@ -69,9 +69,7 @@ enum
   N_PROPERTIES
 };
 
-#define GLADE_EDITOR_PRIVATE(object) (((GladeEditor*)object)->priv)
-
-struct _GladeEditorPrivate
+typedef struct _GladeEditorPrivate
 {
 
   GtkWidget *notebook; /* The notebook widget */
@@ -137,7 +135,7 @@ struct _GladeEditorPrivate
   GtkWidget *class_label; /* A label with the current class label. */
 
   gboolean show_class_field; /* Whether or not to show the class field at the top */
-};
+} GladeEditorPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladeEditor, glade_editor, GTK_TYPE_BOX);
 
@@ -150,6 +148,7 @@ glade_editor_set_property (GObject      *object,
                            GParamSpec   *pspec)
 {
   GladeEditor *editor = GLADE_EDITOR (object);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   switch (prop_id)
     {
@@ -166,7 +165,7 @@ glade_editor_set_property (GObject      *object,
           glade_editor_hide_class_field (editor);
         break;
       case PROP_SHOW_BORDER:
-        gtk_notebook_set_show_border (GTK_NOTEBOOK (editor->priv->notebook),
+        gtk_notebook_set_show_border (GTK_NOTEBOOK (priv->notebook),
                                       g_value_get_boolean (value));
         break;
       default:
@@ -182,6 +181,7 @@ glade_editor_get_property (GObject    *object,
                            GParamSpec *pspec)
 {
   GladeEditor *editor = GLADE_EDITOR (object);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   switch (prop_id)
     {
@@ -189,19 +189,19 @@ glade_editor_get_property (GObject    *object,
         g_value_set_boolean (value, FALSE);
         break;
       case PROP_WIDGET:
-        g_value_set_object (value, editor->priv->loaded_widget);
+        g_value_set_object (value, priv->loaded_widget);
         break;
       case PROP_SHOW_CLASS_FIELD:
-        g_value_set_boolean (value, editor->priv->show_class_field);
+        g_value_set_boolean (value, priv->show_class_field);
         break;
       case PROP_CLASS_FIELD:
-        g_value_set_static_string (value, gtk_label_get_label (GTK_LABEL (editor->priv->class_label)));
+        g_value_set_static_string (value, gtk_label_get_label (GTK_LABEL (priv->class_label)));
         break;
       case PROP_SHOW_BORDER:
-        g_value_set_boolean (value, gtk_notebook_get_show_border (GTK_NOTEBOOK (editor->priv->notebook)));
+        g_value_set_boolean (value, gtk_notebook_get_show_border (GTK_NOTEBOOK (priv->notebook)));
         break;
       case PROP_SIGNAL_EDITOR:
-        g_value_set_object (value, editor->priv->signal_editor);
+        g_value_set_object (value, priv->signal_editor);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -212,8 +212,8 @@ glade_editor_get_property (GObject    *object,
 static void
 glade_editor_dispose (GObject *object)
 {
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (object);
   GladeEditor *editor = GLADE_EDITOR (object);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   glade_editor_load_widget (editor, NULL);
 
@@ -303,7 +303,7 @@ glade_editor_update_class_warning_cb (GladeWidget *widget,
                                       GParamSpec  *pspec,
                                       GladeEditor *editor)
 {
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   if (glade_widget_support_warning (widget))
     gtk_widget_show (priv->warning);
@@ -317,7 +317,7 @@ glade_editor_update_class_warning_cb (GladeWidget *widget,
 static void
 glade_editor_update_class_field (GladeEditor *editor)
 {
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   if (priv->loaded_widget)
     {
@@ -378,7 +378,7 @@ glade_editor_switch_page (GtkNotebook *notebook,
                           guint        page_num,
                           GladeEditor *editor)
 {
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   gtk_widget_hide (priv->page_widget);
   gtk_widget_hide (priv->page_packing);
@@ -405,10 +405,8 @@ glade_editor_switch_page (GtkNotebook *notebook,
 static void
 glade_editor_init (GladeEditor *editor)
 {
-  GladeEditorPrivate *priv;
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
   gint                icon_height;
-
-  editor->priv = priv = glade_editor_get_instance_private (editor);
 
   priv->show_class_field = TRUE;
 
@@ -425,7 +423,7 @@ glade_editor_get_editable_by_adaptor (GladeEditor        *editor,
                                       GladeWidgetAdaptor *adaptor,
                                       GladeEditorPageType type)
 {
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
   GtkWidget *editable;
   GList *list;
 
@@ -487,7 +485,7 @@ glade_editor_load_editable_in_page (GladeEditor        *editor,
                                     GladeWidgetAdaptor *adaptor,
                                     GladeEditorPageType type)
 {
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
   GtkContainer *container = NULL;
   GtkWidget *scrolled_window, *editable;
   GtkAdjustment *adj;
@@ -546,13 +544,14 @@ static void
 glade_editor_load_widget_class (GladeEditor *editor,
                                 GladeWidgetAdaptor *adaptor)
 {
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_GENERAL);
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_COMMON);
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_ATK);
   glade_editor_load_editable_in_page (editor, NULL, GLADE_PAGE_PACKING);
 
-  editor->priv->loaded_adaptor = adaptor;
+  priv->loaded_adaptor = adaptor;
 }
 
 static void
@@ -569,10 +568,12 @@ glade_editor_removed_cb (GladeProject *project,
                          GladeWidget *widget,
                          GladeEditor *editor)
 {
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
+
   /* Widget we were viewing was removed from project,
    * detatch from editor.
    */
-  if (widget == editor->priv->loaded_widget)
+  if (widget == priv->loaded_widget)
     glade_editor_load_widget (editor, NULL);
 
 }
@@ -621,10 +622,11 @@ glade_editor_load_editable (GladeEditor        *editor,
 static void
 clear_editables (GladeEditor *editor)
 {
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
   GladeEditable *editable;
   GList *l;
 
-  for (l = editor->priv->editables; l; l = l->next)
+  for (l = priv->editables; l; l = l->next)
     {
       editable = l->data;
       glade_editable_load (editable, NULL);
@@ -634,7 +636,7 @@ clear_editables (GladeEditor *editor)
 static void
 glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 {
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
   GladeWidgetAdaptor *adaptor;
   GladeProject *project;
 
@@ -657,7 +659,7 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
                                    priv->widget_name_id);
     }
 
-  /* Load the GladeWidgetClass */
+  /* Load the GladeWidgetAdaptor */
   adaptor = widget ? glade_widget_get_adaptor (widget) : NULL;
   if (priv->loaded_adaptor != adaptor || adaptor == NULL)
     glade_editor_load_widget_class (editor, adaptor);
@@ -737,10 +739,12 @@ glade_editor_new (void)
 void
 glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 {
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
+
   g_return_if_fail (GLADE_IS_EDITOR (editor));
   g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
 
-  if (editor->priv->loaded_widget == widget)
+  if (priv->loaded_widget == widget)
     return;
 
   glade_editor_load_widget_real (editor, widget);
@@ -1264,11 +1268,9 @@ glade_editor_hide_info (GladeEditor *editor)
 void
 glade_editor_show_class_field (GladeEditor *editor)
 {
-  GladeEditorPrivate *priv;
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   g_return_if_fail (GLADE_IS_EDITOR (editor));
-
-  priv = GLADE_EDITOR_PRIVATE (editor);
 
   if (priv->show_class_field != TRUE)
     {
@@ -1282,11 +1284,9 @@ glade_editor_show_class_field (GladeEditor *editor)
 void
 glade_editor_hide_class_field (GladeEditor *editor)
 {
-  GladeEditorPrivate *priv;
+  GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   g_return_if_fail (GLADE_IS_EDITOR (editor));
-
-  priv = GLADE_EDITOR_PRIVATE (editor);
 
   if (priv->show_class_field != FALSE)
     {

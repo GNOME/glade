@@ -88,20 +88,16 @@ glade_attr_glist_get_type (void)
 /**************************************************************
  *              GladeEditorProperty stuff here
  **************************************************************/
-typedef struct
+struct _GladeEPropAttrs
 {
   GladeEditorProperty parent_instance;
 
   GtkTreeModel *model;
 
-} GladeEPropAttrs;
+};
 
-GLADE_MAKE_EPROP (GladeEPropAttrs, glade_eprop_attrs)
-#define GLADE_EPROP_ATTRS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ATTRS, GladeEPropAttrs))
-#define GLADE_EPROP_ATTRS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ATTRS, GladeEPropAttrsClass))
-#define GLADE_IS_EPROP_ATTRS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ATTRS))
-#define GLADE_IS_EPROP_ATTRS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ATTRS))
-#define GLADE_EPROP_ATTRS_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ATTRS, GladeEPropAttrsClass))
+GLADE_MAKE_EPROP (GladeEPropAttrs, glade_eprop_attrs, GLADE, EPROP_ATTRS)
+
 enum
 {
 

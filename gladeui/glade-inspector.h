@@ -33,16 +33,8 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_INSPECTOR            (glade_inspector_get_type ())
-#define GLADE_INSPECTOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_INSPECTOR, GladeInspector))
-#define GLADE_INSPECTOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_INSPECTOR, GladeInspectorClass))
-#define GLADE_IS_INSPECTOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_INSPECTOR))
-#define GLADE_IS_INSPECTOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_INSPECTOR))
-#define GLADE_INSPECTOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_INSPECTOR, GladeInspectorClass))
-
-typedef struct _GladeInspector         GladeInspector;
-typedef struct _GladeInspectorClass    GladeInspectorClass;
-typedef struct _GladeInspectorPrivate  GladeInspectorPrivate;
+#define GLADE_TYPE_INSPECTOR glade_inspector_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeInspector, glade_inspector, GLADE, INSPECTOR, GtkBox)
 
 /**
  * GladeInspector:
@@ -50,12 +42,6 @@ typedef struct _GladeInspectorPrivate  GladeInspectorPrivate;
  * The #GladeInspector struct contains private data only, and should be manipulated using the functions below.
  *
  */
-struct _GladeInspector
-{
-  GtkBox parent_instance;
-
-  GladeInspectorPrivate *priv;
-};
 
 struct _GladeInspectorClass
 {
@@ -64,14 +50,8 @@ struct _GladeInspectorClass
   void   (* selection_changed) (GladeInspector *inspector);
   void   (* item_activated)    (GladeInspector *inspector);
 
-  void   (* glade_reserved1)   (void);
-  void   (* glade_reserved2)   (void);
-  void   (* glade_reserved3)   (void);
-  void   (* glade_reserved4)   (void);
+  gpointer padding[4];
 };
-
- 
-GType          glade_inspector_get_type           (void) G_GNUC_CONST;
 
 GtkWidget     *glade_inspector_new                (void);
 GtkWidget     *glade_inspector_new_with_project   (GladeProject   *project);

@@ -25,7 +25,7 @@
 
 #include "glade-about-dialog-editor.h"
 
-static void glade_about_dialog_editor_editable_init (GladeEditableIface *iface);
+static void glade_about_dialog_editor_editable_init (GladeEditableInterface *iface);
 
 /* Callbacks */
 static void license_type_pre_commit     (GladePropertyShell     *shell,
@@ -50,7 +50,7 @@ struct _GladeAboutDialogEditorPrivate
   GtkWidget *logo_icon_radio;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeAboutDialogEditor, glade_about_dialog_editor, GLADE_TYPE_WINDOW_EDITOR,
                          G_ADD_PRIVATE (GladeAboutDialogEditor)
@@ -121,7 +121,7 @@ glade_about_dialog_editor_load (GladeEditable *editable, GladeWidget *widget)
 }
 
 static void
-glade_about_dialog_editor_editable_init (GladeEditableIface *iface)
+glade_about_dialog_editor_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

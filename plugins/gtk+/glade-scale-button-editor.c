@@ -25,14 +25,14 @@
 
 #include "glade-scale-button-editor.h"
 
-static void glade_scale_button_editor_editable_init (GladeEditableIface * iface);
+static void glade_scale_button_editor_editable_init (GladeEditableInterface * iface);
 
 struct _GladeScaleButtonEditorPrivate
 {
   GtkWidget *dummy;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeScaleButtonEditor, glade_scale_button_editor, GLADE_TYPE_BUTTON_EDITOR,
                          G_ADD_PRIVATE (GladeScaleButtonEditor)
@@ -66,7 +66,7 @@ glade_scale_button_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_scale_button_editor_editable_init (GladeEditableIface * iface)
+glade_scale_button_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

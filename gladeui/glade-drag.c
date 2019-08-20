@@ -37,7 +37,7 @@ _glade_drag_can_drag (_GladeDrag *source)
   _GladeDragInterface *iface;
 
   g_return_val_if_fail (GLADE_IS_DRAG (source), FALSE);
-  iface = GLADE_DRAG_GET_INTERFACE (source);
+  iface = GLADE_DRAG_GET_IFACE (source);
   
   if (iface->can_drag)
     return iface->can_drag (source);
@@ -51,7 +51,7 @@ _glade_drag_can_drop (_GladeDrag *dest, gint x, gint y, GObject *data)
   _GladeDragInterface *iface;
 
   g_return_val_if_fail (GLADE_IS_DRAG (dest), FALSE);
-  iface = GLADE_DRAG_GET_INTERFACE (dest);
+  iface = GLADE_DRAG_GET_IFACE (dest);
 
   if (iface->can_drop)
     return iface->can_drop (dest, x, y, data);
@@ -65,7 +65,7 @@ _glade_drag_drop (_GladeDrag *dest, gint x, gint y, GObject *data)
   _GladeDragInterface *iface;
 
   g_return_val_if_fail (GLADE_IS_DRAG (dest), FALSE);
-  iface = GLADE_DRAG_GET_INTERFACE (dest);
+  iface = GLADE_DRAG_GET_IFACE (dest);
 
   if (iface->drop)
     return iface->drop (dest, x, y, data);
@@ -79,7 +79,7 @@ _glade_drag_highlight (_GladeDrag *dest, gint x, gint y)
   _GladeDragInterface *iface;
 
   g_return_if_fail (GLADE_IS_DRAG (dest));
-  iface = GLADE_DRAG_GET_INTERFACE (dest);
+  iface = GLADE_DRAG_GET_IFACE (dest);
 
   if (iface->highlight)
     iface->highlight (dest, x, y);

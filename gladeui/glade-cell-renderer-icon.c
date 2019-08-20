@@ -39,11 +39,11 @@ static gboolean glade_cell_renderer_icon_activate (GtkCellRenderer     *cell,
                                                    const GdkRectangle  *cell_area,
                                                    GtkCellRendererState flags);
 
-struct _GladeCellRendererIconPrivate 
+typedef struct _GladeCellRendererIconPrivate 
 {
   guint active : 1;
   guint activatable : 1;
-};
+} GladeCellRendererIconPrivate;
 
 enum
 {
@@ -69,10 +69,10 @@ G_DEFINE_TYPE_WITH_PRIVATE (GladeCellRendererIcon,
 
 static void glade_cell_renderer_icon_init (GladeCellRendererIcon *cellicon)
 {
-  cellicon->priv = glade_cell_renderer_icon_get_instance_private (cellicon);
+  GladeCellRendererIconPrivate *priv = glade_cell_renderer_icon_get_instance_private (cellicon);
 
-  cellicon->priv->activatable = TRUE;
-  cellicon->priv->active = FALSE;
+  priv->activatable = TRUE;
+  priv->active = FALSE;
 
   g_object_set (G_OBJECT (cellicon), "mode", GTK_CELL_RENDERER_MODE_ACTIVATABLE,
                 NULL);
@@ -121,14 +121,15 @@ glade_cell_renderer_icon_get_property (GObject    *object,
                                        GParamSpec *pspec)
 {
   GladeCellRendererIcon *cellicon = GLADE_CELL_RENDERER_ICON (object);
+  GladeCellRendererIconPrivate *priv = glade_cell_renderer_icon_get_instance_private (cellicon);
 
   switch (param_id)
     {
       case PROP_ACTIVE:
-        g_value_set_boolean (value, cellicon->priv->active);
+        g_value_set_boolean (value, priv->active);
         break;
       case PROP_ACTIVATABLE:
-        g_value_set_boolean (value, cellicon->priv->activatable);
+        g_value_set_boolean (value, priv->activatable);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
@@ -144,14 +145,15 @@ glade_cell_renderer_icon_set_property (GObject      *object,
                                        GParamSpec   *pspec)
 {
   GladeCellRendererIcon *cellicon = GLADE_CELL_RENDERER_ICON (object);
+  GladeCellRendererIconPrivate *priv = glade_cell_renderer_icon_get_instance_private (cellicon);
 
   switch (param_id)
     {
       case PROP_ACTIVE:
-        cellicon->priv->active = g_value_get_boolean (value);
+        priv->active = g_value_get_boolean (value);
         break;
       case PROP_ACTIVATABLE:
-        cellicon->priv->activatable = g_value_get_boolean (value);
+        priv->activatable = g_value_get_boolean (value);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
@@ -174,10 +176,10 @@ glade_cell_renderer_icon_activate (GtkCellRenderer     *cell,
                                    const GdkRectangle  *cell_area,
                                    GtkCellRendererState flags)
 {
-  GladeCellRendererIcon *cellicon;
+  GladeCellRendererIcon *cellicon = GLADE_CELL_RENDERER_ICON (cell);
+  GladeCellRendererIconPrivate *priv = glade_cell_renderer_icon_get_instance_private (cellicon);
 
-  cellicon = GLADE_CELL_RENDERER_ICON (cell);
-  if (cellicon->priv->activatable)
+  if (priv->activatable)
     {
       g_signal_emit (cell, icon_cell_signals[ACTIVATE], 0, path);
       return TRUE;
@@ -189,20 +191,24 @@ glade_cell_renderer_icon_activate (GtkCellRenderer     *cell,
 gboolean
 glade_cell_renderer_icon_get_active (GladeCellRendererIcon *icon)
 {
+  GladeCellRendererIconPrivate *priv = glade_cell_renderer_icon_get_instance_private (icon);
+
   g_return_val_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon), FALSE);
 
-  return icon->priv->active;
+  return priv->active;
 }
 
 void
 glade_cell_renderer_icon_set_active (GladeCellRendererIcon *icon,
                                      gboolean               setting)
 {
+  GladeCellRendererIconPrivate *priv = glade_cell_renderer_icon_get_instance_private (icon);
+
   g_return_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon));
 
-  if (icon->priv->active != setting)
+  if (priv->active != setting)
     {
-      icon->priv->active = setting ? TRUE : FALSE;
+      priv->active = setting ? TRUE : FALSE;
       g_object_notify_by_pspec (G_OBJECT (icon), properties[PROP_ACTIVE]);
     }
 }
@@ -210,20 +216,24 @@ glade_cell_renderer_icon_set_active (GladeCellRendererIcon *icon,
 gboolean
 glade_cell_renderer_icon_get_activatable (GladeCellRendererIcon *icon)
 {
+  GladeCellRendererIconPrivate *priv = glade_cell_renderer_icon_get_instance_private (icon);
+
   g_return_val_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon), FALSE);
 
-  return icon->priv->activatable;
+  return priv->activatable;
 }
 
 void
 glade_cell_renderer_icon_set_activatable (GladeCellRendererIcon *icon,
                                           gboolean               setting)
 {
+  GladeCellRendererIconPrivate *priv = glade_cell_renderer_icon_get_instance_private (icon);
+
   g_return_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon));
 
-  if (icon->priv->activatable != setting)
+  if (priv->activatable != setting)
     {
-      icon->priv->activatable = setting ? TRUE : FALSE;
+      priv->activatable = setting ? TRUE : FALSE;
       g_object_notify_by_pspec (G_OBJECT (icon), properties[PROP_ACTIVATABLE]);
     }
 }

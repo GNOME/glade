@@ -30,10 +30,10 @@
 
 /**
  * SECTION:glade-palette
- * @Short_Description: A widget to select a #GladeWidgetClass for addition.
+ * @Short_Description: A widget to select a #GladeWidgetAdaptor for addition.
  *
  * #GladePalette is responsible for displaying the list of available
- * #GladeWidgetClass types and publishing the currently selected class
+ * #GladeWidgetAdaptor types and publishing the currently selected class
  * to the Glade core.
  */
 

@@ -245,7 +245,7 @@ enum
   NUM_COLUMNS
 };
 
-typedef struct
+struct _GladeEPropModelData
 {
   GladeEditorProperty parent_instance;
 
@@ -260,14 +260,9 @@ typedef struct
   gboolean setting_focus;
   gint editing_row;
   gint editing_column;
-} GladeEPropModelData;
+};
 
-GLADE_MAKE_EPROP (GladeEPropModelData, glade_eprop_model_data)
-#define GLADE_EPROP_MODEL_DATA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_MODEL_DATA, GladeEPropModelData))
-#define GLADE_EPROP_MODEL_DATA_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_MODEL_DATA, GladeEPropModelDataClass))
-#define GLADE_IS_EPROP_MODEL_DATA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_MODEL_DATA))
-#define GLADE_IS_EPROP_MODEL_DATA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_MODEL_DATA))
-#define GLADE_EPROP_MODEL_DATA_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_MODEL_DATA, GladeEPropModelDataClass))
+GLADE_MAKE_EPROP (GladeEPropModelData, glade_eprop_model_data, GLADE, EPROP_MODEL_DATA)
 
 static void eprop_data_focus_editing_cell (GladeEPropModelData *eprop_data);
 

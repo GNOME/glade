@@ -29,7 +29,7 @@
 
 static void glade_widget_editor_finalize (GObject *object);
 
-static void glade_widget_editor_editable_init (GladeEditableIface *iface);
+static void glade_widget_editor_editable_init (GladeEditableInterface *iface);
 
 static void markup_toggled (GtkWidget * widget, GladeWidgetEditor *widget_editor);
 static void custom_tooltip_toggled (GtkWidget *widget, GladeWidgetEditor *widget_editor);
@@ -48,7 +48,7 @@ struct _GladeWidgetEditorPrivate
   GtkWidget *border_width_editor;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 #define TOOLTIP_TEXT_PAGE   0
 #define TOOLTIP_MARKUP_PAGE 1
@@ -128,7 +128,7 @@ glade_widget_editor_load (GladeEditable *editable, GladeWidget *gwidget)
 }
 
 static void
-glade_widget_editor_editable_init (GladeEditableIface *iface)
+glade_widget_editor_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

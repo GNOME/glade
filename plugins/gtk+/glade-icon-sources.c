@@ -127,7 +127,7 @@ enum
   NUM_COLUMNS
 };
 
-typedef struct
+struct _GladeEPropIconSources
 {
   GladeEditorProperty parent_instance;
 
@@ -135,15 +135,12 @@ typedef struct
   GtkTreeStore *store;
   GtkTreeViewColumn *filename_column;
   GtkWidget *combo;
-} GladeEPropIconSources;
+};
 
-GLADE_MAKE_EPROP (GladeEPropIconSources, glade_eprop_icon_sources)
-#define GLADE_EPROP_ICON_SOURCES(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ICON_SOURCES, GladeEPropIconSources))
-#define GLADE_EPROP_ICON_SOURCES_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ICON_SOURCES, GladeEPropIconSourcesClass))
-#define GLADE_IS_EPROP_ICON_SOURCES(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ICON_SOURCES))
-#define GLADE_IS_EPROP_ICON_SOURCES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ICON_SOURCES))
-#define GLADE_EPROP_ICON_SOURCES_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ICON_SOURCES, GladeEPropIconSourcesClass))
-     static void glade_eprop_icon_sources_finalize (GObject *object)
+GLADE_MAKE_EPROP (GladeEPropIconSources, glade_eprop_icon_sources, GLADE, EPROP_ICON_SOURCES)
+
+static void
+glade_eprop_icon_sources_finalize (GObject *object)
 {
   /* Chain up */
   GObjectClass *parent_class =

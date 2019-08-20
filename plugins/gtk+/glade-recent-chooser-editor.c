@@ -25,14 +25,14 @@
 
 #include "glade-recent-chooser-editor.h"
 
-static void glade_recent_chooser_editor_editable_init (GladeEditableIface *iface);
+static void glade_recent_chooser_editor_editable_init (GladeEditableInterface *iface);
 
 struct _GladeRecentChooserEditorPrivate {
   GtkWidget *select_multiple_editor;
   GtkWidget *show_numbers_editor;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeRecentChooserEditor, glade_recent_chooser_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeRecentChooserEditor)
@@ -82,7 +82,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
-glade_recent_chooser_editor_editable_init (GladeEditableIface *iface)
+glade_recent_chooser_editor_editable_init (GladeEditableInterface *iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

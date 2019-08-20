@@ -26,7 +26,7 @@
 
 #include "glade-notebook-editor.h"
 
-static void glade_notebook_editor_editable_init (GladeEditableIface * iface);
+static void glade_notebook_editor_editable_init (GladeEditableInterface * iface);
 static void glade_notebook_editor_grab_focus (GtkWidget * widget);
 static void has_start_action_changed (GObject *object, GParamSpec *pspec, GladeNotebookEditor *editor);
 static void has_end_action_changed (GObject *object, GParamSpec *pspec, GladeNotebookEditor *editor);
@@ -39,7 +39,7 @@ struct _GladeNotebookEditorPrivate
   GtkWidget *action_end_editor;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeNotebookEditor, glade_notebook_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeNotebookEditor)
@@ -97,7 +97,7 @@ glade_notebook_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_notebook_editor_editable_init (GladeEditableIface * iface)
+glade_notebook_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

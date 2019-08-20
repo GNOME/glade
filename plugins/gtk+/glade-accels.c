@@ -128,14 +128,14 @@ enum
   ACCEL_NUM_COLUMNS
 };
 
-typedef struct
+struct _GladeEPropAccel
 {
   GladeEditorProperty parent_instance;
 
   GtkWidget *entry;
   GList *parent_iters;
   GtkTreeModel *model;
-} GladeEPropAccel;
+} ;
 
 typedef struct
 {
@@ -143,13 +143,10 @@ typedef struct
   const gchar *name;                  /* <-- dont free */
 } GladeEpropIterTab;
 
-GLADE_MAKE_EPROP (GladeEPropAccel, glade_eprop_accel)
-#define GLADE_EPROP_ACCEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ACCEL, GladeEPropAccel))
-#define GLADE_EPROP_ACCEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ACCEL, GladeEPropAccelClass))
-#define GLADE_IS_EPROP_ACCEL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ACCEL))
-#define GLADE_IS_EPROP_ACCEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ACCEL))
-#define GLADE_EPROP_ACCEL_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ACCEL, GladeEPropAccelClass))
-     static void glade_eprop_accel_finalize (GObject * object)
+GLADE_MAKE_EPROP (GladeEPropAccel, glade_eprop_accel, GLADE, EPROP_ACCEL)
+
+static void
+glade_eprop_accel_finalize (GObject * object)
 {
   /* Chain up */
   GObjectClass *parent_class =

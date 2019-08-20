@@ -61,6 +61,7 @@ enum
   LAST_SIGNAL
 };
 
+typedef struct _GladeAppPrivate GladeAppPrivate;
 struct _GladeAppPrivate
 {
   GtkWidget *window;
@@ -121,7 +122,7 @@ glade_app_constructor (GType                  type,
 static void
 glade_app_dispose (GObject *app)
 {
-  GladeAppPrivate *priv = GLADE_APP (app)->priv;
+  GladeAppPrivate *priv = glade_app_get_instance_private ((GladeApp *) app);
 
   if (priv->clipboard)
     {
@@ -363,7 +364,7 @@ static void
 glade_app_init (GladeApp *app)
 {
   static gboolean initialized = FALSE;
-  GladeAppPrivate *priv = app->priv = glade_app_get_instance_private (app);
+  GladeAppPrivate *priv = glade_app_get_instance_private (app);
 
   singleton_app = app;
 
@@ -529,6 +530,7 @@ glade_app_config_save ()
   gsize size, written, bytes_written = 0;
   static gboolean error_shown = FALSE;
   GladeApp *app;
+  GladeAppPrivate *priv;
 
   /* If we had any errors; wait untill next session to retry.
    */
@@ -536,6 +538,7 @@ glade_app_config_save ()
     return -1;
 
   app = glade_app_get ();
+  priv = glade_app_get_instance_private (app);
 
   /* Just in case... try to create the config directory */
   if (g_file_test (config_dir, G_FILE_TEST_IS_DIR) == FALSE)
@@ -570,7 +573,7 @@ glade_app_config_save ()
   if ((channel = g_io_channel_new_file (filename, "w", &error)) != NULL)
     {
       if ((data =
-           g_key_file_to_data (app->priv->config, &size, &error)) != NULL)
+           g_key_file_to_data (priv->config, &size, &error)) != NULL)
         {
 
           /* Implement loop here */
@@ -652,8 +655,9 @@ void
 glade_app_set_window (GtkWidget *window)
 {
   GladeApp *app = glade_app_get ();
+  GladeAppPrivate *priv = glade_app_get_instance_private (app);
 
-  app->priv->window = window;
+  priv->window = window;
 }
 
 /**
@@ -666,12 +670,13 @@ GladeCatalog *
 glade_app_get_catalog (const gchar *name)
 {
   GladeApp *app = glade_app_get ();
+  GladeAppPrivate *priv = glade_app_get_instance_private (app);
   GList *list;
   GladeCatalog *catalog;
 
   g_return_val_if_fail (name && name[0], NULL);
 
-  for (list = app->priv->catalogs; list; list = list->next)
+  for (list = priv->catalogs; list; list = list->next)
     {
       catalog = list->data;
       if (!strcmp (glade_catalog_get_name (catalog), name))
@@ -714,8 +719,9 @@ GList *
 glade_app_get_catalogs (void)
 {
   GladeApp *app = glade_app_get ();
+  GladeAppPrivate *priv = glade_app_get_instance_private (app);
 
-  return app->priv->catalogs;
+  return priv->catalogs;
 }
 
 /**
@@ -727,7 +733,9 @@ GtkWidget *
 glade_app_get_window (void)
 {
   GladeApp *app = glade_app_get ();
-  return app->priv->window;
+  GladeAppPrivate *priv = glade_app_get_instance_private (app);
+
+  return priv->window;
 }
 
 /**
@@ -739,7 +747,9 @@ GladeClipboard *
 glade_app_get_clipboard (void)
 {
   GladeApp *app = glade_app_get ();
-  return app->priv->clipboard;
+  GladeAppPrivate *priv = glade_app_get_instance_private (app);
+
+  return priv->clipboard;
 }
 
 /**
@@ -751,7 +761,9 @@ GList *
 glade_app_get_projects (void)
 {
   GladeApp *app = glade_app_get ();
-  return app->priv->projects;
+  GladeAppPrivate *priv = glade_app_get_instance_private (app);
+
+  return priv->projects;
 }
 
 /**
@@ -780,6 +792,7 @@ gboolean
 glade_app_is_project_loaded (const gchar *project_path)
 {
   GladeApp *app;
+  GladeAppPrivate *priv;
   GList *list;
   gboolean loaded = FALSE;
 
@@ -787,8 +800,9 @@ glade_app_is_project_loaded (const gchar *project_path)
     return FALSE;
 
   app = glade_app_get ();
+  priv = glade_app_get_instance_private (app);
 
-  for (list = app->priv->projects; list; list = list->next)
+  for (list = priv->projects; list; list = list->next)
     {
       GladeProject *cur_project = GLADE_PROJECT (list->data);
 
@@ -812,6 +826,7 @@ GladeProject *
 glade_app_get_project_by_path (const gchar *project_path)
 {
   GladeApp *app;
+  GladeAppPrivate *priv;
   GList *l;
   gchar *canonical_path;
 
@@ -819,10 +834,11 @@ glade_app_get_project_by_path (const gchar *project_path)
     return NULL;
 
   app = glade_app_get ();
+  priv = glade_app_get_instance_private (app);
 
   canonical_path = glade_util_canonical_path (project_path);
 
-  for (l = app->priv->projects; l; l = l->next)
+  for (l = priv->projects; l; l = l->next)
     {
       GladeProject *project = (GladeProject *) l->data;
 
@@ -847,17 +863,19 @@ void
 glade_app_add_project (GladeProject *project)
 {
   GladeApp *app;
+  GladeAppPrivate *priv;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
   app = glade_app_get ();
+  priv = glade_app_get_instance_private (app);
 
   /* If the project was previously loaded, don't re-load */
-  if (g_list_find (app->priv->projects, project) != NULL)
+  if (g_list_find (priv->projects, project) != NULL)
     return;
 
   /* Take a reference for GladeApp here... */
-  app->priv->projects = g_list_append (app->priv->projects, g_object_ref (project));
+  priv->projects = g_list_append (priv->projects, g_object_ref (project));
 }
 
 /**
@@ -868,11 +886,13 @@ void
 glade_app_remove_project (GladeProject *project)
 {
   GladeApp *app;
+  GladeAppPrivate *priv;
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
   app = glade_app_get ();
+  priv = glade_app_get_instance_private (app);
 
-  app->priv->projects = g_list_remove (app->priv->projects, project);
+  priv->projects = g_list_remove (priv->projects, project);
 
   /* Its safe to just release the project as the project emits a
    * "close" signal and everyone is responsable for cleaning up at
@@ -893,11 +913,14 @@ void
 glade_app_set_accel_group (GtkAccelGroup *accel_group)
 {
   GladeApp *app;
+  GladeAppPrivate *priv;
+
   g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
 
   app = glade_app_get ();
+  priv = glade_app_get_instance_private (app);
 
-  app->priv->accel_group = accel_group;
+  priv->accel_group = accel_group;
 }
 
 /**
@@ -908,7 +931,10 @@ glade_app_set_accel_group (GtkAccelGroup *accel_group)
 GtkAccelGroup *
 glade_app_get_accel_group (void)
 {
-  return glade_app_get ()->priv->accel_group;
+  GladeApp *app = glade_app_get ();
+  GladeAppPrivate *priv = glade_app_get_instance_private (app);
+
+  return priv->accel_group;
 }
 
 /**

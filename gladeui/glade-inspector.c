@@ -53,11 +53,6 @@
 #include <gdk/gdkkeysyms.h>
 #endif
 
-#define GLADE_INSPECTOR_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
-                                            GLADE_TYPE_INSPECTOR,                 \
-                                            GladeInspectorPrivate))
-
-
 static void     search_entry_text_inserted_cb (GtkEntry       *entry,
                                                const gchar    *text,
                                                gint            length,
@@ -82,7 +77,7 @@ enum
   LAST_SIGNAL
 };
 
-struct _GladeInspectorPrivate
+typedef struct _GladeInspectorPrivate
 {
   GtkWidget *view;
   GtkTreeModel *filter;
@@ -94,7 +89,7 @@ struct _GladeInspectorPrivate
   gboolean search_disabled;
   gchar *completion_text;
   gchar *completion_text_fold;
-};
+} GladeInspectorPrivate;
 
 static GParamSpec *properties[N_PROPERTIES];
 static guint glade_inspector_signals[LAST_SIGNAL] = { 0 };
@@ -208,7 +203,7 @@ glade_inspector_visible_func (GtkTreeModel *model,
                               gpointer      data)
 {
   GladeInspector *inspector = data;
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   GtkTreeIter iter;
 
@@ -247,7 +242,7 @@ glade_inspector_visible_func (GtkTreeModel *model,
 static void
 glade_inspector_refilter (GladeInspector *inspector)
 {
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   if (!priv->search_disabled)
     {
@@ -338,7 +333,8 @@ get_partial_match (GladeInspector *inspector,
                    const gchar    *search,
                    gchar         **first_match)
 {
-  GtkTreeModel     *model = GTK_TREE_MODEL (inspector->priv->project);
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
+  GtkTreeModel     *model = GTK_TREE_MODEL (priv->project);
   CommonMatchData   data;
 
   data.text        = search;
@@ -358,7 +354,7 @@ get_partial_match (GladeInspector *inspector,
 static void
 inspector_set_completion_text (GladeInspector *inspector, const gchar *text)
 {
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   g_free (priv->completion_text);
   priv->completion_text = g_strdup (text);
@@ -369,7 +365,7 @@ inspector_set_completion_text (GladeInspector *inspector, const gchar *text)
 static gboolean
 search_complete_idle (GladeInspector *inspector)
 {
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
   gchar *completed;
   const gchar *str;
   gsize length;
@@ -409,7 +405,7 @@ search_entry_text_inserted_cb (GtkEntry       *entry,
                                gint           *position,
                                GladeInspector *inspector)
 {
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   if (!priv->search_disabled && !priv->idle_complete)
     {
@@ -424,7 +420,7 @@ search_entry_text_deleted_cb (GtkEditable    *editable,
                               gint            end_pos,
                               GladeInspector *inspector)
 {
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   if (!priv->search_disabled)
     {
@@ -438,7 +434,7 @@ search_entry_key_press_event_cb (GtkEntry       *entry,
                                  GdkEventKey    *event,
                                  GladeInspector *inspector)
 {
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
   const gchar *str;
 
   str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
@@ -533,7 +529,7 @@ search_entry_focus_in_cb (GtkWidget      *entry,
                           GdkEventFocus  *event,
                           GladeInspector *inspector)
 {
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   if (priv->search_disabled)
     priv->search_disabled = FALSE;
@@ -546,7 +542,7 @@ search_entry_focus_out_cb (GtkWidget      *entry,
                            GdkEventFocus  *event,
                            GladeInspector *inspector)
 {
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   priv->search_disabled = TRUE;
 
@@ -562,11 +558,9 @@ search_entry_focus_out_cb (GtkWidget      *entry,
 static void
 glade_inspector_init (GladeInspector *inspector)
 {
-  GladeInspectorPrivate *priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
   GtkWidget *sw;
   GtkTreeSelection *selection;
-
-  inspector->priv = priv = glade_inspector_get_instance_private (inspector);
 
   gtk_orientable_set_orientation (GTK_ORIENTABLE (inspector),
                                   GTK_ORIENTATION_VERTICAL);
@@ -636,13 +630,14 @@ static void
 glade_inspector_dispose (GObject *object)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   glade_inspector_set_project (inspector, NULL);
 
-  if (inspector->priv->idle_complete)
+  if (priv->idle_complete)
     {
-      g_source_remove (inspector->priv->idle_complete);
-      inspector->priv->idle_complete = 0;
+      g_source_remove (priv->idle_complete);
+      priv->idle_complete = 0;
     }
 
   G_OBJECT_CLASS (glade_inspector_parent_class)->dispose (object);
@@ -652,7 +647,7 @@ static void
 glade_inspector_finalize (GObject *object)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   g_free (priv->completion_text);
   g_free (priv->completion_text_fold);
@@ -664,6 +659,7 @@ static void
 project_selection_changed_cb (GladeProject   *project,
                               GladeInspector *inspector)
 {
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
   GladeWidget *widget;
   GtkTreeSelection *selection;
   GtkTreeModel *model;
@@ -673,18 +669,18 @@ project_selection_changed_cb (GladeProject   *project,
 
   g_return_if_fail (GLADE_IS_INSPECTOR (inspector));
   g_return_if_fail (GLADE_IS_PROJECT (project));
-  g_return_if_fail (inspector->priv->project == project);
+  g_return_if_fail (priv->project == project);
 
   g_signal_handlers_block_by_func (gtk_tree_view_get_selection
-                                   (GTK_TREE_VIEW (inspector->priv->view)),
+                                   (GTK_TREE_VIEW (priv->view)),
                                    G_CALLBACK (selection_changed_cb),
                                    inspector);
 
   selection =
-      gtk_tree_view_get_selection (GTK_TREE_VIEW (inspector->priv->view));
+      gtk_tree_view_get_selection (GTK_TREE_VIEW (priv->view));
   g_return_if_fail (selection != NULL);
 
-  model = inspector->priv->filter;
+  model = priv->filter;
 
   gtk_tree_selection_unselect_all (selection);
 
@@ -705,10 +701,10 @@ project_selection_changed_cb (GladeProject   *project,
               /* expand parent node */
               if (gtk_tree_path_up (ancestor_path))
                 gtk_tree_view_expand_to_path
-                    (GTK_TREE_VIEW (inspector->priv->view), ancestor_path);
+                    (GTK_TREE_VIEW (priv->view), ancestor_path);
 
               gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW
-                                            (inspector->priv->view), path, NULL,
+                                            (priv->view), path, NULL,
                                             TRUE, 0.5, 0);
 
               gtk_tree_selection_select_iter (selection, iter);
@@ -721,7 +717,7 @@ project_selection_changed_cb (GladeProject   *project,
     }
 
   g_signal_handlers_unblock_by_func (gtk_tree_view_get_selection
-                                     (GTK_TREE_VIEW (inspector->priv->view)),
+                                     (GTK_TREE_VIEW (priv->view)),
                                      G_CALLBACK (selection_changed_cb),
                                      inspector);
 }
@@ -747,6 +743,7 @@ selection_foreach_func (GtkTreeModel *model,
 static void
 selection_changed_cb (GtkTreeSelection *selection, GladeInspector *inspector)
 {
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
   GList *sel = NULL, *l;
 
   gtk_tree_selection_selected_foreach (selection,
@@ -765,17 +762,17 @@ selection_changed_cb (GtkTreeSelection *selection, GladeInspector *inspector)
   if (!sel)
     return;
 
-  g_signal_handlers_block_by_func (inspector->priv->project,
+  g_signal_handlers_block_by_func (priv->project,
                                    G_CALLBACK (project_selection_changed_cb),
                                    inspector);
 
-  glade_project_selection_clear (inspector->priv->project, FALSE);
+  glade_project_selection_clear (priv->project, FALSE);
   for (l = sel; l; l = l->next)
-    glade_project_selection_add (inspector->priv->project, G_OBJECT (l->data), FALSE);
-  glade_project_selection_changed (inspector->priv->project);
+    glade_project_selection_add (priv->project, G_OBJECT (l->data), FALSE);
+  glade_project_selection_changed (priv->project);
   g_list_free (sel);
 
-  g_signal_handlers_unblock_by_func (inspector->priv->project,
+  g_signal_handlers_unblock_by_func (priv->project,
                                      G_CALLBACK (project_selection_changed_cb),
                                      inspector);
 
@@ -797,7 +794,7 @@ button_press_cb (GtkWidget      *widget,
                  GladeInspector *inspector)
 {
   GtkTreeView *view = GTK_TREE_VIEW (widget);
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
   GtkTreePath *path = NULL;
   gboolean handled = FALSE;
 
@@ -1022,14 +1019,14 @@ glade_inspector_set_project (GladeInspector *inspector, GladeProject *project)
   g_return_if_fail (GLADE_IS_INSPECTOR (inspector));
   g_return_if_fail (GLADE_IS_PROJECT (project) || project == NULL);
 
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
-  if(priv->project == project)
+  if (priv->project == project)
     return;
 
-  if (inspector->priv->project)
+  if (priv->project)
     {
-      disconnect_project_signals (inspector, inspector->priv->project);
+      disconnect_project_signals (inspector, priv->project);
 
       /* Release our filter which releases the project */
       gtk_tree_view_set_model (GTK_TREE_VIEW (priv->view), NULL);
@@ -1071,9 +1068,11 @@ glade_inspector_set_project (GladeInspector *inspector, GladeProject *project)
 GladeProject *
 glade_inspector_get_project (GladeInspector *inspector)
 {
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
+
   g_return_val_if_fail (GLADE_IS_INSPECTOR (inspector), NULL);
 
-  return inspector->priv->project;
+  return priv->project;
 }
 
 /**
@@ -1089,7 +1088,7 @@ glade_inspector_get_selected_items (GladeInspector *inspector)
 {
   GtkTreeSelection *selection;
   GList *items = NULL, *paths;
-  GladeInspectorPrivate *priv = inspector->priv;
+  GladeInspectorPrivate *priv = glade_inspector_get_instance_private (inspector);
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (priv->view));
 

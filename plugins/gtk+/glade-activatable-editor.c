@@ -25,7 +25,7 @@
 
 #include "glade-activatable-editor.h"
 
-static void glade_activatable_editor_editable_init (GladeEditableIface * iface);
+static void glade_activatable_editor_editable_init (GladeEditableInterface * iface);
 static void glade_activatable_editor_grab_focus (GtkWidget * widget);
 
 struct _GladeActivatableEditorPrivate {
@@ -35,7 +35,7 @@ struct _GladeActivatableEditorPrivate {
   GtkWidget *action_name_editor;
 };
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeActivatableEditor, glade_activatable_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeActivatableEditor)
@@ -96,7 +96,7 @@ glade_activatable_editor_load (GladeEditable *editable,
 }
 
 static void
-glade_activatable_editor_editable_init (GladeEditableIface * iface)
+glade_activatable_editor_editable_init (GladeEditableInterface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 

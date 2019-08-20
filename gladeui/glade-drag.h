@@ -29,13 +29,8 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_DRAG                (_glade_drag_get_type ())
-#define GLADE_DRAG(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_DRAG, _GladeDrag))
-#define GLADE_IS_DRAG(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_DRAG))
-#define GLADE_DRAG_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), GLADE_TYPE_DRAG, _GladeDragInterface))
-
-typedef struct __GladeDrag _GladeDrag;
-typedef struct __GladeDragInterface _GladeDragInterface;
+#define GLADE_TYPE_DRAG _glade_drag_get_type ()
+G_DECLARE_INTERFACE (_GladeDrag, _glade_drag, GLADE, DRAG, GObject)
 
 struct __GladeDragInterface
 {
@@ -57,8 +52,6 @@ struct __GladeDragInterface
                          gint       x,
                          gint       y);
 };
-
-GType    _glade_drag_get_type  (void) G_GNUC_CONST;
 
 gboolean _glade_drag_can_drag  (_GladeDrag *source);
 

@@ -10,34 +10,9 @@ G_BEGIN_DECLS
  *******************************************************************************/
 /* XXX document me ! */
 
-#define GLADE_MAKE_EPROP_TYPE(func, type, parent)                  \
-GType                                                              \
-func ## _get_type (void)                                           \
-{                                                                  \
-  static GType cmd_type = 0;                                       \
-                                                                   \
-  if (!cmd_type)                                                   \
-    {                                                              \
-      static const GTypeInfo info = {                              \
-        sizeof (type ## Class),                                    \
-        (GBaseInitFunc) NULL,                                      \
-        (GBaseFinalizeFunc) NULL,                                  \
-        (GClassInitFunc) func ## _class_init,                      \
-        (GClassFinalizeFunc) NULL,                                 \
-        NULL,                                                      \
-        sizeof (type),                                             \
-        0,                                                         \
-        (GInstanceInitFunc) NULL                                   \
-      };                                                           \
-                                                                   \
-      cmd_type = g_type_register_static (parent, #type, &info, 0); \
-    }                                                              \
-                                                                   \
-  return cmd_type;                                                 \
-}
-
-
-#define GLADE_MAKE_EPROP(type, func)                              \
+#define GLADE_MAKE_EPROP(type, func, MODULE, OBJ_NAME)            \
+G_DECLARE_FINAL_TYPE (type, func, MODULE, OBJ_NAME, GladeEditorProperty) \
+G_DEFINE_TYPE (type, func, GLADE_TYPE_EDITOR_PROPERTY);           \
 static void                                                       \
 func ## _finalize (GObject *object);                              \
 static void                                                       \
@@ -45,40 +20,21 @@ func ## _load (GladeEditorProperty *me, GladeProperty *property); \
 static GtkWidget *                                                \
 func ## _create_input (GladeEditorProperty *me);                  \
 static void                                                       \
-func ## _class_init (gpointer parent_tmp, gpointer notused)       \
+func ## _class_init (type ## Class *klass)                        \
 {                                                                 \
-  GladeEditorPropertyClass *parent = parent_tmp;                  \
-  GObjectClass* object_class;                                     \
-  object_class = G_OBJECT_CLASS (parent);                         \
-  parent->load =  func ## _load;                                  \
-  parent->create_input =  func ## _create_input;                  \
+  GladeEditorPropertyClass *ep_class = GLADE_EDITOR_PROPERTY_CLASS (klass); \
+  GObjectClass* object_class = G_OBJECT_CLASS (klass);            \
+  ep_class->load =  func ## _load;                                \
+  ep_class->create_input =  func ## _create_input;                \
   object_class->finalize = func ## _finalize;                     \
 }                                                                 \
-typedef struct {                                                  \
-        GladeEditorPropertyClass cmd;                             \
-} type ## Class;                                                  \
-GLADE_MAKE_EPROP_TYPE(func, type, GLADE_TYPE_EDITOR_PROPERTY)
+static void                                                       \
+func ## _init (type *self)                                        \
+{                                                                 \
+}
 
-
-
-#define GLADE_TYPE_EDITOR_PROPERTY            (glade_editor_property_get_type())
-#define GLADE_EDITOR_PROPERTY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EDITOR_PROPERTY, GladeEditorProperty))
-#define GLADE_EDITOR_PROPERTY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EDITOR_PROPERTY, GladeEditorPropertyClass))
-#define GLADE_IS_EDITOR_PROPERTY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EDITOR_PROPERTY))
-#define GLADE_IS_EDITOR_PROPERTY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EDITOR_PROPERTY))
-#define GLADE_EDITOR_PROPERTY_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EDITOR_PROPERTY, GladeEditorPropertyClass))
-
-
-typedef struct _GladeEditorProperty        GladeEditorProperty;
-typedef struct _GladeEditorPropertyClass   GladeEditorPropertyClass;
-typedef struct _GladeEditorPropertyPrivate GladeEditorPropertyPrivate;
-
-struct _GladeEditorProperty
-{
-  GtkBox             parent_instance;
-
-  GladeEditorPropertyPrivate *priv;
-};
+#define GLADE_TYPE_EDITOR_PROPERTY glade_editor_property_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeEditorProperty, glade_editor_property, GLADE, EDITOR_PROPERTY, GtkBox)
 
 struct _GladeEditorPropertyClass {
   GtkBoxClass  parent_class;
@@ -88,15 +44,8 @@ struct _GladeEditorPropertyClass {
   void        (* commit)        (GladeEditorProperty *eprop, GValue *value);
   void       *(* changed)       (GladeEditorProperty *eprop, GladeProperty *property);
 
-  void   (* glade_reserved1)   (void);
-  void   (* glade_reserved2)   (void);
-  void   (* glade_reserved3)   (void);
-  void   (* glade_reserved4)   (void);
+  gpointer padding[4];
 };
-
-
-
-GType                glade_editor_property_get_type           (void) G_GNUC_CONST;
 
 void                 glade_editor_property_load               (GladeEditorProperty *eprop,
                                                                GladeProperty       *property);

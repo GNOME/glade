@@ -30,37 +30,15 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_DESIGN_LAYOUT              (glade_design_layout_get_type ())
-#define GLADE_DESIGN_LAYOUT(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_DESIGN_LAYOUT, GladeDesignLayout))
-#define GLADE_DESIGN_LAYOUT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_DESIGN_LAYOUT, GladeDesignLayoutClass))
-#define GLADE_IS_DESIGN_LAYOUT(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_DESIGN_LAYOUT))
-#define GLADE_IS_DESIGN_LAYOUT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_DESIGN_LAYOUT))
-#define GLADE_DESIGN_LAYOUT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_DESIGN_LAYOUT, GladeDesignLayoutClass))
-
-typedef struct _GladeDesignLayout         GladeDesignLayout;
-typedef struct _GladeDesignLayoutPrivate  GladeDesignLayoutPrivate;
-typedef struct _GladeDesignLayoutClass    GladeDesignLayoutClass;
-
-struct _GladeDesignLayout
-{
-  GtkBin     parent_instance;
-
-  GladeDesignLayoutPrivate *priv;
-};
+#define GLADE_TYPE_DESIGN_LAYOUT glade_design_layout_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeDesignLayout, glade_design_layout, GLADE, DESIGN_LAYOUT, GtkBin)
 
 struct _GladeDesignLayoutClass
 {
   GtkBinClass parent_class;
 
-  void   (* glade_reserved0)   (void);
-  void   (* glade_reserved1)   (void);
-  void   (* glade_reserved2)   (void);
-  void   (* glade_reserved3)   (void);
-  void   (* glade_reserved4)   (void);
+  gpointer padding[5];
 };
-
-
-GType        glade_design_layout_get_type   (void) G_GNUC_CONST;
 
 GtkWidget   *_glade_design_layout_new       (GladeDesignView *view);
 
