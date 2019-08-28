@@ -2805,7 +2805,7 @@ glade_project_autosave (GladeProject *project, GError **error)
   context = glade_project_write (project);
   doc = glade_xml_context_get_doc (context);
   ret = glade_xml_doc_save (doc, autosave_path);
-  glade_xml_context_destroy (context);
+  glade_xml_context_free (context);
 
   g_free (autosave_path);
 
@@ -2949,7 +2949,7 @@ glade_project_save_verify (GladeProject      *project,
   context = glade_project_write (project);
   doc = glade_xml_context_get_doc (context);
   ret = glade_xml_doc_save (doc, path);
-  glade_xml_context_destroy (context);
+  glade_xml_context_free (context);
 
   canonical_path = glade_util_canonical_path (path);
   g_assert (canonical_path);
@@ -3030,6 +3030,7 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
   project->priv->writing_preview = FALSE;
 
   text = glade_xml_dump_from_context (context);
+  glade_xml_context_free (context);
 
   gwidget = glade_widget_get_toplevel (gwidget);
   if (!GTK_IS_WIDGET (glade_widget_get_object (gwidget)))
