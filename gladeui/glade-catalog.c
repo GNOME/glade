@@ -162,9 +162,7 @@ catalog_destroy (GladeCatalog *catalog)
       g_list_free (catalog->widget_groups);
     }
 
-  if (catalog->context)
-    glade_xml_context_free (catalog->context);
-
+  g_clear_pointer (&catalog->context, glade_xml_context_free);
   g_slice_free (GladeCatalog, catalog);
 }
 
@@ -423,7 +421,7 @@ catalog_load (GladeCatalog *catalog)
     }
 
   catalog->widget_groups = g_list_reverse (catalog->widget_groups);
-  catalog->context = (glade_xml_context_free (catalog->context), NULL);
+  g_clear_pointer (&catalog->context, glade_xml_context_free);
 
   return;
 }
