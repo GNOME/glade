@@ -11,10 +11,9 @@ Mailing Lists:
 * glade-devel@ximian.com 
   * For discussions about the development of Glade itself.
 
-
 ## General Information
 
-Glade is a RAD tool to enable quick &amp; easy development of user interfaces
+Glade is a RAD tool to enable quick and easy development of user interfaces
 for the GTK+ 3 toolkit and the GNOME desktop environment. 
 
 The user interfaces designed in Glade are saved as XML and these can be loaded
@@ -22,8 +21,7 @@ by applications dynamically as needed by using GtkBuilder or used directly to
 define a new GtkWidget derived object class using Gtk+ new template feature.
 
 By using GtkBuilder, Glade XML files can be used in numerous programming 
-languages including C, C++, C#, Vala, Java, Perl, Python,and others. 
-
+languages including C, C++, C#, Vala, Java, Perl, Python, and others. 
 
 ## About Glade
 
@@ -47,7 +45,6 @@ in the COPYING file.
 
 * libxml 2.4.1 - used to parse the XML files. If you have GNOME 2 you
   should already have this.
-
 
 ## Installation
 
