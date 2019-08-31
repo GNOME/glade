@@ -11,6 +11,8 @@ Mailing Lists:
 * glade-devel@ximian.com 
   * For discussions about the development of Glade itself.
 
+<a href='https://flathub.org/apps/details/org.gnome.Glade'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-i-en.png'/></a>
+
 ## General Information
 
 Glade is a RAD tool to enable quick and easy development of user interfaces
