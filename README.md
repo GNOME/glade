@@ -6,9 +6,9 @@ Web: <http://glade.gnome.org>
 
 Mailing Lists: 
 
-* glade-users@ximian.com 
+* <glade-users@ximian.com>
   * For discussions about using Glade to build applications.
-* glade-devel@ximian.com 
+* <glade-devel@ximian.com>
   * For discussions about the development of Glade itself.
 
 <a href='https://flathub.org/apps/details/org.gnome.Glade'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-i-en.png'/></a>
