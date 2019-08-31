@@ -4,10 +4,12 @@ A user interface designer for Gtk+ and GNOME
 
 Web: <http://glade.gnome.org>
 
-Mailing Lists: glade-users@ximian.com - For discussions about using
-                                        Glade to build applications.
-               glade-devel@ximian.com - For discussions about the
-                                        development of Glade itself.
+Mailing Lists: 
+
+* glade-users@ximian.com 
+  * For discussions about using Glade to build applications.
+* glade-devel@ximian.com 
+  * For discussions about the development of Glade itself.
 
 
 ## General Information
@@ -38,7 +40,7 @@ in the COPYING file.
 
 ## Requirements
 
-* GTK+ 3.10.0 or above - http://www.gtk.org
+* GTK+ 3.10.0 or above - <http://www.gtk.org>  
   You also need the glib, pango and atk libraries.
   Make sure you have the devel packages as well, as these will contain the
   header files which you will need to compile C applications.
@@ -47,6 +49,6 @@ in the COPYING file.
   should already have this.
 
 
-##Installation
+## Installation
 
 See the file '[INSTALL](INSTALL)'
