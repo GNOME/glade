@@ -2139,7 +2139,10 @@ glade_project_load_internal (GladeProject *project)
   g_signal_emit (project, glade_project_signals[PARSE_BEGAN], 0);
 
   if ((domain = glade_xml_get_property_string (root, GLADE_TAG_DOMAIN)))
-    glade_project_set_translation_domain (project, domain);
+    {
+      glade_project_set_translation_domain (project, domain);
+      g_free (domain);
+    }
 
   glade_project_read_comments (project, root);
 
@@ -2664,6 +2667,7 @@ glade_project_write_comments (GladeProject *project,
       /* Replace regular HYPHEN with NON-BREAKING HYPHEN */
       gchar *license = _glade_util_strreplace (priv->license, FALSE, "--", "‑‑");
       gchar *comment = g_strdup_printf (GLADE_PROJECT_COMMENT"\n\n%s\n\n", license);
+      g_free (license);
       comment_node = glade_xml_doc_new_comment (doc, comment);
       g_free (comment);
     }
@@ -2768,7 +2772,10 @@ glade_project_backup (GladeProject *project, const gchar *path, GError **error)
 
   success = g_file_get_contents (project->priv->path, &content, &length, error);
   if (success)
-    success = g_file_set_contents (destination_path, content, length, error);
+    {
+      success = g_file_set_contents (destination_path, content, length, error);
+      g_free (content);
+    }
 
   g_free (destination_path);
 
