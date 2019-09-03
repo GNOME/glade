@@ -4983,6 +4983,12 @@ glade_widget_verify (GladeWidget *widget)
 
       if (string)
         warning = g_string_free (string, FALSE);
+
+      if (warn_signals)
+        g_list_free (warn_signals);
+
+      if (warn_properties)
+        g_list_free (warn_properties);
     }
 
   glade_widget_set_support_warning (widget, warning);
