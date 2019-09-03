@@ -463,6 +463,8 @@ glade_gtk_label_write_attributes (GladeWidget     *widget,
       glade_xml_node_set_property_string (attr_node, GLADE_TAG_NAME, attr_type);
       glade_xml_node_set_property_string (attr_node, GLADE_TAG_VALUE,
                                           attr_value);
+      g_free (attr_type);
+      g_free (attr_value);
     }
 }
 
