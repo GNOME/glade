@@ -616,7 +616,8 @@ glade_design_view_drag_leave (GtkWidget      *widget,
                               GdkDragContext *context,
                               guint           time)
 {
-  GladeDesignViewPrivate *priv = glade_design_view_get_instance_private ((GladeDesignView *) widget);
+  GladeDesignView *view = GLADE_DESIGN_VIEW (widget);
+  GladeDesignViewPrivate *priv = glade_design_view_get_instance_private (view);
 
   if (priv->drag_target)
     glade_design_view_drag_highlight (priv->drag_target, -1, -1);
@@ -627,7 +628,7 @@ on_source_drag_end (GtkWidget       *widget,
                     GdkDragContext  *context, 
                     GladeDesignView *view)
 {
-  GladeDesignViewPrivate *priv = glade_design_view_get_instance_private ((GladeDesignView *) widget);
+  GladeDesignViewPrivate *priv = glade_design_view_get_instance_private (view);
   
   if (priv->drag_target)
     {
@@ -653,11 +654,7 @@ glade_design_view_drag_data_received (GtkWidget        *widget,
 
   g_signal_handlers_disconnect_by_func (source, on_source_drag_end, view);
 
-  g_clear_object (&priv->drag_data);
-  priv->drag_data = _glade_dnd_get_data (context, selection, info);
-
-  if (priv->drag_data)
-    g_object_ref (priv->drag_data);
+  g_set_object (&priv->drag_data, _glade_dnd_get_data (context, selection, info));
 
   g_signal_connect_object (source, "drag-end", G_CALLBACK (on_source_drag_end), view, 0);
 }
