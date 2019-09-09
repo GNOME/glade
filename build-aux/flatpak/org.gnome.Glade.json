@@ -1,0 +1,31 @@
+{
+    "app-id" : "org.gnome.Glade",
+    "runtime" : "org.gnome.Sdk",
+    "runtime-version" : "master",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "glade",
+    "tags" : [
+        "nightly"
+    ],
+    "desktop-file-name-prefix" : "(Nightly) ",
+    "modules" : [
+        {
+            "name" : "glade",
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "config-opts" : [
+                "--libdir=lib",
+                "--buildtype=debugoptimized",
+            ],
+            "sources" : [
+                {
+                    "disable-shallow-clone" : true,
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/glade.git",
+                    "branch" : "tintou/gtk4"
+                }
+            ]
+        }
+    ]
+}
+
