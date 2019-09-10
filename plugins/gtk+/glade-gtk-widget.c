@@ -150,7 +150,7 @@ glade_gtk_parse_atk_props (GladeWidget *widget, GladeXmlNode *node)
   GladeXmlNode *prop;
   GladeProperty *property;
   GValue *gvalue;
-  gchar *value, *name, *id, *comment;
+  gchar *value, *name, *id, *context, *comment;
   gint translatable;
   gboolean is_action;
 
@@ -215,12 +215,15 @@ glade_gtk_parse_atk_props (GladeWidget *widget, GladeXmlNode *node)
           /* Deal with i18n... ... XXX Do i18n context !!! */
           translatable = glade_xml_get_property_boolean
               (prop, GLADE_TAG_TRANSLATABLE, FALSE);
+          context = glade_xml_get_property_string (prop, GLADE_TAG_CONTEXT);
           comment = glade_xml_get_property_string (prop, GLADE_TAG_COMMENT);
 
           glade_property_i18n_set_translatable (property, translatable);
+          glade_property_i18n_set_context (property, context);
           glade_property_i18n_set_comment (property, comment);
 
           g_free (comment);
+          g_free (context);
           g_free (value);
         }
 
@@ -351,6 +354,7 @@ glade_gtk_widget_write_atk_property (GladeProperty   *property,
     {
       GladePropertyDef *pdef = glade_property_get_def (property);
       GladeXmlNode *prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_PROPERTY);
+      const gchar *comment, *context;
 
       glade_xml_node_append_child (node, prop_node);
 
@@ -364,15 +368,17 @@ glade_gtk_widget_write_atk_property (GladeProperty   *property,
                                             GLADE_TAG_TRANSLATABLE,
                                             GLADE_XML_TAG_I18N_TRUE);
 
-      if (glade_property_i18n_get_comment (property))
+      comment = glade_property_i18n_get_comment (property);
+      if (comment)
         glade_xml_node_set_property_string (prop_node,
                                             GLADE_TAG_COMMENT,
-                                            glade_property_i18n_get_comment (property));
+                                            comment);
 
-      if (glade_property_i18n_get_context (property))
+      context = glade_property_i18n_get_context (property);
+      if (context)
         glade_xml_node_set_property_string (prop_node,
                                             GLADE_TAG_CONTEXT,
-                                            glade_property_i18n_get_context (property));
+                                            context);
     }
 
   g_free (value);
