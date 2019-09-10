@@ -44,9 +44,12 @@ _glade_dnd_get_data (GdkDragContext   *context,
                      guint             info)
 {
   GdkAtom target = gtk_selection_data_get_target (selection);
+  gchar *target_name = gdk_atom_name (target);
+  gboolean is_target_data = (g_strcmp0 (target_name, GLADE_DND_TARGET_DATA) == 0);
 
-  if (info == GLADE_DND_INFO_DATA &&
-      g_strcmp0 (gdk_atom_name (target), GLADE_DND_TARGET_DATA) == 0)
+  g_free (target_name);
+
+  if (info == GLADE_DND_INFO_DATA && is_target_data)
     {
       const guchar *data = gtk_selection_data_get_data (selection);
       if (data)
