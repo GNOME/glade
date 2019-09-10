@@ -13,15 +13,8 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_WIDGET_ADAPTOR            (glade_widget_adaptor_get_type())
-#define GLADE_WIDGET_ADAPTOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_WIDGET_ADAPTOR, GladeWidgetAdaptor))
-#define GLADE_WIDGET_ADAPTOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_WIDGET_ADAPTOR, GladeWidgetAdaptorClass))
-#define GLADE_IS_WIDGET_ADAPTOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_WIDGET_ADAPTOR))
-#define GLADE_IS_WIDGET_ADAPTOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET_ADAPTOR))
-#define GLADE_WIDGET_ADAPTOR_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_WIDGET_ADAPTOR, GladeWidgetAdaptorClass))
-
-typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
-typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
+#define GLADE_TYPE_WIDGET_ADAPTOR glade_widget_adaptor_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladeWidgetAdaptor, glade_widget_adaptor, GLADE, WIDGET_ADAPTOR, GObject)
 
 /**
  * GWA_DEPRECATED:
@@ -615,20 +608,6 @@ typedef gchar   *(* GladeStringFromValueFunc) (GladeWidgetAdaptor *adaptor,
 typedef GladeEditable *(* GladeCreateEditableFunc) (GladeWidgetAdaptor   *adaptor,
                                                     GladeEditorPageType   type);
 
-
-/* Note that everything that must be processed at the creation of
- * every instance is managed on the instance structure, and everywhere
- * that we want to take advantage of inheritance is handled in the class
- * structure.
- */
-struct _GladeWidgetAdaptor
-{
-  GObject      parent_instance;
-
-  GladeWidgetAdaptorPrivate *priv;
-
-};
-
 struct _GladeWidgetAdaptorClass
 {
   GObjectClass               parent_class;
@@ -738,9 +717,6 @@ struct _GladeWidgetAdaptorClass
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
     (glade_widget_adaptor_create_widget_real (query, "adaptor", adaptor, __VA_ARGS__));
-
-
-GType                 glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
 
 GType                 glade_widget_adaptor_get_object_type  (GladeWidgetAdaptor   *adaptor);
 const gchar *glade_widget_adaptor_get_name         (GladeWidgetAdaptor   *adaptor);
