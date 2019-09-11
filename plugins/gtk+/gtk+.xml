@@ -164,11 +164,13 @@
               <!-- GdkEventMask enumeration value -->
               <value id="GDK_SCROLL_MASK" name="Scroll"/>
               <!-- GdkEventMask enumeration value -->
-              <value id="GDK_TOUCH_MASK" name="Touch"/>
+              <value id="GDK_TOUCH_MASK" name="Touch" since="3.4"/>
               <!-- GdkEventMask enumeration value -->
-              <value id="GDK_SMOOTH_SCROLL_MASK" name="Smooth scroll"/>
+              <value id="GDK_SMOOTH_SCROLL_MASK" name="Smooth scroll" since="3.4"/>
               <!-- GdkEventMask enumeration value -->
-              <value id="GDK_TOUCHPAD_GESTURE_MASK" name="Touchpad Gesture"/>
+              <value id="GDK_TOUCHPAD_GESTURE_MASK" name="Touchpad Gesture" since="3.18"/>
+              <!-- GdkEventMask enumeration value -->
+              <value id="GDK_TABLET_PAD_MASK" name="Tablet Pad" since="3.22"/>
               <!-- GdkEventMask enumeration value -->
               <value id="GDK_ALL_EVENTS_MASK" name="All Events"/>
             </displayable-values>
@@ -462,6 +464,8 @@
               <value id="ATK_ROLE_SUBSCRIPT" name="Subscript text"/>
               <!-- AtkRole enumeration value -->
               <value id="ATK_ROLE_SUPERSCRIPT" name="Superscript text"/>
+              <!-- AtkRole enumeration value -->
+              <value id="ATK_ROLE_FOOTNOTE" name="Footnote text"/>
               <!-- Atk role enumeration value -->
               <value id="ATK_ROLE_LAST_DEFINED" name="Last Defined"/>
             </displayable-values>
@@ -1533,6 +1537,10 @@
               <value id="GTK_INPUT_HINT_INHIBIT_OSK" name="Inhibit On-screen Keyboard"/>
               <!-- GtkInputHints enumeration value -->
               <value id="GTK_INPUT_HINT_VERTICAL_WRITING" name="Vertical Writing"/>
+              <!-- GtkInputHints enumeration value -->
+              <value id="GTK_INPUT_HINT_EMOJI" name="Emoji Support" since="3.22.20"/>
+              <!-- GtkInputHints enumeration value -->
+              <value id="GTK_INPUT_HINT_NO_EMOJI" name="No Emoji Support" since="3.22.20"/>
             </displayable-values>
           </property>
           
@@ -2882,6 +2890,28 @@
           <property id="monitor" disabled="True" since="2.14"/>
           <property id="reserve-toggle-size" since="2.18"/>
           <property id="tearoff-state" ignore="True"/>
+          <property id="anchor-hints" default="GDK_ANCHOR_FLIP_X | GDK_ANCHOR_FLIP_Y | GDK_ANCHOR_SLIDE_X | GDK_ANCHOR_SLIDE_Y | GDK_ANCHOR_RESIZE_X | GDK_ANCHOR_RESIZE_Y" since="3.22">
+            <displayable-values>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_FLIP_X" name="Flip Horizontally" since="3.22"/>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_FLIP_Y" name="Flip Vertically" since="3.22"/>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_SLIDE_X" name="Slide Horizontally" since="3.22"/>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_SLIDE_Y" name="Slide Vertically" since="3.22"/>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_RESIZE_X" name="Resize Horizontally" since="3.22"/>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_RESIZE_Y" name="Resize Vertically" since="3.22"/>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_FLIP" name="Flip Both Sides" since="3.22"/>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_SLIDE" name="Slide Both Sides" since="3.22"/>
+              <!-- GdkAnchorHints enumeration value -->
+              <value id="GDK_ANCHOR_RESIZE" name="Resize Both Sides" since="3.22"/>
+            </displayable-values>
+          </property>
         </properties>
         
       </glade-widget-class>
@@ -3289,13 +3319,17 @@
               <!-- GtkLicense enumeration value -->
               <value id="GTK_LICENSE_ARTISTIC" name="Artistic"/>
               <!-- GtkLicense enumeration value -->
-              <value id="GTK_LICENSE_GPL_2_0_ONLY" name="GPL 2.0 Only"/>
+              <value id="GTK_LICENSE_GPL_2_0_ONLY" name="GPL 2.0 Only" since="3.12"/>
               <!-- GtkLicense enumeration value -->
-              <value id="GTK_LICENSE_GPL_3_0_ONLY" name="GPL 3.0 Only"/>
+              <value id="GTK_LICENSE_GPL_3_0_ONLY" name="GPL 3.0 Only" since="3.12"/>
               <!-- GtkLicense enumeration value -->
-              <value id="GTK_LICENSE_LGPL_2_1_ONLY" name="LGPL 2.1 Only"/>
+              <value id="GTK_LICENSE_LGPL_2_1_ONLY" name="LGPL 2.1 Only" since="3.12"/>
               <!-- GtkLicense enumeration value -->
-              <value id="GTK_LICENSE_LGPL_3_0_ONLY" name="LGPL 3.0 Only"/>
+              <value id="GTK_LICENSE_LGPL_3_0_ONLY" name="LGPL 3.0 Only" since="3.12"/>
+              <!-- GtkLicense enumeration value -->
+              <value id="GTK_LICENSE_AGPL_3_0" name="AGPL 3.0" since="3.22"/>
+              <!-- GtkLicense enumeration value -->
+              <value id="GTK_LICENSE_AGPL_3_0_ONLY" name="AGPL 3.0 Only" since="3.22.27"/>
             </displayable-values>
           </property>
           
