@@ -144,6 +144,33 @@ Author: Matthias Clasen <mclasen@redhat.com>
             <property name="width">4</property>
           </packing>
         </child>
+        <child>
+          <object class="GladePropertyLabel" id="homogeneous_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">homogeneous</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="homogeneous_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">homogeneous</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">5</property>
+            <property name="width">4</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -159,6 +186,8 @@ Author: Matthias Clasen <mclasen@redhat.com>
       <editor id="orientation_editor"/>
       <editor id="icon_size_label"/>
       <editor id="icon_size_editor"/>
+      <editor id="homogeneous_label"/>
+      <editor id="homogeneous_editor"/>
     </child-editors>
   </template>
 </interface>
