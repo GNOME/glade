@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>glade.desktop</id>
+  <id>org.gnome.Glade</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0+ and LGPL-2.0+</project_license>
   <name>Glade</name>
@@ -32,6 +32,10 @@
       <image>https://glade.gnome.org/images/glade-main-page.png</image>
     </screenshot>
   </screenshots>
+  <provides>
+    <id>glade.desktop</id>
+  </provides>
+  <launchable type="desktop-id">org.gnome.Glade.desktop</launchable>
   <url type="homepage">http://glade.gnome.org/</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/glade/issues</url>
   <url type="donation">http://www.gnome.org/friends/</url>
