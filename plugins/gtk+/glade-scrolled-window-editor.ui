@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.1 
+<!-- Generated with glade 3.22.0 
 
 libgladegtk - Glade UI Designer Gtk+ support plugin
 Copyright (C) 2013 Tristan Van Berkom <tvb@gnome.org>
@@ -42,7 +42,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
-            <property name="width">6</property>
+            <property name="width">4</property>
           </packing>
         </child>
         <child>
@@ -59,7 +59,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
-            <property name="width">6</property>
+            <property name="width">4</property>
           </packing>
         </child>
         <child>
@@ -73,7 +73,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
-            <property name="width">3</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -84,7 +84,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="property_name">shadow-type</property>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">2</property>
             <property name="width">2</property>
           </packing>
@@ -102,7 +102,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">3</property>
-            <property name="width">3</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -112,7 +112,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="property_name">window-placement</property>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">3</property>
             <property name="width">2</property>
           </packing>
@@ -129,7 +129,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">4</property>
-            <property name="width">3</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -143,7 +143,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">5</property>
-            <property name="width">3</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -154,7 +154,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="property_name">min-content-width</property>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">5</property>
             <property name="width">2</property>
           </packing>
@@ -170,7 +170,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">6</property>
-            <property name="width">3</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -181,8 +181,116 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="property_name">min-content-height</property>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">6</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="max_content_width_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">max-content-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">7</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="max_content_width_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">max-content-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">7</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="max_content_height_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">max-content-height</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">8</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="max_content_height_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">max-content-height</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">8</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="propagate_natural_width_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">propagate-natural-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">9</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="propagate_natural_width_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">propagate-natural-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">9</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="propagate_natural_height_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">propagate-natural-height</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">10</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="propagate_natural_height_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">propagate-natural-height</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">10</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -201,7 +309,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
+            <property name="top_attach">11</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -218,8 +326,8 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             </attributes>
           </object>
           <packing>
-            <property name="left_attach">3</property>
-            <property name="top_attach">7</property>
+            <property name="left_attach">2</property>
+            <property name="top_attach">11</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -233,8 +341,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
-            <property name="width">2</property>
+            <property name="top_attach">12</property>
           </packing>
         </child>
         <child>
@@ -244,8 +351,8 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="property_name">hscrollbar-policy</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">8</property>
+            <property name="left_attach">1</property>
+            <property name="top_attach">12</property>
           </packing>
         </child>
         <child>
@@ -257,8 +364,8 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="custom_text" translatable="yes">Scrollbar Policy:</property>
           </object>
           <packing>
-            <property name="left_attach">3</property>
-            <property name="top_attach">8</property>
+            <property name="left_attach">2</property>
+            <property name="top_attach">12</property>
           </packing>
         </child>
         <child>
@@ -268,8 +375,8 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="property_name">vscrollbar-policy</property>
           </object>
           <packing>
-            <property name="left_attach">4</property>
-            <property name="top_attach">8</property>
+            <property name="left_attach">3</property>
+            <property name="top_attach">12</property>
           </packing>
         </child>
         <child>
@@ -282,8 +389,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">9</property>
-            <property name="width">2</property>
+            <property name="top_attach">13</property>
           </packing>
         </child>
         <child>
@@ -295,8 +401,8 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="custom_text" translatable="yes">Adjustment:</property>
           </object>
           <packing>
-            <property name="left_attach">3</property>
-            <property name="top_attach">9</property>
+            <property name="left_attach">2</property>
+            <property name="top_attach">13</property>
           </packing>
         </child>
         <child>
@@ -306,8 +412,8 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="property_name">hadjustment</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">9</property>
+            <property name="left_attach">1</property>
+            <property name="top_attach">13</property>
           </packing>
         </child>
         <child>
@@ -317,8 +423,8 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="property_name">vadjustment</property>
           </object>
           <packing>
-            <property name="left_attach">4</property>
-            <property name="top_attach">9</property>
+            <property name="left_attach">3</property>
+            <property name="top_attach">13</property>
           </packing>
         </child>
         <child>
@@ -330,37 +436,10 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">4</property>
             <property name="width">2</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
         </child>
       </object>
       <packing>
@@ -380,6 +459,14 @@ Author: Tristan Van Berkom <tvb@gnome.org>
       <editor id="content_width_editor"/>
       <editor id="content_height_label"/>
       <editor id="content_height_editor"/>
+      <editor id="max_content_width_label"/>
+      <editor id="max_content_width_editor"/>
+      <editor id="max_content_height_label"/>
+      <editor id="max_content_height_editor"/>
+      <editor id="propagate_natural_width_label"/>
+      <editor id="propagate_natural_width_editor"/>
+      <editor id="propagate_natural_height_label"/>
+      <editor id="propagate_natural_height_editor"/>
       <editor id="hpolicy_label"/>
       <editor id="hpolicy_editor"/>
       <editor id="vpolicy_label"/>
