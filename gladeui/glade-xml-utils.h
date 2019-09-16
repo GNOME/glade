@@ -45,6 +45,7 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_XML_TAG_LIB                         "lib"
 #define GLADE_XML_TAG_PROPERTY                    "property"
 #define GLADE_XML_TAG_CLASS                       "class"
+#define GLADE_XML_TAG_TYPE_FUNC                   "type-func"
 #define GLADE_XML_TAG_ID                          "id"
 #define GLADE_XML_TAG_SIGNAL                      "signal"
 #define GLADE_XML_TAG_HANDLER                     "handler"
