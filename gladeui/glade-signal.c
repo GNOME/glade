@@ -353,7 +353,7 @@ glade_signal_write (GladeSignal     *signal,
 /**
  * glade_signal_read:
  * @node: The #GladeXmlNode to read
- * @adaptor: The #GladeWidgetAdaptor for thw widget
+ * @adaptor: The #GladeWidgetAdaptor for the widget
  *
  * Reads and creates a ner #GladeSignal based on @node
  *
@@ -413,6 +413,14 @@ glade_signal_read (GladeXmlNode *node, GladeWidgetAdaptor *adaptor)
   return signal;
 }
 
+/**
+ * glade_signal_get_name:
+ * @signal: a #GladeSignal
+ *
+ * Get the name of the signal from the signal definition.
+ *
+ * Returns: The name of the signal
+ */
 const gchar *
 glade_signal_get_name (const GladeSignal *signal)
 {
@@ -421,12 +429,29 @@ glade_signal_get_name (const GladeSignal *signal)
   return glade_signal_def_get_name (signal->priv->def);
 }
 
+/**
+ * glade_signal_get_def:
+ * @signal: a #GladeSignal
+ *
+ * Get the signal definition.
+ *
+ * Returns: (transfer none): the #GladeSignalDef
+ */
 const GladeSignalDef *
 glade_signal_get_def (const GladeSignal *signal)
 {
-        return signal->priv->def;
+  g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
+
+  return signal->priv->def;
 }
 
+/**
+ * glade_signal_set_detail:
+ * @signal: a #GladeSignal
+ * @detail: the detail of the signal
+ *
+ * Set the detail of the signal.
+ */
 void
 glade_signal_set_detail (GladeSignal *signal, const gchar *detail)
 {
@@ -441,6 +466,14 @@ glade_signal_set_detail (GladeSignal *signal, const gchar *detail)
     }
 }
 
+/**
+ * glade_signal_get_detail:
+ * @signal: a #GladeSignal
+ *
+ * Get the signal detail.
+ *
+ * Returns: the detail of the signal
+ */
 const gchar *
 glade_signal_get_detail (const GladeSignal *signal)
 {
@@ -449,6 +482,13 @@ glade_signal_get_detail (const GladeSignal *signal)
   return signal->priv->detail;
 }
 
+/**
+ * glade_signal_set_handler:
+ * @signal: a #GladeSignal
+ * @handler: the handler of the signal
+ *
+ * Set the handler of the signal.
+ */
 void
 glade_signal_set_handler (GladeSignal *signal, const gchar *handler)
 {
@@ -464,6 +504,14 @@ glade_signal_set_handler (GladeSignal *signal, const gchar *handler)
     }
 }
 
+/**
+ * glade_signal_get_handler:
+ * @signal: a #GladeSignal
+ *
+ * Get the signal handler.
+ *
+ * Returns: the handler of the signal
+ */
 const gchar *
 glade_signal_get_handler (const GladeSignal *signal)
 {
@@ -472,6 +520,13 @@ glade_signal_get_handler (const GladeSignal *signal)
   return signal->priv->handler;
 }
 
+/**
+ * glade_signal_set_userdata:
+ * @signal: a #GladeSignal
+ * @userdata: the userdata of the signal
+ *
+ * Set the userdata of the signal.
+ */
 void
 glade_signal_set_userdata (GladeSignal *signal, const gchar *userdata)
 {
@@ -487,6 +542,14 @@ glade_signal_set_userdata (GladeSignal *signal, const gchar *userdata)
     }
 }
 
+/**
+ * glade_signal_get_userdata:
+ * @signal: a #GladeSignal
+ *
+ * Get the userdata handler.
+ *
+ * Returns: the userdata of the signal
+ */
 const gchar *
 glade_signal_get_userdata (const GladeSignal *signal)
 {
@@ -495,6 +558,14 @@ glade_signal_get_userdata (const GladeSignal *signal)
   return signal->priv->userdata;
 }
 
+/**
+ * glade_signal_set_after:
+ * @signal: a #GladeSignal
+ * @after: if the signal handler should be called after the default handler
+ *
+ * Set whether the handler should be called before or after the default handler
+ * of the signal.
+ */
 void
 glade_signal_set_after (GladeSignal *signal, gboolean after)
 {
@@ -508,6 +579,15 @@ glade_signal_set_after (GladeSignal *signal, gboolean after)
     }
 }
 
+/**
+ * glade_signal_get_after:
+ * @signal: a #GladeSignal
+ *
+ * Get whether the handler should be called before or after the default handler
+ * of the signal.
+ *
+ * Returns: Whether the signal handler should be called after the default handler
+ */
 gboolean
 glade_signal_get_after (const GladeSignal *signal)
 {
@@ -516,6 +596,13 @@ glade_signal_get_after (const GladeSignal *signal)
   return signal->priv->after;
 }
 
+/**
+ * glade_signal_set_swapped:
+ * @signal: a #GladeSignal
+ * @swapped: if the instance and userdata arguments should be swapped
+ *
+ * Set whether the instance and userdata arguments should be swapped.
+ */
 void
 glade_signal_set_swapped (GladeSignal *signal, gboolean swapped)
 {
@@ -529,6 +616,14 @@ glade_signal_set_swapped (GladeSignal *signal, gboolean swapped)
     }
 }
 
+/**
+ * glade_signal_get_swapped:
+ * @signal: a #GladeSignal
+ *
+ * Get whether the instance and userdata arguments should be swapped.
+ *
+ * Returns: whether the instance and userdata arguments should be swapped
+ */
 gboolean
 glade_signal_get_swapped (const GladeSignal *signal)
 {
