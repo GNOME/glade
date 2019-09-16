@@ -898,7 +898,7 @@ GladeSignalDef       *glade_widget_adaptor_get_signal_def     (GladeWidgetAdapto
 GladeWidgetAdaptor   *glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor);
 
 gboolean              glade_widget_adaptor_has_internal_children (GladeWidgetAdaptor *adaptor);
-
+const gchar          *glade_widget_adaptor_get_type_func      (GladeWidgetAdaptor *adaptor);
 G_END_DECLS
 
 #endif /* _GLADE_WIDGET_ADAPTOR_H_ */
