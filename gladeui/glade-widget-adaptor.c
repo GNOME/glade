@@ -58,6 +58,9 @@ typedef struct
 {
   GType        type;                /* GType of the widget */
   GType        real_type;
+  gchar       *type_func;           /* The get_type () function name if the default
+                                     * euristic to define one doesn't work
+                                     */
 
   gchar       *name;                /* Name of the widget, for example GtkButton */
   gchar       *generic_name;        /* Used to generate names of new widgets, for
@@ -762,6 +765,7 @@ glade_widget_adaptor_finalize (GObject *object)
 
   g_clear_object (&priv->cursor);
 
+  g_clear_pointer (&priv->type_func, g_free);
   g_clear_pointer (&priv->name, g_free);
   g_clear_pointer (&priv->generic_name, g_free);
   g_clear_pointer (&priv->title, g_free);
@@ -2755,7 +2759,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
   GladeWidgetAdaptorPrivate *priv;
   GladeWidgetAdaptor *adaptor = NULL;
   gchar *name, *generic_name, *icon_name, *adaptor_icon_name, *adaptor_name,
-      *func_name, *template;
+      *func_name = NULL, *template;
   gchar *title, *translated_title, *parent_name;
   GType object_type, adaptor_type, parent_type;
   gchar *missing_icon = NULL;
@@ -2799,7 +2803,6 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
                                            GLADE_TAG_GET_TYPE_FUNCTION)) != NULL)
     {
       object_type = glade_util_get_type_from_name (func_name, TRUE);
-      g_free (func_name);
     }
   else if ((template =
             glade_xml_get_property_string (class_node,
@@ -2841,6 +2844,8 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
       g_warning ("Adaptor class for '%s' already defined",
                  g_type_name (object_type));
       g_free (name);
+      if (func_name)
+        g_free (func_name);
       return NULL;
     }
 
@@ -2865,6 +2870,8 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
                  (adaptor_name) ? adaptor_name : "");
       g_free (adaptor_name);
       g_free (name);
+      if (func_name)
+        g_free (func_name);
       return NULL;
     }
 
@@ -2906,6 +2913,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
                           "icon-name", adaptor_icon_name, NULL);
   priv = glade_widget_adaptor_get_instance_private (adaptor);
   priv->missing_icon = missing_icon;
+  priv->type_func = g_steal_pointer (&func_name);
 
   g_free (generic_name);
   g_free (icon_name);
@@ -4597,4 +4605,23 @@ glade_widget_adaptor_create_editable (GladeWidgetAdaptor *adaptor,
 
   return GLADE_WIDGET_ADAPTOR_GET_CLASS
       (adaptor)->create_editable (adaptor, type);
+}
+
+/**
+ * glade_widget_adaptor_get_type_func:
+ * @adaptor: A #GladeWidgetAdaptor
+ *
+ * Get the _get_type () function name if it is set, a %NULL value means that the
+ * default heuristic for getting the GType is enough for both Glade and GtkBuilder.
+ *
+ * Returns: (nullable): The _get_type () function name or %NULL if none is set
+ */
+const gchar *
+glade_widget_adaptor_get_type_func (GladeWidgetAdaptor *adaptor)
+{
+  GladeWidgetAdaptorPrivate *priv = glade_widget_adaptor_get_instance_private (adaptor);
+
+  g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+
+  return priv->type_func;
 }
