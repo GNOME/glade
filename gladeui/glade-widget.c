@@ -4400,10 +4400,15 @@ glade_widget_write (GladeWidget     *widget,
     }
   else
     {
+      const gchar *type_func = NULL;
       widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
       glade_xml_node_set_property_string (widget_node,
                                           GLADE_XML_TAG_CLASS,
                                           glade_widget_adaptor_get_name (widget->priv->adaptor));
+
+      glade_xml_node_set_property_string (widget_node,
+                                          GLADE_XML_TAG_TYPE_FUNC,
+                                          glade_widget_adaptor_get_type_func (widget->priv->adaptor));
 
       /* Conditionally omit the ID in the output if the name is 'unset'
        */
