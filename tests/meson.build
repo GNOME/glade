@@ -29,7 +29,7 @@ test_unit += [['toplevel-order', {'sources': sources}]]
 
 envs = [
   'GLADE_TESTING=1',
-  'GLADE_CATALOG_SEARCH_PATH=' + (source_root / 'plugins/gtk+'),
+  'GLADE_CATALOG_SEARCH_PATH=' + (build_root / 'plugins/gtk+'),
   'GLADE_MODULE_SEARCH_PATH=' + (build_root / 'plugins/gtk+'),
   'GLADE_PIXMAP_DIR=' + (source_root / 'data/icons'),
   'GLADE_ICON_THEME_PATH=' + (source_root / 'plugins/gtk+/icons/22x22'),
