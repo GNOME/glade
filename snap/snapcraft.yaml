@@ -40,7 +40,7 @@ parts:
     source-type: git
     plugin: meson
     meson-parameters:
-      - --prefix=/snap/glade/current/usr
+      - --prefix=/usr
     override-build: |
       snapcraftctl set-version $(git describe --tags | sed 's/GLADE_//g'|sed 's/_/./g')
       sed -i.bak -e 's|=org.gnome.Glade$|=${SNAP}/meta/gui/org.gnome.Glade.svg|g' data/org.gnome.Glade.desktop.in.in
