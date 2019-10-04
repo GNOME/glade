@@ -449,6 +449,15 @@ glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name)
   return glade_xml_get_property (node, name);
 }
 
+/**
+ * glade_xml_node_set_property_string:
+ * @node_in: a #GladeXmlNode
+ * @name: the name of the property to set
+ * @string: (nullable): the string value of the property to set
+ *
+ * Set a property as a string in the @node_in. Note that %NULL @string value
+ * Are simply ignored and not written in the XML.
+ */
 void
 glade_xml_node_set_property_string (GladeXmlNode *node_in,
                                     const gchar  *name,
