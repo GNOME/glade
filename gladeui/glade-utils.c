@@ -1585,49 +1585,71 @@ glade_utils_value_from_string (GType type,
 /**
  * glade_utils_boolean_from_string:
  * @string: the string to convert
- * @value: return location
+ * @value: (out) (optional): return location
  *
  * Parse a boolean value
  *
- * Returns: True if there was an error on the conversion.
+ * Returns: %TRUE if there was an error on the conversion, %FALSE otherwise.
  */
 gboolean
 glade_utils_boolean_from_string (const gchar *string, gboolean *value)
 {
-  if (string)
+  if (string[0] == '\0')
     {
-      const gchar *c = string;
+      if (value)
+        *value = FALSE;
 
-      /* Skip white spaces */
-      while (g_ascii_isspace (*c))
-        c++;
-
-      /* We only need the first char */
-      switch (*c)
+      return TRUE;
+    }
+  else if (string[1] == '\0')
+    {
+      gchar c = string[0];
+      if (c == '1' ||
+          c == 'y' || c == 't' ||
+          c == 'Y' || c == 'T')
         {
-          case '1':
-          case 't':
-          case 'T':
-          case 'y':
-          case 'Y':
-            if (value)
-              *value = TRUE;
-            return FALSE;
-          break;
+          if (value)
+            *value = TRUE;
+        }
+      else if (c == '0' ||
+               c == 'n' || c == 'f' ||
+               c == 'N' || c == 'F')
+        {
+          if (value)
+            *value = FALSE;
+        }
+      else
+        {
+          if (value)
+            *value = FALSE;
 
-          case '0':
-          case 'f':
-          case 'F':
-          case 'n':
-          case 'N':
-            if (value)
-              *value = FALSE;
-            return FALSE;
-          break;
+          return TRUE;
+        }
+    }
+  else
+    {
+      if (g_ascii_strcasecmp (string, "true") == 0 ||
+          g_ascii_strcasecmp (string, "yes") == 0)
+        {
+          if (value)
+            *value = TRUE;
+        }
+      else if (g_ascii_strcasecmp (string, "false") == 0 ||
+               g_ascii_strcasecmp (string, "no") == 0)
+        {
+          if (value)
+            *value = FALSE;
+        }
+      else
+        {
+          if (value)
+            *value = FALSE;
+
+          return TRUE;
         }
     }
 
-  return TRUE;
+  return FALSE;
 }
 
 /**
