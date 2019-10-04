@@ -44,7 +44,7 @@ glade_gtk_action_widgets_read_responses (GladeWidget  *widget,
                                          GladeXmlNode *widgets_node,
                                          gchar        *action_container)
 {
-  GladeWidget *action_widget, *action_area;
+  GladeWidget *action_area;
   GladeXmlNode *node;
 
   if ((action_area = glade_gtk_action_widgets_get_area (widget, action_container)) == NULL)
@@ -52,11 +52,11 @@ glade_gtk_action_widgets_read_responses (GladeWidget  *widget,
       g_warning ("%s: Could not find action widgets container [%s]", __func__, action_container);
       return;
     }
-  
+
   for (node = glade_xml_node_get_children (widgets_node);
        node; node = glade_xml_node_next (node))
     {
-      gchar *widget_name, *response;
+      gchar *response;
 
       if (!glade_xml_node_verify (node, GLADE_TAG_ACTION_WIDGET))
         continue;
@@ -64,17 +64,41 @@ glade_gtk_action_widgets_read_responses (GladeWidget  *widget,
       response =
           glade_xml_get_property_string_required (node, GLADE_TAG_RESPONSE,
                                                   NULL);
-      widget_name = glade_xml_get_content (node);
-
-      if ((action_widget = glade_widget_find_child (action_area, widget_name)))
+      if (response)
         {
-          glade_widget_property_set_enabled (action_widget, "response-id", TRUE);
-          glade_widget_property_set (action_widget, "response-id",
-                                     (gint)g_ascii_strtoll (response, NULL, 10));
+          gchar *widget_name = glade_xml_get_content (node);
+          GladeWidget *action_widget = glade_widget_find_child (action_area, widget_name);
+
+          if (action_widget)
+            {
+              gint response_id = (gint)g_ascii_strtoll (response, NULL, 10);
+              if (response_id == 0) {
+                GEnumClass *enum_class = g_type_class_ref (GTK_TYPE_RESPONSE_TYPE);
+                GEnumValue *value = g_enum_get_value_by_name (enum_class, response);
+                if (value)
+                  {
+                    response_id = value->value;
+                  }
+                else
+                  {
+                    value = g_enum_get_value_by_nick (enum_class, response);
+                    if (value)
+                      {
+                        response_id = value->value;
+                      }
+                  }
+
+                g_type_class_unref (enum_class);
+              }
+
+              glade_widget_property_set_enabled (action_widget, "response-id", TRUE);
+              glade_widget_property_set (action_widget, "response-id", response_id);
+            }
+
+          g_free (widget_name);
         }
 
       g_free (response);
-      g_free (widget_name);
     }
 }
 
