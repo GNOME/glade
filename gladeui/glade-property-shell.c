@@ -46,7 +46,7 @@ static void      glade_property_shell_get_real_property (GObject       *object,
 /* GladeEditableInterface */
 static void      glade_property_shell_editable_init     (GladeEditableInterface *iface);
 
-struct _GladePropertyShellPrivate
+typedef struct
 {
   /* Current State */
   GladeWidgetAdaptor  *adaptor;
@@ -61,7 +61,7 @@ struct _GladePropertyShellPrivate
   guint                packing : 1;
   guint                use_command : 1;
   guint                disable_check : 1;
-};
+} GladePropertyShellPrivate;
 
 enum {
   PROP_0,
@@ -92,11 +92,11 @@ G_DEFINE_TYPE_WITH_CODE (GladePropertyShell, glade_property_shell, GTK_TYPE_BOX,
 static void
 glade_property_shell_init (GladePropertyShell *shell)
 {
-  shell->priv = glade_property_shell_get_instance_private (shell);
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
-  shell->priv->packing = FALSE;
-  shell->priv->use_command = TRUE;
-  shell->priv->disable_check = FALSE;
+  priv->packing = FALSE;
+  priv->use_command = TRUE;
+  priv->disable_check = FALSE;
 }
 
 static void
@@ -185,9 +185,10 @@ static void
 glade_property_shell_finalize (GObject *object)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (object);
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
-  g_free (shell->priv->property_name);
-  g_free (shell->priv->custom_text);
+  g_clear_pointer (&priv->property_name, g_free);
+  g_clear_pointer (&priv->custom_text, g_free);
 
   G_OBJECT_CLASS (glade_property_shell_parent_class)->finalize (object);
 }
@@ -199,7 +200,7 @@ glade_property_shell_set_real_property (GObject      *object,
                                         GParamSpec   *pspec)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (object);
-  GladePropertyShellPrivate *priv = shell->priv;
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
   const gchar *type_name = NULL;
   GType type = 0;
 
@@ -292,7 +293,7 @@ static void
 glade_property_shell_set_eprop (GladePropertyShell  *shell,
                                 GladeEditorProperty *eprop)
 {
-  GladePropertyShellPrivate *priv = shell->priv;
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
   if (priv->property_editor != eprop)
     {
@@ -328,14 +329,12 @@ glade_property_shell_load (GladeEditable *editable,
                            GladeWidget   *widget)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (editable);
-  GladePropertyShellPrivate *priv;
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  g_return_if_fail (shell->priv->property_name != NULL);
-
-  priv = shell->priv;
+  g_return_if_fail (priv->property_name != NULL);
 
   if (widget)
     {
@@ -433,11 +432,9 @@ void
 glade_property_shell_set_property_name (GladePropertyShell *shell,
                                         const gchar        *property_name)
 {
-  GladePropertyShellPrivate *priv;
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
   g_return_if_fail (GLADE_IS_PROPERTY_SHELL (shell));
-
-  priv = shell->priv;
 
   if (g_strcmp0 (priv->property_name, property_name) != 0)
     {
@@ -451,20 +448,20 @@ glade_property_shell_set_property_name (GladePropertyShell *shell,
 const gchar *
 glade_property_shell_get_property_name (GladePropertyShell *shell)
 {
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
+
   g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), NULL);
 
-  return shell->priv->property_name;
+  return priv->property_name;
 }
 
 void
 glade_property_shell_set_custom_text (GladePropertyShell *shell,
                                       const gchar        *custom_text)
 {
-  GladePropertyShellPrivate *priv;
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
   g_return_if_fail (GLADE_IS_PROPERTY_SHELL (shell));
-
-  priv = shell->priv;
 
   if (g_strcmp0 (priv->custom_text, custom_text) != 0)
     {
@@ -481,20 +478,20 @@ glade_property_shell_set_custom_text (GladePropertyShell *shell,
 const gchar *
 glade_property_shell_get_custom_text (GladePropertyShell *shell)
 {
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
+
   g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), NULL);
 
-  return shell->priv->custom_text;
+  return priv->custom_text;
 }
 
 void
 glade_property_shell_set_packing (GladePropertyShell *shell,
                                   gboolean            packing)
 {
-  GladePropertyShellPrivate *priv;
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
   g_return_if_fail (GLADE_IS_PROPERTY_SHELL (shell));
-
-  priv = shell->priv;
 
   if (priv->packing != packing)
     {
@@ -507,20 +504,20 @@ glade_property_shell_set_packing (GladePropertyShell *shell,
 gboolean
 glade_property_shell_get_packing (GladePropertyShell *shell)
 {
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
+
   g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), FALSE);
 
-  return shell->priv->packing;
+  return priv->packing;
 }
 
 void
 glade_property_shell_set_use_command (GladePropertyShell *shell,
                                       gboolean            use_command)
 {
-  GladePropertyShellPrivate *priv;
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
   g_return_if_fail (GLADE_IS_PROPERTY_SHELL (shell));
-
-  priv = shell->priv;
 
   if (priv->use_command != use_command)
     {
@@ -533,20 +530,20 @@ glade_property_shell_set_use_command (GladePropertyShell *shell,
 gboolean
 glade_property_shell_get_use_command (GladePropertyShell *shell)
 {
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
+
   g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), FALSE);
 
-  return shell->priv->use_command;
+  return priv->use_command;
 }
 
 void
 glade_property_shell_set_disable_check (GladePropertyShell *shell,
                                         gboolean            disable_check)
 {
-  GladePropertyShellPrivate *priv;
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
 
   g_return_if_fail (GLADE_IS_PROPERTY_SHELL (shell));
-
-  priv = shell->priv;
 
   if (priv->disable_check != disable_check)
     {
@@ -562,7 +559,9 @@ glade_property_shell_set_disable_check (GladePropertyShell *shell,
 gboolean
 glade_property_shell_get_disable_check (GladePropertyShell *shell)
 {
+  GladePropertyShellPrivate *priv = glade_property_shell_get_instance_private (shell);
+
   g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), FALSE);
 
-  return shell->priv->disable_check;
+  return priv->disable_check;
 }

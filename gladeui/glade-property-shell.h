@@ -28,31 +28,13 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_TYPE_PROPERTY_SHELL            (glade_property_shell_get_type ())
-#define GLADE_PROPERTY_SHELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROPERTY_SHELL, GladePropertyShell))
-#define GLADE_PROPERTY_SHELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROPERTY_SHELL, GladePropertyShellClass))
-#define GLADE_IS_PROPERTY_SHELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROPERTY_SHELL))
-#define GLADE_IS_PROPERTY_SHELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROPERTY_SHELL))
-#define GLADE_PROPERTY_SHELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROPERTY_SHELL, GladePropertyShellClass))
-
-typedef struct _GladePropertyShell             GladePropertyShell;
-typedef struct _GladePropertyShellClass        GladePropertyShellClass;
-typedef struct _GladePropertyShellPrivate      GladePropertyShellPrivate;
-
-struct _GladePropertyShell
-{
-  /*< private >*/
-  GtkBox box;
-
-  GladePropertyShellPrivate *priv;
-};
+#define GLADE_TYPE_PROPERTY_SHELL glade_property_shell_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GladePropertyShell, glade_property_shell, GLADE, PROPERTY_SHELL, GtkBox)
 
 struct _GladePropertyShellClass
 {
   GtkBoxClass parent_class;
 };
-
-GType          glade_property_shell_get_type          (void) G_GNUC_CONST;
 
 GtkWidget     *glade_property_shell_new               (void);
 
