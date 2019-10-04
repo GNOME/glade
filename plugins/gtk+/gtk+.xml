@@ -2715,13 +2715,16 @@
         <action-activate-function>glade_gtk_listbox_action_activate</action-activate-function>
         <child-action-activate-function>glade_gtk_listbox_child_action_activate</child-action-activate-function>
         <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
+        <set-property-function>glade_gtk_listbox_set_property</set-property-function>
+        <get-property-function>glade_gtk_listbox_get_property</get-property-function>
         <!-- We do not want glade_gtk_container_post_create be executed -->
-        <post-create-function>empty</post-create-function>
-        <add-child-verify-function>glade_gtk_listbox_add_verify</add-child-verify-function>
+        <post-create-function>glade_gtk_listbox_post_create</post-create-function>
         <add-child-function>glade_gtk_listbox_add_child</add-child-function>
+        <replace-child-function>glade_gtk_listbox_replace_child</replace-child-function>
         <remove-child-function>glade_gtk_listbox_remove_child</remove-child-function>
         <child-set-property-function>glade_gtk_listbox_set_child_property</child-set-property-function>
         <child-get-property-function>glade_gtk_listbox_get_child_property</child-get-property-function>
+        <special-child-type>type</special-child-type>
         
         <actions>
           <action id="add_row" name="Add Row" stock="list-add" important="True"/>
@@ -2745,6 +2748,12 @@
               <!-- GtkSelectionMode enumeration value -->
               <value id="GTK_SELECTION_MULTIPLE" name="Multiple"/>
             </displayable-values>
+          </property>
+          <property save="False" id="use-placeholder" since="3.10" default="False" name="Placeholder">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+            <tooltip>Whether this listbox should have a placeholder widget that is shown in the list when it doesn't display any visible children</tooltip>
           </property>
         </properties>
         

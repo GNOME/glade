@@ -93,11 +93,16 @@ glade_gtk_listbox_get_child_property (GladeWidgetAdaptor *adaptor,
                                       GValue             *value)
 {
   g_return_if_fail (GTK_IS_LIST_BOX (container));
-  g_return_if_fail (GTK_IS_LIST_BOX_ROW (child));
+  g_return_if_fail (GTK_IS_WIDGET (child));
 
   if (strcmp (property_name, "position") == 0)
     {
-      gint position = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (child));
+      gint position = 0;
+
+      if (GTK_IS_LIST_BOX_ROW (child)) {
+        position = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (child));
+      }
+
       g_value_set_int (value, position);
     }
   else
@@ -119,18 +124,19 @@ glade_gtk_listbox_set_child_property (GladeWidgetAdaptor *adaptor,
                                       GValue             *value)
 {
   g_return_if_fail (GTK_IS_LIST_BOX (container));
-  g_return_if_fail (GTK_IS_LIST_BOX_ROW (child));
+  g_return_if_fail (GTK_IS_WIDGET (child));
 
   g_return_if_fail (property_name != NULL || value != NULL);
 
   if (strcmp (property_name, "position") == 0)
     {
-      gint position;
+      gint position = g_value_get_int (value);
 
-      position = g_value_get_int (value);
-      glade_gtk_listbox_reorder (GTK_LIST_BOX (container),
-                                 GTK_LIST_BOX_ROW (child),
-                                 position);
+      if (GTK_IS_LIST_BOX_ROW (child)) {
+        glade_gtk_listbox_reorder (GTK_LIST_BOX (container),
+                                   GTK_LIST_BOX_ROW (child),
+                                   position);
+      }
     }
   else
     {
@@ -143,30 +149,102 @@ glade_gtk_listbox_set_child_property (GladeWidgetAdaptor *adaptor,
     }
 }
 
-gboolean
-glade_gtk_listbox_add_verify (GladeWidgetAdaptor *adaptor,
-                              GtkWidget          *container,
-                              GtkWidget          *child,
-                              gboolean            user_feedback)
+static void
+glade_listbox_search_placeholder_forall (GtkWidget *widget,
+                                         gpointer data)
 {
-  if (!GTK_IS_LIST_BOX_ROW (child))
+  GtkWidget **placeholder = (GtkWidget **)data;
+  /* A simple child should be a GtkListBoxRow, otherwise it's a placeholder */
+  if (!GTK_IS_LIST_BOX_ROW (widget) && GTK_IS_WIDGET (widget)) {
+    *placeholder = GTK_WIDGET (widget);
+  }
+}
+
+static GtkWidget*
+glade_listbox_get_placeholder (GtkListBox *list_box) {
+  GtkWidget *placeholder = NULL;
+
+  gtk_container_forall (GTK_CONTAINER (list_box), glade_listbox_search_placeholder_forall, &placeholder);
+
+  return placeholder;
+}
+
+static void
+glade_gtk_listbox_parse_finished (GladeProject *project, GladeWidget *gbox)
+{
+  GObject *box = glade_widget_get_object (gbox);
+  glade_widget_property_set (gbox, "use-placeholder", glade_listbox_get_placeholder (GTK_LIST_BOX (box)) != NULL);
+}
+
+void
+glade_gtk_listbox_post_create (GladeWidgetAdaptor *adaptor,
+                                GObject            *container,
+                                GladeCreateReason   reason)
+{
+  GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+  GladeProject *project = glade_widget_get_project (gwidget);
+
+  if (reason == GLADE_CREATE_LOAD)
     {
-      if (user_feedback)
-        {
-          GladeWidgetAdaptor *tool_item_adaptor =
-            glade_widget_adaptor_get_by_type (GTK_TYPE_LIST_BOX_ROW);
-
-          glade_util_ui_message (glade_app_get_window (),
-                                 GLADE_UI_INFO, NULL,
-                                 ONLY_THIS_GOES_IN_THAT_MSG,
-                                 glade_widget_adaptor_get_title (tool_item_adaptor),
-                                 glade_widget_adaptor_get_title (adaptor));
-        }
-
-      return FALSE;
+      g_signal_connect_object (project, "parse-finished",
+                               G_CALLBACK (glade_gtk_listbox_parse_finished),
+                               gwidget, 0);
     }
+}
 
-  return TRUE;
+void
+glade_gtk_listbox_get_property (GladeWidgetAdaptor *adaptor,
+                                GObject            *object,
+                                const gchar        *id,
+                                GValue             *value)
+{
+  if (!strcmp (id, "use-placeholder"))
+    {
+      g_value_set_boolean (value, glade_listbox_get_placeholder (GTK_LIST_BOX (object)) != NULL);
+    }
+  else
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
+                                                      value);
+}
+
+void
+glade_gtk_listbox_set_property (GladeWidgetAdaptor *adaptor,
+                                GObject            *object,
+                                const gchar        *id,
+                                const GValue       *value)
+{
+  if (!strcmp (id, "use-placeholder"))
+    {
+      GtkWidget *child;
+
+      if (g_value_get_boolean (value))
+        {
+          child = glade_listbox_get_placeholder (GTK_LIST_BOX (object));
+          if (!child)
+            child = glade_placeholder_new ();
+          g_object_set_data (G_OBJECT (child), "special-child-type", "placeholder");
+        }
+      else
+        {
+          child = glade_listbox_get_placeholder (GTK_LIST_BOX (object));
+          if (child)
+            {
+              GladeProject *project = glade_widget_get_project (glade_widget_get_from_gobject (object));
+              /* Assign selection first */
+              if (glade_project_is_selected
+                  (project, child) == FALSE)
+                glade_project_selection_set (project, child, FALSE);
+
+              glade_project_command_delete (project);
+              glade_project_selection_set (project, object, TRUE);
+            }
+          child = NULL;
+        }
+      gtk_list_box_set_placeholder (GTK_LIST_BOX (object), child);
+    }
+  else
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
+                                                      value);
 }
 
 void
@@ -174,7 +252,18 @@ glade_gtk_listbox_add_child (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GObject            *child)
 {
+  gchar *special_child_type;
+
   g_return_if_fail (GTK_IS_LIST_BOX (object));
+  g_return_if_fail (GTK_IS_WIDGET (child));
+
+  special_child_type = g_object_get_data (child, "special-child-type");
+  if (!g_strcmp0 (special_child_type, "placeholder"))
+    {
+      gtk_list_box_set_placeholder (GTK_LIST_BOX (object), GTK_WIDGET (child));
+       return;
+    }
+
   g_return_if_fail (GTK_IS_LIST_BOX_ROW (child));
 
   /* Insert to the end of the list */
@@ -184,10 +273,47 @@ glade_gtk_listbox_add_child (GladeWidgetAdaptor *adaptor,
 }
 
 void
+glade_gtk_listbox_replace_child (GladeWidgetAdaptor *adaptor,
+                                 GObject            *container,
+                                 GObject            *current,
+                                 GObject            *new_widget)
+{
+  gchar *special_child_type =
+    g_object_get_data (G_OBJECT (current), "special-child-type");
+
+  if (!g_strcmp0 (special_child_type, "placeholder"))
+    {
+      g_object_set_data (G_OBJECT (new_widget), "special-child-type", "placeholder");
+      gtk_list_box_set_placeholder (GTK_LIST_BOX (container), GTK_WIDGET (new_widget));
+      return;
+    }
+
+  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
+                                                     container,
+                                                     current, new_widget);
+}
+
+void
 glade_gtk_listbox_remove_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)
 {
+  gchar *special_child_type;
+
+  g_return_if_fail (GTK_IS_LIST_BOX (object));
+  g_return_if_fail (GTK_IS_WIDGET (child));
+
+  special_child_type = g_object_get_data (child, "special-child-type");
+  if (!g_strcmp0 (special_child_type, "placeholder"))
+    {
+      GtkWidget *w;
+
+      w = glade_placeholder_new ();
+      g_object_set_data (G_OBJECT (w), "special-child-type", "placeholder");
+      gtk_list_box_set_placeholder (GTK_LIST_BOX (object), w);
+      return;
+    }
+
   gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 
   sync_row_positions (GTK_LIST_BOX (object));
@@ -201,14 +327,20 @@ glade_gtk_listbox_child_insert_action (GladeWidgetAdaptor *adaptor,
 {
   GladeWidget *parent;
   GladeWidget *gchild;
-  gint position;
+  gint position = 0;
 
   parent = glade_widget_get_from_gobject (container);
   glade_command_push_group (_("Insert Row on %s"), glade_widget_get_name (parent));
 
-  position = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (object));
-  if (after)
-    position++;
+  /* We can right click on the placeholder too */
+  if (GTK_IS_LIST_BOX_ROW (object)) {
+    position = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (object));
+    if (after)
+      position++;
+  } else {
+    if (after)
+      position = -1;
+  }
 
   gchild = glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_LIST_BOX_ROW),
                                  parent,
