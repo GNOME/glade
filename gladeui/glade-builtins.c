@@ -57,13 +57,13 @@ typedef struct _GladeStockItem
 
 /* Hard-coded list of stock images (and displayable translations) from gtk+ that are not stock "items" */
 static const gchar *builtin_stock_images[] = {
-  "gtk-dialog-authentication",  /* GTK_STOCK_DIALOG_AUTHENTICATION */
-  "gtk-dnd",                    /* GTK_STOCK_DND */
-  "gtk-dnd-multiple",           /* GTK_STOCK_DND_MULTIPLE */
-  "gtk-color-picker",           /* GTK_STOCK_COLOR_PICKER */
-  "gtk-directory",              /* GTK_STOCK_DIRECTORY */
-  "gtk-file",                   /* GTK_STOCK_FILE */
-  "gtk-missing-image"           /* GTK_STOCK_MISSING_IMAGE */
+  "dialog-password",  /* GTK_STOCK_DIALOG_AUTHENTICATION */
+  "gtk-dnd",          /* GTK_STOCK_DND */
+  "gtk-dnd-multiple", /* GTK_STOCK_DND_MULTIPLE */
+  "gtk-color-picker", /* GTK_STOCK_COLOR_PICKER */
+  "folder",           /* GTK_STOCK_DIRECTORY */
+  "text-x-generic",   /* GTK_STOCK_FILE */
+  "image-missing"     /* GTK_STOCK_MISSING_IMAGE */
 };
 
 static const gchar *builtin_stock_displayables[] = {
