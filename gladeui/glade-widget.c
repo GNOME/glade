@@ -4400,7 +4400,6 @@ glade_widget_write (GladeWidget     *widget,
     }
   else
     {
-      const gchar *type_func = NULL;
       widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
       glade_xml_node_set_property_string (widget_node,
                                           GLADE_XML_TAG_CLASS,
