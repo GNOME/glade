@@ -479,6 +479,7 @@ glade_gtk_store_read_columns (GladeWidget *widget, GladeXmlNode *node)
     {
       GladeColumnType *data;
       gchar *type, *comment_str, buffer[256];
+      buffer[255] = '\0';
 
       if (!glade_xml_node_verify_silent (prop, GLADE_TAG_COLUMN) &&
           !glade_xml_node_is_comment (prop))
@@ -487,8 +488,8 @@ glade_gtk_store_read_columns (GladeWidget *widget, GladeXmlNode *node)
       if (glade_xml_node_is_comment (prop))
         {
           comment_str = glade_xml_get_content (prop);
-          if (sscanf (comment_str, " column-name %s", buffer) == 1)
-            strncpy (column_name, buffer, 255);
+          if (sscanf (comment_str, " column-name %255s", buffer) == 1)
+            strcpy (column_name, buffer);
 
           g_free (comment_str);
           continue;
