@@ -232,8 +232,8 @@ glade_gtk_listbox_set_property (GladeWidgetAdaptor *adaptor,
               GladeProject *project = glade_widget_get_project (glade_widget_get_from_gobject (object));
               /* Assign selection first */
               if (glade_project_is_selected
-                  (project, child) == FALSE)
-                glade_project_selection_set (project, child, FALSE);
+                  (project, G_OBJECT (child)) == FALSE)
+                glade_project_selection_set (project, G_OBJECT (child), FALSE);
 
               glade_project_command_delete (project);
               glade_project_selection_set (project, object, TRUE);
