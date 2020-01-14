@@ -1422,7 +1422,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
                          -1, G_MAXINT, -1, G_PARAM_READWRITE);
 
   properties[PROP_SUPPORT_WARNING] =
-       g_param_spec_string ("support warning", _("Support Warning"),
+       g_param_spec_string ("support-warning", _("Support Warning"),
                             _("A warning string about version mismatches"),
                             NULL, G_PARAM_READABLE);
 
