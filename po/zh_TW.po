@@ -16,16 +16,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 3.10.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2019-11-11 15:28+0000\n"
-"PO-Revision-Date: 2019-11-27 23:21+0800\n"
-"Last-Translator: pan93412 <pan93412@gmail.com>\n"
+"POT-Creation-Date: 2020-01-14 04:15+0000\n"
+"PO-Revision-Date: 2020-01-21 22:41+0800\n"
+"Last-Translator: Yi-Jyun Pan <pan93412@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@linux.org.tw>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 19.11.80\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
 #: src/main.c:43 src/glade.glade:202
@@ -407,7 +407,6 @@ msgid "Preferences"
 msgstr "偏好設定"
 
 #: src/glade.glade:139
-#| msgid "Glade"
 msgid "About Glade"
 msgstr "關於 Glade"
 
@@ -444,18 +443,14 @@ msgid "Start/resume interactive UI introduction"
 msgstr "開始 / 繼續互動式 UI 介紹"
 
 #: src/glade.glade:728
-#| msgid ""
-#| "Copyright © 2001-2006 Ximian, Inc.\n"
-#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-#| "Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "Copyright © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgstr ""
-"版權所有 © 2001-2006 Ximian, Inc.\n"
-"版權所有 © 2001-2006 Joaquin Cuenca Abela、Paolo Borelli 等人\n"
-"版權所有 © 2004-2018 Tristan Van Berkom、Juan Pablo Ugarte 等人"
+"著作權所有 © 2001-2006 Ximian, Inc.\n"
+"著作權所有 © 2001-2006 Joaquin Cuenca Abela、Paolo Borelli 等人\n"
+"著作權所有 © 2004-2018 Tristan Van Berkom、Juan Pablo Ugarte 等人"
 
 #: src/glade.glade:731
 msgid "A user interface designer for GTK+ and GNOME."
@@ -1681,12 +1676,10 @@ msgid "Whether the border should be shown"
 msgstr "是否顯示邊框"
 
 #: gladeui/glade-editor.c:276
-#| msgid "Date Editor"
 msgid "Signal Editor"
 msgstr "信號編輯器"
 
 #: gladeui/glade-editor.c:277
-#| msgid "The glade widget to edit signals"
 msgid "The signal editor used to edit signals"
 msgstr "信號編輯器是個用來編輯信號的工具"
 
@@ -1792,12 +1785,10 @@ msgid "%s - %s Properties"
 msgstr "%s - %s 屬性"
 
 #: gladeui/glade-editor-property.c:768
-#| msgid "Property _Description:"
 msgid "Property Definition"
 msgstr "屬性定義"
 
 #: gladeui/glade-editor-property.c:769
-#| msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgid "The GladePropertyDef this GladeEditorProperty was created for"
 msgstr "建立這個 GladeEditorProperty 的 GladePropertyDef "
 
@@ -2324,14 +2315,12 @@ msgid ", %s"
 msgstr "、%s"
 
 #: gladeui/glade-project.c:2003
-#, fuzzy, c-format
-#| msgid ""
-#| "Specially because there is an object that can not be build with type "
+#, c-format
 msgid ""
 "Especially because there is %d object that can not be built with type: %s"
 msgid_plural ""
 "Especially because there are %d objects that can not be built with types: %s"
-msgstr[0] "特別是因為有物件不能編譯為這個類型"
+msgstr[0] "尤其是因為有 %d 個物件無法編譯成此種類型：%s"
 
 #: gladeui/glade-project.c:2021
 #, c-format
@@ -2411,7 +2400,8 @@ msgstr "[%s] 屬性「<b>%s</b>」(物件類別「<b>%s</b>」) 已引入 %s %d.
 msgid ""
 "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was introduced "
 "in %s %d.%d\n"
-msgstr "[%s] 正在包裝屬性「<b>%s</b>」(物件類別「<b>%s</b>」) 已引入 %s %d.%d\n"
+msgstr ""
+"[%s] 正在包裝屬性「<b>%s</b>」(物件類別「<b>%s</b>」) 已引入 %s %d.%d\n"
 
 #: gladeui/glade-project.c:3124
 msgid "This property is deprecated"
@@ -2520,7 +2510,6 @@ msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "專案 %s 沒有廢棄的元件或版本不符。"
 
 #: gladeui/glade-property.c:673
-#| msgid "The GladePropertyClass for this property"
 msgid "The GladePropertyDef for this property"
 msgstr "這個屬性的 GladePropertyDef"
 
@@ -2569,10 +2558,8 @@ msgid "Priority information for the property editor to act on"
 msgstr "屬性編輯器行動的優先權資訊"
 
 #: gladeui/glade-property.c:720
-#, fuzzy
-#| msgid "version"
 msgid "Precision"
-msgstr "版本"
+msgstr "精度"
 
 #: gladeui/glade-property.c:721
 msgid "Where applicable, precision to use on editors"
@@ -2714,7 +2701,6 @@ msgid "The glade widget to edit signals"
 msgstr "編輯信號的 glade 元件"
 
 #: gladeui/glade-signal-model.c:29 gladeui/glade-signal-model.c:30
-#| msgid "<Type Here>"
 msgid "<Type here>"
 msgstr "<在這裡輸入>"
 
@@ -2780,7 +2766,6 @@ msgid "Definition"
 msgstr "定義"
 
 #: gladeui/glade-widget-action.c:186
-#| msgid "GladeWidgetActionClass structure pointer"
 msgid "GladeWidgetActionDef structure pointer"
 msgstr "GladeWidgetActionDef 結構游標"
 
@@ -2999,10 +2984,8 @@ msgid "(unnamed)"
 msgstr "(未命名)"
 
 #: gladeui/glade-widget.c:4882
-#, fuzzy
-#| msgid "Template classes are not supported in gtk+ %d.%d"
 msgid "Template classes are only usable in GTK+ 3.10 and later."
-msgstr "範本類別在 gtk+ %d.%d 中是不支援的"
+msgstr "範本類別只能在 GTK+ 3.10 或之後版本使用。"
 
 #: gladeui/glade-widget.c:4890
 #, c-format
@@ -4548,8 +4531,6 @@ msgid "Proximity In"
 msgstr "鄰近輸入"
 
 #: plugins/gtk+/gtk+.xml:161
-#, fuzzy
-#| msgid "Proximity  Out"
 msgid "Proximity Out"
 msgstr "鄰近輸出"
 
@@ -5059,10 +5040,8 @@ msgid "Superscript text"
 msgstr "上標文字"
 
 #: plugins/gtk+/gtk+.xml:468
-#, fuzzy
-#| msgid "Context"
 msgid "Footnote text"
-msgstr "關聯"
+msgstr "註腳文字"
 
 #: plugins/gtk+/gtk+.xml:470
 msgid "Last Defined"
@@ -5117,7 +5096,8 @@ msgstr "子節點，屬於"
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
-msgstr "表示物件是顯示的樹狀表中的儲存格，因為在同一欄的儲存格是展開的並標識為那一格"
+msgstr ""
+"表示物件是顯示的樹狀表中的儲存格，因為在同一欄的儲存格是展開的並標識為那一格"
 
 #: plugins/gtk+/gtk+.xml:525
 msgid "Flows To"
@@ -5127,7 +5107,8 @@ msgstr "流向"
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
-msgstr "表示物件的內容是往另一個 AtkObject 以順序的方式有邏緝的流出，(例如文字流)"
+msgstr ""
+"表示物件的內容是往另一個 AtkObject 以順序的方式有邏緝的流出，(例如文字流)"
 
 #: plugins/gtk+/gtk+.xml:535
 msgid "Flows From"
@@ -5137,7 +5118,8 @@ msgstr "流自"
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
-msgstr "表示物件的內容是從另一個 AtkObject 以順序的方式有邏緝的流入，(例如文字流)"
+msgstr ""
+"表示物件的內容是從另一個 AtkObject 以順序的方式有邏緝的流入，(例如文字流)"
 
 #: plugins/gtk+/gtk+.xml:545
 msgid "Subwindow Of"
@@ -5147,7 +5129,8 @@ msgstr "子視窗，屬於"
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
-msgstr "表示一個子視窗附加到一個元件上，但除此之外在 UI 體系中與該元件沒有其他連線"
+msgstr ""
+"表示一個子視窗附加到一個元件上，但除此之外在 UI 體系中與該元件沒有其他連線"
 
 #: plugins/gtk+/gtk+.xml:555
 msgid "Embeds"
@@ -5279,7 +5262,6 @@ msgid "A list of accel groups to be added to this window"
 msgstr "加入至這個視窗的捷徑鍵群組清單"
 
 #: plugins/gtk+/gtk+.xml:771
-#| msgid "BSD"
 msgid "CSD"
 msgstr "CSD"
 
@@ -5405,7 +5387,6 @@ msgstr "選單殼中選單項目的位置"
 #: plugins/gtk+/gtk+.xml:3876 plugins/gtk+/gtk+.xml:3981
 #: plugins/gtk+/gtk+.xml:4051 plugins/gtk+/gtk+.xml:4104
 #: plugins/gtk+/gtk+.xml:4162 plugins/gtk+/gtk+.xml:5546
-#| msgid "_Edit"
 msgid "Edit…"
 msgstr "編輯…"
 
@@ -5433,7 +5414,6 @@ msgstr "動作名稱"
 #: plugins/gtk+/gtk+.xml:1012 plugins/gtk+/gtk+.xml:1309
 #: plugins/gtk+/gtk+.xml:1786 plugins/gtk+/gtk+.xml:1898
 #: plugins/gtk+/gtk+.xml:3130
-#| msgid "Action Bar"
 msgid "Action Target"
 msgstr "動作目標"
 
@@ -5524,7 +5504,6 @@ msgid "Large Toolbar"
 msgstr "大型工具列"
 
 #: plugins/gtk+/gtk+.xml:1146
-#| msgid "Drag & Drop"
 msgid "Drag &amp; Drop"
 msgstr "拖放"
 
@@ -5569,7 +5548,6 @@ msgid "Half"
 msgstr "一半"
 
 #: plugins/gtk+/gtk+.xml:1278
-#| msgid "Tool Item"
 msgid "GtkToolItem"
 msgstr "GtkToolItem"
 
@@ -5934,7 +5912,6 @@ msgid "Application Chooser Widget"
 msgstr "應用程式選擇器元件"
 
 #: plugins/gtk+/gtk+.xml:2038
-#| msgid "Stack Sidebar"
 msgid "Places Sidebar"
 msgstr "位置側邊欄"
 
@@ -6239,7 +6216,6 @@ msgid "Multiple"
 msgstr "多項"
 
 #: plugins/gtk+/gtk+.xml:2752
-#| msgid "Placeholder text"
 msgid "Placeholder"
 msgstr "佔位符"
 
@@ -6304,44 +6280,36 @@ msgid "Vertical Scale"
 msgstr "垂直尺規"
 
 #: plugins/gtk+/gtk+.xml:2905
-#| msgid "Horizontal"
 msgid "Flip Horizontally"
 msgstr "水平翻轉"
 
 #: plugins/gtk+/gtk+.xml:2907
-#| msgid "Vertical"
 msgid "Flip Vertically"
 msgstr "垂直翻轉"
 
 #: plugins/gtk+/gtk+.xml:2909
-#, fuzzy
-#| msgid "Horizontal"
 msgid "Slide Horizontally"
-msgstr "水平"
+msgstr "水平滑動"
 
 #: plugins/gtk+/gtk+.xml:2911
-#, fuzzy
-#| msgid "Vertical"
 msgid "Slide Vertically"
-msgstr "垂直"
+msgstr "垂直滑動"
 
 #: plugins/gtk+/gtk+.xml:2913
-#| msgid "Horizontal"
 msgid "Resize Horizontally"
 msgstr "水平縮放"
 
 #: plugins/gtk+/gtk+.xml:2915
-#| msgid "Vertical"
 msgid "Resize Vertically"
 msgstr "垂直縮放"
 
 #: plugins/gtk+/gtk+.xml:2917
 msgid "Flip Both Sides"
-msgstr ""
+msgstr "翻轉兩側"
 
 #: plugins/gtk+/gtk+.xml:2919
 msgid "Slide Both Sides"
-msgstr ""
+msgstr "滑動兩側"
 
 #: plugins/gtk+/gtk+.xml:2921
 msgid "Resize Both Sides"
@@ -6514,12 +6482,10 @@ msgid "LGPL 3.0 Only"
 msgstr "只有 LGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3343
-#| msgid "GPL 3.0"
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3345
-#| msgid "GPL 3.0 Only"
 msgid "AGPL 3.0 Only"
 msgstr "只有 AGPL 3.0"
 
@@ -7358,12 +7324,10 @@ msgid "Themed Icon"
 msgstr "主題圖示"
 
 #: plugins/gtk+/gtk+.xml:5609
-#| msgid "File"
 msgid "File Icon"
 msgstr "檔案圖示"
 
 #: plugins/gtk+/gtk+.xml:5611
-#| msgid "File Chooser Dialog"
 msgid "Native File Chooser Dialog"
 msgstr "原生檔案選擇對話框"
 
@@ -8006,7 +7970,6 @@ msgstr ""
 "取代設定文字式工具提示"
 
 #: plugins/gtk+/glade-widget-editor.ui:1019
-#| msgid "Start"
 msgid "Start:"
 msgstr "開始："
 
@@ -8059,11 +8022,8 @@ msgid "WebKit Web View"
 msgstr "WebKit 網頁檢視"
 
 #: plugins/webkit2gtk/webkit2gtk.xml:21
-#, fuzzy
-#| msgid ""
-#| "Set the currently active page to edit, this property will not be saved"
 msgid "The URL to load in Glade (this property will not be saved)"
-msgstr "設定目前用來編輯的頁面，這個屬性不會被儲存"
+msgstr "要在 Glade 載入的網址（此屬性將不儲存）"
 
 #: plugins/webkit2gtk/webkit2gtk.xml:32
 msgid "WebKit Settings"
