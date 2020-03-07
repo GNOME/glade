@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the Alleyoop package.
 # Jan-Willem Harmanny <jwharmanny@hotmail.com>, 2003.
 # Tino Meinen <a.t.meinen@chello.nl>, 2004, 2005.
-# Nathan Follens <nthn@unseen.is>, 2019.
+# Nathan Follens <nthn@unseen.is>, 2019-2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 cvs\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2019-02-06 22:19+0000\n"
-"PO-Revision-Date: 2019-02-26 15:30+0100\n"
+"POT-Creation-Date: 2020-02-25 23:32+0000\n"
+"PO-Revision-Date: 2020-03-07 22:43+0100\n"
 "Last-Translator: Nathan Follens <nthn@unseen.is>\n"
-"Language-Team: Dutch <vertaling@vrijschrift.org>\n"
+"Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../data/glade.appdata.xml.in.h:1
 #: ../src/main.c:42 ../src/glade.glade.h:7
@@ -46,6 +46,8 @@ msgid ""
 "Glade is a RAD tool to enable quick &amp; easy development of user "
 "interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
 msgstr ""
+"Glade is een RAD-hulpmiddel voor snelle en eenvoudige ontwikkeling van "
+"gebruikersinterfaces voor de GTK+3-toolkit en de Gnome-bureaubladomgeving."
 
 #. To translators: AppData description second paragraph
 #: ../data/glade.appdata.xml.in.h:6
@@ -55,6 +57,10 @@ msgid ""
 "directly to define a new GtkWidget derived object class using GTK+ new "
 "template feature."
 msgstr ""
+"De gebruikersinterfaces ontworpen in Glade worden opgeslagen als XML en "
+"kunnen, waar nodig, dynamisch door toepassingen ingeladen worden met "
+"GtkBuilder, of rechtstreeks gebruikt worden om een nieuwe van GtkWidget "
+"afgeleide objectklasse te definiëren met de nieuwe sjabloonfunctie van GTK+."
 
 #. To translators: AppData description third paragraph
 #: ../data/glade.appdata.xml.in.h:8
@@ -62,6 +68,9 @@ msgid ""
 "By using GtkBuilder, Glade XML files can be used in numerous programming "
 "languages including C, C++, C#, Vala, Java, Perl, Python, and others."
 msgstr ""
+"Door middel van GtkBuilder kunnen Glade-XML-bestanden gebruikt worden in "
+"verschillende programmeertalen, inclusief C, C++, C#, Vala, Java, Perl, "
+"Python en meer."
 
 #: ../src/glade-window.c:57
 msgid "[Read Only]"
@@ -69,12 +78,11 @@ msgstr "[Alleen lezen]"
 
 #: ../src/glade-window.c:193
 msgid "User Interface Designer"
-msgstr ""
+msgstr "Gebruikersinterface-ontwerper"
 
 #: ../src/glade-window.c:456 ../src/glade-window.c:463
-#, fuzzy
 msgid "the last action"
-msgstr "Laatste bewerking ongedaan maken"
+msgstr "de laatste bewerking"
 
 #: ../src/glade-window.c:457
 #, c-format
@@ -89,26 +97,25 @@ msgstr "Opnieuw: %s"
 #: ../src/glade-window.c:489
 #, c-format
 msgid "Autosaving '%s'"
-msgstr ""
+msgstr "‘%s’ wordt automatisch opgeslagen"
 
 #: ../src/glade-window.c:494
-#, fuzzy, c-format
+#, c-format
 msgid "Error autosaving '%s'"
-msgstr "Fout bij lezen van \"%s\": %s\n"
+msgstr "Fout bij auto-opslaan van ‘%s’"
 
 #: ../src/glade-window.c:716
 msgid "Open…"
 msgstr "Openen…"
 
 #: ../src/glade-window.c:750
-#, fuzzy, c-format
-#| msgid "Project '%s' saved"
+#, c-format
 msgid "Project %s is still loading."
-msgstr "Project ‘%s’ is opgeslagen"
+msgstr "Project ‘%s’ is nog aan het laden."
 
 #: ../src/glade-window.c:769
 msgid "Failed to backup existing file, continue saving?"
-msgstr ""
+msgstr "Reservekopie van bestaand bestaand is mislukt, doorgaan met opslaan?"
 
 #: ../src/glade-window.c:791
 #, c-format
@@ -159,24 +166,21 @@ msgstr ""
 "Kon het bestand ‘%s’ niet opslaan. Een ander project met dat pad is geopend."
 
 #: ../src/glade-window.c:1029
-#, fuzzy
 msgid "No open projects to save"
-msgstr "Geen project geladen"
+msgstr "Geen geopende projecten om op te slaan"
 
 #: ../src/glade-window.c:1062
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
-msgstr ""
+msgstr "Wijzigingen aan project ‘%s’ opslaan alvorens te sluiten?"
 
 #: ../src/glade-window.c:1070
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "Als u ze niet opslaat, zullen uw wijzigingen definitief verloren gaan."
 
 #: ../src/glade-window.c:1074
-#, fuzzy
-#| msgid "_Close without Saving"
 msgid "Close _without Saving"
-msgstr "_Sluiten zonder Opslaan"
+msgstr "Sluiten _zonder opslaan"
 
 #: ../src/glade-window.c:1075 ../src/glade-window.c:1751
 #: ../gladeui/glade-editor.c:779 ../gladeui/glade-editor.c:1135
@@ -200,57 +204,52 @@ msgid "Save…"
 msgstr "Opslaan…"
 
 #: ../src/glade-window.c:1658
-#, fuzzy
 msgid "Could not create a new project."
-msgstr "Kon icoonbestand niet maken ...\n"
+msgstr "Kon geen nieuw project aanmaken."
 
 #: ../src/glade-window.c:1719
 #, c-format
 msgid "The project %s has unsaved changes"
-msgstr ""
+msgstr "Het project %s heeft niet-opgeslagen wijzigingen"
 
 #: ../src/glade-window.c:1724
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
+"Als u het herlaadt, kunnen alle niet-opgeslagen wijzigingen verloren gaan. "
+"Toch herladen?"
 
 #: ../src/glade-window.c:1734
 #, c-format
 msgid "The project file %s has been externally modified"
-msgstr ""
+msgstr "Het projectbestand %s is extern gewijzigd"
 
 #: ../src/glade-window.c:1739
-#, fuzzy
 msgid "Do you want to reload the project?"
-msgstr ""
-"Het bestand %s bestaat al.\n"
-"Wilt u deze vervangen?"
+msgstr "Wilt u het project herladen?"
 
 #: ../src/glade-window.c:1745
 msgid "_Reload"
-msgstr "Her_rladen"
+msgstr "He_rladen"
 
 #: ../src/glade-window.c:2303
 msgid "Hello, I will show you what's new in Glade"
-msgstr ""
+msgstr "Hallo, ik zal u laten zien wat er allemaal nieuw is in Glade"
 
 #: ../src/glade-window.c:2304
 msgid "The menubar and toolbar were merged in the headerbar"
-msgstr ""
+msgstr "De menubalk en taakbalk zijn samengevoegd in de headerbalk"
 
 #: ../src/glade-window.c:2306
-#, fuzzy
-#| msgid "Open a project"
 msgid "You can open a project"
-msgstr "Een project openen"
+msgstr "U kunt een project openen"
 
 #: ../src/glade-window.c:2307
 msgid "find recently used"
-msgstr ""
+msgstr "de recent gebruikte vinden"
 
 #: ../src/glade-window.c:2308
-#, fuzzy
 msgid "or create a new one"
-msgstr "Kon icoonbestand niet maken ...\n"
+msgstr "of er een nieuw aanmaken"
 
 #: ../src/glade-window.c:2312
 msgid "Undo"
@@ -270,41 +269,39 @@ msgstr ""
 
 #: ../src/glade-window.c:2317
 msgid "just like Save As"
-msgstr ""
+msgstr "net als Opslaan als"
 
 #: ../src/glade-window.c:2318
-#, fuzzy
-#| msgid "Properties"
 msgid "project properties"
-msgstr "Eigenschappen"
+msgstr "projecteigenschappen"
 
 #: ../src/glade-window.c:2319
 msgid "and less commonly used actions"
-msgstr ""
+msgstr "en minder vaak gebruikte acties"
 
 #: ../src/glade-window.c:2321
 msgid "The object inspector took the palette's place"
-msgstr ""
+msgstr "De objectinspecteur heeft de plaats van het palet ingenomen"
 
 #: ../src/glade-window.c:2322
 msgid "To free up space for the property editor"
-msgstr ""
+msgstr "Om plaats te ruimen voor de eigenschapbewerker"
 
 #: ../src/glade-window.c:2324
 msgid "The palette was replaced with a new object chooser"
-msgstr ""
+msgstr "Het palet is vervangen door een nieuwe objectkiezer"
 
 #: ../src/glade-window.c:2325
 msgid "Where you can search all supported classes"
-msgstr ""
+msgstr "Waar u alle ondersteunde klassen kunt doorzoeken"
 
 #: ../src/glade-window.c:2326
 msgid "investigate GTK+ object groups"
-msgstr ""
+msgstr "GTK+-objectgroepen onderzoeken"
 
 #: ../src/glade-window.c:2327
 msgid "and find classes introduced by other libraries"
-msgstr ""
+msgstr "en klassen geïntroduceerd door andere bibliotheken vinden"
 
 #: ../src/glade-window.c:2329
 msgid ""
@@ -358,20 +355,23 @@ msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
 msgstr ""
+"We voeren een bevraging uit bij onze gebruikers\n"
+" zou u deze nu willen invullen?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
 #: ../src/glade-window.c:2552
 msgid "If not, you can always find it in the Help menu."
-msgstr ""
+msgstr "Zo niet, kunt u deze altijd vinden in het menu Hulp."
 
 #: ../src/glade-window.c:2554
 msgid "_Do not show this dialog again"
-msgstr ""
+msgstr "_Dit bericht niet meer tonen"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
 #: ../src/glade-window.c:2575
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
+"Ga naar Hulp -> Registratie & gebruikersbevraging en vul onze bevraging in!"
 
 #: ../src/main.c:51
 msgid "Output version information and exit"
@@ -379,7 +379,7 @@ msgstr "Toon versie-informatie en beëindig programma"
 
 #: ../src/main.c:54
 msgid "Disable Devhelp integration"
-msgstr ""
+msgstr "Devhelp-integratie uitschakelen"
 
 #: ../src/main.c:57
 msgid "[FILE...]"
@@ -392,6 +392,7 @@ msgstr ""
 #: ../src/main.c:90
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
+"Maak of bewerk gebruikersinterfaceontwerpen voor GTK+- of Gnome-toepassingen."
 
 #: ../src/main.c:94 ../src/main.c:95
 msgid "Glade options"
@@ -423,17 +424,15 @@ msgstr "Project sluiten"
 
 #: ../src/glade.glade.h:2
 msgid "Registration & User Survey"
-msgstr ""
+msgstr "Registratie & gebruikersbevraging"
 
 #: ../src/glade.glade.h:3
 msgid "_Developer Reference"
-msgstr ""
+msgstr "On_twikkelaarsreferentie"
 
 #: ../src/glade.glade.h:4
-#, fuzzy
-#| msgid "International"
 msgid "Interactive Intro"
-msgstr "Internationaal"
+msgstr "Interactieve inleiding"
 
 #: ../src/glade.glade.h:5
 msgid "Preferences"
@@ -457,9 +456,8 @@ msgid "Create a new project"
 msgstr "Maak een nieuw project aan"
 
 #: ../src/glade.glade.h:11
-#, fuzzy
 msgid "Edit project properties"
-msgstr "Eigenschappen resetten"
+msgstr "Projecteigenschappen bewerken"
 
 #. GtkFileChooserAction enumeration value
 #: ../src/glade.glade.h:12 ../plugins/gtk+/gtk+.xml.in.h:630
@@ -468,15 +466,15 @@ msgstr "Opslaan"
 
 #: ../src/glade.glade.h:13
 msgid "Save the current project"
-msgstr ""
+msgstr "Sla het huidige project op"
 
 #: ../src/glade.glade.h:14
 msgid "Save the current project with a different name"
-msgstr ""
+msgstr "Sla het huidige project op met een andere naam"
 
 #: ../src/glade.glade.h:15
 msgid "Start/resume interactive UI introduction"
-msgstr ""
+msgstr "Interactieve UI-introductie starten/hervatten"
 
 #: ../src/glade.glade.h:16
 msgid ""
@@ -550,12 +548,16 @@ msgid ""
 "Create a backup of the last version of the project every time the project is "
 "saved"
 msgstr ""
+"Maak een back-up van de laatste versie van het project telkens het project "
+"wordt opgeslagen"
 
 #: ../src/glade-preferences.glade.h:4
 msgid ""
 "Automatically save the project to an alternate file whenever\n"
 "the project is modified and the specified timeout elapses"
 msgstr ""
+"Sla het project automatisch op naar een apart bestand telkens\n"
+"het aangepast is en de opgegeven time-out verloopt"
 
 #: ../src/glade-preferences.glade.h:6
 msgid "seconds"
@@ -563,45 +565,52 @@ msgstr "seconden"
 
 #: ../src/glade-preferences.glade.h:7
 msgid "Automatically save project after"
-msgstr ""
+msgstr "Project automatisch opslaan na"
 
 #: ../src/glade-preferences.glade.h:8
 msgid "Load and Save"
-msgstr ""
+msgstr "Laden en opslaan"
 
 #: ../src/glade-preferences.glade.h:9
 msgid "Versioning errors"
-msgstr ""
+msgstr "Versiefouten"
 
 #: ../src/glade-preferences.glade.h:10
 msgid ""
 "Prompt the user at save time if the project uses any widgets, properties\n"
 "or signals which are not available in the project's target version"
 msgstr ""
+"Informeer de gebruiker bij opslaan indien het project widgets, "
+"eigenschappen\n"
+"of signalen bevat die niet beschikbaar zijn in de doelversie van het project"
 
 #: ../src/glade-preferences.glade.h:12
 msgid "Deprecation warnings"
-msgstr ""
+msgstr "Verouderingswaarschuwingen"
 
 #: ../src/glade-preferences.glade.h:13
 msgid ""
 "Prompt the user at save time if the project uses any widgets,\n"
 "properties or signals which are deprecated"
 msgstr ""
+"Informeer de gebruiker bij opslaan indien het project widgets,\n"
+"eigenschappen of signalen bevat die verouderd zijn"
 
 #: ../src/glade-preferences.glade.h:15
 msgid "Unrecognized types"
-msgstr ""
+msgstr "Niet-herkende types"
 
 #: ../src/glade-preferences.glade.h:16
 msgid ""
 "Prompt the user at save time if the project\n"
 "contains any unrecognized types"
 msgstr ""
+"Informeer de gebruiker bij opslaan indien het project\n"
+"niet-herkende types bevat"
 
 #: ../src/glade-preferences.glade.h:18
 msgid "Show warnings when saving"
-msgstr ""
+msgstr "Waarschuwingen tonen bij opslaan"
 
 #: ../src/glade-preferences.glade.h:19
 msgid "column"
@@ -609,24 +618,24 @@ msgstr "kolom"
 
 #: ../src/glade-preferences.glade.h:20
 msgid "Remove the selected catalog search path"
-msgstr ""
+msgstr "Verwijder het geselecteerde cataloguszoekpad"
 
 #: ../src/glade-preferences.glade.h:21
 msgid "Add a new catalog search path"
-msgstr ""
+msgstr "Voeg een nieuw cataloguszoekpad toe"
 
 #: ../src/glade-preferences.glade.h:22
 msgid "Extra catalog paths"
-msgstr ""
+msgstr "Extra cataloguspaden"
 
 #: ../src/glade-preferences.glade.h:23
 msgid "Select a catalog search path"
-msgstr ""
+msgstr "Selecteer een cataloguszoekpad"
 
 #. translators: Email subject sent to the user after completing the survey
 #: ../src/glade-registration.c:32 ../src/glade-registration.glade.h:26
 msgid "Glade User Survey"
-msgstr ""
+msgstr "Glade-gebruikersbevraging"
 
 #. translators: Email body sent to the user after completing the survey
 #: ../src/glade-registration.c:34
@@ -646,11 +655,25 @@ msgid ""
 "\n"
 "\tThe Glade team\n"
 msgstr ""
+"Bedankt om deel te nemen aan de Glade-gebruikersbevraging!\n"
+"\n"
+"Open de volgende verwijzing om dit e-mailadres te valideren\n"
+"\n"
+"https://people.gnome.org/~jpu/glade/registration.php?email="
+"$email&validation_token=$new_validation_token\n"
+"\n"
+"Indien u de bevraging wilt wijzigen of bijwerken, is uw huidige "
+"updatetoken:\n"
+"$new_token\n"
+"\n"
+"Bedankt\n"
+"\n"
+"\tHet Glade-team\n"
 
 #. translators: Email subject sent to the user after updating the survey
 #: ../src/glade-registration.c:37
 msgid "Glade User Survey (update)"
-msgstr ""
+msgstr "Glade-gebruikersbevraging"
 
 #. translators: Email body sent to the user after updating the survey
 #: ../src/glade-registration.c:39
@@ -664,6 +687,15 @@ msgid ""
 "\n"
 "\tThe Glade team\n"
 msgstr ""
+"Bedankt dat u uw antwoorden voor de Glade-gebruikersbevraging heeft "
+"bijgewerkt!\n"
+"\n"
+"Indien u nogmaals iets wilt bijwerken, is uw huidige updatetoken:\n"
+"$new_token\n"
+"\n"
+"Bedankt\n"
+"\n"
+"\tHet Glade-team\n"
 
 #: ../src/glade-registration.c:306
 #, fuzzy, c-format
@@ -688,10 +720,11 @@ msgstr "%s hernoemen tot %s"
 #: ../src/glade-registration.c:347
 msgid "Sorry, automatic subscription to Glade Users mailing list failed"
 msgstr ""
+"Sorry, automatisch inschrijven bij de Glade-gebruikersmailinglijst is mislukt"
 
 #: ../src/glade-registration.c:350
 msgid "Open Glade Users Website"
-msgstr ""
+msgstr "Glade-gebruikerswebsite openen"
 
 #: ../src/glade-registration.c:402
 msgid "Internal server error"
@@ -700,10 +733,12 @@ msgstr "Interne serverfout"
 #: ../src/glade-registration.c:426
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
 msgstr ""
+"Bedankt dat u de tijd heeft genomen om alle vragen te beantwoorden, we "
+"stellen dit erg op prijs!"
 
 #: ../src/glade-registration.c:434
 msgid "Name and Email fields are required"
-msgstr ""
+msgstr "Velden voor naam en e-mailadres zijn vereist"
 
 #: ../src/glade-registration.c:437
 msgid ""
@@ -711,16 +746,22 @@ msgid ""
 "To update information you need to provide the token that was sent to your "
 "inbox."
 msgstr ""
+"Oeps! Dit e-mailadres is al in gebruik!\n"
+"Om de informatie bij te werken, heeft u het token nodig dat naar uw e-"
+"mailadres is gestuurd."
 
 #: ../src/glade-registration.c:440
 #, c-format
 msgid "Oops! Error saving user information: %s"
 msgstr ""
+"Oeps! Er is een fout opgetreden bij het opslaan van de gebruikersinformatie: "
+"%s"
 
 #: ../src/glade-registration.c:443
 #, c-format
 msgid "Oops! Error saving survey data: %s"
 msgstr ""
+"Oeps! Er is een fout opgetreden bij het opslaan van de bevragingsgegevens: %s"
 
 #: ../src/glade-registration.c:446
 #, fuzzy, c-format
@@ -729,7 +770,7 @@ msgstr "Fout bij lezen van \"%s\": %s\n"
 
 #: ../src/glade-registration.glade.h:1
 msgid "Glade Registration & User Survey"
-msgstr ""
+msgstr "Glade-registratie & gebruikersbevraging"
 
 #. GtkButtonsType enumeration value
 #: ../src/glade-registration.glade.h:2 ../plugins/gtk+/gtk+.xml.in.h:601
@@ -742,7 +783,7 @@ msgstr "Inzenden"
 
 #: ../src/glade-registration.glade.h:4
 msgid "Information will be sent to https://people.gnome.org/~jpu"
-msgstr ""
+msgstr "De informatie wordt naar https://people.gnome.org/~jpu gestuurd"
 
 #: ../src/glade-registration.glade.h:5
 msgid "User Information"
@@ -750,7 +791,7 @@ msgstr "Gebruikersinformatie"
 
 #: ../src/glade-registration.glade.h:6
 msgid "<Your name or nickname is required>"
-msgstr ""
+msgstr "<Uw naam of bijnaam is vereist>"
 
 #: ../src/glade-registration.glade.h:7
 #: ../gladeui/glade-project-properties.ui.h:12
@@ -767,10 +808,12 @@ msgid ""
 "Tokens are processed manually in batches.\n"
 "Please be patient."
 msgstr ""
+"Tokens worden handmatig in groepen verwerkt.\n"
+"Even geduld."
 
 #: ../src/glade-registration.glade.h:11
 msgid "<Required to send back registration token>"
-msgstr ""
+msgstr "<Vereist om het registratietoken terug te sturen>"
 
 #: ../src/glade-registration.glade.h:12
 msgid "Country:"
@@ -798,13 +841,15 @@ msgstr "Website"
 
 #: ../src/glade-registration.glade.h:18
 msgid "Subscribe me to the mailing list"
-msgstr ""
+msgstr "Abonneer me op de mailinglijst"
 
 #: ../src/glade-registration.glade.h:19
 msgid ""
 "Subscribe to Glade Users mailing list.\n"
 "You will be sent email requesting confirmation!"
 msgstr ""
+"Abonneren op de Glade-gebruikersmailinglijst.\n"
+"U zult een e-mail ontvangen om uw abonnement te bevestigen!"
 
 #: ../src/glade-registration.glade.h:21
 msgid "Choose your country"
@@ -812,21 +857,23 @@ msgstr "Kies uw land"
 
 #: ../src/glade-registration.glade.h:22
 msgid "We care about privacy!"
-msgstr ""
+msgstr "Privacy is belangrijk voor ons!"
 
 #: ../src/glade-registration.glade.h:23
 msgid ""
 "All the data will be stored in a private location and will not be shared "
 "with the public or any third party."
 msgstr ""
+"Alle gegevens worden op een private locatie opgeslagen en worden niet "
+"openbaar of met enige derde partij gedeeld."
 
 #: ../src/glade-registration.glade.h:24
 msgid "Update Info"
-msgstr ""
+msgstr "Update-informatie"
 
 #: ../src/glade-registration.glade.h:25
 msgid "<Insert update token, if you want to update previously sent data>"
-msgstr ""
+msgstr "<Voer het updatetoken in als u vroegere gegevens wilt bijwerken>"
 
 #: ../src/glade-registration.glade.h:27
 msgid "How long have you been programming?"
@@ -978,12 +1025,10 @@ msgid "variant"
 msgstr "variant"
 
 #: ../src/glade-registration.glade.h:63
-#| msgid "Free"
 msgid "FreeBSD"
 msgstr "FreeBSD"
 
 #: ../src/glade-registration.glade.h:64
-#| msgid "Open"
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
@@ -1347,9 +1392,8 @@ msgid "Type"
 msgstr "Type"
 
 #: ../gladeui/glade-base-editor.c:1592 ../plugins/gtk+/gtk+.xml.in.h:363
-#, fuzzy
 msgid "Container"
-msgstr "Midden"
+msgstr "Container"
 
 #: ../gladeui/glade-base-editor.c:1593
 msgid "The container object this editor is currently editing"
@@ -1365,10 +1409,8 @@ msgstr "ID:"
 #. Type
 #: ../gladeui/glade-base-editor.c:1898
 #: ../plugins/gtk+/glade-window-editor.ui.h:8
-#, fuzzy
-#| msgid "Type :"
 msgid "Type:"
-msgstr "Type :"
+msgstr "Type:"
 
 #: ../gladeui/glade-base-editor.c:2111
 msgid ""
@@ -1381,9 +1423,8 @@ msgstr ""
 
 #. GTK_STOCK_DIALOG_AUTHENTICATION
 #: ../gladeui/glade-builtins.c:71
-#, fuzzy
 msgid "Authentication"
-msgstr "Laatste bewerking ongedaan maken"
+msgstr "Aanmeldingscontrole"
 
 #. GTK_STOCK_DND
 #. GdkWindowTypeHint enumeration value
@@ -1415,26 +1456,23 @@ msgstr "Bestand"
 #. GTK_STOCK_MISSING_IMAGE
 #: ../gladeui/glade-builtins.c:83
 msgid "Missing Image"
-msgstr ""
+msgstr "Afbeelding ontbreekt"
 
 #: ../gladeui/glade-builtins.c:365
 msgid "Stock"
 msgstr "Voorraad"
 
 #: ../gladeui/glade-builtins.c:366
-#, fuzzy
 msgid "A builtin stock item"
-msgstr "Toevoegen zwevend docking item "
+msgstr "Een ingebakken voorraaditem"
 
 #: ../gladeui/glade-builtins.c:373
-#, fuzzy
 msgid "Stock Image"
-msgstr "Standaard ID"
+msgstr "Voorraadafbeelding"
 
 #: ../gladeui/glade-builtins.c:374
-#, fuzzy
 msgid "A builtin stock image"
-msgstr "Bronafbeelding herhalen"
+msgstr "Een ingebakken voorraadafbeelding"
 
 #: ../gladeui/glade-builtins.c:518
 msgid "Objects"
@@ -1446,14 +1484,14 @@ msgid "A list of objects"
 msgstr "Uitlijnen en verdelen"
 
 #: ../gladeui/glade-builtins.c:527
-#, fuzzy
-#| msgid "File Name"
 msgid "Image File Name"
-msgstr "Bestandnaam"
+msgstr "Afbeeldingsbestandsnaam"
 
 #: ../gladeui/glade-builtins.c:528
 msgid "Enter a filename, relative path or full path to load the image"
 msgstr ""
+"Voer een bestandsnaam, of een relatief of volledig pad in om de afbeelding "
+"te laden"
 
 #: ../gladeui/glade-builtins.c:537
 msgid "Color"
@@ -1468,19 +1506,18 @@ msgid "String"
 msgstr "Tekenreeks"
 
 #: ../gladeui/glade-builtins.c:565
-#, fuzzy
 msgid "An entry"
-msgstr "geen ingang"
+msgstr "Een ingang"
 
 #: ../gladeui/glade-command.c:455 ../gladeui/glade-command.c:511
 #, c-format
 msgid "Enabling property %s on widget %s"
-msgstr ""
+msgstr "Eigenschap %s op widget %s wordt ingeschakeld"
 
 #: ../gladeui/glade-command.c:460 ../gladeui/glade-command.c:516
 #, c-format
 msgid "Disabling property %s on widget %s"
-msgstr ""
+msgstr "Eigenschap %s op widget %s wordt uitgeschakeld"
 
 # ui/galeon.glade.h:157
 #: ../gladeui/glade-command.c:801
@@ -1517,7 +1554,7 @@ msgstr "Of het widget onderdeel is van een samengesteld widget"
 #: ../gladeui/glade-command.c:1393
 #, c-format
 msgid "%s is locked by %s, edit %s first."
-msgstr ""
+msgstr "%s is vergrendeld door %s, bewerk eerst %s."
 
 #: ../gladeui/glade-command.c:1409
 #, c-format
@@ -1534,9 +1571,9 @@ msgid "Create %s"
 msgstr "%s maken"
 
 #: ../gladeui/glade-command.c:1848
-#, fuzzy, c-format
+#, c-format
 msgid "Delete %s"
-msgstr "Inschrijving verwijderen?"
+msgstr "%s verwijderen"
 
 #: ../gladeui/glade-command.c:1874
 #, c-format
@@ -1556,7 +1593,7 @@ msgstr "Verslepen van ‘%s’ naar ‘%s’"
 
 #: ../gladeui/glade-command.c:2021
 msgid "root"
-msgstr ""
+msgstr "root"
 
 #: ../gladeui/glade-command.c:2145
 #, fuzzy, c-format
@@ -1576,17 +1613,17 @@ msgstr "Wijzigingen in profiel %s"
 #: ../gladeui/glade-command.c:2364
 #, c-format
 msgid "Setting i18n metadata"
-msgstr ""
+msgstr "i18n-metadata worden ingesteld"
 
 #: ../gladeui/glade-command.c:2481
 #, c-format
 msgid "Locking %s by widget %s"
-msgstr ""
+msgstr "%s wordt vergrendeld door widget %s"
 
 #: ../gladeui/glade-command.c:2522
 #, c-format
 msgid "Unlocking %s"
-msgstr ""
+msgstr "%s wordt ontgrendeld"
 
 #: ../gladeui/glade-command.c:2644 ../gladeui/glade-command.c:2687
 #, fuzzy, c-format
@@ -1612,16 +1649,16 @@ msgstr "Instellingen voor \"%s\""
 #: ../gladeui/glade-command.c:3009
 #, c-format
 msgid "Unsetting widget '%s' as template"
-msgstr ""
+msgstr "Widget ‘%s’ wordt verwijderd als sjabloon"
 
 #: ../gladeui/glade-command.c:3012
 #, c-format
 msgid "Setting widget '%s' as template"
-msgstr ""
+msgstr "Widget ‘%s’ wordt ingesteld als sjabloon"
 
 #: ../gladeui/glade-command.c:3015
 msgid "Unsetting template"
-msgstr ""
+msgstr "Sjabloon wordt verwijderd"
 
 #: ../gladeui/glade-cursor.c:186
 #, fuzzy, c-format
@@ -1666,7 +1703,7 @@ msgstr ""
 
 #: ../gladeui/glade-editor.c:251
 msgid "Show Class Field"
-msgstr ""
+msgstr "Klasseveld tonen"
 
 #: ../gladeui/glade-editor.c:252
 msgid "Whether to show the class field at the top"
@@ -1678,7 +1715,7 @@ msgstr "Klasseveld"
 
 #: ../gladeui/glade-editor.c:259
 msgid "The class field string"
-msgstr ""
+msgstr "De klasseveldtekenreeks"
 
 #: ../gladeui/glade-editor.c:264
 msgid "Show Border"
@@ -1822,18 +1859,16 @@ msgstr ""
 
 #: ../gladeui/glade-editor-property.c:739 ../gladeui/glade-property-shell.c:143
 msgid "Disable Check"
-msgstr ""
+msgstr "Controle uitschakelen"
 
 #: ../gladeui/glade-editor-property.c:740 ../gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
-msgstr ""
+msgstr "Bepaalt of de controleknop uitdrukkelijk uitgeschakeld moet worden"
 
 #: ../gladeui/glade-editor-property.c:746 ../gladeui/glade-property-label.c:152
 #: ../gladeui/glade-property-shell.c:137
-#, fuzzy
-#| msgid "Custom widget"
 msgid "Custom Text"
-msgstr "Aangepast grafisch element"
+msgstr "Aangepaste tekst"
 
 #: ../gladeui/glade-editor-property.c:747 ../gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
@@ -1848,10 +1883,8 @@ msgid "Select Fields"
 msgstr "Map selecteren"
 
 #: ../gladeui/glade-editor-property.c:1323
-#, fuzzy
-#| msgid "Close"
 msgid "_Close"
-msgstr "Sluiten"
+msgstr "Sl_uiten"
 
 #: ../gladeui/glade-editor-property.c:1336
 msgid "_Select individual fields:"
@@ -1866,9 +1899,8 @@ msgid "Select Named Icon"
 msgstr "Map selecteren"
 
 #: ../gladeui/glade-editor-property.c:1992
-#, fuzzy
 msgid "Edit Text"
-msgstr "Tekst bewerken eigenschap"
+msgstr "Tekst bewerken"
 
 #. Text
 #: ../gladeui/glade-editor-property.c:2015
@@ -1886,10 +1918,8 @@ msgid "Whether this property is translatable"
 msgstr "Of het verkenningsvenster zichtbaar is of niet."
 
 #: ../gladeui/glade-editor-property.c:2065
-#, fuzzy
-#| msgid "Comment for translators"
 msgid "Conte_xt for translation:"
-msgstr "Opmerking voor vertalers"
+msgstr "Vertaalconte_xt:"
 
 #: ../gladeui/glade-editor-property.c:2071
 msgid ""
@@ -1899,19 +1929,16 @@ msgid ""
 msgstr ""
 
 #: ../gladeui/glade-editor-property.c:2103
-#, fuzzy
 msgid "Co_mments for translators:"
-msgstr "<b>Op_merkingen voor vertalers:</b>"
+msgstr "Op_merkingen voor vertalers:"
 
 #: ../gladeui/glade-editor-property.c:2194
 msgid "Select a file from the project resource directory"
 msgstr ""
 
 #: ../gladeui/glade-editor-property.c:2199 ../gladeui/glade-utils.c:486
-#, fuzzy
-#| msgid "Open"
 msgid "_Open"
-msgstr "Openen"
+msgstr "_Openen"
 
 #. GtkInputPurpose enumeration value
 #: ../gladeui/glade-editor-property.c:3055
@@ -1959,9 +1986,8 @@ msgid "O_bjects:"
 msgstr "O_bjecten:"
 
 #: ../gladeui/glade-editor-property.c:3249
-#, fuzzy
 msgid "_New"
-msgstr "Naam"
+msgstr "_Nieuw"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
 #: ../gladeui/glade-editor-property.c:3398
@@ -1975,23 +2001,20 @@ msgid "Objects:"
 msgstr "Objecten:"
 
 #: ../gladeui/glade-editor-table.c:121
-#, fuzzy
 msgid "Page Type"
-msgstr "Afbeeldingstypen"
+msgstr "Paginatype"
 
 #: ../gladeui/glade-editor-table.c:122
 msgid "The editor page type to create this GladeEditorTable for"
 msgstr ""
 
 #: ../gladeui/glade-editor-table.c:305
-#, fuzzy
-#| msgid "Class"
 msgid "Class Name:"
-msgstr "Klasse"
+msgstr "Klassenaam:"
 
 #: ../gladeui/glade-editor-table.c:575
 msgid "The object's unique identifier"
-msgstr ""
+msgstr "De unieke identificatie van het object"
 
 #: ../gladeui/glade-editor-table.c:587 ../gladeui/glade-widget.c:1435
 msgid "Composite"
@@ -1999,7 +2022,7 @@ msgstr "Samengesteld"
 
 #: ../gladeui/glade-editor-table.c:589
 msgid "Whether this widget is a composite template"
-msgstr ""
+msgstr "Of deze widget een samengesteld sjabloon is"
 
 #: ../gladeui/glade-inspector.c:196 ../gladeui/glade-project-properties.c:168
 #: ../gladeui/glade-widget.c:1370
@@ -2022,9 +2045,8 @@ msgid "Expand all"
 msgstr "Alles uitvouwen"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:482
-#, fuzzy
 msgid "All Contexts"
-msgstr "Hoofdcontext"
+msgstr "Alle contexten"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1369
 msgid "Named Icon Chooser"
@@ -2032,48 +2054,42 @@ msgstr ""
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1397
-#, fuzzy
 msgid "Icon _Name:"
-msgstr "Pictogram"
+msgstr "Pictogram_naam:"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1441
-#, fuzzy
-#| msgid "_Contents"
 msgid "C_ontexts:"
-msgstr "In_houd"
+msgstr "C_ontexten:"
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1464
-#, fuzzy
 msgid "Icon Na_mes:"
-msgstr "Pictogram"
+msgstr "Pictogramna_men:"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1488
 msgid "_List standard icons only"
 msgstr ""
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1688
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create directory: %s"
-msgstr "Kon icoonbestand niet maken ...\n"
+msgstr "Kon map niet aanmaken: %s"
 
 #: ../gladeui/glade-object-stub.c:99
-#, fuzzy
 msgid "Delete"
-msgstr "Inschrijving verwijderen?"
+msgstr "Verwijderen"
 
 #: ../gladeui/glade-object-stub.c:101
 msgid "Delete All"
 msgstr "Alles verwijderen"
 
 #: ../gladeui/glade-palette.c:639
-#, fuzzy
 msgid "Widget selector"
-msgstr "Geen afbeelding geselecteerd"
+msgstr "Widgetselectie"
 
 #: ../gladeui/glade-popup.c:381
 msgid "_Add widget here"
-msgstr ""
+msgstr "Voeg hier een _widget toe"
 
 #: ../gladeui/glade-popup.c:386 ../gladeui/glade-popup.c:545
 msgid "Add widget as _toplevel"
@@ -2097,9 +2113,8 @@ msgid "_Paste"
 msgstr "_Plakken"
 
 #: ../gladeui/glade-popup.c:417
-#, fuzzy
 msgid "_Delete"
-msgstr "Inschrijving verwijderen?"
+msgstr "Verwij_deren"
 
 #: ../gladeui/glade-popup.c:549 ../gladeui/glade-popup.c:624
 msgid "Read _documentation"
@@ -2159,15 +2174,15 @@ msgstr ""
 
 #: ../gladeui/glade-previewer.c:791
 msgid "Run First"
-msgstr ""
+msgstr "Eerst uitvoeren"
 
 #: ../gladeui/glade-previewer.c:796
 msgid "Run Last"
-msgstr ""
+msgstr "Laatst uitvoeren"
 
 #: ../gladeui/glade-previewer.c:801
 msgid "Run Cleanup"
-msgstr ""
+msgstr "Opruiming uitvoeren"
 
 #: ../gladeui/glade-previewer-main.c:69
 #, c-format
@@ -2177,7 +2192,7 @@ msgstr ""
 #: ../gladeui/glade-previewer-main.c:79
 #, c-format
 msgid "Object %s not found in UI definition.\n"
-msgstr ""
+msgstr "Object %s niet gevonden in UI-definitie.\n"
 
 #: ../gladeui/glade-previewer-main.c:85
 #, c-format
@@ -2187,7 +2202,7 @@ msgstr ""
 #: ../gladeui/glade-previewer-main.c:145 ../gladeui/glade-previewer-main.c:396
 #, c-format
 msgid "Couldn't load builder definition: %s"
-msgstr ""
+msgstr "Kon builder-definitie niet laden: %s"
 
 #: ../gladeui/glade-previewer-main.c:177 ../gladeui/glade-previewer-main.c:197
 #, c-format
@@ -2197,7 +2212,7 @@ msgstr "Fout: %s.\n"
 #: ../gladeui/glade-previewer-main.c:227
 #, c-format
 msgid "Broken pipe!\n"
-msgstr ""
+msgstr "Gebroken pipe!\n"
 
 #: ../gladeui/glade-previewer-main.c:299
 msgid "Name of the file to preview"
@@ -2213,7 +2228,7 @@ msgstr ""
 
 #: ../gladeui/glade-previewer-main.c:302
 msgid "File name to save a screenshot"
-msgstr ""
+msgstr "Bestandsnaam om een schermafdruk op te slaan"
 
 #: ../gladeui/glade-previewer-main.c:303
 msgid "CSS file to use"
@@ -2256,7 +2271,7 @@ msgstr ""
 
 #: ../gladeui/glade-project.c:958
 msgid "Whether project has been modified since it was last saved"
-msgstr ""
+msgstr "Of het project gewijzigd is sinds het laatst werd opgeslagen"
 
 #: ../gladeui/glade-project.c:964
 msgid "Has Selection"
@@ -2272,7 +2287,7 @@ msgstr "Pad"
 
 #: ../gladeui/glade-project.c:972
 msgid "The filesystem path of the project"
-msgstr ""
+msgstr "Het bestandssysteempad van het project"
 
 #: ../gladeui/glade-project.c:978
 msgid "Read Only"
@@ -2312,7 +2327,7 @@ msgstr "Vertaaldomein"
 
 #: ../gladeui/glade-project.c:1001
 msgid "The project translation domain"
-msgstr ""
+msgstr "Het vertaaldomein van het project"
 
 #: ../gladeui/glade-project.c:1007 ../gladeui/glade-widget.c:1393
 msgid "Template"
@@ -2323,9 +2338,8 @@ msgid "The project's template widget, if any"
 msgstr ""
 
 #: ../gladeui/glade-project.c:1014
-#, fuzzy
 msgid "Resource Path"
-msgstr "Parent"
+msgstr "Bronpad"
 
 #: ../gladeui/glade-project.c:1015
 msgid "Path to load images and resources in Glade's runtime"
@@ -2338,14 +2352,16 @@ msgstr "Licentie"
 #: ../gladeui/glade-project.c:1022
 msgid "License for this project, it will be added as a document level comment."
 msgstr ""
+"Licentie voor dit project, deze wordt toegevoegd als opmerking op "
+"documentniveau."
 
 #: ../gladeui/glade-project.c:1028
 msgid "CSS Provider Path"
-msgstr ""
+msgstr "CSS-leverancierpad"
 
 #: ../gladeui/glade-project.c:1029
 msgid "Path to use as the custom CSS provider for this project."
-msgstr ""
+msgstr "Pad om te gebruiken als aangepaste CSS-leverancier voor dit project."
 
 #: ../gladeui/glade-project.c:1126
 #, c-format
@@ -2374,12 +2390,14 @@ msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
+"Laden van %s is mislukt.\n"
+"De volgende vereiste catalogi zijn niet beschikbaar: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
 #: ../gladeui/glade-project.c:1873
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
-msgstr ""
+msgstr "%s targets Gtk+ %d.%d"
 
 #: ../gladeui/glade-project.c:1912
 msgid "Specially because there is an object that can not be build with type "
@@ -2413,9 +2431,9 @@ msgid ""
 msgstr ""
 
 #: ../gladeui/glade-project.c:2143
-#, fuzzy, c-format
+#, c-format
 msgid "%s document properties"
-msgstr "Eigenschappen resetten"
+msgstr "%s-documenteigenschappen"
 
 #. ******************************************************************
 #. Verify code here (versioning, incompatability checks)
@@ -2472,10 +2490,8 @@ msgstr ""
 
 # afgeschreven/verouderd
 #: ../gladeui/glade-project.c:3035
-#, fuzzy
-#| msgid "This widget is deprecated"
 msgid "This property is deprecated"
-msgstr "Dit widget is verouderd"
+msgstr "Deze eigenschap is verouderd"
 
 #. translators: refers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:3038
@@ -2500,10 +2516,8 @@ msgstr ""
 
 # afgeschreven/verouderd
 #: ../gladeui/glade-project.c:3049
-#, fuzzy
-#| msgid "This widget is deprecated"
 msgid "This signal is deprecated"
-msgstr "Dit widget is verouderd"
+msgstr "Dit signaal is verouderd"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:3052
@@ -2518,27 +2532,29 @@ msgstr "Gegevens"
 #: ../gladeui/glade-project.c:3366
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
-msgstr ""
+msgstr "Project ‘%s’ bevat fouten. Toch opslaan?"
 
 #: ../gladeui/glade-project.c:3367
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
-msgstr ""
+msgstr "Project ‘%s’ bevat verouderde widgets en/of incongruente versies."
 
 #: ../gladeui/glade-project.c:3392
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr ""
+"Object %s is een klassesjabloon, maar dit wordt niet ondersteund door gtk+ "
+"%d.%d"
 
 #: ../gladeui/glade-project.c:3407
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
-msgstr ""
+msgstr "Object %s heeft niet-herkend type %s\n"
 
 #: ../gladeui/glade-project.c:4872
 #, c-format
 msgid "Unsaved %i"
-msgstr ""
+msgstr "Niet-opgeslagen %i"
 
 #: ../gladeui/glade-project.c:5171 ../gladeui/glade-project.c:5222
 #: ../gladeui/glade-project.c:5379
@@ -2565,14 +2581,12 @@ msgid "Unable to paste to multiple widgets"
 msgstr "Plakken in selectie niet mogelijk"
 
 #: ../gladeui/glade-project.c:5292
-#, fuzzy
 msgid "No widget on the clipboard"
-msgstr "Kopieer de locatie van de afbeelding naar het klembord"
+msgstr "Geen widget in het klembord"
 
 #: ../gladeui/glade-project.c:5337
-#, fuzzy
 msgid "Only one widget can be pasted at a time to this container"
-msgstr "Alleen menu items kunnen geplakt worden in een menu of een menubalk."
+msgstr "Er kan slechts één widget tegelijk in deze container geplakt worden"
 
 #: ../gladeui/glade-project.c:5349
 #, fuzzy
@@ -2581,16 +2595,16 @@ msgstr "Onvoldoende geheugen om afbeelding in een buffer op te slaan"
 
 #: ../gladeui/glade-project-properties.c:169
 msgid "The project this properties dialog was created for"
-msgstr ""
+msgstr "Het project waarvoor deze eigenschappendialoog gemaakt is"
 
 #: ../gladeui/glade-project-properties.c:620
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
-msgstr ""
+msgstr "Project %s bevat geen verouderde widgets of incongruente versies."
 
 #: ../gladeui/glade-property.c:648
 msgid "The GladePropertyClass for this property"
-msgstr ""
+msgstr "De Glade-eigenschapsklasse voor deze eigenschap"
 
 #: ../gladeui/glade-property.c:653
 msgid "Enabled"
@@ -2598,7 +2612,7 @@ msgstr "Ingeschakeld"
 
 #: ../gladeui/glade-property.c:654
 msgid "If the property is optional, this is its enabled state"
-msgstr ""
+msgstr "Als de eigenschap optioneel is, is dit de ingeschakelde staat ervan"
 
 # hoofdlettergevoelig?
 #: ../gladeui/glade-property.c:659 ../gladeui/glade-widget-action.c:190
@@ -2610,16 +2624,12 @@ msgid "This gives backends control to set property sensitivity"
 msgstr ""
 
 #: ../gladeui/glade-property.c:665
-#, fuzzy
-#| msgid "Content"
 msgid "Context"
-msgstr "Inhoud"
+msgstr "Context"
 
 #: ../gladeui/glade-property.c:666
-#, fuzzy
-#| msgid "Comment for translators"
 msgid "Context for translation"
-msgstr "Opmerking voor vertalers"
+msgstr "Vertaalcontext"
 
 #. AtkRole enumeration value
 #: ../gladeui/glade-property.c:672 ../plugins/gtk+/gtk+.xml.in.h:272
@@ -2635,9 +2645,8 @@ msgid "Translatable"
 msgstr "Vertaalbaar"
 
 #: ../gladeui/glade-property.c:686
-#, fuzzy
 msgid "Visual State"
-msgstr "Verticale schaal"
+msgstr "Visuele status"
 
 #: ../gladeui/glade-property.c:687
 msgid "Priority information for the property editor to act on"
@@ -2648,7 +2657,6 @@ msgid "The GladeProperty to display a label for"
 msgstr ""
 
 #: ../gladeui/glade-property-label.c:125 ../gladeui/glade-property-shell.c:113
-#, fuzzy
 msgid "Property Name"
 msgstr "Eigenschapnaam"
 
@@ -2690,7 +2698,7 @@ msgstr "Of het verkenningsvenster zichtbaar is of niet."
 
 #: ../gladeui/glade-property-label.c:153
 msgid "Custom text to override the property name"
-msgstr ""
+msgstr "Aangepaste tekst om de eigenschapsnaam te overschrijven"
 
 # zwevende tip/werktip/uitlegtip/tooltip
 # bij discussie vonden veel mensen 'zwevende tip' mooi
@@ -2702,7 +2710,7 @@ msgstr "Zwevende tip"
 
 #: ../gladeui/glade-property-label.c:159
 msgid "Custom tooltip to override the property description"
-msgstr ""
+msgstr "Aangepaste zwevende tip om de eigenschapsbeschrijving te overschrijven"
 
 #: ../gladeui/glade-property-shell.c:126
 #, fuzzy
@@ -2859,7 +2867,7 @@ msgstr ""
 
 #: ../gladeui/glade-widget-action.c:191
 msgid "Whether this action is sensitive"
-msgstr ""
+msgstr "Of deze actie gevoelig is"
 
 #: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1430
 #: ../plugins/gtk+/gtk+.xml.in.h:933
@@ -2868,7 +2876,7 @@ msgstr "Zichtbaar"
 
 #: ../gladeui/glade-widget-action.c:198
 msgid "Whether this action is visible"
-msgstr ""
+msgstr "Of deze actie zichtbaar is"
 
 #: ../gladeui/glade-widget-adaptor.c:243
 #, c-format
@@ -2883,11 +2891,11 @@ msgstr "Dit widget wordt niet ondersteund door GtkBuilder"
 
 #: ../gladeui/glade-widget-adaptor.c:1448
 msgid "Name of the class"
-msgstr ""
+msgstr "Naam van de klasse"
 
 #: ../gladeui/glade-widget-adaptor.c:1455
 msgid "GType of the class"
-msgstr ""
+msgstr "GType van de klasse"
 
 #: ../gladeui/glade-widget-adaptor.c:1461
 msgid "Title"
@@ -2899,14 +2907,12 @@ msgstr ""
 
 # generieke/algemene
 #: ../gladeui/glade-widget-adaptor.c:1468
-#, fuzzy
 msgid "Generic Name"
 msgstr "Algemene naam"
 
 #: ../gladeui/glade-widget-adaptor.c:1469
-#, fuzzy
 msgid "Used to generate names of new widgets"
-msgstr "De naam van het widget"
+msgstr "Wordt gebruikt om namen aan nieuwe widgets te geven"
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../gladeui/glade-widget-adaptor.c:1475 ../plugins/gtk+/gtk+.xml.in.h:663
@@ -2916,9 +2922,8 @@ msgstr "Pictogram"
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../gladeui/glade-widget-adaptor.c:1476
-#, fuzzy
 msgid "The icon name"
-msgstr "Pictogram"
+msgstr "De pictogramnaam"
 
 #: ../gladeui/glade-widget-adaptor.c:1482
 msgid "Catalog"
@@ -2929,9 +2934,8 @@ msgid "The name of the widget catalog this class was declared by"
 msgstr ""
 
 #: ../gladeui/glade-widget-adaptor.c:1489
-#, fuzzy
 msgid "Book"
-msgstr "Opzoeken"
+msgstr "Boek"
 
 #: ../gladeui/glade-widget-adaptor.c:1490
 msgid "DevHelp search namespace for this widget class"
@@ -2992,9 +2996,8 @@ msgstr "Object"
 
 # steen/object
 #: ../gladeui/glade-widget.c:1359
-#, fuzzy
 msgid "The object associated"
-msgstr "%d object geselecteerd"
+msgstr "Het bijbehorende object"
 
 #: ../gladeui/glade-widget.c:1364
 #, fuzzy
@@ -3014,9 +3017,8 @@ msgid "The glade project that this widget belongs to"
 msgstr "Het keuzerondje wiens groep dit widget toebehoort."
 
 #: ../gladeui/glade-widget.c:1378
-#, fuzzy
 msgid "A list of GladeProperties"
-msgstr "Aflevering eigenschappen"
+msgstr "Een lijst met Glade-eigenschappen"
 
 # Parent/moeder/ouder/bovenliggende
 #. GtkResizeMode enumeration value
@@ -3060,7 +3062,7 @@ msgstr ""
 
 #: ../gladeui/glade-widget.c:1413
 msgid "Toplevel Width"
-msgstr ""
+msgstr "Topniveaubreedte"
 
 #: ../gladeui/glade-widget.c:1414
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
@@ -3068,7 +3070,7 @@ msgstr ""
 
 #: ../gladeui/glade-widget.c:1419
 msgid "Toplevel Height"
-msgstr ""
+msgstr "Topniveauhoogte"
 
 #: ../gladeui/glade-widget.c:1420
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
@@ -3101,23 +3103,23 @@ msgstr ""
 #: ../gladeui/glade-widget.c:4812
 #, c-format
 msgid "Object has unrecognized type %s"
-msgstr ""
+msgstr "Object heeft niet-herkend type %s"
 
 #: ../gladeui/glade-widget.c:4878
 msgid "Property has versioning problems: "
-msgstr ""
+msgstr "Eigenschap heeft versieproblemen: "
 
 #: ../gladeui/glade-widget.c:4880
 msgid "Some properties have versioning problems: "
-msgstr ""
+msgstr "Sommige eigenschappen hebben versieproblemen: "
 
 #: ../gladeui/glade-widget.c:4900
 msgid "Signal has versioning problems: "
-msgstr ""
+msgstr "Signaal heeft versieproblemen: "
 
 #: ../gladeui/glade-widget.c:4902
 msgid "Some signals have versioning problems: "
-msgstr ""
+msgstr "Sommige signalen hebben versieproblemen: "
 
 #: ../gladeui/icon-naming-spec.c:38
 #, fuzzy
@@ -3163,7 +3165,7 @@ msgstr "Status"
 
 #: ../gladeui/glade-adaptor-chooser.ui.h:1
 msgid "All available widgets and objects"
-msgstr ""
+msgstr "Alle beschikbare widgets en objecten"
 
 #: ../gladeui/glade-adaptor-chooser.ui.h:2
 msgid ""
@@ -3177,7 +3179,7 @@ msgstr ""
 
 #: ../gladeui/glade-adaptor-chooser.ui.h:5
 msgid "Extra GTK+ objects"
-msgstr ""
+msgstr "Extra GTK+-objecten"
 
 #: ../gladeui/glade-editor.ui.h:1
 msgid "_General"
@@ -3200,7 +3202,7 @@ msgstr "_Signalen"
 
 #: ../gladeui/glade-project-properties.ui.h:1
 msgid "Translation domain:"
-msgstr ""
+msgstr "Vertaaldomein:"
 
 #: ../gladeui/glade-project-properties.ui.h:2
 msgid "Composite template toplevel:"
@@ -3208,11 +3210,11 @@ msgstr ""
 
 #: ../gladeui/glade-project-properties.ui.h:3
 msgid "Select a CSS to use as custom style provider"
-msgstr ""
+msgstr "Selecteer een CSS om te gebruiken als aangepaste stijlleverancier"
 
 #: ../gladeui/glade-project-properties.ui.h:4
 msgid "Custom CSS style provider:"
-msgstr ""
+msgstr "Aangepaste CSS-stijlleverancier:"
 
 #: ../gladeui/glade-project-properties.ui.h:5
 #, fuzzy
@@ -3226,19 +3228,19 @@ msgstr "Kon icoonbestand niet maken ...\n"
 
 #: ../gladeui/glade-project-properties.ui.h:7
 msgid "From this directory"
-msgstr ""
+msgstr "Van deze map"
 
 #: ../gladeui/glade-project-properties.ui.h:8
 msgid "Choose a path to load image resources"
-msgstr ""
+msgstr "Kies een pad om afbeeldingsbronnen te laden"
 
 #: ../gladeui/glade-project-properties.ui.h:9
 msgid "Image resources are loaded locally:"
-msgstr ""
+msgstr "Afbeeldingsbronnen worden lokaal geladen:"
 
 #: ../gladeui/glade-project-properties.ui.h:10
 msgid "Toolkit version required:"
-msgstr ""
+msgstr "Vereiste toolkitversie:"
 
 #: ../gladeui/glade-project-properties.ui.h:13
 msgid "Copyright:"
@@ -3246,7 +3248,7 @@ msgstr "Copyright:"
 
 #: ../gladeui/glade-project-properties.ui.h:14
 msgid "program or library name"
-msgstr ""
+msgstr "programma- of bibliotheeknaam"
 
 #: ../gladeui/glade-project-properties.ui.h:15
 msgid "Author(s):"
@@ -3324,15 +3326,15 @@ msgstr "Instellingen voor \"%s\""
 
 #: ../plugins/gtk+/glade-accels.c:323 ../plugins/gtk+/glade-accels.c:395
 msgid "<choose a key>"
-msgstr ""
+msgstr "<kies een toets>"
 
 #: ../plugins/gtk+/glade-accels.c:467
 msgid "Accelerator Key"
-msgstr ""
+msgstr "Sneltoets"
 
 #: ../plugins/gtk+/glade-accels.c:520
 msgid "Choose accelerator keys..."
-msgstr ""
+msgstr "Kies sneltoetsen…"
 
 #: ../plugins/gtk+/glade-action-bar-editor.c:128
 #: ../plugins/gtk+/glade-box-editor.c:133
@@ -3349,7 +3351,7 @@ msgstr ""
 #: ../plugins/gtk+/glade-attributes.c:224
 msgctxt "textattr"
 msgid "Style"
-msgstr ""
+msgstr "Stijl"
 
 #: ../plugins/gtk+/glade-attributes.c:228
 #, fuzzy
@@ -3361,12 +3363,12 @@ msgstr "Rechts"
 #: ../plugins/gtk+/glade-attributes.c:232
 msgctxt "textattr"
 msgid "Variant"
-msgstr ""
+msgstr "Variant"
 
 #: ../plugins/gtk+/glade-attributes.c:236
 msgctxt "textattr"
 msgid "Stretch"
-msgstr ""
+msgstr "Uitrekken"
 
 #: ../plugins/gtk+/glade-attributes.c:240
 #, fuzzy
@@ -3377,17 +3379,17 @@ msgstr "Onderstreept:"
 #: ../plugins/gtk+/glade-attributes.c:244
 msgctxt "textattr"
 msgid "Strikethrough"
-msgstr ""
+msgstr "Doorstrepen"
 
 #: ../plugins/gtk+/glade-attributes.c:248
 msgctxt "textattr"
 msgid "Gravity"
-msgstr ""
+msgstr "Zwaartekracht"
 
 #: ../plugins/gtk+/glade-attributes.c:252
 msgctxt "textattr"
 msgid "Gravity Hint"
-msgstr ""
+msgstr "Zwaartekrachthint"
 
 #: ../plugins/gtk+/glade-attributes.c:263
 #, fuzzy
@@ -3399,7 +3401,7 @@ msgstr "Grootte"
 #: ../plugins/gtk+/glade-attributes.c:267
 msgctxt "textattr"
 msgid "Absolute Size"
-msgstr ""
+msgstr "Absolute grootte"
 
 #: ../plugins/gtk+/glade-attributes.c:274
 #, fuzzy
@@ -3424,7 +3426,7 @@ msgstr "Onderstreept:"
 #: ../plugins/gtk+/glade-attributes.c:286
 msgctxt "textattr"
 msgid "Strikethrough Color"
-msgstr ""
+msgstr "Doorstrepingskleur"
 
 #: ../plugins/gtk+/glade-attributes.c:296
 #, fuzzy
@@ -3449,7 +3451,7 @@ msgstr "Waarden invoeren"
 
 #: ../plugins/gtk+/glade-attributes.c:363
 msgid "Unset"
-msgstr ""
+msgstr "Niet instellen"
 
 #
 # Common stuff for the templates
@@ -3468,7 +3470,7 @@ msgstr "Selecteren"
 
 #: ../plugins/gtk+/glade-attributes.c:894
 msgid "Attribute"
-msgstr ""
+msgstr "Attribuut"
 
 #: ../plugins/gtk+/glade-attributes.c:902
 msgid "Value"
@@ -3476,11 +3478,11 @@ msgstr "Waarde"
 
 #: ../plugins/gtk+/glade-attributes.c:1057
 msgid "Setup Text Attributes"
-msgstr ""
+msgstr "Stel tekstattributen in"
 
 #: ../plugins/gtk+/glade-attributes.c:1149
 msgid "Edit Attributes"
-msgstr ""
+msgstr "Attributen bewerken"
 
 #: ../plugins/gtk+/glade-button-editor.c:241
 #, fuzzy, c-format
@@ -3522,7 +3524,7 @@ msgstr ""
 #. translators: the adjective not the verb
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:514
 msgid "unset"
-msgstr ""
+msgstr "niet instellen"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:537
 msgid "no model"
@@ -3538,11 +3540,11 @@ msgstr "Bezig met ophalen %d van %d"
 
 #: ../plugins/gtk+/glade-column-types.c:503
 msgid "< define a new column >"
-msgstr ""
+msgstr "< definieer een nieuwe kolom >"
 
 #: ../plugins/gtk+/glade-column-types.c:826
 msgid "Add and remove columns:"
-msgstr ""
+msgstr "Voeg kolommen toe of verwijder er:"
 
 #: ../plugins/gtk+/glade-column-types.c:878
 #, fuzzy
@@ -3562,62 +3564,79 @@ msgstr "Instellingen voor \"%s\""
 #: ../plugins/gtk+/glade-entry-editor.c:287
 #, c-format
 msgid "Setting %s to use an external buffer"
-msgstr ""
+msgstr "%s wordt ingesteld om een externe buffer te gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:371
 #, c-format
 msgid "Setting %s to use a primary icon from stock"
 msgstr ""
+"%s wordt ingesteld om een primair pictogram uit de voorraad te gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:397
 #, c-format
 msgid "Setting %s to use a primary icon from the icon theme"
 msgstr ""
+"%s wordt ingesteld om een primair pictogram uit het pictogramthema te "
+"gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:423
 #, c-format
 msgid "Setting %s to use a primary icon from filename"
 msgstr ""
+"%s wordt ingesteld om een primair pictogram uit de bestandsnaam te gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:449
 #, c-format
 msgid "Setting %s to use a secondary icon from stock"
 msgstr ""
+"%s wordt ingesteld om een secundair pictogram uit de voorraad te gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:476
 #, c-format
 msgid "Setting %s to use a secondary icon from the icon theme"
 msgstr ""
+"%s wordt ingesteld om een secundair pictogram uit het pictogramthema te "
+"gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:502
 #, c-format
 msgid "Setting %s to use a secondary icon from filename"
 msgstr ""
+"%s wordt ingesteld om een secundair pictogram uit de bestandsnaam te "
+"gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:571
 #, c-format
 msgid "Setting primary icon of %s to use tooltip markup"
 msgstr ""
+"Het primaire pictogram van %s wordt ingesteld om markup in de zwevende tip "
+"te gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:574
 #, c-format
 msgid "Setting secondary icon of %s to use tooltip markup"
 msgstr ""
+"Het secundaire pictogram van %s wordt ingesteld om markup in de zwevende tip "
+"te gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:587
 #, c-format
 msgid "Setting primary icon of %s to not use tooltip markup"
 msgstr ""
+"Het primaire pictogram van %s wordt ingesteld om geen markup in de zwevende "
+"tip te gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.c:590
 #, c-format
 msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr ""
+"Het secundaire pictogram van %s wordt ingesteld om geen markup in de "
+"zwevende tip te gebruiken"
 
 #: ../plugins/gtk+/glade-fixed.c:623 ../plugins/gtk+/glade-gtk-grid.c:1018
 #, c-format
 msgid "Placing %s inside %s"
-msgstr ""
+msgstr "%s wordt in %s geplaatst"
 
 #: ../plugins/gtk+/glade-fixed.c:1137
 #, fuzzy
@@ -3703,15 +3722,15 @@ msgstr "Recent"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:226
 msgid "Action Group Editor"
-msgstr ""
+msgstr "Actiegroepbewerker"
 
 #: ../plugins/gtk+/glade-gtk-assistant.c:195
 msgid "Introduction page"
-msgstr ""
+msgstr "Introductiepagina"
 
 #: ../plugins/gtk+/glade-gtk-assistant.c:199
 msgid "Content page"
-msgstr ""
+msgstr "Inhoudspagina"
 
 #: ../plugins/gtk+/glade-gtk-assistant.c:203
 msgid "Confirmation page"
@@ -3775,9 +3794,8 @@ msgstr "Pixbuf"
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:416
 #: ../plugins/gtk+/glade-gtk-tree-view.c:90 ../plugins/gtk+/gtk+.xml.in.h:862
 #: ../plugins/gtk+/glade-entry-editor.ui.h:4
-#, fuzzy
 msgid "Progress"
-msgstr "Voortgangsbalk"
+msgstr "Voortgang"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:418
 #: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:522
@@ -3858,12 +3876,12 @@ msgstr "Kolom invoegen"
 #: ../plugins/gtk+/glade-gtk-table.c:538
 #, c-format
 msgid "Insert Row on %s"
-msgstr ""
+msgstr "Rij invoegen op %s"
 
 #: ../plugins/gtk+/glade-gtk-grid.c:510 ../plugins/gtk+/glade-gtk-table.c:541
 #, c-format
 msgid "Insert Column on %s"
-msgstr ""
+msgstr "Kolom invoegen op %s"
 
 #: ../plugins/gtk+/glade-gtk-grid.c:513 ../plugins/gtk+/glade-gtk-table.c:544
 #, fuzzy, c-format
@@ -3930,10 +3948,12 @@ msgstr ""
 #: ../plugins/gtk+/glade-gtk-image.c:106
 msgid "This property only applies to stock images or named icons"
 msgstr ""
+"Deze eigenschap is enkel van toepassingen op voorraadafbeeldingen of "
+"pictogrammen met een naam"
 
 #: ../plugins/gtk+/glade-gtk-image.c:108 ../plugins/gtk+/glade-gtk-image.c:110
 msgid "This property only applies to named icons"
-msgstr ""
+msgstr "Deze eigenschap is enkel van toepassing op pictogrammen met een naam"
 
 #: ../plugins/gtk+/glade-gtk-label.c:257
 msgid "This property only applies if ellipsize and wrapping are enabled"
@@ -3957,15 +3977,13 @@ msgstr "_Hulp"
 
 #: ../plugins/gtk+/glade-gtk-menu-item.c:53
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:173
-#, fuzzy
 msgid "Edit Menu Bar"
-msgstr "Menubalk"
+msgstr "Menubalk bewerken"
 
 #: ../plugins/gtk+/glade-gtk-menu-item.c:55
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:175
-#, fuzzy
 msgid "Edit Menu"
-msgstr "Menu"
+msgstr "Menu bewerken"
 
 #: ../plugins/gtk+/glade-gtk-menu-item.c:142
 #, c-format
@@ -3973,13 +3991,12 @@ msgid "An object of type %s cannot have any children."
 msgstr ""
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:193
-#, fuzzy
 msgid "<separator>"
-msgstr "Scheidingsteken"
+msgstr "<scheidingsteken>"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:207
 msgid "<custom>"
-msgstr ""
+msgstr "<aangepast>"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:245
 msgid "Children cannot be added to a separator."
@@ -3992,45 +4009,37 @@ msgstr ""
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:262
 #, c-format
 msgid "%s already has a menu."
-msgstr ""
+msgstr "%s heeft al een menu."
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:272
 #, c-format
 msgid "%s item already has a submenu."
-msgstr ""
+msgstr "%s item heeft al een submenu."
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:468
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:476
-#, fuzzy
-#| msgid "Normal"
 msgid "Normal item"
-msgstr "Normaal"
+msgstr "Normaal item"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:469
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:477
-#, fuzzy
 msgid "Image item"
-msgstr "Menu Afbeelding"
+msgstr "Afbeeldingsitem"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:470
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:478
-#, fuzzy
-#| msgid "Check Menu Item"
 msgid "Check item"
-msgstr "Check Menu Item"
+msgstr "Vink-item"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:471
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:479
-#, fuzzy
-#| msgid "Radio Menu Item"
 msgid "Radio item"
-msgstr "Radio Menu Item"
+msgstr "Radio-item"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:472
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:480
-#, fuzzy
 msgid "Separator item"
-msgstr "Schijdingslijn voor menus"
+msgstr "Scheidingsitem"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:481
 #: ../plugins/gtk+/glade-gtk-toolbar.c:258
@@ -4068,7 +4077,7 @@ msgstr "Kanaal %s verwijderen"
 #: ../plugins/gtk+/glade-gtk-notebook.c:985
 #, c-format
 msgid "Insert page on %s"
-msgstr ""
+msgstr "Pagina invoegen op %s"
 
 #: ../plugins/gtk+/glade-gtk-progress-bar.c:30
 msgid "This progressbar does not show text"
@@ -4085,7 +4094,7 @@ msgstr "Of het verkenningsvenster zichtbaar is of niet."
 
 #: ../plugins/gtk+/glade-gtk-searchbar.c:72
 msgid "Search bar is already full"
-msgstr ""
+msgstr "Zoekbalk is al gevuld"
 
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:122
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:148
@@ -4166,7 +4175,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:178
 msgid "Group"
-msgstr ""
+msgstr "Groep"
 
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:225
 #, fuzzy
@@ -4195,15 +4204,15 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:288
 msgid "Search is disabled"
-msgstr ""
+msgstr "Zoeken is uitgeschakeld"
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:295
 msgid "Headers are invisible"
-msgstr ""
+msgstr "Hoofdingen zijn onzichtbaar"
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:302
 msgid "Expanders are not shown"
-msgstr ""
+msgstr "Uitvouwers worden niet weergegeven"
 
 #: ../plugins/gtk+/glade-gtk-widget.c:842
 #, fuzzy, c-format
@@ -4223,12 +4232,12 @@ msgstr "%s hernoemen tot %s"
 #: ../plugins/gtk+/glade-gtk-widget.c:1040
 #, c-format
 msgid "Adding %s to a new Size Group"
-msgstr ""
+msgstr "%s wordt toegevoegd aan een nieuwe groottegroep"
 
 #. Add trailing new... item
 #: ../plugins/gtk+/glade-gtk-widget.c:1107
 msgid "New Size Group"
-msgstr ""
+msgstr "Nieuwe groottegroep"
 
 #: ../plugins/gtk+/glade-gtk-window.c:39
 msgid "This property does not apply to client-side decorated windows"
@@ -4266,6 +4275,8 @@ msgid ""
 "First add a stock name in the entry below, then add and define sources for "
 "that icon in the treeview."
 msgstr ""
+"Voeg eerst een voorraadnaam toe aan onderstaand item, en voeg vervolgens "
+"bronnen voor dat pictogram toe in de boomweergave."
 
 #: ../plugins/gtk+/glade-icon-sources.c:757
 #, c-format
@@ -4338,7 +4349,6 @@ msgid "Setting %s to use a stock item"
 msgstr "Instellingen voor \"%s\""
 
 #: ../plugins/gtk+/glade-image-item-editor.c:304
-#, fuzzy
 msgid "Stock Item:"
 msgstr "Voorraaditem:"
 
@@ -4348,16 +4358,13 @@ msgstr ""
 
 #. Label area frame...
 #: ../plugins/gtk+/glade-image-item-editor.c:343
-#, fuzzy
-#| msgid "Label"
 msgid "Edit Label"
-msgstr "Label"
+msgstr "Label bewerken"
 
 #. Internal Image area...
 #: ../plugins/gtk+/glade-image-item-editor.c:379
-#, fuzzy
 msgid "Edit Image"
-msgstr "Standaard ID"
+msgstr "Afbeelding bewerken"
 
 #: ../plugins/gtk+/glade-label-editor.c:214
 #, fuzzy, c-format
@@ -4429,14 +4436,12 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-string-list.c:334
 #: ../plugins/gtk+/glade-string-list.c:379
-#, fuzzy
-#| msgid "<Type here>"
 msgid "<Type Here>"
-msgstr "<Hier typen>"
+msgstr "<Typ hier>"
 
 #: ../plugins/gtk+/glade-string-list.c:597
 msgid "<Enter ID>"
-msgstr ""
+msgstr "<Voer ID in>"
 
 #: ../plugins/gtk+/glade-tool-button-editor.c:165
 #: ../plugins/gtk+/glade-tool-item-group-editor.c:152
@@ -4452,7 +4457,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-tool-item-group-editor.c:232
 msgid "Group Header"
-msgstr ""
+msgstr "Groepshoofding"
 
 #: ../plugins/gtk+/glade-treeview-editor.c:207
 msgid ""
@@ -4502,9 +4507,8 @@ msgid "Page Setup Dialog"
 msgstr "Berichtenlog"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:2
-#, fuzzy
 msgid "Print Dialog"
-msgstr "Invoerdialoog"
+msgstr "Afdrukvenster"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:3
 #, fuzzy
@@ -4527,9 +4531,8 @@ msgid "Reverse"
 msgstr "Nooit"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:7 ../plugins/gtk+/gtk+.xml.in.h:748
-#, fuzzy
 msgid "Scale"
-msgstr "Opslaan"
+msgstr "Schalen"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:8
 #, fuzzy
@@ -4591,7 +4594,7 @@ msgstr "Viewpoort"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:9
 msgid "Event Box"
-msgstr "Event Box"
+msgstr "Eventbox"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:11
@@ -4604,7 +4607,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:13
 msgid "Scrolled Window"
-msgstr "Schuifbaar Venster"
+msgstr "Schuifvenster"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Expander"
@@ -4617,7 +4620,7 @@ msgstr "Raster"
 # box/vak
 #: ../plugins/gtk+/gtk+.xml.in.h:16
 msgid "Box"
-msgstr ""
+msgstr "Box"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:17
 msgid "Paned"
@@ -4629,7 +4632,7 @@ msgstr "Stapel"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:19
 msgid "Add to Size Group"
-msgstr ""
+msgstr "Toevoegen aan groottegroep"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:20
 #, fuzzy
@@ -4643,7 +4646,7 @@ msgstr "Documentatie lezen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:22
 msgid "Style Classes"
-msgstr "Style-klassen"
+msgstr "Stijlklassen"
 
 #. GtkAttachOptions enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:24
@@ -4690,39 +4693,33 @@ msgstr "Rotatie-informatie"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:40
-#, fuzzy
 msgid "Button Motion"
-msgstr "Knoppenstijl opties"
+msgstr "Beweging knop"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:42
-#, fuzzy
 msgid "Button 1 Motion"
-msgstr "Knoppenstijl opties"
+msgstr "Beweging knop 1"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:44
-#, fuzzy
 msgid "Button 2 Motion"
-msgstr "Knoppenstijl opties"
+msgstr "Beweging knop 2"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:46
-#, fuzzy
 msgid "Button 3 Motion"
-msgstr "Knoppenstijl opties"
+msgstr "Beweging knop 3"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:48
-#, fuzzy
 msgid "Button Press"
-msgstr "_Knop ingedrukt"
+msgstr "Knop ingedrukt"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:50
-#, fuzzy
 msgid "Button Release"
-msgstr "_Toets losgelaten"
+msgstr "Knop losgelaten"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:52
@@ -4873,7 +4870,7 @@ msgstr "Pijl"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Calendar"
-msgstr "Kalender"
+msgstr "Agenda"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:102
@@ -4890,12 +4887,12 @@ msgstr "Check knop"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Check Menu Item"
-msgstr "Check Menu Item"
+msgstr "Checkmenu-item"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Color Chooser"
-msgstr ""
+msgstr "Kleurselectie"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:110
@@ -4907,7 +4904,7 @@ msgstr "Kolommenlijst"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Combo Box"
-msgstr "Combo Box"
+msgstr "Keuzemenu"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:114
@@ -4944,7 +4941,7 @@ msgstr "Dialoog"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Directory Pane"
-msgstr ""
+msgstr "Mappaneel"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:126
@@ -4974,7 +4971,7 @@ msgstr "Bestandselectie-dialoog"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Glass Pane"
-msgstr ""
+msgstr "Glazen paneel"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:136
@@ -5001,7 +4998,7 @@ msgstr "Interne naam"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Layered Pane"
-msgstr ""
+msgstr "Gelaagd paneel"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:148
@@ -5028,27 +5025,27 @@ msgstr "Optie-menu"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid "Page Tab"
-msgstr ""
+msgstr "Paginatabblad"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid "Page Tab List"
-msgstr ""
+msgstr "Paginatabbladlijst"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:164
 msgid "Panel"
-msgstr ""
+msgstr "Paneel"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:166
 msgid "Password Text"
-msgstr ""
+msgstr "Wachtwoordtekst"
 
 #. GdkWindowTypeHint enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:168
 msgid "Popup Menu"
-msgstr "Popup-menu"
+msgstr "Pop-upmenu"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:170
@@ -5072,7 +5069,7 @@ msgstr "Radioknop"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "Radio Menu Item"
-msgstr "Radio Menu Item"
+msgstr "Radiomenu-item"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:178
@@ -5084,7 +5081,7 @@ msgstr "Horizontale werkbalken"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Row Header"
-msgstr ""
+msgstr "Rijhoofding"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:182
@@ -5195,7 +5192,7 @@ msgstr "Kop"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:222
 msgid "Footer"
-msgstr ""
+msgstr "Voettekst"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:224
@@ -5218,7 +5215,7 @@ msgstr "Toepassingen"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Autocomplete"
-msgstr ""
+msgstr "Automatisch aanvullen"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:232
@@ -5257,7 +5254,7 @@ msgstr "Glade-opties"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "Document Frame"
-msgstr ""
+msgstr "Documentkader"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:244
@@ -5279,7 +5276,7 @@ msgstr "Pictogrammen"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "Redundant Object"
-msgstr ""
+msgstr "Overbodig object"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:252
@@ -5294,7 +5291,7 @@ msgstr "Verwijzing"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Input Method Window"
-msgstr ""
+msgstr "Invoermethodevenster"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:258
@@ -5313,27 +5310,27 @@ msgstr "Menu-item"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Document Spreadsheet"
-msgstr ""
+msgstr "Rekenbladdocument"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid "Document Presentation"
-msgstr ""
+msgstr "Presentatiedocument"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Document Text"
-msgstr ""
+msgstr "Tekstdocument"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "Document Web"
-msgstr ""
+msgstr "Webdocument"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "Document Email"
-msgstr ""
+msgstr "E-maildocument"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:274
@@ -5345,38 +5342,32 @@ msgstr "Lijst"
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "Grouping"
-msgstr ""
+msgstr "Groepering"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:278
-#, fuzzy
 msgid "Image Map"
-msgstr "Afbeeldingstypen"
+msgstr "Afbeeldingsmap"
 
 #. GdkWindowTypeHint enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:280
-#, fuzzy
 msgid "Notification"
-msgstr "Positie"
+msgstr "Notificatie"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:282
-#, fuzzy
-#| msgid "Info"
 msgid "Info Bar"
-msgstr "Info"
+msgstr "Infobalk"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid "Level Bar"
-msgstr ""
+msgstr "Niveaubalk"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:286
-#, fuzzy
-#| msgid "Title"
 msgid "Title Bar"
-msgstr "Titel"
+msgstr "Titelbalk"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:288
@@ -5400,10 +5391,8 @@ msgstr "Definitie"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:296
-#, fuzzy
-#| msgid "Vertical"
 msgid "Article"
-msgstr "Verticaal"
+msgstr "Artikel"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:298
@@ -5412,9 +5401,8 @@ msgstr "Mijlpaal"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:300
-#, fuzzy
 msgid "Log"
-msgstr "Opzoeken"
+msgstr "Logboek"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:302
@@ -5429,9 +5417,8 @@ msgstr "Wiskunde"
 # Float: getal met drijvende komma....maar dat is te lang.
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:306
-#, fuzzy
 msgid "Rating"
-msgstr "Float"
+msgstr "Beoordeling"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:308
@@ -5440,10 +5427,8 @@ msgstr "Tijd"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:310
-#, fuzzy
-#| msgid "Description For"
 msgid "Description List"
-msgstr "Omschrijving voor"
+msgstr "Omschrijvingslijst"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:312
@@ -5454,17 +5439,14 @@ msgstr "Omschrijving voor"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:314
-#, fuzzy
-#| msgid "Description For"
 msgid "Description Value"
-msgstr "Omschrijving voor"
+msgstr "Omschrijvingswaarde"
 
 # generieke/algemene
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:316
-#, fuzzy
 msgid "Generic object"
-msgstr "Algemene naam"
+msgstr "Algemeen object"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:318
@@ -5480,74 +5462,70 @@ msgstr ""
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Subscript text"
-msgstr ""
+msgstr "Subscripttekst"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:324
 msgid "Superscript text"
-msgstr ""
+msgstr "Superscripttekst"
 
 #. Atk role enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:326
 msgid "Last Defined"
-msgstr ""
+msgstr "Laatst gedefinieerd"
 
 #. Atk relationset properties
 #: ../plugins/gtk+/gtk+.xml.in.h:328
 msgid "Controlled By"
-msgstr ""
+msgstr "Bestuurd door"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:329
 msgid "Controller For"
-msgstr ""
+msgstr "Bestuurder voor"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:330
-#, fuzzy
 msgid "Labeled By"
-msgstr "Label"
+msgstr "Gelabeld door"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:331
-#, fuzzy
 msgid "Label For"
-msgstr "Label"
+msgstr "Labelen voor"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:332
 msgid "Member Of"
-msgstr ""
+msgstr "Lid van"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:333
 msgid "Node Child Of"
-msgstr ""
+msgstr "Knooppuntlid van"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:334
 msgid "Flows To"
-msgstr ""
+msgstr "Vloeit naar"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:335
 msgid "Flows From"
-msgstr ""
+msgstr "Vloeit van"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:336
 msgid "Subwindow Of"
-msgstr ""
+msgstr "Onderliggend venster van"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:337
-#, fuzzy
 msgid "Embeds"
-msgstr "Ingeschakeld"
+msgstr "Embeds"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:338
 msgid "Embedded By"
-msgstr ""
+msgstr "Ingebed door"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:339
-#, fuzzy
 msgid "Popup For"
-msgstr "Popup"
+msgstr "Pop-up voor"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:340
 msgid "Parent Window Of"
-msgstr ""
+msgstr "Bovenliggend venster van"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:341
 msgid "Described By"
@@ -5707,33 +5685,29 @@ msgstr "Het aantal widgets in de box"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:380
 msgid "Horizontal Box"
-msgstr "Horizontale Box"
+msgstr "Horizontale box"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:381
 msgid "Vertical Box"
-msgstr "Verticale Box"
+msgstr "Verticale box"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:382
-#, fuzzy
 msgid "Action Bar"
-msgstr "Pictogrammen"
+msgstr "Actiebalk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:383
-#, fuzzy
 msgid "The number of items in the action bar"
-msgstr "Het aantal widgets in de box"
+msgstr "Het aantal items in de actiebalk"
 
 #. Virtual accel-groups property to record accel groups
 #: ../plugins/gtk+/gtk+.xml.in.h:385
-#, fuzzy
 msgid "Accel Groups"
-msgstr "Selecteerder"
+msgstr "Accel-groepen"
 
 #. GdkGravity enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:387
-#, fuzzy
 msgid "North West"
-msgstr "Noordwest"
+msgstr "Noordwesten"
 
 #. GdkGravity enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:389
@@ -5742,9 +5716,8 @@ msgstr "Noord"
 
 #. GdkGravity enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:391
-#, fuzzy
 msgid "North East"
-msgstr "Noordoost"
+msgstr "Noordoosten"
 
 #. GdkGravity enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:393
@@ -5819,9 +5792,8 @@ msgstr "Zwevende tip"
 
 #. GtkWindowType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:425
-#, fuzzy
 msgid "Top Level"
-msgstr "Topel"
+msgstr "Topniveau"
 
 #. GtkWindowType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:427
@@ -5842,7 +5814,6 @@ msgstr "Muis"
 
 #. GtkWindowPosition enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:435
-#, fuzzy
 msgid "Always Center"
 msgstr "Altijd in het midden"
 
@@ -5863,19 +5834,16 @@ msgid "Offscreen Window"
 msgstr "Schuifbaar Venster"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:440
-#, fuzzy
-#| msgid "Applications"
 msgid "Application Window"
-msgstr "Toepassingen"
+msgstr "Toepassingsvenster"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:441
 msgid "Overlay"
 msgstr "Overlay"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:442
-#, fuzzy
 msgid "Menu Shell"
-msgstr "Menu-item"
+msgstr "Menu-shell"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:443 ../plugins/gtk+/glade-button-editor.ui.h:8
 msgid "Position"
@@ -5896,9 +5864,8 @@ msgstr "Gebruik onderstreping"
 
 #. GtkActivatable
 #: ../plugins/gtk+/gtk+.xml.in.h:448
-#, fuzzy
 msgid "Related Action"
-msgstr "Laatste bewerking ongedaan maken"
+msgstr "Gerelateerde actie"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:449
 msgid "Use Action Appearance"
@@ -5907,16 +5874,13 @@ msgstr "Actie-uiterlijk gebruiken"
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #. GtkActionable
 #: ../plugins/gtk+/gtk+.xml.in.h:451
-#, fuzzy
-#| msgid "Icon Name"
 msgid "Action Name"
-msgstr "Pictogram"
+msgstr "Actienaam"
 
 #. Atk click property
 #: ../plugins/gtk+/gtk+.xml.in.h:453
-#, fuzzy
 msgid "Click"
-msgstr "Ophalen"
+msgstr "Klikken"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:454
 msgid "Set the description of the Click atk action"
@@ -5928,19 +5892,16 @@ msgid "Image Menu Item"
 msgstr "Menu Afbeelding"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:456
-#, fuzzy
 msgid "Stock Item"
-msgstr "Voorraaditem:"
+msgstr "Voorraaditem"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:457
-#, fuzzy
 msgid "Accel Group"
-msgstr "Selecteerder"
+msgstr "Accel-groep"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:458
-#, fuzzy
 msgid "The stock item for this menu item"
-msgstr "Het voorraaditem om te gebruiken."
+msgstr "Het voorraaditem voor dit menu-item"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:459
 #, fuzzy
@@ -5966,7 +5927,7 @@ msgstr "Boven naar onder"
 #. GtkPackDirection enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:467
 msgid "Bottom to Top"
-msgstr "Boven naar beneden"
+msgstr "Onder naar boven"
 
 #. GtkTreeViewGridLines enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:469 ../plugins/gtk+/glade-misc-editor.ui.h:2
@@ -5982,9 +5943,8 @@ msgstr "Verticaal"
 
 #. GtkToolbarStyle enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:473
-#, fuzzy
 msgid "Icons only"
-msgstr "Pictogrammen"
+msgstr "Alleen pictogrammen"
 
 #. GtkToolbarStyle enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:475
@@ -6022,7 +5982,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:488
 msgid "A symbolic icon size for the stock icon"
-msgstr ""
+msgstr "Een symbolische grootte voor het voorraadpictogram"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:489
 #, fuzzy
@@ -6065,9 +6025,8 @@ msgstr "Midden"
 
 #. GtkReliefStyle enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:502
-#, fuzzy
 msgid "Half"
-msgstr "Hagel"
+msgstr "Half"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:503
 #, fuzzy
@@ -6085,6 +6044,8 @@ msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr ""
+"Het voorraadpictogram weergegeven op het item (kies een item uit de GTK+-"
+"voorraad of uit een pictogramfabriek)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:506
 #, fuzzy
@@ -6103,7 +6064,7 @@ msgstr "Schakelknop"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:509
 msgid "Handle Box"
-msgstr "Handle Box"
+msgstr "Handlebox"
 
 #. PangoAlignment enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:511
@@ -6234,22 +6195,22 @@ msgstr "Kleurselectie "
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:559
 msgid "Lowercase"
-msgstr ""
+msgstr "Kleine letters"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:561
 msgid "Uppercase Chars"
-msgstr ""
+msgstr "Grote letters, enkele tekens"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:563
 msgid "Uppercase Words"
-msgstr ""
+msgstr "Grote letters, volledige woorden"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:565
 msgid "Uppercase Sentences"
-msgstr ""
+msgstr "Grote letters, volledige zinnen"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:567
@@ -6265,11 +6226,11 @@ msgstr "Verticale Panes"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:570
 msgid "Primary Stock Icon"
-msgstr ""
+msgstr "Primair voorraadpictogram"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:571
 msgid "Secondary Stock Icon"
-msgstr ""
+msgstr "Secundair voorraadpictogram"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:572
 msgid "Primary Icon Pixbuf"
@@ -6281,17 +6242,13 @@ msgstr ""
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../plugins/gtk+/gtk+.xml.in.h:574
-#, fuzzy
-#| msgid "Icon Name"
 msgid "Primary Icon Name"
-msgstr "Pictogram"
+msgstr "Naam primaire pictogram"
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../plugins/gtk+/gtk+.xml.in.h:575
-#, fuzzy
-#| msgid "Icon Name"
 msgid "Secondary Icon Name"
-msgstr "Pictogram"
+msgstr "Naam secundaire pictogram"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:576
 msgid "Primary Icon Activatable"
@@ -6395,15 +6352,12 @@ msgstr "Toepassen"
 
 #. GtkResponseType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:611
-#, fuzzy
-#| msgid "_Help"
 msgid "Help"
-msgstr "_Hulp"
+msgstr "Hulp"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:612 ../plugins/gtk+/glade-button-editor.ui.h:7
-#, fuzzy
 msgid "Stock Button"
-msgstr "Standaardknop:"
+msgstr "Voorraadknop"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:613
 #, fuzzy
@@ -6423,9 +6377,8 @@ msgid "Release"
 msgstr "Loslaten"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:618
-#, fuzzy
 msgid "The stock item for this button"
-msgstr "Het tempo voor deze actie"
+msgstr "Het voorraaditem voor deze knop"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:619
 msgid "The response ID of this button in a dialog"
@@ -6441,7 +6394,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:622
 msgid "Check Button"
-msgstr "Check knop"
+msgstr "Checkknop"
 
 #. GtkPolicyType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:624
@@ -6450,9 +6403,8 @@ msgstr "Altijd"
 
 #. GtkSpinButtonUpdatePolicy enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:626
-#, fuzzy
 msgid "If Valid"
-msgstr "Het ID is ongeldig"
+msgstr "Indien geldig"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:627
 msgid "Switch"
@@ -6461,7 +6413,7 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:628
 #: ../plugins/gtk+/glade-file-chooser-button-editor.ui.h:1
 msgid "File Chooser Button"
-msgstr "Bestandsselectiedialoog-knop"
+msgstr "Bestandsselectieknop"
 
 #
 # Common stuff for the templates
@@ -6477,9 +6429,8 @@ msgid "Create Folder"
 msgstr "Map aanmaken"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:637
-#, fuzzy
 msgid "Scale Button"
-msgstr "Standaardknop:"
+msgstr "Schaalknop"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:638
 msgid ""
@@ -6490,43 +6441,35 @@ msgid ""
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:639
-#, fuzzy
 msgid "Volume Button"
-msgstr "Schakelknop"
+msgstr "Volumeknop"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:640
-#, fuzzy
 msgid "File Chooser Widget"
-msgstr "Bestandselectie-dialoog"
+msgstr "Bestandselectiewidget"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:641
-#, fuzzy
 msgid "Application Chooser Widget"
-msgstr "Bestandselectie-dialoog"
+msgstr "Toepassingsselectiewidget"
 
 #. GtkPlacesOpenFlags enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:643
-#, fuzzy
 msgid "New Tab"
-msgstr "Naam"
+msgstr "Nieuw tabblad"
 
 # src/menubar.c:50
 #. GtkPlacesOpenFlags enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:645
-#, fuzzy
-#| msgid "Window"
 msgid "New Window"
-msgstr "Venster"
+msgstr "Nieuw venster"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:646
-#, fuzzy
 msgid "Color Button"
-msgstr "Combinatieknop"
+msgstr "Kleurknop"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:647
-#, fuzzy
 msgid "Font Button"
-msgstr "Lettertypeselectie-knop"
+msgstr "Lettertypeknop"
 
 #. GtkTreeViewColumnSizing enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:649
@@ -6544,10 +6487,8 @@ msgid "Off"
 msgstr "Uit"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:654
-#, fuzzy
-#| msgid "Combo Box"
 msgid "Combo Box Text"
-msgstr "Combo Box"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:655
 msgid "Items"
@@ -6559,10 +6500,8 @@ msgid "The list of items to show in the combo box"
 msgstr "Het model voor de combo-box"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:657
-#, fuzzy
-#| msgid "File Chooser Button"
 msgid "Application Chooser Button"
-msgstr "Bestandsselectiedialoog-knop"
+msgstr "Toepassingsselectieknop"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:658
 msgid "Progress Bar"
@@ -6580,16 +6519,14 @@ msgstr "Discreet"
 
 # generieke/algemene
 #: ../plugins/gtk+/gtk+.xml.in.h:665
-#, fuzzy
 msgid "Resource Name"
-msgstr "Algemene naam"
+msgstr "Bronnaam"
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #. We have to save/load icon-size as int, and fake the enum
 #: ../plugins/gtk+/gtk+.xml.in.h:667
-#, fuzzy
 msgid "Icon Size"
-msgstr "Pictogram"
+msgstr "Pictogramgrootte"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:668
 msgid "Dialog Box"
@@ -6610,11 +6547,11 @@ msgstr "Kolom invoegen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:673
 msgid "Remove Row"
-msgstr ""
+msgstr "Rij verwijderen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:674
 msgid "Remove Column"
-msgstr ""
+msgstr "Kolom verwijderen"
 
 #. GtkButtonBoxStyle enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:676
@@ -6632,10 +6569,8 @@ msgid "Rows"
 msgstr "Rijen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:680 ../plugins/gtk+/glade-grid-editor.ui.h:3
-#, fuzzy
-#| msgid "Columned List"
 msgid "Columns"
-msgstr "Kolommenlijst"
+msgstr "Kolommen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:681
 #, fuzzy
@@ -6653,7 +6588,7 @@ msgstr "Horizontale werkbalken"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:684
 msgid "Vertical Panes"
-msgstr "Verticale Panes"
+msgstr "Verticale panelen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:685
 msgid "Notebook"
@@ -6669,11 +6604,11 @@ msgstr "Pagina invoegen na"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:688
 msgid "Remove Page"
-msgstr ""
+msgstr "Pagina verwijderen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:689
 msgid "Number of pages"
-msgstr "Aantal pagina's"
+msgstr "Aantal pagina’s"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:690
 #, fuzzy
@@ -6688,6 +6623,8 @@ msgstr "Pictogrammen"
 #: ../plugins/gtk+/gtk+.xml.in.h:692
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
+"Stelt de huidig actieve pagina in voor bewerking, deze eigenschap wordt niet "
+"opgeslagen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:693
 #, fuzzy
@@ -6696,11 +6633,11 @@ msgstr "Het aantal widgets in de box"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:694
 msgid "HeaderBar"
-msgstr ""
+msgstr "Headerbalk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:695
 msgid "Reserve space for subtitle"
-msgstr ""
+msgstr "Ruimte voorbehouden voor ondertitels"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:696
 #, fuzzy
@@ -6735,7 +6672,7 @@ msgstr "kind"
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:703
 msgid "Crossfade"
-msgstr ""
+msgstr "Overloop"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:705
@@ -6747,17 +6684,17 @@ msgstr "Rechts"
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:707
 msgid "Slide Left"
-msgstr ""
+msgstr "Veeg naar links"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:709
 msgid "Slide Up"
-msgstr ""
+msgstr "Veeg omhoog"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:711
 msgid "Slide Down"
-msgstr ""
+msgstr "Veeg omhoog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:712
 #, fuzzy
@@ -6767,7 +6704,7 @@ msgstr "Links naar rechts"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:713
 msgid "Slide Up-Down"
-msgstr ""
+msgstr "Veeg omhoog-omlaag"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:714
 msgid "Move Over Up"
@@ -6832,7 +6769,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:729
 msgid "Revealer"
-msgstr ""
+msgstr "Onthuller"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:730
 msgid "Add Row"
@@ -6840,9 +6777,8 @@ msgstr "Rij toevoegen"
 
 #. PangoUnderline enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:732
-#, fuzzy
 msgid "Single"
-msgstr "Tekenreeks"
+msgstr "Enkel"
 
 #. GtkSelectionMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:734
@@ -6929,12 +6865,11 @@ msgstr "Horizontale schuifbalk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:756
 msgid "Vertical Scrollbar"
-msgstr "Verticale Schuifbalk"
+msgstr "Verticale schuifbalk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:757
-#, fuzzy
 msgid "Button Box"
-msgstr "Knop"
+msgstr "Knopbox"
 
 #. GtkButtonBoxStyle enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:759
@@ -6953,11 +6888,11 @@ msgstr "Rand"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:764
 msgid "Horizontal Button Box"
-msgstr "Horizontale Knop box"
+msgstr "Horizontale knopbox"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:765
 msgid "Vertical Button Box"
-msgstr "Verticale Knop Box"
+msgstr "Verticale knopBox"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:766
 #, fuzzy
@@ -6966,7 +6901,7 @@ msgstr "Horizontaal scheidingsteken"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:767
 msgid "Vertical Separator"
-msgstr "Verticaal Scheidingsteken"
+msgstr "Verticaal scheidingsteken"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:768
 #, fuzzy
@@ -7004,7 +6939,7 @@ msgstr "Vast"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:779
 msgid "OpenGL Area"
-msgstr ""
+msgstr "OpenGL-gebied"
 
 #. GtkMessageType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:781
@@ -7068,7 +7003,7 @@ msgstr ""
 #.
 #: ../plugins/gtk+/gtk+.xml.in.h:807
 msgid "About Dialog"
-msgstr "Over Dialoog"
+msgstr "Over-dialoog"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:811
@@ -7129,15 +7064,15 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:833
 msgid "Color Selection Dialog"
-msgstr "Kleurkeuzedialoogvenster"
+msgstr "Kleurselectiedialoogvenster"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:834
 msgid "File Chooser Dialog"
-msgstr "Bestandselectie-dialoog"
+msgstr "Bestandselectiedialoog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:835
 msgid "Font Selection Dialog"
-msgstr "Lettertype Selectie Dialoog"
+msgstr "Lettertypeselectiedialoog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:836
 #, fuzzy
@@ -7152,18 +7087,17 @@ msgstr "Berichtenlog"
 #. GtkButtonsType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:839
 msgid "Ok"
-msgstr "Ok"
+msgstr "Oké"
 
 #. GtkButtonsType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:841
 msgid "Yes, No"
-msgstr "Ja, Nee"
+msgstr "Ja, nee"
 
 #. GtkButtonsType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:843
-#, fuzzy
 msgid "Ok, Cancel"
-msgstr "Annuleren"
+msgstr "Oké, annuleren"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:844
 msgid "Color Selection"
@@ -7192,7 +7126,7 @@ msgstr "Bestandselectie-dialoog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:849
 msgid "Font Selection"
-msgstr "Lettertype-selectie"
+msgstr "Lettertypeselectie"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:850
 msgid "Assistant"
@@ -7245,7 +7179,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:866
 msgid "Popover"
-msgstr ""
+msgstr "Popover"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:867
 #, fuzzy
@@ -7304,7 +7238,7 @@ msgstr "Bestandselectie-dialoog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:880
 msgid "Size Group"
-msgstr ""
+msgstr "Groottegroep"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:881
 msgid "Widgets"
@@ -7313,11 +7247,11 @@ msgstr "Widgets"
 #. GtkSizeGroupMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:883
 msgid "Both"
-msgstr ""
+msgstr "Beide"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:884
 msgid "List of widgets in this group"
-msgstr ""
+msgstr "Lijst van widgets in deze groep"
 
 # src/menubar.c:50
 #: ../plugins/gtk+/gtk+.xml.in.h:885
@@ -7328,7 +7262,7 @@ msgstr "Venster"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:886
 msgid "Adjustment"
-msgstr ""
+msgstr "Aanpassing"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:890
 #, fuzzy
@@ -7370,11 +7304,11 @@ msgstr "Pictogrammen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:897
 msgid "Icon Sources"
-msgstr ""
+msgstr "Pictogrambronnen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:898
 msgid "A list of sources for this icon factory"
-msgstr ""
+msgstr "Een lijst met bronnen voor deze pictogramfabriek"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:899
 #, fuzzy
@@ -7384,15 +7318,15 @@ msgstr "Lijst item"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:900
 msgid "Data"
-msgstr ""
+msgstr "Gegevens"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:901
 msgid "Enter a list of column types for this data store"
-msgstr ""
+msgstr "Voer een lijst met kolomtypes voor deze gegevensopslag in"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:902
 msgid "Enter a list of values to be applied on each row"
-msgstr ""
+msgstr "Voer een lijst met waarden in die op elke rij toegepast moeten worden"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:903
 #, fuzzy
@@ -7401,11 +7335,11 @@ msgstr "Boomweergave"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:904
 msgid "Tree Model Filter"
-msgstr ""
+msgstr "Boommodelfilter"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:905
 msgid "Tree Model Sort"
-msgstr ""
+msgstr "Boommodelsorteervolgorde"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:906
 #, fuzzy
@@ -7437,7 +7371,7 @@ msgstr "Aflopend"
 #. GtkTreeViewColumnSizing enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:916
 msgid "Grow Only"
-msgstr ""
+msgstr "Enkel vergroten"
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../plugins/gtk+/gtk+.xml.in.h:917
@@ -7464,7 +7398,7 @@ msgstr "Achtergrondkleur"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Width column"
-msgstr ""
+msgstr "Breedtekolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:923
 #, fuzzy
@@ -7477,29 +7411,24 @@ msgid "Horizontal Padding"
 msgstr "Horizontale opvulling"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:925
-#, fuzzy
-#| msgid "Horizontal Panes"
 msgid "Horizontal Padding column"
-msgstr "Horizontale werkbalken"
+msgstr "Horizontaleopvullingskolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:926
 msgid "Vertical Padding"
 msgstr "Verticale opvulling"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:927
-#, fuzzy
-#| msgid "Vertical Panes"
 msgid "Vertical Padding column"
-msgstr "Verticale Panes"
+msgstr "Verticaleopvullingskolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:928
 msgid "Horizontal Alignment"
 msgstr "Horizontale uitlijning"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:929
-#, fuzzy
 msgid "Horizontal Alignment column"
-msgstr "Horizontale werkbalken"
+msgstr "Horizontaleuitlijningskolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:930
 msgid "Vertical Alignment"
@@ -7507,54 +7436,44 @@ msgstr "Verticale uitlijning"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:931
 msgid "Vertical Alignment column"
-msgstr ""
+msgstr "Verticaleuitlijningskolom"
 
 # hoofdlettergevoelig?
 #: ../plugins/gtk+/gtk+.xml.in.h:932
-#, fuzzy
-#| msgid "Sensitive"
 msgid "Sensitive column"
-msgstr "Gevoelig"
+msgstr "Gevoelige kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:934
 msgid "Visible column"
-msgstr ""
+msgstr "Zichtbare kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:935
 msgid "The column in the model to load the value from"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:936
-#, fuzzy
-#| msgid "Text Entry"
 msgid "Text Renderer"
-msgstr "Tekstinvoer"
+msgstr "Tekstrenderer"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:937
-#, fuzzy
-#| msgid "Alignment"
 msgid "Alignment column"
-msgstr "Uitlijning"
+msgstr "Uitlijningskolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:938
 msgid "Attributes column"
-msgstr ""
+msgstr "Attributenkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:939
-#, fuzzy
-#| msgid "Background Color"
 msgid "Background Color Name column"
-msgstr "Achtergrondkleur"
+msgstr "Achtergrondkleurnaamkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:940
-#, fuzzy
-#| msgid "Background Color"
 msgid "Background Color column"
-msgstr "Achtergrondkleur"
+msgstr "Achtergrondkleurkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:941
 msgid "Editable column"
-msgstr ""
+msgstr "Bewerkbare kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:942
 msgid "Ellipsize column"
@@ -7562,37 +7481,31 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:943
 msgid "Family column"
-msgstr ""
+msgstr "Familiekolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:944
-#, fuzzy
-#| msgid "Insert Column"
 msgid "Font column"
-msgstr "Kolom invoegen"
+msgstr "Lettertypekolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:945
-#, fuzzy
-#| msgid "Description For"
 msgid "Font Description column"
-msgstr "Omschrijving voor"
+msgstr "Lettertypebeschrijvingskolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:946
 msgid "Foreground Color Name column"
-msgstr ""
+msgstr "Voorgrondkleurnaamkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:947
-#, fuzzy
-#| msgid "Background Color"
 msgid "Foreground Color column"
-msgstr "Achtergrondkleur"
+msgstr "Voorgrondkleurkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:948
 msgid "Language column"
-msgstr ""
+msgstr "Taalkom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:949
 msgid "Markup column"
-msgstr ""
+msgstr "Markupkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:950
 #, fuzzy
@@ -7601,69 +7514,60 @@ msgid "Rise column"
 msgstr "Kolom invoegen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:951
-#, fuzzy
 msgid "Scale column"
-msgstr "Standaardknop:"
+msgstr "Schaalkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:952
 msgid "Single Paragraph Mode column"
-msgstr ""
+msgstr "Enkelealineamoduskolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:953
 msgid "Size column"
-msgstr ""
+msgstr "Groottekolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:954
 msgid "Data column"
-msgstr ""
+msgstr "Gegevenskolom"
 
 #. PangoStretch enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:956
 msgid "Ultra Condensed"
-msgstr "Ultra condensed"
+msgstr "Ultra samengedrukt"
 
 #. PangoStretch enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:958
 msgid "Extra Condensed"
-msgstr "Extra condensed"
+msgstr "Extra samengedrukt"
 
 #. PangoStretch enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:960
 msgid "Condensed"
-msgstr "Condensed"
+msgstr "Samengedrukt"
 
 #. PangoStretch enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:962
 msgid "Semi Condensed"
-msgstr "Semi-condensed"
+msgstr "Half samengedrukt"
 
 #. PangoStretch enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:964
-#, fuzzy
-#| msgid "Expander"
 msgid "Semi Expanded"
-msgstr "Uitklapper"
+msgstr "Half uitgevouwen"
 
 #. PangoStretch enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:966
-#, fuzzy
-#| msgid "Expander"
 msgid "Expanded"
-msgstr "Uitklapper"
+msgstr "Uitgevouwen"
 
 #. PangoStretch enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:968
-#, fuzzy
-#| msgid "Expander"
 msgid "Extra Expanded"
-msgstr "Uitklapper"
+msgstr "Extra uitgevouwen"
 
 #. PangoStretch enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:970
-#, fuzzy
-#| msgid "Expander"
 msgid "Ultra Expanded"
-msgstr "Uitklapper"
+msgstr "Ultra uitgevouwen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:971
 msgid "Stretch column"
@@ -7685,13 +7589,11 @@ msgstr "Schuingedrukt"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:977
 msgid "Style column"
-msgstr ""
+msgstr "Stijlkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:978
-#, fuzzy
-#| msgid "Text only"
 msgid "Text column"
-msgstr "Alleen tekst"
+msgstr "Tekstkolom"
 
 #. PangoUnderline enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:980
@@ -7704,9 +7606,8 @@ msgid "Low"
 msgstr "Laag"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:983
-#, fuzzy
 msgid "Underline column"
-msgstr "Onderstreept:"
+msgstr "Onderstrepingskolom"
 
 #. PangoVariant enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:985
@@ -7715,13 +7616,11 @@ msgstr "Kleine hoofdletters"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:986
 msgid "Variant column"
-msgstr ""
+msgstr "Variantkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:987
-#, fuzzy
-#| msgid "Insert Column"
 msgid "Weight column"
-msgstr "Kolom invoegen"
+msgstr "Gewichtkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:988
 #, fuzzy
@@ -7778,10 +7677,8 @@ msgstr "Shift-toets"
 # Dokbaar/aanlegbaar/aankoppelbaar
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1002
-#, fuzzy
-#| msgid "Locked"
 msgid "Lock Key"
-msgstr "Aangekoppeld"
+msgstr "Vergrendelingstoets"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1004
@@ -7815,35 +7712,28 @@ msgstr "Achtste toets"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1016
-#, fuzzy
-#| msgid "File Chooser Button"
 msgid "First Mouse Button"
-msgstr "Bestandsselectiedialoog-knop"
+msgstr "Eerste muisknop"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1018
-#, fuzzy
 msgid "Second Mouse Button"
-msgstr "Lettertypeselectie-knop"
+msgstr "Tweede muisknop"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1020
-#, fuzzy
 msgid "Third Mouse Button"
-msgstr "Lettertypeselectie-knop"
+msgstr "Derde muisknop"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1022
-#, fuzzy
 msgid "Fourth Mouse Button"
-msgstr "Lettertypeselectie-knop"
+msgstr "Vierde muisknop"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1024
-#, fuzzy
-#| msgid "File Chooser Button"
 msgid "Fifth Mouse Button"
-msgstr "Bestandsselectiedialoog-knop"
+msgstr "Vijfde muisknop"
 
 #. GdkModifierType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:1026
@@ -7934,7 +7824,6 @@ msgid "Pixbuf column"
 msgstr "Pixbufkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1049
-#| msgid "Insert Column"
 msgid "GIcon column"
 msgstr "GIconkolom"
 
@@ -7948,16 +7837,15 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1052
 msgid "Stock Detail column"
-msgstr ""
+msgstr "Voorraaddetailkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1053
-#, fuzzy
 msgid "Stock column"
-msgstr "Standaardknop:"
+msgstr "Voorraadkolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1054
 msgid "Stock Size column"
-msgstr ""
+msgstr "Voorraadgroottekolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1055
 msgid "Progress Renderer"
@@ -7982,7 +7870,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1060
 msgid "Value column"
-msgstr ""
+msgstr "Waardekolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1061
 msgid "Inverted column"
@@ -8076,18 +7964,16 @@ msgid "Themed Icon"
 msgstr "Overeenkomsten in"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1084
-#, fuzzy
 msgid "Toplevels"
-msgstr "Topel"
+msgstr "Topniveaus"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1085
 msgid "Containers"
 msgstr "Containers"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1086
-#, fuzzy
 msgid "Control"
-msgstr "Geheel getal"
+msgstr "Bediening"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1087
 msgid "Display"
@@ -8190,10 +8076,8 @@ msgid "Toggle and Radio"
 msgstr ""
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:4
-#, fuzzy
-#| msgid "Value:"
 msgid "Value ID:"
-msgstr "Waarde:"
+msgstr "Waarde-ID:"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:5
 msgid "Radio proxies"
@@ -8241,18 +8125,16 @@ msgid "Vertical:"
 msgstr "Verticaal:"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:4
-#, fuzzy
 msgid "Button Attributes"
-msgstr "_Knop ingedrukt"
+msgstr "Knopattributen"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:5
-#, fuzzy
 msgid "Button Content"
-msgstr "Knoppenstijl opties"
+msgstr "Knopinhoud"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:6
 msgid "Add custom content"
-msgstr ""
+msgstr "Aangepaste inhoud toevoegen"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:9
 msgid "Label with optional image"
@@ -8269,15 +8151,12 @@ msgid "Position:"
 msgstr "Positie:"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:1
-#, fuzzy
-#| msgid "Combo Box Entry"
 msgid "Combo Box Attributes"
-msgstr "Combo Box invoer"
+msgstr "Keuzelijstattributen"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:2
-#, fuzzy
 msgid "Tree model:"
-msgstr "Boomweergave"
+msgstr "Boommodel:"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:3
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:3
@@ -8287,23 +8166,19 @@ msgstr ""
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:4
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:4
 msgid "Tearoff menus"
-msgstr ""
+msgstr "Afscheurmenu’s"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:5
 msgid "Tabular Menus"
 msgstr ""
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:1
-#, fuzzy
-#| msgid "Combo Box Entry"
 msgid "Combo Box Text Attributes"
-msgstr "Combo Box invoer"
+msgstr "Keuzelijsttekstattributen"
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:2
-#, fuzzy
-#| msgid "List Item"
 msgid "List of items:"
-msgstr "Lijst item"
+msgstr "Lijst met items:"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:2
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:2
@@ -8312,7 +8187,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:5
 msgid "Primary Icon"
-msgstr ""
+msgstr "Primair pictogram"
 
 # zwevende tip/werktip/uitlegtip/tooltip
 # bij discussie vonden veel mensen 'zwevende tip' mooi
@@ -8324,7 +8199,7 @@ msgstr "Zwevende tip:"
 #: ../plugins/gtk+/glade-entry-editor.ui.h:7
 #: ../plugins/gtk+/glade-widget-editor.ui.h:4
 msgid "Use markup"
-msgstr ""
+msgstr "Markup gebruiken"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:8
 msgid ""
@@ -8334,7 +8209,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:11
 msgid "Secondary Icon"
-msgstr ""
+msgstr "Secundair pictogram"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:12
 msgid ""
@@ -8347,15 +8222,12 @@ msgid "Horizontal Alignment:"
 msgstr "Horizontale uitlijning:"
 
 #: ../plugins/gtk+/glade-file-chooser-editor.ui.h:1
-#, fuzzy
-#| msgid "File Chooser Button"
 msgid "File Chooser Attributes"
-msgstr "Bestandsselectiedialoog-knop"
+msgstr "Bestandsselectieattributen"
 
 #: ../plugins/gtk+/glade-font-button-editor.ui.h:1
-#, fuzzy
 msgid "Font Button Attributes"
-msgstr "Lettertypeselectie-knop"
+msgstr "Lettertypeknopattributen"
 
 #: ../plugins/gtk+/glade-font-chooser-editor.ui.h:1
 msgid "Font Chooser Attributes"
@@ -8367,11 +8239,11 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-grid-editor.ui.h:4
 msgid "Spacing:"
-msgstr ""
+msgstr "Spatiëring:"
 
 #: ../plugins/gtk+/glade-grid-editor.ui.h:5
 msgid "Homogeneous"
-msgstr ""
+msgstr "Homogeen"
 
 #: ../plugins/gtk+/glade-grid-editor.ui.h:6
 msgid "Count:"
@@ -8382,10 +8254,8 @@ msgid "Headerbar Attributes"
 msgstr ""
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:2
-#, fuzzy
-#| msgid "Custom widget"
 msgid "Custom title"
-msgstr "Aangepast grafisch element"
+msgstr "Aangepaste titel"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:3
 msgid "Whether the headerbar should use a custom title widget."
@@ -8401,9 +8271,8 @@ msgstr ""
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:1
-#, fuzzy
 msgid "Icon View Attributes"
-msgstr "Pictogram"
+msgstr "Pictogramweergaveattributen"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:2
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:4
@@ -8419,9 +8288,8 @@ msgid "Cell Spacing:"
 msgstr ""
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:5
-#, fuzzy
 msgid "Item Width:"
-msgstr "Maximumbreedte"
+msgstr "Itembreedte:"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:6
 msgid "View Margin:"
@@ -8438,18 +8306,16 @@ msgstr "Grootte"
 #: ../plugins/gtk+/glade-label-editor.ui.h:1
 #: ../plugins/gtk+/glade-window-editor.ui.h:4
 msgid "Appearance"
-msgstr ""
+msgstr "Uiterlijk"
 
 # Float: getal met drijvende komma....maar dat is te lang.
 #: ../plugins/gtk+/glade-label-editor.ui.h:2
-#, fuzzy
 msgid "Formatting"
-msgstr "Float"
+msgstr "Opmaak"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:3
-#, fuzzy
 msgid "Label behaviour"
-msgstr "Label"
+msgstr "Labelgedrag"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:4
 msgid "Wrap only on new line"
@@ -8462,9 +8328,8 @@ msgid "Never wrap"
 msgstr "Nooit verticaal"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:6
-#, fuzzy
 msgid "Label Width"
-msgstr "Schuifbaar Venster"
+msgstr "Labelbreedte"
 
 #: ../plugins/gtk+/glade-label-editor.ui.h:7
 msgid "Automatically wrap"
@@ -8488,9 +8353,8 @@ msgid "Minimum:"
 msgstr ""
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:4
-#, fuzzy
 msgid "Maximum:"
-msgstr "Maximumbreedte"
+msgstr "Maximum:"
 
 #: ../plugins/gtk+/glade-level-bar-editor.ui.h:5
 msgid "Value:"
@@ -8529,13 +8393,12 @@ msgstr ""
 
 #. Property used to choose which page of the notebook to edit
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:3
-#, fuzzy
 msgid "Edit page:"
-msgstr "Type"
+msgstr "Pagina bewerken:"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:4
 msgid "Tab Attributes"
-msgstr ""
+msgstr "Tabbladattributen"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:5
 #, fuzzy
@@ -8549,11 +8412,11 @@ msgstr "Pictogrammen"
 
 #: ../plugins/gtk+/glade-popover-editor.ui.h:1
 msgid "Popover Attributes"
-msgstr ""
+msgstr "Popoverattributen"
 
 #: ../plugins/gtk+/glade-popover-menu-editor.ui.h:1
 msgid "Menu Attributes"
-msgstr ""
+msgstr "Menu-attributen"
 
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:1
 #, fuzzy
@@ -8571,16 +8434,12 @@ msgid "Tree View Attributes"
 msgstr "Boomweergave"
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:2
-#, fuzzy
-#| msgid "Insert Column"
 msgid "Search Column:"
-msgstr "Kolom invoegen"
+msgstr "Zoekkolom:"
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:3
-#, fuzzy
-#| msgid "Insert Column"
 msgid "Expander Column:"
-msgstr "Kolom invoegen"
+msgstr "Uitvouwkolom:"
 
 #: ../plugins/gtk+/glade-recent-chooser-editor.ui.h:1
 #, fuzzy
@@ -8588,18 +8447,16 @@ msgid "Recent Chooser Attributes"
 msgstr "Bestandselectie-dialoog"
 
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:1
-#, fuzzy
 msgid "Scale Button Attributes"
-msgstr "Standaardknop:"
+msgstr "Schaalknopattributen"
 
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:2
-#, fuzzy
 msgid "Scale orientation:"
-msgstr "Standaardknop:"
+msgstr "Schaaloriëntatie:"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:1
 msgid "Scale Attributes"
-msgstr ""
+msgstr "Schaalattributen"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:2
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:2
@@ -8624,21 +8481,19 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:1
 msgid "Scrolling Attributes"
-msgstr ""
+msgstr "Schuifattributen"
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:4
 msgid "Policy:"
-msgstr ""
+msgstr "Beleid:"
 
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:1
 msgid "Scrollbar Attributes"
-msgstr ""
+msgstr "Schuifbalkattributen"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:1
-#, fuzzy
-#| msgid "Scrolled Window"
 msgid "Scrolled Window Attributes"
-msgstr "Schuifbaar Venster"
+msgstr "Schuifvensterattributen"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:2
 msgid "Window Placement:"
@@ -8646,40 +8501,35 @@ msgstr "Vensterplaatsing:"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:5
 msgid "Scrollbar Policy:"
-msgstr ""
+msgstr "Schuifbalkbeleid:"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:6
 msgid "Adjustment:"
-msgstr ""
+msgstr "Aanpassing:"
 
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:1
-#, fuzzy
-#| msgid "Spin Button"
 msgid "Spin Button Attributes"
-msgstr "Spinknop"
+msgstr "Draaiknopattributen"
 
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:2
-#, fuzzy
 msgid "Button Orientation:"
-msgstr "Knoppenstijl opties"
+msgstr "Knoporiëntatie:"
 
 #: ../plugins/gtk+/glade-stack-editor.ui.h:1
 msgid "Stack Attributes"
-msgstr ""
+msgstr "Stack-attributen"
 
 #: ../plugins/gtk+/glade-stack-editor.ui.h:2
 msgid "Homogeneous:"
-msgstr ""
+msgstr "Homogeen:"
 
 #: ../plugins/gtk+/glade-stack-switcher-editor.ui.h:1
 msgid "Stack Switcher Attributes"
 msgstr ""
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:1
-#, fuzzy
-#| msgid "Text View"
 msgid "Text View Attributes"
-msgstr "Tekst-weergave"
+msgstr "Tekstweergaveattributen"
 
 #. Name for populate-all property
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:4
@@ -8687,9 +8537,8 @@ msgid "Populate for touch"
 msgstr ""
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:5
-#, fuzzy
 msgid "Text Formatting"
-msgstr "Statisch"
+msgstr "Tekstopmaak"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:6
 msgid "Indentation:"
@@ -8708,28 +8557,28 @@ msgstr "Rechts:"
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:9
 #: ../plugins/gtk+/glade-widget-editor.ui.h:14
 msgid "Margins"
-msgstr ""
+msgstr "Marges"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:10
 msgid "Spacing"
-msgstr ""
+msgstr "Spatiëring"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:11
 msgid "Above Lines:"
-msgstr ""
+msgstr "Regels boven:"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:12
 msgid "Below Lines:"
-msgstr ""
+msgstr "Regels onder:"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:13
 msgid "Inside Wrap:"
-msgstr ""
+msgstr "Regelterugloop:"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:14
 #: ../plugins/gtk+/glade-widget-editor.ui.h:15
 msgid "Top:"
-msgstr ""
+msgstr "Top:"
 
 # onderkant
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:15
@@ -8747,23 +8596,19 @@ msgstr "Widget:"
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:1
 msgid "Widget Attributes"
-msgstr ""
+msgstr "Widget-attributen"
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:3
 msgid "Whether to use markup in the tooltip"
 msgstr ""
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:5
-#, fuzzy
-#| msgid "Widget"
 msgid "Widget Flags"
-msgstr "Widget"
+msgstr "Widgetvlaggen"
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:6
-#, fuzzy
-#| msgid "Widget"
 msgid "Widget Spacing"
-msgstr "Widget"
+msgstr "Widgetspatiëring"
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:8
 msgid ""
@@ -8773,7 +8618,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:1
 msgid "Window Attributes"
-msgstr ""
+msgstr "Vensterattributen"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:2
 msgid "Transient For:"
@@ -8781,20 +8626,17 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:3
 msgid "Attached To:"
-msgstr ""
+msgstr "Gekoppeld aan:"
 
 # in de tooltip wordt uitgelegd dat het 'de naam van' is
 #: ../plugins/gtk+/glade-window-editor.ui.h:5
-#, fuzzy
 msgid "Icon File"
-msgstr "Pictogram"
+msgstr "Pictogrambestand"
 
 # src/menubar.c:50
 #: ../plugins/gtk+/glade-window-editor.ui.h:7
-#, fuzzy
-#| msgid "_Windows"
 msgid "Window Flags"
-msgstr "_Vensters"
+msgstr "Venstervlaggen"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:9
 msgid "Hint:"
@@ -8802,7 +8644,7 @@ msgstr "Hint:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:11
 msgid "Gravity:"
-msgstr ""
+msgstr "Zwaartekracht:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:12
 msgid "Title:"
@@ -8810,11 +8652,11 @@ msgstr "Titel:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:13
 msgid "Client side window decorations"
-msgstr ""
+msgstr "Vensterdecoraties aan cliëntzijde"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:14
 msgid "Whether this window should include a custom titlebar."
-msgstr ""
+msgstr "Bepaalt of dit venster een aangepaste headerbalk heeft."
 
 # adres/URL
 #~ msgid "Could not display the URL '%s'"
