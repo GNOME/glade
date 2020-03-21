@@ -95,7 +95,7 @@ tsort_node_has_no_incoming_edge (gpointer node, GList *edges)
  *         graph of @nodes.
  * 
  * Topological sorting implementation.
- * After calling this funtion only graph cycles (circular dependencies) are left
+ * After calling this function only graph cycles (circular dependencies) are left
  * in @edges list. So if @edges is NULL it means the returned list has all the 
  * elements topologically sorted if not it means there are at least one
  * circular dependency.

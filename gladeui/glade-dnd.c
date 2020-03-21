@@ -82,7 +82,7 @@ on_drag_icon_draw (GtkWidget *widget, cairo_t *cr)
   gdouble h2;
   GdkRGBA bg;
 
-  /* Not needed acording to GtkWidget:draw documentation
+  /* Not needed according to GtkWidget:draw documentation
    * But seems like there is a bug when used as a drag_icon that makes the
    * cairo translation used here persist when drawing children.
    */

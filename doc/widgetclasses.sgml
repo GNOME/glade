@@ -16,7 +16,7 @@ Adding support for custom widgets
     <para>
 Widget support in Glade is provided by the #GladeWidgetAdaptor object, each
 `glade-widget-class' definition in the catalog will result in the creation
-of an adaptor, which inherits the funcionality of the adaptor created for its
+of an adaptor, which inherits the functionality of the adaptor created for its
 parent, or the closest adaptor available in the ancestry. Adaptor methods can
 be overridden by functions in the plugin by specifying them in the catalog.
 There is also a wealth of options you can use in the `glade-widget-class' without
@@ -76,7 +76,7 @@ Here is the complete example of the form of the `glade-widget-class' definition:
   <refsect1>
     <title>Widget Class Properties</title>
     <para>
-The following are all properies of the `glade-widget-class' tag
+The following are all properties of the `glade-widget-class' tag
     </para>
     <variablelist>
       <varlistentry>
@@ -168,7 +168,7 @@ tree and will be translated before use in the interface.
           <para>
 Use this to specify the name of the parent your widget derives from, you
 can use this option instead of loading a real widget type (this allows you
-to fake derive and still add properties and run your catalog independantly
+to fake derive and still add properties and run your catalog independently
 of any plugins or libraries).
           </para>
         </listitem>
@@ -506,7 +506,7 @@ are added to the toolbar.
     <para>
 Default values can be specified for packing properties on your widget when added
 to a said type of parent, as the example shows above; use the `parent-class' to 
-specify what parent (or derivative of that parent) you are targetting and fill
+specify what parent (or derivative of that parent) you are targeting and fill
 in any `child-property' tags you need for that parent using `id' property to 
 specify the property name and the `default' property for the value.
     </para>
@@ -542,7 +542,7 @@ and GENERIC_NAME is the value of an widget class's generic name attribute.
     </para>
   
     <para>
-To explicity set an icon name for a widget class, the "icon-name" attribute of the
+To explicitly set an icon name for a widget class, the "icon-name" attribute of the
 "glade-widget-class" element can be specified. This will override the default icon 
 name assigned to the widget class.
     </para>

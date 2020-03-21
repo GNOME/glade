@@ -943,10 +943,10 @@ glade_project_class_init (GladeProjectClass *klass)
   /**
    * GladeProject::widget-visibility-changed:
    * @gladeproject: the #GladeProject which received the signal.
-   * @widget: the widget that its visibity changed
-   * @visible: the current visiblity of the widget
+   * @widget: the widget that its visibility changed
+   * @visible: the current visibility of the widget
    *
-   * Emitted when the visivility of a widget changed
+   * Emitted when the visibility of a widget changed
    */
   glade_project_signals[WIDGET_VISIBILITY_CHANGED] =
       g_signal_new ("widget-visibility-changed",
@@ -1399,7 +1399,7 @@ glade_project_fix_object_props (GladeProject *project)
                                         "glade-loaded-object")) != NULL)
             {
               /* Parse the object list and set the property to it
-               * (this magicly works for both objects & object lists)
+               * (this magically works for both objects & object lists)
                */
               value = glade_property_def_make_gvalue_from_string (def, txt, project);
 
@@ -2146,7 +2146,7 @@ glade_project_load_internal (GladeProject *project)
 
   glade_project_read_comments (project, root);
 
-  /* Read requieres, and do not abort load if there are missing catalog since
+  /* Read requires, and do not abort load if there are missing catalog since
    * GladeObjectStub is created to keep the original xml for unknown object classes
    */
   glade_project_read_requires (project, root, load_path ? load_path : priv->path, &has_gtk_dep);
@@ -3087,7 +3087,7 @@ glade_project_writing_preview (GladeProject       *project)
 }
 
 /*******************************************************************
-     Verify code here (versioning, incompatability checks)
+     Verify code here (versioning, incompatibility checks)
  *******************************************************************/
 
 /* Defined here for pretty translator comments (bug in intl tools, for some reason
@@ -3289,7 +3289,7 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
   if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
       !GSC_VERSION_CHECK (signal_def, target_major, target_minor))
     {
-      GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s not avalable in version %d.%d\n",
+      GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s not available in version %d.%d\n",
                                    glade_signal_get_name (signal),
                                    glade_widget_adaptor_get_name (adaptor),
                                    target_major, target_minor));
@@ -3392,8 +3392,8 @@ glade_project_verify_signals (GladeWidget     *widget,
  * glade_project_verify_properties:
  * @widget: A #GladeWidget
  *
- * Synchonizes @widget with user visible information
- * about version compatability and notifies the UI
+ * Synchronizes @widget with user visible information
+ * about version compatibility and notifies the UI
  * it should update.
  */
 static void
@@ -3724,7 +3724,7 @@ glade_project_release_widget_name (GladeProject *project,
 /**
  * glade_project_available_widget_name:
  * @project: a #GladeProject
- * @widget: the #GladeWidget intended to recieve a new name
+ * @widget: the #GladeWidget intended to receive a new name
  * @name: base name of the widget to create
  *
  * Checks whether @name is an appropriate name for @widget.
@@ -3764,7 +3764,7 @@ glade_project_reserve_widget_name (GladeProject *project,
 /**
  * glade_project_new_widget_name:
  * @project: a #GladeProject
- * @widget: the #GladeWidget intended to recieve a new name, or %NULL
+ * @widget: the #GladeWidget intended to receive a new name, or %NULL
  * @base_name: base name of the widget to create
  *
  * Creates a new name for a widget that doesn't collide with any of the names 
@@ -4913,7 +4913,7 @@ glade_project_reset_path (GladeProject *project)
  * @project: The #GladeProject.
  * @resource: The resource basename
  *
- * Project resource strings are always relative, this function tranforms a
+ * Project resource strings are always relative, this function transforms a
  * path relative to project to a full path.
  *
  * Returns: A newly allocated string holding the
@@ -4954,7 +4954,7 @@ glade_project_resource_fullpath (GladeProject *project, const gchar *resource)
  * @widget: The widget which visibility changed
  * @visible: widget visibility value
  *
- * Emmits  GladeProject::widget-visibility-changed signal
+ * Emits  GladeProject::widget-visibility-changed signal
  *
  */
 void

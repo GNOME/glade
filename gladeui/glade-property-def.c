@@ -157,7 +157,7 @@ struct _GladePropertyDef
   guint is_modified : 1; /* If true, this property_def has been "modified" from the
                           * the standard property by a xml file. */
 
-  guint themed_icon : 1; /* Some GParamSpecString properties reffer to icon names
+  guint themed_icon : 1; /* Some GParamSpecString properties refer to icon names
                           * in the icon theme... these need to be specified in the
                           * property class definition if proper editing tools are to
                           * be used.
@@ -169,7 +169,7 @@ struct _GladePropertyDef
                          */
         
   guint transfer_on_paste : 1; /* If this is a packing prop, 
-                                * wether we should transfer it on paste.
+                                * whether we should transfer it on paste.
                                 */
         
   guint parentless_widget : 1;  /* True if this property should point to a parentless widget
@@ -2225,7 +2225,7 @@ glade_property_def_update_from_node (GladeXmlNode      *node,
  * @comp: a #GladePropertyDef
  *
  * Returns: whether @property_def and @comp are a match or not
- *          (properties in seperate decendant heirarchies that
+ *          (properties in separate descendant hierarchies that
  *           have the same name are not matches).
  */
 gboolean
@@ -2335,7 +2335,7 @@ glade_property_def_compare (GladePropertyDef *property_def,
  * @properties: (element-type GladePropertyDef): a list of #GladePropertyDef
  * @parent: the #GType of the parent
  *
- * This function assignes "weight" to each property in its natural order staring from 1.
+ * This function assigns "weight" to each property in its natural order staring from 1.
  * If parent is 0 weight will be set for every #GladePropertyDef in the list.
  * This function will not override weight if it is already set (weight >= 0.0)
  */
@@ -2364,7 +2364,7 @@ glade_property_def_set_weights (GList **properties, GType parent)
           if (property_def->weight >= 0.0)
             continue;
 
-          /* Special-casing weight of properties for seperate tabs */
+          /* Special-casing weight of properties for separate tabs */
           if (property_def->common)
             property_def->weight = common;
           else if (property_def->packing)

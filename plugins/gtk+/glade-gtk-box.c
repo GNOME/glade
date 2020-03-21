@@ -521,7 +521,7 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 
   gchild = glade_widget_get_from_gobject (child);
 
-  /* The "Remove Slot" operation only makes sence on placeholders,
+  /* The "Remove Slot" operation only makes sense on placeholders,
    * otherwise its a "Delete" operation on the child widget.
    */
   if (gchild)
@@ -603,7 +603,7 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
   gbox = glade_widget_get_from_gobject (container);
 
   if ((gchild = glade_widget_get_from_gobject (new_widget)) != NULL)
-    /* The "Remove Slot" operation only makes sence on placeholders,
+    /* The "Remove Slot" operation only makes sense on placeholders,
      * otherwise its a "Delete" operation on the child widget.
      */
     glade_widget_set_pack_action_visible (gchild, "remove_slot", FALSE);

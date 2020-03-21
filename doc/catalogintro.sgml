@@ -64,7 +64,7 @@ are integrating an object "Frobnicator":
     <title>Toplevel catalog properties and tags</title>
     <para>
 When defining the catalog, the 'name' and 'library' 
-are both manditory attributes of the 'glade-catalog' tag; optionally
+are both mandatory attributes of the 'glade-catalog' tag; optionally
 you can also use 'icon-prefix', 'depends' and 'domain'.
     </para>
 
@@ -95,7 +95,7 @@ Please note that all versioning related support is completely optional.
         <term>targetable</term>
         <listitem>
           <para>
-A comma separated list of 'major.minor' formed versions describing sensable previous
+A comma separated list of 'major.minor' formed versions describing sensible previous
 targetable versions of the underlying toolkit not including the current version; 
 example: <literal>targetable="0.6,0.8"</literal>.
           </para>
@@ -144,7 +144,7 @@ for your plugin.
         <listitem>
           <para>
 The domain in which to search for translatable strings from the 
-catalog file; please note that all strings from the catalog that will apear in the UI are
+catalog file; please note that all strings from the catalog that will appear in the UI are
 translated using this domain. If the 'domain' is not specified, the library property will
 be used in it's stead.
           </para>
@@ -156,7 +156,7 @@ be used in it's stead.
         <listitem>
           <para>
 Used to specify a namespace to search devhelp docs library with
-(specificly, it is the $(DOC_MODULE) that you specified in your gtk-doc Makefile.am).
+(specifically, it is the $(DOC_MODULE) that you specified in your gtk-doc Makefile.am).
           </para>
         </listitem>
       </varlistentry>

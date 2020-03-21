@@ -463,7 +463,7 @@ glade_app_class_init (GladeAppClass *klass)
   /**
    * GladeApp::widget-adaptor-registered:
    * @gladeapp: the #GladeApp which received the signal.
-   * @adaptor: the newlly registered #GladeWidgetAdaptor.
+   * @adaptor: the newly registered #GladeWidgetAdaptor.
    *
    * Emitted when a new widget adaptor is registered.
    */
@@ -503,7 +503,7 @@ glade_app_do_event (GdkEvent *event)
   gdk_window_get_user_data (window, &widget);
 
   /* As a slight optimization we could replace gtk_widget_get_ancestor()
-   * with a custom function that only iterates trought parents with windows.
+   * with a custom function that only iterates trough parents with windows.
    */
   if (widget && IS_GLADE_WIDGET_EVENT (event->type) &&
       (layout = gtk_widget_get_ancestor (widget, GLADE_TYPE_DESIGN_LAYOUT)))

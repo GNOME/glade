@@ -23,7 +23,7 @@ progs_cflags = \
 progs_libs  = $(GTK_LIBS) $(GTK_MAC_LIBS)
 progs_ldadd = $(top_builddir)/gladeui/libgladeui-2.la
 
-# Test that GladeWidgets and thier runtime objects
+# Test that GladeWidgets and their runtime objects
 # are created and finalized properly
 create_widgets_CPPFLAGS = $(progs_cppflags)
 create_widgets_CFLAGS   = $(progs_cflags)

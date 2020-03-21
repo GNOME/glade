@@ -1098,7 +1098,7 @@ glade_property_sync (GladeProperty *property)
  * glade_property_load:
  * @property: a #GladeProperty
  *
- * Loads the value of @property from the coresponding object instance
+ * Loads the value of @property from the corresponding object instance
  */
 void
 glade_property_load (GladeProperty *property)
@@ -1478,7 +1478,7 @@ glade_property_set_sensitive (GladeProperty *property,
 {
   g_return_if_fail (GLADE_IS_PROPERTY (property));
 
-  /* reason is only why we're disableing it */
+  /* reason is only why we're disabling it */
   if (sensitive == FALSE)
     {
       if (property->priv->insensitive_tooltip)

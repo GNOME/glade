@@ -154,7 +154,7 @@ glade_xml_set_content (GladeXmlNode *node_in, const gchar *content)
 }
 
 /*
- * Get a value for a node either carried as an attibute or as
+ * Get a value for a node either carried as an attribute or as
  * the content of a child.
  *
  * Returns a g_malloc'ed string.  Caller must free.
@@ -280,7 +280,7 @@ glade_xml_get_value_int_required (GladeXmlNode *node,
 }
 
 /*
- * Get a String value for a node either carried as an attibute or as
+ * Get a String value for a node either carried as an attribute or as
  * the content of a child.
  */
 gchar *
@@ -313,7 +313,7 @@ glade_xml_set_property (xmlNodePtr   node,
 }
 
 /*
- * Get a String value for a node either carried as an attibute or as
+ * Get a String value for a node either carried as an attribute or as
  * the content of a child.
  */
 gboolean
@@ -337,7 +337,7 @@ glade_xml_get_boolean (GladeXmlNode *node_in,
 }
 
 /*
- * Get a String value for a node either carried as an attibute or as
+ * Get a String value for a node either carried as an attribute or as
  * the content of a child.
  */
 gboolean
@@ -604,7 +604,7 @@ glade_xml_search_child (GladeXmlNode *node_in, const gchar *name)
  * @tree: A #GladeXmlNode
  * @name: the name of the child
  * 
- * just a small wrapper arround glade_xml_search_child that displays
+ * just a small wrapper around glade_xml_search_child that displays
  * an error if the child was not found
  *
  * Returns: (nullable): the requested #GladeXmlNode

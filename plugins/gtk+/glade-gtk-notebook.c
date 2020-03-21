@@ -249,7 +249,7 @@ glade_gtk_notebook_extract_children (GtkWidget *notebook)
       /* Explicitly remove the tab label first */
       gtk_notebook_set_tab_label (nb, page, NULL);
 
-      /* FIXE: we need to unparent here to avoid anoying warning when reparenting */
+      /* FIXE: we need to unparent here to avoid annoying warning when reparenting */
       if (tab)
         {
           gtk_widget_unparent (tab);

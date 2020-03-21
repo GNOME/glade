@@ -697,7 +697,7 @@ widget_parent_changed (GtkWidget          *widget,
   GladeWidget *parent;
 
   /* this could get called for a stale instance of an object
-   * being rebuilt for a contruct-only property. */
+   * being rebuilt for a construct-only property. */
   if (!gwidget)
     return;
 
@@ -968,7 +968,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
               glade_command_pop_group ();
 
               /* Undo delete command
-               * FIXME: this will leave the "Adding parent..." comand in the
+               * FIXME: this will leave the "Adding parent..." command in the
                * redo list, which I think its better than leaving it in the
                * undo list by using glade_command_add() to add the widget back
                * to the original parent.

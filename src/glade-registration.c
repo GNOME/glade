@@ -31,7 +31,7 @@
 /* translators: Email subject sent to the user after completing the survey */
 #define MAIL_SUBJECT _("Glade User Survey")
 /* translators: Email body sent to the user after completing the survey */
-#define MAIL_BODY _("Thank you for taking Glade Users survey, we appreciate it!\n\nTo validate this email address open the folowing link\n\nhttps://people.gnome.org/~jpu/glade/registration.php?email=$email&validation_token=$new_validation_token\n\nIn case you want to change or update the survey, your current update token is:\n$new_token\n\nCheers\n\n	The Glade team\n")
+#define MAIL_BODY _("Thank you for taking Glade Users survey, we appreciate it!\n\nTo validate this email address open the following link\n\nhttps://people.gnome.org/~jpu/glade/registration.php?email=$email&validation_token=$new_validation_token\n\nIn case you want to change or update the survey, your current update token is:\n$new_token\n\nCheers\n\n	The Glade team\n")
 
 /* translators: Email subject sent to the user after updating the survey */
 #define UPDATE_MAIL_SUBJECT _("Glade User Survey (update)")

@@ -1567,7 +1567,7 @@ glade_named_icon_chooser_dialog_class_init (GladeNamedIconChooserDialogClass *kl
    * This signal is emitted when there is a change in the set of
    * selected icon names.  This can happen when a user
    * modifies the selection with the mouse or the keyboard, or when
-   * explicitely calling functions to change the selection.
+   * explicitly calling functions to change the selection.
    */
   dialog_signals[SELECTION_CHANGED] =
       g_signal_new ("selection-changed",
@@ -1674,7 +1674,7 @@ settings_to_keyfile (GladeNamedIconChooserDialog *dialog)
   return keyfile;
 }
 
-/* serializes the the current configuration to the config file */
+/* serializes the current configuration to the config file */
 static void
 settings_save (GladeNamedIconChooserDialog *dialog)
 {

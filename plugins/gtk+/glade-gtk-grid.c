@@ -974,7 +974,7 @@ glade_gtk_grid_configure_end (GladeFixed  *fixed,
   glade_widget_pack_property_get (child, "top-attach",  &new_child.top_attach);
   glade_widget_pack_property_get (child, "height",      &new_child.height);
 
-  /* Compare the meaningfull part of the current edit. */
+  /* Compare the meaningful part of the current edit. */
   if (memcmp (&new_child, &grid_edit, sizeof (GladeGridChild)) != 0)
     {
       GValue left_attach_value = { 0, };

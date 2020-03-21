@@ -144,7 +144,7 @@ on_read_ready (GObject *source, GAsyncResult *res, gpointer data)
     {
       g_string_append_len (priv->response, priv->response_buffer, bytes_read);
 
-      /* NOTE: We do not need to parse content-lenght because we do not support
+      /* NOTE: We do not need to parse content-length because we do not support
        * multiples HTTP requests in the same connection.
        */
       if (priv->cancellable)
@@ -179,7 +179,7 @@ on_write_ready (GObject *source, GAsyncResult *res, gpointer data)
 
   if (error == NULL && priv->data->len != count)
     error = g_error_new (G_IO_ERROR, G_IO_ERROR_FAILED, 
-                         "Error sending data data to %s", 
+                         "Error sending data to %s", 
                          priv->host);
 
   if (error)
@@ -332,7 +332,7 @@ glade_http_class_init (GladeHTTPClass *klass)
 
   properties[PROP_TLS] =
     g_param_spec_boolean ("tls", "TLS",
-                          "Wheter to use tls encryption or not",
+                          "Whether to use tls encryption or not",
                           FALSE, G_PARAM_READWRITE);
 
   /* Install all properties */

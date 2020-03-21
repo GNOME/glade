@@ -39,7 +39,7 @@ glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
   gint i;
 
   /* Here we need to force use-header-bar to FALSE in the runtime because
-   * GtkAboutDialog set it to TRUE in its contructor which then triggers a
+   * GtkAboutDialog set it to TRUE in its constructor which then triggers a
    * warning when glade tries to add placeholders in the action area
    */
   for (i = 0; i < n_parameters; i++)

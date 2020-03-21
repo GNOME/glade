@@ -53,7 +53,7 @@ glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  GladeCreateReason   reason)
 {
-  /* This makes gtk_text_view_set_buffer() stop complaing */
+  /* This makes gtk_text_view_set_buffer() stop complaining */
   gtk_drag_dest_set (GTK_WIDGET (object), 0, NULL, 0, 0);
 
   /* Glade hangs when a TextView gets a double click. So we stop them */

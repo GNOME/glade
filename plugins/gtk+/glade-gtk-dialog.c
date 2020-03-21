@@ -83,7 +83,7 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
   
   if (reason == GLADE_CREATE_USER)
     {
-      /* HIG complient border-width defaults on dialogs */
+      /* HIG compliant border-width defaults on dialogs */
       glade_widget_property_set (widget, "border-width", 5);
     }
 
@@ -105,7 +105,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
   /* These properties are controlled by the GtkDialog style properties:
    * "content-area-border", "button-spacing" and "action-area-border",
-   * so we must disable thier use.
+   * so we must disable their use.
    */
   glade_widget_remove_property (vbox_widget, "border-width");
   glade_widget_remove_property (actionarea_widget, "border-width");
@@ -143,7 +143,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   /* Only set these on the original create. */
   if (reason == GLADE_CREATE_USER)
     {
-      /* HIG complient spacing defaults on dialogs */
+      /* HIG compliant spacing defaults on dialogs */
       glade_widget_property_set (vbox_widget, "spacing", 2);
 
       if (GTK_IS_ABOUT_DIALOG (object) ||

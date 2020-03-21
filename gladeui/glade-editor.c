@@ -107,7 +107,7 @@ typedef struct _GladeEditorPrivate
                          * them on demand
                          */
         
-  GtkWidget *packing_page; /* Packing pages are dynamicly created each
+  GtkWidget *packing_page; /* Packing pages are dynamically created each
                             * selection, this pointer is only to free
                             * the last packing page.
                             */
@@ -558,7 +558,7 @@ static void
 glade_editor_close_cb (GladeProject *project, GladeEditor *editor)
 {
   /* project we are viewing was closed,
-   * detatch from editor.
+   * detouch from editor.
    */
   glade_editor_load_widget (editor, NULL);
 }
@@ -571,7 +571,7 @@ glade_editor_removed_cb (GladeProject *project,
   GladeEditorPrivate *priv = glade_editor_get_instance_private (editor);
 
   /* Widget we were viewing was removed from project,
-   * detatch from editor.
+   * detouch from editor.
    */
   if (widget == priv->loaded_widget)
     glade_editor_load_widget (editor, NULL);
@@ -879,7 +879,7 @@ glade_editor_reset_view (void)
                                                G_TYPE_INT,      /* Parent node ?       */
                                                G_TYPE_BOOLEAN,  /* Child node ?        */
                                                G_TYPE_BOOLEAN,  /* Has default value   */
-                                               G_TYPE_BOOLEAN,  /* Doesn't have defaut */
+                                               G_TYPE_BOOLEAN,  /* Doesn't have default */
                                                G_TYPE_STRING);  /* Default string      */
 
   view_widget = gtk_tree_view_new_with_model (model);
@@ -1129,7 +1129,7 @@ glade_editor_reset_properties (GList *props)
     }
 
   if (project)
-    /* GladeCommand takes ownership of allocated list, ugly but practicle */
+    /* GladeCommand takes ownership of allocated list, ugly but practical */
     glade_command_set_properties_list (project, sdata_list);
 
 }

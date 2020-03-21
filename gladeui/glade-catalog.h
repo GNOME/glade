@@ -42,7 +42,7 @@ typedef struct _GladeWidgetGroup GladeWidgetGroup;
  * @name: The name of the catalog
  *
  * Called once at glade startup time for every catalog, catalogs
- * are initialized in order of dependancies.
+ * are initialized in order of dependencies.
  */
 typedef void      (*GladeCatalogInitFunc)    (const gchar *name);
 

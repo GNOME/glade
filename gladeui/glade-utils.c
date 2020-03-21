@@ -200,7 +200,7 @@ _glade_util_dialog_set_hig (GtkDialog *dialog)
  *
  * Creates a new warning dialog window as a child of @parent containing
  * the text of @format, runs it, then destroys it on close. Depending
- * on @type, a cancel button may apear or the icon may change.
+ * on @type, a cancel button may appear or the icon may change.
  *
  * Returns: True if the @type was GLADE_UI_ARE_YOU_SURE and the user
  *          selected "OK", True if the @type was GLADE_UI_YES_OR_NO and
@@ -522,7 +522,7 @@ glade_util_file_dialog_new (const gchar *title,
  * @a: a #gchar
  * @b: a #gchar
  *
- * Replaces each occurance of the character @a in @str to @b.
+ * Replaces each occurrence of the character @a in @str to @b.
  */
 void
 glade_util_replace (gchar *str, gchar a, gchar b)
@@ -541,11 +541,11 @@ glade_util_replace (gchar *str, gchar a, gchar b)
 /**
  * _glade_util_strreplace:
  * @str: a string
- * @free_str: wheter to free str or not
+ * @free_str: whether to free str or not
  * @key: the key string to search for
  * @replacement: string to replace key
  *
- * Replaces each occurance of the string @key in @str to @replacement.
+ * Replaces each occurrence of the string @key in @str to @replacement.
  */
 gchar *
 _glade_util_strreplace (gchar *str,
@@ -1013,7 +1013,7 @@ glade_util_have_devhelp (void)
       if (g_spawn_command_line_sync ("devhelp --version",
                                      &ptr, NULL, &ret, &error))
         {
-          /* If we have a successfull return code.. parse the output.
+          /* If we have a successful return code.. parse the output.
            */
           if (ret == 0)
             {
@@ -1295,7 +1295,7 @@ glade_util_icon_name_to_filename (const gchar *value)
 
   sscanf (value, "glade-generated-%s", filename);
 
-  /* XXX: Filenames without an extention will evidently
+  /* XXX: Filenames without an extension will evidently
    * break here
    */
   if ((p = strrchr (filename, '-')) != NULL)
@@ -1678,7 +1678,7 @@ glade_utils_string_from_value (const GValue *value)
 /**
  * glade_utils_liststore_from_enum_type:
  * @enum_type: A #GType
- * @include_empty: wheather to prepend an "Unset" slot
+ * @include_empty: whether to prepend an "Unset" slot
  *
  * Creates a liststore suitable for comboboxes and such to 
  * chose from a variety of types.

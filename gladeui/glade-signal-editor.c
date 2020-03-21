@@ -111,12 +111,12 @@ glade_signal_editor_take_target_focus_path (GladeSignalEditor *editor,
 
   if (priv->target_focus_path)
     {
-      /* ensure there is an idle callback registred */
+      /* ensure there is an idle callback registered */
       if (priv->focus_id == 0)
         priv->focus_id = g_idle_add (tree_path_focus_idle, editor);
     }
   else
-    /* ensure there is no idle callback registred */
+    /* ensure there is no idle callback registered */
     if (priv->focus_id > 0)
       {
         g_source_remove (priv->focus_id);

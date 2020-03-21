@@ -264,7 +264,7 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
 
   glade_gtk_button_update_stock (widget);
 
-  /* Fold "font-name" property into the "font" propery */
+  /* Fold "font-name" property into the "font" property */
   object = glade_widget_get_object (widget);
   if (GTK_IS_FONT_BUTTON (object))
     {

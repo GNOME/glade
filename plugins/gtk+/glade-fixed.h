@@ -46,7 +46,7 @@ struct _GladeFixed {
   gchar            *x_prop;      /* packing property names (on child widgets) used */
   gchar            *y_prop;      /* to obtain & configure widget coordinates */
   gchar            *width_prop;  /* property names (on child widgets) used to obtain */
-  gchar            *height_prop; /* & configure widget dimentions. */
+  gchar            *height_prop; /* & configure widget dimensions. */
 
   gboolean          can_resize; /* whether the container supports child resizes or only
                                  * drags.

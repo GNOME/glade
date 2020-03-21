@@ -26,7 +26,7 @@
  * @Short_Description: The glade preview launch/kill interface.
  *
  * This object owns all data that is needed to keep a preview. It stores
- * the GIOChannel used for comunnication between glade and glade-previewer,
+ * the GIOChannel used for communication between glade and glade-previewer,
  * the event source id for a watch  (in the case a watch is used to monitor
  * the communication channel), the previewed widget and the pid of the
  * corresponding glade-previewer.

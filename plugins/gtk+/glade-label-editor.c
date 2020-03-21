@@ -51,7 +51,7 @@ struct _GladeLabelEditorPrivate
   GtkWidget *pattern_radio;       /* Use a pattern string to underline portions of the text
                                    * (pattern eprop embedded) */
 
-  /* These control whether to use single-line-mode, wrap & wrap-mode or niether */
+  /* These control whether to use single-line-mode, wrap & wrap-mode or neither */
   GtkWidget *wrap_free_label; /* Set boldness on this label for a fake property */
   GtkWidget *wrap_free_radio;
   GtkWidget *single_radio;

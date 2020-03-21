@@ -248,7 +248,7 @@ GladeXmlNode * glade_xml_node_add_prev_sibling (GladeXmlNode *node, GladeXmlNode
 GladeXmlNode * glade_xml_node_add_next_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
 GType          glade_xml_node_get_type (void) G_GNUC_CONST;
 
-/* Document Operatons */
+/* Document Operations */
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);
 GladeXmlDoc *  glade_xml_doc_new (void);
 GladeXmlDoc *  glade_xml_doc_ref (GladeXmlDoc *doc);

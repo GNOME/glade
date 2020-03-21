@@ -1409,7 +1409,7 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 
   child_new = glade_widget_get_object (gchild_new);
 
-  /* Cut and Paste childrens */
+  /* Cut and Paste children */
   if ((children = glade_widget_get_children (gchild)) != NULL)
     {
       GList *gchildren = NULL;
@@ -1636,7 +1636,7 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
    * @gladebaseeditor: the #GladeBaseEditor which received the signal.
    * @gchild: the selected #GladeWidget.
    *
-   * Emited when the user selects a child in the editor's treeview.
+   * Emitted when the user selects a child in the editor's treeview.
    * You can add the relevant child properties here using 
    * glade_base_editor_add_default_properties() and glade_base_editor_add_properties() 
    * You can also add labels with glade_base_editor_add_label to make the
@@ -1656,7 +1656,7 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
    * @child: the #GObject being changed.
    * @type: the new type for @child.
    *
-   * Returns: TRUE to stop signal emision.
+   * Returns: TRUE to stop signal emission.
    */
   glade_base_editor_signals[SIGNAL_CHANGE_TYPE] =
       g_signal_new ("change-type",
@@ -1726,7 +1726,7 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
    *
    * Move child here if something else must be done other than cut & paste.
    *
-   * Returns: wheater child has been sucessfully moved or not.
+   * Returns: whether child has been successfully moved or not.
    */
   glade_base_editor_signals[SIGNAL_MOVE_CHILD] =
       g_signal_new ("move-child",

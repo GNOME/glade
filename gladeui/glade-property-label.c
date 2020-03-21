@@ -684,7 +684,7 @@ glade_property_label_set_property (GladePropertyLabel *label,
            */
           glade_property_label_sensitivity_cb (property, NULL, label);
 
-          /* Load intial label state
+          /* Load initial label state
            */
           glade_property_label_state_cb (property, NULL, label);
 

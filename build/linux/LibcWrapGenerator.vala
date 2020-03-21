@@ -244,7 +244,7 @@ public class Main : Object {
 
 					symbolMap.set (symbolName, version);
 
-					/* First occurance of the symbol, if it's older
+					/* First occurrence of the symbol, if it's older
 					 * than the minimum required, put it in that table also
 					 */
 					if (minimumVersion.newerThan (version)) {

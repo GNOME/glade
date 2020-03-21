@@ -28,7 +28,7 @@
  * The #GladeWidgetAdaptor object is a proxy for widget class support in Glade.
  * it is automatically generated from the xml and allows you to override its
  * methods in the plugin library for fine grained support on how you load/save
- * widgets and handle thier properties in the runtime and more.
+ * widgets and handle their properties in the runtime and more.
  * 
  */
 
@@ -75,7 +75,7 @@ typedef struct
                                      * [see glade-property.h] this list contains
                                      * properties about the widget that we are going
                                      * to modify. Like "title", "label", "rows" .
-                                     * Each property creates an input in the propety
+                                     * Each property creates an input in the property
                                      * editor.
                                      */
   GList       *packing_props;       /* List of GladePropertyDef objects that describe
@@ -465,7 +465,7 @@ gwa_setup_properties (GladeWidgetAdaptor *adaptor,
   guint n_specs = 0;
   GList *l;
 
-  /* only GtkContainer child propeties can be introspected */
+  /* only GtkContainer child properties can be introspected */
   if (is_packing && !g_type_is_a (priv->type, GTK_TYPE_CONTAINER))
     return;
 
@@ -475,7 +475,7 @@ gwa_setup_properties (GladeWidgetAdaptor *adaptor,
   else
     priv->properties = gwa_clone_parent_properties (adaptor, is_packing);
 
-  /* Now automaticly introspect new properties added in this class,
+  /* Now automatically introspect new properties added in this class,
    * allow the class writer to decide what to override in the resulting
    * list of properties.
    */
@@ -2310,7 +2310,7 @@ gwa_update_properties_from_type (GladeWidgetAdaptor *adaptor,
   GParamSpec **specs = NULL, *spec;
   guint i, n_specs = 0;
 
-  /* only GtkContainer child propeties can be introspected */
+  /* only GtkContainer child properties can be introspected */
   if (is_packing && !g_type_is_a (priv->type, GTK_TYPE_CONTAINER))
     return;
 
@@ -2744,10 +2744,10 @@ generate_deprecated_icon (const gchar *icon_name)
  * @class_node: the #GladeXmlNode to load
  * @module: the plugin GModule.
  *
- * Dynamicly creates a subclass of #GladeWidgetAdaptor and subclasses
- * the closest parent adaptor (parent class adapters must be creates/registerd
+ * Dynamically creates a subclass of #GladeWidgetAdaptor and subclasses
+ * the closest parent adaptor (parent class adapters must be created/registered
  * prior to child classes, otherwise inheritance wont work) and parses in
- * the relevent catalog info.
+ * the relevant catalog info.
  *
  * Returns: (transfer full): a newly allocated #GladeWidgetAdaptor
  */
@@ -2959,7 +2959,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
    * (the name specified in the catalog) means we are using the type specified in the
    * the parent tag as the runtime and the class already exist.
    * So we need to add the properties and signals from the real class
-   * even though they wont be aplied at runtime.
+   * even though they wont be applied at runtime.
    */
   if (priv->type != priv->real_type)
     {
@@ -3030,9 +3030,9 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
  * @reason:            The #GladeCreateReason for which this internal widget
  *                     was created (usually just pass the reason from the post_create
  *                     function; note also this is used only by the plugin code so
- *                     pass something usefull here).
+ *                     pass something useful here).
  *
- * A convenienve function to create a #GladeWidget of the prescribed type
+ * A convenience function to create a #GladeWidget of the prescribed type
  * for internal widgets.
  *
  * Returns: (transfer full): a freshly created #GladeWidget wrapper object for the
@@ -3512,7 +3512,7 @@ glade_widget_adaptor_get_internal_child (GladeWidgetAdaptor *adaptor,
  * @property_name: The property identifier
  * @value:         The #GValue
  *
- * This delagate function is used to apply the property value on
+ * This delegate function is used to apply the property value on
  * the runtime object.
  *
  */
@@ -3571,11 +3571,11 @@ glade_widget_adaptor_get_property (GladeWidgetAdaptor *adaptor,
  * @property_name: The property identifier
  * @value:         The #GValue
  *
- * This delagate function is always called whenever setting any
+ * This delegate function is always called whenever setting any
  * properties with the exception of load time, and copy/paste time
- * (basicly the two places where we recreate a hierarchy that we
- * already know "works") its basicly an optional backend provided
- * boundry checker for properties.
+ * (basically the two places where we recreate a hierarchy that we
+ * already know "works") its basically an optional backend provided
+ * boundary checker for properties.
  *
  * Returns: whether or not its OK to set @value on @object, this function
  * will silently return TRUE if the class did not provide a verify function.
@@ -3818,11 +3818,11 @@ glade_widget_adaptor_child_get_property (GladeWidgetAdaptor *adaptor,
  * @property_name: The id of the property
  * @value:         The @GValue
  *
- * This delagate function is always called whenever setting any
+ * This delegate function is always called whenever setting any
  * properties with the exception of load time, and copy/paste time
- * (basicly the two places where we recreate a hierarchy that we
- * already know "works") its basicly an optional backend provided
- * boundry checker for properties.
+ * (basically the two places where we recreate a hierarchy that we
+ * already know "works") its basically an optional backend provided
+ * boundary checker for properties.
  *
  * Returns: whether or not its OK to set @value on @object, this function
  * will silently return TRUE if the class did not provide a verify function.
@@ -4295,8 +4295,8 @@ glade_widget_adaptor_child_action_activate (GladeWidgetAdaptor *adaptor,
  * @object:    The #GObject
  * @action_path: The action identifier in the action tree
  *
- * This delagate function is used to create dynamically customized
- * submenus. Called only for actions that dont have children.
+ * This delegate function is used to create dynamically customized
+ * submenus. Called only for actions that don't have children.
  *
  * Returns: (transfer full) (nullable): A newly created #GtkMenu or %NULL
  */
@@ -4497,8 +4497,8 @@ glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
 /**
  * glade_widget_adaptor_create_eprop_by_name:
  * @adaptor: A #GladeWidgetAdaptor
- * @property_id: the string if of the coresponding #GladePropertyDef to be edited
- * @packing: whether this reffers to a packing property
+ * @property_id: the string if of the corresponding #GladePropertyDef to be edited
+ * @packing: whether this refers to a packing property
  * @use_command: whether to use the GladeCommand interface
  * to commit property changes
  * 

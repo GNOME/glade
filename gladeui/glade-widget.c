@@ -254,9 +254,9 @@ glade_widget_add_child_impl (GladeWidget *widget,
    * after parenting the widget so that we can introspect the
    * values setup by the runtime widget, in which case the plugin
    * cannot access its packing properties and set them sensitive
-   * or connect to thier signals etc. maybe its not so important
+   * or connect to their signals etc. maybe its not so important
    * but its a flaw worthy of note, some kind of double pass api
-   * would be needed to accomadate this.
+   * would be needed to accommodate this.
    */
 
 
@@ -787,8 +787,8 @@ glade_widget_dup_properties (GladeWidget *dest_widget,
  *
  * Removes the #GladeProperty indicated by @id_property
  * from @widget (this is intended for use in the plugin, to
- * remove properties from composite children that dont make
- * sence to allow the user to specify, notably - properties
+ * remove properties from composite children that don't make
+ * sense to allow the user to specify, notably - properties
  * that are proxied through the composite widget's properties or
  * style properties).
  */
@@ -800,7 +800,7 @@ glade_widget_remove_property (GladeWidget *widget, const gchar *id_property)
   g_return_if_fail (GLADE_IS_WIDGET (widget));
   g_return_if_fail (id_property);
 
-  /* XXX FIXME: currently we arent calling this on packing properties,
+  /* XXX FIXME: currently we aren't calling this on packing properties,
    * but doing so could cause crashes because the hash table is not
    * managed properly
    */
@@ -1025,7 +1025,7 @@ glade_widget_dispose (GObject *object)
     g_list_foreach (widget->priv->properties, (GFunc) reset_object_property,
                     widget->priv->project);
 
-  /* We have to make sure properties release thier references on other widgets first 
+  /* We have to make sure properties release their references on other widgets first 
    * hence the reset (for object properties) */
   if (widget->priv->properties)
     {
@@ -1441,7 +1441,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
 
   properties[PROP_VISIBLE] =
        g_param_spec_boolean ("visible", _("Visible"),
-                            _("Wether the widget is visible or not"),
+                            _("Whether the widget is visible or not"),
                              FALSE, G_PARAM_READABLE);
 
   properties[PROP_COMPOSITE] =
@@ -1510,7 +1510,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
                     GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
-   * GladeWidget::button-relese-event:
+   * GladeWidget::button-release-event:
    * @gladewidget: the #GladeWidget which received the signal.
    * @arg1: the #GdkEvent
    */
@@ -1755,7 +1755,7 @@ glade_widget_dup_internal (GladeWidget *main_target,
                                      template_widget->priv->packing_properties, FALSE,
                                      FALSE, FALSE);
 
-  /* If custom properties are still at thier
+  /* If custom properties are still at their
    * default value, they need to be synced.
    */
   glade_widget_sync_custom_props (gwidget);
@@ -2141,7 +2141,7 @@ glade_widget_hide (GladeWidget *widget)
  * Adds @property to @widget 's list of referenced properties.
  *
  * Note: this is used to track properties on other objects that
- *       reffer to this object.
+ *       refer to this object.
  */
 void
 glade_widget_add_prop_ref (GladeWidget *widget, GladeProperty *property)
@@ -2154,7 +2154,7 @@ glade_widget_add_prop_ref (GladeWidget *widget, GladeProperty *property)
   if (!g_list_find (widget->priv->prop_refs, property))
     widget->priv->prop_refs = g_list_prepend (widget->priv->prop_refs, property);
 
-  /* parentless widget reffed widgets are added to thier reffering widgets. 
+  /* parentless widget reffed widgets are added to their referring widgets. 
    * they cant be in the design view.
    */
   pdef = glade_property_get_def (property);
@@ -2177,7 +2177,7 @@ glade_widget_add_prop_ref (GladeWidget *widget, GladeProperty *property)
  * Removes @property from @widget 's list of referenced properties.
  *
  * Note: this is used to track properties on other objects that
- *       reffer to this object.
+ *       refer to this object.
  */
 void
 glade_widget_remove_prop_ref (GladeWidget *widget, GladeProperty *property)
@@ -2574,8 +2574,8 @@ glade_widget_rebuild (GladeWidget *gwidget)
       glade_project_remove_object (project, gwidget->priv->object);
     }
 
-  /* parentless_widget and object properties that reffer to this widget 
-   * should be unset before transfering */
+  /* parentless_widget and object properties that refer to this widget 
+   * should be unset before transferring */
   l = g_list_copy (gwidget->priv->properties);
   save_properties = g_list_copy (gwidget->priv->prop_refs);
   save_properties = g_list_concat (l, save_properties);
@@ -2629,7 +2629,7 @@ glade_widget_rebuild (GladeWidget *gwidget)
   if (parent)
     glade_widget_add_child (parent, gwidget, FALSE);
 
-  /* Custom properties aren't transfered in build_object, since build_object
+  /* Custom properties aren't transferred in build_object, since build_object
    * is only concerned with object creation.
    */
   glade_widget_sync_custom_props (gwidget);
@@ -3292,7 +3292,7 @@ glade_widget_pack_property_set_save_always (GladeWidget *widget,
  *
  * Creates a printable string representing @id_property in
  * @widget, if @value is specified it will be used in place
- * of @id_property's real value (this is a convinience
+ * of @id_property's real value (this is a convenience
  * function to print/debug properties usually from plugin
  * backends).
  *
@@ -3924,8 +3924,8 @@ glade_widget_set_packing_properties (GladeWidget *widget,
  * @widget: a #GladeWidget
  * @type: a  #GType
  * 
- * Returns: whether this GladeWidget has any decendants of type @type
- *          or any decendants that implement the @type interface
+ * Returns: whether this GladeWidget has any descendants of type @type
+ *          or any descendants that implement the @type interface
  */
 gboolean
 glade_widget_has_decendant (GladeWidget *widget, GType type)
@@ -4047,7 +4047,7 @@ glade_widget_read_child (GladeWidget *widget, GladeXmlNode *node)
  *
  * Creates a new #GladeWidget from a XML node.
  *
- * If node is a template and its parent class is abstract/non instantiable,
+ * If node is a template and its parent class is abstract/non instantiatable,
  * Glade will use a class with the GladeInstantiable prefix instead.
  *
  * For example, with a GtkBin template Glade will GladeInstantiableGtkBin class
@@ -4504,7 +4504,7 @@ glade_widget_depends (GladeWidget *widget, GladeWidget *other)
  * 
  * Currently only motion and button events are handled (see IS_GLADE_WIDGET_EVENT)
  * 
- * Returns: (transfer none): the asociated #GdkDevice for this glade widget event.
+ * Returns: (transfer none): the associated #GdkDevice for this glade widget event.
  *
  * Deprecated: use gdk_event_get_device() instead.
  */

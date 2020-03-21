@@ -227,7 +227,7 @@ typedef GladeWidget * (* GladeCreateWidgetFunc) (GladeWidgetAdaptor *adaptor,
  * @property_name: The property identifier
  * @value: The #GValue
  *
- * This delagate function is used to apply the property value on
+ * This delegate function is used to apply the property value on
  * the runtime object.
  *
  * Sets @value on @object for a given #GladePropertyDef
@@ -258,11 +258,11 @@ typedef void     (* GladeGetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
  * @property_name: The property identifier
  * @value: The #GValue
  *
- * This delagate function is always called whenever setting any
+ * This delegate function is always called whenever setting any
  * properties with the exception of load time, and copy/paste time
- * (basicly the two places where we recreate a hierarchy that we
- * already know "works") its basicly an optional backend provided
- * boundry checker for properties.
+ * (basically the two places where we recreate a hierarchy that we
+ * already know "works") its basically an optional backend provided
+ * boundary checker for properties.
  *
  * Returns: whether or not its OK to set @value on @object
  */
@@ -313,11 +313,11 @@ typedef void   (* GladeChildGetPropertyFunc)      (GladeWidgetAdaptor *adaptor,
  * @property_name: The property name
  * @value: The #GValue
  *
- * This delagate function is always called whenever setting any
+ * This delegate function is always called whenever setting any
  * properties with the exception of load time, and copy/paste time
- * (basicly the two places where we recreate a hierarchy that we
- * already know "works") its basicly an optional backend provided
- * boundry checker for properties.
+ * (basically the two places where we recreate a hierarchy that we
+ * already know "works") its basically an optional backend provided
+ * boundary checker for properties.
  *
  * Returns: whether or not its OK to set @value on @object
  */
@@ -475,7 +475,7 @@ typedef GObject *(* GladeGetInternalFunc)         (GladeWidgetAdaptor *adaptor,
  * @object: The #GObject
  * @action_path: The action path
  *
- * This delagate function is used to catch actions from the core.
+ * This delegate function is used to catch actions from the core.
  *
  */
 typedef void     (* GladeActionActivateFunc)  (GladeWidgetAdaptor *adaptor,
@@ -489,7 +489,7 @@ typedef void     (* GladeActionActivateFunc)  (GladeWidgetAdaptor *adaptor,
  * @object: The #GObject
  * @action_path: The action path
  *
- * This delagate function is used to catch packing actions from the core.
+ * This delegate function is used to catch packing actions from the core.
  *
  */
 typedef void     (* GladeChildActionActivateFunc) (GladeWidgetAdaptor *adaptor,
@@ -504,8 +504,8 @@ typedef void     (* GladeChildActionActivateFunc) (GladeWidgetAdaptor *adaptor,
  * @object: The #GObject
  * @action_path: The action path
  *
- * This delagate function is used to create dynamically customized
- * submenus. Called only for actions that dont have children.
+ * This delegate function is used to create dynamically customized
+ * submenus. Called only for actions that don't have children.
  *
  */
 typedef GtkWidget  *(* GladeActionSubmenuFunc)  (GladeWidgetAdaptor *adaptor,
@@ -645,11 +645,11 @@ struct _GladeWidgetAdaptorClass
                                              * instantiation).
                                              */
 
-  GladeGetInternalFunc       get_internal_child; /* Retrieves the the internal child
+  GladeGetInternalFunc       get_internal_child; /* Retrieves the internal child
                                                   * of the given name.
                                                   */
 
-  /* Delagate to verify if this is a valid value for this property,
+  /* Delegate to verify if this is a valid value for this property,
    * if this function exists and returns FALSE, then glade_property_set
    * will abort before making any changes
    */
@@ -677,7 +677,7 @@ struct _GladeWidgetAdaptorClass
                                                 * this support type.
                                                 */
 
-  GladeChildVerifyPropertyFunc child_verify_property; /* A boundry checker for 
+  GladeChildVerifyPropertyFunc child_verify_property; /* A boundary checker for 
                                                        * packing properties 
                                                        */
   GladeChildSetPropertyFunc    child_set_property; /* Sets/Gets a packing property */
@@ -686,12 +686,12 @@ struct _GladeWidgetAdaptorClass
                                                 * child widget with
                                                 * another one: it's used to
                                                 * replace a placeholder with
-                                                * a widget and viceversa.
+                                                * a widget and vice versa.
                                                 */
         
   GladeActionActivateFunc      action_activate;       /* This method is used to catch actions */
   GladeChildActionActivateFunc child_action_activate; /* This method is used to catch packing actions */
-  GladeActionSubmenuFunc       action_submenu;        /* Delagate function to create dynamic submenus
+  GladeActionSubmenuFunc       action_submenu;        /* Delegate function to create dynamic submenus
                                                        * in action menus. */
   GladeDependsFunc             depends;           /* Periodically sort widgets in the project */
   GladeReadWidgetFunc          read_widget;       /* Reads widget attributes from xml */

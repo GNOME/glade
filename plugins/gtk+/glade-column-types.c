@@ -662,7 +662,7 @@ column_name_edited (GtkCellRendererText * cell,
       strcmp (new_column_name, old_column_name) == 0)
     return;
 
-  /* Attempt to rename the column, and commit if successfull... */
+  /* Attempt to rename the column, and commit if successful... */
   glade_property_get (prop, &columns);
   if (columns)
     columns = glade_column_list_copy (columns);

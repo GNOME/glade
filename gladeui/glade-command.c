@@ -264,12 +264,12 @@ glade_command_collapse (GladeCommand *command, GladeCommand *other)
 
 /**
  * glade_command_push_group:
- * @fmt:         The collective desctiption of the command group.
+ * @fmt:         The collective description of the command group.
  *               only the description of the first group on the 
  *               stack is used when embedding groups.
  * @...: args to the format string.
  *
- * Marks the begining of a group.
+ * Marks the beginning of a group.
  */
 void
 glade_command_push_group (const gchar *fmt, ...)
@@ -1178,9 +1178,9 @@ get_all_parentless_reffed_widgets (GList *reffed, GladeWidget *widget)
  * @pasting: whether we are pasting an existing widget or creating a new one.
  *
  * Performs an add command on all widgets in @widgets to @parent, possibly
- * replacing @placeholder (note toplevels dont need a parent; the active project
+ * replacing @placeholder (note toplevels don't need a parent; the active project
  * will be used when pasting toplevel objects).
- * Pasted widgets will persist packing properties from thier cut/copy source
+ * Pasted widgets will persist packing properties from their cut/copy source
  * while newly added widgets will prefer packing defaults.
  *
  */
@@ -1209,7 +1209,7 @@ glade_command_add (GList            *widgets,
   me->add = TRUE;
   me->from_clipboard = pasting;
 
-  /* Things can go wrong in this function if the dataset is inacurate,
+  /* Things can go wrong in this function if the dataset is inaccurate,
    * we make no real attempt here to recover, just g_critical() and
    * fix the bugs as they pop up.
    */
@@ -2816,7 +2816,7 @@ glade_command_property_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
       GladeCommandProperty *this = (GladeCommandProperty *) this_cmd;
       GladeCommandProperty *other = (GladeCommandProperty *) other_cmd;
 
-      /* Intern strings can be compared by comparind the pointers */
+      /* Intern strings can be compared by comparing the pointers */
       return this->property_id == other->property_id;
     }
 
@@ -2894,7 +2894,7 @@ glade_command_set_project_property (GladeProject       *project,
   me->description_new = description_new;
   me->property_id = g_intern_static_string (property_id);
 
-  /* move the old value to the comand struct */
+  /* move the old value to the command struct */
   me->old_value = old_value;
 
   /* set new value */

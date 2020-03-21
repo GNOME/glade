@@ -651,7 +651,7 @@ glade_previewer_slideshow_save (GladePreviewer *preview,
  * 
  * Set whether to print handlers when they are activated or not.
  * It only works if you use glade_previewer_connect_function() as the 
- * connect funtion.
+ * connect function.
  */
 void
 glade_previewer_set_print_handlers (GladePreviewer *preview,
@@ -778,11 +778,11 @@ on_handler_called (SignalData *data)
   data->n_invocations++;
 
   if (data->n_invocations == 1)
-    /* translators: this will be shown in glade previewer when a signal %s::%s is emited one time */
+    /* translators: this will be shown in glade previewer when a signal %s::%s is emitted one time */
     g_string_append_printf (message, _("%s::%s emitted one time"),
                             G_OBJECT_TYPE_NAME (object), query->signal_name);
   else
-    /* translators: this will be shown in glade previewer when a signal %s::%s is emited %d times */
+    /* translators: this will be shown in glade previewer when a signal %s::%s is emitted %d times */
     g_string_append_printf (message, _("%s::%s emitted %d times"),
                             G_OBJECT_TYPE_NAME (object), query->signal_name,
                             data->n_invocations);

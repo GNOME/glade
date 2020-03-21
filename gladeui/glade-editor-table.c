@@ -83,7 +83,7 @@ struct _GladeEditorTablePrivate
 
   GList *properties; /* A list of GladeEditorPropery items.
                       * For each row in the gtk_table, there is a
-                      * corrsponding GladeEditorProperty struct.
+                      * corresponding GladeEditorProperty struct.
                       */
 
   GladeEditorPageType type; /* Is this table to be used in the common tab, ?
@@ -493,7 +493,7 @@ property_class_comp (gconstpointer a, gconstpointer b)
       else
         return 0;
     }
-  /* Group properties by thier class hierarchy */
+  /* Group properties by their class hierarchy */
   else
     {
       if (g_type_is_a (pa->owner_type, pb->owner_type))
@@ -629,7 +629,7 @@ append_name_field (GladeEditorTable *table)
   glade_editor_table_attach (table, priv->name_label, 0, priv->rows);
   glade_editor_table_attach (table, priv->name_field, 1, priv->rows);
 
-  /* Set initial visiblity */
+  /* Set initial visibility */
   gtk_widget_set_visible (priv->name_label, priv->show_name);
   gtk_widget_set_visible (priv->name_field, priv->show_name);
 

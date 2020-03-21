@@ -117,7 +117,7 @@ enum
   COLUMN_BUTTON_ACTIVE,    /* whether the GladeCellRendererButton is to be used (to launch dialogs) */
   COLUMN_TEXT,             /* text attribute value for all text derived renderers */
   COLUMN_TEXT_STYLE,       /* whether to make italic */
-  COLUMN_TEXT_FG,          /* forground colour of the text */
+  COLUMN_TEXT_FG,          /* foreground colour of the text */
   
   COLUMN_COMBO_ACTIVE,     /* whether the combobox renderer is being used */
   COLUMN_COMBO_MODEL,      /* the model for the dropdown list */

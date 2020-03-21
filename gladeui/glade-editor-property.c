@@ -511,7 +511,7 @@ glade_editor_property_finalize (GObject *object)
   GladeEditorProperty *eprop = GLADE_EDITOR_PROPERTY (object);
   GladeEditorPropertyPrivate *priv = glade_editor_property_get_instance_private (eprop);
 
-  /* detatch from loaded property */
+  /* detouch from loaded property */
   glade_editor_property_load_common (eprop, NULL);
 
   g_free (priv->custom_text);
@@ -957,7 +957,7 @@ glade_eprop_numeric_force_update (GtkSpinButton       *spin,
         {
           /* Here we commit the new property value but we make sure 
            * glade_eprop_numeric_load() is not called to prevent
-           * gtk_spin_button_set_value() changing the the value the
+           * gtk_spin_button_set_value() changing the value the
            * user is trying to input.
            */
           GladeEPropNumeric *eprop_numeric = GLADE_EPROP_NUMERIC (eprop);

@@ -658,7 +658,7 @@ glade_catalog_load_all (void)
   for (l = catalog_paths; l; l = g_list_next (l))
     catalogs = catalogs_from_path (catalogs, l->data);
   
-  /* Catalogs need dependancies, most catalogs depend on
+  /* Catalogs need dependencies, most catalogs depend on
    * the gtk+ catalog, but some custom toolkits may depend
    * on the gnome catalog for instance.
    */

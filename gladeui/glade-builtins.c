@@ -403,7 +403,7 @@ glade_glist_get_type (void)
 
 /****************************************************************
  *  Built-in GladeParamSpecObjects for object list properties   *
- *  (Used as a pspec to desctibe an AtkRelationSet, but can     *
+ *  (Used as a pspec to describe an AtkRelationSet, but can     *
  *  for any object list property)                               *
  ****************************************************************/
 static void

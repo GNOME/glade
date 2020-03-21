@@ -288,7 +288,7 @@ gwa_action_path_get_id (const gchar *action_path)
  * glade_widget_action_def_new:
  * @path: the action path
  *
- * Returns: a newlly created #GladeWidgetActionDef for @path.
+ * Returns: a newly created #GladeWidgetActionDef for @path.
  */
 GladeWidgetActionDef *
 glade_widget_action_def_new (const gchar *path)
@@ -306,7 +306,7 @@ glade_widget_action_def_new (const gchar *path)
  * glade_widget_action_def_clone:
  * @action: a GladeWidgetActionDef
  *
- * Returns: a newlly allocated copy of @action.
+ * Returns: a newly allocated copy of @action.
  */
 GladeWidgetActionDef *
 glade_widget_action_def_clone (GladeWidgetActionDef *action)

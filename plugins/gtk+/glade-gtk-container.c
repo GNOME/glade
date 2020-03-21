@@ -127,10 +127,10 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
   for (i = 0; i < nproperties; i++)
     {
       /* If the added widget is a placeholder then we
-       * want to keep all the "tranfer-on-paste" properties
+       * want to keep all the "transfer-on-paste" properties
        * as default so that it looks fresh (transfer-on-paste
-       * properties dont effect the position/slot inside a 
-       * contianer)
+       * properties don't effect the position/slot inside a 
+       * container)
        */
       if (GLADE_IS_PLACEHOLDER (new_widget))
         {
