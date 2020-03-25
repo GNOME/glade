@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
 "POT-Creation-Date: 2020-03-18 11:31+0000\n"
-"PO-Revision-Date: 2020-03-21 20:53+0200\n"
+"PO-Revision-Date: 2020-03-24 17:37+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "Language: uk\n"
@@ -1921,6 +1921,8 @@ msgid ""
 "meaning of this string from the meaning of other occurrences of the same "
 "string"
 msgstr ""
+"Для коротких і неоднозначних рядків вкажіть тут слово для відокремлення"
+" значення цього рядка від інших використань того самого рядка"
 
 #: ../gladeui/glade-editor-property.c:2103
 msgid "Co_mments for translators:"
@@ -2585,7 +2587,7 @@ msgstr "У цей контейнер за раз може бути вставл�
 
 #: ../gladeui/glade-project.c:5349
 msgid "Insufficient amount of placeholders in target container"
-msgstr "Недостатньо комірок у контейнері"
+msgstr "Недостатньо комірок у контейнері призначення"
 
 #: ../gladeui/glade-project-properties.c:169
 msgid "The project this properties dialog was created for"
@@ -2801,6 +2803,8 @@ msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
 "Add a %s first."
 msgstr ""
+"Неможливо додати віджет %s без можливості гортання на %s безпосередньо.\n"
+"Спочатку додайте %s."
 
 #: ../gladeui/glade-utils.c:491
 msgid "All Files"
@@ -2853,7 +2857,7 @@ msgstr "Чи буде ця дія видимою"
 #: ../gladeui/glade-widget-adaptor.c:243
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr "Виведений адаптер (%s) елементу %s вже існує!"
+msgstr "Виведений адаптер (%s) елемента %s вже існує!"
 
 #: ../gladeui/glade-widget-adaptor.c:951
 #, c-format
@@ -2912,7 +2916,7 @@ msgstr "Простір назв DevHelp для цього класу відже�
 
 #: ../gladeui/glade-widget-adaptor.c:1496
 msgid "Special Child Type"
-msgstr "Спеціальний тип дочірнього елементу"
+msgstr "Спеціальний тип дочірнього елемента"
 
 #: ../gladeui/glade-widget-adaptor.c:1497
 msgid ""
@@ -2935,7 +2939,7 @@ msgstr "Запит"
 
 #: ../gladeui/glade-widget-adaptor.c:1510
 msgid "Whether the adaptor should query the use or not"
-msgstr ""
+msgstr "Чи має адаптер надсилати запит щодо використання"
 
 #: ../gladeui/glade-widget.c:1342
 msgid "The name of the widget"
@@ -2947,7 +2951,7 @@ msgstr "Внутрішня назва"
 
 #: ../gladeui/glade-widget.c:1347
 msgid "The internal name of the widget"
-msgstr "Внутрішня назва елементу"
+msgstr "Внутрішня назва елемента"
 
 #: ../gladeui/glade-widget.c:1351
 msgid "Anarchist"
@@ -3129,6 +3133,8 @@ msgid ""
 "Click on a placeholder to create this class\n"
 "(use middle button to create more than one)"
 msgstr ""
+"Клацніть на заміннику, щоб створити цей клас\n"
+"(скористайтеся середньою кнопкою миші, щоб створити декілька)"
 
 #: ../gladeui/glade-adaptor-chooser.ui.h:4
 msgid "Non-GTK+ widgets and objects"
@@ -3160,15 +3166,15 @@ msgstr "Домен перекладу:"
 
 #: ../gladeui/glade-project-properties.ui.h:2
 msgid "Composite template toplevel:"
-msgstr ""
+msgstr "Верхній рівень складеного шаблона:"
 
 #: ../gladeui/glade-project-properties.ui.h:3
 msgid "Select a CSS to use as custom style provider"
-msgstr ""
+msgstr "Виберіть CSS, яку буде використано як нетипове джерело стилів"
 
 #: ../gladeui/glade-project-properties.ui.h:4
 msgid "Custom CSS style provider:"
-msgstr ""
+msgstr "Нетипове джерело стилів CSS:"
 
 #: ../gladeui/glade-project-properties.ui.h:5
 msgid "From the project directory"
@@ -3192,7 +3198,7 @@ msgstr "Зображення завантажується:"
 
 #: ../gladeui/glade-project-properties.ui.h:10
 msgid "Toolkit version required:"
-msgstr ""
+msgstr "Потрібна версія набору бібліотек:"
 
 #: ../gladeui/glade-project-properties.ui.h:13
 msgid "Copyright:"
@@ -3260,6 +3266,8 @@ msgid ""
 "Verify that the project does not use any properties,\n"
 "signals or widgets which are not available in the target version"
 msgstr ""
+"Перевірити, чи немає у проєкті використання властивостей,\n"
+"сигналів або віджетів, які є недоступними у версії призначення"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.c:141
 #, c-format
@@ -3292,13 +3300,13 @@ msgstr "Виберіть швидку клавішу..."
 #: ../plugins/gtk+/glade-box-editor.c:133
 #, c-format
 msgid "Setting %s to use a center child"
-msgstr ""
+msgstr "Параметр %s для використання центрального дочірнього елемента"
 
 #: ../plugins/gtk+/glade-action-bar-editor.c:131
 #: ../plugins/gtk+/glade-box-editor.c:136
 #, c-format
 msgid "Setting %s to not use a center child"
-msgstr ""
+msgstr "Параметр %s для невикористання центрального дочірнього елемента"
 
 #: ../plugins/gtk+/glade-attributes.c:224
 msgctxt "textattr"
@@ -3394,7 +3402,7 @@ msgstr "Не встановлено"
 
 #: ../plugins/gtk+/glade-attributes.c:724
 msgid "Select a color"
-msgstr "Вибір каталогу"
+msgstr "Вибір кольору"
 
 #: ../plugins/gtk+/glade-attributes.c:759
 msgid "Select a font"
@@ -3419,7 +3427,7 @@ msgstr "Редагувати атрибути"
 #: ../plugins/gtk+/glade-button-editor.c:241
 #, c-format
 msgid "Setting %s to use a custom child"
-msgstr "Використання додатково визначеного елементу всередині %s"
+msgstr "Використання у %s нетипового дочірнього елемента"
 
 #: ../plugins/gtk+/glade-button-editor.c:269
 #, c-format
@@ -3440,12 +3448,12 @@ msgstr "Використання мітки та значка у %s"
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:191
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
-msgstr "використання у %s атрибуту з властивості %s"
+msgstr "Використання у %s атрибуту з властивості %s"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:212
 #, c-format
 msgid "Setting %s to use the %s property directly"
-msgstr "використання у %s властивості %s безпосередньо"
+msgstr "Використання у %s властивості %s безпосередньо"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:356
 #, c-format
@@ -3488,12 +3496,12 @@ msgstr "Назва стовпчика"
 #: ../plugins/gtk+/glade-entry-editor.c:247
 #, c-format
 msgid "Setting %s to use static text"
-msgstr ""
+msgstr "Використання у %s статичного тексту"
 
 #: ../plugins/gtk+/glade-entry-editor.c:287
 #, c-format
 msgid "Setting %s to use an external buffer"
-msgstr ""
+msgstr "Використання у %s зовнішньго буфера"
 
 #: ../plugins/gtk+/glade-entry-editor.c:371
 #, c-format
@@ -3529,21 +3537,25 @@ msgstr "використання вторинного значка у %s з фа
 #, c-format
 msgid "Setting primary icon of %s to use tooltip markup"
 msgstr ""
+"Використання у %s форматування у тексті підказки до основної піктограми"
 
 #: ../plugins/gtk+/glade-entry-editor.c:574
 #, c-format
 msgid "Setting secondary icon of %s to use tooltip markup"
 msgstr ""
+"Використання у %s форматування у тексті підказки до вторинної піктограми"
 
 #: ../plugins/gtk+/glade-entry-editor.c:587
 #, c-format
 msgid "Setting primary icon of %s to not use tooltip markup"
 msgstr ""
+"Невикористання у %s форматування у тексті підказки до основної піктограми"
 
 #: ../plugins/gtk+/glade-entry-editor.c:590
 #, c-format
 msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr ""
+"Невикористання у %s форматування у тексті підказки до вторинної піктограми"
 
 #: ../plugins/gtk+/glade-fixed.c:623 ../plugins/gtk+/glade-gtk-grid.c:1018
 #, c-format
@@ -3706,7 +3718,7 @@ msgstr "Поступ"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:451
 msgid "Icon View Editor"
-msgstr "Редактор області значків"
+msgstr "Редактор області піктограм"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:456
 msgid "Combo Editor"
@@ -3728,46 +3740,51 @@ msgstr "%s працює напряму з %s"
 
 #: ../plugins/gtk+/glade-gtk-combo-box.c:31
 msgid "This combo box is not configured to have an entry"
-msgstr ""
+msgstr "Цей спадний список не налаштовано на те, щоб у ньому були пункти"
 
 #: ../plugins/gtk+/glade-gtk-combo-box.c:94
 msgid "Tearoff menus are disabled"
-msgstr ""
+msgstr "Відривні меню вимкнено"
 
 #: ../plugins/gtk+/glade-gtk-container.c:58
 msgid "Cannot add a toplevel window to a container."
-msgstr ""
+msgstr "Неможливо додати вікно верхнього рівня до контейнера."
 
 #: ../plugins/gtk+/glade-gtk-container.c:67
 msgid "Cannot add a popover to a container."
-msgstr ""
+msgstr "Неможливо додати контекстний віджет до контейнера."
 
 #: ../plugins/gtk+/glade-gtk-container.c:78
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
-msgstr ""
+msgstr "Віджети типу %s можуть містити інші віджети лише як дочірні."
 
 #: ../plugins/gtk+/glade-gtk-container.c:89
 #, c-format
 msgid "Widgets of type %s need placeholders to add children."
 msgstr ""
+"У віджетах типу %s для додавання дочірніх елементів потрібні заповнювачі."
 
 #: ../plugins/gtk+/glade-gtk-entry.c:195
 msgid ""
 "This property is only available\n"
 "if the entry has a frame"
 msgstr ""
+"Ця властивість доступна, лише\n"
+"якщо у елемента є рамка"
 
 #: ../plugins/gtk+/glade-gtk-entry.c:204
 msgid ""
 "This property is only available\n"
 "if the entry characters are invisible"
 msgstr ""
+"Ця властивість доступна, лише якщо\n"
+"символи запису є невидимими"
 
 #: ../plugins/gtk+/glade-gtk-flow-box.c:204
 #, c-format
 msgid "Insert Child on %s"
-msgstr ""
+msgstr "Вставити дочірній об'єкт на %s"
 
 #: ../plugins/gtk+/glade-gtk-grid.c:507
 #: ../plugins/gtk+/glade-gtk-list-box.c:207
@@ -3813,15 +3830,15 @@ msgstr "Ця властивість керується дією"
 #: ../plugins/gtk+/glade-gtk.h:39
 #, c-format
 msgid "Only objects of type %s can be added to objects of type %s."
-msgstr ""
+msgstr "Лише об'єкти типу %s можна додавати до об'єктів типу %s."
 
 #: ../plugins/gtk+/glade-gtk.h:41
 msgid "The accelerator can only be set when inside an Action Group."
-msgstr ""
+msgstr "Прискорювач можна встановлювати лише всередині групи кнопок дій."
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
-msgstr ""
+msgstr "Ця властивість не застосовується, якщо встановлено нетиповий заголовок"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:113
 #: ../plugins/gtk+/glade-gtk-notebook.c:992
@@ -3835,25 +3852,30 @@ msgstr "Вставка заповнювача місця до %s"
 #: ../plugins/gtk+/glade-gtk-stack.c:197
 #, c-format
 msgid "Remove placeholder from %s"
-msgstr "Видалення заповнювача місця %s"
+msgstr "Вилучення заповнювача з %s"
 
 #: ../plugins/gtk+/glade-gtk-header-bar.c:304
 msgid ""
 "The decoration layout does not apply to header bars which do no show window "
 "controls"
 msgstr ""
+"Компонування декорацій не стосується смужок заголовків, на яких не буде"
+" показано засоби керування вікном"
 
 #: ../plugins/gtk+/glade-gtk-image.c:106
 msgid "This property only applies to stock images or named icons"
 msgstr ""
+"Ця властивість застосовується лише до стокових зображень та піктограм з теми"
 
 #: ../plugins/gtk+/glade-gtk-image.c:108 ../plugins/gtk+/glade-gtk-image.c:110
 msgid "This property only applies to named icons"
-msgstr "Ця властивість застосовується лише до значків з теми"
+msgstr "Ця властивість застосовується лише до піктограм з теми"
 
 #: ../plugins/gtk+/glade-gtk-label.c:257
 msgid "This property only applies if ellipsize and wrapping are enabled"
 msgstr ""
+"Ця властивість застосовується, лише якщо увімкнено обривання тексту трьома"
+" крапками та перенесення рядків"
 
 #: ../plugins/gtk+/glade-gtk-menu-bar.c:115
 msgid "_File"
@@ -3884,7 +3906,7 @@ msgstr "Правка меню"
 #: ../plugins/gtk+/glade-gtk-menu-item.c:142
 #, c-format
 msgid "An object of type %s cannot have any children."
-msgstr ""
+msgstr "У об'єкта типу %s не може бути дочірніх об'єктів."
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:193
 msgid "<separator>"
@@ -3896,11 +3918,11 @@ msgstr "<інший>"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:245
 msgid "Children cannot be added to a separator."
-msgstr ""
+msgstr "До роздільника не можна додавати дочірні елементи."
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:253
 msgid "Children cannot be added to a Recent Chooser Menu."
-msgstr ""
+msgstr "До меню вибору нещодавніх записів не можна додавати дочірні елементи."
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:262
 #, c-format
@@ -3954,7 +3976,7 @@ msgstr "Група інструментів панелі"
 
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:560 ../plugins/gtk+/gtk+.xml.in.h:753
 msgid "Recent Chooser Menu"
-msgstr ""
+msgstr "Меню вибору нещодавніх записів"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:598 ../plugins/gtk+/gtk+.xml.in.h:156
@@ -4086,6 +4108,8 @@ msgstr "Редактор дерева"
 msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
+"Якщо встановлено режим фіксованої висоти, стовпчики повинні мати фіксовані"
+" розміри на панелі ієрархії"
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:288
 msgid "Search is disabled"
@@ -4102,7 +4126,7 @@ msgstr "Розширювачі не показано"
 #: ../plugins/gtk+/glade-gtk-widget.c:842
 #, c-format
 msgid "Removing parent of %s"
-msgstr "Видалення батьківського елементу %s"
+msgstr "Вилучаємо батьківський елемент %s"
 
 #: ../plugins/gtk+/glade-gtk-widget.c:901
 #, c-format
@@ -4127,6 +4151,8 @@ msgstr "Нова група вирівнювання"
 #: ../plugins/gtk+/glade-gtk-window.c:39
 msgid "This property does not apply to client-side decorated windows"
 msgstr ""
+"Ця властивість не стосується вікон, декорування яких виконується на боці"
+" клієнта"
 
 #. Translators: %s is the name of a widget here, the sentence means:
 #. * Make the widget use a custom title
@@ -4147,12 +4173,12 @@ msgstr "Налаштовуємо %s на використання стандар
 #: ../plugins/gtk+/glade-header-bar-editor.c:193
 #, c-format
 msgid "Setting %s to show window controls"
-msgstr ""
+msgstr "Параметр %s для показу засобів керування вікном"
 
 #: ../plugins/gtk+/glade-header-bar-editor.c:196
 #, c-format
 msgid "Setting %s to not show window controls"
-msgstr ""
+msgstr "Параметр %s для вимикання показу засобів керування вікном"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-icon-factory-editor.c:160
@@ -4160,8 +4186,8 @@ msgid ""
 "First add a stock name in the entry below, then add and define sources for "
 "that icon in the treeview."
 msgstr ""
-"Спочатку вкажіть назву елементу у полі вводу, потім додайте та визначте "
-"джерела значків у дереві."
+"Спочатку вкажіть назву запису у полі вводу, потім додайте та визначте "
+"джерела піктограм у ієрархії."
 
 #: ../plugins/gtk+/glade-icon-sources.c:757
 #, c-format
@@ -4223,7 +4249,7 @@ msgstr "використання у %s значка з теми"
 #: ../plugins/gtk+/glade-image-editor.c:275
 #, c-format
 msgid "Setting %s to use a resource name"
-msgstr ""
+msgstr "Використання назви ресурсу %s"
 
 #: ../plugins/gtk+/glade-image-editor.c:301
 #, c-format
@@ -4290,22 +4316,22 @@ msgstr "Додати та видалити рядки:"
 #: ../plugins/gtk+/glade-notebook-editor.c:158
 #, c-format
 msgid "Setting %s to have a start action"
-msgstr ""
+msgstr "Параметр для додавання до %s початкової дії"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:161
 #, c-format
 msgid "Setting %s to have an end action"
-msgstr ""
+msgstr "Параметр для додавання до %s завершальної дії"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:164
 #, c-format
 msgid "Setting %s to not have a start action"
-msgstr ""
+msgstr "Параметр для усування у %s початкової дії"
 
 #: ../plugins/gtk+/glade-notebook-editor.c:167
 #, c-format
 msgid "Setting %s to not have an end action"
-msgstr ""
+msgstr "Параметр для усування у %s завершальної дії"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:155
@@ -4314,9 +4340,9 @@ msgid ""
 "you to retrieve them when setting cell renderer attributes (press the Delete "
 "key to remove the selected column)"
 msgstr ""
-"Додайте стовпчики у таблицю, вкажіть їх назви, які будуть використовуватись "
-"для посилання на стовпчик з елементу растеризації комірки (натисніть Delete "
-"щоб видалити виділений стовпчик)"
+"Визначте стовпчики для вашої збірки списку. Надайте їм правильних описових"
+" назв, які допоможуть вам використовувати їх при визначенні атрибутів обробки"
+" комірки (натисніть Delete, щоб вилучити позначений стовпчик)"
 
 #: ../plugins/gtk+/glade-store-editor.c:190
 msgid ""
@@ -4364,37 +4390,37 @@ msgstr ""
 #: ../plugins/gtk+/glade-widget-editor.c:183
 #, c-format
 msgid "Setting %s to use a custom tooltip"
-msgstr ""
+msgstr "Використання у %s нетипової підказки"
 
 #: ../plugins/gtk+/glade-widget-editor.c:265
 #, c-format
 msgid "Setting %s to use tooltip markup"
-msgstr ""
+msgstr "Використання у підказці до %s форматування тексту"
 
 #: ../plugins/gtk+/glade-widget-editor.c:277
 #, c-format
 msgid "Setting %s to not use tooltip markup"
-msgstr ""
+msgstr "Невикористання у підказці до %s форматування тексту"
 
 #: ../plugins/gtk+/glade-window-editor.c:145
 #, c-format
 msgid "Setting %s to use a named icon"
-msgstr ""
+msgstr "Використання у %s іменованої піктограми"
 
 #: ../plugins/gtk+/glade-window-editor.c:179
 #, c-format
 msgid "Setting %s to use an icon file"
-msgstr ""
+msgstr "Використання у %s файла піктограми"
 
 #: ../plugins/gtk+/glade-window-editor.c:225
 #, c-format
 msgid "Setting %s to use a custom titlebar"
-msgstr ""
+msgstr "Використання у %s нетипової смужки заголовка"
 
 #: ../plugins/gtk+/glade-window-editor.c:228
 #, c-format
 msgid "Setting %s to use a system provided titlebar"
-msgstr ""
+msgstr "Використання у %s наданої системою смужки заголовка"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 msgid "Page Setup Dialog"
@@ -4438,11 +4464,11 @@ msgstr "Попередній перегляд"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:11
 msgid "Number Up"
-msgstr ""
+msgstr "Сторінок на аркуші"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:12
 msgid "Number Up Layout"
-msgstr ""
+msgstr "Компонування декількох сторінок на аркуші"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:13
 msgid "GTK+ Unix Print Toplevels"
@@ -4450,7 +4476,7 @@ msgstr "Діалог друку GTK+ у Unix"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "Preview snapshot"
-msgstr ""
+msgstr "Переглянути знімок"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:3
 msgid "Edit Separately"
@@ -4640,7 +4666,7 @@ msgstr "Сповіщення про показ"
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Proximity In"
-msgstr "У безпосередній близькості"
+msgstr "Близькість зсередини"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:70
@@ -5254,7 +5280,7 @@ msgstr "Текст верхнього індексу"
 #. Atk role enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:326
 msgid "Last Defined"
-msgstr ""
+msgstr "Останній визначений"
 
 #. Atk relationset properties
 #: ../plugins/gtk+/gtk+.xml.in.h:328
@@ -5319,7 +5345,7 @@ msgstr "Опис для"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:343
 msgid "A list of style class names to apply to this widget"
-msgstr ""
+msgstr "Список назв класів стилів, які слід застосувати до цього віджета"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:344
 msgid "A list of accelerator keys"
@@ -5468,7 +5494,7 @@ msgstr "Внизу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:378
 msgid "Center Child"
-msgstr ""
+msgstr "Центрувати дочірній"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:379
 msgid "The number of items in the box"
@@ -5493,7 +5519,7 @@ msgstr "Кількість елементів на панелі дій"
 #. Virtual accel-groups property to record accel groups
 #: ../plugins/gtk+/gtk+.xml.in.h:385
 msgid "Accel Groups"
-msgstr ""
+msgstr "Групи прискорювачів"
 
 #. GdkGravity enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:387
@@ -5607,7 +5633,7 @@ msgstr "По центру батьківського"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:438
 msgid "A list of accel groups to be added to this window"
-msgstr ""
+msgstr "Список груп прискорювачів, які слід додати до цього вікна"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Offscreen Window"
@@ -5631,7 +5657,7 @@ msgstr "Позиція"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:444
 msgid "The position of the menu item in the menu shell"
-msgstr "Позиція елементу меню у меню"
+msgstr "Позиція пункту меню у оболонці меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:445
 msgid "Edit&#8230;"
@@ -5757,7 +5783,7 @@ msgstr "Розмір для цього вбудованого значка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:489
 msgid "The position of the tool item in the toolbar"
-msgstr "Позиція елементу на панелі інструментів"
+msgstr "Позиція запису інструмента на панелі інструментів"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:490
 msgid "Tool Palette"
@@ -5775,15 +5801,15 @@ msgstr "Природний"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:495
 msgid "Whether to start scrolling at less than minimum or natural width"
-msgstr ""
+msgstr "Чи розпочинати гортання при меншій за мінімальну або природну ширину"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "Whether to start scrolling at less than minimum or natural height"
-msgstr ""
+msgstr "Чи розпочинати гортання при меншій за мінімальну або природну висоту"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:497
 msgid "The position of the tool item group in the palette"
-msgstr ""
+msgstr "Розташування групи записів інструментів у палітрі"
 
 #. PangoEllipsizeMode enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:500
@@ -5809,6 +5835,8 @@ msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr ""
+"Вбудована піктограма, яку буде показано для пункту (виберіть записі із набору"
+" GTK+ або сховища піктограм)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:506
 msgid "Toggle Tool Button"
@@ -5927,7 +5955,7 @@ msgstr "Пароль"
 #. GtkInputPurpose enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:551
 msgid "Pin Code"
-msgstr ""
+msgstr "Пінкод"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:553
@@ -5957,17 +5985,17 @@ msgstr "Великі літери"
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:563
 msgid "Uppercase Words"
-msgstr ""
+msgstr "Слова з великої літери"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:565
 msgid "Uppercase Sentences"
-msgstr ""
+msgstr "Речення з великої літери"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:567
 msgid "Inhibit On-screen Keyboard"
-msgstr ""
+msgstr "Успадковувати екранну клавіатуру"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:569
@@ -6172,6 +6200,10 @@ msgid ""
 "the second item for the highest value. All the subsequent icons will be used "
 "for all the other values, spread evenly over the range of values"
 msgstr ""
+"Назва піктограм, які буде використано кнопкою масштабування. Перший запис у"
+" масиві буде використано на кнопці, якщо поточне значення є найменшим, другий"
+" запис — найбільшим. Усі наступні піктограми буде використано для інших"
+" значень за рівномірним розподілом у діапазоні значень"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:639
 msgid "Volume Button"
@@ -6255,7 +6287,7 @@ msgstr "Назва ресурсу"
 #. We have to save/load icon-size as int, and fake the enum
 #: ../plugins/gtk+/gtk+.xml.in.h:667
 msgid "Icon Size"
-msgstr "Область значків"
+msgstr "Розмір піктограм"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:668
 msgid "Dialog Box"
@@ -6347,6 +6379,8 @@ msgstr "Кінцева дія"
 #: ../plugins/gtk+/gtk+.xml.in.h:692
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
+"Встановити поточну активну сторінку для редагування. Значення цієї"
+" властивості не буде збережено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:693
 msgid "The number of pages in the notebook"
@@ -6354,11 +6388,11 @@ msgstr "Кількість сторінок у записнику"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:694
 msgid "HeaderBar"
-msgstr ""
+msgstr "Смужка заголовка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:695
 msgid "Reserve space for subtitle"
-msgstr ""
+msgstr "Зворотний пробіл для підзаголовка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:696
 msgid "Custom Title"
@@ -6370,11 +6404,11 @@ msgstr "Додати слот"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:698
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
-msgstr ""
+msgstr "Зберігати висоту смужки заголовка при динамічних змінах підзаголовка."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:699
 msgid "The number of items in the header bar"
-msgstr ""
+msgstr "Кількість пунктів на смужці заголовка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:700
 msgid "Edit page"
@@ -6387,83 +6421,83 @@ msgstr "Видимий дочірній елемент"
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:703
 msgid "Crossfade"
-msgstr ""
+msgstr "Перехресний перехід"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:705
 msgid "Slide Right"
-msgstr ""
+msgstr "Ковзання праворуч"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:707
 msgid "Slide Left"
-msgstr ""
+msgstr "Ковзання ліворуч"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:709
 msgid "Slide Up"
-msgstr ""
+msgstr "Ковзання вгору"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:711
 msgid "Slide Down"
-msgstr ""
+msgstr "Ковзання вниз"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:712
 msgid "Slide Left-Right"
-msgstr ""
+msgstr "Ковзання ліворуч-праворуч"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:713
 msgid "Slide Up-Down"
-msgstr ""
+msgstr "Ковзання вгору-вниз"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:714
 msgid "Move Over Up"
-msgstr ""
+msgstr "Насувати вгору"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:715
 msgid "Move Over Down"
-msgstr ""
+msgstr "Насувати вниз"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:716
 msgid "Move Over Left"
-msgstr ""
+msgstr "Насувати ліворуч"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:717
 msgid "Move Over Right"
-msgstr ""
+msgstr "Насувати праворуч"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:718
 msgid "Move Over Up-Down"
-msgstr ""
+msgstr "Насувати вгору-вниз"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:719
 msgid "Move Over Down-Up"
-msgstr ""
+msgstr "Насувати вниз-вгору"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:720
 msgid "Move Over Left-Right"
-msgstr ""
+msgstr "Насувати ліворуч-праворуч"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:721
 msgid "Move Over Right-Left"
-msgstr ""
+msgstr "Насувати праворуч-ліворуч"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:722
 msgid "Move Under Up"
-msgstr ""
+msgstr "Підсувати вгору"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:723
 msgid "Move Under Down"
-msgstr ""
+msgstr "Підсувати вниз"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:724
 msgid "Move Under Left"
-msgstr ""
+msgstr "Підсувати ліворуч"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:725
 msgid "Move Under Right"
-msgstr ""
+msgstr "Підсувати праворуч"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:726
 msgid "The number of pages in the stack"
@@ -6471,15 +6505,15 @@ msgstr "Кількість сторінок у стосі"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:727
 msgid "Stack Switcher"
-msgstr ""
+msgstr "Перемикач стосу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:728
 msgid "Stack Sidebar"
-msgstr ""
+msgstr "Бічна панель зі стосом"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:729
 msgid "Revealer"
-msgstr ""
+msgstr "Викривач"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:730
 msgid "Add Row"
@@ -6502,15 +6536,15 @@ msgstr "Декілька"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:737
 msgid "The position of the row item in the listbox"
-msgstr ""
+msgstr "Розташування елемента рядка на панелі списку"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:738
 msgid "List Box Row"
-msgstr ""
+msgstr "Рядок панелі списку"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:739
 msgid "Flow Box"
-msgstr ""
+msgstr "Динамічна панель"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:740
 msgid "Add Child"
@@ -6518,11 +6552,11 @@ msgstr "Додати дочірній елемент"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:741
 msgid "The position of the child in the flowbox"
-msgstr ""
+msgstr "Розташування дочірнього об'єкта на динамічній панелі"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:742
 msgid "Flow Box Child"
-msgstr ""
+msgstr "Дочірній об'єкт динамічної панелі"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:743
 msgid "Range"
@@ -6541,12 +6575,14 @@ msgstr "Відкладений"
 #: ../plugins/gtk+/gtk+.xml.in.h:749
 msgid "The number of digits to round the value to when the value changes"
 msgstr ""
+"Кількість цифр, до якої слід округлювати значення, коли значення змінюється"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:750
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr ""
+"Визначає, чи підсвічувати область у жолобку знизу або ліворуч до повзунка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:751
 msgid "Horizontal Scale"
@@ -6637,7 +6673,7 @@ msgstr "Фіксований"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:779
 msgid "OpenGL Area"
-msgstr ""
+msgstr "Область OpenGL"
 
 #. GtkMessageType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:781
@@ -6694,6 +6730,8 @@ msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
 msgstr ""
+"Якщо увімкнено гортання за допомогою накладок, смужки гортання буде додано як"
+" традиційні віджети, лише якщо буде виявлено наявність миші"
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
@@ -6864,6 +6902,8 @@ msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
 msgstr ""
+"Визначає, чи буде цю сторінку від початку позначено як заповнену, незалежно"
+" від введених користувачем даних."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:865
 msgid "The page position in the Assistant"
@@ -6875,7 +6915,7 @@ msgstr "Контекстний віджет"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:867
 msgid "Popover Menu"
-msgstr ""
+msgstr "Накладне меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:868
 msgid "Number of submenus"
@@ -6887,16 +6927,18 @@ msgstr "Редагування меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:870
 msgid "The number of submenus in the popover menu"
-msgstr ""
+msgstr "Кількість підменю у накладному меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:871
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
+"Встановити поточне активне підменю для редагування. Значення цієї властивості"
+" не буде збережено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "Model Button"
-msgstr ""
+msgstr "Кнопка моделі"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:873
 msgid "Link Button"
@@ -6947,7 +6989,7 @@ msgstr "Зсув"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:890
 msgid "An accelerator key for this action"
-msgstr ""
+msgstr "Клавіатурне скорочення для цієї дії"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:891
 msgid "Toggle Action"
@@ -6971,11 +7013,11 @@ msgstr "Автодоповнення вводу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:896
 msgid "Icon Factory"
-msgstr "Фабрика значків"
+msgstr "Фабрика піктограм"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:897
 msgid "Icon Sources"
-msgstr "Джерела значків"
+msgstr "Джерела піктограм"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:898
 msgid "A list of sources for this icon factory"
@@ -7039,7 +7081,7 @@ msgstr "Лише збільшувати"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:917
 msgid "Icon View"
-msgstr "Перегляд значків"
+msgstr "Перегляд піктограмами"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:919
 msgid "Cell Background Color name column"
@@ -7051,7 +7093,7 @@ msgstr "Стовпчик кольору тла комірки"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:921
 msgid "Cell Background RGBA column"
-msgstr ""
+msgstr "Стовпчик RGBA тла комірки"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Width column"
@@ -7288,11 +7330,11 @@ msgstr "Стовпчик ширини переносу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:991
 msgid "Background RGBA column"
-msgstr ""
+msgstr "Стовпчик RGBA тла"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:992
 msgid "Foreground RGBA column"
-msgstr ""
+msgstr "Стовпчик RGBA тексту"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:993
 msgid "Maximum width in characters"
@@ -7515,7 +7557,7 @@ msgstr "Обернений стовпчик"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1062
 msgid "Spinner Renderer"
-msgstr ""
+msgstr "Обробник лічильника"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1063
 msgid "Active column"
@@ -7575,19 +7617,19 @@ msgstr "Взірці"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1077
 msgid "The list of mime types to add to the filter"
-msgstr ""
+msgstr "Список типів MIME, які слід додати до фільтра"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1078
 msgid "The list of file name patterns to add to the filter"
-msgstr ""
+msgstr "Список взірців назв файлів, які слід додати до фільтра"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1079
 msgid "Recent Filter"
-msgstr ""
+msgstr "Нещодавній фільтр"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1081
 msgid "The list of application names to add to the filter"
-msgstr ""
+msgstr "Список назв програм, які слід додати до фільтра"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1082
 msgid "Recent Manager"
@@ -7685,11 +7727,11 @@ msgstr "Атрибути панелі"
 #: ../plugins/gtk+/glade-action-bar-editor.ui.h:2
 #: ../plugins/gtk+/glade-box-editor.ui.h:3
 msgid "Add center child"
-msgstr ""
+msgstr "Додати центрований дочірній елемент"
 
 #: ../plugins/gtk+/glade-action-bar-editor.ui.h:3
 msgid "Whether this action bar should include a centered child."
-msgstr ""
+msgstr "Визначає, чи має ця панель дій включати центрований дочірній елемент."
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:1
 msgid "Action Attributes"
@@ -7697,11 +7739,11 @@ msgstr "Атрибути дії"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:2
 msgid "Toolbar Proxies"
-msgstr ""
+msgstr "Агенти панелі інструментів"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:3
 msgid "Toggle and Radio"
-msgstr ""
+msgstr "Перемикач і радіо-кнопка"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:4
 msgid "Value ID:"
@@ -7709,19 +7751,19 @@ msgstr "Ід. значення:"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:5
 msgid "Radio proxies"
-msgstr ""
+msgstr "Агенти радіо-кнопок"
 
 #: ../plugins/gtk+/glade-activatable-editor.ui.h:1
 msgid "Activatable / Actionable"
-msgstr ""
+msgstr "Можна активувати/можна задіяти"
 
 #: ../plugins/gtk+/glade-app-chooser-button-editor.ui.h:1
 msgid "App Chooser Button Attributes"
-msgstr ""
+msgstr "Атрибути кнопки вибору програми"
 
 #: ../plugins/gtk+/glade-app-chooser-widget-editor.ui.h:1
 msgid "App Chooser Widget Attributes"
-msgstr ""
+msgstr "Атрибути віджета вибору програми"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:2
 msgid "Baseline:"
@@ -7729,11 +7771,11 @@ msgstr "Базова лінія:"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:4
 msgid "Whether this box should include a centered child."
-msgstr ""
+msgstr "Визначає, чи має ця панель включати центрований дочірній елемент."
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:1
 msgid "Child alignments:"
-msgstr ""
+msgstr "Вирівнювання дочірніх:"
 
 #: ../plugins/gtk+/glade-button-editor.ui.h:2
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:2
@@ -7783,20 +7825,20 @@ msgstr "Модель ієрархії:"
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:3
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:3
 msgid "Draw frame around entry"
-msgstr ""
+msgstr "Малювати рамку навколо запису"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:4
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:4
 msgid "Tearoff menus"
-msgstr ""
+msgstr "Відривні меню"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:5
 msgid "Tabular Menus"
-msgstr ""
+msgstr "Табульовані меню"
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:1
 msgid "Combo Box Text Attributes"
-msgstr ""
+msgstr "Атрибути тексту спадного списку"
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:2
 msgid "List of items:"
@@ -7805,7 +7847,7 @@ msgstr "Список пунктів:"
 #: ../plugins/gtk+/glade-entry-editor.ui.h:2
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:2
 msgid "Input Hints:"
-msgstr ""
+msgstr "Підказки щодо введення:"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:5
 msgid "Primary Icon"
@@ -7826,6 +7868,8 @@ msgid ""
 "Whether to use markup in the\n"
 "primary icon's tooltip\n"
 msgstr ""
+"Чи слід використовувати розмітку\n"
+"у підказці до основної піктограми\n"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:11
 msgid "Secondary Icon"
@@ -7836,6 +7880,8 @@ msgid ""
 "Whether to use markup in the\n"
 "secondary icon's tooltip"
 msgstr ""
+"Чи слід використовувати розмітку\n"
+"у підказці до вторинної піктограми"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:14
 msgid "Horizontal Alignment:"
@@ -7880,14 +7926,17 @@ msgstr "Нетиповий заголовок"
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:3
 msgid "Whether the headerbar should use a custom title widget."
 msgstr ""
+"Визначає, чи має смужка заголовка використовувати віджет нетипового заголовка."
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:4
 msgid "Show window controls"
-msgstr ""
+msgstr "Показати засоби керування вікном"
 
 #: ../plugins/gtk+/glade-header-bar-editor.ui.h:5
 msgid "Whether to show window controls, e.g. a close button."
 msgstr ""
+"Визначає, чи слід показувати засоби керування вікном, наприклад кнопку"
+" закриття."
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:1
 msgid "Icon View Attributes"
@@ -7997,7 +8046,7 @@ msgstr "Проміжки"
 
 #: ../plugins/gtk+/glade-model-button-editor.ui.h:1
 msgid "Model Button Attributes"
-msgstr ""
+msgstr "Атрибути кнопки моделі"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:1
 msgid "Notebook Attributes"
@@ -8006,7 +8055,7 @@ msgstr "Атрибути нотатника"
 #. Property used to choose which page of the notebook to edit
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:3
 msgid "Edit page:"
-msgstr ""
+msgstr "Редагувати сторінку:"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:4
 msgid "Tab Attributes"
@@ -8022,7 +8071,7 @@ msgstr "Кінцева дія:"
 
 #: ../plugins/gtk+/glade-popover-editor.ui.h:1
 msgid "Popover Attributes"
-msgstr ""
+msgstr "Атрибути контекстного віджета"
 
 #: ../plugins/gtk+/glade-popover-menu-editor.ui.h:1
 msgid "Menu Attributes"
@@ -8113,7 +8162,7 @@ msgstr "Налаштування:"
 
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:1
 msgid "Spin Button Attributes"
-msgstr ""
+msgstr "Атрибути кнопки-лічильника"
 
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:2
 msgid "Button Orientation:"
@@ -8129,7 +8178,7 @@ msgstr "Однорідність:"
 
 #: ../plugins/gtk+/glade-stack-switcher-editor.ui.h:1
 msgid "Stack Switcher Attributes"
-msgstr ""
+msgstr "Атрибути перемикача стосу"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:1
 msgid "Text View Attributes"
@@ -8138,7 +8187,7 @@ msgstr "Атрибути текстової панелі"
 #. Name for populate-all property
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:4
 msgid "Populate for touch"
-msgstr ""
+msgstr "Заповнити для сенсорного екрана"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:5
 msgid "Text Formatting"
@@ -8218,6 +8267,8 @@ msgid ""
 "Use the \"query-tooltip\" to present a tooltip\n"
 "instead of setting a literal tooltip"
 msgstr ""
+"Скористайтеся «query-tooltip» для показу підказки\n"
+"замість встановлення підказки буквально"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:1
 msgid "Window Attributes"
@@ -8225,7 +8276,7 @@ msgstr "Атрибути вікна"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:2
 msgid "Transient For:"
-msgstr ""
+msgstr "Перехідне для:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:3
 msgid "Attached To:"
