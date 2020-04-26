@@ -1,6 +1,6 @@
 project(
   'glade', 'c',
-  version: '3.22.0',
+  version: '3.36.0',
   license: 'LGPL2',
   default_options: 'buildtype=debugoptimized',
   meson_version: '>= 0.49.0',

@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.52)
 
 m4_define(glade_major_version, 3)
-m4_define(glade_minor_version, 22)
+m4_define(glade_minor_version, 36)
 m4_define(glade_micro_version, 0)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
@@ -56,8 +56,8 @@ AC_PATH_PROG(DLLTOOL, dlltool)
 # Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
 
 GLADE_REVISION=0
-GLADE_CURRENT=11
-GLADE_AGE=5
+GLADE_CURRENT=12
+GLADE_AGE=0
 GLADE_CURRENT_MINUS_AGE=`expr $GLADE_CURRENT - $GLADE_AGE`
 AC_SUBST(GLADE_REVISION)
 AC_SUBST(GLADE_CURRENT)
