@@ -8,21 +8,21 @@
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2009, 2010, 2011.
 # Juan Pablo Ugarte <juanpablougarte@gmail.com>, 2014.
 # 
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010-2019.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010-2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2019-10-04 15:20+0000\n"
-"PO-Revision-Date: 2019-10-10 11:41+0200\n"
+"POT-Creation-Date: 2020-04-19 14:13+0000\n"
+"PO-Revision-Date: 2020-04-28 12:25+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 3.34.0\n"
+"X-Generator: Gtranslator 3.36.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
@@ -627,10 +627,25 @@ msgstr "Encuesta de usuarios de Glade"
 
 #. translators: Email body sent to the user after completing the survey
 #: src/glade-registration.c:34
+#| msgid ""
+#| "Thank you for taking Glade Users survey, we appreciate it!\n"
+#| "\n"
+#| "To validate this email address open the folowing link\n"
+#| "\n"
+#| "https://people.gnome.org/~jpu/glade/registration.php?email="
+#| "$email&validation_token=$new_validation_token\n"
+#| "\n"
+#| "In case you want to change or update the survey, your current update "
+#| "token is:\n"
+#| "$new_token\n"
+#| "\n"
+#| "Cheers\n"
+#| "\n"
+#| "\tThe Glade team\n"
 msgid ""
 "Thank you for taking Glade Users survey, we appreciate it!\n"
 "\n"
-"To validate this email address open the folowing link\n"
+"To validate this email address open the following link\n"
 "\n"
 "https://people.gnome.org/~jpu/glade/registration.php?email="
 "$email&validation_token=$new_validation_token\n"
@@ -643,12 +658,12 @@ msgid ""
 "\n"
 "\tThe Glade team\n"
 msgstr ""
-"Gracias por completar la encuesta de usuarios de Glade, lo apreciamos!\n"
+"Gracias por completar la encuesta de usuarios de Glade, lo apreciamos.\n"
 "\n"
 "Para validar esta dirección de correo-e abra el siguiente enlace\n"
 "\n"
 "https://people.gnome.org/~jpu/glade/registration.php?email="
-"$email&validation_token=$new_validation_token\n"
+"$email&validation_token=$new_validation_toke\n"
 "\n"
 "En caso de que quiera cambiar o actualizar la encuesta, su testigo de "
 "actualización es:\n"
@@ -2132,13 +2147,13 @@ msgstr "Intercambiado"
 msgid "After"
 msgstr "Después"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted one time
 #: gladeui/glade-previewer.c:782
 #, c-format
 msgid "%s::%s emitted one time"
 msgstr "%s::%s emitida una vez"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted %d times
 #: gladeui/glade-previewer.c:786
 #, c-format
 msgid "%s::%s emitted %d times"
@@ -2409,7 +2424,7 @@ msgid "%s document properties"
 msgstr "Propiedades del documento %s"
 
 #. ******************************************************************
-#. Verify code here (versioning, incompatability checks)
+#. Verify code here (versioning, incompatibility checks)
 #. ******************************************************************
 #. Defined here for pretty translator comments (bug in intl tools, for some reason
 #. * you can only comment about the line directly following, forcing you to write
@@ -2786,7 +2801,6 @@ msgid "The glade widget to edit signals"
 msgstr "El widget de Glade para editar señales"
 
 #: gladeui/glade-signal-model.c:29 gladeui/glade-signal-model.c:30
-#| msgid "<Type Here>"
 msgid "<Type here>"
 msgstr "<Escriba aquí>"
 
@@ -3062,7 +3076,9 @@ msgid "A warning string about version mismatches"
 msgstr "Una cadena de advertencia acerca de inconsistencias entre versiones"
 
 #: gladeui/glade-widget.c:1444
-msgid "Wether the widget is visible or not"
+#, fuzzy
+#| msgid "Wether the widget is visible or not"
+msgid "Whether the widget is visible or not"
 msgstr "Indica si el widget es visible o no"
 
 #: gladeui/glade-widget.c:1449
@@ -3074,28 +3090,28 @@ msgstr "Indica si este widget es la plantilla para un widget compuesto"
 msgid "(unnamed)"
 msgstr "(sin nombre)"
 
-#: gladeui/glade-widget.c:4883
+#: gladeui/glade-widget.c:4882
 msgid "Template classes are only usable in GTK+ 3.10 and later."
 msgstr "Las plantillas de clases sólo se pueden usar en GTK+ 3.10 y superior."
 
-#: gladeui/glade-widget.c:4891
+#: gladeui/glade-widget.c:4890
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "El objeto tiene un tipo %s no reconocido"
 
-#: gladeui/glade-widget.c:4957
+#: gladeui/glade-widget.c:4956
 msgid "Property has versioning problems: "
 msgstr "La propiedad tiene problemas de versión:"
 
-#: gladeui/glade-widget.c:4959
+#: gladeui/glade-widget.c:4958
 msgid "Some properties have versioning problems: "
 msgstr "Algunas propiedades tienen problemas de versión:"
 
-#: gladeui/glade-widget.c:4979
+#: gladeui/glade-widget.c:4978
 msgid "Signal has versioning problems: "
 msgstr "La señal tiene problemas de versión:"
 
-#: gladeui/glade-widget.c:4981
+#: gladeui/glade-widget.c:4980
 msgid "Some signals have versioning problems: "
 msgstr "Algunas señales tienen problemas de versión:"
 
@@ -4673,7 +4689,6 @@ msgid "Touchpad Gesture"
 msgstr "Gesto del «touchpad»"
 
 #: plugins/gtk+/gtk+.xml:173
-#| msgid "Table"
 msgid "Tablet Pad"
 msgstr "Tableta"
 
@@ -5160,7 +5175,6 @@ msgid "Superscript text"
 msgstr "Texto superescrito"
 
 #: plugins/gtk+/gtk+.xml:468
-#| msgid "Context"
 msgid "Footnote text"
 msgstr "Nota de texto al pie"
 
@@ -6361,7 +6375,6 @@ msgid "Multiple"
 msgstr "Múltiple"
 
 #: plugins/gtk+/gtk+.xml:2752
-#| msgid "Placeholder text"
 msgid "Placeholder"
 msgstr "Lugar"
 
@@ -6430,32 +6443,26 @@ msgid "Vertical Scale"
 msgstr "Escala vertical"
 
 #: plugins/gtk+/gtk+.xml:2905
-#| msgid "Horizontal"
 msgid "Flip Horizontally"
 msgstr "Voltear horizontalmente"
 
 #: plugins/gtk+/gtk+.xml:2907
-#| msgid "Vertical"
 msgid "Flip Vertically"
 msgstr "Voltear verticalmente"
 
 #: plugins/gtk+/gtk+.xml:2909
-#| msgid "Horizontal"
 msgid "Slide Horizontally"
 msgstr "Deslizar horizontalmente"
 
 #: plugins/gtk+/gtk+.xml:2911
-#| msgid "Vertical"
 msgid "Slide Vertically"
 msgstr "Deslizar verticalmente"
 
 #: plugins/gtk+/gtk+.xml:2913
-#| msgid "Never Horizontal"
 msgid "Resize Horizontally"
 msgstr "Redimensionar horizontalmente"
 
 #: plugins/gtk+/gtk+.xml:2915
-#| msgid "Vertical"
 msgid "Resize Vertically"
 msgstr "Redimensionar verticalmente"
 
@@ -6640,12 +6647,10 @@ msgid "LGPL 3.0 Only"
 msgstr "Sólo LGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3343
-#| msgid "GPL 3.0"
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3345
-#| msgid "GPL 3.0 Only"
 msgid "AGPL 3.0 Only"
 msgstr "AGPL 3.0 Only"
 
