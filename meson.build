@@ -35,8 +35,8 @@ gladeui_minor_version = version_array[1].to_int()
 gladeui_libname = '@0@-@1@'.format(gladeui_name, gladeui_version)
 
 gladeui_revision = 0
-gladeui_current = 11
-gladeui_age = 5
+gladeui_current = 12
+gladeui_age = 0
 gladeui_current_minus_age = gladeui_current - gladeui_age
 gladeui_libversion = '@0@.@1@.@2@'.format(gladeui_current_minus_age, gladeui_age, gladeui_revision)
 
