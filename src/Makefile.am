@@ -29,6 +29,7 @@ glade_SOURCES = \
 	glade-preferences.c \
 	glade-http.c \
 	glade-registration.c \
+	glade-settings.c \
 	main.c
 
 noinst_HEADERS = \
