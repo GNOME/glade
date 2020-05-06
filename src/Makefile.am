@@ -39,6 +39,7 @@ noinst_HEADERS = \
 	glade-preferences.h \
 	glade-logo.h \
 	glade-registration.h \
+	glade-settings.h \
 	glade-http.h
 
 # Generate resources
