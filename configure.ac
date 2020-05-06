@@ -349,7 +349,7 @@ AC_SUBST([AM_LDFLAGS])
 AC_CONFIG_FILES([
 Makefile
 data/gladeui-2.0.pc
-data/glade.desktop.in
+data/org.gnome.Glade.desktop.in
 data/Makefile
 data/icons/Makefile
 data/icons/hicolor/Makefile
