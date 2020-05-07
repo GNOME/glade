@@ -47,7 +47,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#ifdef MAC_INTEGRATION
+#ifdef MAC_BUNDLE
 #  include <gtkosxapplication.h>
 #endif
 
@@ -166,13 +166,13 @@ build_package_paths (void)
   if (path)
     pixmaps_dir = g_strdup (path);
 
-#if defined (G_OS_WIN32) || (defined (MAC_INTEGRATION) && defined (MAC_BUNDLE))
+#if defined (G_OS_WIN32) || defined (MAC_BUNDLE)
   gchar *prefix;
 
 # ifdef G_OS_WIN32
   prefix = g_win32_get_package_installation_directory_of_module (NULL);
 
-# else // defined (MAC_INTEGRATION) && defined (MAC_BUNDLE)
+# else // defined (MAC_BUNDLE)
   prefix = quartz_application_get_resource_path ();
 
 # endif

@@ -306,7 +306,6 @@ dnl ================================================================
 _gdk_tgt=`$PKG_CONFIG --variable=targets gdk-3.0`
 AM_CONDITIONAL([GDK_TARGET_QUARTZ], [test x$_gdk_tgt = xquartz])
 if test "x$_gdk_tgt" = xquartz; then 
-   PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration-gtk3)
 
    GTK_MAC_BUNDLE_FLAG=
 
@@ -315,6 +314,7 @@ if test "x$_gdk_tgt" = xquartz; then
       build_bundle=yes, build_bundle=no)
 
    if test "x$build_bundle" = xyes; then
+      PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration-gtk3)
       AC_MSG_NOTICE([enableing mac bundle..])
 
       GTK_MAC_BUNDLE_FLAG=-DMAC_BUNDLE

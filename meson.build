@@ -147,9 +147,9 @@ have_webkit2gtk = webkit2gtk_dep.found()
 # Check for GDK Quartz and MacOSX integration package
 enable_mac_integration = dependency('gdk-3.0').get_pkgconfig_variable('targets').contains('quartz')
 if enable_mac_integration
-  gtk_mac_integration_gtk3_dep = dependency('gtk-mac-integration-gtk3')
 
   if get_option('mac_bundle')
+    gtk_mac_integration_gtk3_dep = dependency('gtk-mac-integration-gtk3')
     gtk_mac_bundle_flags = '-DMAC_BUNDLE'
   endif
 endif

@@ -47,11 +47,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#ifdef MAC_INTEGRATION
-#  include <gtkosxapplication.h>
-#endif
-
-
 #define ACTION_GROUP_STATIC             "GladeStatic"
 #define ACTION_GROUP_PROJECT            "GladeProject"
 #define ACTION_GROUP_PROJECTS_LIST_MENU "GladeProjectsList"

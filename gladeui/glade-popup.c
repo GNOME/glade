@@ -671,7 +671,7 @@ glade_popup_is_popup_event (GdkEventButton *event)
 {
   g_return_val_if_fail (event, FALSE);
 
-#ifdef MAC_INTEGRATION
+#ifdef __APPLE__
   return (event->type == GDK_BUTTON_PRESS && event->button == 1 &&
           ((event->state & GDK_MOD1_MASK) != 0));
 #else

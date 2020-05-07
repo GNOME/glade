@@ -176,8 +176,8 @@ c_flags = common_flags
 ldflags = []
 
 if enable_mac_integration
-  private_deps += gtk_mac_integration_gtk3_dep
   if get_option('mac_bundle')
+    private_deps += gtk_mac_integration_gtk3_dep
     c_flags += '-DMAC_BUNDLE'
   endif
 endif
