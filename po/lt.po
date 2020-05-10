@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-01-14 04:15+0000\n"
-"PO-Revision-Date: 2020-02-05 22:57+0200\n"
+"POT-Creation-Date: 2020-05-07 11:50+0000\n"
+"PO-Revision-Date: 2020-05-10 22:36+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 3.34.0\n"
+"X-Generator: Gtranslator 3.36.0\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
 #: src/main.c:43 src/glade.glade:202
@@ -610,10 +610,25 @@ msgstr "Glade naudotojo apklausa"
 
 #. translators: Email body sent to the user after completing the survey
 #: src/glade-registration.c:34
+#| msgid ""
+#| "Thank you for taking Glade Users survey, we appreciate it!\n"
+#| "\n"
+#| "To validate this email address open the folowing link\n"
+#| "\n"
+#| "https://people.gnome.org/~jpu/glade/registration.php?email="
+#| "$email&validation_token=$new_validation_token\n"
+#| "\n"
+#| "In case you want to change or update the survey, your current update "
+#| "token is:\n"
+#| "$new_token\n"
+#| "\n"
+#| "Cheers\n"
+#| "\n"
+#| "\tThe Glade team\n"
 msgid ""
 "Thank you for taking Glade Users survey, we appreciate it!\n"
 "\n"
-"To validate this email address open the folowing link\n"
+"To validate this email address open the following link\n"
 "\n"
 "https://people.gnome.org/~jpu/glade/registration.php?email="
 "$email&validation_token=$new_validation_token\n"
@@ -2112,13 +2127,13 @@ msgstr "Sukeistas"
 msgid "After"
 msgstr "Po"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted one time
 #: gladeui/glade-previewer.c:782
 #, c-format
 msgid "%s::%s emitted one time"
 msgstr "%s::%s sukeltas vieną kartą"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted %d times
 #: gladeui/glade-previewer.c:786
 #, c-format
 msgid "%s::%s emitted %d times"
@@ -2386,7 +2401,7 @@ msgid "%s document properties"
 msgstr "%s dokumento savybės"
 
 #. ******************************************************************
-#. Verify code here (versioning, incompatability checks)
+#. Verify code here (versioning, incompatibility checks)
 #. ******************************************************************
 #. Defined here for pretty translator comments (bug in intl tools, for some reason
 #. * you can only comment about the line directly following, forcing you to write
@@ -2741,7 +2756,6 @@ msgid "The glade widget to edit signals"
 msgstr "Glade valdymo elementas signalams redaguoti"
 
 #: gladeui/glade-signal-model.c:29 gladeui/glade-signal-model.c:30
-#| msgid "<Type Here>"
 msgid "<Type here>"
 msgstr "<Rašykite čia>"
 
@@ -3014,7 +3028,8 @@ msgid "A warning string about version mismatches"
 msgstr "Įspėjimo apie versijų nesutapimus tekstas"
 
 #: gladeui/glade-widget.c:1444
-msgid "Wether the widget is visible or not"
+#| msgid "Wether the widget is visible or not"
+msgid "Whether the widget is visible or not"
 msgstr "Ar elementas yra matomas"
 
 #: gladeui/glade-widget.c:1449
@@ -4606,7 +4621,6 @@ msgid "Touchpad Gesture"
 msgstr "Jutiklinio kilimėlio gestas"
 
 #: plugins/gtk+/gtk+.xml:173
-#| msgid "Table"
 msgid "Tablet Pad"
 msgstr "Planšetės paviršius"
 
@@ -5090,7 +5104,6 @@ msgid "Superscript text"
 msgstr "Viršutinio indekso tekstas"
 
 #: plugins/gtk+/gtk+.xml:468
-#| msgid "Context"
 msgid "Footnote text"
 msgstr "Išnašos tekstas"
 
@@ -6276,7 +6289,6 @@ msgid "Multiple"
 msgstr "Kartotinis"
 
 #: plugins/gtk+/gtk+.xml:2752
-#| msgid "Placeholder text"
 msgid "Placeholder"
 msgstr "Vietaženklis"
 
@@ -6343,32 +6355,26 @@ msgid "Vertical Scale"
 msgstr "Vertikali skalė"
 
 #: plugins/gtk+/gtk+.xml:2905
-#| msgid "Horizontal"
 msgid "Flip Horizontally"
 msgstr "Apsukti horizontaliai"
 
 #: plugins/gtk+/gtk+.xml:2907
-#| msgid "Vertical"
 msgid "Flip Vertically"
 msgstr "Apversti vertikaliai"
 
 #: plugins/gtk+/gtk+.xml:2909
-#| msgid "Horizontal"
 msgid "Slide Horizontally"
 msgstr "Slinkti horizontaliai"
 
 #: plugins/gtk+/gtk+.xml:2911
-#| msgid "Vertical"
 msgid "Slide Vertically"
 msgstr "Slinkti vertikaliai"
 
 #: plugins/gtk+/gtk+.xml:2913
-#| msgid "Horizontal"
 msgid "Resize Horizontally"
 msgstr "Keisti dydį horizontaliai"
 
 #: plugins/gtk+/gtk+.xml:2915
-#| msgid "Vertical"
 msgid "Resize Vertically"
 msgstr "Keisti dydį vertikaliai"
 
@@ -6553,12 +6559,10 @@ msgid "LGPL 3.0 Only"
 msgstr "Tik LGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3343
-#| msgid "GPL 3.0"
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3345
-#| msgid "GPL 3.0 Only"
 msgid "AGPL 3.0 Only"
 msgstr "Tik AGPL 3.0"
 
