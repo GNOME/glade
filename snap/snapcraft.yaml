@@ -38,6 +38,7 @@ parts:
       snapcraftctl set-version $(git describe --tags | sed 's/GLADE_//g'|sed 's/_/./g')
       sed -i.bak -e 's|=org.gnome.Glade$|=snap.$SNAPCRAFT_PROJECT_NAME.org.gnome.Glade|g' data/org.gnome.Glade.desktop.in.in
       sed -i.bak '\|<id>org.gnome.Glade</id>|a<icon type="stock">snap.$SNAPCRAFT_PROJECT_NAME.org.gnome.Glade</icon>' data/org.gnome.Glade.appdata.xml.in
+      sed -i.bak -e 's|symlink_media: true,|symlink_media: false,|g' help/meson.build
       snapcraftctl build
       mkdir -p $SNAPCRAFT_PART_INSTALL/meta/gui/
       cp $SNAPCRAFT_PART_SRC/data/icons/hicolor/scalable/apps/org.gnome.Glade.svg $SNAPCRAFT_PART_INSTALL/meta/gui/icon.svg
