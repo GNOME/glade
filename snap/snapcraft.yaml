@@ -1,18 +1,5 @@
 name: glade
 adopt-info: glade
-summary: Create or open user interface designs for GTK+ applications
-description: |
-
-  Glade is a RAD tool to enable quick & easy development of user interfaces
-  for the GTK+ 3 toolkit and the GNOME desktop environment.
-
-  The user interfaces designed in Glade are saved as XML and these can be
-  loaded by applications dynamically as needed by using GtkBuilder or used
-  directly to define a new GtkWidget derived object class using
-  GTK+ new template feature.
-
-  By using GtkBuilder, Glade XML files can be used in numerous programming
-  languages including C, C++, C#, Vala, Java, Perl, Python, and others.
 
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
@@ -27,37 +14,49 @@ slots:
 apps:
   glade:
     command: usr/bin/glade
-    extensions: [gnome-3-28]
+    extensions: [gnome-3-34]
+    environment:
+      GLADE_CATALOG_SEARCH_PATH: "$SNAP/usr/share/glade/catalogs"
+      GLADE_MODULE_SEARCH_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/glade/modules"
+      GLADE_PIXMAP_DIR: "$SNAP/usr/share/glade/pixmaps"
     plugs:
       - home
-      - gsettings
       - network
-    desktop: usr/share/applications/org.gnome.Glade.desktop
+      - removable-media
+      - mount-observe
+    common-id: org.gnome.Glade
 
 parts:
   glade:
     source: .
     source-type: git
+    parse-info: [usr/share/metainfo/org.gnome.Glade.appdata.xml]
     plugin: meson
     meson-parameters:
       - --prefix=/usr
     override-build: |
       snapcraftctl set-version $(git describe --tags | sed 's/GLADE_//g'|sed 's/_/./g')
-      sed -i.bak -e 's|=org.gnome.Glade$|=${SNAP}/meta/gui/org.gnome.Glade.svg|g' data/org.gnome.Glade.desktop.in.in
+      sed -i.bak -e 's|=org.gnome.Glade$|=snap.$SNAPCRAFT_PROJECT_NAME.org.gnome.Glade|g' data/org.gnome.Glade.desktop.in.in
+      sed -i.bak '\|<id>org.gnome.Glade</id>|a<icon type="stock">snap.$SNAPCRAFT_PROJECT_NAME.org.gnome.Glade</icon>' data/org.gnome.Glade.appdata.xml.in
       snapcraftctl build
       mkdir -p $SNAPCRAFT_PART_INSTALL/meta/gui/
-      cp ../src/data/icons/hicolor/scalable/apps/org.gnome.Glade.svg $SNAPCRAFT_PART_INSTALL/meta/gui/
-    organize:
-      snap/glade/current/usr: usr
+      cp $SNAPCRAFT_PART_SRC/data/icons/hicolor/scalable/apps/org.gnome.Glade.svg $SNAPCRAFT_PART_INSTALL/meta/gui/icon.svg
+      cp -r $SNAPCRAFT_PART_INSTALL/usr/share/icons $SNAPCRAFT_PART_INSTALL/meta/gui/
+      for i in `find $SNAPCRAFT_PART_INSTALL/meta/gui/icons -name "*.svg" -o -name "*.png"`
+      do
+        mv $i "`dirname $i`/snap.$SNAPCRAFT_PROJECT_NAME.`basename $i`"
+      done
     build-packages:
       - gnome-common
       - libxml2-dev
       - libglib2.0-dev
       - libgtk-3-dev
       - python-gi-dev
-      - python2.7-dev
+      - python3.6-dev
       - gtk-doc-tools
       - yelp-tools
       - intltool
       - gobject-introspection
       - libgirepository1.0-dev
+    stage-packages:
+      - libpython3.6
