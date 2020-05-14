@@ -18,22 +18,22 @@
 # Gustavo Marques <gutodisse@gmail.com>, 2016.
 # Bruno Lopes da Silva <brunolopesbldsb@gmail.com>, 2018.
 # Ricardo Silva Veloso <ricvelozo@gmail.com>, 2018-2020.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2012-2019.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2012-2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-01-07 12:21+0000\n"
-"PO-Revision-Date: 2020-01-13 14:14-0300\n"
-"Last-Translator: Ricardo Silva Veloso <ricvelozo@gmail.com>\n"
+"POT-Creation-Date: 2020-05-07 11:50+0000\n"
+"PO-Revision-Date: 2020-05-14 07:38-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 3.36.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
@@ -654,10 +654,25 @@ msgstr "Pesquisa de usuário Glade"
 
 #. translators: Email body sent to the user after completing the survey
 #: src/glade-registration.c:34
+#| msgid ""
+#| "Thank you for taking Glade Users survey, we appreciate it!\n"
+#| "\n"
+#| "To validate this email address open the folowing link\n"
+#| "\n"
+#| "https://people.gnome.org/~jpu/glade/registration.php?email="
+#| "$email&validation_token=$new_validation_token\n"
+#| "\n"
+#| "In case you want to change or update the survey, your current update "
+#| "token is:\n"
+#| "$new_token\n"
+#| "\n"
+#| "Cheers\n"
+#| "\n"
+#| "\tThe Glade team\n"
 msgid ""
 "Thank you for taking Glade Users survey, we appreciate it!\n"
 "\n"
-"To validate this email address open the folowing link\n"
+"To validate this email address open the following link\n"
 "\n"
 "https://people.gnome.org/~jpu/glade/registration.php?email="
 "$email&validation_token=$new_validation_token\n"
@@ -673,7 +688,7 @@ msgstr ""
 "Obrigado por participar da pesquisa de usuários do Glade, nós somos muito "
 "gratos!\n"
 "\n"
-"Para validar esse endereço de email, abra o seguinte link\n"
+"Para validar esse endereço de e-mail, abra o seguinte link\n"
 "\n"
 "https://people.gnome.org/~jpu/glade/registration.php?email="
 "$email&validation_token=$new_validation_token\n"
@@ -2161,13 +2176,13 @@ msgstr "Trocado"
 msgid "After"
 msgstr "Depois"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted one time
 #: gladeui/glade-previewer.c:782
 #, c-format
 msgid "%s::%s emitted one time"
 msgstr "%s::%s emitido uma vez"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted %d times
 #: gladeui/glade-previewer.c:786
 #, c-format
 msgid "%s::%s emitted %d times"
@@ -2439,7 +2454,7 @@ msgid "%s document properties"
 msgstr "Propriedades do documento %s"
 
 #. ******************************************************************
-#. Verify code here (versioning, incompatability checks)
+#. Verify code here (versioning, incompatibility checks)
 #. ******************************************************************
 #. Defined here for pretty translator comments (bug in intl tools, for some reason
 #. * you can only comment about the line directly following, forcing you to write
@@ -2973,7 +2988,7 @@ msgstr "Consulta"
 
 #: gladeui/glade-widget-adaptor.c:1524
 msgid "Whether the adaptor should query the use or not"
-msgstr "Se o adaptador deve consultar o uso ou não"
+msgstr "Se o adaptador deve consultar o uso"
 
 #: gladeui/glade-widget.c:1355
 msgid "The name of the widget"
@@ -3077,8 +3092,9 @@ msgid "A warning string about version mismatches"
 msgstr "Uma string de aviso sobre versões incompatíveis"
 
 #: gladeui/glade-widget.c:1444
-msgid "Wether the widget is visible or not"
-msgstr "Se o widget é visível"
+#| msgid "Wether the widget is visible or not"
+msgid "Whether the widget is visible or not"
+msgstr "Se o widget está visível"
 
 #: gladeui/glade-widget.c:1449
 msgid "Whether this widget is the template for a composite widget"
