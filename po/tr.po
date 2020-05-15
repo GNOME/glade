@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-01-02 22:42+0000\n"
-"PO-Revision-Date: 2020-02-12 21:03+0300\n"
+"POT-Creation-Date: 2020-05-07 11:50+0000\n"
+"PO-Revision-Date: 2020-05-15 05:45+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -383,7 +383,7 @@ msgstr "Sürüm bilgilerini yaz ve çık"
 
 #: src/main.c:55
 msgid "Disable Devhelp integration"
-msgstr "Devhelp bütünleşmesini kapat"
+msgstr "Devhelp tümleşimini kapat"
 
 #: src/main.c:57
 msgid "be verbose"
@@ -624,7 +624,7 @@ msgstr "Glade Kullanıcı Anketi"
 msgid ""
 "Thank you for taking Glade Users survey, we appreciate it!\n"
 "\n"
-"To validate this email address open the folowing link\n"
+"To validate this email address open the following link\n"
 "\n"
 "https://people.gnome.org/~jpu/glade/registration.php?email="
 "$email&validation_token=$new_validation_token\n"
@@ -637,7 +637,7 @@ msgid ""
 "\n"
 "\tThe Glade team\n"
 msgstr ""
-"Glade Kullanıcı anketini aldığınız için teşekkürler, minnettarız!\n"
+"Glade Kullanıcı anketine katıldığınız için teşekkürler, minnettarız!\n"
 "\n"
 "Bu e-posta adresini doğrulamak için aşağıdaki bağlantıyı açın\n"
 "\n"
@@ -648,7 +648,7 @@ msgstr ""
 "jetonunuz:\n"
 "$new_token\n"
 "\n"
-"Sağ ol\n"
+"Sağlıcakla\n"
 "\n"
 "\tGlade takımı\n"
 
@@ -710,7 +710,7 @@ msgstr "Glade Kullanıcı web sitesini aç"
 
 #: src/glade-registration.c:402
 msgid "Internal server error"
-msgstr "Dahili sunucu hatası"
+msgstr "İç sunucu hatası"
 
 #: src/glade-registration.c:426
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
@@ -727,23 +727,23 @@ msgid ""
 "To update information you need to provide the token that was sent to your "
 "inbox."
 msgstr ""
-"Oops!E-posta adresi zaten kullanımda!\n"
+"Amanın! E-posta adresi zaten kullanımda!\n"
 "Bilgi güncellemek için mail kutunuza gönderilen jetonu temin etmelisiniz."
 
 #: src/glade-registration.c:440
 #, c-format
 msgid "Oops! Error saving user information: %s"
-msgstr "Oops! Kullanıcı bilgisi kaydedilirken hata: %s"
+msgstr "Amanın! Kullanıcı bilgisi kaydedilirken hata: %s"
 
 #: src/glade-registration.c:443
 #, c-format
 msgid "Oops! Error saving survey data: %s"
-msgstr "Oops! Anket verisi kaydedilirken hata: %s"
+msgstr "Amanın! Anket verisi kaydedilirken hata: %s"
 
 #: src/glade-registration.c:446
 #, c-format
 msgid "Oops! Error accessing DB: %s"
-msgstr "Oops! DBʼye erişimde hata: %s"
+msgstr "Amanın! DBʼye erişimde hata: %s"
 
 #: src/glade-registration.glade:44
 msgid "Glade Registration & User Survey"
@@ -1171,7 +1171,7 @@ msgstr "Sahipli/Kapalı yazılım"
 
 #: src/glade-registration.glade:1818
 msgid "None - distributed internally"
-msgstr "Hiçbiri - dahili dağıtım"
+msgstr "Hiçbiri - iç dağıtım"
 
 #: src/glade-registration.glade:1853
 msgid ""
@@ -1455,7 +1455,7 @@ msgstr "Depo"
 
 #: gladeui/glade-builtins.c:371
 msgid "A builtin stock item"
-msgstr "Dahili depo ögesi"
+msgstr "Yerleşik depo ögesi"
 
 #: gladeui/glade-builtins.c:383
 msgid "Stock Image"
@@ -1463,7 +1463,7 @@ msgstr "Depo Resmi"
 
 #: gladeui/glade-builtins.c:384
 msgid "A builtin stock image"
-msgstr "Dahili depo resmi"
+msgstr "Yerleşik depo resmi"
 
 #: gladeui/glade-builtins.c:538
 msgid "Objects"
@@ -1797,11 +1797,11 @@ msgstr "Ö_zellikler:"
 
 #: gladeui/glade-editor.c:1193
 msgid "_Select All"
-msgstr "_Hepsini Seç"
+msgstr "Tümünü _Seç"
 
 #: gladeui/glade-editor.c:1201
 msgid "_Unselect All"
-msgstr "_Hepsinin Seçimini Kaldır"
+msgstr "Tümünün Seçimini _Kaldır"
 
 #. Description
 #: gladeui/glade-editor.c:1211
@@ -2037,7 +2037,7 @@ msgstr "Sil"
 
 #: gladeui/glade-object-stub.c:101
 msgid "Delete All"
-msgstr "_Hepsini Sil"
+msgstr "Tümünü Sil"
 
 #: gladeui/glade-palette.c:639
 msgid "Widget selector"
@@ -2116,13 +2116,13 @@ msgstr "Takaslı"
 msgid "After"
 msgstr "Sonra"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted one time
 #: gladeui/glade-previewer.c:782
 #, c-format
 msgid "%s::%s emitted one time"
 msgstr "%s::%s bir kere yayıldı"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted %d times
 #: gladeui/glade-previewer.c:786
 #, c-format
 msgid "%s::%s emitted %d times"
@@ -2308,7 +2308,7 @@ msgstr "Bu proje için özel CSS sağlayıcı olarak kullanılacak yol."
 #: gladeui/glade-project.c:1204
 #, c-format
 msgid "(internal %s)"
-msgstr "(dahili %s)"
+msgstr "(iç %s)"
 
 #: gladeui/glade-project.c:1209
 #, c-format
@@ -2383,7 +2383,7 @@ msgid "%s document properties"
 msgstr "%s belge özellikleri"
 
 #. ******************************************************************
-#. Verify code here (versioning, incompatability checks)
+#. Verify code here (versioning, incompatibility checks)
 #. ******************************************************************
 #. Defined here for pretty translator comments (bug in intl tools, for some reason
 #. * you can only comment about the line directly following, forcing you to write
@@ -2926,11 +2926,11 @@ msgstr "Parçacığın adı"
 
 #: gladeui/glade-widget.c:1359
 msgid "Internal name"
-msgstr "Dahili ad"
+msgstr "İç ad"
 
 #: gladeui/glade-widget.c:1360
 msgid "The internal name of the widget"
-msgstr "Parçacığın dahili adı"
+msgstr "Parçacığın iç adı"
 
 #: gladeui/glade-widget.c:1364
 msgid "Anarchist"
@@ -2975,11 +2975,11 @@ msgstr "Üstlük yapan GladeWidgetʼe belirteç"
 
 #: gladeui/glade-widget.c:1401
 msgid "Internal Name"
-msgstr "Dahili Ad"
+msgstr "İç Ad"
 
 #: gladeui/glade-widget.c:1402
 msgid "A generic name prefix for internal widgets"
-msgstr "Dahili parçacıklar için genel ad öneki"
+msgstr "İç parçacıklar için genel ad öneki"
 
 #: gladeui/glade-widget.c:1407
 msgid "A GladeWidget template to base a new widget on"
@@ -3019,10 +3019,10 @@ msgstr "Üst düzey GladeDesignLayout içindeyken parçacığın yüksekliği"
 
 #: gladeui/glade-widget.c:1439
 msgid "A warning string about version mismatches"
-msgstr "Sürüm eşleşememeleri hakkında bir uyarı"
+msgstr "Sürüm eşleşememeleri hakkında uyarı"
 
 #: gladeui/glade-widget.c:1444
-msgid "Wether the widget is visible or not"
+msgid "Whether the widget is visible or not"
 msgstr "Parçacığın görünür olup olmaması"
 
 #: gladeui/glade-widget.c:1449
@@ -3145,7 +3145,7 @@ msgstr "Birleşik şablon üst düzey:"
 
 #: gladeui/glade-project-properties.ui:167
 msgid "Select a CSS to use as custom style provider"
-msgstr "Özel biçem sağlayıcı olarak kullanılacak bir CSS seçin"
+msgstr "Özel biçem sağlayıcı olarak kullanılacak CSS seçin"
 
 #: gladeui/glade-project-properties.ui:179
 msgid "Custom CSS style provider:"
@@ -3165,7 +3165,7 @@ msgstr "Bu dizinden"
 
 #: gladeui/glade-project-properties.ui:282
 msgid "Choose a path to load image resources"
-msgstr "Resim kaynaklarını yüklemek için bir yol seçin"
+msgstr "Resim kaynaklarını yüklemek için yol seçin"
 
 #: gladeui/glade-project-properties.ui:314
 msgid "Image resources are loaded locally:"
@@ -3261,7 +3261,7 @@ msgstr "%s logo simgesi kullanacak şekilde ayarlanıyor"
 
 #: plugins/gtk+/glade-accels.c:320 plugins/gtk+/glade-accels.c:392
 msgid "<choose a key>"
-msgstr "<bir tuş seç>"
+msgstr "<tuş seç>"
 
 #: plugins/gtk+/glade-accels.c:464
 msgid "Accelerator Key"
@@ -3375,7 +3375,7 @@ msgstr "Atanmamış"
 
 #: plugins/gtk+/glade-attributes.c:726
 msgid "Select a color"
-msgstr "Bir renk seç"
+msgstr "Renk seç"
 
 #: plugins/gtk+/glade-attributes.c:761
 msgid "Select a font"
@@ -3450,7 +3450,7 @@ msgstr "%s üzerindeki ayarlar sütunları"
 
 #: plugins/gtk+/glade-column-types.c:500
 msgid "< define a new column >"
-msgstr "< yeni bir sütun belirleyin >"
+msgstr "< yeni sütun belirle >"
 
 #: plugins/gtk+/glade-column-types.c:823
 msgid "Add and remove columns:"
@@ -3477,7 +3477,7 @@ msgstr "%s harici tampon kullanacak şekilde ayarlanıyor"
 #: plugins/gtk+/glade-entry-editor.c:371
 #, c-format
 msgid "Setting %s to use a primary icon from stock"
-msgstr "%s depodan bir birincil simge kullanması için atanması"
+msgstr "%s depodan birincil simge kullanması için atanması"
 
 #: plugins/gtk+/glade-entry-editor.c:397
 #, c-format
@@ -3696,7 +3696,7 @@ msgstr "%s doğrudan %s değiştirmek için atandı"
 
 #: plugins/gtk+/glade-gtk-combo-box.c:31
 msgid "This combo box is not configured to have an entry"
-msgstr "Bu çoklu kutu bir girdisi olacak şekilde yapılandırılmamış"
+msgstr "Bu çoklu kutu, girilecek biçimde yapılandırılmamış"
 
 #: plugins/gtk+/glade-gtk-combo-box.c:95
 msgid "Tearoff menus are disabled"
@@ -3875,12 +3875,12 @@ msgstr "Alt nesne Son Kullanılan Seçici Menüye eklenemez."
 #: plugins/gtk+/glade-gtk-menu-shell.c:265
 #, c-format
 msgid "%s already has a menu."
-msgstr "%sʼin zaten bir menüsü var."
+msgstr "%sʼin zaten menüsü var."
 
 #: plugins/gtk+/glade-gtk-menu-shell.c:275
 #, c-format
 msgid "%s item already has a submenu."
-msgstr "%s ögesinin zaten bir alt menüsü var."
+msgstr "%s ögesinin zaten alt menüsü var."
 
 #: plugins/gtk+/glade-gtk-menu-shell.c:474
 #: plugins/gtk+/glade-gtk-menu-shell.c:482
@@ -4124,7 +4124,7 @@ msgid ""
 "First add a stock name in the entry below, then add and define sources for "
 "that icon in the treeview."
 msgstr ""
-"Öncelikle aşağıdaki girişe bir depo adı ekleyin, sonra ağaç görünüm "
+"Öncelikle aşağıdaki girişe depo adı ekleyin, sonra ağaç görünüm "
 "içerisindeki bu simge için kaynakları ekleyin ve tanımlayın."
 
 #: plugins/gtk+/glade-icon-sources.c:759
@@ -4133,7 +4133,7 @@ msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
 "will only ever load them in the runtime from your project directory)."
 msgstr ""
-"'%s' kaynağı için bir dosya adı, göreceli ya da tam yol girin (Glade "
+"'%s' kaynağı için dosya adı, göreceli ya da tam yol girin (Glade "
 "yalnızca proje dizininden çalışma zamanı yükleyecektir)."
 
 #: plugins/gtk+/glade-icon-sources.c:767
@@ -4152,7 +4152,7 @@ msgstr "Bu '%s' kaynağı için metin yönünü atayın"
 #, c-format
 msgid "Set whether you want to specify an icon size for this source of '%s'"
 msgstr ""
-"Bu '%s' kaynağı için bir simge boyutu belirtmek isteyip istemediğinizi atayın"
+"Bu '%s' kaynağı için simge boyutu belirtmek isteyip istemediğinizi atayın"
 
 #: plugins/gtk+/glade-icon-sources.c:787
 #, c-format
@@ -8063,7 +8063,7 @@ msgid ""
 "Use the \"query-tooltip\" to present a tooltip\n"
 "instead of setting a literal tooltip"
 msgstr ""
-"Kelimesi kelimesine bir araç ipucu ayarlamak yerine\n"
+"Sözcüğü sözcüğüne bir araç ipucu ayarlamak yerine\n"
 "araç ipucunu \"query-tooltip\" kullanarak sun"
 
 #: plugins/gtk+/glade-widget-editor.ui:1019
@@ -8420,7 +8420,7 @@ msgstr "WebKit2GTK+ Parçacıkları"
 #~ msgstr "Sürümleri ve artık kullanılmayanları denetle:"
 
 #~ msgid "All"
-#~ msgstr "Hepsi"
+#~ msgstr "Tümü"
 
 #~ msgid "Invisible Char Set"
 #~ msgstr "Görünmez Karakter Kümesi"
