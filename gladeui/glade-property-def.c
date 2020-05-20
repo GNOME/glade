@@ -452,6 +452,21 @@ glade_property_def_make_string_from_objects (GladePropertyDef *
   return string;
 }
 
+static locale_t
+get_C_locale (void)
+{
+  static gsize initialized = FALSE;
+  static locale_t C_locale = NULL;
+
+  if (g_once_init_enter (&initialized))
+    {
+      C_locale = newlocale (LC_ALL_MASK, "C", NULL);
+      g_once_init_leave (&initialized, TRUE);
+    }
+
+  return C_locale;
+}
+
 static gchar *
 glade_dtostr (double number, gdouble epsilon)
 {
@@ -461,8 +476,10 @@ glade_dtostr (double number, gdouble epsilon)
   for (i = 0; i <= 20; i++)
     {
       double rounded;
-
+      locale_t old_locale;
+      old_locale = uselocale (get_C_locale ());
       snprintf (str, G_ASCII_DTOSTR_BUF_SIZE, "%.*f", i, number);
+      uselocale (old_locale);
       rounded = g_ascii_strtod (str, NULL);
 
       if (ABS (rounded - number) <= epsilon)
