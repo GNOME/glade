@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-04-28 15:43+0000\n"
-"PO-Revision-Date: 2020-04-30 11:59+0200\n"
+"POT-Creation-Date: 2020-05-19 20:42+0000\n"
+"PO-Revision-Date: 2020-05-20 11:56+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -76,250 +76,251 @@ msgstr ""
 "lenguajes de programación, incluyendo C, C++, C#, Vala, Java, Perl, Python, "
 "y otros."
 
-#: src/glade-window.c:59
+#: src/glade-window.c:54
 msgid "[Read Only]"
 msgstr "[Sólo lectura]"
 
-#: src/glade-window.c:196
+#: src/glade-window.c:191
 msgid "User Interface Designer"
 msgstr "Diseñador de interfaces de usuario"
 
-#: src/glade-window.c:461 src/glade-window.c:468
+#: src/glade-window.c:456 src/glade-window.c:463
 msgid "the last action"
 msgstr "la última acción"
 
-#: src/glade-window.c:462
+#: src/glade-window.c:457
 #, c-format
 msgid "Undo: %s"
 msgstr "Deshacer: %s"
 
-#: src/glade-window.c:469
+#: src/glade-window.c:464
 #, c-format
 msgid "Redo: %s"
 msgstr "Rehacer: %s"
 
-#: src/glade-window.c:494
+#: src/glade-window.c:489
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Autoguardando «%s»"
 
-#: src/glade-window.c:499
+#: src/glade-window.c:494
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Erro al autoguardar «%s»"
 
-#: src/glade-window.c:721
+#: src/glade-window.c:716
 msgid "Open…"
 msgstr "Abrir…"
 
-#: src/glade-window.c:755
+#: src/glade-window.c:750
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Aún se está cargando el proyecto «%s»."
 
-#: src/glade-window.c:774
+#: src/glade-window.c:769
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
 "Falló al hacer una copia de seguridad del archivo existente, ¿continuar el "
 "guardado?"
 
-#: src/glade-window.c:789
+#: src/glade-window.c:784
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Falló al guardar %s: %s"
 
-#: src/glade-window.c:828
+#: src/glade-window.c:823
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "El archivo «%s» ha sido modificado desde que fue leído"
 
-#: src/glade-window.c:832
+#: src/glade-window.c:827
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Si lo guarda, todos los cambios externos pueden perderse. ¿Guardarlo de "
 "todos modos?"
 
-#: src/glade-window.c:837
+#: src/glade-window.c:832
 msgid "_Save Anyway"
 msgstr "_Guardar de todos modos"
 
-#: src/glade-window.c:845
+#: src/glade-window.c:840
 msgid "_Don't Save"
 msgstr "_No guardar"
 
-#: src/glade-window.c:878
+#: src/glade-window.c:873
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Proyecto «%s» guardado"
 
-#: src/glade-window.c:909
+#: src/glade-window.c:904
 msgid "Save As…"
 msgstr "Guardar como…"
 
-#: src/glade-window.c:973
+#: src/glade-window.c:968
 #, c-format
 msgid "Could not save the file %s"
 msgstr "No se pudo guardar el archivo %s"
 
-#: src/glade-window.c:977
+#: src/glade-window.c:972
 msgid "You do not have the permissions necessary to save the file."
 msgstr "No tiene los permisos necesarios para guardar el archivo."
 
-#: src/glade-window.c:999
+#: src/glade-window.c:994
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "No se pudo guardar el archivo %s. Otro proyecto con esa ruta está abierto."
 
-#: src/glade-window.c:1027
+#: src/glade-window.c:1022
 msgid "No open projects to save"
 msgstr "Ningún proyecto abierto para guardar"
 
-#: src/glade-window.c:1060
+#: src/glade-window.c:1055
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "¿Guardar los cambios del proyecto «%s» antes de cerrar?"
 
-#: src/glade-window.c:1068
+#: src/glade-window.c:1063
 msgid "Your changes will be lost if you don't save them."
 msgstr "Sus cambios se perderán si no los guarda."
 
-#: src/glade-window.c:1072
+#: src/glade-window.c:1067
 msgid "Close _without Saving"
 msgstr "Cerrar _sin guardar"
 
-#: src/glade-window.c:1073 src/glade-window.c:1758 gladeui/glade-editor.c:795
-#: gladeui/glade-editor.c:1151 gladeui/glade-editor-property.c:1776
-#: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
-#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
-#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3648
-#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:522
-#: plugins/gtk+/glade-attributes.c:1062
+#: src/glade-window.c:1068 src/glade-window.c:1753
+#: src/glade-preferences.glade:447 src/glade-registration.glade:101
+#: gladeui/glade-editor.c:795 gladeui/glade-editor.c:1151
+#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
+#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3218
+#: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3337
+#: gladeui/glade-editor-property.c:3648 gladeui/glade-utils.c:483
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: src/glade-window.c:1074 gladeui/glade-utils.c:486
+#: src/glade-window.c:1069 src/glade.glade:646 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Guardar"
 
-#: src/glade-window.c:1105
+#: src/glade-window.c:1100
 msgid "Save…"
 msgstr "Guardar…"
 
-#: src/glade-window.c:1665
+#: src/glade-window.c:1660
 msgid "Could not create a new project."
 msgstr "No se pudo crear un proyecto nuevo."
 
-#: src/glade-window.c:1726
+#: src/glade-window.c:1721
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "El proyecto %s tiene cambios no guardados"
 
-#: src/glade-window.c:1731
+#: src/glade-window.c:1726
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Si lo recarga, todos los cambios externos pueden perderse. ¿Recargarlo de "
 "todos modos?"
 
-#: src/glade-window.c:1741
+#: src/glade-window.c:1736
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "El archivo de proyecto «%s» ha sido modificado externamente"
 
-#: src/glade-window.c:1746
+#: src/glade-window.c:1741
 msgid "Do you want to reload the project?"
 msgstr "¿Quiere volver a cargar el proyecto?"
 
-#: src/glade-window.c:1752
+#: src/glade-window.c:1747
 msgid "_Reload"
 msgstr "Re_cargar"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2287
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Hola, esto le mostrará las novedades de Glade"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2288
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr ""
 "Las barras de menú y de herramientas se ha incluido en la barra de cabecera"
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2290
 msgid "You can open a project"
 msgstr "Puede abrir un proyecto"
 
-#: src/glade-window.c:2296
+#: src/glade-window.c:2291
 msgid "find recently used"
 msgstr "buscar archivos usados recientemente"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2292
 msgid "or create a new one"
 msgstr "o crear uno nuevo"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2296
 msgid "Undo"
 msgstr "Deshacer"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2297
 msgid "Redo"
 msgstr "Rehacer"
 
-#: src/glade-window.c:2303
+#: src/glade-window.c:2298
 msgid "Project switcher"
 msgstr "El selector de proyectos"
 
-#: src/glade-window.c:2305
+#: src/glade-window.c:2300
 msgid "and Save button are directly accessible in the headerbar"
 msgstr ""
 "y el botón Guardar son directamente accesibles desde la barra de cabecera"
 
-#: src/glade-window.c:2306
+#: src/glade-window.c:2301
 msgid "just like Save As"
 msgstr "igual que Guardar como"
 
-#: src/glade-window.c:2307
+#: src/glade-window.c:2302
 msgid "project properties"
 msgstr "las propiedades del proyecto"
 
-#: src/glade-window.c:2308
+#: src/glade-window.c:2303
 msgid "and less commonly used actions"
 msgstr "y las acciones menos usadas habitualmente"
 
-#: src/glade-window.c:2310
+#: src/glade-window.c:2305
 msgid "The object inspector took the palette's place"
 msgstr "El inspector de objetos se ha colocado en lugar de la paleta"
 
-#: src/glade-window.c:2311
+#: src/glade-window.c:2306
 msgid "To free up space for the property editor"
 msgstr "Para liberar espacio para el editor de propiedades"
 
-#: src/glade-window.c:2313
+#: src/glade-window.c:2308
 msgid "The palette was replaced with a new object chooser"
 msgstr "La paleta se ha reemplazado por un nuevo selector de objetos"
 
-#: src/glade-window.c:2314
+#: src/glade-window.c:2309
 msgid "Where you can search all supported classes"
 msgstr "Donde puede buscar todas las clases soportadas"
 
-#: src/glade-window.c:2315
+#: src/glade-window.c:2310
 msgid "investigate GTK+ object groups"
 msgstr "investigar grupos de objetos de GTK+"
 
-#: src/glade-window.c:2316
+#: src/glade-window.c:2311
 msgid "and find classes introduced by other libraries"
 msgstr "y encontrar clases introducidas por otras bibliotecas"
 
-#: src/glade-window.c:2318
+#: src/glade-window.c:2313
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr ""
 "Bien, ahora que ha terminado la visión general empecemos con el nuevo flujo "
 "de trabajo"
 
-#: src/glade-window.c:2320
+#: src/glade-window.c:2315
 msgid "First of all, create a new project"
 msgstr "Antes de nada, cree un proyecto nuevo"
 
-#: src/glade-window.c:2321
+#: src/glade-window.c:2316
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
@@ -327,34 +328,34 @@ msgstr ""
 "Ahora añada una GtkWindow usando el nuevo selector de widgets o pulsando dos "
 "veces en el área de trabajo"
 
-#: src/glade-window.c:2322
+#: src/glade-window.c:2317
 msgid "Excellent!"
 msgstr "Excelente"
 
-#: src/glade-window.c:2323
+#: src/glade-window.c:2318
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr ""
 "¿Sabía que puede pulsar dos veces en cualquier lugar para crear widgets?"
 
-#: src/glade-window.c:2324
+#: src/glade-window.c:2319
 msgid "Try adding a grid"
 msgstr "Pruebe a añadir una rejilla"
 
-#: src/glade-window.c:2325
+#: src/glade-window.c:2320
 msgid "and a button"
 msgstr "y un botón"
 
-#: src/glade-window.c:2327
+#: src/glade-window.c:2322
 msgid "Quite easy! Isn't it?"
 msgstr "Es muy fácil ¿verdad?"
 
-#: src/glade-window.c:2328
+#: src/glade-window.c:2323
 msgid "Enjoy!"
 msgstr "Disfrute"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2546
+#: src/glade-window.c:2541
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -363,16 +364,16 @@ msgstr ""
 "¿le gustaría tomarla en este momento?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2550
+#: src/glade-window.c:2545
 msgid "If not, you can always find it in the Help menu."
 msgstr "Sino, siempre puede encontrarla en el menú Ayuda."
 
-#: src/glade-window.c:2552
+#: src/glade-window.c:2547
 msgid "_Do not show this dialog again"
 msgstr "_No mostrar este dialogo nuevamente"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2573
+#: src/glade-window.c:2568
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
 "Ve a Ayuda -> Registro y encuesta de usuarios y completa nuestra encuesta!"
@@ -430,9 +431,10 @@ msgstr "Preferencias"
 msgid "About Glade"
 msgstr "Acerca de Glade"
 
-#: src/glade.glade:461 plugins/gtk+/gtk+.xml:1937
-msgid "Open"
-msgstr "Abrir"
+#: src/glade.glade:461 src/glade-preferences.glade:461
+#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
+msgid "_Open"
+msgstr "_Abrir"
 
 #: src/glade.glade:466
 msgid "Open a project"
@@ -445,10 +447,6 @@ msgstr "Crea un proyecto nuevo"
 #: src/glade.glade:623
 msgid "Edit project properties"
 msgstr "Editar las propiedades del proyecto"
-
-#: src/glade.glade:646 plugins/gtk+/gtk+.xml:1935
-msgid "Save"
-msgstr "Guardar"
 
 #: src/glade.glade:651
 msgid "Save the current project"
@@ -616,6 +614,11 @@ msgstr "Añadir una ruta de búsqueda de un catálogo nueva"
 msgid "Extra catalog paths"
 msgstr "Rutas de catálogos adicionales"
 
+#: src/glade-preferences.glade:399 gladeui/glade-editor-property.c:1380
+#: gladeui/glade-project-properties.ui:644
+msgid "_Close"
+msgstr "_Cerrar"
+
 #: src/glade-preferences.glade:428
 msgid "Select a catalog search path"
 msgstr "Seleccionar una rutas de búsqueda de catálogos"
@@ -755,14 +758,10 @@ msgstr "Error al acceder a la BB.DD: %s"
 msgid "Glade Registration & User Survey"
 msgstr "Registro de Glade y encuesta para usuarios"
 
-#: src/glade-registration.glade:101 plugins/gtk+/gtk+.xml:1732
-#: plugins/gtk+/gtk+.xml:3448
-msgid "Cancel"
-msgstr "Cancelar"
-
 #: src/glade-registration.glade:114
-msgid "Submit"
-msgstr "Enviar"
+#| msgid "Submit"
+msgid "_Submit"
+msgstr "_Enviar"
 
 #: src/glade-registration.glade:118
 msgid "Information will be sent to https://people.gnome.org/~jpu"
@@ -1866,10 +1865,6 @@ msgstr "Testo personalizado que mostrar en la etiqueta de la propiedad"
 msgid "Select Fields"
 msgstr "Seleccionar campos"
 
-#: gladeui/glade-editor-property.c:1380
-msgid "_Close"
-msgstr "_Cerrar"
-
 #: gladeui/glade-editor-property.c:1393
 msgid "_Select individual fields:"
 msgstr "_Seleccionar campos individuales:"
@@ -1917,10 +1912,6 @@ msgstr "_Comentarios para los traductores:"
 #: gladeui/glade-editor-property.c:2277
 msgid "Select a file from the project resource directory"
 msgstr "Seleccionar un archivo desde la carpeta de recursos del proyecto"
-
-#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
-msgid "_Open"
-msgstr "_Abrir"
 
 #: gladeui/glade-editor-property.c:3137 gladeui/glade-widget-adaptor.c:1461
 #: gladeui/glade-widget.c:1354 plugins/gtk+/gtk+.xml:1511
@@ -3061,7 +3052,6 @@ msgid "A warning string about version mismatches"
 msgstr "Una cadena de advertencia acerca de inconsistencias entre versiones"
 
 #: gladeui/glade-widget.c:1444
-#| msgid "Wether the widget is visible or not"
 msgid "Whether the widget is visible or not"
 msgstr "Indica si el widget es visible o no"
 
@@ -3275,6 +3265,10 @@ msgstr "MIT"
 #: gladeui/glade-project-properties.ui:552
 msgid "GNU All permissive"
 msgstr "GNU Permitir todo"
+
+#: gladeui/glade-project-properties.ui:626
+msgid "_Verify"
+msgstr "_Comprobar"
 
 #: gladeui/glade-project-properties.ui:630
 msgid ""
@@ -5949,6 +5943,10 @@ msgstr "Eliminar evento"
 msgid "OK"
 msgstr "Aceptar"
 
+#: plugins/gtk+/gtk+.xml:1732 plugins/gtk+/gtk+.xml:3448
+msgid "Cancel"
+msgstr "Cancelar"
+
 #: plugins/gtk+/gtk+.xml:1734 plugins/gtk+/gtk+.xml:3446
 msgid "Close"
 msgstr "Cerrar"
@@ -6013,6 +6011,14 @@ msgstr "Interruptor"
 #: plugins/gtk+/glade-file-chooser-button-editor.ui:69
 msgid "File Chooser Button"
 msgstr "Botón del selector de archivos"
+
+#: plugins/gtk+/gtk+.xml:1935
+msgid "Save"
+msgstr "Guardar"
+
+#: plugins/gtk+/gtk+.xml:1937
+msgid "Open"
+msgstr "Abrir"
 
 #: plugins/gtk+/gtk+.xml:1939
 msgid "Select Folder"
