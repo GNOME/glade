@@ -92,7 +92,7 @@ static void     project_css_provider_path_changed     (GladeProject           *p
                                                        GParamSpec             *pspec,
                                                        GladeProjectProperties *properties);
 
-struct _GladeProjectPropertiesPrivate
+typedef struct
 {
   GladeProject *project;
 
@@ -125,6 +125,14 @@ struct _GladeProjectPropertiesPrivate
   GtkTextBuffer  *license_textbuffer;
   
   gboolean ignore_ui_cb;
+} GladeProjectPropertiesPrivate;
+
+
+struct _GladeProjectProperties
+{
+  GtkDialog parent;
+
+  GladeProjectPropertiesPrivate *priv; /* Unused */
 };
 
 enum
@@ -134,6 +142,7 @@ enum
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladeProjectProperties, glade_project_properties, GTK_TYPE_DIALOG);
+#define GLADE_PROJECT_PROPERTIES_PRIVATE(o) ((GladeProjectPropertiesPrivate *) glade_project_properties_get_instance_private((GladeProjectProperties*)o))
 
 /********************************************************
  *                  Class/Instance Init                 *
@@ -141,9 +150,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (GladeProjectProperties, glade_project_properties, GT
 static void
 glade_project_properties_init (GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv;
-
-  properties->priv = priv = glade_project_properties_get_instance_private (properties);
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   priv->target_radios = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                g_free, NULL);
@@ -224,7 +231,7 @@ static void
 glade_project_properties_finalize (GObject *object)
 {
   GladeProjectProperties        *properties = GLADE_PROJECT_PROPERTIES (object);
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   g_hash_table_destroy (priv->target_radios);
 
@@ -234,7 +241,7 @@ glade_project_properties_finalize (GObject *object)
 static void
 target_version_box_fill (GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GladeProject *project = priv->project;
   GtkWidget *vbox = priv->toolkit_box;
   GtkWidget *label, *active_radio, *target_radio, *hbox;
@@ -317,7 +324,7 @@ target_version_box_fill (GladeProjectProperties *properties)
 static void
 update_prefs_for_resource_path (GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   const gchar *resource_path;
 
   resource_path = glade_project_get_resource_path (priv->project);
@@ -359,7 +366,7 @@ static void
 glade_project_properties_set_project (GladeProjectProperties *properties,
                                       GladeProject           *project)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   /* No strong reference, we belong to the project */
   g_assert (priv->project == NULL);
@@ -411,7 +418,7 @@ static void
 target_button_clicked (GtkWidget              *widget,
                        GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GladeTargetableVersion        *version;
   gchar                         *catalog;
 
@@ -427,7 +434,7 @@ static void
 resource_default_toggled (GtkWidget              *widget,
                           GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   if (priv->ignore_ui_cb || 
       !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
@@ -440,7 +447,7 @@ static void
 resource_relative_toggled (GtkWidget              *widget,
                            GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GtkToggleButton *toggle = GTK_TOGGLE_BUTTON (widget);
   
   if (priv->ignore_ui_cb || !gtk_toggle_button_get_active (toggle))
@@ -456,7 +463,7 @@ static void
 resource_fullpath_toggled (GtkWidget              *widget,
                            GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GtkToggleButton *toggle = GTK_TOGGLE_BUTTON (widget);
 
   if (priv->ignore_ui_cb || !gtk_toggle_button_get_active (toggle))
@@ -488,7 +495,7 @@ on_relative_path_entry_insert_text (GtkEditable            *editable,
 static void
 on_relative_path_entry_changed (GtkEntry *entry, GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   if (priv->ignore_ui_cb)
     return;
@@ -499,7 +506,7 @@ on_relative_path_entry_changed (GtkEntry *entry, GladeProjectProperties *propert
 static void
 resource_full_path_set (GtkFileChooserButton *button, GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   gchar *text;
   
   if (priv->ignore_ui_cb)
@@ -514,7 +521,7 @@ static void
 on_template_combo_box_changed (GtkComboBox            *combo,
                                GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GtkTreeIter iter;
 
   if (priv->ignore_ui_cb)
@@ -538,7 +545,7 @@ static void
 on_template_checkbutton_toggled (GtkToggleButton        *togglebutton,
                                  GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   if (priv->ignore_ui_cb)
     return;
@@ -595,7 +602,7 @@ template_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
 static GtkTreeModel *
 glade_project_toplevel_model_filter_new (GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GtkTreeModel *model;
 
   model = gtk_tree_model_filter_new (GTK_TREE_MODEL (priv->project), NULL);
@@ -607,7 +614,7 @@ glade_project_toplevel_model_filter_new (GladeProjectProperties *properties)
 static void
 verify_clicked (GtkWidget *button, GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   if (glade_project_verify (priv->project, FALSE,
                             GLADE_VERIFY_VERSIONS     |
@@ -626,7 +633,7 @@ verify_clicked (GtkWidget *button, GladeProjectProperties *properties)
 static void
 on_domain_entry_changed (GtkWidget *entry, GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   if (priv->ignore_ui_cb)
     return;
@@ -844,7 +851,7 @@ string_count_new_lines (const gchar *str)
 static void
 gpp_update_license (GladeProjectProperties *properties, gchar *license)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   const gchar *name, *description;
   gchar *copyright, *authors;
 
@@ -885,7 +892,8 @@ gpp_update_license (GladeProjectProperties *properties, gchar *license)
 static void
 on_license_data_changed (GladeProjectProperties *properties)
 {
-  const gchar *id = gtk_combo_box_get_active_id (properties->priv->license_comboboxtext);
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
+  const gchar *id = gtk_combo_box_get_active_id (priv->license_comboboxtext);
   gchar *license;
 
   if ((license = gpp_get_license_from_id (id)))
@@ -896,7 +904,7 @@ static void
 on_license_comboboxtext_changed (GtkComboBox            *widget,
                                  GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   gchar *license;
 
   if ((license = gpp_get_license_from_id (gtk_combo_box_get_active_id (widget))))
@@ -917,7 +925,7 @@ static void
 on_glade_project_properties_hide (GtkWidget              *widget,
                                   GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GtkTextIter start, end;
   gchar *license;
 
@@ -933,7 +941,7 @@ on_glade_project_properties_hide (GtkWidget              *widget,
 static void
 on_css_checkbutton_toggled (GtkWidget *widget, GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   if (priv->ignore_ui_cb)
     return;
@@ -953,7 +961,7 @@ static void
 on_css_filechooser_file_set (GtkFileChooserButton   *widget,
                              GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   const gchar *path;
 
   if (priv->ignore_ui_cb)
@@ -971,7 +979,7 @@ static void
 project_targets_changed (GladeProject           *project,
                          GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GList *list;
   GSList *radios, *l;
 
@@ -1019,7 +1027,7 @@ project_domain_changed (GladeProject           *project,
                         GParamSpec             *pspec,
                         GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   const gchar *domain;
 
   priv->ignore_ui_cb = TRUE;
@@ -1035,7 +1043,7 @@ project_resource_path_changed (GladeProject           *project,
                                GParamSpec             *pspec,
                                GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   priv->ignore_ui_cb = TRUE;
   update_prefs_for_resource_path (properties);
   priv->ignore_ui_cb = FALSE;
@@ -1046,7 +1054,7 @@ project_template_changed (GladeProject           *project,
                           GParamSpec             *pspec,
                           GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GtkTreeModel *model;
   GtkTreeIter iter;
   gboolean valid;
@@ -1101,7 +1109,7 @@ project_license_changed (GladeProject           *project,
                          GParamSpec             *pspec,
                          GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
   priv->ignore_ui_cb = TRUE;  
   gtk_text_buffer_set_text (priv->license_textbuffer, 
@@ -1115,7 +1123,7 @@ project_css_provider_path_changed (GladeProject           *project,
                                    GParamSpec             *pspec,
                                    GladeProjectProperties *properties)
 {
-  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   const gchar *filename = glade_project_get_css_provider_path (project);
   GtkFileChooser *chooser = GTK_FILE_CHOOSER (priv->css_filechooser);
 
@@ -1147,19 +1155,21 @@ _glade_project_properties_set_license_data (GladeProjectProperties *props,
                                             const gchar *copyright,
                                             const gchar *authors)
 {
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(props);
+
   if (!license ||
-      !gtk_combo_box_set_active_id (props->priv->license_comboboxtext, license))
+      !gtk_combo_box_set_active_id (priv->license_comboboxtext, license))
     {
-      gtk_combo_box_set_active_id (props->priv->license_comboboxtext, "other");
+      gtk_combo_box_set_active_id (priv->license_comboboxtext, "other");
       name = description = copyright = authors = "";
       license = "other";
     }
         
-  gtk_entry_buffer_set_text (props->priv->name_entrybuffer, name ? name : "", -1);
-  gtk_entry_buffer_set_text (props->priv->description_entrybuffer, description ? description : "", -1);
+  gtk_entry_buffer_set_text (priv->name_entrybuffer, name ? name : "", -1);
+  gtk_entry_buffer_set_text (priv->description_entrybuffer, description ? description : "", -1);
 
-  gtk_text_buffer_set_text (props->priv->copyright_textbuffer, copyright ? copyright : "", -1);
-  gtk_text_buffer_set_text (props->priv->authors_textbuffer, authors ? authors : "", -1);
+  gtk_text_buffer_set_text (priv->copyright_textbuffer, copyright ? copyright : "", -1);
+  gtk_text_buffer_set_text (priv->authors_textbuffer, authors ? authors : "", -1);
 
   gpp_update_license (props, gpp_get_license_from_id (license));
 }
@@ -1172,7 +1182,8 @@ _glade_project_properties_get_license_data (GladeProjectProperties *props,
                                             gchar **copyright,
                                             gchar **authors)
 {
-  const gchar *id = gtk_combo_box_get_active_id (props->priv->license_comboboxtext);
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(props);
+  const gchar *id = gtk_combo_box_get_active_id (priv->license_comboboxtext);
 
   if (!g_strcmp0 (id, "other"))
     {
@@ -1181,11 +1192,11 @@ _glade_project_properties_get_license_data (GladeProjectProperties *props,
     }
 
   *license = g_strdup (id);
-  *name = g_strdup (gtk_entry_buffer_get_text (props->priv->name_entrybuffer));
-  *description = g_strdup (gtk_entry_buffer_get_text (props->priv->description_entrybuffer));
+  *name = g_strdup (gtk_entry_buffer_get_text (priv->name_entrybuffer));
+  *description = g_strdup (gtk_entry_buffer_get_text (priv->description_entrybuffer));
 
-  g_object_get (props->priv->copyright_textbuffer, "text", copyright, NULL);
-  g_object_get (props->priv->authors_textbuffer, "text", authors, NULL);
+  g_object_get (priv->copyright_textbuffer, "text", copyright, NULL);
+  g_object_get (priv->authors_textbuffer, "text", authors, NULL);
 }
 
 /******************************************************
