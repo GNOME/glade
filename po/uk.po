@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-03-22 12:42+0000\n"
-"PO-Revision-Date: 2020-03-31 09:53+0300\n"
+"POT-Creation-Date: 2020-05-19 20:42+0000\n"
+"PO-Revision-Date: 2020-05-20 08:31+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "Language: uk\n"
@@ -72,246 +72,247 @@ msgstr ""
 "За допомогою GtkBuilder файли XML Glade можна використовувати у коді "
 "багатьма мовами програмування, зокрема C, C++, C#, Vala, Java, Perl, Python."
 
-#: src/glade-window.c:59
+#: src/glade-window.c:54
 msgid "[Read Only]"
 msgstr "[Лише для читання]"
 
-#: src/glade-window.c:196
+#: src/glade-window.c:191
 msgid "User Interface Designer"
 msgstr "Редактор інтерфейсів користувача"
 
-#: src/glade-window.c:461 src/glade-window.c:468
+#: src/glade-window.c:456 src/glade-window.c:463
 msgid "the last action"
 msgstr "остання дія"
 
-#: src/glade-window.c:462
+#: src/glade-window.c:457
 #, c-format
 msgid "Undo: %s"
 msgstr "Вернути: %s"
 
-#: src/glade-window.c:469
+#: src/glade-window.c:464
 #, c-format
 msgid "Redo: %s"
 msgstr "Повторити: %s"
 
-#: src/glade-window.c:494
+#: src/glade-window.c:489
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Автоматичне збереження «%s»"
 
-#: src/glade-window.c:499
+#: src/glade-window.c:494
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Помилка під час спроби автоматично зберегти «%s»"
 
-#: src/glade-window.c:721
+#: src/glade-window.c:716
 msgid "Open…"
 msgstr "Відкрити…"
 
-#: src/glade-window.c:755
+#: src/glade-window.c:750
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Завантаження проєкту %s ще не завершено."
 
-#: src/glade-window.c:774
+#: src/glade-window.c:769
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
 "Не вдалося створити резервну копію наявного файла. Продовжити процес "
 "зберігання?"
 
-#: src/glade-window.c:789
+#: src/glade-window.c:784
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Не вдається зберегти %s: %s"
 
-#: src/glade-window.c:828
+#: src/glade-window.c:823
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Файл %s був змінений на диску з моменту останнього читання"
 
-#: src/glade-window.c:832
+#: src/glade-window.c:827
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Якщо ви збережете його, всі зміни, що зроблені зовні, будуть втрачені. "
 "Зберегти попри все?"
 
-#: src/glade-window.c:837
+#: src/glade-window.c:832
 msgid "_Save Anyway"
 msgstr "З_берегти"
 
-#: src/glade-window.c:845
+#: src/glade-window.c:840
 msgid "_Don't Save"
 msgstr "_Не зберігати"
 
-#: src/glade-window.c:878
+#: src/glade-window.c:873
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Проєкт «%s» збережений"
 
-#: src/glade-window.c:909
+#: src/glade-window.c:904
 msgid "Save As…"
 msgstr "Зберегти як…"
 
-#: src/glade-window.c:973
+#: src/glade-window.c:968
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Не вдається зберегти файл %s"
 
-#: src/glade-window.c:977
+#: src/glade-window.c:972
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Недостатньо прав для збереження файлу."
 
-#: src/glade-window.c:999
+#: src/glade-window.c:994
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "Не вдалося зберегти файл %s. Інший проєкт у цьому каталозі вже відкритий."
 
-#: src/glade-window.c:1027
+#: src/glade-window.c:1022
 msgid "No open projects to save"
 msgstr "Немає відкритих проєктів для збереження"
 
-#: src/glade-window.c:1060
+#: src/glade-window.c:1055
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Зберегти зміни у проєкті «%s» перед закриттям?"
 
-#: src/glade-window.c:1068
+#: src/glade-window.c:1063
 msgid "Your changes will be lost if you don't save them."
 msgstr "Якщо не зберегти, зміни будуть втрачені."
 
-#: src/glade-window.c:1072
+#: src/glade-window.c:1067
 msgid "Close _without Saving"
 msgstr "_Закрити без збереження"
 
-#: src/glade-window.c:1073 src/glade-window.c:1758 gladeui/glade-editor.c:795
-#: gladeui/glade-editor.c:1151 gladeui/glade-editor-property.c:1776
-#: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
-#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
-#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3648
-#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:522
-#: plugins/gtk+/glade-attributes.c:1062
+#: src/glade-window.c:1068 src/glade-window.c:1753
+#: src/glade-preferences.glade:447 src/glade-registration.glade:101
+#: gladeui/glade-editor.c:795 gladeui/glade-editor.c:1151
+#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
+#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3218
+#: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3337
+#: gladeui/glade-editor-property.c:3648 gladeui/glade-utils.c:483
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Скасувати"
 
-#: src/glade-window.c:1074 gladeui/glade-utils.c:486
+#: src/glade-window.c:1069 src/glade.glade:646 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "З_берегти"
 
-#: src/glade-window.c:1105
+#: src/glade-window.c:1100
 msgid "Save…"
 msgstr "Зберегти…"
 
-#: src/glade-window.c:1665
+#: src/glade-window.c:1660
 msgid "Could not create a new project."
 msgstr "Не вдається створити новий проєкт."
 
-#: src/glade-window.c:1726
+#: src/glade-window.c:1721
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Проєкт %s містить незбережені зміни"
 
-#: src/glade-window.c:1731
+#: src/glade-window.c:1726
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Якщо ви перечитаєте його, всі зміни, що зроблені зовні, будуть втрачені. "
 "Перечитати попри все?"
 
-#: src/glade-window.c:1741
+#: src/glade-window.c:1736
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Файл %s був змінений зовні"
 
-#: src/glade-window.c:1746
+#: src/glade-window.c:1741
 msgid "Do you want to reload the project?"
 msgstr "Перечитати проєкт?"
 
-#: src/glade-window.c:1752
+#: src/glade-window.c:1747
 msgid "_Reload"
 msgstr "Пере_читати"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2287
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Привіт, я покажу вам нові можливості Glade"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2288
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Панелі меню та інструментів було об'єднано у панель заголовка"
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2290
 msgid "You can open a project"
 msgstr "Ви можете відкрити проєкт"
 
-#: src/glade-window.c:2296
+#: src/glade-window.c:2291
 msgid "find recently used"
 msgstr "відкрити нещодавно використані файли"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2292
 msgid "or create a new one"
 msgstr "або створити новий"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2296
 msgid "Undo"
 msgstr "Скасувати"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2297
 msgid "Redo"
 msgstr "Повторити"
 
-#: src/glade-window.c:2303
+#: src/glade-window.c:2298
 msgid "Project switcher"
 msgstr "Перемикач проєктів"
 
-#: src/glade-window.c:2305
+#: src/glade-window.c:2300
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "і кнопка «Зберегти» є безпосередньо доступним на панелі заголовка"
 
-#: src/glade-window.c:2306
+#: src/glade-window.c:2301
 msgid "just like Save As"
 msgstr "так само, як і кнопка «Зберегти як»"
 
-#: src/glade-window.c:2307
+#: src/glade-window.c:2302
 msgid "project properties"
 msgstr "властивості проєкту"
 
-#: src/glade-window.c:2308
+#: src/glade-window.c:2303
 msgid "and less commonly used actions"
 msgstr "та кнопки, які використовуються не так часто,"
 
-#: src/glade-window.c:2310
+#: src/glade-window.c:2305
 msgid "The object inspector took the palette's place"
 msgstr "Місце палітри зайняла панель інспектора об'єктів"
 
-#: src/glade-window.c:2311
+#: src/glade-window.c:2306
 msgid "To free up space for the property editor"
 msgstr "Щоб звільнити місце для панелі редактора властивостей"
 
-#: src/glade-window.c:2313
+#: src/glade-window.c:2308
 msgid "The palette was replaced with a new object chooser"
 msgstr "Палітру було замінено на нову панель вибору об'єктів"
 
-#: src/glade-window.c:2314
+#: src/glade-window.c:2309
 msgid "Where you can search all supported classes"
 msgstr "Ви можете виконувати пошук у всіх підтримуваних класах"
 
-#: src/glade-window.c:2315
+#: src/glade-window.c:2310
 msgid "investigate GTK+ object groups"
 msgstr "вивчати групи об'єктів GTK+"
 
-#: src/glade-window.c:2316
+#: src/glade-window.c:2311
 msgid "and find classes introduced by other libraries"
 msgstr "і знаходити класи, які впроваджуються іншими бібліотеками"
 
-#: src/glade-window.c:2318
+#: src/glade-window.c:2313
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr "Гаразд, з оглядом усе. Давайте ознайомимося із новими робочим процесом"
 
-#: src/glade-window.c:2320
+#: src/glade-window.c:2315
 msgid "First of all, create a new project"
 msgstr "Спочатку, слід створити проєкт"
 
-#: src/glade-window.c:2321
+#: src/glade-window.c:2316
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
@@ -319,34 +320,34 @@ msgstr ""
 "Гаразд, тепер додайте GtkWindow за допомогою нової панелі вибору віджетів "
 "або подвійного клацання лівою кнопкою миші на панелі робочого простору"
 
-#: src/glade-window.c:2322
+#: src/glade-window.c:2317
 msgid "Excellent!"
 msgstr "Відмінно!"
 
-#: src/glade-window.c:2323
+#: src/glade-window.c:2318
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr ""
 "До речі, чи відомо вам, що подвійним клацанням можна створювати віджети?"
 
-#: src/glade-window.c:2324
+#: src/glade-window.c:2319
 msgid "Try adding a grid"
 msgstr "Спробуйте додати таблицю"
 
-#: src/glade-window.c:2325
+#: src/glade-window.c:2320
 msgid "and a button"
 msgstr "і кнопку"
 
-#: src/glade-window.c:2327
+#: src/glade-window.c:2322
 msgid "Quite easy! Isn't it?"
 msgstr "Доволі просто! Чи не так?"
 
-#: src/glade-window.c:2328
+#: src/glade-window.c:2323
 msgid "Enjoy!"
 msgstr "Насолоджуйтеся!"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2546
+#: src/glade-window.c:2541
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -355,18 +356,18 @@ msgstr ""
 " Хочете взяти участь у нашому опитуванні зараз?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2550
+#: src/glade-window.c:2545
 msgid "If not, you can always find it in the Help menu."
 msgstr ""
 "Якщо ні, ви завжди можете повернутися до нашого опитування за допомогою "
 "пункту меню «Довідка»."
 
-#: src/glade-window.c:2552
+#: src/glade-window.c:2547
 msgid "_Do not show this dialog again"
 msgstr "_Не показувати це вікно знову"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2573
+#: src/glade-window.c:2568
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
 "Скористайтеся пунктом меню «Довідка → Реєстрація та опитування користувачів» "
@@ -421,13 +422,13 @@ msgid "Preferences"
 msgstr "Налаштування"
 
 #: src/glade.glade:139
-#| msgid "Glade"
 msgid "About Glade"
 msgstr "Про Glade"
 
-#: src/glade.glade:461 plugins/gtk+/gtk+.xml:1937
-msgid "Open"
-msgstr "Відкрити"
+#: src/glade.glade:461 src/glade-preferences.glade:461
+#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
+msgid "_Open"
+msgstr "_Відкрити"
 
 #: src/glade.glade:466
 msgid "Open a project"
@@ -440,10 +441,6 @@ msgstr "Створити новий проєкт"
 #: src/glade.glade:623
 msgid "Edit project properties"
 msgstr "Змінити властивості проєкту"
-
-#: src/glade.glade:646 plugins/gtk+/gtk+.xml:1935
-msgid "Save"
-msgstr "Зберегти"
 
 #: src/glade.glade:651
 msgid "Save the current project"
@@ -458,10 +455,6 @@ msgid "Start/resume interactive UI introduction"
 msgstr "Почати або поновити перегляд інтерактивного вступу щодо інтерфейсу"
 
 #: src/glade.glade:728
-#| msgid ""
-#| "Copyright © 2001-2006 Ximian, Inc.\n"
-#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-#| "Copyright © 2004-2017 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -613,6 +606,11 @@ msgstr "Додати новий шлях пошуку у каталозі"
 msgid "Extra catalog paths"
 msgstr "Додаткові шляхи у каталозі"
 
+#: src/glade-preferences.glade:399 gladeui/glade-editor-property.c:1380
+#: gladeui/glade-project-properties.ui:644
+msgid "_Close"
+msgstr "З_акрити"
+
 #: src/glade-preferences.glade:428
 msgid "Select a catalog search path"
 msgstr "Вибрати шлях пошуку у каталозі"
@@ -624,21 +622,6 @@ msgstr "Опитування користувачів Glade"
 
 #. translators: Email body sent to the user after completing the survey
 #: src/glade-registration.c:34
-#| msgid ""
-#| "Thank you for taking Glade Users survey, we appreciate it!\n"
-#| "\n"
-#| "To validate this email address open the folowing link\n"
-#| "\n"
-#| "https://people.gnome.org/~jpu/glade/registration.php?email="
-#| "$email&validation_token=$new_validation_token\n"
-#| "\n"
-#| "In case you want to change or update the survey, your current update "
-#| "token is:\n"
-#| "$new_token\n"
-#| "\n"
-#| "Cheers\n"
-#| "\n"
-#| "\tThe Glade team\n"
 msgid ""
 "Thank you for taking Glade Users survey, we appreciate it!\n"
 "\n"
@@ -771,14 +754,10 @@ msgstr "Оце тобі! Помилка під час спроби доступ�
 msgid "Glade Registration & User Survey"
 msgstr "Реєстрація і опитування користувачів Glade"
 
-#: src/glade-registration.glade:101 plugins/gtk+/gtk+.xml:1732
-#: plugins/gtk+/gtk+.xml:3448
-msgid "Cancel"
-msgstr "Скасувати"
-
 #: src/glade-registration.glade:114
-msgid "Submit"
-msgstr "Надіслати"
+#| msgid "Submit"
+msgid "_Submit"
+msgstr "_Надіслати"
 
 #: src/glade-registration.glade:118
 msgid "Information will be sent to https://people.gnome.org/~jpu"
@@ -1733,12 +1712,10 @@ msgid "Whether the border should be shown"
 msgstr "Чи слід показувати рамку"
 
 #: gladeui/glade-editor.c:276
-#| msgid "Date Editor"
 msgid "Signal Editor"
 msgstr "Редактор сигналів"
 
 #: gladeui/glade-editor.c:277
-#| msgid "The glade widget to edit signals"
 msgid "The signal editor used to edit signals"
 msgstr "Редактор сигналів для редагування сигналів"
 
@@ -1844,12 +1821,10 @@ msgid "%s - %s Properties"
 msgstr "%s — властивості %s"
 
 #: gladeui/glade-editor-property.c:768
-#| msgid "Property _Description:"
 msgid "Property Definition"
 msgstr "Визначення властивості"
 
 #: gladeui/glade-editor-property.c:769
-#| msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgid "The GladePropertyDef this GladeEditorProperty was created for"
 msgstr "GladePropertyDef, для якого було створено цю GladeEditorProperty"
 
@@ -1883,10 +1858,6 @@ msgstr "Нетиповий текст, який слід показувати у
 #: gladeui/glade-editor-property.c:1377
 msgid "Select Fields"
 msgstr "Виділити поля"
-
-#: gladeui/glade-editor-property.c:1380
-msgid "_Close"
-msgstr "З_акрити"
 
 #: gladeui/glade-editor-property.c:1393
 msgid "_Select individual fields:"
@@ -1924,8 +1895,8 @@ msgid ""
 "meaning of this string from the meaning of other occurrences of the same "
 "string"
 msgstr ""
-"Для коротких і неоднозначних рядків вкажіть тут слово для відокремлення"
-" значення цього рядка від інших використань того самого рядка"
+"Для коротких і неоднозначних рядків вкажіть тут слово для відокремлення "
+"значення цього рядка від інших використань того самого рядка"
 
 #: gladeui/glade-editor-property.c:2186
 msgid "Co_mments for translators:"
@@ -1934,10 +1905,6 @@ msgstr "К_оментар для перекладачів:"
 #: gladeui/glade-editor-property.c:2277
 msgid "Select a file from the project resource directory"
 msgstr "Виберіть файл з каталогу ресурсів проєкту"
-
-#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
-msgid "_Open"
-msgstr "_Відкрити"
 
 #: gladeui/glade-editor-property.c:3137 gladeui/glade-widget-adaptor.c:1461
 #: gladeui/glade-widget.c:1354 plugins/gtk+/gtk+.xml:1511
@@ -2386,8 +2353,6 @@ msgstr ", %s"
 
 #: gladeui/glade-project.c:2003
 #, c-format
-#| msgid ""
-#| "Specially because there is an object that can not be build with type "
 msgid ""
 "Especially because there is %d object that can not be built with type: %s"
 msgid_plural ""
@@ -2599,7 +2564,6 @@ msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "Проєкт «%s» не містить застарілих віджетів чи невідповідності версій"
 
 #: gladeui/glade-property.c:673
-#| msgid "The GladePropertyClass for this property"
 msgid "The GladePropertyDef for this property"
 msgstr "GladePropertyDef для цієї властивості"
 
@@ -2648,7 +2612,6 @@ msgid "Priority information for the property editor to act on"
 msgstr "Інформація про стан об'єкту для редактора властивостей"
 
 #: gladeui/glade-property.c:720
-#| msgid "version"
 msgid "Precision"
 msgstr "Точність"
 
@@ -2797,7 +2760,6 @@ msgid "The glade widget to edit signals"
 msgstr "Віджет glade для редагування сигналів"
 
 #: gladeui/glade-signal-model.c:29 gladeui/glade-signal-model.c:30
-#| msgid "<Type Here>"
 msgid "<Type here>"
 msgstr "<Введіть тут>"
 
@@ -2863,7 +2825,6 @@ msgid "Definition"
 msgstr "Визначення"
 
 #: gladeui/glade-widget-action.c:186
-#| msgid "GladeWidgetActionClass structure pointer"
 msgid "GladeWidgetActionDef structure pointer"
 msgstr "Вказівник на структуру GladeWidgetActionDef"
 
@@ -3071,7 +3032,6 @@ msgid "A warning string about version mismatches"
 msgstr "Рядок з попередженням про невідповідність версій"
 
 #: gladeui/glade-widget.c:1444
-#| msgid "Wether the widget is visible or not"
 msgid "Whether the widget is visible or not"
 msgstr "Чи буде цей віджет видимим"
 
@@ -3085,7 +3045,6 @@ msgid "(unnamed)"
 msgstr "(без назви)"
 
 #: gladeui/glade-widget.c:4882
-#| msgid "Template classes are not supported in gtk+ %d.%d"
 msgid "Template classes are only usable in GTK+ 3.10 and later."
 msgstr ""
 "Класи шаблонів можна використовувати лише у GTK+ 3.10 та новіших версіях."
@@ -3287,6 +3246,10 @@ msgstr "MIT"
 #: gladeui/glade-project-properties.ui:552
 msgid "GNU All permissive"
 msgstr "GNU All permissive"
+
+#: gladeui/glade-project-properties.ui:626
+msgid "_Verify"
+msgstr "П_еревірити"
 
 #: gladeui/glade-project-properties.ui:630
 msgid ""
@@ -3871,8 +3834,8 @@ msgid ""
 "The decoration layout does not apply to header bars which do no show window "
 "controls"
 msgstr ""
-"Компонування декорацій не стосується смужок заголовків, на яких не буде"
-" показано засоби керування вікном"
+"Компонування декорацій не стосується смужок заголовків, на яких не буде "
+"показано засоби керування вікном"
 
 #: plugins/gtk+/glade-gtk-image.c:108
 msgid "This property only applies to stock images or named icons"
@@ -3886,8 +3849,8 @@ msgstr "Ця властивість застосовується лише до �
 #: plugins/gtk+/glade-gtk-label.c:258
 msgid "This property only applies if ellipsize and wrapping are enabled"
 msgstr ""
-"Ця властивість застосовується, лише якщо увімкнено обривання тексту трьома"
-" крапками та перенесення рядків"
+"Ця властивість застосовується, лише якщо увімкнено обривання тексту трьома "
+"крапками та перенесення рядків"
 
 #: plugins/gtk+/glade-gtk-menu-bar.c:116
 msgid "_File"
@@ -4112,8 +4075,8 @@ msgstr "Редактор дерева"
 msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
-"Якщо встановлено режим фіксованої висоти, стовпчики повинні мати фіксовані"
-" розміри на панелі ієрархії"
+"Якщо встановлено режим фіксованої висоти, стовпчики повинні мати фіксовані "
+"розміри на панелі ієрархії"
 
 #: plugins/gtk+/glade-gtk-tree-view.c:292
 msgid "Search is disabled"
@@ -4155,8 +4118,8 @@ msgstr "Нова група вирівнювання"
 #: plugins/gtk+/glade-gtk-window.c:39
 msgid "This property does not apply to client-side decorated windows"
 msgstr ""
-"Ця властивість не стосується вікон, декорування яких виконується на боці"
-" клієнта"
+"Ця властивість не стосується вікон, декорування яких виконується на боці "
+"клієнта"
 
 #. Translators: %s is the name of a widget here, the sentence means:
 #. * Make the widget use a custom title
@@ -4344,9 +4307,9 @@ msgid ""
 "you to retrieve them when setting cell renderer attributes (press the Delete "
 "key to remove the selected column)"
 msgstr ""
-"Визначте стовпчики для вашої збірки списку. Надайте їм правильних описових"
-" назв, які допоможуть вам використовувати їх при визначенні атрибутів обробки"
-" комірки (натисніть Delete, щоб вилучити позначений стовпчик)"
+"Визначте стовпчики для вашої збірки списку. Надайте їм правильних описових "
+"назв, які допоможуть вам використовувати їх при визначенні атрибутів обробки "
+"комірки (натисніть Delete, щоб вилучити позначений стовпчик)"
 
 #: plugins/gtk+/glade-store-editor.c:190
 msgid ""
@@ -4660,7 +4623,6 @@ msgid "Proximity In"
 msgstr "Близькість зсередини"
 
 #: plugins/gtk+/gtk+.xml:161
-#| msgid "Proximity  Out"
 msgid "Proximity Out"
 msgstr "Близькість ззовні"
 
@@ -4685,7 +4647,6 @@ msgid "Touchpad Gesture"
 msgstr "Жест на сенсорному пристрої"
 
 #: plugins/gtk+/gtk+.xml:173
-#| msgid "Table"
 msgid "Tablet Pad"
 msgstr "Панель планшета"
 
@@ -5169,7 +5130,6 @@ msgid "Superscript text"
 msgstr "Текст верхнього індексу"
 
 #: plugins/gtk+/gtk+.xml:468
-#| msgid "Context"
 msgid "Footnote text"
 msgstr "Текст підрядкової примітки"
 
@@ -5402,7 +5362,6 @@ msgid "A list of accel groups to be added to this window"
 msgstr "Список груп прискорювачів, які слід додати до цього вікна"
 
 #: plugins/gtk+/gtk+.xml:771
-#| msgid "BSD"
 msgid "CSD"
 msgstr "CSD"
 
@@ -5528,7 +5487,6 @@ msgstr "Позиція пункту меню у оболонці меню"
 #: plugins/gtk+/gtk+.xml:3876 plugins/gtk+/gtk+.xml:3981
 #: plugins/gtk+/gtk+.xml:4051 plugins/gtk+/gtk+.xml:4104
 #: plugins/gtk+/gtk+.xml:4162 plugins/gtk+/gtk+.xml:5546
-#| msgid "_Edit"
 msgid "Edit…"
 msgstr "Змінити…"
 
@@ -5556,7 +5514,6 @@ msgstr "Назва дії"
 #: plugins/gtk+/gtk+.xml:1012 plugins/gtk+/gtk+.xml:1309
 #: plugins/gtk+/gtk+.xml:1786 plugins/gtk+/gtk+.xml:1898
 #: plugins/gtk+/gtk+.xml:3130
-#| msgid "Action Bar"
 msgid "Action Target"
 msgstr "Ціль дії"
 
@@ -5647,7 +5604,6 @@ msgid "Large Toolbar"
 msgstr "Велика панель інструментів"
 
 #: plugins/gtk+/gtk+.xml:1146
-#| msgid "Drag & Drop"
 msgid "Drag &amp; Drop"
 msgstr "Перетягування зі скиданням"
 
@@ -5692,7 +5648,6 @@ msgid "Half"
 msgstr "Половина"
 
 #: plugins/gtk+/gtk+.xml:1278
-#| msgid "Tool Item"
 msgid "GtkToolItem"
 msgstr "GtkToolItem"
 
@@ -5709,8 +5664,8 @@ msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr ""
-"Вбудована піктограма, яку буде показано для пункту (виберіть записі із набору"
-" GTK+ або сховища піктограм)"
+"Вбудована піктограма, яку буде показано для пункту (виберіть записі із "
+"набору GTK+ або сховища піктограм)"
 
 #: plugins/gtk+/gtk+.xml:1335
 msgid "Toggle Tool Button"
@@ -5959,6 +5914,10 @@ msgstr "Вилучити подію"
 msgid "OK"
 msgstr "Гаразд"
 
+#: plugins/gtk+/gtk+.xml:1732 plugins/gtk+/gtk+.xml:3448
+msgid "Cancel"
+msgstr "Скасувати"
+
 #: plugins/gtk+/gtk+.xml:1734 plugins/gtk+/gtk+.xml:3446
 msgid "Close"
 msgstr "Закрити"
@@ -6024,6 +5983,14 @@ msgstr "Перемкнутися"
 msgid "File Chooser Button"
 msgstr "Кнопка вибору файлів"
 
+#: plugins/gtk+/gtk+.xml:1935
+msgid "Save"
+msgstr "Зберегти"
+
+#: plugins/gtk+/gtk+.xml:1937
+msgid "Open"
+msgstr "Відкрити"
+
 #: plugins/gtk+/gtk+.xml:1939
 msgid "Select Folder"
 msgstr "Вибір каталогу"
@@ -6043,10 +6010,10 @@ msgid ""
 "the second item for the highest value. All the subsequent icons will be used "
 "for all the other values, spread evenly over the range of values"
 msgstr ""
-"Назва піктограм, які буде використано кнопкою масштабування. Перший запис у"
-" масиві буде використано на кнопці, якщо поточне значення є найменшим, другий"
-" запис — найбільшим. Усі наступні піктограми буде використано для інших"
-" значень за рівномірним розподілом у діапазоні значень"
+"Назва піктограм, які буде використано кнопкою масштабування. Перший запис у "
+"масиві буде використано на кнопці, якщо поточне значення є найменшим, другий "
+"запис — найбільшим. Усі наступні піктограми буде використано для інших "
+"значень за рівномірним розподілом у діапазоні значень"
 
 #: plugins/gtk+/gtk+.xml:1978
 msgid "Volume Button"
@@ -6061,7 +6028,6 @@ msgid "Application Chooser Widget"
 msgstr "Віджет вибору програми"
 
 #: plugins/gtk+/gtk+.xml:2038
-#| msgid "Places"
 msgid "Places Sidebar"
 msgstr "Бічна панель «Місця»"
 
@@ -6208,8 +6174,8 @@ msgstr "Видалити панель"
 #: plugins/gtk+/gtk+.xml:2500 plugins/gtk+/gtk+.xml:2613
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
-"Встановити поточну активну сторінку для редагування. Значення цієї"
-" властивості не буде збережено"
+"Встановити поточну активну сторінку для редагування. Значення цієї "
+"властивості не буде збережено"
 
 #: plugins/gtk+/gtk+.xml:2508 plugins/gtk+/gtk+.xml:2601
 msgid "Number of pages"
@@ -6368,7 +6334,6 @@ msgid "Multiple"
 msgstr "Декілька"
 
 #: plugins/gtk+/gtk+.xml:2752
-#| msgid "Placeholder text"
 msgid "Placeholder"
 msgstr "Замінник"
 
@@ -6377,8 +6342,8 @@ msgid ""
 "Whether this listbox should have a placeholder widget that is shown in the "
 "list when it doesn't display any visible children"
 msgstr ""
-"Чи має ця панель списку містити віджет-замінник, який буде показано у списку,"
-" коли той не показуватиме ніяких видимих дочірніх елементів"
+"Чи має ця панель списку містити віджет-замінник, який буде показано у "
+"списку, коли той не показуватиме ніяких видимих дочірніх елементів"
 
 #: plugins/gtk+/gtk+.xml:2766
 msgid "The position of the row item in the listbox"
@@ -6437,32 +6402,26 @@ msgid "Vertical Scale"
 msgstr "Вертикальна шкала"
 
 #: plugins/gtk+/gtk+.xml:2905
-#| msgid "Horizontal"
 msgid "Flip Horizontally"
 msgstr "Віддзеркалення горизонтально"
 
 #: plugins/gtk+/gtk+.xml:2907
-#| msgid "Vertical"
 msgid "Flip Vertically"
 msgstr "Віддзеркалення вертикально"
 
 #: plugins/gtk+/gtk+.xml:2909
-#| msgid "Horizontal"
 msgid "Slide Horizontally"
 msgstr "Ковзання горизонтально"
 
 #: plugins/gtk+/gtk+.xml:2911
-#| msgid "Vertical"
 msgid "Slide Vertically"
 msgstr "Ковзання вертикально"
 
 #: plugins/gtk+/gtk+.xml:2913
-#| msgid "Horizontal"
 msgid "Resize Horizontally"
 msgstr "Зміна розмірів горизонтально"
 
 #: plugins/gtk+/gtk+.xml:2915
-#| msgid "Vertical"
 msgid "Resize Vertically"
 msgstr "Зміна розмірів вертикально"
 
@@ -6599,8 +6558,8 @@ msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
 msgstr ""
-"Якщо увімкнено гортання за допомогою накладок, смужки гортання буде додано як"
-" традиційні віджети, лише якщо буде виявлено наявність миші"
+"Якщо увімкнено гортання за допомогою накладок, смужки гортання буде додано "
+"як традиційні віджети, лише якщо буде виявлено наявність миші"
 
 #: plugins/gtk+/gtk+.xml:3293
 msgid "About Dialog"
@@ -6647,12 +6606,10 @@ msgid "LGPL 3.0 Only"
 msgstr "Лише LGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3343
-#| msgid "GPL 3.0"
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3345
-#| msgid "GPL 3.0 Only"
 msgid "AGPL 3.0 Only"
 msgstr "Лише AGPL 3.0"
 
@@ -6744,8 +6701,8 @@ msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
 msgstr ""
-"Визначає, чи буде цю сторінку від початку позначено як заповнену, незалежно"
-" від введених користувачем даних."
+"Визначає, чи буде цю сторінку від початку позначено як заповнену, незалежно "
+"від введених користувачем даних."
 
 #: plugins/gtk+/gtk+.xml:3546
 msgid "Content"
@@ -6791,8 +6748,8 @@ msgstr "Редагування меню"
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
-"Встановити поточне активне підменю для редагування. Значення цієї властивості"
-" не буде збережено"
+"Встановити поточне активне підменю для редагування. Значення цієї "
+"властивості не буде збережено"
 
 #: plugins/gtk+/gtk+.xml:3623
 msgid "Model Button"
@@ -7497,12 +7454,10 @@ msgid "Themed Icon"
 msgstr "Піктограма з теми"
 
 #: plugins/gtk+/gtk+.xml:5609
-#| msgid "File"
 msgid "File Icon"
 msgstr "Піктограма файла"
 
 #: plugins/gtk+/gtk+.xml:5611
-#| msgid "File Chooser Dialog"
 msgid "Native File Chooser Dialog"
 msgstr "Природне вікно вибору файлів"
 
@@ -7800,7 +7755,8 @@ msgstr "Нетиповий заголовок"
 #: plugins/gtk+/glade-header-bar-editor.ui:73
 msgid "Whether the headerbar should use a custom title widget."
 msgstr ""
-"Визначає, чи має смужка заголовка використовувати віджет нетипового заголовка."
+"Визначає, чи має смужка заголовка використовувати віджет нетипового "
+"заголовка."
 
 #: plugins/gtk+/glade-header-bar-editor.ui:160
 msgid "Show window controls"
@@ -7809,8 +7765,8 @@ msgstr "Показати засоби керування вікном"
 #: plugins/gtk+/glade-header-bar-editor.ui:164
 msgid "Whether to show window controls, e.g. a close button."
 msgstr ""
-"Визначає, чи слід показувати засоби керування вікном, наприклад кнопку"
-" закриття."
+"Визначає, чи слід показувати засоби керування вікном, наприклад кнопку "
+"закриття."
 
 #: plugins/gtk+/glade-icon-view-editor.ui:69
 msgid "Icon View Attributes"
@@ -8148,7 +8104,6 @@ msgstr ""
 "замість встановлення підказки буквально"
 
 #: plugins/gtk+/glade-widget-editor.ui:1019
-#| msgid "Start"
 msgid "Start:"
 msgstr "Початок:"
 
@@ -8203,8 +8158,8 @@ msgstr "Вебпанель WebKit"
 #: plugins/webkit2gtk/webkit2gtk.xml:21
 msgid "The URL to load in Glade (this property will not be saved)"
 msgstr ""
-"Адреса сторінки, яку слід завантажити до Glade (значення цієї властивості не"
-" буде збережено)"
+"Адреса сторінки, яку слід завантажити до Glade (значення цієї властивості не "
+"буде збережено)"
 
 #: plugins/webkit2gtk/webkit2gtk.xml:32
 msgid "WebKit Settings"
