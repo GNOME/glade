@@ -51,6 +51,7 @@
 #define READONLY_INDICATOR (_("[Read Only]"))
 
 #define URL_DEVELOPER_MANUAL "http://library.gnome.org/devel/gladeui/"
+#define URL_USER_MANUAL      "https://help.gnome.org/users/glade/stable/"
 
 #define CONFIG_GROUP_WINDOWS        "Glade Windows"
 #define GLADE_WINDOW_DEFAULT_WIDTH  720
@@ -1434,6 +1435,14 @@ on_reference_action_activate (GSimpleAction *action,
 }
 
 static void
+on_user_manuel_action_activate (GSimpleAction *action,
+                                GVariant      *parameter,
+                                gpointer       data)
+{
+  glade_util_url_show (URL_USER_MANUAL);
+}
+
+static void
 on_preferences_action_activate (GSimpleAction *action,
                                 GVariant      *parameter,
                                 gpointer       data)
@@ -2321,6 +2330,7 @@ on_application_notify (GObject *gobject, GParamSpec *pspec)
     { "registration", on_registration_action_activate, NULL, NULL, NULL },
     { "intro",        on_intro_action_activate, NULL, NULL, NULL },
     { "reference",    on_reference_action_activate, NULL, NULL, NULL },
+    { "help",         on_user_manuel_action_activate, NULL, NULL, NULL },
     { "preferences",  on_preferences_action_activate, NULL, NULL, NULL },
     { "about",        on_about_action_activate, NULL, NULL, NULL },
     { "quit",         on_quit_action_activate, NULL, NULL, NULL },
