@@ -18,10 +18,10 @@ Glade bugs are tracked at
 
 GIT
 ~~~
-You can browse the source code at https://git.gnome.org/browse/glade
+You can browse the source code at https://gitlab.gnome.org/GNOME/glade
 To check out a copy of Glade you can use the following command:
 
-	git clone git://git.gnome.org/glade
+	git clone https://gitlab.gnome.org/GNOME/glade.git
 
 Patches
 ~~~~~~~
