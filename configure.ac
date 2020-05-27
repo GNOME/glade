@@ -378,7 +378,6 @@ doc/version.xml
 help/Makefile
 man/Makefile
 tests/Makefile
-build/mingw-w64/glade.nsi
 ])
 
 AC_OUTPUT
