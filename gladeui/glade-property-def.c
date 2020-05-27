@@ -38,6 +38,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <glib/gi18n-lib.h>
+#include <locale.h>
 
 #include "glade.h"
 #include "glade-widget.h"
