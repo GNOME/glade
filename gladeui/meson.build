@@ -272,6 +272,7 @@ if glade_system == 'windows'
 
   if not glade_unstable
     ldflags += cc.get_supported_link_arguments('-mwindows')
+    ldflags += cc.get_supported_link_arguments('-entry:mainCRTStartup')
   endif
 endif
 

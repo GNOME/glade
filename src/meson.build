@@ -44,6 +44,7 @@ if glade_system == 'windows'
   test_ldflags = ['-export-dynamic']
   if not glade_unstable
     test_ldflags += ['-mwindows']
+    test_ldflags += ['-entry:mainCRTStartup']
   endif
   ldflags += cc.get_supported_link_arguments(test_ldflags)
 endif
