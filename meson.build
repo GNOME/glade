@@ -102,7 +102,7 @@ gmodule_export_dep = dependency('gmodule-export-2.0')
 gtk_dep = dependency('gtk+-3.0', version: '>= 3.22.0')
 libxml_dep = dependency('libxml-2.0', version: '>= 2.4.0')
 
-m_dep = cc.find_library('m')
+m_dep = cc.find_library('m', required: false)
 
 # Check for the unix print widgets in gtk+
 have_gtk_unix_print = cc.has_function('gtk_print_unix_dialog_new', dependencies: gtk_dep)
