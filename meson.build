@@ -68,6 +68,7 @@ config_h = configuration_data()
 # package defines
 set_defines = [
   # package
+  ['PACKAGE', meson.project_name()],
   ['PACKAGE_NAME', meson.project_name()],
   ['PACKAGE_STRING', '@0@ @1@'.format(glade_name, glade_version)],
   ['PACKAGE_VERSION', glade_version],
