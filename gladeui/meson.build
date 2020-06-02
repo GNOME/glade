@@ -184,8 +184,8 @@ endif
 
 if glade_system == 'windows'
   rc = configure_file(
-    input: 'glade.rc.in',
-    output: '@BASELINE@',
+    input: 'gladeui.rc.in',
+    output: 'gladeui.rc',
     configuration: rc_conf,
   )
 
@@ -264,11 +264,11 @@ ldflags = []
 if glade_system == 'windows'
   rc = configure_file(
     input: 'glade-previewer.rc.in',
-    output: '@BASELINE@',
+    output: 'glade-previewer.rc',
     configuration: rc_conf,
   )
 
-  sources += windows.compile_resources(rc)
+  sources += windows.compile_resources(rc, include_directories: include_directories('.'))
 
   if not glade_unstable
     ldflags += cc.get_supported_link_arguments('-mwindows')

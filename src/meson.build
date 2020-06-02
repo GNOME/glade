@@ -35,11 +35,11 @@ ldflags = []
 if glade_system == 'windows'
   rc = configure_file(
     input: 'glade.rc.in',
-    output: '@BASELINE@',
+    output: 'glade.rc',
     configuration: rc_conf,
   )
 
-  sources += windows.compile_resources(rc)
+  sources += windows.compile_resources(rc, include_directories: include_directories('.'))
 
   test_ldflags = ['-export-dynamic']
   if not glade_unstable
