@@ -15,16 +15,18 @@ i18n.merge_file(
   install_dir: glade_datadir / 'applications',
 )
 
-appdata = glade_name + '.appdata.xml'
+if glade_system != 'windows'
+  appdata = glade_name + '.appdata.xml'
 
-i18n.merge_file(
-  'appdata',
-  input: 'org.gnome.Glade.appdata.xml.in',
-  output: '@BASENAME@',
-  po_dir: po_dir,
-  install: true,
-  install_dir: glade_datadir / 'metainfo',
-)
+  i18n.merge_file(
+    'appdata',
+    input: 'org.gnome.Glade.appdata.xml.in',
+    output: '@BASENAME@',
+    po_dir: po_dir,
+    install: true,
+    install_dir: glade_datadir / 'metainfo',
+  )
+endif
 
 # FIXME: replace these by install_subdir once autotools is removed
 install_data(
