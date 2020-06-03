@@ -183,6 +183,7 @@ if enable_mac_integration
   endif
 endif
 
+extra_cflags = []
 if glade_system == 'windows'
   rc = configure_file(
     input: 'gladeui.rc.in',
@@ -191,6 +192,10 @@ if glade_system == 'windows'
   )
 
   sources += windows.compile_resources(rc)
+
+  if cc.get_argument_syntax() == 'msvc'
+    extra_cflags += '-DGLADEUI_EXPORTS=__declspec(dllexport)'
+  endif
 
   ldflags += cc.get_supported_link_arguments([
     # gmodule-export-2.0 on windows does not include -export-dynamic flag
@@ -205,7 +210,7 @@ libgladeui = shared_library(
   sources: sources + enum_sources + marshal_sources + private_headers + headers,
   include_directories: top_inc,
   dependencies: deps + private_deps,
-  c_args: common_c_flags,
+  c_args: common_c_flags + extra_cflags,
   link_args: ldflags,
   install: true,
 )
