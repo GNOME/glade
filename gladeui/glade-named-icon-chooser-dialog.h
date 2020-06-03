@@ -24,10 +24,12 @@
 #define __GLADE_NAMED_ICON_CHOOSER_DIALOG_H__
 
 #include <gtk/gtk.h>
+#include <gladeui/glade-macros.h>
 
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_NAMED_ICON_CHOOSER_DIALOG glade_named_icon_chooser_dialog_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeNamedIconChooserDialog, glade_named_icon_chooser_dialog, GLADE, NAMED_ICON_CHOOSER_DIALOG, GtkDialog)
 
 struct _GladeNamedIconChooserDialogClass
@@ -41,19 +43,24 @@ struct _GladeNamedIconChooserDialogClass
   gpointer padding[4];
 };
 
+GLADEUI_EXPORTS
 GtkWidget  *glade_named_icon_chooser_dialog_new            (const gchar      *title,
                                                             GtkWindow        *parent,
                                                             const gchar      *first_button_text,
                                                             ...) G_GNUC_NULL_TERMINATED;
 
+GLADEUI_EXPORTS
 gchar      *glade_named_icon_chooser_dialog_get_icon_name  (GladeNamedIconChooserDialog *chooser);
 
+GLADEUI_EXPORTS
 void        glade_named_icon_chooser_dialog_set_icon_name  (GladeNamedIconChooserDialog *chooser,
                                                             const gchar                 *icon_name);
 
+GLADEUI_EXPORTS
 gboolean    glade_named_icon_chooser_dialog_set_context    (GladeNamedIconChooserDialog *chooser,
                                                             const gchar                 *context);
 
+GLADEUI_EXPORTS
 gchar      *glade_named_icon_chooser_dialog_get_context    (GladeNamedIconChooserDialog *chooser);
 
 G_END_DECLS

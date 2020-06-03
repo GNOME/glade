@@ -28,6 +28,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_EDITOR_TABLE glade_editor_table_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeEditorTable, glade_editor_table, GLADE, EDITOR_TABLE, GtkGrid)
 
 struct _GladeEditorTableClass
@@ -40,6 +41,7 @@ struct _GladeEditorTableClass
   void   (* glade_reserved4)   (void);
 };
 
+GLADEUI_EXPORTS
 GtkWidget       *glade_editor_table_new      (GladeWidgetAdaptor   *adaptor,
                                               GladeEditorPageType   type);
 

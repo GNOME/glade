@@ -23,11 +23,13 @@
 #define __GLADE_CELL_RENDERER_ICON_H__
 
 #include <gtk/gtk.h>
+#include <gladeui/glade-macros.h>
 
 
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_CELL_RENDERER_ICON glade_cell_renderer_icon_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeCellRendererIcon, glade_cell_renderer_icon, GLADE, CELL_RENDERER_ICON, GtkCellRendererPixbuf)
 
 struct _GladeCellRendererIconClass
@@ -38,13 +40,18 @@ struct _GladeCellRendererIconClass
                      const gchar           *path);
 };
 
+GLADEUI_EXPORTS
 GtkCellRenderer *glade_cell_renderer_icon_new            (void);
 
+GLADEUI_EXPORTS
 gboolean        glade_cell_renderer_icon_get_active      (GladeCellRendererIcon *icon);
+GLADEUI_EXPORTS
 void            glade_cell_renderer_icon_set_active      (GladeCellRendererIcon *icon,
                                                           gboolean               setting);
 
+GLADEUI_EXPORTS
 gboolean        glade_cell_renderer_icon_get_activatable (GladeCellRendererIcon *icon);
+GLADEUI_EXPORTS
 void            glade_cell_renderer_icon_set_activatable (GladeCellRendererIcon *icon,
                                                           gboolean               setting);
 

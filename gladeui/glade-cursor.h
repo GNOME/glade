@@ -1,6 +1,8 @@
 #ifndef __GLADE_CURSOR_H__
 #define __GLADE_CURSOR_H__
 
+#include <gladeui/glade-macros.h>
+
 G_BEGIN_DECLS
 
 /* GladeCursor is just a structures that has a pointer to all the cursors
@@ -45,10 +47,13 @@ typedef enum {
   GLADE_CURSOR_DRAG
 } GladeCursorType;
 
+GLADEUI_EXPORTS
 void               glade_cursor_init                  (void);
+GLADEUI_EXPORTS
 void               glade_cursor_set                   (GladeProject    *project,
                                                        GdkWindow       *window, 
                                                        GladeCursorType  type);
+GLADEUI_EXPORTS
 const GdkPixbuf*   glade_cursor_get_add_widget_pixbuf (void);
 
 G_END_DECLS

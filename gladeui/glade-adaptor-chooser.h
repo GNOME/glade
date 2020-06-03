@@ -30,12 +30,16 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_ADAPTOR_CHOOSER (glade_adaptor_chooser_get_type ())
+GLADEUI_EXPORTS
 G_DECLARE_FINAL_TYPE (GladeAdaptorChooser, glade_adaptor_chooser, GLADE, ADAPTOR_CHOOSER, GtkBox)
 
+GLADEUI_EXPORTS
 GtkWidget    *glade_adaptor_chooser_new (void);
 
+GLADEUI_EXPORTS
 void          glade_adaptor_chooser_set_project (GladeAdaptorChooser *chooser,
                                                  GladeProject        *project);
+GLADEUI_EXPORTS
 GladeProject *glade_adaptor_chooser_get_project (GladeAdaptorChooser *chooser);
 
 G_END_DECLS

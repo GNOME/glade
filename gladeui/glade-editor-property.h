@@ -2,6 +2,7 @@
 #define __GLADE_EDITOR_PROPERTY_H__
 
 #include <gtk/gtk.h>
+#include <gladeui/glade-macros.h>
 
 G_BEGIN_DECLS
 
@@ -34,6 +35,7 @@ func ## _init (type *self)                                        \
 }
 
 #define GLADE_TYPE_EDITOR_PROPERTY glade_editor_property_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeEditorProperty, glade_editor_property, GLADE, EDITOR_PROPERTY, GtkBox)
 
 struct _GladeEditorPropertyClass {
@@ -47,37 +49,52 @@ struct _GladeEditorPropertyClass {
   gpointer padding[4];
 };
 
+GLADEUI_EXPORTS
 void                 glade_editor_property_load               (GladeEditorProperty *eprop,
                                                                GladeProperty       *property);
 
+GLADEUI_EXPORTS
 void                 glade_editor_property_load_by_widget     (GladeEditorProperty *eprop,
                                                                GladeWidget         *widget);
 
+GLADEUI_EXPORTS
 void                 glade_editor_property_commit             (GladeEditorProperty *eprop,
                                                                GValue              *value);
+GLADEUI_EXPORTS
 void                 glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
                                                                GValue              *value);
+GLADEUI_EXPORTS
 void                 glade_editor_property_set_custom_text    (GladeEditorProperty *eprop,
                                                                const gchar         *custom_text);
+GLADEUI_EXPORTS
 const gchar         *glade_editor_property_get_custom_text    (GladeEditorProperty *eprop);
+GLADEUI_EXPORTS
 void                 glade_editor_property_set_disable_check  (GladeEditorProperty *eprop,
                                                                gboolean             disable_check);
+GLADEUI_EXPORTS
 gboolean             glade_editor_property_get_disable_check  (GladeEditorProperty *eprop);
 
+GLADEUI_EXPORTS
 GtkWidget           *glade_editor_property_get_item_label     (GladeEditorProperty *eprop);
+GLADEUI_EXPORTS
 GladePropertyDef    *glade_editor_property_get_property_def   (GladeEditorProperty *eprop);
+GLADEUI_EXPORTS
 GladeProperty       *glade_editor_property_get_property       (GladeEditorProperty *eprop);
+GLADEUI_EXPORTS
 gboolean             glade_editor_property_loading            (GladeEditorProperty *eprop);
 
+GLADEUI_EXPORTS
 gboolean             glade_editor_property_show_i18n_dialog     (GtkWidget         *parent,
                                                                  gchar            **text,
                                                                  gchar            **context,
                                                                  gchar            **comment,
                                                                  gboolean          *translatable);
+GLADEUI_EXPORTS
 gboolean             glade_editor_property_show_resource_dialog (GladeProject      *project, 
                                                                  GtkWidget         *parent, 
                                                                  gchar            **filename);
 
+GLADEUI_EXPORTS
 gboolean             glade_editor_property_show_object_dialog   (GladeProject      *project,
                                                                  const gchar       *title,
                                                                  GtkWidget         *parent, 
@@ -97,16 +114,27 @@ gboolean             glade_editor_property_show_object_dialog   (GladeProject   
 #define GLADE_TYPE_EPROP_UNICHAR         (glade_eprop_unichar_get_type())
 #define GLADE_TYPE_EPROP_OBJECT          (glade_eprop_object_get_type())
 #define GLADE_TYPE_EPROP_OBJECTS         (glade_eprop_objects_get_type())
+GLADEUI_EXPORTS
 GType     glade_eprop_numeric_get_type     (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_enum_get_type        (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_flags_get_type       (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_color_get_type       (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_named_icon_get_type  (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_text_get_type        (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_bool_get_type        (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_check_get_type       (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_unichar_get_type     (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_object_get_type      (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType     glade_eprop_objects_get_type     (void) G_GNUC_CONST;
 
 

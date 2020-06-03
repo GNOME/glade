@@ -28,6 +28,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_EDITOR_SKELETON glade_editor_skeleton_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeEditorSkeleton, glade_editor_skeleton, GLADE, EDITOR_SKELETON, GtkBox)
 
 struct _GladeEditorSkeletonClass
@@ -35,7 +36,9 @@ struct _GladeEditorSkeletonClass
   GtkBoxClass parent_class;
 };
 
+GLADEUI_EXPORTS
 GtkWidget     *glade_editor_skeleton_new               (void);
+GLADEUI_EXPORTS
 void           glade_editor_skeleton_add_editor        (GladeEditorSkeleton *skeleton,
                                                         GladeEditable       *editor);
 

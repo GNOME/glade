@@ -34,6 +34,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_INSPECTOR glade_inspector_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeInspector, glade_inspector, GLADE, INSPECTOR, GtkBox)
 
 /**
@@ -53,11 +54,16 @@ struct _GladeInspectorClass
   gpointer padding[4];
 };
 
+GLADEUI_EXPORTS
 GtkWidget     *glade_inspector_new                (void);
+GLADEUI_EXPORTS
 GtkWidget     *glade_inspector_new_with_project   (GladeProject   *project);
+GLADEUI_EXPORTS
 void           glade_inspector_set_project        (GladeInspector *inspector,
                                                    GladeProject   *project);
+GLADEUI_EXPORTS
 GladeProject  *glade_inspector_get_project        (GladeInspector *inspector);
+GLADEUI_EXPORTS
 GList         *glade_inspector_get_selected_items (GladeInspector *inspector);
 
 G_END_DECLS

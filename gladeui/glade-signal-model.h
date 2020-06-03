@@ -62,7 +62,9 @@ struct _GladeSignalModel
   GladeSignalModelPrivate *priv;
 };
 
+GLADEUI_EXPORTS
 GType         glade_signal_model_get_type (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GtkTreeModel *glade_signal_model_new      (GladeWidget *widget,
                                            GHashTable  *signals);
 

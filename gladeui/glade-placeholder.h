@@ -58,11 +58,16 @@ struct _GladePlaceholderClass
 };
 
 
+GLADEUI_EXPORTS
 GType         glade_placeholder_get_type        (void) G_GNUC_CONST;
 
+GLADEUI_EXPORTS
 GtkWidget    *glade_placeholder_new             (void);
+GLADEUI_EXPORTS
 GladeProject *glade_placeholder_get_project     (GladePlaceholder *placeholder);
+GLADEUI_EXPORTS
 GladeWidget  *glade_placeholder_get_parent      (GladePlaceholder *placeholder);
+GLADEUI_EXPORTS
 GList        *glade_placeholder_packing_actions (GladePlaceholder *placeholder);
 
 G_END_DECLS

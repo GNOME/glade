@@ -2,6 +2,7 @@
 #define __GLADE_PROPERTY_H__
 
 #include <glib-object.h>
+#include <gladeui/glade-macros.h>
 
 G_BEGIN_DECLS
 
@@ -59,126 +60,173 @@ struct _GladePropertyClass
 };
 
 
+GLADEUI_EXPORTS
 GType                   glade_property_get_type              (void) G_GNUC_CONST;
 
+GLADEUI_EXPORTS
 GladeProperty          *glade_property_new                   (GladePropertyDef   *def,
                                                               GladeWidget        *widget,
                                                               GValue             *value);
 
+GLADEUI_EXPORTS
 GladeProperty          *glade_property_dup                   (GladeProperty      *template_prop,
                                                               GladeWidget        *widget);
 
+GLADEUI_EXPORTS
 void                    glade_property_reset                 (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_original_reset        (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_default               (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_original_default      (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_equals_value          (GladeProperty      *property, 
                                                               const GValue       *value);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_equals                (GladeProperty      *property, 
                                                               ...);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_set_value             (GladeProperty      *property, 
                                                               const GValue       *value);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_set_va_list           (GladeProperty      *property,
                                                               va_list             vl);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_set                   (GladeProperty      *property,
                                                               ...);
 
+GLADEUI_EXPORTS
 void                    glade_property_get_value             (GladeProperty      *property, 
                                                               GValue             *value);
 
+GLADEUI_EXPORTS
 void                    glade_property_get_default           (GladeProperty      *property, 
                                                               GValue             *value);
 
+GLADEUI_EXPORTS
 void                    glade_property_get_va_list           (GladeProperty      *property,
                                                               va_list             vl);
 
+GLADEUI_EXPORTS
 void                    glade_property_get                   (GladeProperty      *property, 
                                                               ...);
 
+GLADEUI_EXPORTS
 void                    glade_property_add_object            (GladeProperty      *property,
                                                               GObject            *object);
 
+GLADEUI_EXPORTS
 void                    glade_property_remove_object         (GladeProperty      *property,
                                                               GObject            *object);
 
+GLADEUI_EXPORTS
 void                    glade_property_sync                  (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_load                  (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_read                  (GladeProperty      *property,
                                                               GladeProject       *project,
                                                               GladeXmlNode       *node);
 
+GLADEUI_EXPORTS
 void                    glade_property_write                 (GladeProperty      *property,        
                                                               GladeXmlContext    *context,
                                                               GladeXmlNode       *node);
 
+GLADEUI_EXPORTS
 GladePropertyDef       *glade_property_get_def               (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_set_sensitive         (GladeProperty      *property,
                                                               gboolean            sensitive,
                                                               const gchar        *reason);
+GLADEUI_EXPORTS
 const gchar   *glade_propert_get_insensitive_tooltip(GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_set_support_warning   (GladeProperty      *property,
                                                               gboolean            disable,
                                                               const gchar        *reason);
+GLADEUI_EXPORTS
 const gchar   *glade_property_get_support_warning   (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_warn_usage            (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_get_sensitive         (GladeProperty      *property);
 
 
+GLADEUI_EXPORTS
 void                    glade_property_set_save_always       (GladeProperty      *property,
                                                               gboolean            setting);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_get_save_always       (GladeProperty      *property);
 
 
+GLADEUI_EXPORTS
 void                    glade_property_set_enabled           (GladeProperty      *property,
                                                               gboolean            enabled);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_get_enabled           (GladeProperty      *property);
 
 
+GLADEUI_EXPORTS
 gchar                  *glade_property_make_string           (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 GladeWidget            *glade_property_get_widget            (GladeProperty      *property);
+GLADEUI_EXPORTS
 void                    glade_property_set_widget            (GladeProperty      *property,
                                                               GladeWidget        *widget);
 
+GLADEUI_EXPORTS
 GValue                 *glade_property_inline_value          (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 GladePropertyState      glade_property_get_state             (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
                                                               const gchar        *str);
 
+GLADEUI_EXPORTS
 const gchar   *glade_property_i18n_get_comment      (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_i18n_set_context      (GladeProperty      *property, 
                                                               const gchar        *str);
 
+GLADEUI_EXPORTS
 const gchar   *glade_property_i18n_get_context      (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_i18n_set_translatable (GladeProperty      *property,
                                                               gboolean            translatable);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_i18n_get_translatable (GladeProperty      *property);
 
+GLADEUI_EXPORTS
 void                    glade_property_push_superuser        (void);
 
+GLADEUI_EXPORTS
 void                    glade_property_pop_superuser         (void);
 
+GLADEUI_EXPORTS
 gboolean                glade_property_superuser             (void);
 
 G_END_DECLS

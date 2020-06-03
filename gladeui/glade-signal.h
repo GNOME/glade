@@ -34,41 +34,61 @@ struct _GladeSignalClass {
 };
 
 
+GLADEUI_EXPORTS
 GType                 glade_signal_get_type            (void) G_GNUC_CONST;
 
+GLADEUI_EXPORTS
 GladeSignal          *glade_signal_new                 (const GladeSignalDef *sig_def,
                                                         const gchar        *handler,
                                                         const gchar        *userdata,
                                                         gboolean            after,
                                                         gboolean            swapped);
+GLADEUI_EXPORTS
 GladeSignal          *glade_signal_clone               (const GladeSignal  *signal);
+GLADEUI_EXPORTS
 gboolean              glade_signal_equal               (const GladeSignal  *sig1, 
                                                         const GladeSignal  *sig2);
+GLADEUI_EXPORTS
 GladeSignal          *glade_signal_read                (GladeXmlNode       *node,
                                                         GladeWidgetAdaptor *adaptor);
+GLADEUI_EXPORTS
 void                  glade_signal_write               (GladeSignal        *signal,
                                                         GladeXmlContext    *context,
                                                         GladeXmlNode       *node);
 
+GLADEUI_EXPORTS
 const gchar *glade_signal_get_name            (const GladeSignal  *signal);
+GLADEUI_EXPORTS
 const GladeSignalDef *glade_signal_get_def    (const GladeSignal * signal);
+GLADEUI_EXPORTS
 void                  glade_signal_set_detail          (GladeSignal        *signal,
                                                         const gchar        *detail);
+GLADEUI_EXPORTS
 const gchar *glade_signal_get_detail          (const GladeSignal  *signal);
+GLADEUI_EXPORTS
 void                  glade_signal_set_handler         (GladeSignal        *signal,
                                                         const gchar        *handler);
+GLADEUI_EXPORTS
 const gchar *glade_signal_get_handler         (const GladeSignal  *signal);
+GLADEUI_EXPORTS
 void                  glade_signal_set_userdata        (GladeSignal        *signal,
                                                         const gchar        *userdata);
+GLADEUI_EXPORTS
 const gchar *glade_signal_get_userdata        (const GladeSignal  *signal);
+GLADEUI_EXPORTS
 void                  glade_signal_set_after           (GladeSignal        *signal,
                                                         gboolean            after);
+GLADEUI_EXPORTS
 gboolean              glade_signal_get_after           (const GladeSignal  *signal);
+GLADEUI_EXPORTS
 void                  glade_signal_set_swapped         (GladeSignal        *signal,
                                                         gboolean            swapped);
+GLADEUI_EXPORTS
 gboolean              glade_signal_get_swapped         (const GladeSignal  *signal);
+GLADEUI_EXPORTS
 void                  glade_signal_set_support_warning (GladeSignal        *signal,
                                                         const gchar        *support_warning);
+GLADEUI_EXPORTS
 const gchar *glade_signal_get_support_warning (const GladeSignal  *signal);
 
 G_END_DECLS

@@ -23,6 +23,7 @@
 #define _GLADE_WIDGET_ACTION_H_
 
 #include <glib-object.h>
+#include <gladeui/glade-macros.h>
 
 G_BEGIN_DECLS
 
@@ -69,26 +70,40 @@ struct _GladeWidgetActionClass
 };
 
 
+GLADEUI_EXPORTS
 GType                 glade_widget_action_get_type      (void) G_GNUC_CONST;
 
+GLADEUI_EXPORTS
 void                  glade_widget_action_set_sensitive (GladeWidgetAction *action,
                                                          gboolean           sensitive);
+GLADEUI_EXPORTS
 gboolean              glade_widget_action_get_sensitive (GladeWidgetAction *action);
+GLADEUI_EXPORTS
 void                  glade_widget_action_set_visible   (GladeWidgetAction *action,
                                                          gboolean           visible);
+GLADEUI_EXPORTS
 gboolean              glade_widget_action_get_visible   (GladeWidgetAction *action);
+GLADEUI_EXPORTS
 GList                *glade_widget_action_get_children  (GladeWidgetAction *action);
+GLADEUI_EXPORTS
 GladeWidgetActionDef *glade_widget_action_get_def       (GladeWidgetAction *action);
 
 
+GLADEUI_EXPORTS
 GType                 glade_widget_action_def_get_type      (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GladeWidgetActionDef *glade_widget_action_def_new           (const gchar          *path);
+GLADEUI_EXPORTS
 GladeWidgetActionDef *glade_widget_action_def_clone         (GladeWidgetActionDef *action);
+GLADEUI_EXPORTS
 void                  glade_widget_action_def_free          (GladeWidgetActionDef *action);
+GLADEUI_EXPORTS
 void                  glade_widget_action_def_set_label     (GladeWidgetActionDef *action,
                                                              const gchar          *label);
+GLADEUI_EXPORTS
 void                  glade_widget_action_def_set_stock     (GladeWidgetActionDef *action,
                                                              const gchar          *stock);
+GLADEUI_EXPORTS
 void                  glade_widget_action_def_set_important (GladeWidgetActionDef *action,
                                                              gboolean              important);
 

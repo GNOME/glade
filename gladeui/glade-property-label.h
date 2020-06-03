@@ -52,29 +52,43 @@ struct _GladePropertyLabelClass
   GtkEventBoxClass parent_class;
 };
 
+GLADEUI_EXPORTS
 GType          glade_property_label_get_type          (void) G_GNUC_CONST;
 
+GLADEUI_EXPORTS
 GtkWidget     *glade_property_label_new               (void);
 
+GLADEUI_EXPORTS
 void           glade_property_label_set_property_name (GladePropertyLabel *label,
                                                        const gchar        *property_name);
+GLADEUI_EXPORTS
 const gchar   *glade_property_label_get_property_name (GladePropertyLabel *label);
+GLADEUI_EXPORTS
 void           glade_property_label_set_append_colon  (GladePropertyLabel *label,
                                                        gboolean            append_colon);
+GLADEUI_EXPORTS
 gboolean       glade_property_label_get_append_colon  (GladePropertyLabel *label);
+GLADEUI_EXPORTS
 void           glade_property_label_set_packing       (GladePropertyLabel *label,
                                                        gboolean            packing);
+GLADEUI_EXPORTS
 gboolean       glade_property_label_get_packing       (GladePropertyLabel *label);
 
+GLADEUI_EXPORTS
 void           glade_property_label_set_custom_text   (GladePropertyLabel *label,
                                                        const gchar        *custom_text);
+GLADEUI_EXPORTS
 const gchar   *glade_property_label_get_custom_text   (GladePropertyLabel *label);
+GLADEUI_EXPORTS
 void           glade_property_label_set_custom_tooltip(GladePropertyLabel *label,
                                                        const gchar        *custom_tooltip);
+GLADEUI_EXPORTS
 const gchar   *glade_property_label_get_custom_tooltip(GladePropertyLabel *label);
 
+GLADEUI_EXPORTS
 void           glade_property_label_set_property      (GladePropertyLabel *label,
                                                        GladeProperty      *property);
+GLADEUI_EXPORTS
 GladeProperty *glade_property_label_get_property      (GladePropertyLabel *label);
 
 G_END_DECLS

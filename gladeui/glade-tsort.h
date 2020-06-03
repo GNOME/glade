@@ -25,6 +25,7 @@
 #define __GLADE_TSORT_H__
 
 #include <glib.h>
+#include <gladeui/glade-macros.h>
 
 G_BEGIN_DECLS
 
@@ -36,12 +37,15 @@ struct __NodeEdge
   gpointer successor;
 };
 
+GLADEUI_EXPORTS
 GList *_node_edge_prepend   (GList *list,
                              gpointer predecessor,
                              gpointer successor);
 
+GLADEUI_EXPORTS
 void   _node_edge_list_free (GList *list);
 
+GLADEUI_EXPORTS
 GList *_glade_tsort         (GList **nodes,
                              GList **edges);
 

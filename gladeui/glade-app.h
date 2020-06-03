@@ -30,6 +30,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_APP glade_app_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeApp, glade_app, GLADE, APP, GObject)
 
 #define GLADE_ENV_CATALOG_PATH     "GLADE_CATALOG_SEARCH_PATH"
@@ -46,44 +47,70 @@ struct _GladeAppClass
   gpointer padding[6];
 };
 
+GLADEUI_EXPORTS
 void               glade_init                     (void);
 
+GLADEUI_EXPORTS
 GladeApp*          glade_app_new                  (void);
+GLADEUI_EXPORTS
 GladeApp*          glade_app_get                  (void);
+GLADEUI_EXPORTS
 GKeyFile*          glade_app_get_config           (void);
+GLADEUI_EXPORTS
 gint               glade_app_config_save          (void);
 
+GLADEUI_EXPORTS
 gboolean           glade_app_do_event             (GdkEvent *event);
 
+GLADEUI_EXPORTS
 gboolean           glade_app_get_catalog_version  (const gchar   *name, 
                                                    gint          *major, 
                                                    gint          *minor);
+GLADEUI_EXPORTS
 GList             *glade_app_get_catalogs         (void);
+GLADEUI_EXPORTS
 GladeCatalog      *glade_app_get_catalog          (const gchar   *name);
+GLADEUI_EXPORTS
 GladeClipboard*    glade_app_get_clipboard        (void);
 
+GLADEUI_EXPORTS
 void               glade_app_add_project          (GladeProject  *project);
+GLADEUI_EXPORTS
 void               glade_app_remove_project       (GladeProject  *project);
+GLADEUI_EXPORTS
 GList*             glade_app_get_projects         (void);
+GLADEUI_EXPORTS
 gboolean           glade_app_is_project_loaded    (const gchar   *project_path);
+GLADEUI_EXPORTS
 GladeProject*      glade_app_get_project_by_path  (const gchar   *project_path);
 
+GLADEUI_EXPORTS
 void               glade_app_set_window           (GtkWidget     *window);
+GLADEUI_EXPORTS
 GtkWidget*         glade_app_get_window           (void);
  
+GLADEUI_EXPORTS
 void               glade_app_set_accel_group      (GtkAccelGroup *accel_group);
+GLADEUI_EXPORTS
 GtkAccelGroup     *glade_app_get_accel_group      (void);
 
+GLADEUI_EXPORTS
 void               glade_app_search_docs          (const gchar   *book, 
                                                    const gchar   *page, 
                                                    const gchar   *search);
 
 /* package paths */
+GLADEUI_EXPORTS
 const gchar       *glade_app_get_catalogs_dir     (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 const gchar       *glade_app_get_modules_dir      (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 const gchar       *glade_app_get_pixmaps_dir      (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 const gchar       *glade_app_get_locale_dir       (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 const gchar       *glade_app_get_bin_dir          (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 const gchar       *glade_app_get_lib_dir          (void) G_GNUC_CONST;
 
 G_END_DECLS

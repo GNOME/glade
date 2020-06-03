@@ -7,6 +7,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_SIGNAL_EDITOR glade_signal_editor_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeSignalEditor, glade_signal_editor, GLADE, SIGNAL_EDITOR, GtkBox)
 
 /* The GladeSignalEditor is used to house the signal editor interface and
@@ -23,11 +24,15 @@ struct _GladeSignalEditorClass
   gpointer padding[4];
 };
 
+GLADEUI_EXPORTS
 GladeSignalEditor *glade_signal_editor_new                    (void);
+GLADEUI_EXPORTS
 void               glade_signal_editor_load_widget            (GladeSignalEditor *editor,
                                                                GladeWidget       *widget);
+GLADEUI_EXPORTS
 GladeWidget       *glade_signal_editor_get_widget             (GladeSignalEditor *editor);
 
+GLADEUI_EXPORTS
 void               glade_signal_editor_enable_dnd             (GladeSignalEditor *editor,
                                                                gboolean           enabled);
 

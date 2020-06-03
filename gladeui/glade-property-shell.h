@@ -52,24 +52,36 @@ struct _GladePropertyShellClass
   GtkBoxClass parent_class;
 };
 
+GLADEUI_EXPORTS
 GType          glade_property_shell_get_type          (void) G_GNUC_CONST;
 
+GLADEUI_EXPORTS
 GtkWidget     *glade_property_shell_new               (void);
 
+GLADEUI_EXPORTS
 void           glade_property_shell_set_property_name (GladePropertyShell *shell,
                                                        const gchar        *property_name);
+GLADEUI_EXPORTS
 const gchar   *glade_property_shell_get_property_name (GladePropertyShell *shell);
+GLADEUI_EXPORTS
 void           glade_property_shell_set_custom_text   (GladePropertyShell *shell,
                                                        const gchar        *custom_text);
+GLADEUI_EXPORTS
 const gchar   *glade_property_shell_get_custom_text   (GladePropertyShell *shell);
+GLADEUI_EXPORTS
 void           glade_property_shell_set_packing       (GladePropertyShell *shell,
                                                        gboolean            packing);
+GLADEUI_EXPORTS
 gboolean       glade_property_shell_get_packing       (GladePropertyShell *shell);
+GLADEUI_EXPORTS
 void           glade_property_shell_set_use_command   (GladePropertyShell *shell,
                                                        gboolean            use_command);
+GLADEUI_EXPORTS
 gboolean       glade_property_shell_get_use_command   (GladePropertyShell *shell);
+GLADEUI_EXPORTS
 void           glade_property_shell_set_disable_check (GladePropertyShell *shell,
                                                        gboolean            disable_check);
+GLADEUI_EXPORTS
 gboolean       glade_property_shell_get_disable_check (GladePropertyShell *shell);
 
 G_END_DECLS

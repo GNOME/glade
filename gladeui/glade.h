@@ -21,6 +21,7 @@
 #ifndef __GLADE_H__
 #define __GLADE_H__
 
+#include <gladeui/glade-macros.h>
 #include <gladeui/glade-xml-utils.h>
 #include <gladeui/glade-widget-adaptor.h>
 #include <gladeui/glade-widget.h>

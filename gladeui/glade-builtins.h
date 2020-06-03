@@ -27,33 +27,52 @@ typedef struct _GladeParamSpecObjects   GladeParamSpecObjects;
         (G_TYPE_CHECK_INSTANCE_CAST ((pspec),  \
          GLADE_TYPE_PARAM_OBJECTS, GladeParamSpecObjects))
 
+GLADEUI_EXPORTS
 GType        glade_standard_stock_get_type       (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType        glade_standard_stock_image_get_type (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType        glade_glist_get_type                (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GType        glade_param_objects_get_type        (void) G_GNUC_CONST;
 
+GLADEUI_EXPORTS
 GParamSpec  *glade_param_spec_objects      (const gchar   *name,
                                             const gchar   *nick,
                                             const gchar   *blurb,
                                             GType          accepted_type,
                                             GParamFlags    flags);
 
+GLADEUI_EXPORTS
 void         glade_param_spec_objects_set_type (GladeParamSpecObjects *pspec,
                                                 GType                  type);
+GLADEUI_EXPORTS
 GType        glade_param_spec_objects_get_type (GladeParamSpecObjects *pspec);
 
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_pixbuf_spec      (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_gdkcolor_spec    (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_objects_spec     (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_stock_spec       (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_stock_image_spec (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_int_spec         (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_uint_spec        (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_string_spec      (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_strv_spec        (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_float_spec       (void);
+GLADEUI_EXPORTS
 GParamSpec  *glade_standard_boolean_spec     (void);
 
+GLADEUI_EXPORTS
 void         glade_standard_stock_append_prefix (const gchar *prefix);
 
 G_END_DECLS

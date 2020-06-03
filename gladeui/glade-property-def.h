@@ -54,116 +54,179 @@ G_BEGIN_DECLS
 
 typedef struct _GladePropertyDef GladePropertyDef;
 
+GLADEUI_EXPORTS
 GType                  glade_property_def_get_type                (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GladePropertyDef      *glade_property_def_new                     (GladeWidgetAdaptor *adaptor,
                                                                    const gchar        *id);
+GLADEUI_EXPORTS
 GladePropertyDef      *glade_property_def_new_from_spec           (GladeWidgetAdaptor *adaptor,
                                                                    GParamSpec         *spec);
+GLADEUI_EXPORTS
 GladePropertyDef      *glade_property_def_new_from_spec_full      (GladeWidgetAdaptor *adaptor,
                                                                    GParamSpec         *spec,
                                                                    gboolean            need_handle);
+GLADEUI_EXPORTS
 GladePropertyDef      *glade_property_def_clone                   (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 void                   glade_property_def_free                    (GladePropertyDef   *property_def);
 
+GLADEUI_EXPORTS
 void                   glade_property_def_set_adaptor             (GladePropertyDef   *property_def,
                                                                    GladeWidgetAdaptor *adaptor);
+GLADEUI_EXPORTS
 GladeWidgetAdaptor    *glade_property_def_get_adaptor             (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 void                   glade_property_def_set_pspec               (GladePropertyDef   *property_def,
                                                                    GParamSpec         *pspec);
+GLADEUI_EXPORTS
 GParamSpec            *glade_property_def_get_pspec               (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 void                   glade_property_def_set_is_packing          (GladePropertyDef   *property_def,
                                                                    gboolean            is_packing);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_get_is_packing          (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_save                    (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_save_always             (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_is_visible              (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_is_object               (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 void                   glade_property_def_set_virtual             (GladePropertyDef   *property_def,
                                                                    gboolean            value);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_get_virtual             (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 void                   glade_property_def_set_ignore              (GladePropertyDef   *property_def,
                                                                    gboolean            ignore);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_get_ignore              (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 void                   glade_property_def_set_name                (GladePropertyDef   *property_def,
                                                                    const gchar        *name);
+GLADEUI_EXPORTS
 const gchar  *glade_property_def_get_name                (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 void                   glade_property_def_set_tooltip             (GladePropertyDef   *property_def,
                                                                    const gchar        *tooltip);
+GLADEUI_EXPORTS
 const gchar  *glade_property_def_get_tooltip             (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 const gchar  *glade_property_def_id                      (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_themed_icon             (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 void                   glade_property_def_set_construct_only      (GladePropertyDef   *property_def,
                                                                    gboolean            construct_only);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_get_construct_only      (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 const GValue *glade_property_def_get_default             (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 const GValue *glade_property_def_get_original_default    (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_translatable            (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_needs_sync              (GladePropertyDef   *property_def);
 
+GLADEUI_EXPORTS
 gboolean               glade_property_def_query                   (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_atk                     (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_common                  (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_parentless_widget       (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_optional                (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_optional_default        (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_multiline               (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_stock                   (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_stock_icon              (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_transfer_on_paste       (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_custom_layout           (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gdouble                glade_property_def_weight                  (GladePropertyDef   *property_def);
 
+GLADEUI_EXPORTS
 const gchar  *glade_property_def_create_type             (GladePropertyDef   *property_def);
 
+GLADEUI_EXPORTS
 guint16                glade_property_def_since_major             (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 guint16                glade_property_def_since_minor             (GladePropertyDef   *property_def);
+GLADEUI_EXPORTS
 gboolean               glade_property_def_deprecated              (GladePropertyDef   *property_def);
 
+GLADEUI_EXPORTS
 GValue                *glade_property_def_make_gvalue_from_string (GladePropertyDef   *property_def,
                                                                    const gchar        *string,
                                                                    GladeProject       *project);
 
+GLADEUI_EXPORTS
 gchar                 *glade_property_def_make_string_from_gvalue (GladePropertyDef   *property_def,
                                                                    const GValue       *value);
 
+GLADEUI_EXPORTS
 GValue                *glade_property_def_make_gvalue_from_vl     (GladePropertyDef   *property_def,
                                                                    va_list             vl);
 
+GLADEUI_EXPORTS
 void                   glade_property_def_set_vl_from_gvalue      (GladePropertyDef   *property_def,
                                                                    GValue             *value,
                                                                    va_list             vl);
 
+GLADEUI_EXPORTS
 GValue                *glade_property_def_make_gvalue             (GladePropertyDef   *property_def,
                                                                    ...);
 
+GLADEUI_EXPORTS
 void                   glade_property_def_get_from_gvalue         (GladePropertyDef   *property_def,
                                                                    GValue             *value,
                                                                    ...);
 
+GLADEUI_EXPORTS
 gboolean               glade_property_def_update_from_node        (GladeXmlNode       *node,
                                                                    GType               object_type,
                                                                    GladePropertyDef  **property_def_ref,
                                                                    const gchar        *domain);
 
+GLADEUI_EXPORTS
 GtkAdjustment         *glade_property_def_make_adjustment         (GladePropertyDef   *property_def);
 
+GLADEUI_EXPORTS
 gboolean               glade_property_def_match                   (GladePropertyDef   *property_def,
                                                                    GladePropertyDef   *comp);
 
+GLADEUI_EXPORTS
 gboolean               glade_property_def_void_value              (GladePropertyDef   *property_def,
                                                                    GValue             *value);
 
+GLADEUI_EXPORTS
 gint                   glade_property_def_compare                 (GladePropertyDef   *property_def,
                                                                    const GValue       *value1,
                                                                    const GValue       *value2);
 
+GLADEUI_EXPORTS
 GValue                *glade_property_def_get_default_from_spec   (GParamSpec         *spec);
 
+GLADEUI_EXPORTS
 void                   glade_property_def_set_weights             (GList             **properties,
                                                                    GType               parent);
 
+GLADEUI_EXPORTS
 void                   glade_property_def_load_defaults_from_spec (GladePropertyDef   *property_def);
 
+GLADEUI_EXPORTS
 guint                  glade_property_def_make_flags_from_string  (GType               type,
                                                                    const char         *string);
 G_END_DECLS

@@ -33,6 +33,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_DESIGN_VIEW glade_design_view_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeDesignView, glade_design_view, GLADE, DESIGN_VIEW, GtkBox)
 
 struct _GladeDesignViewClass
@@ -42,10 +43,13 @@ struct _GladeDesignViewClass
   gpointer padding[4];
 };
 
+GLADEUI_EXPORTS
 GtkWidget         *glade_design_view_new              (GladeProject *project);
 
+GLADEUI_EXPORTS
 GladeProject      *glade_design_view_get_project      (GladeDesignView *view);
 
+GLADEUI_EXPORTS
 GladeDesignView   *glade_design_view_get_from_project (GladeProject *project);
 
 G_END_DECLS

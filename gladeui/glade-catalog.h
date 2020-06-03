@@ -53,37 +53,57 @@ typedef struct {
 } GladeTargetableVersion;
 
 
+GLADEUI_EXPORTS
 void          glade_catalog_add_path                (const gchar      *path);
+GLADEUI_EXPORTS
 void          glade_catalog_remove_path             (const gchar      *path);
+GLADEUI_EXPORTS
 const GList  *glade_catalog_get_extra_paths         (void);
+GLADEUI_EXPORTS
 const GList  *glade_catalog_load_all                (void);
 
+GLADEUI_EXPORTS
 const gchar  *glade_catalog_get_name       (GladeCatalog     *catalog);
+GLADEUI_EXPORTS
 const gchar  *glade_catalog_get_prefix     (GladeCatalog     *catalog);
+GLADEUI_EXPORTS
 const gchar  *glade_catalog_get_icon_prefix(GladeCatalog     *catalog);
+GLADEUI_EXPORTS
 const gchar  *glade_catalog_get_domain     (GladeCatalog     *catalog);
+GLADEUI_EXPORTS
 const gchar  *glade_catalog_get_book       (GladeCatalog     *catalog);
 
+GLADEUI_EXPORTS
 GList        *glade_catalog_get_targets             (GladeCatalog     *catalog);
 
+GLADEUI_EXPORTS
 guint16       glade_catalog_get_major_version       (GladeCatalog     *catalog);
+GLADEUI_EXPORTS
 guint16       glade_catalog_get_minor_version       (GladeCatalog     *catalog);
 
+GLADEUI_EXPORTS
 GList        *glade_catalog_get_widget_groups       (GladeCatalog     *catalog);
 
+GLADEUI_EXPORTS
 GList        *glade_catalog_get_adaptors            (GladeCatalog     *catalog);
 
+GLADEUI_EXPORTS
 gboolean      glade_catalog_is_loaded               (const gchar      *name);
 
+GLADEUI_EXPORTS
 void          glade_catalog_destroy_all             (void);
 
 
+GLADEUI_EXPORTS
 const gchar  *glade_widget_group_get_name           (GladeWidgetGroup *group);
 
+GLADEUI_EXPORTS
 const gchar  *glade_widget_group_get_title          (GladeWidgetGroup *group);
 
+GLADEUI_EXPORTS
 gboolean      glade_widget_group_get_expanded       (GladeWidgetGroup *group);
 
+GLADEUI_EXPORTS
 const GList  *glade_widget_group_get_adaptors       (GladeWidgetGroup *group);
 
 G_END_DECLS

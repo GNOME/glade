@@ -7,6 +7,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_EDITOR glade_editor_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeEditor, glade_editor, GLADE, EDITOR, GtkBox)
 
 /* The GladeEditor is a window that is used to display and modify widget
@@ -21,19 +22,28 @@ struct _GladeEditorClass
   gpointer padding[4];
 };
 
+GLADEUI_EXPORTS
 GladeEditor *glade_editor_new                (void);
+GLADEUI_EXPORTS
 void         glade_editor_load_widget        (GladeEditor       *editor,
                                               GladeWidget       *widget);
 G_DEPRECATED
+GLADEUI_EXPORTS
 void         glade_editor_show_info          (GladeEditor       *editor);
 G_DEPRECATED
+GLADEUI_EXPORTS
 void         glade_editor_hide_info          (GladeEditor       *editor);
 
+GLADEUI_EXPORTS
 void         glade_editor_show_class_field   (GladeEditor       *editor);
+GLADEUI_EXPORTS
 void         glade_editor_hide_class_field   (GladeEditor       *editor);
 
+GLADEUI_EXPORTS
 gboolean     glade_editor_query_dialog       (GladeWidget       *widget);
+GLADEUI_EXPORTS
 GtkWidget   *glade_editor_dialog_for_widget  (GladeWidget       *widget);
+GLADEUI_EXPORTS
 void         glade_editor_reset_dialog_run   (GtkWidget         *parent,
                                               GladeWidget       *gwidget);
 

@@ -1,6 +1,8 @@
 #ifndef __GLADE_DEBUG_H__
 #define __GLADE_DEBUG_H__
 
+#include <gladeui/glade-macros.h>
+
 G_BEGIN_DECLS
 
 typedef enum {
@@ -25,9 +27,12 @@ typedef enum {
 
 #endif /* GLADE_ENABLE_DEBUG */
 
+GLADEUI_EXPORTS
 void   glade_init_debug_flags (void);
+GLADEUI_EXPORTS
 guint  glade_get_debug_flags  (void);
 
+GLADEUI_EXPORTS
 void   glade_setup_log_handlers (void);
 
 G_END_DECLS

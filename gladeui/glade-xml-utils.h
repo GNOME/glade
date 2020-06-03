@@ -5,6 +5,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gmodule.h>
+#include <gladeui/glade-macros.h>
 
 
 G_BEGIN_DECLS
@@ -194,83 +195,137 @@ typedef struct _GladeProject        GladeProject;
 
 
 /* search child */
+GLADEUI_EXPORTS
 GladeXmlNode *   glade_xml_search_child          (GladeXmlNode *node, const gchar *name);
+GLADEUI_EXPORTS
 GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode *tree, const gchar *name);
 
 /* content */
 
+GLADEUI_EXPORTS
 gchar *      glade_xml_get_content (GladeXmlNode *node_in); /* Get the content of the node */
+GLADEUI_EXPORTS
 void         glade_xml_set_content (GladeXmlNode *node_in, const gchar *content);
 
+GLADEUI_EXPORTS
 gboolean     glade_xml_get_value_int          (GladeXmlNode *node_in, const gchar *name, int *val);
+GLADEUI_EXPORTS
 gboolean     glade_xml_get_value_int_required (GladeXmlNode *node, const gchar *name, int *val);
 
+GLADEUI_EXPORTS
 gchar *      glade_xml_get_value_string          (GladeXmlNode *node, const gchar *name);
+GLADEUI_EXPORTS
 gchar *      glade_xml_get_value_string_required (GladeXmlNode *node,
                                                   const gchar *name,
                                                   const gchar *xtra_info);
 
+GLADEUI_EXPORTS
 gboolean glade_xml_get_boolean (GladeXmlNode *node, const gchar *name, gboolean _default);
 
+GLADEUI_EXPORTS
 void         glade_xml_set_value (GladeXmlNode *node_in, const gchar *name, const gchar *val);
 
 /* Properties */ 
+GLADEUI_EXPORTS
 gchar   *glade_xml_get_property_string_required (GladeXmlNode *node_in, const gchar *name, const gchar *xtra);
+GLADEUI_EXPORTS
 gchar   *glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
+GLADEUI_EXPORTS
 gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean _default);
+GLADEUI_EXPORTS
 gdouble  glade_xml_get_property_double (GladeXmlNode *node_in, const gchar *name, gdouble _default);
+GLADEUI_EXPORTS
 gint     glade_xml_get_property_int (GladeXmlNode *node_in, const gchar *name, gint _default);
+GLADEUI_EXPORTS
 gboolean glade_xml_get_property_version (GladeXmlNode *node_in, const gchar *name, guint16 *major, guint16 *minor);
+GLADEUI_EXPORTS
 GList   *glade_xml_get_property_targetable_versions (GladeXmlNode *node_in, const gchar *name);
 
 
+GLADEUI_EXPORTS
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
+GLADEUI_EXPORTS
 void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value);
 
 /* Node operations */
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_new (GladeXmlContext *context, const gchar *name);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_new_comment (GladeXmlContext *context, const gchar *comment);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_copy (GladeXmlNode *node);
+GLADEUI_EXPORTS
 void           glade_xml_node_delete (GladeXmlNode *node);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_get_children (GladeXmlNode *node);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_get_parent (GladeXmlNode *node_in);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_next (GladeXmlNode *node_in);
+GLADEUI_EXPORTS
 gboolean       glade_xml_node_verify (GladeXmlNode *node_in, const gchar *name);
+GLADEUI_EXPORTS
 gboolean       glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name);
+GLADEUI_EXPORTS
 const gchar *  glade_xml_node_get_name (GladeXmlNode *node_in);
+GLADEUI_EXPORTS
 void           glade_xml_node_append_child (GladeXmlNode * node, GladeXmlNode *child);
+GLADEUI_EXPORTS
 void           glade_xml_node_remove (GladeXmlNode *node_in);
+GLADEUI_EXPORTS
 gboolean       glade_xml_node_is_comment (GladeXmlNode *node_in);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_next_with_comments (GladeXmlNode *node_in);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_prev_with_comments (GladeXmlNode *node_in);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_get_children_with_comments (GladeXmlNode *node);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_add_prev_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_node_add_next_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
+GLADEUI_EXPORTS
 GType          glade_xml_node_get_type (void) G_GNUC_CONST;
 
 /* Document Operations */
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);
+GLADEUI_EXPORTS
 GladeXmlDoc *  glade_xml_doc_new (void);
+GLADEUI_EXPORTS
 GladeXmlDoc *  glade_xml_doc_ref (GladeXmlDoc *doc);
+GLADEUI_EXPORTS
 void           glade_xml_doc_unref (GladeXmlDoc *doc);
+GLADEUI_EXPORTS
 void           glade_xml_doc_set_root (GladeXmlDoc *doc, GladeXmlNode *node);
+GLADEUI_EXPORTS
 gint           glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path);
+GLADEUI_EXPORTS
 GladeXmlNode * glade_xml_doc_new_comment (GladeXmlDoc *doc, const gchar *comment);
+GLADEUI_EXPORTS
 GType          glade_xml_doc_get_type (void) G_GNUC_CONST;
 
 /* Parse Context */
+GLADEUI_EXPORTS
 GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, const gchar *name_space);
+GLADEUI_EXPORTS
 GladeXmlContext * glade_xml_context_copy    (GladeXmlContext *context);
+GLADEUI_EXPORTS
 void              glade_xml_context_free    (GladeXmlContext *context);
+GLADEUI_EXPORTS
 GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
                                                    const gchar *nspace,
                                                    const gchar *root_name);
+GLADEUI_EXPORTS
 GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
+GLADEUI_EXPORTS
 GType             glade_xml_context_get_type (void) G_GNUC_CONST;
 
 /* Dumps an xml string from a context */
+GLADEUI_EXPORTS
 gchar * glade_xml_dump_from_context (GladeXmlContext *context);
 
+GLADEUI_EXPORTS
 gboolean        glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
                                               GModule          *module,
                                               gchar            *tagname,

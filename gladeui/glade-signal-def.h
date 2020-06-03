@@ -49,29 +49,43 @@ G_BEGIN_DECLS
 
 typedef struct _GladeSignalDef GladeSignalDef;
 
+GLADEUI_EXPORTS
 GType                 glade_signal_def_get_type                 (void) G_GNUC_CONST;
+GLADEUI_EXPORTS
 GladeSignalDef       *glade_signal_def_new                      (GladeWidgetAdaptor   *adaptor,
                                                                  GType                 for_type,
                                                                  guint                 signal_id);
+GLADEUI_EXPORTS
 GladeSignalDef       *glade_signal_def_clone                    (GladeSignalDef       *signal_def);
+GLADEUI_EXPORTS
 void                  glade_signal_def_free                     (GladeSignalDef       *signal_def);
+GLADEUI_EXPORTS
 void                  glade_signal_def_update_from_node         (GladeSignalDef       *signal_def,
                                                                  GladeXmlNode         *node,
                                                                  const gchar          *domain);
 
+GLADEUI_EXPORTS
 GladeWidgetAdaptor   *glade_signal_def_get_adaptor              (const GladeSignalDef *signal_def);
+GLADEUI_EXPORTS
 const gchar *glade_signal_def_get_name                 (const GladeSignalDef *signal_def);
+GLADEUI_EXPORTS
 const gchar *glade_signal_def_get_object_type_name     (const GladeSignalDef *signal_def);
+GLADEUI_EXPORTS
 GSignalFlags          glade_signal_def_get_flags                (const GladeSignalDef *signal_def);
 
+GLADEUI_EXPORTS
 void                  glade_signal_def_set_since                (GladeSignalDef       *signal_def,
                                                                  guint16               since_major,
                                                                  guint16               since_minor);
+GLADEUI_EXPORTS
 guint16               glade_signal_def_since_major              (GladeSignalDef       *signal_def);
+GLADEUI_EXPORTS
 guint16               glade_signal_def_since_minor              (GladeSignalDef       *signal_def);
 
+GLADEUI_EXPORTS
 void                  glade_signal_def_set_deprecated           (GladeSignalDef       *signal_def,
                                                                  gboolean              deprecated);
+GLADEUI_EXPORTS
 gboolean              glade_signal_def_deprecated               (GladeSignalDef       *signal_def);
 
 

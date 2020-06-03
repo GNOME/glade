@@ -70,164 +70,213 @@ struct _GladeWidgetClass
                                   General api
  *******************************************************************************/
 
+GLADEUI_EXPORTS
 GType                   glade_widget_get_type               (void);
 
+GLADEUI_EXPORTS
 GladeWidget            *glade_widget_get_from_gobject       (gpointer          object);
 
+GLADEUI_EXPORTS
 gboolean                glade_widget_add_verify             (GladeWidget      *widget,
                                                              GladeWidget      *child,
                                                              gboolean          user_feedback);
 
+GLADEUI_EXPORTS
 void                    glade_widget_add_child              (GladeWidget      *parent,
                                                              GladeWidget      *child,
                                                              gboolean          at_mouse);
 
+GLADEUI_EXPORTS
 void                    glade_widget_remove_child           (GladeWidget      *parent,
                                                              GladeWidget      *child);
 
+GLADEUI_EXPORTS
 void                    glade_widget_replace                (GladeWidget      *parent,
                                                              GObject          *old_object,
                                                              GObject          *new_object);
  
+GLADEUI_EXPORTS
 void                    glade_widget_rebuild                (GladeWidget      *gwidget);
  
+GLADEUI_EXPORTS
 GladeWidget            *glade_widget_dup                    (GladeWidget      *template_widget,
                                                              gboolean          exact);
 
+GLADEUI_EXPORTS
 GList                  *glade_widget_get_signal_list        (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 void                    glade_widget_copy_signals           (GladeWidget      *widget,
                                                              GladeWidget      *template_widget);
+GLADEUI_EXPORTS
 void                    glade_widget_copy_properties        (GladeWidget      *widget,
                                                              GladeWidget      *template_widget,
                                                              gboolean          copy_parentless,
                                                              gboolean          exact);
 
+GLADEUI_EXPORTS
 void                    glade_widget_set_packing_properties (GladeWidget      *widget,
                                                              GladeWidget      *container);
 
+GLADEUI_EXPORTS
 GList                  *glade_widget_get_properties         (GladeWidget      *widget);
+GLADEUI_EXPORTS
 GList                  *glade_widget_get_packing_properties (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
                                                              const gchar      *id_property);
  
+GLADEUI_EXPORTS
 GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
                                                              const gchar      *id_property);
 
+GLADEUI_EXPORTS
 GList                  *glade_widget_dup_properties         (GladeWidget      *dest_widget,
                                                              GList            *template_props,
                                                              gboolean          as_load,
                                                              gboolean          copy_parentless,
                                                              gboolean          exact);
 
+GLADEUI_EXPORTS
 void                    glade_widget_remove_property        (GladeWidget      *widget,
                                                              const gchar      *id_property);
  
+GLADEUI_EXPORTS
 void                    glade_widget_show                   (GladeWidget      *widget);
  
+GLADEUI_EXPORTS
 void                    glade_widget_hide                   (GladeWidget      *widget);
  
+GLADEUI_EXPORTS
 void                    glade_widget_add_signal_handler     (GladeWidget      *widget,
                                                              const GladeSignal      *signal_handler);
  
+GLADEUI_EXPORTS
 void                    glade_widget_remove_signal_handler  (GladeWidget      *widget,
                                                              const GladeSignal      *signal_handler);
  
+GLADEUI_EXPORTS
 void                    glade_widget_change_signal_handler  (GladeWidget      *widget,
                                                              const GladeSignal      *old_signal_handler,
                                                              const GladeSignal      *new_signal_handler);
  
+GLADEUI_EXPORTS
 GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
                                                              const gchar      *signal_name);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_has_decendant          (GladeWidget      *widget,
                                                              GType             type);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_event                  (GladeWidget      *gwidget,
                                                              GdkEvent         *event);
 
+GLADEUI_EXPORTS
 gboolean                glade_widget_placeholder_relation   (GladeWidget      *parent, 
                                                              GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GladeWidgetAction      *glade_widget_get_action             (GladeWidget *widget,
                                                              const gchar *action_path);
 
+GLADEUI_EXPORTS
 GladeWidgetAction      *glade_widget_get_pack_action        (GladeWidget *widget,
                                                              const gchar *action_path);
 
+GLADEUI_EXPORTS
 GList                  *glade_widget_get_actions            (GladeWidget *widget);
+GLADEUI_EXPORTS
 GList                  *glade_widget_get_pack_actions       (GladeWidget *widget);
 
+GLADEUI_EXPORTS
 gboolean                glade_widget_set_action_sensitive   (GladeWidget *widget,
                                                              const gchar *action_path,
                                                              gboolean     sensitive);
 
+GLADEUI_EXPORTS
 gboolean                glade_widget_set_pack_action_sensitive (GladeWidget *widget,
                                                                 const gchar *action_path,
                                                                 gboolean     sensitive);
 
+GLADEUI_EXPORTS
 gboolean                glade_widget_set_action_visible     (GladeWidget *widget,
                                                              const gchar *action_path,
                                                              gboolean     visible);
 
+GLADEUI_EXPORTS
 gboolean                glade_widget_set_pack_action_visible (GladeWidget *widget,
                                                               const gchar *action_path,
                                                               gboolean     visible);
 
+GLADEUI_EXPORTS
 void                    glade_widget_write                  (GladeWidget     *widget,
                                                              GladeXmlContext *context,
                                                              GladeXmlNode    *node);
 
+GLADEUI_EXPORTS
 void                    glade_widget_write_child            (GladeWidget     *widget,
                                                              GladeWidget     *child,
                                                              GladeXmlContext *context,
                                                              GladeXmlNode    *node);
 
+GLADEUI_EXPORTS
 void                    glade_widget_write_signals          (GladeWidget     *widget,
                                                              GladeXmlContext *context,
                                                              GladeXmlNode    *node);
 
+GLADEUI_EXPORTS
 void                    glade_widget_write_placeholder      (GladeWidget     *parent,
                                                              GObject         *object,
                                                              GladeXmlContext *context,
                                                              GladeXmlNode    *node);
         
+GLADEUI_EXPORTS
 GladeWidget            *glade_widget_read                   (GladeProject     *project,
                                                              GladeWidget      *parent,
                                                              GladeXmlNode     *node,
                                                              const gchar      *internal);
 
+GLADEUI_EXPORTS
 void                    glade_widget_read_child             (GladeWidget      *widget,
                                                              GladeXmlNode     *node);
 
 
+GLADEUI_EXPORTS
 void                    glade_widget_write_special_child_prop (GladeWidget     *parent, 
                                                                GObject         *object,
                                                                GladeXmlContext *context,
                                                                GladeXmlNode    *node);
 
+GLADEUI_EXPORTS
 void                    glade_widget_set_child_type_from_node (GladeWidget         *parent,
                                                                GObject             *child,
                                                                GladeXmlNode        *node);
 
+GLADEUI_EXPORTS
 GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *widget,
                                                              const gchar      *property,
                                                              gboolean          packing,
                                                              gboolean          use_command);
 
+GLADEUI_EXPORTS
 gchar                  *glade_widget_generate_path_name     (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 gboolean                glade_widget_is_ancestor            (GladeWidget      *widget,
                                                              GladeWidget      *ancestor);
 
 G_DEPRECATED
+GLADEUI_EXPORTS
 gboolean                glade_widget_depends                (GladeWidget      *widget,
                                                              GladeWidget      *other);
 
 G_DEPRECATED
+GLADEUI_EXPORTS
 GdkDevice              *glade_widget_get_device_from_event  (GdkEvent *event);
 
+GLADEUI_EXPORTS
 void                    glade_widget_ensure_name            (GladeWidget      *widget,
                                                              GladeProject     *project,
                                                              gboolean          use_command);
@@ -236,37 +285,47 @@ void                    glade_widget_ensure_name            (GladeWidget      *w
                       Project, object property references
  *******************************************************************************/
  
+GLADEUI_EXPORTS
 void                    glade_widget_add_prop_ref           (GladeWidget      *widget,
                                                              GladeProperty    *property);
  
+GLADEUI_EXPORTS
 void                    glade_widget_remove_prop_ref        (GladeWidget      *widget,
                                                              GladeProperty    *property);
 
+GLADEUI_EXPORTS
 GList                  *glade_widget_list_prop_refs         (GladeWidget      *widget);
+GLADEUI_EXPORTS
 gboolean                glade_widget_has_prop_refs          (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GladeProperty          *glade_widget_get_parentless_widget_ref (GladeWidget  *widget);
 
 
+GLADEUI_EXPORTS
 GList                  *glade_widget_get_parentless_reffed_widgets (GladeWidget *widget);
 
 /*******************************************************************************
             Functions that deal with properties on the runtime object
  *******************************************************************************/
 
+GLADEUI_EXPORTS
 void                    glade_widget_object_set_property    (GladeWidget      *widget,
                                                              const gchar      *property_name,
                                                              const GValue     *value);
 
+GLADEUI_EXPORTS
 void                    glade_widget_object_get_property    (GladeWidget      *widget,
                                                              const gchar      *property_name,
                                                              GValue           *value);
 
+GLADEUI_EXPORTS
 void                    glade_widget_child_set_property     (GladeWidget      *widget,
                                                              GladeWidget      *child,
                                                              const gchar      *property_name,
                                                              const GValue     *value);
 
+GLADEUI_EXPORTS
 void                    glade_widget_child_get_property     (GladeWidget      *widget,
                                                              GladeWidget      *child,
                                                              const gchar      *property_name,
@@ -276,69 +335,86 @@ void                    glade_widget_child_get_property     (GladeWidget      *w
                    GladeProperty api convenience wrappers
  *******************************************************************************/
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_property_get           (GladeWidget      *widget,
                                                              const gchar      *id_property,
                                                              ...);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_property_set           (GladeWidget      *widget,
                                                              const gchar      *id_property,
                                                              ...);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_pack_property_get      (GladeWidget      *widget,
                                                              const gchar      *id_property,
                                                              ...);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_pack_property_set      (GladeWidget      *widget,
                                                              const gchar      *id_property,
                                                              ...);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_property_reset         (GladeWidget      *widget,
                                                              const gchar      *id_property);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_pack_property_reset    (GladeWidget      *widget,
                                                              const gchar      *id_property);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_property_default       (GladeWidget      *widget,
                                                              const gchar      *id_property);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_property_original_default (GladeWidget      *widget,
                                                                 const gchar      *id_property);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_pack_property_default  (GladeWidget      *widget,
                                                              const gchar      *id_property);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_property_set_sensitive (GladeWidget      *widget,
                                                              const gchar      *id_property,
                                                              gboolean          sensitive,
                                                              const gchar      *reason);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
                                                                   const gchar      *id_property,
                                                                   gboolean          sensitive,
                                                                   const gchar      *reason);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_property_set_enabled   (GladeWidget      *widget,
                                                              const gchar      *id_property,
                                                              gboolean          enabled);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_pack_property_set_enabled (GladeWidget      *widget,
                                                                 const gchar      *id_property,
                                                                 gboolean          enabled);
 
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_property_set_save_always (GladeWidget      *widget,
                                                                const gchar      *id_property,
                                                                gboolean          setting);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_pack_property_set_save_always (GladeWidget      *widget,
                                                                     const gchar      *id_property,
                                                                     gboolean          setting);
 
+GLADEUI_EXPORTS
 gchar                  *glade_widget_property_string        (GladeWidget      *widget,
                                                              const gchar      *id_property,
                                                              const GValue     *value);
 
 
+GLADEUI_EXPORTS
 gchar                  *glade_widget_pack_property_string   (GladeWidget      *widget,
                                                              const gchar      *id_property,
                                                              const GValue     *value);
@@ -347,68 +423,99 @@ gchar                  *glade_widget_pack_property_string   (GladeWidget      *w
                                   Accessors
  *******************************************************************************/
 
+GLADEUI_EXPORTS
 void                    glade_widget_set_name               (GladeWidget      *widget,
                                                              const gchar      *name);
  
+GLADEUI_EXPORTS
 const gchar   *glade_widget_get_name               (GladeWidget      *widget);
+GLADEUI_EXPORTS
 const gchar   *glade_widget_get_display_name       (GladeWidget      *widget);
+GLADEUI_EXPORTS
 gboolean                glade_widget_has_name               (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 void                    glade_widget_set_is_composite       (GladeWidget      *widget,
                                                              gboolean          composite);
 
+GLADEUI_EXPORTS
 gboolean                glade_widget_get_is_composite       (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 void                    glade_widget_set_internal           (GladeWidget      *widget,
                                                              const gchar      *internal);
  
+GLADEUI_EXPORTS
 const gchar   *glade_widget_get_internal           (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GObject                *glade_widget_get_object             (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 void                    glade_widget_set_project            (GladeWidget      *widget,
                                                              GladeProject     *project);
  
+GLADEUI_EXPORTS
 GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 void                    glade_widget_set_in_project         (GladeWidget      *widget,
                                                              gboolean          in_project);
+GLADEUI_EXPORTS
 gboolean                glade_widget_in_project             (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GladeWidgetAdaptor     *glade_widget_get_adaptor            (GladeWidget      *widget);
  
+GLADEUI_EXPORTS
 GladeWidget            *glade_widget_get_parent             (GladeWidget      *widget);
  
+GLADEUI_EXPORTS
 void                    glade_widget_set_parent             (GladeWidget      *widget,
                                                              GladeWidget      *parent);
 
+GLADEUI_EXPORTS
 GList                  *glade_widget_get_children           (GladeWidget* widget);
 
+GLADEUI_EXPORTS
 GladeWidget            *glade_widget_get_toplevel           (GladeWidget      *widget);
  
+GLADEUI_EXPORTS
 gboolean                glade_widget_superuser              (void);
  
+GLADEUI_EXPORTS
 void                    glade_widget_push_superuser         (void);
  
+GLADEUI_EXPORTS
 void                    glade_widget_pop_superuser          (void);
 
+GLADEUI_EXPORTS
 void                    glade_widget_verify                 (GladeWidget      *widget);
+GLADEUI_EXPORTS
 void                    glade_widget_set_support_warning    (GladeWidget      *widget,
                                                              const gchar      *warning);
+GLADEUI_EXPORTS
 const gchar   *glade_widget_support_warning        (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 void                    glade_widget_lock                   (GladeWidget      *widget,
                                                              GladeWidget      *locked);
+GLADEUI_EXPORTS
 void                    glade_widget_unlock                 (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GladeWidget            *glade_widget_get_locker             (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GList                  *glade_widget_list_locked_widgets    (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 void                    glade_widget_support_changed        (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GtkTreeModel           *glade_widget_get_signal_model       (GladeWidget      *widget);
 
+GLADEUI_EXPORTS
 GladeWidget            *glade_widget_find_child             (GladeWidget *widget,
                                                              const gchar *name);
 

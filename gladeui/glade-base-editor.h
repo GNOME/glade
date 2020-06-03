@@ -28,6 +28,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_BASE_EDITOR glade_base_editor_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeBaseEditor, glade_base_editor, GLADE, BASE_EDITOR, GtkBox)
 
 struct _GladeBaseEditorClass
@@ -44,33 +45,41 @@ struct _GladeBaseEditorClass
   gpointer padding[6];
 };
 
+GLADEUI_EXPORTS
 GladeBaseEditor     *glade_base_editor_new                    (GObject *container,
                                                                GladeEditable *main_editable,
                                                                ...);
 
+GLADEUI_EXPORTS
 void                 glade_base_editor_append_types           (GladeBaseEditor *editor, 
                                                                GType parent_type,
                                                                ...);
 
+GLADEUI_EXPORTS
 void                 glade_base_editor_add_editable           (GladeBaseEditor     *editor,
                                                                GladeWidget         *gchild,
                                                                GladeEditorPageType  page);
 
+GLADEUI_EXPORTS
 void                 glade_base_editor_add_default_properties (GladeBaseEditor *editor,
                                                                GladeWidget *gchild);
 
+GLADEUI_EXPORTS
 void                 glade_base_editor_add_properties         (GladeBaseEditor *editor,
                                                                GladeWidget *gchild,
                                                                gboolean packing,
                                                                ...);
 
+GLADEUI_EXPORTS
 void                 glade_base_editor_add_label              (GladeBaseEditor *editor,
                                                                gchar *str);
 
+GLADEUI_EXPORTS
 void                 glade_base_editor_set_show_signal_editor (GladeBaseEditor *editor,
                                                                gboolean val);
 
 /* Convenience functions */
+GLADEUI_EXPORTS
 GtkWidget           *glade_base_editor_pack_new_window        (GladeBaseEditor *editor,
                                                                gchar *title,
                                                                gchar *help_markup);

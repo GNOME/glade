@@ -14,6 +14,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_WIDGET_ADAPTOR glade_widget_adaptor_get_type ()
+GLADEUI_EXPORTS
 G_DECLARE_DERIVABLE_TYPE (GladeWidgetAdaptor, glade_widget_adaptor, GLADE, WIDGET_ADAPTOR, GObject)
 
 /**
@@ -718,27 +719,43 @@ struct _GladeWidgetAdaptorClass
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
     (glade_widget_adaptor_create_widget_real (query, "adaptor", adaptor, __VA_ARGS__));
 
+GLADEUI_EXPORTS
 GType                 glade_widget_adaptor_get_object_type  (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_name         (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_generic_name (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_display_name (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_title        (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_icon_name    (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_catalog      (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_book         (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const GList *glade_widget_adaptor_get_properties   (GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const GList *glade_widget_adaptor_get_packing_props(GladeWidgetAdaptor   *adaptor);
+GLADEUI_EXPORTS
 const GList *glade_widget_adaptor_get_signals      (GladeWidgetAdaptor   *adaptor);
 
+GLADEUI_EXPORTS
 GList                *glade_widget_adaptor_list_adaptors    (void);
 
+GLADEUI_EXPORTS
 GladeWidgetAdaptor   *glade_widget_adaptor_from_catalog     (GladeCatalog         *catalog,
                                                              GladeXmlNode         *class_node,
                                                              GModule              *module);
 
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_register         (GladeWidgetAdaptor   *adaptor);
  
+GLADEUI_EXPORTS
 GladeWidget          *glade_widget_adaptor_create_internal  (GladeWidget          *parent,
                                                              GObject              *internal_object,
                                                              const gchar          *internal_name,
@@ -746,158 +763,207 @@ GladeWidget          *glade_widget_adaptor_create_internal  (GladeWidget        
                                                              gboolean              anarchist,
                                                              GladeCreateReason     reason);
 
+GLADEUI_EXPORTS
 GladeWidget          *glade_widget_adaptor_create_widget_real (gboolean            query, 
                                                                const gchar        *first_property,
                                                                ...);
 
 
+GLADEUI_EXPORTS
 GladeWidgetAdaptor   *glade_widget_adaptor_get_by_name        (const gchar        *name);
+GLADEUI_EXPORTS
 GladeWidgetAdaptor   *glade_widget_adaptor_get_by_type        (GType               type);
+GLADEUI_EXPORTS
 GladeWidgetAdaptor   *glade_widget_adaptor_from_pspec         (GladeWidgetAdaptor *adaptor,
                                                                GParamSpec         *pspec);
 
+GLADEUI_EXPORTS
 GladePropertyDef     *glade_widget_adaptor_get_property_def   (GladeWidgetAdaptor *adaptor,
                                                                const gchar        *name);
+GLADEUI_EXPORTS
 GladePropertyDef     *glade_widget_adaptor_get_pack_property_def (GladeWidgetAdaptor *adaptor,
                                                                   const gchar        *name);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLADEUI_EXPORTS
 GParameter           *glade_widget_adaptor_default_params     (GladeWidgetAdaptor *adaptor,
                                                                gboolean            construct,
                                                                guint              *n_params);
+GLADEUI_EXPORTS
 GObject              *glade_widget_adaptor_construct_object   (GladeWidgetAdaptor *adaptor,
                                                                guint               n_parameters,
                                                                GParameter         *parameters);
 G_GNUC_END_IGNORE_DEPRECATIONS
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_destroy_object     (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_post_create        (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object,
                                                                GladeCreateReason   reason);
+GLADEUI_EXPORTS
 GObject              *glade_widget_adaptor_get_internal_child (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object,
                                                                const gchar        *internal_name);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_set_property       (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object,
                                                                const gchar        *property_name,
                                                                const GValue       *value);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_get_property       (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object,
                                                                const gchar        *property_name,
                                                                GValue             *value);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_verify_property    (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object,
                                                                const gchar        *property_name,
                                                                const GValue       *value);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_add_verify         (GladeWidgetAdaptor *adaptor,
                                                                GObject            *container,
                                                                GObject            *child,
                                                                gboolean            user_feedback);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_add                (GladeWidgetAdaptor *adaptor,
                                                                GObject            *container,
                                                                GObject            *child);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_remove             (GladeWidgetAdaptor *adaptor,
                                                                GObject            *container,
                                                                GObject            *child);
+GLADEUI_EXPORTS
 GList                *glade_widget_adaptor_get_children       (GladeWidgetAdaptor *adaptor,
                                                                GObject            *container);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_has_child          (GladeWidgetAdaptor *adaptor,
                                                                GObject            *container,
                                                                GObject            *child);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_child_set_property (GladeWidgetAdaptor *adaptor,
                                                                GObject            *container,
                                                                GObject            *child,
                                                                const gchar        *property_name,
                                                                const GValue       *value);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_child_get_property (GladeWidgetAdaptor *adaptor,
                                                                GObject            *container,
                                                                GObject            *child,
                                                                const gchar        *property_name,
                                                                GValue             *value);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_child_verify_property (GladeWidgetAdaptor *adaptor,
                                                                   GObject            *container,
                                                                   GObject            *child,
                                                                   const gchar        *property_name,
                                                                   const GValue       *value);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_replace_child      (GladeWidgetAdaptor *adaptor,
                                                                GObject            *container,
                                                                GObject            *old_obj,
                                                                GObject            *new_obj);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_query              (GladeWidgetAdaptor *adaptor);
 
+GLADEUI_EXPORTS
 const gchar *glade_widget_adaptor_get_packing_default(GladeWidgetAdaptor *child_adaptor,
                                                                GladeWidgetAdaptor *container_adaptor,
                                                                const gchar        *id);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_is_container       (GladeWidgetAdaptor *adaptor);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_action_add         (GladeWidgetAdaptor *adaptor,
                                                                const gchar *action_path,
                                                                const gchar *label,
                                                                const gchar *stock,
                                                                gboolean important);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_pack_action_add    (GladeWidgetAdaptor *adaptor,
                                                                const gchar *action_path,
                                                                const gchar *label,
                                                                const gchar *stock,
                                                                gboolean important);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_action_remove      (GladeWidgetAdaptor *adaptor,
                                                                const gchar *action_path);
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_pack_action_remove (GladeWidgetAdaptor *adaptor,
                                                                const gchar *action_path);
+GLADEUI_EXPORTS
 GList                *glade_widget_adaptor_actions_new        (GladeWidgetAdaptor *adaptor);
+GLADEUI_EXPORTS
 GList                *glade_widget_adaptor_pack_actions_new   (GladeWidgetAdaptor *adaptor);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_action_activate    (GladeWidgetAdaptor *adaptor,
                                                                GObject            *object,
                                                                const gchar        *action_path);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_child_action_activate (GladeWidgetAdaptor *adaptor,
                                                                   GObject            *container,
                                                                   GObject            *object,
                                                                   const gchar        *action_path);
+GLADEUI_EXPORTS
 GtkWidget            *glade_widget_adaptor_action_submenu        (GladeWidgetAdaptor *adaptor,
                                                                   GObject            *object,
                                                                   const gchar        *action_path);
 
 G_DEPRECATED
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_depends            (GladeWidgetAdaptor *adaptor,
                                                                GladeWidget        *widget,
                                                                GladeWidget        *another);
 
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_read_widget        (GladeWidgetAdaptor *adaptor,
                                                                GladeWidget        *widget,
                                                                GladeXmlNode       *node);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_write_widget       (GladeWidgetAdaptor *adaptor,
                                                                GladeWidget        *widget,
                                                                GladeXmlContext    *context,
                                                                GladeXmlNode       *node);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_write_widget_after (GladeWidgetAdaptor *adaptor,
                                                                GladeWidget        *widget,
                                                                GladeXmlContext    *context,
                                                                GladeXmlNode       *node);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_read_child         (GladeWidgetAdaptor *adaptor,
                                                                GladeWidget        *widget,
                                                                GladeXmlNode       *node);
+GLADEUI_EXPORTS
 void                  glade_widget_adaptor_write_child        (GladeWidgetAdaptor *adaptor,
                                                                GladeWidget        *widget,
                                                                GladeXmlContext    *context,
                                                                GladeXmlNode       *node);
 
+GLADEUI_EXPORTS
 GladeEditorProperty  *glade_widget_adaptor_create_eprop       (GladeWidgetAdaptor *adaptor,
                                                                GladePropertyDef   *def,
                                                                gboolean            use_command);
+GLADEUI_EXPORTS
 GladeEditorProperty  *glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
                                                                  const gchar        *property_id,
                                                                  gboolean            packing,
                                                                  gboolean            use_command);
 
+GLADEUI_EXPORTS
 gchar                *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor *adaptor,
                                                                GladePropertyDef   *def,
                                                                const GValue       *value);
+GLADEUI_EXPORTS
 GladeEditable        *glade_widget_adaptor_create_editable    (GladeWidgetAdaptor *adaptor,
                                                                GladeEditorPageType type);
+GLADEUI_EXPORTS
 GladeSignalDef       *glade_widget_adaptor_get_signal_def     (GladeWidgetAdaptor *adaptor,
                                                                const gchar        *name);
+GLADEUI_EXPORTS
 GladeWidgetAdaptor   *glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor);
 
+GLADEUI_EXPORTS
 gboolean              glade_widget_adaptor_has_internal_children (GladeWidgetAdaptor *adaptor);
+GLADEUI_EXPORTS
 const gchar          *glade_widget_adaptor_get_type_func      (GladeWidgetAdaptor *adaptor);
 G_END_DECLS
 

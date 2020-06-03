@@ -72,29 +72,40 @@ typedef enum
 } GladeItemAppearance;
 
 
+GLADEUI_EXPORTS
 GType                glade_palette_get_type                 (void) G_GNUC_CONST;
 
+GLADEUI_EXPORTS
 GtkWidget           *glade_palette_new                      (void);
 
+GLADEUI_EXPORTS
 GladeProject        *glade_palette_get_project              (GladePalette *palette);
+GLADEUI_EXPORTS
 void                 glade_palette_set_project              (GladePalette *palette,
                                                              GladeProject *project);
 
+GLADEUI_EXPORTS
 GladeItemAppearance  glade_palette_get_item_appearance      (GladePalette *palette);
 
+GLADEUI_EXPORTS
 void                 glade_palette_set_item_appearance      (GladePalette       *palette,
                                                              GladeItemAppearance item_appearance);
                                                              
+GLADEUI_EXPORTS
 gboolean             glade_palette_get_use_small_item_icons (GladePalette *palette);
 
+GLADEUI_EXPORTS
 void                     glade_palette_set_use_small_item_icons (GladePalette *palette,
                                                                  gboolean      use_small_item_icons);
                                                              
+GLADEUI_EXPORTS
 void                     glade_palette_set_show_selector_button (GladePalette *palette,
                                                                  gboolean      show_selector_button);
                                                              
+GLADEUI_EXPORTS
 gboolean             glade_palette_get_show_selector_button (GladePalette *palette);
 
+GLADEUI_EXPORTS
 GtkToolPalette      *glade_palette_get_tool_palette         (GladePalette *palette);
 
 G_END_DECLS
