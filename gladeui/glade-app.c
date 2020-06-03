@@ -51,6 +51,12 @@
 #  include <gtkosxapplication.h>
 #endif
 
+#ifdef G_OS_WIN32
+# define G_MKDIR_MODE S_IREAD | S_IWRITE
+#else
+# define G_MKDIR_MODE S_IRWXU
+#endif
+
 #define GLADE_CONFIG_FILENAME "glade.conf"
 
 enum
@@ -555,7 +561,7 @@ glade_app_config_save ()
           error_shown = TRUE;
           return -1;
         }
-      else if (g_mkdir (config_dir, S_IRWXU) != 0)
+      else if (g_mkdir (config_dir, G_MKDIR_MODE) != 0)
         {
           /* Doesnt exist; failed to create */
           glade_util_ui_message
