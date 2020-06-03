@@ -30,6 +30,7 @@ struct _GladeKey {
   gchar *name;
 };
 
+G_MODULE_EXPORT
 extern const GladeKey GladeKeys[];
 
 #define  GLADE_KEYS_LAST_ALPHANUM    "9"
@@ -37,25 +38,34 @@ extern const GladeKey GladeKeys[];
 #define  GLADE_KEYS_LAST_KP          "KP_9"
 #define  GLADE_KEYS_LAST_FKEY        "F35"
 
+G_MODULE_EXPORT
 GType        glade_accel_glist_get_type    (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GType        glade_eprop_accel_get_type    (void) G_GNUC_CONST;
 
+G_MODULE_EXPORT
 GList       *glade_accel_list_copy         (GList         *accels);
+G_MODULE_EXPORT
 void         glade_accel_list_free         (GList         *accels);
 
+G_MODULE_EXPORT
 gchar       *glade_accels_make_string      (GList *accels);
 
+G_MODULE_EXPORT
 GladeAccelInfo *glade_accel_read           (GladeXmlNode    *node,
                                             gboolean         require_signal);
+G_MODULE_EXPORT
 GladeXmlNode   *glade_accel_write          (GladeAccelInfo  *accel_info,
                                             GladeXmlContext *context,
                                             gboolean         write_signal);
 
 
+G_MODULE_EXPORT
 void         glade_gtk_write_accels        (GladeWidget     *widget,
                                             GladeXmlContext *context,
                                             GladeXmlNode    *node,
                                             gboolean         write_signal);
+G_MODULE_EXPORT
 void         glade_gtk_read_accels         (GladeWidget     *widget,
                                             GladeXmlNode    *node,
                                             gboolean         require_signal);

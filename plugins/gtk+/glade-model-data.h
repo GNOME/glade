@@ -41,32 +41,45 @@ typedef struct _GladeModelData         GladeModelData;
 #define GLADE_TYPE_MODEL_DATA_TREE  (glade_model_data_tree_get_type())
 #define GLADE_TYPE_EPROP_MODEL_DATA (glade_eprop_model_data_get_type())
 
+G_MODULE_EXPORT
 GType           glade_model_data_tree_get_type     (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GType           glade_eprop_model_data_get_type    (void) G_GNUC_CONST;
 
 
+G_MODULE_EXPORT
 GladeModelData *glade_model_data_new               (GType           type,
                                                     const gchar    *column_name);
+G_MODULE_EXPORT
 GladeModelData *glade_model_data_copy              (GladeModelData *data);
+G_MODULE_EXPORT
 void            glade_model_data_free              (GladeModelData *data);
 
+G_MODULE_EXPORT
 GNode          *glade_model_data_tree_copy         (GNode          *node);
+G_MODULE_EXPORT
 void            glade_model_data_tree_free         (GNode          *node);
 
+G_MODULE_EXPORT
 GladeModelData *glade_model_data_tree_get_data     (GNode          *data_tree, 
                                                     gint            row, 
                                                     gint            colnum);
+G_MODULE_EXPORT
 void            glade_model_data_insert_column     (GNode          *node,
                                                     GType           type,
                                                     const gchar    *column_name,
                                                     gint            nth);
+G_MODULE_EXPORT
 void            glade_model_data_remove_column     (GNode          *node,
                                                     gint            nth);
+G_MODULE_EXPORT
 void            glade_model_data_reorder_column    (GNode          *node,
                                                     gint            column,
                                                     gint            nth);
+G_MODULE_EXPORT
 gint            glade_model_data_column_index      (GNode          *node,
                                                     const gchar    *column_name);
+G_MODULE_EXPORT
 void            glade_model_data_column_rename     (GNode          *node,
                                                     const gchar    *column_name,
                                                     const gchar    *new_name);

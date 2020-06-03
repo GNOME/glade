@@ -49,7 +49,9 @@ struct _GladeRecentChooserEditorClass
   GladeEditorSkeletonClass parent;
 };
 
+G_MODULE_EXPORT
 GType            glade_recent_chooser_editor_get_type (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GtkWidget       *glade_recent_chooser_editor_new      (void);
 
 G_END_DECLS

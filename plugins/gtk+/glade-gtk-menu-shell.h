@@ -26,38 +26,48 @@
 
 G_BEGIN_DECLS
 
+G_MODULE_EXPORT
 void glade_gtk_menu_shell_launch_editor            (GObject *object, gchar *title);
 
+G_MODULE_EXPORT
 gboolean glade_gtk_menu_shell_change_type (GladeBaseEditor *editor,
                                            GladeWidget     *gchild,
                                            GType            type,
                                            gpointer         data);
+G_MODULE_EXPORT
 GladeWidget *glade_gtk_menu_shell_build_child (GladeBaseEditor *editor,
                                                GladeWidget     *gparent,
                                                GType            type,
                                                gpointer         data);
+G_MODULE_EXPORT
 gboolean glade_gtk_menu_shell_delete_child (GladeBaseEditor *editor,
                                             GladeWidget     *gparent,
                                             GladeWidget     *gchild,
                                             gpointer         data);
+G_MODULE_EXPORT
 gboolean glade_gtk_menu_shell_move_child (GladeBaseEditor *editor,
                                           GladeWidget     *gparent,
                                           GladeWidget     *gchild,
                                           gpointer         data);
 
+G_MODULE_EXPORT
 gchar *glade_gtk_menu_shell_tool_item_get_display_name (GladeBaseEditor *editor,
                                                         GladeWidget     *gchild,
                                                         gpointer         user_data);
 
+G_MODULE_EXPORT
 void glade_gtk_toolbar_child_selected              (GladeBaseEditor *editor,
                                                     GladeWidget     *gchild,
                                                     gpointer         data);
+G_MODULE_EXPORT
 void glade_gtk_tool_palette_child_selected         (GladeBaseEditor *editor,
                                                     GladeWidget     *gchild,
                                                     gpointer         data);
+G_MODULE_EXPORT
 void glade_gtk_recent_chooser_menu_child_selected  (GladeBaseEditor *editor,
                                                     GladeWidget     *gchild,
                                                     gpointer         data);
+G_MODULE_EXPORT
 void glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor *editor,
                                                     GladeWidget     *gchild,
                                                     gpointer         data);

@@ -26,19 +26,24 @@
 
 G_BEGIN_DECLS
 
+G_MODULE_EXPORT
 gboolean glade_gtk_cell_layout_sync_attributes (GObject *layout);
 
 /* Base editor handlers */
+G_MODULE_EXPORT
 gchar   *glade_gtk_cell_layout_get_display_name (GladeBaseEditor *editor,
                                                  GladeWidget     *gchild,
                                                  gpointer         user_data);
+G_MODULE_EXPORT
 void     glade_gtk_cell_layout_child_selected   (GladeBaseEditor *editor,
                                                  GladeWidget     *gchild,
                                                  gpointer         data);
+G_MODULE_EXPORT
 gboolean glade_gtk_cell_layout_move_child       (GladeBaseEditor *editor,
                                                  GladeWidget     *gparent,
                                                  GladeWidget     *gchild,
                                                  gpointer         data); 
+G_MODULE_EXPORT
 GList   *glade_gtk_cell_layout_get_children     (GladeWidgetAdaptor *adaptor,
                                                  GObject            *container);
 

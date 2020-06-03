@@ -21,12 +21,17 @@ struct _GladeString {
   gboolean  translatable;
 };
 
+G_MODULE_EXPORT
 GType        glade_eprop_string_list_get_type    (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GType        glade_string_list_get_type          (void) G_GNUC_CONST;
 
+G_MODULE_EXPORT
 void         glade_string_list_free              (GList         *list);
+G_MODULE_EXPORT
 GList       *glade_string_list_copy              (GList         *list);
 
+G_MODULE_EXPORT
 GList       *glade_string_list_append            (GList         *list,
                                                   const gchar   *string,
                                                   const gchar   *comment,
@@ -34,8 +39,10 @@ GList       *glade_string_list_append            (GList         *list,
                                                   gboolean       translatable,
                                                   const gchar   *id);
 
+G_MODULE_EXPORT
 gchar       *glade_string_list_to_string         (GList         *list);
 
+G_MODULE_EXPORT
 GladeEditorProperty *glade_eprop_string_list_new (GladePropertyDef *pdef,
                                                   gboolean          use_command,
                                                   gboolean          translatable,

@@ -26,6 +26,7 @@
 
 G_BEGIN_DECLS
 
+G_MODULE_EXPORT
 void glade_gtk_treeview_launch_editor (GObject * treeview);
 
 G_END_DECLS

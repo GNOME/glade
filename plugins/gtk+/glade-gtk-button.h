@@ -26,6 +26,7 @@
 
 G_BEGIN_DECLS
 
+G_MODULE_EXPORT
 void  glade_gtk_sync_use_appearance (GladeWidget *gwidget);
 
 

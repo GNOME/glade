@@ -26,6 +26,7 @@
 
 G_BEGIN_DECLS
 
+G_MODULE_EXPORT
 void  glade_gtk_write_icon_size (GladeWidget     *widget,
                                  GladeXmlContext *context,
                                  GladeXmlNode    *node,

@@ -22,6 +22,7 @@ typedef struct {
   GladeEditorPropertyClass eprop_class;
 } GladeEPropEnumIntClass;
 
+G_MODULE_EXPORT
 GladeEditorProperty *glade_eprop_enum_int_new (GladePropertyDef *pdef,
                                                GType             type,
                                                gboolean          use_command);

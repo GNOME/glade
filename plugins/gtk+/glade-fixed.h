@@ -84,6 +84,7 @@ struct _GladeFixedClass {
 
 };
 
+G_MODULE_EXPORT
 GType              glade_fixed_get_type     (void);
 
 G_END_DECLS

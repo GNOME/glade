@@ -49,7 +49,9 @@ struct _GladeSpinButtonEditorClass
   GladeEntryEditorClass parent;
 };
 
+G_MODULE_EXPORT
 GType            glade_spin_button_editor_get_type (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GtkWidget       *glade_spin_button_editor_new      (void);
 
 G_END_DECLS

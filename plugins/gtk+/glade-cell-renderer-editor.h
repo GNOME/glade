@@ -55,12 +55,16 @@ struct _GladeCellRendererEditorClass
   GtkBoxClass parent;
 };
 
+G_MODULE_EXPORT
 GType            glade_eprop_cell_attribute_get_type (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GType            glade_cell_renderer_editor_get_type (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GtkWidget       *glade_cell_renderer_editor_new      (GladeWidgetAdaptor  *adaptor,
                                                       GladeEditorPageType  type,
                                                       GladeEditable       *editable);
 
+G_MODULE_EXPORT
 GladeWidget     *glade_cell_renderer_get_model       (GladeWidget         *renderer);
 
 G_END_DECLS

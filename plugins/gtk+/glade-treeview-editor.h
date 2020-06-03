@@ -50,7 +50,9 @@ struct _GladeTreeViewEditorClass
   GtkBoxClass parent;
 };
 
+G_MODULE_EXPORT
 GType            glade_tree_view_editor_get_type (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GtkWidget       *glade_tree_view_editor_new      (GladeWidgetAdaptor *adaptor,
                                                   GladeEditable      *editable);
 

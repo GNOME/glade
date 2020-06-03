@@ -23,12 +23,17 @@ struct _GladeAttribute {
 };
 
 
+G_MODULE_EXPORT
 GType        glade_eprop_attrs_get_type         (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GType        glade_attr_glist_get_type          (void) G_GNUC_CONST;
 
+G_MODULE_EXPORT
 GladeAttribute *glade_gtk_attribute_from_string (PangoAttrType    type,
                                                  const gchar     *strval);
+G_MODULE_EXPORT
 gchar       *glade_gtk_string_from_attr         (GladeAttribute  *gattr);
+G_MODULE_EXPORT
 void         glade_attr_list_free               (GList           *attrs);
 
 

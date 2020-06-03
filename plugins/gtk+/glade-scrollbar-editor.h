@@ -48,7 +48,9 @@ struct _GladeScrollbarEditorClass
   GladeEditorSkeletonClass parent;
 };
 
+G_MODULE_EXPORT
 GType            glade_scrollbar_editor_get_type (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GtkWidget       *glade_scrollbar_editor_new      (void);
 
 G_END_DECLS

@@ -26,6 +26,7 @@
 
 G_BEGIN_DECLS
 
+G_MODULE_EXPORT
 gboolean glade_gtk_cell_renderer_sync_attributes (GObject * object);
 
 G_END_DECLS

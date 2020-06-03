@@ -49,7 +49,9 @@ struct _GladeScrolledWindowEditorClass
   GladeEditorSkeletonClass parent;
 };
 
+G_MODULE_EXPORT
 GType            glade_scrolled_window_editor_get_type (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GtkWidget       *glade_scrolled_window_editor_new      (void);
 
 G_END_DECLS

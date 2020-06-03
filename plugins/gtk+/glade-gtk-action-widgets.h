@@ -33,13 +33,16 @@ G_BEGIN_DECLS
 #define GLADE_TAG_ACTION_WIDGET  "action-widget"
 #define GLADE_TAG_RESPONSE       "response"
 
+G_MODULE_EXPORT
 void glade_gtk_action_widgets_ensure_names (GladeWidget *widget,
                                             gchar       *action_container);
 
+G_MODULE_EXPORT
 void glade_gtk_action_widgets_read_child  (GladeWidget  *widget,
                                            GladeXmlNode *node,
                                            gchar        *action_container);
 
+G_MODULE_EXPORT
 void glade_gtk_action_widgets_write_child (GladeWidget     *widget,
                                            GladeXmlContext *context,
                                            GladeXmlNode    *node,

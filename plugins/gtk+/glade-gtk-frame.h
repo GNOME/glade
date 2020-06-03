@@ -26,6 +26,7 @@
 
 G_BEGIN_DECLS
 
+G_MODULE_EXPORT
 gboolean
 glade_gtk_write_special_child_label_item (GladeWidgetAdaptor   *adaptor,
                                           GladeWidget          *widget,

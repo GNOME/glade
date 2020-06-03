@@ -37,11 +37,16 @@ typedef struct _GladeParamIconSources    GladeParamIconSources;
 #define GLADE_TYPE_ICON_SOURCES       (glade_icon_sources_get_type())
 #define GLADE_TYPE_EPROP_ICON_SOURCES (glade_eprop_icon_sources_get_type())
 
+G_MODULE_EXPORT
 GType             glade_icon_sources_get_type          (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GType             glade_eprop_icon_sources_get_type    (void) G_GNUC_CONST;
 
+G_MODULE_EXPORT
 GladeIconSources *glade_icon_sources_new               (void);
+G_MODULE_EXPORT
 GladeIconSources *glade_icon_sources_copy              (GladeIconSources *sources);
+G_MODULE_EXPORT
 void              glade_icon_sources_free              (GladeIconSources *sources);
 
 G_END_DECLS

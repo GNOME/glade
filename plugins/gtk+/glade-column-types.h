@@ -34,15 +34,22 @@ typedef struct
 #define GLADE_TYPE_COLUMN_TYPE_LIST   (glade_column_type_list_get_type())
 #define GLADE_TYPE_EPROP_COLUMN_TYPES (glade_eprop_column_types_get_type())
 
+G_MODULE_EXPORT
 GType        glade_column_type_list_get_type      (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GType        glade_eprop_column_types_get_type    (void) G_GNUC_CONST;
 
+G_MODULE_EXPORT
 void         glade_column_list_free               (GList *list);
+G_MODULE_EXPORT
 GList       *glade_column_list_copy               (GList *list);
 
+G_MODULE_EXPORT
 GladeColumnType *glade_column_type_new            (const gchar *type_name,
                                                    const gchar *column_name);
+G_MODULE_EXPORT
 void             glade_column_type_free           (GladeColumnType *column);
+G_MODULE_EXPORT
 GladeColumnType *glade_column_list_find_column    (GList *list, const gchar *column_name);
 
 G_END_DECLS

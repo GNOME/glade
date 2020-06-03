@@ -52,7 +52,9 @@ struct _GladeToolItemGroupEditorClass
   GtkBoxClass parent;
 };
 
+G_MODULE_EXPORT
 GType            glade_tool_item_group_editor_get_type (void) G_GNUC_CONST;
+G_MODULE_EXPORT
 GtkWidget       *glade_tool_item_group_editor_new      (GladeWidgetAdaptor *adaptor,
                                                         GladeEditable      *editable);
 
