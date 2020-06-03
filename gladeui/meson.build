@@ -37,6 +37,7 @@ headers = files(
   'glade-editor-skeleton.h',
   'glade-editor-table.h',
   'glade-inspector.h',
+  'glade-macros.h',
   'glade-name-context.h',
   'glade-palette.h',
   'glade-placeholder.h',
