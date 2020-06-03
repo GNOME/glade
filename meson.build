@@ -101,7 +101,11 @@ glib_dep = dependency('glib-2.0', version: '>= 2.53.2')
 gmodule_dep = dependency('gmodule-2.0')
 gmodule_export_dep = dependency('gmodule-export-2.0')
 gtk_dep = dependency('gtk+-3.0', version: '>= 3.22.0')
-libxml_dep = dependency('libxml-2.0', version: '>= 2.4.0')
+libxml_dep = dependency('libxml-2.0', version: '>= 2.4.0', required: cc.get_argument_syntax() != 'msvc')
+
+if not libxml_dep.found()
+  libxml_dep = cc.find_library('libxml2')
+endif
 
 m_dep = cc.find_library('m', required: false)
 
