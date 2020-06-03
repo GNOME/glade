@@ -131,7 +131,7 @@ glade_gtk_filter_write_strings (GladeWidget     *widget,
     }
 }
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_gtk_recent_file_filter_create_eprop (GladeWidgetAdaptor *adaptor,
                                            GladePropertyDef   *def, 
                                            gboolean            use_command)
@@ -152,7 +152,7 @@ glade_gtk_recent_file_filter_create_eprop (GladeWidgetAdaptor *adaptor,
   return eprop;
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_recent_file_filter_string_from_value (GladeWidgetAdaptor *adaptor,
                                                 GladePropertyDef   *def,
                                                 const GValue       *value)
@@ -172,7 +172,7 @@ glade_gtk_recent_file_filter_string_from_value (GladeWidgetAdaptor *adaptor,
         (G_TYPE_OBJECT)->string_from_value (adaptor, def, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_recent_filter_read_widget (GladeWidgetAdaptor *adaptor,
                                      GladeWidget        *widget, 
                                      GladeXmlNode       *node)
@@ -189,7 +189,7 @@ glade_gtk_recent_filter_read_widget (GladeWidgetAdaptor *adaptor,
   glade_gtk_filter_read_strings (widget, node, FILTER_APPLICATION, "glade-applications");
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_recent_filter_write_widget (GladeWidgetAdaptor *adaptor,
                                       GladeWidget        *widget,
                                       GladeXmlContext    *context, 
@@ -231,7 +231,7 @@ glade_gtk_recent_filter_write_widget (GladeWidgetAdaptor *adaptor,
     glade_xml_node_append_child (node, strings_node);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_file_filter_read_widget (GladeWidgetAdaptor *adaptor,
                                    GladeWidget        *widget, 
                                    GladeXmlNode       *node)
@@ -247,7 +247,7 @@ glade_gtk_file_filter_read_widget (GladeWidgetAdaptor *adaptor,
   glade_gtk_filter_read_strings (widget, node, FILTER_PATTERN, "glade-patterns");
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_file_filter_write_widget (GladeWidgetAdaptor *adaptor,
                                     GladeWidget        *widget,
                                     GladeXmlContext    *context, 

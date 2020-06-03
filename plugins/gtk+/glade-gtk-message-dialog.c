@@ -101,7 +101,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_message_dialog_set_property (GladeWidgetAdaptor * adaptor,
                                        GObject * object,
                                        const gchar * id, const GValue * value)
@@ -168,7 +168,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_message_dialog_verify_property (GladeWidgetAdaptor * adaptor,
                                           GObject * object,
                                           const gchar * id,
@@ -194,7 +194,7 @@ glade_gtk_message_dialog_verify_property (GladeWidgetAdaptor * adaptor,
     return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_message_dialog_get_property (GladeWidgetAdaptor * adaptor,
                                        GObject * object,
                                        const gchar * property_name,

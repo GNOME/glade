@@ -30,7 +30,7 @@
 
 #define GLADE_RESPONSE_CLEAR 42
 
-GList *
+G_MODULE_EXPORT GList *
 glade_accel_list_copy (GList * accels)
 {
   GList *ret = NULL, *list;
@@ -51,7 +51,7 @@ glade_accel_list_copy (GList * accels)
   return g_list_reverse (ret);
 }
 
-void
+G_MODULE_EXPORT void
 glade_accel_list_free (GList * accels)
 {
   GList *list;
@@ -67,7 +67,7 @@ glade_accel_list_free (GList * accels)
   g_list_free (accels);
 }
 
-GType
+G_MODULE_EXPORT GType
 glade_accel_glist_get_type (void)
 {
   static GType type_id = 0;
@@ -83,7 +83,7 @@ glade_accel_glist_get_type (void)
 /* This is not used to save in the glade file... and its a one-way conversion.
  * its only usefull to show the values in the UI.
  */
-gchar *
+G_MODULE_EXPORT gchar *
 glade_accels_make_string (GList * accels)
 {
   GladeAccelInfo *info;
@@ -330,7 +330,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }
 
-void
+G_MODULE_EXPORT void
 accel_edited (GtkCellRendererAccel * accel,
               gchar * path_string,
               guint accel_key,
@@ -402,7 +402,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }
 
-void
+G_MODULE_EXPORT void
 accel_cleared (GtkCellRendererAccel * accel,
                gchar * path_string, GladeEPropAccel * eprop_accel)
 {
@@ -815,7 +815,7 @@ glade_gtk_modifier_string_from_bits (GdkModifierType modifiers)
   return NULL;
 }
 
-GladeAccelInfo *
+G_MODULE_EXPORT GladeAccelInfo *
 glade_accel_read (GladeXmlNode * node, gboolean require_signal)
 {
   GladeAccelInfo *ainfo;
@@ -849,7 +849,7 @@ glade_accel_read (GladeXmlNode * node, gboolean require_signal)
   return ainfo;
 }
 
-GladeXmlNode *
+G_MODULE_EXPORT GladeXmlNode *
 glade_accel_write (GladeAccelInfo * accel,
                    GladeXmlContext * context, gboolean write_signal)
 {
@@ -877,7 +877,7 @@ glade_accel_write (GladeAccelInfo * accel,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_read_accels (GladeWidget * widget,
                        GladeXmlNode * node, gboolean require_signal)
 {
@@ -911,7 +911,7 @@ glade_gtk_read_accels (GladeWidget * widget,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_write_accels (GladeWidget * widget,
                         GladeXmlContext * context,
                         GladeXmlNode * node, gboolean write_signal)

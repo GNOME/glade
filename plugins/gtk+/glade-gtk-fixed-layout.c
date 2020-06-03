@@ -27,7 +27,7 @@
 
 #include "glade-layout-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_layout_create_editable (GladeWidgetAdaptor *adaptor,
                                   GladeEditorPageType type)
 {
@@ -105,7 +105,7 @@ glade_gtk_fixed_layout_draw (GtkWidget *widget, cairo_t *cr)
   cairo_restore (cr);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor *adaptor,
                                     GObject            *object,
                                     GladeCreateReason   reason)
@@ -125,7 +125,7 @@ glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor *adaptor,
                     G_CALLBACK (glade_gtk_fixed_layout_draw), NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_fixed_layout_add_child (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   GObject            *child)
@@ -136,7 +136,7 @@ glade_gtk_fixed_layout_add_child (GladeWidgetAdaptor *adaptor,
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      GObject            *child)

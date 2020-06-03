@@ -33,7 +33,7 @@
 #include "glade-real-tree-view-editor.h"
 
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_treeview_create_editable (GladeWidgetAdaptor *adaptor,
                                     GladeEditorPageType type)
 {
@@ -45,7 +45,7 @@ glade_gtk_treeview_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_treeview_add_verify (GladeWidgetAdaptor *adaptor,
                                GtkWidget          *container,
                                GtkWidget          *child,
@@ -71,7 +71,7 @@ glade_gtk_treeview_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_treeview_launch_editor (GObject *treeview)
 {
   GladeBaseEditor    *editor;
@@ -106,7 +106,7 @@ glade_gtk_treeview_launch_editor (GObject *treeview)
   gtk_widget_show (window);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_treeview_action_activate (GladeWidgetAdaptor *adaptor,
                                     GObject            *object,
                                     const gchar        *action_path)
@@ -134,7 +134,7 @@ glade_gtk_treeview_get_column_index (GtkTreeView * view,
   return -1;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_treeview_get_child_property (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *child,
@@ -155,7 +155,7 @@ glade_gtk_treeview_get_child_property (GladeWidgetAdaptor *adaptor,
                                                   property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_treeview_set_child_property (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *child,
@@ -179,7 +179,7 @@ glade_gtk_treeview_set_child_property (GladeWidgetAdaptor *adaptor,
                                                   property_name, value);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_treeview_get_children (GladeWidgetAdaptor *adaptor,
                                  GtkTreeView        *view)
 {
@@ -198,7 +198,7 @@ glade_gtk_treeview_get_children (GladeWidgetAdaptor *adaptor,
 #define INSENSITIVE_COLUMN_SIZING_MSG \
         _("Columns must have a fixed size inside a treeview with fixed height mode set")
 
-void
+G_MODULE_EXPORT void
 glade_gtk_treeview_add_child (GladeWidgetAdaptor * adaptor,
                               GObject * container, GObject * child)
 {
@@ -223,7 +223,7 @@ glade_gtk_treeview_add_child (GladeWidgetAdaptor * adaptor,
   glade_gtk_cell_layout_sync_attributes (G_OBJECT (column));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
                                  GObject            *container,
                                  GObject            *child)
@@ -238,7 +238,7 @@ glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
   gtk_tree_view_remove_column (view, column);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_treeview_replace_child (GladeWidgetAdaptor *adaptor,
                                   GObject            *container,
                                   GObject            *current, 
@@ -275,7 +275,7 @@ glade_gtk_treeview_replace_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_cell_layout_sync_attributes (G_OBJECT (column));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_treeview_set_property (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  const gchar        *id,

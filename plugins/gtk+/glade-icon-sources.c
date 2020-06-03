@@ -74,7 +74,7 @@ icon_sources_dup (gchar *icon_name, GList *set, GladeIconSources *dup)
   g_hash_table_insert (dup->sources, g_strdup (icon_name), dup_set);
 }
 
-GladeIconSources *
+G_MODULE_EXPORT GladeIconSources *
 glade_icon_sources_copy (GladeIconSources *sources)
 {
   if (!sources)
@@ -87,7 +87,7 @@ glade_icon_sources_copy (GladeIconSources *sources)
   return dup;
 }
 
-void
+G_MODULE_EXPORT void
 glade_icon_sources_free (GladeIconSources *sources)
 {
   if (sources)
@@ -97,7 +97,7 @@ glade_icon_sources_free (GladeIconSources *sources)
     }
 }
 
-GType
+G_MODULE_EXPORT GType
 glade_icon_sources_get_type (void)
 {
   static GType type_id = 0;

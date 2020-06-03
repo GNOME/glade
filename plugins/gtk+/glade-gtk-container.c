@@ -25,7 +25,7 @@
 #include <gladeui/glade.h>
 #include <string.h>
 
-void
+G_MODULE_EXPORT void
 glade_gtk_container_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *container,
                                  GladeCreateReason   reason)
@@ -43,7 +43,7 @@ glade_gtk_container_post_create (GladeWidgetAdaptor *adaptor,
     }
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
                                 GtkWidget          *container,
                                 GtkWidget          *child,
@@ -96,7 +96,7 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
                                    GtkWidget          *container,
                                    GtkWidget          *current,
@@ -153,7 +153,7 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
   g_free (value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_container_add_child (GladeWidgetAdaptor *adaptor,
                                GtkWidget          *container,
                                GtkWidget          *child)
@@ -172,7 +172,7 @@ glade_gtk_container_add_child (GladeWidgetAdaptor *adaptor,
   gtk_container_add (GTK_CONTAINER (container), child);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_container_remove_child (GladeWidgetAdaptor *adaptor,
                                   GtkWidget          *container,
                                   GtkWidget          *child)
@@ -191,7 +191,7 @@ glade_gtk_container_remove_child (GladeWidgetAdaptor *adaptor,
     g_list_free (children);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_container_set_child_property (GladeWidgetAdaptor *adaptor,
                                         GObject            *container,
                                         GObject            *child,
@@ -203,7 +203,7 @@ glade_gtk_container_set_child_property (GladeWidgetAdaptor *adaptor,
                                       GTK_WIDGET (child), property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_container_get_child_property (GladeWidgetAdaptor *adaptor,
                                         GObject            *container,
                                         GObject            *child,
@@ -215,7 +215,7 @@ glade_gtk_container_get_child_property (GladeWidgetAdaptor *adaptor,
                                       GTK_WIDGET (child), property_name, value);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_container_get_children (GladeWidgetAdaptor *adaptor,
                                   GObject            *container)
 {
@@ -233,7 +233,7 @@ glade_gtk_container_get_children (GladeWidgetAdaptor *adaptor,
 }
 
 /* This is used in the XML for some derived classes */
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_container_create_editable (GladeWidgetAdaptor *adaptor,
                                      GladeEditorPageType type)
 {

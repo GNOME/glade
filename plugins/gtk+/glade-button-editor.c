@@ -391,7 +391,7 @@ glade_button_editor_new (void)
 /*************************************
  *     Private Plugin Extensions     *
  *************************************/
-void
+G_MODULE_EXPORT void
 glade_button_editor_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *editor,
                                  GladeCreateReason   reason)

@@ -50,7 +50,7 @@ glade_gtk_entry_changed (GtkEditable *editable, GladeWidget *gentry)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_entry_post_create (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GladeCreateReason   reason)
@@ -65,7 +65,7 @@ glade_gtk_entry_post_create (GladeWidgetAdaptor *adaptor,
                     G_CALLBACK (glade_gtk_entry_changed), gentry);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_entry_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {
@@ -75,7 +75,7 @@ glade_gtk_entry_create_editable (GladeWidgetAdaptor *adaptor,
     return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               const gchar        *id,
@@ -215,7 +215,7 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
                              GladeWidget        *widget,
                              GladeXmlNode       *node)

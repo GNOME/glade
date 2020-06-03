@@ -28,7 +28,7 @@
 #include "glade-gtk.h"
 #include "glade-accels.h"
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_action_group_add_verify (GladeWidgetAdaptor *adaptor,
                                    GtkWidget          *container,
                                    GtkWidget          *child,
@@ -57,7 +57,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_group_add_child (GladeWidgetAdaptor *adaptor,
                                   GObject            *container,
                                   GObject            *child)
@@ -83,7 +83,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_group_remove_child (GladeWidgetAdaptor *adaptor,
                                      GObject            *container,
                                      GObject            *child)
@@ -110,7 +110,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_group_replace_child (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *current,
@@ -120,7 +120,7 @@ glade_gtk_action_group_replace_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_action_group_add_child (adaptor, container, new_action);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_action_group_get_children (GladeWidgetAdaptor *adaptor,
                                      GObject            *container)
 {
@@ -131,7 +131,7 @@ glade_gtk_action_group_get_children (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_group_read_child (GladeWidgetAdaptor *adaptor,
                                    GladeWidget        *widget,
                                    GladeXmlNode       *node)
@@ -158,7 +158,7 @@ glade_gtk_action_group_read_child (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_group_write_child (GladeWidgetAdaptor *adaptor,
                                     GladeWidget        *widget,
                                     GladeXmlContext    *context,
@@ -231,7 +231,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   gtk_widget_show (window);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_action_activate (GladeWidgetAdaptor *adaptor,
                                   GObject *object,
                                   const gchar *action_path)

@@ -153,7 +153,7 @@ use_center_child_toggled (GtkWidget            * widget,
   glade_editable_load (GLADE_EDITABLE (box_editor), gwidget);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_action_bar_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_ACTION_BAR_EDITOR, NULL);

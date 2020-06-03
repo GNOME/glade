@@ -25,7 +25,7 @@
 #include <config.h>
 #include "glade-activatable-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_switch_create_editable (GladeWidgetAdaptor *adaptor,
                                   GladeEditorPageType type)
 {
@@ -35,7 +35,7 @@ glade_gtk_switch_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_switch_post_create (GladeWidgetAdaptor *adaptor,
                               GObject *widget,
                               GladeCreateReason reason)

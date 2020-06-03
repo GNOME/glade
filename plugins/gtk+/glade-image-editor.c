@@ -309,7 +309,7 @@ file_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   glade_editable_load (GLADE_EDITABLE (image_editor), gwidget);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_image_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_IMAGE_EDITOR, NULL);

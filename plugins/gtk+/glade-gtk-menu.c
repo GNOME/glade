@@ -25,7 +25,7 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
-GObject *
+G_MODULE_EXPORT GObject *
 glade_gtk_menu_constructor (GType type,
                             guint n_construct_properties,
                             GObjectConstructParam * construct_properties)

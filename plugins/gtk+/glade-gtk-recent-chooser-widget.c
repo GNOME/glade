@@ -28,7 +28,7 @@
 #include "glade-gtk-dialog.h"
 #include "glade-recent-chooser-widget-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_recent_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
                                                  GladeEditorPageType type)
 {

@@ -41,7 +41,7 @@ glade_font_chooser_dialog_editor_init (GladeFontChooserDialogEditor * self)
   gtk_widget_init_template (GTK_WIDGET (self));
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_font_chooser_dialog_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_FONT_CHOOSER_DIALOG_EDITOR, NULL);

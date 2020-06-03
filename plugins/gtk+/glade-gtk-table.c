@@ -203,7 +203,7 @@ gtk_table_children_callback (GtkWidget *widget, gpointer client_data)
   *children = g_list_prepend (*children, widget);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_table_get_children (GladeWidgetAdaptor *adaptor,
                               GtkContainer       *container)
 {
@@ -215,7 +215,7 @@ glade_gtk_table_get_children (GladeWidgetAdaptor *adaptor,
   return children;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_table_add_child (GladeWidgetAdaptor *adaptor,
                            GObject            *object,
                            GObject            *child)
@@ -225,7 +225,7 @@ glade_gtk_table_add_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_table_remove_child (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               GObject            *child)
@@ -235,7 +235,7 @@ glade_gtk_table_remove_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_table_replace_child (GladeWidgetAdaptor *adaptor,
                                GtkWidget          *container,
                                GtkWidget          *current,
@@ -356,7 +356,7 @@ glade_gtk_table_set_n_common (GObject      *object,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_table_set_property (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               const gchar        *id,
@@ -389,7 +389,7 @@ glade_gtk_table_verify_n_common (GObject      *object,
   return TRUE;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_table_verify_property (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  const gchar        *id,
@@ -406,7 +406,7 @@ glade_gtk_table_verify_property (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_table_set_child_property (GladeWidgetAdaptor *adaptor,
                                     GObject            *container,
                                     GObject            *child,
@@ -490,7 +490,7 @@ glade_gtk_table_verify_right_bottom_attach (GObject     *object,
   return TRUE;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_table_child_verify_property (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *child,
@@ -666,7 +666,7 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
   glade_command_pop_group ();
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_table_child_action_activate (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *object,

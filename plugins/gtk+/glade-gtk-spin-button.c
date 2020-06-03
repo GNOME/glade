@@ -27,7 +27,7 @@
 
 #include "glade-spin-button-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_spin_button_create_editable (GladeWidgetAdaptor *adaptor,
                                        GladeEditorPageType type)
 {
@@ -66,7 +66,7 @@ glade_gtk_spin_button_set_adjustment (GObject *object, const GValue *value)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_spin_button_set_property (GladeWidgetAdaptor *adaptor,
                                     GObject            *object,
                                     const gchar        *id,

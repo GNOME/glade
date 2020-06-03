@@ -31,7 +31,7 @@
 #define GLADE_TAG_ITEMS  "items"
 #define GLADE_TAG_ITEM   "item"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_combo_box_text_create_editable (GladeWidgetAdaptor *adaptor,
                                           GladeEditorPageType type)
 {
@@ -43,7 +43,7 @@ glade_gtk_combo_box_text_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_combo_box_text_post_create (GladeWidgetAdaptor *adaptor,
                                       GObject            *object, 
                                       GladeCreateReason   reason)
@@ -58,7 +58,7 @@ glade_gtk_combo_box_text_post_create (GladeWidgetAdaptor *adaptor,
   glade_widget_set_action_visible (gwidget, "launch_editor", FALSE);
 }
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_gtk_combo_box_text_create_eprop (GladeWidgetAdaptor *adaptor,
                                        GladePropertyDef   *def, 
                                        gboolean            use_command)
@@ -79,7 +79,7 @@ glade_gtk_combo_box_text_create_eprop (GladeWidgetAdaptor *adaptor,
   return eprop;
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_combo_box_text_string_from_value (GladeWidgetAdaptor *adaptor,
                                             GladePropertyDef   *def,
                                             const GValue       *value)
@@ -99,7 +99,7 @@ glade_gtk_combo_box_text_string_from_value (GladeWidgetAdaptor *adaptor,
         (GTK_TYPE_COMBO_BOX)->string_from_value (adaptor, def, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_combo_box_text_set_property (GladeWidgetAdaptor *adaptor,
                                        GObject            *object,
                                        const gchar        *id,
@@ -176,7 +176,7 @@ glade_gtk_combo_box_text_read_items (GladeWidget *widget, GladeXmlNode *node)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_combo_box_text_read_widget (GladeWidgetAdaptor *adaptor,
                                       GladeWidget        *widget,
                                       GladeXmlNode       *node)
@@ -234,7 +234,7 @@ glade_gtk_combo_box_text_write_items (GladeWidget     *widget,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_combo_box_text_write_widget (GladeWidgetAdaptor *adaptor,
                                        GladeWidget        *widget,
                                        GladeXmlContext    *context,

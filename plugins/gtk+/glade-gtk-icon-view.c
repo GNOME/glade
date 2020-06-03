@@ -27,7 +27,7 @@
 
 #include "glade-icon-view-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_icon_view_create_editable (GladeWidgetAdaptor *adaptor,
                                      GladeEditorPageType type)
 {

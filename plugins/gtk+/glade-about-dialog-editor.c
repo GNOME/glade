@@ -206,7 +206,7 @@ logo_file_toggled (GtkWidget *widget, GladeAboutDialogEditor *editor)
   glade_about_dialog_editor_set_logo_as_file (editor, TRUE);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_about_dialog_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_ABOUT_DIALOG_EDITOR, NULL);

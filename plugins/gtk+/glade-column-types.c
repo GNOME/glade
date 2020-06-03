@@ -147,7 +147,7 @@ column_types_store_populate (GtkListStore * store)
   column_types_store_populate_enums_flags (store, FALSE);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_column_list_copy (GList * list)
 {
   GList *l, *retval = NULL;
@@ -164,7 +164,7 @@ glade_column_list_copy (GList * list)
   return g_list_reverse (retval);
 }
 
-GladeColumnType *
+G_MODULE_EXPORT GladeColumnType *
 glade_column_type_new (const gchar * type_name, const gchar * column_name)
 {
   GladeColumnType *column = g_slice_new0 (GladeColumnType);
@@ -175,7 +175,7 @@ glade_column_type_new (const gchar * type_name, const gchar * column_name)
   return column;
 }
 
-void
+G_MODULE_EXPORT void
 glade_column_type_free (GladeColumnType * column)
 {
   g_free (column->type_name);
@@ -183,14 +183,14 @@ glade_column_type_free (GladeColumnType * column)
   g_slice_free (GladeColumnType, column);
 }
 
-void
+G_MODULE_EXPORT void
 glade_column_list_free (GList * list)
 {
   g_list_foreach (list, (GFunc) glade_column_type_free, NULL);
   g_list_free (list);
 }
 
-GladeColumnType *
+G_MODULE_EXPORT GladeColumnType *
 glade_column_list_find_column (GList * list, const gchar * column_name)
 {
   GladeColumnType *column = NULL, *iter;
@@ -209,7 +209,7 @@ glade_column_list_find_column (GList * list, const gchar * column_name)
   return column;
 }
 
-GType
+G_MODULE_EXPORT GType
 glade_column_type_list_get_type (void)
 {
   static GType type_id = 0;

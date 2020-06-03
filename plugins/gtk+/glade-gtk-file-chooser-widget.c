@@ -29,7 +29,7 @@
 #include "glade-file-chooser-widget-editor.h"
 #include "glade-file-chooser-button-editor.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor *adaptor,
                                            GObject            *object,
                                            GladeCreateReason   reason)
@@ -38,7 +38,7 @@ glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor *adaptor,
                         glade_gtk_file_chooser_default_forall, NULL);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_file_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
                                                GladeEditorPageType type)
 {
@@ -49,7 +49,7 @@ glade_gtk_file_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor *adaptor,
                                             GObject            *object,
                                             const gchar        *id,
@@ -67,7 +67,7 @@ glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_file_chooser_button_create_editable (GladeWidgetAdaptor *adaptor,
                                                GladeEditorPageType type)
 {

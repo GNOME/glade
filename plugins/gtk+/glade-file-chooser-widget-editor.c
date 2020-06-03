@@ -41,7 +41,7 @@ glade_file_chooser_widget_editor_init (GladeFileChooserWidgetEditor * self)
   gtk_widget_init_template (GTK_WIDGET (self));
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_file_chooser_widget_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_FILE_CHOOSER_WIDGET_EDITOR, NULL);

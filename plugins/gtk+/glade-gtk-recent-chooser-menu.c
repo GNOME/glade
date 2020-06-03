@@ -27,7 +27,7 @@
 
 #include "glade-recent-chooser-menu-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor *adaptor,
                                                GladeEditorPageType type)
 {
@@ -37,7 +37,7 @@ glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_MENU)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_recent_chooser_menu_set_property (GladeWidgetAdaptor *adaptor,
                                             GObject            *object,
                                             const gchar        *id,

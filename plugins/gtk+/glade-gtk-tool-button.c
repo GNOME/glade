@@ -28,7 +28,7 @@
 #include "glade-gtk.h"
 #include "glade-tool-button-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_tool_button_create_editable (GladeWidgetAdaptor *adaptor,
                                        GladeEditorPageType type)
 {
@@ -135,7 +135,7 @@ glade_gtk_tool_button_set_icon_name (GObject *object, const GValue *value)
   gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (object), name);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
                                     GObject            *object,
                                     const gchar        *id,
@@ -194,7 +194,7 @@ glade_gtk_tool_button_parse_finished (GladeProject *project,
     glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_STOCK);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_button_read_widget (GladeWidgetAdaptor *adaptor,
                                    GladeWidget        *widget,
                                    GladeXmlNode       *node)

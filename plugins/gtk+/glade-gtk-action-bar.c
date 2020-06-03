@@ -32,7 +32,7 @@
 #include "glade-gtk.h"
 
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_action_bar_create_editable (GladeWidgetAdaptor * adaptor,
                                       GladeEditorPageType type)
 {
@@ -52,7 +52,7 @@ glade_gtk_action_bar_parse_finished (GladeProject * project,
   glade_widget_property_set (gbox, "use-center-child", gtk_action_bar_get_center_widget (GTK_ACTION_BAR (object)) != NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_bar_post_create (GladeWidgetAdaptor * adaptor,
                                   GObject * container,
                                   GladeCreateReason reason)
@@ -101,7 +101,7 @@ sort_children (GtkWidget * widget_a, GtkWidget * widget_b, GtkWidget *box)
   return position_a - position_b;
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_action_bar_get_children (GladeWidgetAdaptor * adaptor,
                                    GObject * container)
 {
@@ -164,7 +164,7 @@ glade_gtk_action_bar_set_child_pack_type (GObject * container,
   gtk_container_child_set (GTK_CONTAINER (container), GTK_WIDGET (child), "pack-type", pack_type, NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_bar_set_child_property (GladeWidgetAdaptor * adaptor,
                                          GObject * container,
                                          GObject * child,
@@ -193,7 +193,7 @@ glade_gtk_action_bar_get_num_children (GObject *box)
   return retval;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_bar_get_property (GladeWidgetAdaptor * adaptor,
                                    GObject * object,
                                    const gchar * id,
@@ -308,7 +308,7 @@ glade_gtk_action_bar_set_size (GObject * object, const GValue * value)
   g_list_free (children);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_bar_set_property (GladeWidgetAdaptor * adaptor,
                                    GObject * object,
                                    const gchar * id,
@@ -363,7 +363,7 @@ glade_gtk_action_bar_verify_size (GObject *object, const GValue *value)
   return count > new_size ? FALSE : new_size >= 0;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_action_bar_verify_property (GladeWidgetAdaptor * adaptor,
                                       GObject * object,
                                       const gchar * id,
@@ -377,7 +377,7 @@ glade_gtk_action_bar_verify_property (GladeWidgetAdaptor * adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_bar_add_child (GladeWidgetAdaptor * adaptor,
                                 GObject * object,
                                 GObject * child)
@@ -430,7 +430,7 @@ glade_gtk_action_bar_add_child (GladeWidgetAdaptor * adaptor,
     glade_widget_pack_property_set (gchild, "position", num_children - 1);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_bar_remove_child (GladeWidgetAdaptor * adaptor,
                                    GObject * object,
                                    GObject * child)
@@ -461,7 +461,7 @@ glade_gtk_action_bar_remove_child (GladeWidgetAdaptor * adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_bar_replace_child (GladeWidgetAdaptor * adaptor,
                                     GObject * container,
                                     GObject * current,

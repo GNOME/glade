@@ -29,7 +29,7 @@
 
 #define DRAW_VALUE_DISABLED_MSG _("Scale is configured to not draw the value")
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_scale_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {
@@ -41,7 +41,7 @@ glade_gtk_scale_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_scale_set_property (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               const gchar        *id,

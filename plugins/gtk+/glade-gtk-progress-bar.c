@@ -29,7 +29,7 @@
 
 #define TEXT_DISABLED_MSG _("This progressbar does not show text")
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_progress_bar_create_editable (GladeWidgetAdaptor *adaptor,
                                         GladeEditorPageType type)
 {
@@ -41,7 +41,7 @@ glade_gtk_progress_bar_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_progress_bar_set_property (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      const gchar        *id,

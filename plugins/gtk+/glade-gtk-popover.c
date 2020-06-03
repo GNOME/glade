@@ -27,7 +27,7 @@
 
 #include "glade-popover-editor.h"
 
-GObject *
+G_MODULE_EXPORT GObject *
 glade_gtk_popover_constructor (GType type,
                                guint n_construct_properties,
                                GObjectConstructParam * construct_properties)
@@ -46,7 +46,7 @@ glade_gtk_popover_constructor (GType type,
   return ret_obj;
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_popover_create_editable (GladeWidgetAdaptor * adaptor,
                                    GladeEditorPageType  type)
 {
@@ -65,7 +65,7 @@ popover_key_press (GtkWidget *popover, GdkEventKey *event, gpointer user_data)
   return FALSE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_post_create (GladeWidgetAdaptor *adaptor,
                                GObject            *popover,
                                GladeCreateReason   reason)

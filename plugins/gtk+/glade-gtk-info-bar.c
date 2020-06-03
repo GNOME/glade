@@ -26,7 +26,7 @@
 #include <gladeui/glade.h>
 #include "glade-gtk-action-widgets.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_info_bar_read_child (GladeWidgetAdaptor *adaptor,
                                GladeWidget *widget,
                                GladeXmlNode *node)
@@ -38,7 +38,7 @@ glade_gtk_info_bar_read_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_action_widgets_read_child (widget, node, "action_area");
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_info_bar_write_child (GladeWidgetAdaptor *adaptor,
                                 GladeWidget *widget,
                                 GladeXmlContext *context,

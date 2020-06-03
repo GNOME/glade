@@ -63,7 +63,7 @@ glade_gtk_file_chooser_forall (GtkWidget * widget, gpointer data)
                           glade_gtk_file_chooser_default_forall, NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
                               GObject *object, GladeCreateReason reason)
 {
@@ -158,7 +158,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_dialog_read_child (GladeWidgetAdaptor * adaptor,
                              GladeWidget * widget, GladeXmlNode * node)
 {
@@ -169,7 +169,7 @@ glade_gtk_dialog_read_child (GladeWidgetAdaptor * adaptor,
   glade_gtk_action_widgets_read_child (widget, node, "action_area");
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_dialog_write_child (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget,
                               GladeXmlContext * context, GladeXmlNode * node)
@@ -192,7 +192,7 @@ glade_gtk_dialog_write_child (GladeWidgetAdaptor * adaptor,
 }
 
 /* Shared with file chooser widget */
-void
+G_MODULE_EXPORT void
 glade_gtk_file_chooser_default_forall (GtkWidget * widget, gpointer data)
 {
   /* Since GtkFileChooserDefault is not exposed we check if its a

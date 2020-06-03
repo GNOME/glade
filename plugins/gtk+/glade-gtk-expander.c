@@ -26,7 +26,7 @@
 
 #include "glade-gtk-frame.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_expander_post_create (GladeWidgetAdaptor *adaptor,
                                 GObject            *expander,
                                 GladeCreateReason   reason)
@@ -67,7 +67,7 @@ glade_gtk_expander_post_create (GladeWidgetAdaptor *adaptor,
 
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_expander_replace_child (GladeWidgetAdaptor *adaptor,
                                   GtkWidget          *container,
                                   GtkWidget          *current,
@@ -95,7 +95,7 @@ glade_gtk_expander_replace_child (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_expander_add_child (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               GObject            *child)
@@ -118,7 +118,7 @@ glade_gtk_expander_add_child (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->add (adaptor, object, child);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_expander_remove_child (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  GObject            *child)
@@ -138,7 +138,7 @@ glade_gtk_expander_remove_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_expander_write_child (GladeWidgetAdaptor *adaptor,
                                 GladeWidget        *widget,
                                 GladeXmlContext    *context,

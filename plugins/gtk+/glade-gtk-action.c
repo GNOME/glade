@@ -29,7 +29,7 @@
 #include "glade-action-editor.h"
 #include "glade-recent-action-editor.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_post_create (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               GladeCreateReason   reason)
@@ -51,7 +51,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
                                        ACTION_ACCEL_INSENSITIVE_MSG);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_action_create_editable (GladeWidgetAdaptor *adaptor,
                                   GladeEditorPageType type)
 {

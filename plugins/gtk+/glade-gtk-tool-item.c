@@ -25,7 +25,7 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
-GObject *
+G_MODULE_EXPORT GObject *
 glade_gtk_tool_item_constructor (GType type,
                                  guint n_construct_properties,
                                  GObjectConstructParam *construct_properties)
@@ -44,7 +44,7 @@ glade_gtk_tool_item_constructor (GType type,
   return ret_obj;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *object, 
                                  GladeCreateReason   reason)
@@ -57,7 +57,7 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
     gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_item_set_property (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   const gchar        *id,

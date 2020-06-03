@@ -94,7 +94,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   return gitem;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_bar_post_create (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GladeCreateReason   reason)

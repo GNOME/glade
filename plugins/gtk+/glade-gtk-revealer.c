@@ -24,7 +24,7 @@
 #include <config.h>
 #include <gladeui/glade.h>
 
-void
+G_MODULE_EXPORT void
 glade_gtk_revealer_post_create (GladeWidgetAdaptor *adaptor,
                                 GObject            *container,
                                 GladeCreateReason   reason)

@@ -164,7 +164,7 @@ glade_gtk_action_widgets_write_responses (GladeWidget     *widget,
   g_list_free (action_widgets);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_widgets_ensure_names (GladeWidget *widget,
                                        gchar       *action_container)
 {
@@ -200,7 +200,7 @@ glade_gtk_action_widgets_ensure_names (GladeWidget *widget,
   g_list_free (action_widgets);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_action_widgets_write_child (GladeWidget     *widget,
                                       GladeXmlContext *context,
                                       GladeXmlNode    *node,

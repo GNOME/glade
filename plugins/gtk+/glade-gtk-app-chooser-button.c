@@ -27,7 +27,7 @@
 
 #include "glade-app-chooser-button-editor.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_app_chooser_button_post_create (GladeWidgetAdaptor *adaptor,
                                           GObject            *object, 
                                           GladeCreateReason   reason)
@@ -42,7 +42,7 @@ glade_gtk_app_chooser_button_post_create (GladeWidgetAdaptor *adaptor,
   glade_widget_set_action_visible (gwidget, "launch_editor", FALSE);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_app_chooser_button_create_editable (GladeWidgetAdaptor *adaptor,
                                               GladeEditorPageType type)
 {

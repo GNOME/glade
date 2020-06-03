@@ -29,7 +29,7 @@
 #include "glade-attributes.h"
 #include "glade-gtk.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_label_post_create (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GladeCreateReason   reason)
@@ -296,7 +296,7 @@ glade_gtk_label_set_use_underline (GObject *object, const GValue *value)
   gtk_label_set_use_underline (GTK_LABEL (object), g_value_get_boolean (value));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_label_set_property (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               const gchar        *id,
@@ -385,7 +385,7 @@ glade_gtk_label_read_attributes (GladeWidget *widget, GladeXmlNode *node)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_label_read_widget (GladeWidgetAdaptor *adaptor,
                              GladeWidget        *widget,
                              GladeXmlNode       *node)
@@ -468,7 +468,7 @@ glade_gtk_label_write_attributes (GladeWidget     *widget,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
                               GladeWidget        *widget,
                               GladeXmlContext    *context,
@@ -495,7 +495,7 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
 
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
                                    GladePropertyDef   *def,
                                    const GValue       *value)
@@ -529,7 +529,7 @@ glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
 }
 
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_gtk_label_create_eprop (GladeWidgetAdaptor *adaptor,
                               GladePropertyDef   *def,
                               gboolean            use_command)
@@ -552,7 +552,7 @@ glade_gtk_label_create_eprop (GladeWidgetAdaptor *adaptor,
   return eprop;
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_label_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {

@@ -27,7 +27,7 @@
 
 #include "glade-scrolled-window-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_scrolled_window_create_editable (GladeWidgetAdaptor *adaptor,
                                            GladeEditorPageType type)
 {
@@ -39,7 +39,7 @@ glade_gtk_scrolled_window_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_scrolled_window_set_property (GladeWidgetAdaptor *adaptor,
                                         GObject            *object,
                                         const gchar        *id,
@@ -60,7 +60,7 @@ glade_gtk_scrolled_window_set_property (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_scrolled_window_add_child_verify (GladeWidgetAdaptor *adaptor,
                                             GtkWidget          *container,
                                             GtkWidget          *child,

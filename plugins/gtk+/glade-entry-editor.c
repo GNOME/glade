@@ -618,7 +618,7 @@ secondary_tooltip_markup_toggled (GtkWidget        *widget,
   toggle_tooltip_markup (entry_editor, widget, FALSE);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_entry_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_ENTRY_EDITOR, NULL);
@@ -627,7 +627,7 @@ glade_entry_editor_new (void)
 /*************************************
  *     Private Plugin Extensions     *
  *************************************/
-void
+G_MODULE_EXPORT void
 glade_entry_editor_post_create (GladeWidgetAdaptor *adaptor,
                                 GObject            *editor,
                                 GladeCreateReason   reason)

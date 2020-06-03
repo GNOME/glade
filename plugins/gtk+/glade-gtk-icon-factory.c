@@ -37,7 +37,7 @@
 #define GLADE_TAG_STATE     "state"
 #define GLADE_TAG_SIZE      "size"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_icon_factory_post_create (GladeWidgetAdaptor *adaptor,
                                     GObject            *object,
                                     GladeCreateReason   reason)
@@ -47,7 +47,7 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_icon_factory_destroy_object (GladeWidgetAdaptor *adaptor,
                                        GObject            *object)
 {
@@ -192,7 +192,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   glade_icon_sources_free (sources);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor *adaptor,
                                     GladeWidget        *widget,
                                     GladeXmlNode       *node)
@@ -308,7 +308,7 @@ glade_gtk_icon_factory_write_sources (GladeWidget     *widget,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor *adaptor,
                                      GladeWidget        *widget,
                                      GladeXmlContext    *context,
@@ -354,7 +354,7 @@ glade_gtk_icon_factory_set_sources (GObject *object, const GValue *value)
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_icon_factory_set_property (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      const gchar        *property_name,
@@ -424,7 +424,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
                                           GladePropertyDef   *def,
                                           const GValue       *value)
@@ -452,7 +452,7 @@ glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
 }
 
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
                                      GladePropertyDef   *def,
                                      gboolean            use_command)
@@ -472,7 +472,7 @@ glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
   return eprop;
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor *adaptor,
                                         GladeEditorPageType type)
 {

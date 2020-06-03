@@ -80,7 +80,7 @@ property_icon_size_notify_enabled (GladeProperty *property,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_toolbar_post_create (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                GladeCreateReason   reason)
@@ -99,7 +99,7 @@ glade_gtk_toolbar_post_create (GladeWidgetAdaptor *adaptor,
                     G_CALLBACK (property_icon_size_notify_enabled), object);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_toolbar_get_child_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *child,
@@ -125,7 +125,7 @@ glade_gtk_toolbar_get_child_property (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *child,
@@ -161,7 +161,7 @@ glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor *adaptor,
                                                   property_name, value);
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_toolbar_add_verify (GladeWidgetAdaptor *adaptor,
                               GtkWidget          *container,
                               GtkWidget          *child,
@@ -187,7 +187,7 @@ glade_gtk_toolbar_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_toolbar_add_child (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GObject            *child)
@@ -215,7 +215,7 @@ glade_gtk_toolbar_add_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_toolbar_remove_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)
@@ -283,7 +283,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   gtk_widget_show (window);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_toolbar_action_activate (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    const gchar        *action_path)
@@ -298,7 +298,7 @@ glade_gtk_toolbar_action_activate (GladeWidgetAdaptor *adaptor,
 }
 
 /* Write the GtkIconSize as an integer */
-void
+G_MODULE_EXPORT void
 glade_gtk_toolbar_write_widget (GladeWidgetAdaptor *adaptor,
                                 GladeWidget        *widget,
                                 GladeXmlContext    *context,

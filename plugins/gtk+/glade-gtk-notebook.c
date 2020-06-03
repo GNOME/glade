@@ -42,7 +42,7 @@ typedef struct
 static gboolean glade_gtk_notebook_setting_position = FALSE;
 
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_notebook_create_editable (GladeWidgetAdaptor *adaptor,
                                     GladeEditorPageType type)
 {
@@ -395,7 +395,7 @@ glade_gtk_notebook_parse_finished (GladeProject *project, GObject *object)
                              "has-action-end", action != NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_post_create (GladeWidgetAdaptor *adaptor,
                                 GObject            *notebook,
                                 GladeCreateReason   reason)
@@ -548,7 +548,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_set_property (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  const gchar        *id,
@@ -587,7 +587,7 @@ glade_gtk_notebook_set_property (GladeWidgetAdaptor *adaptor,
                                                       id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_get_property (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  const gchar        *id,
@@ -633,7 +633,7 @@ glade_gtk_notebook_verify_n_pages (GObject *object, const GValue *value)
   return TRUE;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_notebook_verify_property (GladeWidgetAdaptor *adaptor,
                                     GObject            *object,
                                     const gchar        *id,
@@ -648,7 +648,7 @@ glade_gtk_notebook_verify_property (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_add_child (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               GObject            *child)
@@ -749,7 +749,7 @@ glade_gtk_notebook_add_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_remove_child (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  GObject            *child)
@@ -801,7 +801,7 @@ glade_gtk_notebook_remove_child (GladeWidgetAdaptor *adaptor,
 
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_replace_child (GladeWidgetAdaptor *adaptor,
                                   GtkWidget          *container,
                                   GtkWidget          *current,
@@ -856,7 +856,7 @@ glade_gtk_notebook_replace_child (GladeWidgetAdaptor *adaptor,
     gtk_widget_destroy (GTK_WIDGET (new_widget));
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_notebook_child_verify_property (GladeWidgetAdaptor *adaptor,
                                           GObject            *container,
                                           GObject            *child,
@@ -876,7 +876,7 @@ glade_gtk_notebook_child_verify_property (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_set_child_property (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *child,
@@ -903,7 +903,7 @@ glade_gtk_notebook_set_child_property (GladeWidgetAdaptor *adaptor,
                                                   property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_get_child_property (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *child,
@@ -937,7 +937,7 @@ glade_gtk_notebook_get_child_property (GladeWidgetAdaptor *adaptor,
                                       GTK_WIDGET (child), property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_notebook_child_action_activate (GladeWidgetAdaptor *adaptor,
                                           GObject            *container,
                                           GObject            *object,
@@ -966,7 +966,7 @@ glade_gtk_notebook_child_action_activate (GladeWidgetAdaptor *adaptor,
 }
 
 /* Shared with glade-gtk-box.c */
-void
+G_MODULE_EXPORT void
 glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
                                                    GObject            *container,
                                                    GObject            *object,

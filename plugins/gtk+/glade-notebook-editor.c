@@ -112,7 +112,7 @@ glade_notebook_editor_grab_focus (GtkWidget * widget)
   gtk_widget_grab_focus (notebook_editor->priv->embed);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_notebook_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_NOTEBOOK_EDITOR, NULL);

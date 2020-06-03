@@ -41,7 +41,7 @@ glade_message_dialog_editor_init (GladeMessageDialogEditor * self)
   gtk_widget_init_template (GTK_WIDGET (self));
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_message_dialog_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_MESSAGE_DIALOG_EDITOR, NULL);

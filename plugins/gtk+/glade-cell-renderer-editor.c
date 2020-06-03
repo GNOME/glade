@@ -281,7 +281,7 @@ get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
 }
 
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
                                 GladeEditorPageType type, GladeEditable * embed)
 {
@@ -453,7 +453,7 @@ glade_cell_renderer_parent_get_model (GladeWidget *widget)
   return NULL;
 }
 
-GladeWidget *
+G_MODULE_EXPORT GladeWidget *
 glade_cell_renderer_get_model (GladeWidget * renderer)
 {
   GladeWidget *gparent;

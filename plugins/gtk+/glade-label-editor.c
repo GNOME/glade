@@ -412,7 +412,7 @@ wrap_mode_toggled (GtkWidget *widget, GladeLabelEditor *label_editor)
   glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_label_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_LABEL_EDITOR, NULL);

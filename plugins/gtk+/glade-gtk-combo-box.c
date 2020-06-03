@@ -30,7 +30,7 @@
 
 #define NO_ENTRY_MSG _("This combo box is not configured to have an entry")
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_combo_box_create_editable (GladeWidgetAdaptor *adaptor,
                                      GladeEditorPageType type)
 {
@@ -42,7 +42,7 @@ glade_gtk_combo_box_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *object, 
                                  GladeCreateReason   reason)
@@ -65,7 +65,7 @@ glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   const gchar        *id,
@@ -99,7 +99,7 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
                                                       object, id, value);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_combo_box_get_children (GladeWidgetAdaptor *adaptor,
                                   GtkComboBox        *combo)
 {

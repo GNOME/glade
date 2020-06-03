@@ -25,7 +25,7 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
-void
+G_MODULE_EXPORT void
 glade_gtk_radio_button_set_property (GladeWidgetAdaptor * adaptor,
                                      GObject * object,
                                      const gchar * property_name,

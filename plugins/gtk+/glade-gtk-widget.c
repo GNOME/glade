@@ -49,7 +49,7 @@
  * (and is for use in overriding some post_create functions
  * throughout the catalog).
  */
-void
+G_MODULE_EXPORT void
 empty (GObject * container, GladeCreateReason reason)
 {
 }
@@ -74,7 +74,7 @@ static const gchar *atk_relations_list[] = {
 };
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_widget_destroy_object (GladeWidgetAdaptor *adaptor,
                                  GObject            *object)
 {
@@ -314,7 +314,7 @@ glade_gtk_widget_read_style_classes (GladeWidget *widget, GladeXmlNode *node)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
                               GladeWidget        *widget,
                               GladeXmlNode       *node)
@@ -584,7 +584,7 @@ glade_gtk_widget_write_style_classes (GladeWidget     *widget,
     glade_xml_node_append_child (node, style_node);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
                                GladeWidget        *widget,
                                GladeXmlContext    *context,
@@ -610,7 +610,7 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_widget_write_widget_after (GladeWidgetAdaptor *adaptor,
                                      GladeWidget        *widget,
                                      GladeXmlContext    *context,
@@ -627,7 +627,7 @@ glade_gtk_widget_write_widget_after (GladeWidgetAdaptor *adaptor,
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget_after (adaptor, widget, context, node);
 }
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
                                GladePropertyDef   *def,
                                gboolean            use_command)
@@ -651,7 +651,7 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
   return eprop;
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_widget_create_editable (GladeWidgetAdaptor *adaptor,
                                   GladeEditorPageType type)
 {
@@ -666,7 +666,7 @@ glade_gtk_widget_create_editable (GladeWidgetAdaptor *adaptor,
   return editable;
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
                                     GladePropertyDef   *def,
                                     const GValue       *value)
@@ -709,7 +709,7 @@ widget_parent_changed (GtkWidget          *widget,
     glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
                                    GObject            *widget,
                                    GladeCreateReason   reason)
@@ -735,7 +735,7 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
     glade_widget_set_action_visible (gwidget, "read_documentation", FALSE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_widget_set_property (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                const gchar        *id,
@@ -781,7 +781,7 @@ glade_gtk_widget_set_property (GladeWidgetAdaptor *adaptor,
       GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_widget_get_property (GladeWidgetAdaptor * adaptor,
                                GObject * object,
                                const gchar * id, GValue * value)
@@ -821,7 +821,7 @@ create_command_property_list (GladeWidget *gnew, GList *saved_props)
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
                                   GObject            *object, 
                                   const gchar        *action_path)
@@ -1076,7 +1076,7 @@ glade_gtk_widget_add2group_cb (GtkMenuItem *item, GladeWidget *gwidget)
 }
 
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_gtk_widget_action_submenu (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  const gchar        *action_path)

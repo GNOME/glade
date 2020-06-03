@@ -80,7 +80,7 @@ glade_gtk_color_button_refresh_color (GtkColorButton *button,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_color_button_set_property (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      const gchar        *id,
@@ -117,7 +117,7 @@ glade_gtk_color_button_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkButton ------------------------------ */
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_button_create_editable (GladeWidgetAdaptor *adaptor,
                                   GladeEditorPageType type)
 {
@@ -151,7 +151,7 @@ glade_gtk_button_update_stock (GladeWidget *widget)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_button_post_create (GladeWidgetAdaptor *adaptor,
                               GObject            *button,
                               GladeCreateReason   reason)
@@ -193,7 +193,7 @@ glade_gtk_lock_button_is_own_property (GladeProperty *property)
   return (spec->owner_type == GTK_TYPE_LOCK_BUTTON);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                const gchar        *id,
@@ -248,7 +248,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
     gtk_widget_set_visible (GTK_WIDGET (object), TRUE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
                               GladeWidget        *widget,
                               GladeXmlNode       *node)
@@ -280,7 +280,7 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
                                GladeWidget        *widget,
                                GladeXmlContext    *context,
@@ -325,7 +325,7 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 
 }
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_gtk_button_create_eprop (GladeWidgetAdaptor *adaptor,
                                GladePropertyDef   *def, 
                                gboolean            use_command)
@@ -345,7 +345,7 @@ glade_gtk_button_create_eprop (GladeWidgetAdaptor *adaptor,
 
 
 /* Shared with other classes */
-void 
+G_MODULE_EXPORT void
 glade_gtk_sync_use_appearance (GladeWidget *gwidget)
 {
   GladeProperty *prop;

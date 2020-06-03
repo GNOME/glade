@@ -428,7 +428,7 @@ glade_eprop_enum_int_set_property (GObject      *object,
     }
 }
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_eprop_enum_int_new (GladePropertyDef   *pdef,
                           GType               type,
                           gboolean            use_command)

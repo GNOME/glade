@@ -41,7 +41,7 @@ glade_gtk_radio_menu_item_set_group (GObject * object, const GValue * value)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_radio_menu_item_set_property (GladeWidgetAdaptor * adaptor,
                                         GObject * object,
                                         const gchar * id, const GValue * value)

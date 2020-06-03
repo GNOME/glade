@@ -28,7 +28,7 @@
 #include "glade-gtk-menu-shell.h"
 #include "glade-gtk.h"
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_menu_shell_add_verify (GladeWidgetAdaptor *adaptor,
                                  GtkWidget          *container,
                                  GtkWidget          *child,
@@ -54,7 +54,7 @@ glade_gtk_menu_shell_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_shell_add_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)
@@ -67,7 +67,7 @@ glade_gtk_menu_shell_add_child (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_shell_remove_child (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    GObject            *child)
@@ -98,7 +98,7 @@ glade_gtk_menu_shell_get_item_position (GObject * container, GObject * child)
   return position;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_shell_get_child_property (GladeWidgetAdaptor *adaptor,
                                          GObject            *container,
                                          GObject            *child,
@@ -122,7 +122,7 @@ glade_gtk_menu_shell_get_child_property (GladeWidgetAdaptor *adaptor,
                                                   child, property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_shell_set_child_property (GladeWidgetAdaptor *adaptor,
                                          GObject            *container,
                                          GObject            *child,
@@ -164,7 +164,7 @@ glade_gtk_menu_shell_set_child_property (GladeWidgetAdaptor *adaptor,
                                                   property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_shell_action_activate (GladeWidgetAdaptor *adaptor,
                                       GObject            *object,
                                       const gchar        *action_path)
@@ -183,7 +183,7 @@ glade_gtk_menu_shell_action_activate (GladeWidgetAdaptor *adaptor,
   gtk_menu_shell_deactivate (GTK_MENU_SHELL (object));
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_menu_shell_tool_item_get_display_name (GladeBaseEditor *editor,
                                                  GladeWidget     *gchild,
                                                  gpointer         user_data)
@@ -232,7 +232,7 @@ glade_gtk_menu_shell_item_get_parent (GladeWidget * gparent, GObject * parent)
   return gparent;
 }
 
-GladeWidget *
+G_MODULE_EXPORT GladeWidget *
 glade_gtk_menu_shell_build_child (GladeBaseEditor *editor,
                                   GladeWidget     *gparent,
                                   GType            type,
@@ -299,7 +299,7 @@ glade_gtk_menu_shell_build_child (GladeBaseEditor *editor,
   return gitem_new;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_menu_shell_delete_child (GladeBaseEditor *editor,
                                    GladeWidget     *gparent,
                                    GladeWidget     *gchild,
@@ -329,7 +329,7 @@ glade_gtk_menu_shell_delete_child (GladeBaseEditor *editor,
   return TRUE;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_menu_shell_move_child (GladeBaseEditor *editor,
                                  GladeWidget     *gparent,
                                  GladeWidget     *gchild,
@@ -422,7 +422,7 @@ glade_gtk_menu_shell_move_child (GladeBaseEditor *editor,
   return TRUE;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_menu_shell_change_type (GladeBaseEditor *editor,
                                   GladeWidget     *gchild,
                                   GType            type,
@@ -460,7 +460,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   return FALSE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title)
 {
   GladeBaseEditor *editor;
@@ -508,7 +508,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   gtk_widget_show (window);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
                                   GladeWidget     *gchild,
                                   gpointer         data)
@@ -541,7 +541,7 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
                                       "expand", "fill", "homogeneous", "new-row", NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_palette_child_selected (GladeBaseEditor *editor,
                                        GladeWidget     *gchild,
                                        gpointer         data)
@@ -561,7 +561,7 @@ glade_gtk_tool_palette_child_selected (GladeBaseEditor *editor,
                                     "exclusive", "expand", NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_recent_chooser_menu_child_selected (GladeBaseEditor *editor,
                                               GladeWidget     *gchild,
                                               gpointer         data)
@@ -574,7 +574,7 @@ glade_gtk_recent_chooser_menu_child_selected (GladeBaseEditor *editor,
   glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor *editor,
                                                GladeWidget     *gchild,
                                                gpointer         data)

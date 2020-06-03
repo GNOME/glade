@@ -27,7 +27,7 @@
 
 #include "glade-arrow-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_arrow_create_editable (GladeWidgetAdaptor * adaptor,
                                  GladeEditorPageType type)
 {

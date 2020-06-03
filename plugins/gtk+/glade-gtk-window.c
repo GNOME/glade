@@ -61,7 +61,7 @@ glade_gtk_window_ensure_titlebar_placeholder (GObject *window)
   gtk_widget_hide (placeholder);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               GladeCreateReason   reason)
@@ -143,7 +143,7 @@ glade_gtk_window_read_accel_groups (GladeWidget *widget, GladeXmlNode *node)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_window_read_widget (GladeWidgetAdaptor *adaptor,
                               GladeWidget        *widget,
                               GladeXmlNode       *node)
@@ -195,7 +195,7 @@ glade_gtk_window_write_accel_groups (GladeWidget     *widget,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_window_write_widget (GladeWidgetAdaptor *adaptor,
                                GladeWidget        *widget,
                                GladeXmlContext    *context,
@@ -212,7 +212,7 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor *adaptor,
   glade_gtk_window_write_accel_groups (widget, context, node);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_window_create_editable (GladeWidgetAdaptor *adaptor,
                                   GladeEditorPageType type)
 {
@@ -247,7 +247,7 @@ glade_gtk_window_create_editable (GladeWidgetAdaptor *adaptor,
   return editable;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_window_set_property (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                const gchar        *id,
@@ -294,7 +294,7 @@ glade_gtk_window_set_property (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_window_replace_child (GladeWidgetAdaptor *adaptor,
                                 GtkWidget          *container,
                                 GtkWidget          *current,
@@ -319,7 +319,7 @@ glade_gtk_window_replace_child (GladeWidgetAdaptor *adaptor,
                                            G_OBJECT (new_widget));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_window_add_child (GladeWidgetAdaptor *adaptor,
                             GObject            *object,
                             GObject            *child)
@@ -352,7 +352,7 @@ glade_gtk_window_add_child (GladeWidgetAdaptor *adaptor,
 
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_window_remove_child (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                GObject            *child)

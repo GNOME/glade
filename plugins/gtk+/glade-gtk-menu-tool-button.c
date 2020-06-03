@@ -27,7 +27,7 @@
 
 #include "glade-gtk.h"
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_menu_tool_button_get_children (GladeWidgetAdaptor *adaptor,
                                          GtkMenuToolButton  *button)
 {
@@ -43,7 +43,7 @@ glade_gtk_menu_tool_button_get_children (GladeWidgetAdaptor *adaptor,
   return list;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_menu_tool_button_add_verify (GladeWidgetAdaptor *adaptor,
                                        GtkWidget          *container,
                                        GtkWidget          *child,
@@ -69,7 +69,7 @@ glade_gtk_menu_tool_button_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_tool_button_add_child (GladeWidgetAdaptor *adaptor,
                                       GObject            *object,
                                       GObject            *child)
@@ -83,7 +83,7 @@ glade_gtk_menu_tool_button_add_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor *adaptor,
                                          GObject            *object,
                                          GObject            *child)
@@ -96,7 +96,7 @@ glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_tool_button_replace_child (GladeWidgetAdaptor *adaptor,
                                           GObject            *container,
                                           GObject            *current,

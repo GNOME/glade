@@ -125,7 +125,7 @@ glade_action_editor_editable_init (GladeEditableInterface * iface)
 /*************************************
  *                API                *
  *************************************/
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_action_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_ACTION_EDITOR, NULL);
@@ -134,7 +134,7 @@ glade_action_editor_new (void)
 /*************************************
  *     Private Plugin Extensions     *
  *************************************/
-void
+G_MODULE_EXPORT void
 glade_action_editor_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *editor,
                                  GladeCreateReason   reason)

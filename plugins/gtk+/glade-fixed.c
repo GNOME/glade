@@ -1234,7 +1234,7 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 *******************************************************************************/
 
 /* This is called from the catalog for a few widgets */
-GladeWidget *
+G_MODULE_EXPORT GladeWidget *
 glade_gtk_create_fixed_widget (GladeWidgetAdaptor * adaptor,
                                const gchar * first_property_name,
                                va_list var_args)

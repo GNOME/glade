@@ -29,6 +29,7 @@ struct _GladeInstantiableGtkBin
   GtkBin parent;
 };
 
+G_MODULE_EXPORT
 G_DECLARE_FINAL_TYPE (GladeInstantiableGtkBin, glade_instantiable_gtk_bin, GLADE, INSTANTIABLE_GTK_BIN, GtkBin)
 G_DEFINE_TYPE (GladeInstantiableGtkBin, glade_instantiable_gtk_bin, GTK_TYPE_BIN)
 

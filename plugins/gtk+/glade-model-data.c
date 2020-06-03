@@ -30,7 +30,7 @@
 #include "glade-model-data.h"
 #include "glade-column-types.h"
 
-GladeModelData *
+G_MODULE_EXPORT GladeModelData *
 glade_model_data_new (GType type, const gchar *column_name)
 {
   GladeModelData *data = g_slice_new0 (GladeModelData);
@@ -46,7 +46,7 @@ glade_model_data_new (GType type, const gchar *column_name)
   return data;
 }
 
-GladeModelData *
+G_MODULE_EXPORT GladeModelData *
 glade_model_data_copy (GladeModelData *data)
 {
   GladeModelData *dup;
@@ -71,7 +71,7 @@ glade_model_data_copy (GladeModelData *data)
   return dup;
 }
 
-void
+G_MODULE_EXPORT void
 glade_model_data_free (GladeModelData *data)
 {
   if (data)
@@ -86,7 +86,7 @@ glade_model_data_free (GladeModelData *data)
     }
 }
 
-GNode *
+G_MODULE_EXPORT GNode *
 glade_model_data_tree_copy (GNode *node)
 {
   return g_node_copy_deep (node, (GCopyFunc) glade_model_data_copy, NULL);
@@ -100,7 +100,7 @@ model_data_traverse_free (GNode *node, gpointer data)
   return FALSE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_model_data_tree_free (GNode *node)
 {
   if (node)
@@ -111,7 +111,7 @@ glade_model_data_tree_free (GNode *node)
     }
 }
 
-GladeModelData *
+G_MODULE_EXPORT GladeModelData *
 glade_model_data_tree_get_data (GNode *data_tree, gint row, gint colnum)
 {
   GNode *node;
@@ -125,7 +125,7 @@ glade_model_data_tree_get_data (GNode *data_tree, gint row, gint colnum)
   return NULL;
 }
 
-void
+G_MODULE_EXPORT void
 glade_model_data_insert_column (GNode       *node,
                                 GType        type,
                                 const gchar *column_name,
@@ -146,7 +146,7 @@ glade_model_data_insert_column (GNode       *node,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_model_data_remove_column (GNode *node, gint nth)
 {
   GNode *row, *item;
@@ -166,7 +166,7 @@ glade_model_data_remove_column (GNode *node, gint nth)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_model_data_reorder_column (GNode *node, gint column, gint nth)
 {
   GNode *row, *item;
@@ -184,7 +184,7 @@ glade_model_data_reorder_column (GNode *node, gint column, gint nth)
     }
 }
 
-gint
+G_MODULE_EXPORT gint
 glade_model_data_column_index (GNode *node, const gchar *column_name)
 {
   gint i;
@@ -202,7 +202,7 @@ glade_model_data_column_index (GNode *node, const gchar *column_name)
   return -1;
 }
 
-void
+G_MODULE_EXPORT void
 glade_model_data_column_rename (GNode       *node,
                                 const gchar *column_name,
                                 const gchar *new_name)
@@ -225,7 +225,7 @@ glade_model_data_column_rename (GNode       *node,
     }
 }
 
-GType
+G_MODULE_EXPORT GType
 glade_model_data_tree_get_type (void)
 {
   static GType type_id = 0;

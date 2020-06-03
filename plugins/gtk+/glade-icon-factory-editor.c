@@ -120,7 +120,7 @@ glade_icon_factory_editor_grab_focus (GtkWidget *widget)
 }
 
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_icon_factory_editor_new (GladeWidgetAdaptor *adaptor,
                                GladeEditable      *embed)
 {

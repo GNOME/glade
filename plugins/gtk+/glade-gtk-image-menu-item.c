@@ -117,7 +117,7 @@ glade_gtk_image_menu_item_set_stock (GObject *object, const GValue *value)
     glade_gtk_image_menu_item_set_label (object, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
                                         GObject            *object,
                                         const gchar        *id,
@@ -150,7 +150,7 @@ glade_gtk_image_menu_item_parse_finished (GladeProject *project,
     glade_widget_lock (widget, gimage);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
                                        GladeWidget        *widget,
                                        GladeXmlNode       *node)
@@ -189,7 +189,7 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
                                         GladeWidget        *widget,
                                         GladeXmlContext    *context,
@@ -226,7 +226,7 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
  * attached as a property
  */
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_image_menu_item_create_editable (GladeWidgetAdaptor *adaptor,
                                            GladeEditorPageType type)
 {

@@ -84,7 +84,7 @@ glade_gtk_stack_project_changed (GladeWidget * gwidget,
   g_object_set_data (G_OBJECT (gwidget), "stack-project-ptr", project);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_stack_post_create (GladeWidgetAdaptor *adaptor,
                              GObject            *container,
                              GladeCreateReason   reason)
@@ -138,7 +138,7 @@ update_position_with_command (GtkWidget *widget, gpointer data)
   glade_command_set_property (property, position);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_stack_child_action_activate (GladeWidgetAdaptor * adaptor,
                                        GObject * container,
                                        GObject * object,
@@ -216,7 +216,7 @@ glade_gtk_stack_child_action_activate (GladeWidgetAdaptor * adaptor,
                                                                action_path);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_stack_create_editable (GladeWidgetAdaptor * adaptor,
                                  GladeEditorPageType  type)
 {
@@ -357,7 +357,7 @@ gtk_stack_get_page (GtkStack *stack)
   return page;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_stack_set_property (GladeWidgetAdaptor * adaptor,
                               GObject * object,
                               const gchar * id,
@@ -371,7 +371,7 @@ glade_gtk_stack_set_property (GladeWidgetAdaptor * adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_stack_get_property (GladeWidgetAdaptor * adaptor,
                               GObject * object,
                               const gchar * id,
@@ -422,7 +422,7 @@ glade_gtk_stack_set_child_position (GObject * container,
   glade_widget_property_set (gbox, "page", page);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_stack_set_child_property (GladeWidgetAdaptor * adaptor,
                                     GObject * container,
                                     GObject * child,
@@ -460,7 +460,7 @@ glade_gtk_stack_verify_page (GObject *object,
   return 0 <= page && page < pages;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_stack_verify_property (GladeWidgetAdaptor * adaptor,
                                  GObject * object,
                                  const gchar * id,
@@ -476,7 +476,7 @@ glade_gtk_stack_verify_property (GladeWidgetAdaptor * adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_stack_add_child (GladeWidgetAdaptor * adaptor,
                            GObject * object,
                            GObject * child)
@@ -515,7 +515,7 @@ glade_gtk_stack_add_child (GladeWidgetAdaptor * adaptor,
   glade_widget_property_set (gbox, "page", page);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_stack_remove_child (GladeWidgetAdaptor * adaptor,
                               GObject * object,
                               GObject * child)
@@ -532,7 +532,7 @@ glade_gtk_stack_remove_child (GladeWidgetAdaptor * adaptor,
   glade_widget_property_set (gbox, "page", page);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_stack_replace_child (GladeWidgetAdaptor * adaptor,
                                GObject * container,
                                GObject * current,

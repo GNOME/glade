@@ -31,7 +31,7 @@
 #include "glade-cell-renderer-editor.h"
 #include "glade-column-types.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
                                          GObject            *object,
                                          const gchar        *action_path)
@@ -55,7 +55,7 @@ glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor, object, action_path);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor,
                                           GObject            *object,
                                           GladeCreateReason   reason)
@@ -81,7 +81,7 @@ glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor,
   g_idle_add ((GSourceFunc) glade_gtk_cell_renderer_sync_attributes, object);
 }
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
                                       GladePropertyDef   *def,
                                       gboolean            use_command)
@@ -99,7 +99,7 @@ glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
 }
 
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor *adaptor,
                                          GladeEditorPageType type)
 {
@@ -179,7 +179,7 @@ glade_gtk_cell_renderer_property_enabled (GObject     *object,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *object,
                                       const gchar        *property_name,
@@ -250,7 +250,7 @@ glade_gtk_cell_renderer_write_properties (GladeWidget     *widget,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
                                       GladeWidget        *widget,
                                       GladeXmlContext    *context,
@@ -309,7 +309,7 @@ glade_gtk_cell_renderer_parse_finished (GladeProject *project,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
                                      GladeWidget        *widget,
                                      GladeXmlNode       *node)
@@ -340,7 +340,7 @@ glade_gtk_cell_layout_has_renderer (GtkCellLayout   *layout,
   return has_renderer;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_cell_renderer_sync_attributes (GObject *object)
 {
 

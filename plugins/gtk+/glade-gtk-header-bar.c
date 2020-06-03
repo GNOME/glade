@@ -77,7 +77,7 @@ glade_gtk_header_bar_parse_finished (GladeProject *project,
   glade_widget_property_set (gbox, "use-custom-title", gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object)) != NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_post_create (GladeWidgetAdaptor *adaptor,
                                   GObject            *container,
                                   GladeCreateReason   reason)
@@ -97,7 +97,7 @@ glade_gtk_header_bar_post_create (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
                                       GObject            *object,
                                       const gchar        *action_path)
@@ -122,7 +122,7 @@ glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor, object, action_path);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor *adaptor,
                                             GObject            *container,
                                             GObject            *object,
@@ -161,7 +161,7 @@ glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor *adaptor,
                                                                action_path);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_get_property (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    const gchar        *id,
@@ -234,7 +234,7 @@ glade_gtk_header_bar_set_size (GObject      *object,
   g_list_free (children);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_set_use_custom_title (GObject *object,
                                            gboolean use_custom_title)
 {
@@ -282,7 +282,7 @@ glade_gtk_header_bar_set_use_custom_title (GObject *object,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_set_property (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    const gchar        *id,
@@ -310,7 +310,7 @@ glade_gtk_header_bar_set_property (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *parent,
                                 GObject            *child)
@@ -345,7 +345,7 @@ glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_remove_child (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    GObject            *child)
@@ -382,7 +382,7 @@ glade_gtk_header_bar_remove_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_replace_child (GladeWidgetAdaptor *adaptor,
                                     GObject            *container,
                                     GObject            *current,
@@ -421,7 +421,7 @@ glade_gtk_header_bar_replace_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_header_bar_verify_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *object,
                                       const gchar        *id,
@@ -471,7 +471,7 @@ sort_children (GtkWidget *widget_a, GtkWidget *widget_b, GtkWidget *bar)
   return position_a - position_b;
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_header_bar_get_children (GladeWidgetAdaptor *adaptor,
                                    GObject            *container)
 {
@@ -482,7 +482,7 @@ glade_gtk_header_bar_get_children (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_header_bar_child_set_property (GladeWidgetAdaptor *adaptor,
                                          GObject            *container,
                                          GObject            *child,
@@ -585,7 +585,7 @@ glade_gtk_header_bar_child_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_header_bar_create_editable (GladeWidgetAdaptor *adaptor,
                                       GladeEditorPageType type)
 {

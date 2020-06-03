@@ -27,7 +27,7 @@
 
 #include "glade-text-view-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_text_view_create_editable (GladeWidgetAdaptor *adaptor,
                                      GladeEditorPageType type)
 {
@@ -48,7 +48,7 @@ glade_gtk_text_view_stop_double_click (GtkWidget      *widget,
   return (event->type == GDK_2BUTTON_PRESS || event->type == GDK_3BUTTON_PRESS);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  GladeCreateReason   reason)
@@ -61,7 +61,7 @@ glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
                     G_CALLBACK (glade_gtk_text_view_stop_double_click), NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_text_view_set_property (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   const gchar        *property_name,

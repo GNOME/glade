@@ -28,7 +28,7 @@
 #include "glade-stack-switcher-editor.h"
 
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_stack_switcher_create_editable (GladeWidgetAdaptor * adaptor,
                                           GladeEditorPageType type)
 {

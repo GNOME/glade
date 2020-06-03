@@ -29,7 +29,7 @@
 #include "glade-gtk-image.h"
 #include "glade-gtk.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
                              GladeWidget        *widget,
                              GladeXmlNode       *node)
@@ -68,7 +68,7 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
   glade_property_sync (property);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_image_write_widget (GladeWidgetAdaptor *adaptor,
                               GladeWidget        *widget,
                               GladeXmlContext    *context,
@@ -136,7 +136,7 @@ glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_image_get_property (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               const gchar        *id,
@@ -156,7 +156,7 @@ glade_gtk_image_get_property (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_property (adaptor, object, id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               const gchar        *id,
@@ -210,7 +210,7 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
     }
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_image_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {
@@ -221,7 +221,7 @@ glade_gtk_image_create_editable (GladeWidgetAdaptor *adaptor,
 }
 
 /* Shared with other classes */
-void
+G_MODULE_EXPORT void
 glade_gtk_write_icon_size (GladeWidget     *widget,
                            GladeXmlContext *context,
                            GladeXmlNode    *node,

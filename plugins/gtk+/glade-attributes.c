@@ -56,7 +56,7 @@ glade_attr_list_copy (GList *attrs)
   return g_list_reverse (ret);
 }
 
-void
+G_MODULE_EXPORT void
 glade_attr_list_free (GList *attrs)
 {
   GList *list;
@@ -72,7 +72,7 @@ glade_attr_list_free (GList *attrs)
   g_list_free (attrs);
 }
 
-GType
+G_MODULE_EXPORT GType
 glade_attr_glist_get_type (void)
 {
   static GType type_id = 0;
@@ -449,7 +449,7 @@ type_from_attr_type (PangoAttrType type)
   return gtype;
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_string_from_attr (GladeAttribute *gattr)
 {
   gchar *ret = NULL;
@@ -532,7 +532,7 @@ glade_gtk_string_from_attr (GladeAttribute *gattr)
   return ret;
 }
 
-GladeAttribute *
+G_MODULE_EXPORT GladeAttribute *
 glade_gtk_attribute_from_string (PangoAttrType type, const gchar *strval)
 {
   GladeAttribute *gattr;

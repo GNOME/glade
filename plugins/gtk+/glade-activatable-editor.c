@@ -103,7 +103,7 @@ glade_activatable_editor_editable_init (GladeEditableInterface * iface)
   iface->load = glade_activatable_editor_load;
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_activatable_editor_new (GladeWidgetAdaptor * adaptor,
                               GladeEditable * embed)
 {

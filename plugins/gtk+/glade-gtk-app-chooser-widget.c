@@ -27,7 +27,7 @@
 
 #include "glade-app-chooser-widget-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_app_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
                                               GladeEditorPageType type)
 {

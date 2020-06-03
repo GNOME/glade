@@ -27,7 +27,7 @@
 
 #include "glade-level-bar-editor.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_level_bar_create_editable (GladeWidgetAdaptor *adaptor,
                                      GladeEditorPageType type)
 {

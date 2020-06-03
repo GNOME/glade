@@ -25,7 +25,7 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
-void
+G_MODULE_EXPORT void
 glade_gtk_adjustment_write_widget (GladeWidgetAdaptor *adaptor,
                                    GladeWidget        *widget,
                                    GladeXmlContext    *context,
@@ -99,7 +99,7 @@ get_digits (GladeWidget *widget)
   return MAX (digits, get_prop_precision (widget, "page-size"));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_adjustment_read_widget (GladeWidgetAdaptor *adaptor,
                                   GladeWidget        *widget,
                                   GladeXmlNode       *node)
@@ -114,7 +114,7 @@ glade_gtk_adjustment_read_widget (GladeWidgetAdaptor *adaptor,
   glade_widget_property_set (widget, "glade-digits", get_digits (widget), NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_adjustment_set_property (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    const gchar        *property_name,
@@ -144,7 +144,7 @@ glade_gtk_adjustment_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_adjustment_verify_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *object,
                                       const gchar        *id,

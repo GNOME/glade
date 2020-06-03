@@ -24,7 +24,7 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
-void
+G_MODULE_EXPORT void
 glade_gtk_paned_post_create (GladeWidgetAdaptor * adaptor,
                              GObject * paned, GladeCreateReason reason)
 {
@@ -39,7 +39,7 @@ glade_gtk_paned_post_create (GladeWidgetAdaptor * adaptor,
     gtk_paned_add2 (GTK_PANED (paned), glade_placeholder_new ());
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_paned_add_child (GladeWidgetAdaptor * adaptor,
                            GObject * object, GObject * child)
 {
@@ -90,7 +90,7 @@ glade_gtk_paned_add_child (GladeWidgetAdaptor * adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_paned_remove_child (GladeWidgetAdaptor * adaptor,
                               GObject * object, GObject * child)
 {
@@ -99,7 +99,7 @@ glade_gtk_paned_remove_child (GladeWidgetAdaptor * adaptor,
   glade_gtk_paned_post_create (adaptor, object, GLADE_CREATE_USER);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_paned_set_child_property (GladeWidgetAdaptor * adaptor,
                                     GObject * container,
                                     GObject * child,
@@ -144,7 +144,7 @@ glade_gtk_paned_set_child_property (GladeWidgetAdaptor * adaptor,
                                                   property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_paned_get_child_property (GladeWidgetAdaptor * adaptor,
                                     GObject * container,
                                     GObject * child,

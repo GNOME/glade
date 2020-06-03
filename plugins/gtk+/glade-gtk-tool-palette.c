@@ -29,7 +29,7 @@
 #include "glade-gtk-menu-shell.h"
 #include "glade-gtk.h"
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_tool_palette_create_editable (GladeWidgetAdaptor *adaptor,
                                         GladeEditorPageType type)
 {
@@ -41,7 +41,7 @@ glade_gtk_tool_palette_create_editable (GladeWidgetAdaptor *adaptor,
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_palette_get_child_property (GladeWidgetAdaptor *adaptor,
                                            GObject            *container,
                                            GObject            *child,
@@ -67,7 +67,7 @@ glade_gtk_tool_palette_get_child_property (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_palette_set_child_property (GladeWidgetAdaptor *adaptor,
                                            GObject            *container,
                                            GObject            *child,
@@ -104,7 +104,7 @@ glade_gtk_tool_palette_set_child_property (GladeWidgetAdaptor *adaptor,
                                                   property_name, value);
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_tool_palette_add_verify (GladeWidgetAdaptor *adaptor,
                                    GtkWidget          *container,
                                    GtkWidget          *child,
@@ -130,7 +130,7 @@ glade_gtk_tool_palette_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_palette_add_child (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   GObject            *child)
@@ -157,7 +157,7 @@ glade_gtk_tool_palette_add_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_palette_remove_child (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      GObject            *child)
@@ -228,7 +228,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   gtk_widget_show (window);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_palette_action_activate (GladeWidgetAdaptor *adaptor,
                                         GObject            *object,
                                         const gchar        *action_path)

@@ -28,7 +28,7 @@
 #include "glade-gtk.h"
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-GObject *
+G_MODULE_EXPORT GObject *
 glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
                                          guint               n_parameters,
                                          GParameter         *parameters)
@@ -70,7 +70,7 @@ glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
 
-void
+G_MODULE_EXPORT void
 glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor *adaptor,
                                     GladeWidget        *widget,
                                     GladeXmlNode       *node)
@@ -89,7 +89,7 @@ glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor *adaptor,
     glade_widget_property_set (widget, "glade-logo-as-file", FALSE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_about_dialog_set_property (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      const gchar        *id,

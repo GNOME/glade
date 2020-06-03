@@ -61,7 +61,7 @@ glade_app_chooser_widget_editor_grab_focus (GtkWidget * widget)
   gtk_widget_grab_focus (app_editor->priv->embed);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_app_chooser_widget_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_APP_CHOOSER_WIDGET_EDITOR, NULL);

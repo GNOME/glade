@@ -83,7 +83,7 @@ glade_gtk_flowbox_reorder (GtkFlowBox    *flowbox,
   sync_child_positions (flowbox);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_flowbox_get_child_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *child,
@@ -109,7 +109,7 @@ glade_gtk_flowbox_get_child_property (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_flowbox_set_child_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *child,
@@ -141,7 +141,7 @@ glade_gtk_flowbox_set_child_property (GladeWidgetAdaptor *adaptor,
     }
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_flowbox_add_verify (GladeWidgetAdaptor *adaptor,
                               GtkWidget          *container,
                               GtkWidget          *child,
@@ -167,7 +167,7 @@ glade_gtk_flowbox_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_flowbox_add_child (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GObject            *child)
@@ -181,7 +181,7 @@ glade_gtk_flowbox_add_child (GladeWidgetAdaptor *adaptor,
                             -1);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_flowbox_remove_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)
@@ -216,7 +216,7 @@ glade_gtk_flowbox_child_insert_action (GladeWidgetAdaptor *adaptor,
   glade_command_pop_group ();
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_flowbox_action_activate (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    const gchar        *action_path)
@@ -236,7 +236,7 @@ glade_gtk_flowbox_action_activate (GladeWidgetAdaptor *adaptor,
                                                          object, action_path);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_flowbox_child_action_activate (GladeWidgetAdaptor *adaptor,
                                          GObject            *container,
                                          GObject            *object,

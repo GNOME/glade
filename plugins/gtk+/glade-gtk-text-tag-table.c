@@ -27,7 +27,7 @@
 
 #include "glade-gtk.h"
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_text_tag_table_add_verify (GladeWidgetAdaptor *adaptor,
                                      GtkWidget          *container,
                                      GtkWidget          *child,
@@ -53,7 +53,7 @@ glade_gtk_text_tag_table_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_text_tag_table_add_child (GladeWidgetAdaptor *adaptor,
                                     GObject            *container, 
                                     GObject            *child)
@@ -75,7 +75,7 @@ glade_gtk_text_tag_table_add_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_text_tag_table_remove_child (GladeWidgetAdaptor *adaptor,
                                        GObject            *container,
                                        GObject            *child)
@@ -97,7 +97,7 @@ glade_gtk_text_tag_table_remove_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_text_tag_table_replace_child (GladeWidgetAdaptor *adaptor,
                                         GObject            *container,
                                         GObject            *current,
@@ -107,7 +107,7 @@ glade_gtk_text_tag_table_replace_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_text_tag_table_add_child (adaptor, container, new_tag);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_text_tag_table_get_children (GladeWidgetAdaptor *adaptor,
                                        GObject            *container)
 {
@@ -160,7 +160,7 @@ glade_gtk_text_tag_table_launch_editor (GObject  *table)
   gtk_widget_show (window);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_text_tag_table_action_activate (GladeWidgetAdaptor *adaptor,
                                           GObject            *object,
                                           const gchar        *action_path)

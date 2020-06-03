@@ -159,7 +159,7 @@ glade_gtk_popover_menu_visible_submenu_changed (GObject *popover,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_menu_post_create (GladeWidgetAdaptor *adaptor,
                                     GObject *container,
                                     GladeCreateReason reason)
@@ -183,7 +183,7 @@ glade_gtk_popover_menu_post_create (GladeWidgetAdaptor *adaptor,
   GWA_GET_CLASS (GTK_TYPE_POPOVER)->post_create (adaptor, container, reason);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_menu_add_child (GladeWidgetAdaptor *adaptor,
                                   GObject *parent,
                                   GObject *child)
@@ -202,7 +202,7 @@ glade_gtk_popover_menu_add_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_menu_remove_child (GladeWidgetAdaptor *adaptor,
                                      GObject *parent,
                                      GObject *child)
@@ -221,7 +221,7 @@ glade_gtk_popover_menu_remove_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_menu_replace_child (GladeWidgetAdaptor * adaptor,
                                       GObject * container,
                                       GObject * current,
@@ -399,7 +399,7 @@ glade_gtk_popover_menu_set_current (GObject *object,
   g_list_free (children);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_menu_set_property (GladeWidgetAdaptor * adaptor,
                                      GObject * object,
                                      const gchar * id,
@@ -413,7 +413,7 @@ glade_gtk_popover_menu_set_property (GladeWidgetAdaptor * adaptor,
     GWA_GET_CLASS (GTK_TYPE_POPOVER)->set_property (adaptor, object, id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_menu_get_property (GladeWidgetAdaptor * adaptor,
                                      GObject * object,
                                      const gchar * id,
@@ -458,7 +458,7 @@ glade_gtk_popover_menu_verify_current (GObject *object,
   return 0 <= current && current < submenus;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_popover_menu_verify_property (GladeWidgetAdaptor * adaptor,
                                         GObject * object,
                                         const gchar * id,
@@ -524,7 +524,7 @@ glade_gtk_popover_menu_set_child_position (GObject * container,
   glade_widget_pack_property_set (gbox, "visible-submenu", get_visible_child (GTK_POPOVER_MENU (container), NULL));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_menu_set_child_property (GladeWidgetAdaptor * adaptor,
                                            GObject * container,
                                            GObject * child,
@@ -540,7 +540,7 @@ glade_gtk_popover_menu_set_child_property (GladeWidgetAdaptor * adaptor,
     GWA_GET_CLASS (GTK_TYPE_POPOVER)->child_set_property (adaptor, container, child, id, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_popover_menu_get_child_property (GladeWidgetAdaptor * adaptor,
                                            GObject * container,
                                            GObject * child,
@@ -551,7 +551,7 @@ glade_gtk_popover_menu_get_child_property (GladeWidgetAdaptor * adaptor,
                                     GTK_WIDGET (child), id, value);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_popover_menu_create_editable (GladeWidgetAdaptor * adaptor,
                                         GladeEditorPageType  type)
 {

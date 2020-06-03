@@ -114,7 +114,7 @@ on_widget_project_notify (GObject *gobject,
                              object, 0);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_overlay_post_create (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                GladeCreateReason   reason)
@@ -127,7 +127,7 @@ glade_gtk_overlay_post_create (GladeWidgetAdaptor *adaptor,
   on_widget_project_notify (G_OBJECT (widget), NULL, NULL);
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_overlay_add_verify (GladeWidgetAdaptor *adaptor,
                               GtkWidget          *container,
                               GtkWidget          *child,
@@ -153,7 +153,7 @@ glade_gtk_overlay_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_overlay_add_child (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GObject            *child)
@@ -173,7 +173,7 @@ glade_gtk_overlay_add_child (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->add (adaptor, object, child);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_overlay_remove_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)

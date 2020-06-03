@@ -28,7 +28,7 @@
 #include "glade-tool-item-group-editor.h"
 #include "glade-gtk.h"
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_tool_item_group_add_verify (GladeWidgetAdaptor *adaptor,
                                       GtkWidget          *container,
                                       GtkWidget          *child,
@@ -54,7 +54,7 @@ glade_gtk_tool_item_group_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_item_group_add_child (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      GObject            *child)
@@ -62,7 +62,7 @@ glade_gtk_tool_item_group_add_child (GladeWidgetAdaptor *adaptor,
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_item_group_remove_child (GladeWidgetAdaptor *adaptor,
                                         GObject            *object,
                                         GObject            *child)
@@ -84,7 +84,7 @@ glade_gtk_tool_item_group_parse_finished (GladeProject *project,
     glade_widget_property_set (widget, "custom-label", FALSE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_item_group_read_widget (GladeWidgetAdaptor *adaptor,
                                        GladeWidget        *widget,
                                        GladeXmlNode       *node)
@@ -120,7 +120,7 @@ glade_gtk_tool_item_group_set_custom_label (GObject *object, const GValue *value
     glade_widget_property_set_sensitive (gbutton, "label", TRUE, NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_tool_item_group_set_property (GladeWidgetAdaptor *adaptor,
                                         GObject            *object,
                                         const gchar        *id,
@@ -152,7 +152,7 @@ glade_gtk_tool_item_group_set_property (GladeWidgetAdaptor *adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_tool_item_group_create_editable (GladeWidgetAdaptor *adaptor,
                                            GladeEditorPageType type)
 {

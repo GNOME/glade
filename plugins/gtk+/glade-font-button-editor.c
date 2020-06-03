@@ -41,7 +41,7 @@ glade_font_button_editor_init (GladeFontButtonEditor * self)
   gtk_widget_init_template (GTK_WIDGET (self));
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_font_button_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_FONT_BUTTON_EDITOR, NULL);

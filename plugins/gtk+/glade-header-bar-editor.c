@@ -210,7 +210,7 @@ show_decoration_toggled (GtkWidget            *widget,
   glade_editable_load (GLADE_EDITABLE (editor), gwidget);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_header_bar_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_HEADER_BAR_EDITOR, NULL);

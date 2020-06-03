@@ -121,7 +121,7 @@ glade_gtk_store_set_data (GObject *object, const GValue *value)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_store_set_property (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               const gchar        *property_name,
@@ -141,7 +141,7 @@ glade_gtk_store_set_property (GladeWidgetAdaptor *adaptor,
                                                  object, property_name, value);
 }
 
-GladeEditorProperty *
+G_MODULE_EXPORT GladeEditorProperty *
 glade_gtk_store_create_eprop (GladeWidgetAdaptor *adaptor,
                               GladePropertyDef   *def,
                               gboolean            use_command)
@@ -201,7 +201,7 @@ glade_gtk_store_columns_changed (GladeProperty *property,
   g_list_free (prop_refs);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_store_post_create (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GladeCreateReason   reason)
@@ -229,7 +229,7 @@ glade_gtk_store_post_create (GladeWidgetAdaptor *adaptor,
                     G_CALLBACK (glade_gtk_store_columns_changed), gwidget);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_store_create_editable (GladeWidgetAdaptor *adaptor,
                                  GladeEditorPageType type)
 {
@@ -244,7 +244,7 @@ glade_gtk_store_create_editable (GladeWidgetAdaptor *adaptor,
   return editable;
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
                                    GladePropertyDef   *def,
                                    const GValue       *value)
@@ -438,7 +438,7 @@ glade_gtk_store_write_data (GladeWidget     *widget,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_store_write_widget (GladeWidgetAdaptor *adaptor,
                               GladeWidget        *widget,
                               GladeXmlContext    *context,
@@ -648,7 +648,7 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
   glade_model_data_tree_free (data_tree);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
                              GladeWidget        *widget, 
                              GladeXmlNode       *node)

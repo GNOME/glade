@@ -274,7 +274,7 @@ table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
     gtk_widget_set_hexpand (child, TRUE);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_image_item_editor_new (GladeWidgetAdaptor *adaptor,
                              GladeEditable      *embed)
 {

@@ -26,7 +26,7 @@
 
 #include "glade-gtk-frame.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_frame_post_create (GladeWidgetAdaptor *adaptor,
                              GObject            *frame,
                              GladeCreateReason   reason)
@@ -81,7 +81,7 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor *adaptor,
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, frame, reason);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
                                GtkWidget          *container,
                                GtkWidget          *current,
@@ -108,7 +108,7 @@ glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
                                            G_OBJECT (new_widget));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
                            GObject            *object,
                            GObject            *child)
@@ -146,7 +146,7 @@ glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_frame_remove_child (GladeWidgetAdaptor *adaptor,
                               GObject            *object,
                               GObject            *child)
@@ -165,7 +165,7 @@ glade_gtk_frame_remove_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_frame_write_child (GladeWidgetAdaptor *adaptor,
                              GladeWidget        *widget,
                              GladeXmlContext    *context,
@@ -180,7 +180,7 @@ glade_gtk_frame_write_child (GladeWidgetAdaptor *adaptor,
 }
 
 /* Shared with GtkExpander code */
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_write_special_child_label_item (GladeWidgetAdaptor  *adaptor,
                                           GladeWidget         *widget,
                                           GladeXmlContext     *context,

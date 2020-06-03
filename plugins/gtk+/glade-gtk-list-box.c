@@ -85,7 +85,7 @@ glade_gtk_listbox_reorder (GtkListBox    *listbox,
   sync_row_positions (listbox);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_get_child_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *child,
@@ -116,7 +116,7 @@ glade_gtk_listbox_get_child_property (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_set_child_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *child,
@@ -176,7 +176,7 @@ glade_gtk_listbox_parse_finished (GladeProject *project, GladeWidget *gbox)
   glade_widget_property_set (gbox, "use-placeholder", glade_listbox_get_placeholder (GTK_LIST_BOX (box)) != NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_post_create (GladeWidgetAdaptor *adaptor,
                                 GObject            *container,
                                 GladeCreateReason   reason)
@@ -192,7 +192,7 @@ glade_gtk_listbox_post_create (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_get_property (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 const gchar        *id,
@@ -207,7 +207,7 @@ glade_gtk_listbox_get_property (GladeWidgetAdaptor *adaptor,
                                                       value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_set_property (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 const gchar        *id,
@@ -247,7 +247,7 @@ glade_gtk_listbox_set_property (GladeWidgetAdaptor *adaptor,
                                                       value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_add_child (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GObject            *child)
@@ -272,7 +272,7 @@ glade_gtk_listbox_add_child (GladeWidgetAdaptor *adaptor,
                             -1);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_replace_child (GladeWidgetAdaptor *adaptor,
                                  GObject            *container,
                                  GObject            *current,
@@ -293,7 +293,7 @@ glade_gtk_listbox_replace_child (GladeWidgetAdaptor *adaptor,
                                                      current, new_widget);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_remove_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)
@@ -351,7 +351,7 @@ glade_gtk_listbox_child_insert_action (GladeWidgetAdaptor *adaptor,
   glade_command_pop_group ();
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_action_activate (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    const gchar        *action_path)
@@ -371,7 +371,7 @@ glade_gtk_listbox_action_activate (GladeWidgetAdaptor *adaptor,
                                                          object, action_path);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_listbox_child_action_activate (GladeWidgetAdaptor *adaptor,
                                          GObject            *container,
                                          GObject            *object,

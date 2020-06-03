@@ -79,7 +79,7 @@ glade_gtk_size_group_read_widgets (GladeWidget *widget, GladeXmlNode *node)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_size_group_read_widget (GladeWidgetAdaptor *adaptor,
                                   GladeWidget        *widget,
                                   GladeXmlNode       *node)
@@ -127,7 +127,7 @@ glade_gtk_size_group_write_widgets (GladeWidget     *widget,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_size_group_write_widget (GladeWidgetAdaptor *adaptor,
                                    GladeWidget        *widget,
                                    GladeXmlContext    *context,
@@ -144,7 +144,7 @@ glade_gtk_size_group_write_widget (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_size_group_set_property (GladeWidgetAdaptor *adaptor,
                                    GObject            *object,
                                    const gchar        *property_name,

@@ -27,7 +27,7 @@
 #include <gladeui/glade.h>
 #include "glade-gtk.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_search_bar_post_create (GladeWidgetAdaptor *adaptor,
                               GObject *widget,
                               GladeCreateReason reason)
@@ -44,7 +44,7 @@ glade_gtk_search_bar_post_create (GladeWidgetAdaptor *adaptor,
   gtk_search_bar_set_show_close_button (GTK_SEARCH_BAR (widget), FALSE);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_search_bar_get_children (GladeWidgetAdaptor * adaptor,
                                    GtkSearchBar       * searchbar)
 {
@@ -55,7 +55,7 @@ glade_gtk_search_bar_get_children (GladeWidgetAdaptor * adaptor,
   return g_list_append (NULL, current);
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_search_bar_add_verify (GladeWidgetAdaptor *adaptor,
                               GtkWidget          *container,
                               GtkWidget          *child,
@@ -79,7 +79,7 @@ glade_gtk_search_bar_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE; 
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_search_bar_add_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)
@@ -94,7 +94,7 @@ glade_gtk_search_bar_add_child (GladeWidgetAdaptor *adaptor,
   g_object_set_data (G_OBJECT (object), "child", child);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_search_bar_remove_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)
@@ -112,7 +112,7 @@ glade_gtk_search_bar_remove_child (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_search_bar_replace_child (GladeWidgetAdaptor * adaptor,
                                    GtkWidget * container,
                                    GtkWidget * current, GtkWidget * new_widget)

@@ -15,7 +15,7 @@ model_button_clicked (GtkWidget *widget, gpointer user_data)
     gtk_widget_show (popover);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_model_button_post_create (GladeWidgetAdaptor *adaptor,
                                     GObject            *object,
                                     GladeCreateReason   reason)
@@ -24,7 +24,7 @@ glade_gtk_model_button_post_create (GladeWidgetAdaptor *adaptor,
                     G_CALLBACK (model_button_clicked), NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_model_button_read_widget (GladeWidgetAdaptor *adaptor,
                                     GladeWidget        *widget,
                                     GladeXmlNode       *node)
@@ -32,7 +32,7 @@ glade_gtk_model_button_read_widget (GladeWidgetAdaptor *adaptor,
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_model_button_write_widget (GladeWidgetAdaptor *adaptor,
                                      GladeWidget        *widget,
                                      GladeXmlContext    *context,
@@ -41,7 +41,7 @@ glade_gtk_model_button_write_widget (GladeWidgetAdaptor *adaptor,
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_model_button_create_editable (GladeWidgetAdaptor *adaptor,
                                         GladeEditorPageType type)
 {

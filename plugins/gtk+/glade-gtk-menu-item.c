@@ -29,7 +29,7 @@
 #include "glade-gtk-menu-shell.h"
 #include "glade-gtk.h"
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_item_action_activate (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      const gchar        *action_path)
@@ -62,7 +62,7 @@ glade_gtk_menu_item_action_activate (GladeWidgetAdaptor *adaptor,
     gtk_menu_shell_deactivate (GTK_MENU_SHELL (shell));
 }
 
-GObject *
+G_MODULE_EXPORT GObject *
 glade_gtk_menu_item_constructor (GType type,
                                  guint n_construct_properties,
                                  GObjectConstructParam *construct_properties)
@@ -81,7 +81,7 @@ glade_gtk_menu_item_constructor (GType type,
   return ret_obj;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
                                  GObject * object, GladeCreateReason reason)
 {
@@ -96,7 +96,7 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
     }
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
                                   GObject            *object)
 {
@@ -111,7 +111,7 @@ glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
   return list;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_menu_item_add_verify (GladeWidgetAdaptor *adaptor,
                                 GtkWidget          *container,
                                 GtkWidget          *child,
@@ -149,7 +149,7 @@ glade_gtk_menu_item_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_item_add_child (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                GObject            *child)
@@ -169,7 +169,7 @@ glade_gtk_menu_item_add_child (GladeWidgetAdaptor *adaptor,
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (object), GTK_WIDGET (child));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_item_remove_child (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   GObject            *child)
@@ -209,7 +209,7 @@ glade_gtk_menu_item_set_use_underline (GObject * object, const GValue * value)
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   const gchar        *id,
@@ -228,7 +228,7 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
                                                       value);
 }
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_activatable_create_editable (GladeWidgetAdaptor *adaptor,
                                        GladeEditorPageType type)
 {

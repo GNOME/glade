@@ -134,7 +134,7 @@ glade_gtk_assistant_parse_finished (GladeProject *project, GObject *object)
     }
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_assistant_get_children (GladeWidgetAdaptor *adaptor,
                                   GObject            *container)
 {
@@ -176,7 +176,7 @@ on_assistant_project_selection_changed (GladeProject *project,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *object,
                                  GladeCreateReason   reason)
@@ -215,7 +215,7 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
                       parent);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_assistant_add_child (GladeWidgetAdaptor * adaptor,
                                GObject * container, GObject * child)
 {
@@ -240,7 +240,7 @@ assistant_remove_child (GtkAssistant *assistant, GtkWidget *child)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_assistant_remove_child (GladeWidgetAdaptor *adaptor,
                                   GObject            *container,
                                   GObject            *child)
@@ -254,7 +254,7 @@ glade_gtk_assistant_remove_child (GladeWidgetAdaptor *adaptor,
                              gtk_assistant_get_n_pages (assistant));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_assistant_replace_child (GladeWidgetAdaptor *adaptor,
                                    GObject            *container,
                                    GObject            *current,
@@ -274,7 +274,7 @@ glade_gtk_assistant_replace_child (GladeWidgetAdaptor *adaptor,
     gtk_assistant_set_current_page (assistant, pos);
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_assistant_verify_property (GladeWidgetAdaptor *adaptor,
                                      GObject            *object,
                                      const gchar        *property_name,
@@ -293,7 +293,7 @@ glade_gtk_assistant_verify_property (GladeWidgetAdaptor *adaptor,
                                                            value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_assistant_set_property (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   const gchar        *property_name,
@@ -320,7 +320,7 @@ glade_gtk_assistant_set_property (GladeWidgetAdaptor *adaptor,
                                                  object, property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_assistant_get_property (GladeWidgetAdaptor *adaptor,
                                   GObject            *object,
                                   const gchar        *property_name,
@@ -338,7 +338,7 @@ glade_gtk_assistant_get_property (GladeWidgetAdaptor *adaptor,
                                                  object, property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
                                         GObject            *container,
                                         GObject            *child,
@@ -381,7 +381,7 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
                                                        property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_assistant_get_child_property (GladeWidgetAdaptor *adaptor,
                                         GObject            *container,
                                         GObject            *child,

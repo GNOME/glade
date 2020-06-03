@@ -44,7 +44,7 @@ glade_gtk_text_buffer_changed (GtkTextBuffer * buffer, GladeWidget * gbuffy)
   g_free (text);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_text_buffer_post_create (GladeWidgetAdaptor * adaptor,
                                    GObject * object, GladeCreateReason reason)
 {
@@ -56,7 +56,7 @@ glade_gtk_text_buffer_post_create (GladeWidgetAdaptor * adaptor,
                     G_CALLBACK (glade_gtk_text_buffer_changed), gbuffy);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_text_buffer_set_property (GladeWidgetAdaptor * adaptor,
                                     GObject * object,
                                     const gchar * id, const GValue * value)

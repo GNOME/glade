@@ -31,7 +31,7 @@
 #include "glade-cell-renderer-editor.h"
 #include "glade-treeview-editor.h"
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_cell_layout_add_verify (GladeWidgetAdaptor *adaptor,
                                   GtkWidget          *container,
                                   GtkWidget          *child,
@@ -57,7 +57,7 @@ glade_gtk_cell_layout_add_verify (GladeWidgetAdaptor *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_add_child (GladeWidgetAdaptor *adaptor,
                                  GObject            *container,
                                  GObject            *child)
@@ -79,7 +79,7 @@ glade_gtk_cell_layout_add_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_cell_renderer_sync_attributes (child);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_remove_child (GladeWidgetAdaptor *adaptor,
                                     GObject            *container,
                                     GObject            *child)
@@ -112,7 +112,7 @@ glade_gtk_cell_layout_remove_child (GladeWidgetAdaptor *adaptor,
   g_list_free (children);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_cell_layout_get_children (GladeWidgetAdaptor *adaptor,
                                     GObject            *container)
 {
@@ -120,7 +120,7 @@ glade_gtk_cell_layout_get_children (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_get_child_property (GladeWidgetAdaptor *adaptor,
                                           GObject            *container,
                                           GObject            *child,
@@ -144,7 +144,7 @@ glade_gtk_cell_layout_get_child_property (GladeWidgetAdaptor *adaptor,
                                                   property_name, value);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_set_child_property (GladeWidgetAdaptor *adaptor,
                                           GObject            *container,
                                           GObject            *child,
@@ -213,7 +213,7 @@ glade_gtk_cell_renderer_read_attributes (GladeWidget  *widget,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_read_child (GladeWidgetAdaptor *adaptor,
                                   GladeWidget        *widget,
                                   GladeXmlNode       *node)
@@ -310,7 +310,7 @@ glade_gtk_cell_renderer_write_attributes (GladeWidget     *widget,
     glade_xml_node_append_child (node, attrs_node);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_write_child (GladeWidgetAdaptor *adaptor,
                                    GladeWidget        *widget,
                                    GladeXmlContext    *context,
@@ -333,7 +333,7 @@ glade_gtk_cell_layout_write_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_cell_renderer_write_attributes (widget, context, child_node);
 }
 
-gchar *
+G_MODULE_EXPORT gchar *
 glade_gtk_cell_layout_get_display_name (GladeBaseEditor *editor,
                                         GladeWidget     *gchild,
                                         gpointer         user_data)
@@ -349,7 +349,7 @@ glade_gtk_cell_layout_get_display_name (GladeBaseEditor *editor,
   return g_strdup (name);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_child_selected (GladeBaseEditor *editor,
                                       GladeWidget     *gchild,
                                       gpointer         data)
@@ -374,7 +374,7 @@ glade_gtk_cell_layout_child_selected (GladeBaseEditor *editor,
     }
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_cell_layout_move_child (GladeBaseEditor *editor,
                                   GladeWidget     *gparent,
                                   GladeWidget     *gchild,
@@ -465,7 +465,7 @@ glade_gtk_cell_layout_launch_editor_action (GObject *object)
   while ((w = glade_widget_get_parent (w)));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_action_activate (GladeWidgetAdaptor *adaptor,
                                        GObject            *object,
                                        const gchar        *action_path)
@@ -477,7 +477,7 @@ glade_gtk_cell_layout_action_activate (GladeWidgetAdaptor *adaptor,
                                                     object, action_path);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor *adaptor,
                                                  GObject            *object,
                                                  const gchar        *action_path)
@@ -489,7 +489,7 @@ glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor *adaptor,
                                                       object, action_path);
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_cell_layout_sync_attributes (GObject *layout)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (layout);

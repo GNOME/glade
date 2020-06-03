@@ -56,7 +56,7 @@ static gboolean glade_gtk_grid_configure_child (GladeFixed   *fixed,
                                                 GdkRectangle *rect,
                                                 GtkWidget    *grid);
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_grid_create_editable (GladeWidgetAdaptor *adaptor,
                                 GladeEditorPageType type)
 {
@@ -184,7 +184,7 @@ glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
   glade_gtk_grid_refresh_placeholders (GTK_GRID (container), TRUE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_grid_post_create (GladeWidgetAdaptor *adaptor,
                             GObject            *container,
                             GladeCreateReason   reason)
@@ -206,7 +206,7 @@ glade_gtk_grid_post_create (GladeWidgetAdaptor *adaptor,
                       container);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_grid_destroy_object (GladeWidgetAdaptor *adaptor,
                                GObject            *object)
 {
@@ -256,7 +256,7 @@ gtk_grid_children_callback (GtkWidget *widget, gpointer client_data)
   *children = g_list_prepend (*children, widget);
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_grid_get_children (GladeWidgetAdaptor *adaptor, 
                              GtkContainer       *container)
 {
@@ -270,7 +270,7 @@ glade_gtk_grid_get_children (GladeWidgetAdaptor *adaptor,
   return children;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_grid_add_child (GladeWidgetAdaptor *adaptor,
                           GObject            *object,
                           GObject            *child)
@@ -283,7 +283,7 @@ glade_gtk_grid_add_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_grid_refresh_placeholders (GTK_GRID (object), FALSE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_grid_remove_child (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              GObject            *child)
@@ -296,7 +296,7 @@ glade_gtk_grid_remove_child (GladeWidgetAdaptor *adaptor,
   glade_gtk_grid_refresh_placeholders (GTK_GRID (object), FALSE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_grid_replace_child (GladeWidgetAdaptor *adaptor,
                               GObject            *container,
                               GObject            *current,
@@ -352,7 +352,7 @@ glade_gtk_grid_set_n_common (GObject      *object,
   glade_gtk_grid_refresh_placeholders (grid, FALSE);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_grid_set_property (GladeWidgetAdaptor *adaptor,
                              GObject            *object,
                              const gchar        *id,
@@ -388,7 +388,7 @@ glade_gtk_grid_verify_n_common (GObject      *object,
   return TRUE;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_grid_verify_property (GladeWidgetAdaptor  *adaptor,
                                 GObject             *object,
                                 const gchar         *id,
@@ -405,7 +405,7 @@ glade_gtk_grid_verify_property (GladeWidgetAdaptor  *adaptor,
   return TRUE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_grid_set_child_property (GladeWidgetAdaptor *adaptor,
                                    GObject            *container,
                                    GObject            *child,
@@ -456,7 +456,7 @@ glade_gtk_grid_verify_attach_common (GObject     *object,
   return TRUE;
 }
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_grid_child_verify_property (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *child,
@@ -609,7 +609,7 @@ glade_gtk_grid_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
   glade_command_pop_group ();
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_grid_child_action_activate (GladeWidgetAdaptor *adaptor,
                                       GObject            *container,
                                       GObject            *object,

@@ -46,7 +46,7 @@ static gboolean glade_gtk_box_configure_end (GladeFixed  *fixed,
                                              GtkWidget   *box);
 
 
-GladeEditable *
+G_MODULE_EXPORT GladeEditable *
 glade_gtk_box_create_editable (GladeWidgetAdaptor *adaptor,
                                GladeEditorPageType type)
 {
@@ -65,7 +65,7 @@ glade_gtk_box_parse_finished (GladeProject *project, GladeWidget *gbox)
                              gtk_box_get_center_widget (GTK_BOX (box)) != NULL);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_box_post_create (GladeWidgetAdaptor *adaptor,
                            GObject            *container,
                            GladeCreateReason   reason)
@@ -135,7 +135,7 @@ sort_box_children (GtkWidget *widget_a, GtkWidget *widget_b, GtkWidget *box)
   return position_a - position_b;
 }
 
-GList *
+G_MODULE_EXPORT GList *
 glade_gtk_box_get_children (GladeWidgetAdaptor *adaptor, GObject *container)
 {
   GList *children;
@@ -145,7 +145,7 @@ glade_gtk_box_get_children (GladeWidgetAdaptor *adaptor, GObject *container)
   return g_list_sort_with_data (children, (GCompareDataFunc) sort_box_children, container);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
                                   GObject            *container,
                                   GObject            *child,
@@ -259,7 +259,7 @@ glade_gtk_box_get_num_children (GObject *box)
   return retval;
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_box_get_property (GladeWidgetAdaptor *adaptor,
                             GObject            *object,
                             const gchar        *id,
@@ -377,7 +377,7 @@ glade_gtk_box_set_size (GObject *object, const GValue *value)
 
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_box_set_property (GladeWidgetAdaptor *adaptor,
                             GObject            *object,
                             const gchar        *id,
@@ -434,7 +434,7 @@ glade_gtk_box_verify_size (GObject *object, const GValue *value)
 }
 
 
-gboolean
+G_MODULE_EXPORT gboolean
 glade_gtk_box_verify_property (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                const gchar        *id,
@@ -471,7 +471,7 @@ fix_response_id_on_child (GladeWidget *gbox, GObject *child, gboolean add)
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
                          GObject            *object,
                          GObject            *child)
@@ -537,7 +537,7 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
     glade_widget_pack_property_set (gchild, "position", num_children - 1);
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
                             GObject            *object,
                             GObject            *child)
@@ -574,7 +574,7 @@ glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
 }
 
 
-void
+G_MODULE_EXPORT void
 glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
                              GObject            *container,
                              GObject            *current,
@@ -614,7 +614,7 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
   g_object_unref (G_OBJECT (current));
 }
 
-void
+G_MODULE_EXPORT void
 glade_gtk_box_child_action_activate (GladeWidgetAdaptor *adaptor,
                                      GObject            *container,
                                      GObject            *object,

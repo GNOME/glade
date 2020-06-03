@@ -63,7 +63,7 @@ glade_real_tree_view_editor_grab_focus (GtkWidget * widget)
   gtk_widget_grab_focus (priv->embed);
 }
 
-GtkWidget *
+G_MODULE_EXPORT GtkWidget *
 glade_real_tree_view_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_REAL_TREE_VIEW_EDITOR, NULL);
