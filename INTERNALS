@@ -1,22 +1,22 @@
-Glade3 internals
-~~~~~~~~~~~~~~~~
+Glade internals
+~~~~~~~~~~~~~~~
 
 
 about this document
 ===================
 
 This is a short description of the designs goals and of the
-implementation choices of Glade3. It isn't complete, but
+implementation choices of Glade. It isn't complete, but
 I hope that it may be useful.
 
  * Note: not only I'm not the original author/designer of 
-   glade3, but also I have not touched glade3 for many months.
+   glade, but also I have not touched glade for many months.
 
-The only reason why I'm writing this doc is that glade3 development
+The only reason why I'm writing this doc is that glade development
 has been stagnating for a long time... now it seems that there are some
 developers interested in resuming work on it, so I thought that it was 
 right to put down some notes on what I remember to ease their way
-through the glade3 codebase.
+through the glade codebase.
 
 Everyone who spots errors and inaccuracies in this doc, or who wants to
 add informations to it, should feel free to improve it!
@@ -35,8 +35,8 @@ the description of a Gtk+ GUI to an xml file.
  * glade is a tool to create and edit the desired interface in an easy
    way and then automatically serialize it to the xml file.
 
-Glade3 is a complete rewrite of the original glade and takes advantage
-of the introspection properties of the GTK+2 toolkit.
+Glade is a complete rewrite of the original glade and takes advantage
+of the introspection properties of the GTK toolkit.
 
 
 

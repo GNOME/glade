@@ -1,12 +1,12 @@
 Glade official git repository is hosted by the GNOME foundation at
-git.gnome.org
+gitlab.gnome.org
 
 Mailing List
 ~~~~~~~~~~~~
-Glade discussion takes place on glade-devel@lists.ximian.com
+Glade discussion takes place on glade-devel-list@gnome.org
 
 To subscribe or to consult archives visit
-	http://lists.ximian.com/mailman/listinfo/glade-devel
+	https://mail.gnome.org/mailman/listinfo/glade-devel-list
 
 
 GitLab
@@ -58,7 +58,7 @@ Naming conventions:
 - function names should be lowercase and prefixed with the
   file name (or, if the function is static and the name too long,
   with an abbreviation), e.g:
-  glade_project_window_my_function () 
+  glade_project_window_my_function ()
   gpw_my_loooooooooong_named_fuction ()
 - variable names should be lowercase and be short but self explanatory;
   if you need more than one word use an underscore, e.g:
