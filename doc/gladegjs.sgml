@@ -1,0 +1,99 @@
+<refentry id="gjssupport" revision="5 Jun 2020">
+ <refmeta>
+   <refentrytitle>JavaScript Gtk widgets support</refentrytitle>
+   <refmiscinfo>Glade UI</refmiscinfo>
+ </refmeta>
+ <refnamediv>
+   <refname>Add GJS/JavaScript support to your catalog</refname>
+   <refpurpose>
+How to write and install a catalog for a JavaScript widget library
+   </refpurpose>
+ </refnamediv>
+
+ <refsect1>
+   <title>Introduction</title>
+   <para>
+Glade supports loading widgets programed in JavaScript by linking and running GJS from the gladegjs catalog plugin.
+   </para>
+
+   <para>
+So in order for glade to support your JavaScript widgets you will have to:
+
+<varlistentry><listitem>
+a) specify gladegjs support code as your plugin library.
+</listitem></varlistentry>
+
+<varlistentry><listitem>
+b) set glade_gjs_init as you init function.
+</listitem></varlistentry>
+
+<varlistentry><listitem>
+c) make sure your catalog name is the same as your JavaScript import library since
+glade_gjs_init() will use this name to import your widgets into the
+interpreter.
+</listitem></varlistentry>
+
+     <programlisting>
+<![CDATA[
+<glade-catalog name="gjsplugin" library="gladegjs" domain="glade-3" depends="gtk+">
+ <init-function>glade_gjs_init</init-function>
+
+ <glade-widget-classes>
+   <glade-widget-class title="MyJSGrid" name="MyJSGrid" generic-name="mygrid"/>
+ </glade-widget-classes>
+
+ <glade-widget-group name="gjs" title="Gjs">
+   <glade-widget-class-ref name="MyJSGrid"/>
+ </glade-widget-group>
+</glade-catalog>]]>
+     </programlisting>
+   </para>
+
+   <para>
+GJS will look up for your widgets in the same places it looks
+for regular catalogs plugins, that is $GLADE_ENV_MODULE_PATH
+environment variable and `pkg-config --variable=moduledir gladeui-2.0`
+
+So the easiest thing would be to make a symlink in one of those directory, just
+do not forget that the name should be the one specified in your catalog name.
+   </para>
+
+   <para>
+gjsplugin.js
+     <programlisting>
+<![CDATA[
+#!/usr/bin/gjs
+
+const GObject = imports.gi.GObject;
+const Gtk     = imports.gi.Gtk;
+
+var MyJSGrid = GObject.registerClass({
+    GTypeName: 'MyJSGrid',
+    Properties: {
+      'string-property': GObject.ParamSpec.string('string-property', 'String Prop',
+        'Longer description', GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+        'Foobar'),
+      'int-property': GObject.ParamSpec.int('int-property', 'Integer Prop',
+        'Longer description',
+         GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+         0, 10, 5)
+    },
+    Signals: {'mysignal': {param_types: [GObject.TYPE_INT]}},
+}, class MyJSGrid extends Gtk.Grid {
+    _init(props) {
+        super._init(props);
+        this.label = new Gtk.Label ({ visible: true });
+        this.add (this.label);
+        this.connect('notify::string-property', this._update.bind(this));
+        this.connect('notify::int-property', this._update.bind(this));
+        this._update();
+    }
+    _update (obj, pspec) {
+        this.label.set_text ('JS Properties\nInteger = ' + this.int_property + '\nString = \'' + this.string_property + '\'');
+    }
+});
+]]>
+     </programlisting>
+   </para>
+ </refsect1>
+</refentry>
