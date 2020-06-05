@@ -34,6 +34,7 @@ glade_python_init() will use this name to import your widgets into the
 interpreter.
 </listitem></varlistentry>
 
+pythonplugin.xml
      <programlisting>
 <![CDATA[
 <glade-catalog name="pythonplugin" library="gladepython"
@@ -41,11 +42,11 @@ domain="glade-3" depends="gtk+">
  <init-function>glade_python_init</init-function>
 
  <glade-widget-classes>
-   <glade-widget-class title="MyBox" name="MyBox" generic-name="mybox"/>
+   <glade-widget-class title="MyPythonBox" name="MyPythonBox" generic-name="mypythonbox"/>
  </glade-widget-classes>
 
  <glade-widget-group name="python" title="Python">
-   <glade-widget-class-ref name="MyBox"/>
+   <glade-widget-class-ref name="MyPythonBox"/>
  </glade-widget-group>
 </glade-catalog>]]>
      </programlisting>
@@ -66,13 +67,24 @@ do not forget that the name should be the one specified in your catalog name.
 pythonplugin.py
      <programlisting>
 <![CDATA[
-from gi.repository import Gtk
+from gi.repository import GLib, Gtk, GObject
 
-class MyBox(Gtk.HBox):
-       __gtype_name__ = 'MyBox'
+class MyPythonBox(Gtk.Box):
+  __gtype_name__ = 'MyPythonBox'
 
-       def __init__(self):
-               Gtk.HBox.__init__(self)
+  foo = GObject.Property(type=int, nick='An integer')
+  bar = GObject.Property(type=str, nick='A String')
+
+  def _update(self, obj, pspec):
+    self.label.set_text ('Python Properties\nInteger = ' + str(self.foo) + '\nString = \'' + self.bar + '\'')
+
+  def __init__ (self):
+    Gtk.Box.__init__ (self)
+    self.label = Gtk.Label (visible = True)
+    self.add (self.label)
+    self.connect('notify::foo', self._update)
+    self.connect('notify::bar', self._update)
+    self._update(None, None)
 ]]>
      </programlisting>
    </para>
