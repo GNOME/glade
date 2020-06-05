@@ -132,7 +132,7 @@ pygobject_version = '3.8.0'
 pygobject_dep = dependency('pygobject-3.0', version: '>= ' + pygobject_version, required: get_option('python'))
 have_python = pygobject_dep.found()
 if have_python
-  python_dep = import('python').find_installation().dependency()
+  python_dep = dependency('python-3.8-embed', version: '>= 3.8')
 
   version_array = pygobject_version.split('.')
   config_h.set('PYGOBJECT_REQUIRED_MAJOR', version_array[0].to_int())
