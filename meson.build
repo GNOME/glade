@@ -34,6 +34,12 @@ gladeui_minor_version = version_array[1].to_int()
 
 gladeui_libname = '@0@-@1@'.format(gladeui_name, gladeui_version)
 
+# If the source code has changed at all, increment gladeui_revision
+# If any interfaces have been added, removed, or changed, increment gladeui_current, and set gladeui_revision to 0.
+# If any interfaces have been added since the last public release, then increment gladeui_age.
+# If any interfaces have been removed since the last public release, then set gladeui_age to 0.
+# Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
+
 gladeui_revision = 0
 gladeui_current = 12
 gladeui_age = 0
