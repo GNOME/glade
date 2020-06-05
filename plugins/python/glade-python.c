@@ -110,7 +110,7 @@ glade_python_setup ()
   if (PyErr_Occurred ())
     {
       PyObject *ptype, *pvalue, *ptraceback, *pstr;
-      char *pvalue_char = "";
+      const char *pvalue_char = "";
 
       PyErr_Fetch (&ptype, &pvalue, &ptraceback);
       PyErr_NormalizeException (&ptype, &pvalue, &ptraceback);
