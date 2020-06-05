@@ -141,7 +141,7 @@ if have_python
 endif
 
 # WebKit2GTK support
-webkit2gtk_dep = dependency('webkit2gtk-4.0', version: '>= 2.12.0', required: get_option('webkit2gtk'))
+webkit2gtk_dep = dependency('webkit2gtk-4.0', version: '>= 2.28.0', required: get_option('webkit2gtk'))
 have_webkit2gtk = webkit2gtk_dep.found()
 
 # Check for GDK Quartz and MacOSX integration package
