@@ -60,7 +60,7 @@ static void     verify_clicked                        (GtkWidget              *b
                                                        GladeProjectProperties *properties);
 static void     on_domain_entry_changed               (GtkWidget              *entry,
                                                        GladeProjectProperties *properties);
-static void     target_button_clicked                 (GtkWidget              *widget,
+static void     target_combobox_changed               (GtkWidget              *widget,
                                                        GladeProjectProperties *properties);
 static void     on_glade_project_properties_hide      (GtkWidget              *widget,
                                                        GladeProjectProperties *properties);
@@ -99,7 +99,7 @@ typedef struct
   /* Properties */
   GtkWidget *project_wide_radio;
   GtkWidget *toplevel_contextual_radio;
-  GtkWidget *toolkit_box;
+  GtkWidget *toolkit_grid;
 
   GtkWidget *resource_default_radio;
   GtkWidget *resource_relative_radio;
@@ -191,7 +191,7 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, domain_entry);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, template_checkbutton);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, template_combobox);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, toolkit_box);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, toolkit_grid);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, css_filechooser);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, css_checkbutton);
 
@@ -239,85 +239,83 @@ glade_project_properties_finalize (GObject *object)
 }
 
 static void
-target_version_box_fill (GladeProjectProperties *properties)
+combobox_populate_from_catalog (GladeProjectProperties *properties,
+                                GtkWidget              *combobox,
+                                GladeCatalog           *catalog)
 {
   GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GladeProject *project = priv->project;
-  GtkWidget *vbox = priv->toolkit_box;
-  GtkWidget *label, *active_radio, *target_radio, *hbox;
-  GList *list, *targets;
+  gint minor, major, position;
+  GList *targets;
 
-  /* Add stuff to vbox */
-  for (list = glade_app_get_catalogs (); list; list = g_list_next (list))
+  glade_project_get_target_version (project,
+                                    glade_catalog_get_name (catalog),
+                                    &major, &minor);
+
+  for (targets = glade_catalog_get_targets (catalog), position = 0;
+       targets; targets = targets->next, position++)
+    {
+      GladeTargetableVersion *version = targets->data;
+      g_autofree gchar *name = g_strdup_printf ("%d.%d",
+                                     version->major,
+                                     version->minor);
+
+      gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT(combobox), position, name);
+      if (major == version->major && minor == version->minor)
+        gtk_combo_box_set_active (GTK_COMBO_BOX(combobox), position);
+
+      g_signal_connect (G_OBJECT (combobox), "changed",
+                        G_CALLBACK (target_combobox_changed), properties);
+      g_object_set_data (G_OBJECT (combobox), "catalog",
+                         (gchar *) glade_catalog_get_name (catalog));
+    }
+
+  g_hash_table_insert (priv->target_radios,
+                       g_strdup (glade_catalog_get_name (catalog)),
+                       combobox);
+}
+
+static void
+target_version_box_fill (GladeProjectProperties *properties)
+{
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
+  GtkWidget *grid = priv->toolkit_grid;
+  GtkWidget *label, *combobox;
+  static gint n_columns = 3;
+  gint i, j, left;
+  GList *list;
+
+
+  /* Add stuff to the toolkit grid */
+  for (list = glade_app_get_catalogs (), i = 0, j = 0; list;
+       list = g_list_next (list))
     {
       GladeCatalog *catalog = list->data;
-      gint minor, major;
 
       /* Skip if theres only one option */
       if (g_list_length (glade_catalog_get_targets (catalog)) <= 1)
         continue;
 
-      glade_project_get_target_version (project,
-                                        glade_catalog_get_name (catalog),
-                                        &major, &minor);
-
       /* Special case to mark GTK+ in upper case */
       if (strcmp (glade_catalog_get_name (catalog), "gtk+") == 0)
-        label = gtk_label_new ("GTK+");
+        label = gtk_label_new ("GTK");
       else
         label = gtk_label_new (glade_catalog_get_name (catalog));
+
+      left = (i % n_columns) * 2;
       gtk_widget_set_halign (label, GTK_ALIGN_START);
-
+      gtk_grid_attach (GTK_GRID (grid), label, left, j, 1, 1);
       gtk_widget_show (label);
-      gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 2);
-      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
-      active_radio = target_radio = NULL;
+      combobox = gtk_combo_box_text_new ();
+      gtk_widget_set_margin_end (combobox, 8);
+      combobox_populate_from_catalog (properties, combobox, catalog);
+      gtk_grid_attach (GTK_GRID (grid), combobox, left + 1, j, 1, 1);
+      gtk_widget_show (combobox);
 
-      for (targets = glade_catalog_get_targets (catalog);
-           targets; targets = targets->next)
-        {
-          GladeTargetableVersion *version = targets->data;
-          gchar *name = g_strdup_printf ("%d.%d",
-                                         version->major,
-                                         version->minor);
-
-          if (!target_radio)
-            target_radio = gtk_radio_button_new_with_label (NULL, name);
-          else
-            target_radio =
-                gtk_radio_button_new_with_label_from_widget
-                (GTK_RADIO_BUTTON (target_radio), name);
-          g_free (name);
-
-          g_signal_connect (G_OBJECT (target_radio), "clicked",
-                            G_CALLBACK (target_button_clicked), properties);
-
-          g_object_set_data (G_OBJECT (target_radio), "version", version);
-          g_object_set_data (G_OBJECT (target_radio), "catalog",
-                             (gchar *) glade_catalog_get_name (catalog));
-
-          gtk_widget_show (target_radio);
-          gtk_box_pack_end (GTK_BOX (hbox), target_radio, TRUE, TRUE, 2);
-
-          if (major == version->major && minor == version->minor)
-            active_radio = target_radio;
-
-        }
-
-      if (active_radio)
-        {
-          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (active_radio), TRUE);
-          g_hash_table_insert (priv->target_radios,
-                               g_strdup (glade_catalog_get_name (catalog)),
-                               gtk_radio_button_get_group (GTK_RADIO_BUTTON
-                                                           (active_radio)));
-        }
-      else
-        g_warning ("Corrupt catalog versions");
-
-      gtk_widget_show (hbox);
-      gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 2);
+      i++;
+      if (i % n_columns == 0)
+        j++;
     }
 }
 
@@ -415,19 +413,22 @@ glade_project_properties_set_property (GObject *object,
  *                     Callbacks                        *
  ********************************************************/
 static void
-target_button_clicked (GtkWidget              *widget,
-                       GladeProjectProperties *properties)
+target_combobox_changed (GtkWidget              *widget,
+                         GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
-  GladeTargetableVersion        *version;
-  gchar                         *catalog;
+  g_autofree gchar *version = NULL;
+  gchar *catalog;
+  gint major, minor;
 
   if (priv->ignore_ui_cb)
     return;
 
-  version = g_object_get_data (G_OBJECT (widget), "version");
+  version = gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (widget));
   catalog = g_object_get_data (G_OBJECT (widget), "catalog");
-  glade_command_set_project_target (priv->project, catalog, version->major, version->minor);
+
+  if (sscanf (version, "%d.%d", &major, &minor) == 2)
+    glade_command_set_project_target (priv->project, catalog, major, minor);
 }
 
 static void
@@ -981,15 +982,13 @@ project_targets_changed (GladeProject           *project,
 {
   GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
   GList *list;
-  GSList *radios, *l;
-
   priv->ignore_ui_cb = TRUE;
 
   /* For each catalog */
   for (list = glade_app_get_catalogs (); list; list = g_list_next (list))
     {
-      GladeTargetableVersion *version;
       GladeCatalog *catalog = list->data;
+      GtkComboBox *combobox;
       gint minor, major;
 
       /* Skip if theres only one option */
@@ -1003,20 +1002,11 @@ project_targets_changed (GladeProject           *project,
 
       /* Fetch the radios for this catalog  */
       if (priv->target_radios &&
-          (radios = g_hash_table_lookup (priv->target_radios, glade_catalog_get_name (catalog))) != NULL)
+          (combobox = g_hash_table_lookup (priv->target_radios, glade_catalog_get_name (catalog))) != NULL)
         {
-          for (l = radios; l; l = l->next)
-            {
-              GtkWidget *radio = l->data;
-
-              /* Activate the appropriate button for the project/catalog */
-              version = g_object_get_data (G_OBJECT (radio), "version");
-              if (version->major == major && version->minor == minor)
-                {
-                  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
-                  break;
-                }
-            }
+          g_autofree gchar *id = NULL;
+          id = g_strdup_printf ("%d.%d", major, minor);
+          gtk_combo_box_set_active_id(GTK_COMBO_BOX(combobox), id);
         }
     }
   priv->ignore_ui_cb = FALSE;
