@@ -28,6 +28,7 @@ static gboolean
 glade_gjs_setup ()
 {
   GjsContext  *context;
+  gchar **tokens = NULL;
   const gchar *path;
   const GList *l;
   GArray *paths;
@@ -36,7 +37,14 @@ glade_gjs_setup ()
 
   /* GLADE_ENV_MODULE_PATH has priority */
   if ((path = g_getenv (GLADE_ENV_MODULE_PATH)))
-    g_array_append_val (paths, path);
+    {
+      tokens = g_strsplit(path, ":", -1);
+      gint i;
+
+      for (i = 0; tokens[i]; i++)
+        g_array_append_val (paths, tokens[i]);
+    }
+
 
   /* Append modules directory */
   if ((path = glade_app_get_modules_dir ()))
@@ -54,6 +62,7 @@ glade_gjs_setup ()
   g_object_ref_sink (context);
 
   g_array_free (paths, TRUE);
+  g_strfreev (tokens);
 
   return FALSE;
 }
@@ -80,7 +89,7 @@ glade_gjs_init (const gchar *name)
     cname[0] = g_ascii_toupper (cname[0]);
 
   /* Yeah, we use the catalog name as the library */
-  import_sentence = g_strdup_printf ("const %s = imports.%s;", cname, name);
+  import_sentence = g_strdup_printf ("imports.gi.versions.Gtk = \"3.0\";\nconst %s = imports.%s;", cname, name);
 
   /* Importing the module will create all the GTypes so that glade can use them at runtime */
   retval = gjs_context_eval (gjs_context_get_current (),
