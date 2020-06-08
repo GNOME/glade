@@ -1,6 +1,14 @@
+# Glade uses a Major.Minor.Micro versioning system
+#
+# With odd minor numbers representing development releases and even numbers
+# stable releases and micro numbers bug bugfixes.
+#
+# Since master is built as a nightly flatpak, we bump the version to development
+# inmediatelly after making a stable release, that way people using the nigthly
+# version will always know they are on a development release.
 project(
   'glade', 'c',
-  version: '3.36.0',
+  version: '3.37.0',
   license: 'GPL2',
   default_options: 'buildtype=debugoptimized',
   meson_version: '>= 0.49.0',
