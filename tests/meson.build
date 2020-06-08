@@ -1,6 +1,25 @@
+envs = [
+  'GLADE_TESTING=1',
+  'GLADE_CATALOG_SEARCH_PATH=' + (source_root / 'plugins/gtk+'),
+  'GLADE_MODULE_SEARCH_PATH=' + (build_root / 'plugins/gtk+'),
+  'GLADE_PIXMAP_DIR=' + (source_root / 'data/icons'),
+  'GLADE_ICON_THEME_PATH=' + (source_root / 'plugins/gtk+/icons/22x22'),
+]
+
+modenvs = [
+  'GLADE_TESTING=1',
+  'GLADE_CATALOG_SEARCH_PATH=' + (source_root / 'plugins/gtk+:') +
+    (source_root / 'plugins/python:') + (source_root / 'plugins/gjs:') + (source_root / 'tests/catalogs'),
+  'GLADE_MODULE_SEARCH_PATH=' + (build_root / 'plugins/gtk+:') +
+    (build_root / 'plugins/python:') + (build_root / 'plugins/gjs:') + (source_root / 'tests/modules'),
+  'GLADE_PIXMAP_DIR=' + (source_root / 'data/icons'),
+  'GLADE_ICON_THEME_PATH=' + (source_root / 'plugins/gtk+/icons/22x22'),
+]
+
 test_unit = [
-  ['add-child', {'sources': 'add-child.c'}],
-  ['create-widgets', {'sources': 'create-widgets.c'}],
+  ['add-child', {'sources': 'add-child.c'}, envs],
+  ['create-widgets', {'sources': 'create-widgets.c'}, envs],
+  ['modules', {'sources': 'modules.c'}, modenvs],
 ]
 
 sources = files('toplevel-order.c')
@@ -25,15 +44,7 @@ sources += gnome.compile_resources(
   export: true,
 )
 
-test_unit += [['toplevel-order', {'sources': sources}]]
-
-envs = [
-  'GLADE_TESTING=1',
-  'GLADE_CATALOG_SEARCH_PATH=' + (source_root / 'plugins/gtk+'),
-  'GLADE_MODULE_SEARCH_PATH=' + (build_root / 'plugins/gtk+'),
-  'GLADE_PIXMAP_DIR=' + (source_root / 'data/icons'),
-  'GLADE_ICON_THEME_PATH=' + (source_root / 'plugins/gtk+/icons/22x22'),
-]
+test_unit += [['toplevel-order', {'sources': sources}, envs]]
 
 foreach unit: test_unit
   exe = executable(
@@ -47,6 +58,6 @@ foreach unit: test_unit
   test(
     unit[0],
     exe,
-    env: envs,
+    env: unit[2],
   )
 endforeach
