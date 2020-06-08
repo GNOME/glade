@@ -453,15 +453,27 @@ glade_property_def_make_string_from_objects (GladePropertyDef *
   return string;
 }
 
-static locale_t
+#ifdef G_OS_WIN32
+# define LOCALE_TYPE char *
+# define uselocale(x) setlocale (LC_ALL, x)
+#else
+# define LOCALE_TYPE locale_t
+#endif
+
+static LOCALE_TYPE
 get_C_locale (void)
 {
   static gsize initialized = FALSE;
-  static locale_t C_locale = NULL;
+  static LOCALE_TYPE C_locale = NULL;
 
   if (g_once_init_enter (&initialized))
     {
-      C_locale = newlocale (LC_ALL_MASK, "C", NULL);
+#ifdef G_OS_WIN32
+      _configthreadlocale (_ENABLE_PER_THREAD_LOCALE);
+      C_locale = "C";
+#else
+      C_locale = newlocale (LC_ALL, "C");
+#endif
       g_once_init_leave (&initialized, TRUE);
     }
 
@@ -477,7 +489,7 @@ glade_dtostr (double number, gdouble epsilon)
   for (i = 0; i <= 20; i++)
     {
       double rounded;
-      locale_t old_locale;
+      LOCALE_TYPE old_locale;
       old_locale = uselocale (get_C_locale ());
       snprintf (str, G_ASCII_DTOSTR_BUF_SIZE, "%.*f", i, number);
       uselocale (old_locale);
