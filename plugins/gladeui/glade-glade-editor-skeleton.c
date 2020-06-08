@@ -28,7 +28,7 @@
 #define GLADE_TAG_SKELETON_EDITORS "child-editors"
 #define GLADE_TAG_SKELETON_EDITOR  "editor"
 
-void
+G_MODULE_EXPORT void
 glade_glade_editor_skeleton_read_widget (GladeWidgetAdaptor *adaptor,
 					 GladeWidget        *widget,
 					 GladeXmlNode       *node)
@@ -81,7 +81,7 @@ glade_glade_editor_skeleton_read_widget (GladeWidgetAdaptor *adaptor,
     }
 }
 
-void
+G_MODULE_EXPORT void
 glade_glade_editor_skeleton_write_widget_after (GladeWidgetAdaptor *adaptor,
 						GladeWidget        *widget,
 						GladeXmlContext    *context,

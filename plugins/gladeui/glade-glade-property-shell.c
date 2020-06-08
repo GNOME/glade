@@ -25,7 +25,7 @@
 #include <config.h>
 #include <gladeui/glade.h>
 
-void
+G_MODULE_EXPORT void
 glade_glade_property_shell_post_create (GladeWidgetAdaptor *adaptor,
 					GObject            *object,
 					GladeCreateReason   reason)
