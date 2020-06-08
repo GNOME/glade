@@ -165,7 +165,7 @@ glade_python_setup ()
   return FALSE;
 }
 
-void
+G_MODULE_EXPORT void
 glade_python_init (const gchar *name)
 {
   static gsize init = 0;
