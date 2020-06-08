@@ -230,7 +230,7 @@ sources += gnome.compile_resources(
 )
 
 shared_module(
-  'gladegtk',
+  '@0@gladegtk'.format(module_prefix),
   sources: sources,
   dependencies: libgladeui_dep,
   c_args: '-DG_LOG_DOMAIN="GladeUI-GTK"',

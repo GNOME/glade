@@ -4,7 +4,7 @@ deps = [
 ]
 
 shared_module(
-  'gladewebkit2gtk',
+  '@0@gladewebkit2gtk'.format(module_prefix),
   sources: 'glade-webkit2gtk.c',
   dependencies: deps,
   c_args: '-DG_LOG_DOMAIN="GladeUI-WEBKIT2GTK"',

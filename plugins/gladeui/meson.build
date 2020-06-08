@@ -4,7 +4,7 @@ sources = files(
 )
 
 shared_module(
-  'gladeglade',
+  '@0@gladeglade'.format(module_prefix),
   sources: sources,
   dependencies: libgladeui_dep,
   c_args: '-DG_LOG_DOMAIN="GladeUI-Glade"',

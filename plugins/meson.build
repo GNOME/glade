@@ -1,6 +1,10 @@
 ldflags = []
+module_prefix = ''
 if glade_system == 'windows'
   ldflags += cc.get_supported_link_arguments('-no-undefined')
+  if cc.get_argument_syntax() == 'msvc'
+    module_prefix = 'lib'
+  endif
 endif
 
 plugins_kwargs = {

@@ -5,7 +5,7 @@ deps = [
 ]
 
 shared_module(
-  'gladepython',
+  '@0@gladepython'.format(module_prefix),
   sources: 'glade-python.c',
   dependencies: deps,
   c_args: '-DG_LOG_DOMAIN="GladeUI-PYTHON"',
