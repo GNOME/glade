@@ -95,6 +95,7 @@ glade_python_setup ()
   GString *command;
   const gchar *module_path;
   const GList *paths;
+  gchar **tokens = NULL;
 
   Py_SetProgramName (PY_STRING (PACKAGE_NAME));
 
@@ -140,9 +141,14 @@ glade_python_setup ()
   command = g_string_new ("import sys; sys.path+=[");
 
   /* GLADE_ENV_MODULE_PATH has priority */
-  module_path = g_getenv (GLADE_ENV_MODULE_PATH);
-  if (module_path)
-    g_string_append_printf (command, "'%s', ", module_path);
+  if ((module_path = g_getenv (GLADE_ENV_MODULE_PATH)))
+    {
+      tokens = g_strsplit(module_path, ":", -1);
+      gint i;
+
+      for (i = 0; tokens[i]; i++)
+        g_string_append_printf (command, "'%s', ", tokens[i]);
+    }
 
   /* Append modules directory */
   g_string_append_printf (command, "'%s'", glade_app_get_modules_dir ());
@@ -161,6 +167,7 @@ glade_python_setup ()
   PyRun_SimpleString (command->str);
 
   g_string_free (command, TRUE);
+  g_strfreev (tokens);
 
   return FALSE;
 }
