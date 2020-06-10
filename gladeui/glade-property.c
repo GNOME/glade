@@ -634,9 +634,7 @@ glade_property_finalize (GObject *object)
 static void
 glade_property_init (GladeProperty *property)
 {
-  property->priv = G_TYPE_INSTANCE_GET_PRIVATE (property,
-                                                GLADE_TYPE_PROPERTY,
-                                                GladePropertyPrivate);
+  property->priv = glade_property_get_instance_private (property);
 
   property->priv->precision = 2;
   property->priv->enabled = TRUE;
