@@ -508,20 +508,10 @@ glade_property_def_make_string_from_gvalue (GladePropertyDef *
   GdkRGBA *rgba;
   GList *objects;
 
-  if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  if (DEPRECATED_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
     {
-      gint eval = g_value_get_enum (value);
-      string = glade_property_def_make_string_from_enum
-          (property_def->pspec->value_type, eval);
-    }
-  else if (G_IS_PARAM_SPEC_FLAGS (property_def->pspec))
-    {
-      guint flags = g_value_get_flags (value);
-      string = glade_property_def_make_string_from_flags
-          (property_def, flags, FALSE);
-    }
-  else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
-    {
+      G_GNUC_END_IGNORE_DEPRECATIONS;
       GValueArray *value_array = g_value_get_boxed (value);
 
       if (value_array && value_array->n_values &&
@@ -539,6 +529,18 @@ glade_property_def_make_string_from_gvalue (GladePropertyDef *
           string = gstring->str;
           g_string_free (gstring, FALSE);
         }
+    }
+  else if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
+    {
+      gint eval = g_value_get_enum (value);
+      string = glade_property_def_make_string_from_enum
+          (property_def->pspec->value_type, eval);
+    }
+  else if (G_IS_PARAM_SPEC_FLAGS (property_def->pspec))
+    {
+      guint flags = g_value_get_flags (value);
+      string = glade_property_def_make_string_from_flags
+          (property_def, flags, FALSE);
     }
   else if (G_IS_PARAM_SPEC_BOXED (property_def->pspec))
     {
@@ -843,20 +845,10 @@ glade_property_def_make_gvalue_from_string (GladePropertyDef *property_def,
 
   g_value_init (value, property_def->pspec->value_type);
 
-  if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  if (DEPRECATED_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
     {
-      gint eval = glade_property_def_make_enum_from_string
-          (property_def->pspec->value_type, string);
-      g_value_set_enum (value, eval);
-    }
-  else if (G_IS_PARAM_SPEC_FLAGS (property_def->pspec))
-    {
-      guint flags = glade_property_def_make_flags_from_string
-          (property_def->pspec->value_type, string);
-      g_value_set_flags (value, flags);
-    }
-  else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
-    {
+      G_GNUC_END_IGNORE_DEPRECATIONS;
       GValueArray *value_array;
       GValue str_value = { 0, };
       gint i;
@@ -879,6 +871,18 @@ glade_property_def_make_gvalue_from_string (GladePropertyDef *property_def,
         }
       g_value_take_boxed (value, value_array);
       g_strfreev (strv);
+    }
+  else if (G_IS_PARAM_SPEC_ENUM (property_def->pspec))
+    {
+      gint eval = glade_property_def_make_enum_from_string
+          (property_def->pspec->value_type, string);
+      g_value_set_enum (value, eval);
+    }
+  else if (G_IS_PARAM_SPEC_FLAGS (property_def->pspec))
+    {
+      guint flags = glade_property_def_make_flags_from_string
+          (property_def->pspec->value_type, string);
+      g_value_set_flags (value, flags);
     }
   else if (G_IS_PARAM_SPEC_BOXED (property_def->pspec))
     {

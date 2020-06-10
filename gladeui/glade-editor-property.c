@@ -1917,7 +1917,7 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 
       /* Deprecated GValueArray */
       G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-      value_array_type = G_TYPE_VALUE_ARRAY;
+      value_array_type = g_value_array_get_type ();
       G_GNUC_END_IGNORE_DEPRECATIONS;
 
       buffer =
@@ -1973,7 +1973,7 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 
   /* Deprecated GValueArray */
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-  value_array_type = G_TYPE_VALUE_ARRAY;
+  value_array_type = g_value_array_get_type ();
   G_GNUC_END_IGNORE_DEPRECATIONS;
 
   pspec = glade_property_def_get_pspec (priv->property_def);
@@ -2432,7 +2432,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 
   /* Deprecated GValueArray */
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-  value_array_type = G_TYPE_VALUE_ARRAY;
+  value_array_type = g_value_array_get_type ();
   G_GNUC_END_IGNORE_DEPRECATIONS;
 
   property_def = priv->property_def;

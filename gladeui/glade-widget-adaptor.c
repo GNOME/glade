@@ -1239,18 +1239,18 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
 {
   GType type = 0;
 
-  if (G_IS_PARAM_SPEC_ENUM (pspec))
-    type = GLADE_TYPE_EPROP_ENUM;
-  else if (G_IS_PARAM_SPEC_FLAGS (pspec))
-    type = GLADE_TYPE_EPROP_FLAGS;
-  else if (G_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  if (DEPRECATED_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
     {
       /* Require deprecated code */
-      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-      if (pspec->value_type == G_TYPE_VALUE_ARRAY)
+      if (pspec->value_type == g_value_array_get_type ())
         type = GLADE_TYPE_EPROP_TEXT;
       G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
     }
+  else if (G_IS_PARAM_SPEC_ENUM (pspec))
+    type = GLADE_TYPE_EPROP_ENUM;
+  else if (G_IS_PARAM_SPEC_FLAGS (pspec))
+    type = GLADE_TYPE_EPROP_FLAGS;
   else if (G_IS_PARAM_SPEC_BOXED (pspec))
     {
       if (pspec->value_type == GDK_TYPE_COLOR ||

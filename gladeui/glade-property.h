@@ -12,6 +12,8 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROPERTY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROPERTY))
 #define GLADE_PROPERTY_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_PROPERTY, GladePropertyClass))
 
+#define DEPRECATED_IS_PARAM_SPEC_VALUE_ARRAY(p) G_TYPE_CHECK_INSTANCE_TYPE (p, g_value_array_get_type())
+
 typedef struct _GladePropertyClass   GladePropertyClass;
 typedef struct _GladePropertyPrivate GladePropertyPrivate;
 
