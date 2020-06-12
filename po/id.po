@@ -2,15 +2,15 @@
 # Copyright (C) 2010 THE glade3'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the glade3 package.
 # Andika Triwidada <andika@gmail.com>, 2010-2014.
-# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019.
+# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2020.
 # Sucipto <sucipto@pm.me>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-05-07 11:50+0000\n"
-"PO-Revision-Date: 2020-05-14 16:44+0700\n"
+"POT-Creation-Date: 2020-05-26 12:56+0000\n"
+"PO-Revision-Date: 2020-06-06 18:59+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
@@ -72,245 +72,246 @@ msgstr ""
 "bahasa pemrograman termasuk C, C++, C#, Vala, Java, Perl, Python, dan "
 "lainnya."
 
-#: src/glade-window.c:59
+#: src/glade-window.c:54
 msgid "[Read Only]"
 msgstr "[Hanya Baca]"
 
-#: src/glade-window.c:196
+#: src/glade-window.c:191
 msgid "User Interface Designer"
 msgstr "Perancang Antar Muka Pengguna"
 
-#: src/glade-window.c:461 src/glade-window.c:468
+#: src/glade-window.c:456 src/glade-window.c:463
 msgid "the last action"
 msgstr "aksi terakhir"
 
-#: src/glade-window.c:462
+#: src/glade-window.c:457
 #, c-format
 msgid "Undo: %s"
 msgstr "Batalkan: %s"
 
-#: src/glade-window.c:469
+#: src/glade-window.c:464
 #, c-format
 msgid "Redo: %s"
 msgstr "Jadi Lagi: %s"
 
-#: src/glade-window.c:494
+#: src/glade-window.c:489
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Simpan otomatis '%s'"
 
-#: src/glade-window.c:499
+#: src/glade-window.c:494
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Galat saat menyimpan otomatis '%s'"
 
-#: src/glade-window.c:721
+#: src/glade-window.c:716
 msgid "Open…"
 msgstr "Buka…"
 
-#: src/glade-window.c:755
+#: src/glade-window.c:750
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Projek '%s' masih sedang dimuat."
 
-#: src/glade-window.c:774
+#: src/glade-window.c:769
 msgid "Failed to backup existing file, continue saving?"
 msgstr "Gagal membuat cadangan berkas yang ada, lanjutkan menyimpan?"
 
-#: src/glade-window.c:789
+#: src/glade-window.c:784
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Gagal menyimpan %s: %s"
 
-#: src/glade-window.c:828
+#: src/glade-window.c:823
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Berkas %s telah diubah semenjak terakhir dibaca"
 
-#: src/glade-window.c:832
+#: src/glade-window.c:827
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Jika Anda menyimpannya, seluruh perubahan dari luar akan hilang. Simpan saja?"
 
-#: src/glade-window.c:837
+#: src/glade-window.c:832
 msgid "_Save Anyway"
 msgstr "_Simpan Saja"
 
-#: src/glade-window.c:845
+#: src/glade-window.c:840
 msgid "_Don't Save"
 msgstr "_Jangan Simpan"
 
-#: src/glade-window.c:878
+#: src/glade-window.c:873
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Projek '%s' telah disimpan"
 
-#: src/glade-window.c:909
+#: src/glade-window.c:904
 msgid "Save As…"
 msgstr "Simpan Sebagai…"
 
-#: src/glade-window.c:973
+#: src/glade-window.c:968
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Tak bisa menyimpan berkas %s"
 
-#: src/glade-window.c:977
+#: src/glade-window.c:972
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Anda tidak memiliki izin yang dibutuhkan untuk menyimpan berkas."
 
-#: src/glade-window.c:999
+#: src/glade-window.c:994
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "Tak bisa menyimpan berkas %s. Projek lain dengan path tersebut sedang dibuka."
 
-#: src/glade-window.c:1027
+#: src/glade-window.c:1022
 msgid "No open projects to save"
 msgstr "Tak ada projek terbuka untuk disimpan"
 
-#: src/glade-window.c:1060
+#: src/glade-window.c:1055
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Simpan perubahan ke projek \"%s\" sebelum ditutup?"
 
-#: src/glade-window.c:1068
+#: src/glade-window.c:1063
 msgid "Your changes will be lost if you don't save them."
 msgstr "Perubahan yang Anda buat akan hilang bila tidak Anda simpan."
 
-#: src/glade-window.c:1072
+#: src/glade-window.c:1067
 msgid "Close _without Saving"
 msgstr "Tutup _tanpa Menyimpan"
 
-#: src/glade-window.c:1073 src/glade-window.c:1758 gladeui/glade-editor.c:795
-#: gladeui/glade-editor.c:1151 gladeui/glade-editor-property.c:1776
-#: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
-#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
-#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3648
-#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:522
-#: plugins/gtk+/glade-attributes.c:1062
+#: src/glade-window.c:1068 src/glade-window.c:1753
+#: src/glade-preferences.glade:447 src/glade-registration.glade:101
+#: gladeui/glade-editor.c:795 gladeui/glade-editor.c:1151
+#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
+#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3218
+#: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3337
+#: gladeui/glade-editor-property.c:3648 gladeui/glade-utils.c:483
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Batal"
 
-#: src/glade-window.c:1074 gladeui/glade-utils.c:486
+#: src/glade-window.c:1069 src/glade.glade:646 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Simpan"
 
-#: src/glade-window.c:1105
+#: src/glade-window.c:1100
 msgid "Save…"
 msgstr "Simpan…"
 
-#: src/glade-window.c:1665
+#: src/glade-window.c:1660
 msgid "Could not create a new project."
 msgstr "Tak dapat membuat projek baru."
 
-#: src/glade-window.c:1726
+#: src/glade-window.c:1721
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Projek %s memiliki perubahan yang belum disimpan"
 
-#: src/glade-window.c:1731
+#: src/glade-window.c:1726
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Bila Anda memuat ulang, semua perubahan yang belum tersimpan akan hilang. "
 "Muat ulang saja?"
 
-#: src/glade-window.c:1741
+#: src/glade-window.c:1736
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Berkas %s dari projek telah diubah dari luar"
 
-#: src/glade-window.c:1746
+#: src/glade-window.c:1741
 msgid "Do you want to reload the project?"
 msgstr "Anda ingin memuat ulang projek?"
 
-#: src/glade-window.c:1752
+#: src/glade-window.c:1747
 msgid "_Reload"
 msgstr "_Muat Ulang"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2287
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Halo, saya akan menunjukkan apa yang baru di Glade"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2288
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Bilah menu dan bilah alat yang digabung pada bilah header"
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2290
 msgid "You can open a project"
 msgstr "Anda bisa membuka sebuah proyek"
 
-#: src/glade-window.c:2296
+#: src/glade-window.c:2291
 msgid "find recently used"
 msgstr "temukan yang baru-baru ini digunakan"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2292
 msgid "or create a new one"
 msgstr "atau buat yang baru"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2296
 msgid "Undo"
 msgstr "Batalkan"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2297
 msgid "Redo"
 msgstr "Jadi Lagi"
 
-#: src/glade-window.c:2303
+#: src/glade-window.c:2298
 msgid "Project switcher"
 msgstr "Pengalih proyek"
 
-#: src/glade-window.c:2305
+#: src/glade-window.c:2300
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "dan tombol Simpan dapat langsung diakses di bilah header"
 
-#: src/glade-window.c:2306
+#: src/glade-window.c:2301
 msgid "just like Save As"
 msgstr "seperti Simpan Sebagai"
 
-#: src/glade-window.c:2307
+#: src/glade-window.c:2302
 msgid "project properties"
 msgstr "properti proyek"
 
-#: src/glade-window.c:2308
+#: src/glade-window.c:2303
 msgid "and less commonly used actions"
 msgstr "dan aksi yang kurang umum digunakan"
 
-#: src/glade-window.c:2310
+#: src/glade-window.c:2305
 msgid "The object inspector took the palette's place"
 msgstr "Inspektor objek mengambil tempat palet itu"
 
-#: src/glade-window.c:2311
+#: src/glade-window.c:2306
 msgid "To free up space for the property editor"
 msgstr "Untuk membebaskan ruang penyunting properti"
 
-#: src/glade-window.c:2313
+#: src/glade-window.c:2308
 msgid "The palette was replaced with a new object chooser"
 msgstr "Palet diganti dengan pemilih objek baru"
 
-#: src/glade-window.c:2314
+#: src/glade-window.c:2309
 msgid "Where you can search all supported classes"
 msgstr "Di mana Anda bisa mencari semua kelas yang didukung"
 
-#: src/glade-window.c:2315
+#: src/glade-window.c:2310
 msgid "investigate GTK+ object groups"
 msgstr "menyelidiki kelompok objek GTK+"
 
-#: src/glade-window.c:2316
+#: src/glade-window.c:2311
 msgid "and find classes introduced by other libraries"
 msgstr "dan temukan kelas yang diperkenalkan oleh pustaka lain"
 
-#: src/glade-window.c:2318
+#: src/glade-window.c:2313
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr ""
 "OK, sekarang kita sudah selesai dengan ikhtisar, mari kita mulai dengan alur "
 "kerja baru"
 
-#: src/glade-window.c:2320
+#: src/glade-window.c:2315
 msgid "First of all, create a new project"
 msgstr "Pertama-tama, buat proyek baru"
 
-#: src/glade-window.c:2321
+#: src/glade-window.c:2316
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
@@ -318,35 +319,35 @@ msgstr ""
 "OK, sekarang tambahkan GtkWindow menggunakan pemilih widget baru atau dengan "
 "mengklik ganda pada ruang kerja"
 
-#: src/glade-window.c:2322
+#: src/glade-window.c:2317
 msgid "Excellent!"
 msgstr "Bagus sekali!"
 
-#: src/glade-window.c:2323
+#: src/glade-window.c:2318
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr ""
 "Omong-omong, apakah Anda tahu Anda bisa klik dua kali pada placeholder "
 "manapun untuk membuat widget?"
 
-#: src/glade-window.c:2324
+#: src/glade-window.c:2319
 msgid "Try adding a grid"
 msgstr "Coba tambahkan grid"
 
-#: src/glade-window.c:2325
+#: src/glade-window.c:2320
 msgid "and a button"
 msgstr "dan sebuah tombol"
 
-#: src/glade-window.c:2327
+#: src/glade-window.c:2322
 msgid "Quite easy! Isn't it?"
 msgstr "Cukup mudah bukan?"
 
-#: src/glade-window.c:2328
+#: src/glade-window.c:2323
 msgid "Enjoy!"
 msgstr "Nikmati!"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2546
+#: src/glade-window.c:2541
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -355,16 +356,16 @@ msgstr ""
 "apakah Anda ingin mengikutinya sekarang?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2550
+#: src/glade-window.c:2545
 msgid "If not, you can always find it in the Help menu."
 msgstr "Bila tidak, Anda selalu dapat menemukannya dalam menu Bantuan."
 
-#: src/glade-window.c:2552
+#: src/glade-window.c:2547
 msgid "_Do not show this dialog again"
 msgstr "Jangan tampilkan _dialog ini lagi"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2573
+#: src/glade-window.c:2568
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
 "Pergilah ke Bantuan -> Pendaftaran & Survey Pengguna dan lengkapi survey "
@@ -424,9 +425,10 @@ msgstr "Preferensi"
 msgid "About Glade"
 msgstr "Tentang Glade"
 
-#: src/glade.glade:461 plugins/gtk+/gtk+.xml:1937
-msgid "Open"
-msgstr "Buka"
+#: src/glade.glade:461 src/glade-preferences.glade:461
+#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
+msgid "_Open"
+msgstr "_Buka"
 
 #: src/glade.glade:466
 msgid "Open a project"
@@ -439,10 +441,6 @@ msgstr "Buat projek baru"
 #: src/glade.glade:623
 msgid "Edit project properties"
 msgstr "Sunting properti projek"
-
-#: src/glade.glade:646 plugins/gtk+/gtk+.xml:1935
-msgid "Save"
-msgstr "Simpan"
 
 #: src/glade.glade:651
 msgid "Save the current project"
@@ -603,6 +601,11 @@ msgstr "Tambahkan path pencarian katalog baru"
 msgid "Extra catalog paths"
 msgstr "Path katalog ekstra"
 
+#: src/glade-preferences.glade:399 gladeui/glade-editor-property.c:1380
+#: gladeui/glade-project-properties.ui:644
+msgid "_Close"
+msgstr "_Tutup"
+
 #: src/glade-preferences.glade:428
 msgid "Select a catalog search path"
 msgstr "Pilih sebuah path pencarian katalog"
@@ -743,14 +746,9 @@ msgstr "Ups! Galat saat mengakses DB: %s"
 msgid "Glade Registration & User Survey"
 msgstr "Pendaftaran Glade & Survey Pengguna"
 
-#: src/glade-registration.glade:101 plugins/gtk+/gtk+.xml:1732
-#: plugins/gtk+/gtk+.xml:3448
-msgid "Cancel"
-msgstr "Batal"
-
 #: src/glade-registration.glade:114
-msgid "Submit"
-msgstr "Kirim"
+msgid "_Submit"
+msgstr "_Kirim"
 
 #: src/glade-registration.glade:118
 msgid "Information will be sent to https://people.gnome.org/~jpu"
@@ -1852,10 +1850,6 @@ msgstr "Teks Gubahan untuk ditampilkan dalam label properti"
 msgid "Select Fields"
 msgstr "Pilih Ruas"
 
-#: gladeui/glade-editor-property.c:1380
-msgid "_Close"
-msgstr "_Tutup"
-
 #: gladeui/glade-editor-property.c:1393
 msgid "_Select individual fields:"
 msgstr "Pilih rua_s individual:"
@@ -1902,10 +1896,6 @@ msgstr "Ko_mentar bagi penerjemah:"
 #: gladeui/glade-editor-property.c:2277
 msgid "Select a file from the project resource directory"
 msgstr "Pilih suatu berkas dari direktori sumber daya projek"
-
-#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
-msgid "_Open"
-msgstr "_Buka"
 
 #: gladeui/glade-editor-property.c:3137 gladeui/glade-widget-adaptor.c:1461
 #: gladeui/glade-widget.c:1354 plugins/gtk+/gtk+.xml:1511
@@ -3238,6 +3228,10 @@ msgstr "MIT"
 #: gladeui/glade-project-properties.ui:552
 msgid "GNU All permissive"
 msgstr "GNU All permissive"
+
+#: gladeui/glade-project-properties.ui:626
+msgid "_Verify"
+msgstr "_Verifikasi"
 
 #: gladeui/glade-project-properties.ui:630
 msgid ""
@@ -5890,6 +5884,10 @@ msgstr "Hapus Kejadian"
 msgid "OK"
 msgstr "OK"
 
+#: plugins/gtk+/gtk+.xml:1732 plugins/gtk+/gtk+.xml:3448
+msgid "Cancel"
+msgstr "Batal"
+
 #: plugins/gtk+/gtk+.xml:1734 plugins/gtk+/gtk+.xml:3446
 msgid "Close"
 msgstr "Tutup"
@@ -5954,6 +5952,14 @@ msgstr "Tukar"
 #: plugins/gtk+/glade-file-chooser-button-editor.ui:69
 msgid "File Chooser Button"
 msgstr "Tombol Pemilih Berkas"
+
+#: plugins/gtk+/gtk+.xml:1935
+msgid "Save"
+msgstr "Simpan"
+
+#: plugins/gtk+/gtk+.xml:1937
+msgid "Open"
+msgstr "Buka"
 
 #: plugins/gtk+/gtk+.xml:1939
 msgid "Select Folder"
