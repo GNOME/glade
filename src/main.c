@@ -147,6 +147,8 @@ open (GApplication  *application,
   if (verbose) g_timer_destroy (timer);
 }
 
+#include "workaround.h"
+
 int
 main (int argc, char *argv[])
 {
@@ -162,6 +164,14 @@ main (int argc, char *argv[])
     }
 
   gtk_init (&argc, &argv);
+
+  /* FIXME:
+   *
+   * This prevents glade from crashing when loading GJS plugin on X11 backend
+   */
+#ifdef GDK_WINDOWING_X11
+  _init_cairo_xlib_workaround ();
+#endif
 
   app = gtk_application_new ("org.gnome.Glade", G_APPLICATION_HANDLES_OPEN);
 
