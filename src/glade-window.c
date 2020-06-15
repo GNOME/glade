@@ -47,10 +47,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#define ACTION_GROUP_STATIC             "GladeStatic"
-#define ACTION_GROUP_PROJECT            "GladeProject"
-#define ACTION_GROUP_PROJECTS_LIST_MENU "GladeProjectsList"
-
 #define READONLY_INDICATOR (_("[Read Only]"))
 
 #define URL_DEVELOPER_MANUAL "http://library.gnome.org/devel/gladeui/"
@@ -63,11 +59,6 @@
 #define CONFIG_KEY_WIDTH            "width"
 #define CONFIG_KEY_HEIGHT           "height"
 #define CONFIG_KEY_MAXIMIZED        "maximized"
-
-#define CONFIG_GROUP_LOAD_SAVE      "Load and Save"
-#define CONFIG_KEY_BACKUP           "backup"
-#define CONFIG_KEY_AUTOSAVE         "autosave"
-#define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
 #define CONFIG_INTRO_GROUP          "Intro"
 #define CONFIG_INTRO_DONE           "intro-done"
@@ -2115,11 +2106,12 @@ glade_window_init (GladeWindow *window)
 
   priv->default_path = NULL;
 
+  /* This will load extra catalog paths */
   priv->settings = glade_settings_new ();
   glade_settings_load (priv->settings, glade_app_get_config ());
 
-  /* We need this for the icons to be available */
-  glade_init ();
+  /* Create GladeApp singleton, this will load all catalogs and load icons */
+  priv->app = glade_app_new ();
 
   gtk_widget_init_template (GTK_WIDGET (window));
 
@@ -2412,14 +2404,10 @@ glade_window_constructed (GObject *object)
   g_signal_connect (G_OBJECT (window), "key-press-event",
                     G_CALLBACK (glade_utils_hijack_key_press), window);
 
-  /* Load configuration, we need the list of extra catalog paths before creating
-   * the GladeApp
-   */
-  glade_window_config_load (window);
-
-  /* Create GladeApp singleton, this will load all catalogs */
-  priv->app = glade_app_new ();
   glade_app_set_window (GTK_WIDGET (window));
+
+  /* Load configuration */
+  glade_window_config_load (window);
 
   /* Clipboard signals */
   g_signal_connect (G_OBJECT (glade_app_get_clipboard ()),

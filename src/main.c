@@ -161,6 +161,8 @@ main (int argc, char *argv[])
       return -1;
     }
 
+  gtk_init (&argc, &argv);
+
   app = gtk_application_new ("org.gnome.Glade", G_APPLICATION_HANDLES_OPEN);
 
   g_application_set_option_context_summary (G_APPLICATION (app),
