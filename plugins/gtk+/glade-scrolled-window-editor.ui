@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.0 
+<!-- Generated with glade 3.37.0 
 
 libgladegtk - Glade UI Designer Gtk+ support plugin
 Copyright (C) 2013 Tristan Van Berkom <tvb@gnome.org>
@@ -22,7 +22,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
 
 -->
 <interface domain="glade">
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.24"/>
   <requires lib="gladeui" version="0.0"/>
   <template class="GladeScrolledWindowEditor" parent="GladeEditorSkeleton">
     <property name="visible">True</property>
@@ -66,7 +66,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <object class="GladePropertyLabel" id="shadow_type_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="margin_start">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">shadow-type</property>
           </object>
@@ -93,7 +93,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <object class="GladePropertyShell" id="window_placement_set_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="margin_start">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">window-placement-set</property>
             <property name="editor_type">GladeEpropCheck</property>
@@ -121,7 +121,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <object class="GladePropertyShell" id="kinetic_scrolling_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="margin_start">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">kinetic-scrolling</property>
             <property name="editor_type">GladeEpropCheck</property>
@@ -136,162 +136,13 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <object class="GladePropertyLabel" id="content_width_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="margin_start">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">min-content-width</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">5</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="content_width_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">min-content-width</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">5</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyLabel" id="content_height_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">min-content-height</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="content_height_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">min-content-height</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">6</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyLabel" id="max_content_width_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">max-content-width</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="max_content_width_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">max-content-width</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">7</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyLabel" id="max_content_height_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">max-content-height</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="max_content_height_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">max-content-height</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">8</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyLabel" id="propagate_natural_width_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">propagate-natural-width</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">9</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="propagate_natural_width_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">propagate-natural-width</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">9</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyLabel" id="propagate_natural_height_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">propagate-natural-height</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">10</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="propagate_natural_height_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">propagate-natural-height</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">10</property>
-            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -300,7 +151,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="can_focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
-            <property name="margin_left">12</property>
+            <property name="margin_start">12</property>
             <property name="hexpand">False</property>
             <property name="label" translatable="yes">Horizontal</property>
             <attributes>
@@ -309,7 +160,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">11</property>
+            <property name="top_attach">8</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -327,7 +178,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">11</property>
+            <property name="top_attach">8</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -335,13 +186,13 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           <object class="GladePropertyLabel" id="hpolicy_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">24</property>
+            <property name="margin_start">24</property>
             <property name="property_name">hscrollbar-policy</property>
             <property name="custom_text" translatable="yes">Scrollbar Policy:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">12</property>
+            <property name="top_attach">9</property>
           </packing>
         </child>
         <child>
@@ -352,20 +203,20 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">12</property>
+            <property name="top_attach">9</property>
           </packing>
         </child>
         <child>
           <object class="GladePropertyLabel" id="vpolicy_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="margin_start">12</property>
             <property name="property_name">vscrollbar-policy</property>
             <property name="custom_text" translatable="yes">Scrollbar Policy:</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">12</property>
+            <property name="top_attach">9</property>
           </packing>
         </child>
         <child>
@@ -376,33 +227,33 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">12</property>
+            <property name="top_attach">9</property>
           </packing>
         </child>
         <child>
           <object class="GladePropertyLabel" id="hadj_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">24</property>
+            <property name="margin_start">24</property>
             <property name="property_name">hadjustment</property>
             <property name="custom_text" translatable="yes">Adjustment:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">13</property>
+            <property name="top_attach">10</property>
           </packing>
         </child>
         <child>
           <object class="GladePropertyLabel" id="vadj_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="margin_start">12</property>
             <property name="property_name">vadjustment</property>
             <property name="custom_text" translatable="yes">Adjustment:</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">13</property>
+            <property name="top_attach">10</property>
           </packing>
         </child>
         <child>
@@ -413,7 +264,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">13</property>
+            <property name="top_attach">10</property>
           </packing>
         </child>
         <child>
@@ -424,7 +275,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </object>
           <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">13</property>
+            <property name="top_attach">10</property>
           </packing>
         </child>
         <child>
@@ -439,6 +290,180 @@ Author: Tristan Van Berkom <tvb@gnome.org>
             <property name="left_attach">2</property>
             <property name="top_attach">4</property>
             <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="max_content_width_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">max-content-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="propagate_natural_width_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">propagate-natural-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <child>
+              <object class="GladePropertyLabel" id="content_height_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_start">12</property>
+                <property name="property_name">min-content-height</property>
+                <property name="custom_text" translatable="yes">Height: </property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="content_height_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="property_name">min-content-height</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">5</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <child>
+              <object class="GladePropertyLabel" id="max_content_height_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_start">12</property>
+                <property name="property_name">max-content-height</property>
+                <property name="custom_text" translatable="yes">Height: </property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="max_content_height_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="property_name">max-content-height</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">6</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <child>
+              <object class="GladePropertyLabel" id="propagate_natural_height_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_start">12</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">propagate-natural-height</property>
+                <property name="custom_text" translatable="yes">Height: </property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="propagate_natural_height_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="property_name">propagate-natural-height</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">7</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="content_width_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">min-content-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="max_content_width_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">max-content-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="propagate_natural_width_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">propagate-natural-width</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">7</property>
           </packing>
         </child>
       </object>
@@ -456,17 +481,6 @@ Author: Tristan Van Berkom <tvb@gnome.org>
       <editor id="window_placement_editor"/>
       <editor id="kinetic_scrolling_editor"/>
       <editor id="content_width_label"/>
-      <editor id="content_width_editor"/>
-      <editor id="content_height_label"/>
-      <editor id="content_height_editor"/>
-      <editor id="max_content_width_label"/>
-      <editor id="max_content_width_editor"/>
-      <editor id="max_content_height_label"/>
-      <editor id="max_content_height_editor"/>
-      <editor id="propagate_natural_width_label"/>
-      <editor id="propagate_natural_width_editor"/>
-      <editor id="propagate_natural_height_label"/>
-      <editor id="propagate_natural_height_editor"/>
       <editor id="hpolicy_label"/>
       <editor id="hpolicy_editor"/>
       <editor id="vpolicy_label"/>
@@ -476,6 +490,17 @@ Author: Tristan Van Berkom <tvb@gnome.org>
       <editor id="hadj_editor"/>
       <editor id="vadj_editor"/>
       <editor id="overlay_scrolling_editor"/>
+      <editor id="max_content_width_label"/>
+      <editor id="propagate_natural_width_label"/>
+      <editor id="content_height_label"/>
+      <editor id="content_height_editor"/>
+      <editor id="max_content_height_label"/>
+      <editor id="max_content_height_editor"/>
+      <editor id="propagate_natural_height_label"/>
+      <editor id="propagate_natural_height_editor"/>
+      <editor id="content_width_editor"/>
+      <editor id="max_content_width_editor"/>
+      <editor id="propagate_natural_width_editor"/>
     </child-editors>
   </template>
 </interface>
