@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-05-19 20:42+0000\n"
-"PO-Revision-Date: 2020-05-20 08:31+0300\n"
+"POT-Creation-Date: 2020-06-15 23:01+0000\n"
+"PO-Revision-Date: 2020-06-16 12:28+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "Language: uk\n"
@@ -607,7 +607,6 @@ msgid "Extra catalog paths"
 msgstr "Додаткові шляхи у каталозі"
 
 #: src/glade-preferences.glade:399 gladeui/glade-editor-property.c:1380
-#: gladeui/glade-project-properties.ui:644
 msgid "_Close"
 msgstr "З_акрити"
 
@@ -755,7 +754,6 @@ msgid "Glade Registration & User Survey"
 msgstr "Реєстрація і опитування користувачів Glade"
 
 #: src/glade-registration.glade:114
-#| msgid "Submit"
 msgid "_Submit"
 msgstr "_Надіслати"
 
@@ -771,7 +769,7 @@ msgstr "Відомості щодо користувача"
 msgid "<Your name or nickname is required>"
 msgstr "<Слід вказати ваше ім'я або псевдонім>"
 
-#: src/glade-registration.glade:256 gladeui/glade-project-properties.ui:399
+#: src/glade-registration.glade:256 gladeui/glade-project-properties.ui:450
 #: plugins/gtk+/glade-about-dialog-editor.ui:69
 msgid "Name:"
 msgstr "Назва:"
@@ -914,7 +912,7 @@ msgstr "Perl"
 #: src/glade-registration.glade:1348 src/glade-registration.glade:1379
 #: src/glade-registration.glade:1399 src/glade-registration.glade:1494
 #: src/glade-registration.glade:1985 src/glade-registration.glade:2192
-#: gladeui/glade-project-properties.ui:543 plugins/gtk+/gtk+.xml:3184
+#: gladeui/glade-project-properties.ui:577 plugins/gtk+/gtk+.xml:3184
 #: plugins/gtk+/gtk+.xml:4890
 msgid "Other"
 msgstr "Інше"
@@ -1514,6 +1512,7 @@ msgid "Disabling property %s on widget %s"
 msgstr "Вимикаємо властивість %s для віджета %s"
 
 #: gladeui/glade-command.c:785
+#, c-format
 msgid "Setting multiple properties"
 msgstr "Встановлення кількох властивостей"
 
@@ -1601,6 +1600,7 @@ msgid "Change signal handler %s"
 msgstr "Змінити обробник сигналу %s"
 
 #: gladeui/glade-command.c:2350
+#, c-format
 msgid "Setting i18n metadata"
 msgstr "Встановлення метаданих локалізації"
 
@@ -1736,7 +1736,7 @@ msgid "%s Properties - %s"
 msgstr "Властивості %s — %s"
 
 #: gladeui/glade-editor.c:361 gladeui/glade-widget.c:1390
-#: gladeui/glade-project-properties.ui:368
+#: gladeui/glade-project-properties.ui:420
 #: plugins/gtk+/glade-gtk-action-group.c:188
 #: plugins/gtk+/glade-gtk-cell-layout.c:365
 #: plugins/gtk+/glade-gtk-menu-shell.c:525
@@ -1881,7 +1881,7 @@ msgstr "_Текст:"
 msgid "T_ranslatable"
 msgstr "П_ерекладається"
 
-#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:705
+#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:703
 msgid "Whether this property is translatable"
 msgstr "Чи перекладається ця властивість або ні"
 
@@ -1911,7 +1911,7 @@ msgstr "Виберіть файл з каталогу ресурсів проє�
 msgid "Name"
 msgstr "Назва"
 
-#: gladeui/glade-editor-property.c:3146 gladeui/glade-property.c:672
+#: gladeui/glade-editor-property.c:3146 gladeui/glade-property.c:670
 msgid "Class"
 msgstr "Клас"
 
@@ -1985,7 +1985,7 @@ msgstr "Суміщення"
 msgid "Whether this widget is a composite template"
 msgstr "Визначає, чи є цей віджет композитним шаблоном"
 
-#: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:168
+#: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:175
 #: gladeui/glade-widget.c:1383
 msgid "Project"
 msgstr "Проєкт"
@@ -2292,7 +2292,7 @@ msgid "Path to load images and resources in Glade's runtime"
 msgstr ""
 "Шлях для завантаження зображень і ресурсів до середовища виконання Glade"
 
-#: gladeui/glade-project.c:1099 gladeui/glade-project-properties.ui:603
+#: gladeui/glade-project.c:1099 gladeui/glade-project-properties.ui:635
 msgid "License"
 msgstr "Ліцензія"
 
@@ -2322,6 +2322,7 @@ msgid "(%s child)"
 msgstr "(%s дочірній)"
 
 #: gladeui/glade-project.c:1211
+#, c-format
 msgid "(template)"
 msgstr "(шаблон)"
 
@@ -2554,68 +2555,68 @@ msgstr "У цей контейнер за раз може бути вставл�
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Недостатньо комірок у контейнері призначення"
 
-#: gladeui/glade-project-properties.c:169
+#: gladeui/glade-project-properties.c:176
 msgid "The project this properties dialog was created for"
 msgstr "Проєкт, для якого було створено це діалогове вікно властивостей"
 
-#: gladeui/glade-project-properties.c:620
+#: gladeui/glade-project-properties.c:628
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "Проєкт «%s» не містить застарілих віджетів чи невідповідності версій"
 
-#: gladeui/glade-property.c:673
+#: gladeui/glade-property.c:671
 msgid "The GladePropertyDef for this property"
 msgstr "GladePropertyDef для цієї властивості"
 
-#: gladeui/glade-property.c:678
+#: gladeui/glade-property.c:676
 msgid "Enabled"
 msgstr "Увімкнено"
 
-#: gladeui/glade-property.c:679
+#: gladeui/glade-property.c:677
 msgid "If the property is optional, this is its enabled state"
 msgstr "Якщо властивість може бути відсутня, це ознака відсутності"
 
-#: gladeui/glade-property.c:684 gladeui/glade-widget-action.c:191
+#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:191
 msgid "Sensitive"
 msgstr "Чутливий"
 
-#: gladeui/glade-property.c:685
+#: gladeui/glade-property.c:683
 msgid "This gives backends control to set property sensitivity"
 msgstr "Керуючий вхід для встановлення властивості чутливості"
 
-#: gladeui/glade-property.c:690
+#: gladeui/glade-property.c:688
 msgid "Context"
 msgstr "Контекст"
 
-#: gladeui/glade-property.c:691
+#: gladeui/glade-property.c:689
 msgid "Context for translation"
 msgstr "Контекст повідомлення для перекладача"
 
-#: gladeui/glade-property.c:697 plugins/gtk+/gtk+.xml:414
+#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:414
 msgid "Comment"
 msgstr "Коментар"
 
-#: gladeui/glade-property.c:698
+#: gladeui/glade-property.c:696
 msgid "Comment for translators"
 msgstr "Коментар для перекладачів"
 
-#: gladeui/glade-property.c:704
+#: gladeui/glade-property.c:702
 msgid "Translatable"
 msgstr "Перекладається"
 
-#: gladeui/glade-property.c:711
+#: gladeui/glade-property.c:709
 msgid "Visual State"
 msgstr "Стан відображення"
 
-#: gladeui/glade-property.c:712
+#: gladeui/glade-property.c:710
 msgid "Priority information for the property editor to act on"
 msgstr "Інформація про стан об'єкту для редактора властивостей"
 
-#: gladeui/glade-property.c:720
+#: gladeui/glade-property.c:718
 msgid "Precision"
 msgstr "Точність"
 
-#: gladeui/glade-property.c:721
+#: gladeui/glade-property.c:719
 msgid "Where applicable, precision to use on editors"
 msgstr "Де застосовне, точність, яку слід використовувати у редакторах"
 
@@ -3146,118 +3147,118 @@ msgstr "Сп_ільні"
 msgid "_Signals"
 msgstr "_Сигнали"
 
-#: gladeui/glade-project-properties.ui:94
-msgid "Translation domain:"
-msgstr "Домен перекладу:"
-
-#: gladeui/glade-project-properties.ui:147
-msgid "Composite template toplevel:"
-msgstr "Верхній рівень складеного шаблона:"
-
-#: gladeui/glade-project-properties.ui:167
-msgid "Select a CSS to use as custom style provider"
-msgstr "Виберіть CSS, яку буде використано як нетипове джерело стилів"
-
-#: gladeui/glade-project-properties.ui:179
-msgid "Custom CSS style provider:"
-msgstr "Нетипове джерело стилів CSS:"
-
-#: gladeui/glade-project-properties.ui:222
-msgid "From the project directory"
-msgstr "з каталогу проєкту повним шляхом"
-
-#: gladeui/glade-project-properties.ui:240
-msgid "From a project relative directory"
-msgstr "з каталогу проєкту за відносним шляхом"
-
-#: gladeui/glade-project-properties.ui:259
-msgid "From this directory"
-msgstr "з іншого каналу"
-
-#: gladeui/glade-project-properties.ui:282
-msgid "Choose a path to load image resources"
-msgstr "Виберіть каталог із зображеннями"
-
-#: gladeui/glade-project-properties.ui:314
-msgid "Image resources are loaded locally:"
-msgstr "Зображення завантажується:"
-
-#: gladeui/glade-project-properties.ui:349
-msgid "Toolkit version required:"
-msgstr "Потрібна версія набору бібліотек:"
-
-#: gladeui/glade-project-properties.ui:413
-msgid "Copyright:"
-msgstr "Авторські права:"
-
-#: gladeui/glade-project-properties.ui:428
-msgid "program or library name"
-msgstr "назва програми або бібліотеки"
-
-#: gladeui/glade-project-properties.ui:443
-msgid "Author(s):"
-msgstr "Автор(и):"
-
-#: gladeui/glade-project-properties.ui:457
-#: plugins/gtk+/glade-about-dialog-editor.ui:99
-msgid "License:"
-msgstr "Ліцензування:"
-
-#: gladeui/glade-project-properties.ui:511
-msgid "Description:"
-msgstr "Опис:"
-
-#: gladeui/glade-project-properties.ui:527
-msgid "program or library short description"
-msgstr "короткий опис програми або бібліотеки"
-
-#: gladeui/glade-project-properties.ui:544
-msgid "GNU GPL version 2"
-msgstr "GNU GPL, версія 2"
-
-#: gladeui/glade-project-properties.ui:545
-msgid "GNU GPL version 3"
-msgstr "GNU GPL, версія 3"
-
-#: gladeui/glade-project-properties.ui:546
-msgid "GNU LGPL version 2.1"
-msgstr "GNU LGPL, версія 2.1"
-
-#: gladeui/glade-project-properties.ui:547
-msgid "GNU LGPL version 3"
-msgstr "GNU LGPL, версія 3"
-
-#: gladeui/glade-project-properties.ui:548
-msgid "BSD 2-clause"
-msgstr "BSD 2-clause"
-
-#: gladeui/glade-project-properties.ui:549
-msgid "BSD 3-clause"
-msgstr "BSD 3-clause"
-
-#: gladeui/glade-project-properties.ui:550
-msgid "Apache 2"
-msgstr "Apache 2"
-
-#: gladeui/glade-project-properties.ui:551
-msgid "MIT"
-msgstr "MIT"
-
-#: gladeui/glade-project-properties.ui:552
-msgid "GNU All permissive"
-msgstr "GNU All permissive"
-
-#: gladeui/glade-project-properties.ui:626
+#: gladeui/glade-project-properties.ui:72
 msgid "_Verify"
 msgstr "П_еревірити"
 
-#: gladeui/glade-project-properties.ui:630
+#: gladeui/glade-project-properties.ui:76
 msgid ""
 "Verify that the project does not use any properties,\n"
 "signals or widgets which are not available in the target version"
 msgstr ""
 "Перевірити, чи немає у проєкті використання властивостей,\n"
 "сигналів або віджетів, які є недоступними у версії призначення"
+
+#: gladeui/glade-project-properties.ui:141
+msgid "Translation domain:"
+msgstr "Домен перекладу:"
+
+#: gladeui/glade-project-properties.ui:189
+msgid "Composite template toplevel:"
+msgstr "Верхній рівень складеного шаблона:"
+
+#: gladeui/glade-project-properties.ui:207
+msgid "Select a CSS to use as custom style provider"
+msgstr "Виберіть CSS, яку буде використано як нетипове джерело стилів"
+
+#: gladeui/glade-project-properties.ui:217
+msgid "Custom CSS style provider:"
+msgstr "Нетипове джерело стилів CSS:"
+
+#: gladeui/glade-project-properties.ui:258
+msgid "From the project directory"
+msgstr "з каталогу проєкту повним шляхом"
+
+#: gladeui/glade-project-properties.ui:275
+msgid "From a project relative directory"
+msgstr "з каталогу проєкту за відносним шляхом"
+
+#: gladeui/glade-project-properties.ui:292
+msgid "From this directory"
+msgstr "з іншого каналу"
+
+#: gladeui/glade-project-properties.ui:313
+msgid "Choose a path to load image resources"
+msgstr "Виберіть каталог із зображеннями"
+
+#: gladeui/glade-project-properties.ui:341
+msgid "Image resources are loaded locally:"
+msgstr "Зображення завантажується:"
+
+#: gladeui/glade-project-properties.ui:401
+msgid "Toolkit version required:"
+msgstr "Потрібна версія набору бібліотек:"
+
+#: gladeui/glade-project-properties.ui:462
+msgid "Copyright:"
+msgstr "Авторські права:"
+
+#: gladeui/glade-project-properties.ui:476
+msgid "program or library name"
+msgstr "назва програми або бібліотеки"
+
+#: gladeui/glade-project-properties.ui:488
+msgid "Author(s):"
+msgstr "Автор(и):"
+
+#: gladeui/glade-project-properties.ui:500
+#: plugins/gtk+/glade-about-dialog-editor.ui:99
+msgid "License:"
+msgstr "Ліцензування:"
+
+#: gladeui/glade-project-properties.ui:548
+msgid "Description:"
+msgstr "Опис:"
+
+#: gladeui/glade-project-properties.ui:563
+msgid "program or library short description"
+msgstr "короткий опис програми або бібліотеки"
+
+#: gladeui/glade-project-properties.ui:578
+msgid "GNU GPL version 2"
+msgstr "GNU GPL, версія 2"
+
+#: gladeui/glade-project-properties.ui:579
+msgid "GNU GPL version 3"
+msgstr "GNU GPL, версія 3"
+
+#: gladeui/glade-project-properties.ui:580
+msgid "GNU LGPL version 2.1"
+msgstr "GNU LGPL, версія 2.1"
+
+#: gladeui/glade-project-properties.ui:581
+msgid "GNU LGPL version 3"
+msgstr "GNU LGPL, версія 3"
+
+#: gladeui/glade-project-properties.ui:582
+msgid "BSD 2-clause"
+msgstr "BSD 2-clause"
+
+#: gladeui/glade-project-properties.ui:583
+msgid "BSD 3-clause"
+msgstr "BSD 3-clause"
+
+#: gladeui/glade-project-properties.ui:584
+msgid "Apache 2"
+msgstr "Apache 2"
+
+#: gladeui/glade-project-properties.ui:585
+msgid "MIT"
+msgstr "MIT"
+
+#: gladeui/glade-project-properties.ui:586
+msgid "GNU All permissive"
+msgstr "GNU All permissive"
 
 #: plugins/gtk+/glade-about-dialog-editor.c:141
 #, c-format
@@ -5564,14 +5565,14 @@ msgstr "Знизу вгору"
 #: plugins/gtk+/gtk+.xml:1109 plugins/gtk+/gtk+.xml:2618
 #: plugins/gtk+/gtk+.xml:3741 plugins/gtk+/gtk+.xml:4003
 #: plugins/gtk+/glade-misc-editor.ui:65 plugins/gtk+/glade-misc-editor.ui:127
-#: plugins/gtk+/glade-scrolled-window-editor.ui:305
+#: plugins/gtk+/glade-scrolled-window-editor.ui:156
 msgid "Horizontal"
 msgstr "Горизонтально"
 
 #: plugins/gtk+/gtk+.xml:1111 plugins/gtk+/gtk+.xml:2619
 #: plugins/gtk+/gtk+.xml:3743 plugins/gtk+/gtk+.xml:4005
 #: plugins/gtk+/glade-misc-editor.ui:82 plugins/gtk+/glade-misc-editor.ui:144
-#: plugins/gtk+/glade-scrolled-window-editor.ui:323
+#: plugins/gtk+/glade-scrolled-window-editor.ui:174
 msgid "Vertical"
 msgstr "Вертикальне"
 
@@ -5754,7 +5755,7 @@ msgid "Phone"
 msgstr "Телефон"
 
 #: plugins/gtk+/gtk+.xml:1507 plugins/gtk+/glade-about-dialog-editor.ui:287
-#: plugins/webkit2gtk/webkit2gtk.xml:17
+#: plugins/webkit2gtk/webkit2gtk.xml:18
 msgid "URL"
 msgstr "URL"
 
@@ -7983,15 +7984,22 @@ msgstr "Атрибути вікна з гортанням"
 msgid "Window Placement:"
 msgstr "Розташування вікна:"
 
-#: plugins/gtk+/glade-scrolled-window-editor.ui:340
-#: plugins/gtk+/glade-scrolled-window-editor.ui:364
+#: plugins/gtk+/glade-scrolled-window-editor.ui:191
+#: plugins/gtk+/glade-scrolled-window-editor.ui:215
 msgid "Scrollbar Policy:"
 msgstr "Правила смужки гортання:"
 
-#: plugins/gtk+/glade-scrolled-window-editor.ui:388
-#: plugins/gtk+/glade-scrolled-window-editor.ui:401
+#: plugins/gtk+/glade-scrolled-window-editor.ui:239
+#: plugins/gtk+/glade-scrolled-window-editor.ui:252
 msgid "Adjustment:"
 msgstr "Налаштування:"
+
+#: plugins/gtk+/glade-scrolled-window-editor.ui:332
+#: plugins/gtk+/glade-scrolled-window-editor.ui:370
+#: plugins/gtk+/glade-scrolled-window-editor.ui:409
+#| msgid "Right:"
+msgid "Height: "
+msgstr "Висота: "
 
 #: plugins/gtk+/glade-spin-button-editor.ui:49
 msgid "Spin Button Attributes"
@@ -8151,20 +8159,20 @@ msgstr "Обрамлення вікон на боці клієнта"
 msgid "Whether this window should include a custom titlebar."
 msgstr "Визначає, чи має включати це вікно нетипову смужку заголовка."
 
-#: plugins/webkit2gtk/webkit2gtk.xml:14
+#: plugins/webkit2gtk/webkit2gtk.xml:15
 msgid "WebKit Web View"
 msgstr "Вебпанель WebKit"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:21
+#: plugins/webkit2gtk/webkit2gtk.xml:22
 msgid "The URL to load in Glade (this property will not be saved)"
 msgstr ""
 "Адреса сторінки, яку слід завантажити до Glade (значення цієї властивості не "
 "буде збережено)"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:32
+#: plugins/webkit2gtk/webkit2gtk.xml:33
 msgid "WebKit Settings"
 msgstr "Параметри WebKit"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:36
+#: plugins/webkit2gtk/webkit2gtk.xml:37
 msgid "WebKit2GTK+ Widgets"
 msgstr "Віджети WebKit2GTK+"
