@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-05-19 20:42+0000\n"
-"PO-Revision-Date: 2020-05-20 11:56+0200\n"
+"POT-Creation-Date: 2020-06-15 23:01+0000\n"
+"PO-Revision-Date: 2020-06-16 09:30+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -615,7 +615,6 @@ msgid "Extra catalog paths"
 msgstr "Rutas de catálogos adicionales"
 
 #: src/glade-preferences.glade:399 gladeui/glade-editor-property.c:1380
-#: gladeui/glade-project-properties.ui:644
 msgid "_Close"
 msgstr "_Cerrar"
 
@@ -759,7 +758,6 @@ msgid "Glade Registration & User Survey"
 msgstr "Registro de Glade y encuesta para usuarios"
 
 #: src/glade-registration.glade:114
-#| msgid "Submit"
 msgid "_Submit"
 msgstr "_Enviar"
 
@@ -775,7 +773,7 @@ msgstr "Información del usuario"
 msgid "<Your name or nickname is required>"
 msgstr "<Su nombre o alias es necesario>"
 
-#: src/glade-registration.glade:256 gladeui/glade-project-properties.ui:399
+#: src/glade-registration.glade:256 gladeui/glade-project-properties.ui:450
 #: plugins/gtk+/glade-about-dialog-editor.ui:69
 msgid "Name:"
 msgstr "Nombre:"
@@ -919,7 +917,7 @@ msgstr "Perl"
 #: src/glade-registration.glade:1348 src/glade-registration.glade:1379
 #: src/glade-registration.glade:1399 src/glade-registration.glade:1494
 #: src/glade-registration.glade:1985 src/glade-registration.glade:2192
-#: gladeui/glade-project-properties.ui:543 plugins/gtk+/gtk+.xml:3184
+#: gladeui/glade-project-properties.ui:577 plugins/gtk+/gtk+.xml:3184
 #: plugins/gtk+/gtk+.xml:4890
 msgid "Other"
 msgstr "Otro"
@@ -1518,6 +1516,7 @@ msgid "Disabling property %s on widget %s"
 msgstr "Desactivando la propiedad %s en el widget %s"
 
 #: gladeui/glade-command.c:785
+#, c-format
 msgid "Setting multiple properties"
 msgstr "Estableciendo propiedades múltiples"
 
@@ -1605,6 +1604,7 @@ msgid "Change signal handler %s"
 msgstr "Cambiar el manipulador de señal %s"
 
 #: gladeui/glade-command.c:2350
+#, c-format
 msgid "Setting i18n metadata"
 msgstr "Configurando metadatos de internacionalización"
 
@@ -1741,7 +1741,7 @@ msgid "%s Properties - %s"
 msgstr "%s propiedades - %s"
 
 #: gladeui/glade-editor.c:361 gladeui/glade-widget.c:1390
-#: gladeui/glade-project-properties.ui:368
+#: gladeui/glade-project-properties.ui:420
 #: plugins/gtk+/glade-gtk-action-group.c:188
 #: plugins/gtk+/glade-gtk-cell-layout.c:365
 #: plugins/gtk+/glade-gtk-menu-shell.c:525
@@ -1887,7 +1887,7 @@ msgstr "_Texto:"
 msgid "T_ranslatable"
 msgstr "_Traducible"
 
-#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:705
+#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:703
 msgid "Whether this property is translatable"
 msgstr "Indica si esta propiedad se puede traducir"
 
@@ -1918,7 +1918,7 @@ msgstr "Seleccionar un archivo desde la carpeta de recursos del proyecto"
 msgid "Name"
 msgstr "Nombre"
 
-#: gladeui/glade-editor-property.c:3146 gladeui/glade-property.c:672
+#: gladeui/glade-editor-property.c:3146 gladeui/glade-property.c:670
 msgid "Class"
 msgstr "Clase"
 
@@ -1992,7 +1992,7 @@ msgstr "Compuesta"
 msgid "Whether this widget is a composite template"
 msgstr "Indica si el widget es una plantilla compuesta"
 
-#: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:168
+#: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:175
 #: gladeui/glade-widget.c:1383
 msgid "Project"
 msgstr "Proyecto"
@@ -2300,7 +2300,7 @@ msgid "Path to load images and resources in Glade's runtime"
 msgstr ""
 "Ruta donde cargar las imágenes y los recursos en tiempo de ejecución de Glade"
 
-#: gladeui/glade-project.c:1099 gladeui/glade-project-properties.ui:603
+#: gladeui/glade-project.c:1099 gladeui/glade-project-properties.ui:635
 msgid "License"
 msgstr "Licencia"
 
@@ -2329,6 +2329,7 @@ msgid "(%s child)"
 msgstr "(hijo de %s)"
 
 #: gladeui/glade-project.c:1211
+#, c-format
 msgid "(template)"
 msgstr "(plantilla)"
 
@@ -2566,72 +2567,72 @@ msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 "Cantidad insuficiente de lugares de colocación en el contenedor destino"
 
-#: gladeui/glade-project-properties.c:169
+#: gladeui/glade-project-properties.c:176
 msgid "The project this properties dialog was created for"
 msgstr "El proyecto para el que se creó este diálogo de propiedades"
 
-#: gladeui/glade-project-properties.c:620
+#: gladeui/glade-project-properties.c:628
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr ""
 "El proyecto %s no tiene widgets obsoletos o inconsistencias entre versiones."
 
-#: gladeui/glade-property.c:673
+#: gladeui/glade-property.c:671
 msgid "The GladePropertyDef for this property"
 msgstr "La GladePropertyDef para esta propiedad"
 
-#: gladeui/glade-property.c:678
+#: gladeui/glade-property.c:676
 msgid "Enabled"
 msgstr "Activado"
 
-#: gladeui/glade-property.c:679
+#: gladeui/glade-property.c:677
 msgid "If the property is optional, this is its enabled state"
 msgstr "Si la propiedad es opcional, esto está en su estado activado"
 
-#: gladeui/glade-property.c:684 gladeui/glade-widget-action.c:191
+#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:191
 msgid "Sensitive"
 msgstr "Sensible"
 
-#: gladeui/glade-property.c:685
+#: gladeui/glade-property.c:683
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 "Esto proporciona a los backend el control para establecer la propiedad de "
 "sensibilidad"
 
-#: gladeui/glade-property.c:690
+#: gladeui/glade-property.c:688
 msgid "Context"
 msgstr "Contexto"
 
-#: gladeui/glade-property.c:691
+#: gladeui/glade-property.c:689
 msgid "Context for translation"
 msgstr "Comentario para traducción"
 
-#: gladeui/glade-property.c:697 plugins/gtk+/gtk+.xml:414
+#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:414
 msgid "Comment"
 msgstr "Comentario"
 
-#: gladeui/glade-property.c:698
+#: gladeui/glade-property.c:696
 msgid "Comment for translators"
 msgstr "Comentario para los traductores"
 
-#: gladeui/glade-property.c:704
+#: gladeui/glade-property.c:702
 msgid "Translatable"
 msgstr "Traducible"
 
-#: gladeui/glade-property.c:711
+#: gladeui/glade-property.c:709
 msgid "Visual State"
 msgstr "Estado visual"
 
-#: gladeui/glade-property.c:712
+#: gladeui/glade-property.c:710
 msgid "Priority information for the property editor to act on"
 msgstr ""
 "Información de prioridad para que el editor de propiedades actúe sobre ella"
 
-#: gladeui/glade-property.c:720
+#: gladeui/glade-property.c:718
 msgid "Precision"
 msgstr "Precisión"
 
-#: gladeui/glade-property.c:721
+#: gladeui/glade-property.c:719
 msgid "Where applicable, precision to use on editors"
 msgstr "Si aplica, precisión que usar en los editores"
 
@@ -3165,118 +3166,118 @@ msgstr "_Comunes"
 msgid "_Signals"
 msgstr "_Señales"
 
-#: gladeui/glade-project-properties.ui:94
-msgid "Translation domain:"
-msgstr "Dominio de traducción:"
-
-#: gladeui/glade-project-properties.ui:147
-msgid "Composite template toplevel:"
-msgstr "Nivel superior de la plantilla de composición:"
-
-#: gladeui/glade-project-properties.ui:167
-msgid "Select a CSS to use as custom style provider"
-msgstr "Seleccionar un CSS que usar como proveedor de estilo personalizado"
-
-#: gladeui/glade-project-properties.ui:179
-msgid "Custom CSS style provider:"
-msgstr "Proveedor de estilo CSS personalizado:"
-
-#: gladeui/glade-project-properties.ui:222
-msgid "From the project directory"
-msgstr "Desde la carpeta del proyecto"
-
-#: gladeui/glade-project-properties.ui:240
-msgid "From a project relative directory"
-msgstr "Desde una carpeta de proyecto relativo"
-
-#: gladeui/glade-project-properties.ui:259
-msgid "From this directory"
-msgstr "Desde esta carpeta"
-
-#: gladeui/glade-project-properties.ui:282
-msgid "Choose a path to load image resources"
-msgstr "Elegir una ruta donde cargar los recursos de imágenes"
-
-#: gladeui/glade-project-properties.ui:314
-msgid "Image resources are loaded locally:"
-msgstr "Los recursos de imágenes se cargan localmente:"
-
-#: gladeui/glade-project-properties.ui:349
-msgid "Toolkit version required:"
-msgstr "Versiones de los toolkit necesarias:"
-
-#: gladeui/glade-project-properties.ui:413
-msgid "Copyright:"
-msgstr "Copyright:"
-
-#: gladeui/glade-project-properties.ui:428
-msgid "program or library name"
-msgstr "nombre del programa o la biblioteca"
-
-#: gladeui/glade-project-properties.ui:443
-msgid "Author(s):"
-msgstr "Autores:"
-
-#: gladeui/glade-project-properties.ui:457
-#: plugins/gtk+/glade-about-dialog-editor.ui:99
-msgid "License:"
-msgstr "Licencia:"
-
-#: gladeui/glade-project-properties.ui:511
-msgid "Description:"
-msgstr "Descripción:"
-
-#: gladeui/glade-project-properties.ui:527
-msgid "program or library short description"
-msgstr "descripción corta del programa o la biblioteca"
-
-#: gladeui/glade-project-properties.ui:544
-msgid "GNU GPL version 2"
-msgstr "GNU GPL versión 2"
-
-#: gladeui/glade-project-properties.ui:545
-msgid "GNU GPL version 3"
-msgstr "GNU GPL versión 3"
-
-#: gladeui/glade-project-properties.ui:546
-msgid "GNU LGPL version 2.1"
-msgstr "GNU LGPL versión 2.1"
-
-#: gladeui/glade-project-properties.ui:547
-msgid "GNU LGPL version 3"
-msgstr "GNU LGPL versión 3"
-
-#: gladeui/glade-project-properties.ui:548
-msgid "BSD 2-clause"
-msgstr "BSD 2-clause"
-
-#: gladeui/glade-project-properties.ui:549
-msgid "BSD 3-clause"
-msgstr "BSD 3-clause"
-
-#: gladeui/glade-project-properties.ui:550
-msgid "Apache 2"
-msgstr "Apache 2"
-
-#: gladeui/glade-project-properties.ui:551
-msgid "MIT"
-msgstr "MIT"
-
-#: gladeui/glade-project-properties.ui:552
-msgid "GNU All permissive"
-msgstr "GNU Permitir todo"
-
-#: gladeui/glade-project-properties.ui:626
+#: gladeui/glade-project-properties.ui:72
 msgid "_Verify"
 msgstr "_Comprobar"
 
-#: gladeui/glade-project-properties.ui:630
+#: gladeui/glade-project-properties.ui:76
 msgid ""
 "Verify that the project does not use any properties,\n"
 "signals or widgets which are not available in the target version"
 msgstr ""
 "Verificar que el proyecto no usa propiedades,\n"
 "señales o widgets que no estén disponibles en la versión objetivo"
+
+#: gladeui/glade-project-properties.ui:141
+msgid "Translation domain:"
+msgstr "Dominio de traducción:"
+
+#: gladeui/glade-project-properties.ui:189
+msgid "Composite template toplevel:"
+msgstr "Nivel superior de la plantilla de composición:"
+
+#: gladeui/glade-project-properties.ui:207
+msgid "Select a CSS to use as custom style provider"
+msgstr "Seleccionar un CSS que usar como proveedor de estilo personalizado"
+
+#: gladeui/glade-project-properties.ui:217
+msgid "Custom CSS style provider:"
+msgstr "Proveedor de estilo CSS personalizado:"
+
+#: gladeui/glade-project-properties.ui:258
+msgid "From the project directory"
+msgstr "Desde la carpeta del proyecto"
+
+#: gladeui/glade-project-properties.ui:275
+msgid "From a project relative directory"
+msgstr "Desde una carpeta de proyecto relativo"
+
+#: gladeui/glade-project-properties.ui:292
+msgid "From this directory"
+msgstr "Desde esta carpeta"
+
+#: gladeui/glade-project-properties.ui:313
+msgid "Choose a path to load image resources"
+msgstr "Elegir una ruta donde cargar los recursos de imágenes"
+
+#: gladeui/glade-project-properties.ui:341
+msgid "Image resources are loaded locally:"
+msgstr "Los recursos de imágenes se cargan localmente:"
+
+#: gladeui/glade-project-properties.ui:401
+msgid "Toolkit version required:"
+msgstr "Versiones de los toolkit necesarias:"
+
+#: gladeui/glade-project-properties.ui:462
+msgid "Copyright:"
+msgstr "Copyright:"
+
+#: gladeui/glade-project-properties.ui:476
+msgid "program or library name"
+msgstr "nombre del programa o la biblioteca"
+
+#: gladeui/glade-project-properties.ui:488
+msgid "Author(s):"
+msgstr "Autores:"
+
+#: gladeui/glade-project-properties.ui:500
+#: plugins/gtk+/glade-about-dialog-editor.ui:99
+msgid "License:"
+msgstr "Licencia:"
+
+#: gladeui/glade-project-properties.ui:548
+msgid "Description:"
+msgstr "Descripción:"
+
+#: gladeui/glade-project-properties.ui:563
+msgid "program or library short description"
+msgstr "descripción corta del programa o la biblioteca"
+
+#: gladeui/glade-project-properties.ui:578
+msgid "GNU GPL version 2"
+msgstr "GNU GPL versión 2"
+
+#: gladeui/glade-project-properties.ui:579
+msgid "GNU GPL version 3"
+msgstr "GNU GPL versión 3"
+
+#: gladeui/glade-project-properties.ui:580
+msgid "GNU LGPL version 2.1"
+msgstr "GNU LGPL versión 2.1"
+
+#: gladeui/glade-project-properties.ui:581
+msgid "GNU LGPL version 3"
+msgstr "GNU LGPL versión 3"
+
+#: gladeui/glade-project-properties.ui:582
+msgid "BSD 2-clause"
+msgstr "BSD 2-clause"
+
+#: gladeui/glade-project-properties.ui:583
+msgid "BSD 3-clause"
+msgstr "BSD 3-clause"
+
+#: gladeui/glade-project-properties.ui:584
+msgid "Apache 2"
+msgstr "Apache 2"
+
+#: gladeui/glade-project-properties.ui:585
+msgid "MIT"
+msgstr "MIT"
+
+#: gladeui/glade-project-properties.ui:586
+msgid "GNU All permissive"
+msgstr "GNU Permitir todo"
 
 #: plugins/gtk+/glade-about-dialog-editor.c:141
 #, c-format
@@ -5589,14 +5590,14 @@ msgstr "De abajo a arriba"
 #: plugins/gtk+/gtk+.xml:1109 plugins/gtk+/gtk+.xml:2618
 #: plugins/gtk+/gtk+.xml:3741 plugins/gtk+/gtk+.xml:4003
 #: plugins/gtk+/glade-misc-editor.ui:65 plugins/gtk+/glade-misc-editor.ui:127
-#: plugins/gtk+/glade-scrolled-window-editor.ui:305
+#: plugins/gtk+/glade-scrolled-window-editor.ui:156
 msgid "Horizontal"
 msgstr "Horizontal"
 
 #: plugins/gtk+/gtk+.xml:1111 plugins/gtk+/gtk+.xml:2619
 #: plugins/gtk+/gtk+.xml:3743 plugins/gtk+/gtk+.xml:4005
 #: plugins/gtk+/glade-misc-editor.ui:82 plugins/gtk+/glade-misc-editor.ui:144
-#: plugins/gtk+/glade-scrolled-window-editor.ui:323
+#: plugins/gtk+/glade-scrolled-window-editor.ui:174
 msgid "Vertical"
 msgstr "Vertical"
 
@@ -5783,7 +5784,7 @@ msgid "Phone"
 msgstr "Teléfono"
 
 #: plugins/gtk+/gtk+.xml:1507 plugins/gtk+/glade-about-dialog-editor.ui:287
-#: plugins/webkit2gtk/webkit2gtk.xml:17
+#: plugins/webkit2gtk/webkit2gtk.xml:18
 msgid "URL"
 msgstr "URL"
 
@@ -8012,15 +8013,22 @@ msgstr "Atributos de la ventana desplazada"
 msgid "Window Placement:"
 msgstr "Colocación de la ventana:"
 
-#: plugins/gtk+/glade-scrolled-window-editor.ui:340
-#: plugins/gtk+/glade-scrolled-window-editor.ui:364
+#: plugins/gtk+/glade-scrolled-window-editor.ui:191
+#: plugins/gtk+/glade-scrolled-window-editor.ui:215
 msgid "Scrollbar Policy:"
 msgstr "Política de desplazamiento:"
 
-#: plugins/gtk+/glade-scrolled-window-editor.ui:388
-#: plugins/gtk+/glade-scrolled-window-editor.ui:401
+#: plugins/gtk+/glade-scrolled-window-editor.ui:239
+#: plugins/gtk+/glade-scrolled-window-editor.ui:252
 msgid "Adjustment:"
 msgstr "Ajuste:"
+
+#: plugins/gtk+/glade-scrolled-window-editor.ui:332
+#: plugins/gtk+/glade-scrolled-window-editor.ui:370
+#: plugins/gtk+/glade-scrolled-window-editor.ui:409
+#| msgid "Right:"
+msgid "Height: "
+msgstr "Altura: "
 
 #: plugins/gtk+/glade-spin-button-editor.ui:49
 msgid "Spin Button Attributes"
@@ -8180,19 +8188,19 @@ msgstr "Decoraciones de la ventana del lado del cliente"
 msgid "Whether this window should include a custom titlebar."
 msgstr "Indica si la ventana debe incluir una barra de título personalizada."
 
-#: plugins/webkit2gtk/webkit2gtk.xml:14
+#: plugins/webkit2gtk/webkit2gtk.xml:15
 msgid "WebKit Web View"
 msgstr "Vista web de WebKit"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:21
+#: plugins/webkit2gtk/webkit2gtk.xml:22
 msgid "The URL to load in Glade (this property will not be saved)"
 msgstr "El URL que cargar en Glade (esta propiedad no se guardará)"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:32
+#: plugins/webkit2gtk/webkit2gtk.xml:33
 msgid "WebKit Settings"
 msgstr "Configuración de WebKit"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:36
+#: plugins/webkit2gtk/webkit2gtk.xml:37
 msgid "WebKit2GTK+ Widgets"
 msgstr "Widgets de WebKit2GTK+"
 
