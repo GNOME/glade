@@ -22,7 +22,15 @@
 	  <tooltip>The URL to load in Glade (this property will not be saved)</tooltip>
 	</property>
         <property id="user-content-manager" disabled="True" />
-        <property id="web-context" disabled="True" /> 
+        <property id="web-context" disabled="True" />
+        <property id="automation-presentation-type">  
+          <displayable-values>
+            <!-- WebKitAutomationBrowsingContextPresentation enumeration value -->
+            <value id="WEBKIT_AUTOMATION_BROWSING_CONTEXT_PRESENTATION_WINDOW" name="Window"/>
+            <!-- WebKitAutomationBrowsingContextPresentation enumeration value -->
+            <value id="WEBKIT_AUTOMATION_BROWSING_CONTEXT_PRESENTATION_TAB" name="Tab"/>
+            </displayable-values>
+        </property>
       </properties>
     </glade-widget-class>
 
@@ -30,8 +38,20 @@
                         generic-name="settings"
                         title="WebKit Settings"
                         toplevel="True"
-                        get-type-function="webkit_settings_get_type"/>
-
+                        get-type-function="webkit_settings_get_type">
+      <properties>
+        <property id="hardware-acceleration-policy">  
+          <displayable-values>
+            <!-- WebKitHardwareAccelerationPolicy enumeration value -->
+            <value id="WEBKIT_HARDWARE_ACCELERATION_POLICY_ON_DEMAND" name="On Demand"/>
+            <!-- WebKitHardwareAccelerationPolicy enumeration value -->
+            <value id="WEBKIT_HARDWARE_ACCELERATION_POLICY_ALWAYS" name="Always"/>
+            <!-- WebKitHardwareAccelerationPolicy enumeration value -->
+            <value id="WEBKIT_HARDWARE_ACCELERATION_POLICY_NEVER" name="Never"/>
+          </displayable-values>
+        </property>
+      </properties>
+    </glade-widget-class>
   </glade-widget-classes>
   
   <glade-widget-group name="webkit2gtk" title="WebKit2GTK+ Widgets">
