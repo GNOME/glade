@@ -6,7 +6,7 @@
                domain="glade"
                depends="gtk+"
                book="WebKit2GTK">
-
+  <init-function>glade_webkit2gtk_init</init-function>
   <glade-widget-classes>
 
     <glade-widget-class name="WebKitWebView"

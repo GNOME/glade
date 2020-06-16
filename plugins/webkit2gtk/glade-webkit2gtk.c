@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 Juan Pablo Ugarte
+ * Copyright (C) 2011-2020 Juan Pablo Ugarte
  *               2016 Endless Mobile Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -28,6 +28,13 @@
 #include <gladeui/glade.h>
 
 void
+glade_webkit2gtk_init (const gchar *name)
+{
+  /* Enable Sandbox */
+  webkit_web_context_set_sandbox_enabled (webkit_web_context_get_default (), TRUE);
+}
+
+void
 glade_webkit_web_view_set_property (GladeWidgetAdaptor *adaptor,
                                     GObject            *object,
                                     const gchar        *id,
@@ -36,19 +43,20 @@ glade_webkit_web_view_set_property (GladeWidgetAdaptor *adaptor,
   if (g_str_equal(id, "glade-url"))
     {
       const gchar *url = g_value_get_string (value);
-      gchar *scheme = g_uri_parse_scheme (url);
+      g_autofree gchar *scheme, *full_url;
 
-      if (scheme)
+      if (!url)
+        return;
+
+      if ((scheme = g_uri_parse_scheme (url)))
         {
           webkit_web_view_load_uri (WEBKIT_WEB_VIEW (object), url);
-          g_free (scheme);
           return;
         }
 
-      gchar *full_url = g_strconcat ("http://", url, NULL);
+      full_url = g_strconcat ("http://", url, NULL);
       webkit_web_view_load_uri (WEBKIT_WEB_VIEW (object), full_url);
-      g_free (full_url);
     }
   else
-    GWA_GET_CLASS(G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
+    GWA_GET_CLASS(GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
