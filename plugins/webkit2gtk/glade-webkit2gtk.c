@@ -43,7 +43,7 @@ glade_webkit_web_view_set_property (GladeWidgetAdaptor *adaptor,
   if (g_str_equal(id, "glade-url"))
     {
       const gchar *url = g_value_get_string (value);
-      g_autofree gchar *scheme, *full_url;
+      g_autofree gchar *scheme = NULL, *full_url = NULL;
 
       if (!url)
         return;
