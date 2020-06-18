@@ -119,7 +119,7 @@ va_copy_src = '''
     };
 '''
 
-if not cc.links(va_copy_src.format('va_copy', name: 'how to copy va_list'))
+if not cc.links(va_copy_src.format('va_copy'), name: 'how to copy va_list')
   if cc.links(va_copy_src.format('__va_copy'))
     config_h.set('va_copy', '__va_copy')
   else
