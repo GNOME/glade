@@ -2127,8 +2127,14 @@ glade_project_load_internal (GladeProject *project)
 
   if (!glade_xml_node_verify_silent (root, GLADE_XML_TAG_PROJECT))
     {
-      g_warning ("Couldnt recognize GtkBuilder xml, skipping %s",
-                 load_path ? load_path : priv->path);
+      if (glade_xml_node_verify_silent (root, "glade-interface"))
+        glade_util_ui_message (glade_app_get_window (), GLADE_UI_ERROR, NULL,
+                               "This version of Glade does not support old libglade files.\n"
+                               "Please use Glade 3.8 for GTK 2 files.");
+      else
+        glade_util_ui_message (glade_app_get_window (), GLADE_UI_ERROR, NULL,
+                               "Couldn't recognize GtkBuilder xml.\nskipping %s",
+                               load_path ? load_path : priv->path);
       glade_xml_context_free (context);
       g_free (load_path);
       priv->loading = FALSE;
