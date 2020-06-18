@@ -1200,7 +1200,7 @@ glade_property_write (GladeProperty   *property,
                       GladeXmlNode    *node)
 {
   GladeXmlNode *prop_node;
-  gchar *name, *value;
+  gchar *value;
   gboolean save_always;
   gchar *binding_flags = NULL;
   GFlagsClass *flags_class;
@@ -1226,10 +1226,6 @@ glade_property_write (GladeProperty   *property,
   if (!save_always && glade_property_original_default (property) && !property->priv->bind_source)
     return;
 
-  /* Escape our string and save with underscores */
-  name = g_strdup (glade_property_def_id (property->priv->def));
-  glade_util_replace (name, '-', '_');
-
   /* convert the value of this property to a string */
   if (!(value = glade_widget_adaptor_string_from_value
         (glade_property_def_get_adaptor (property->priv->def), property->priv->def,
@@ -1244,7 +1240,8 @@ glade_property_write (GladeProperty   *property,
   glade_xml_node_append_child (node, prop_node);
 
   /* Name and value */
-  glade_xml_node_set_property_string (prop_node, GLADE_XML_TAG_NAME, name);
+  glade_xml_node_set_property_string (prop_node, GLADE_XML_TAG_NAME,
+                                      glade_property_def_id (property->priv->def));
   glade_xml_set_content (prop_node, value);
 
   /* i18n stuff */
@@ -1306,7 +1303,6 @@ glade_property_write (GladeProperty   *property,
           g_free (binding_flags);
         }
     }
-  g_free (name);
   g_free (value);
 }
 

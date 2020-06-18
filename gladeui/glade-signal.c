@@ -373,6 +373,8 @@ glade_signal_read (GladeXmlNode *node, GladeWidgetAdaptor *adaptor)
         glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME,
                                                 NULL)))
     return NULL;
+
+  /* Old files had properties/signals with underscore */
   glade_util_replace (name, '_', '-');
 
   /* Search for a detail, and strip it from the signal name */
