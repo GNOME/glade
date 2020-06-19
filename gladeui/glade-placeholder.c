@@ -505,7 +505,7 @@ glade_placeholder_drag_can_drop (_GladeDrag *dest, gint x, gint y, GObject *data
     {
       GType otype = glade_widget_adaptor_get_object_type (GLADE_WIDGET_ADAPTOR (data));
 
-      if (g_type_is_a (otype, GTK_TYPE_WIDGET) && !GWA_IS_TOPLEVEL (data))
+      if (g_type_is_a (otype, GTK_TYPE_WIDGET) && !GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (data))
         return TRUE;
     }
   else if (GTK_IS_WIDGET (data))

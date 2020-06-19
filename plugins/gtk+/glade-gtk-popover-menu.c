@@ -180,7 +180,7 @@ glade_gtk_popover_menu_post_create (GladeWidgetAdaptor *adaptor,
   g_signal_connect (container, "notify::visible-submenu",
                     G_CALLBACK (glade_gtk_popover_menu_visible_submenu_changed), NULL);
 
-  GWA_GET_CLASS (GTK_TYPE_POPOVER)->post_create (adaptor, container, reason);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_POPOVER)->post_create (adaptor, container, reason);
 }
 
 void
@@ -410,7 +410,7 @@ glade_gtk_popover_menu_set_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "current"))
     glade_gtk_popover_menu_set_current (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_POPOVER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_POPOVER)->set_property (adaptor, object, id, value);
 }
 
 void
@@ -430,7 +430,7 @@ glade_gtk_popover_menu_get_property (GladeWidgetAdaptor * adaptor,
       g_value_set_int (value, get_visible_child (GTK_POPOVER_MENU (object), NULL));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_POPOVER)->get_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_POPOVER)->get_property (adaptor, object, id, value);
 }
 
 static gboolean
@@ -468,8 +468,8 @@ glade_gtk_popover_menu_verify_property (GladeWidgetAdaptor * adaptor,
     return glade_gtk_popover_menu_verify_submenus (object, value);
   else if (!strcmp (id, "current"))
     return glade_gtk_popover_menu_verify_current (object, value);
-  else if (GWA_GET_CLASS (GTK_TYPE_POPOVER)->verify_property)
-    return GWA_GET_CLASS (GTK_TYPE_POPOVER)->verify_property (adaptor, object, id, value);
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_POPOVER)->verify_property)
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_POPOVER)->verify_property (adaptor, object, id, value);
 
   return TRUE;
 }
@@ -537,7 +537,7 @@ glade_gtk_popover_menu_set_child_property (GladeWidgetAdaptor * adaptor,
     gtk_container_child_set_property (GTK_CONTAINER (container),
                                       GTK_WIDGET (child), id, value);
   else    
-    GWA_GET_CLASS (GTK_TYPE_POPOVER)->child_set_property (adaptor, container, child, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_POPOVER)->child_set_property (adaptor, container, child, id, value);
 }
 
 void
@@ -558,6 +558,6 @@ glade_gtk_popover_menu_create_editable (GladeWidgetAdaptor * adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_popover_menu_editor_new ();
   else
-    return GWA_GET_CLASS (GTK_TYPE_POPOVER)->create_editable (adaptor, type);
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_POPOVER)->create_editable (adaptor, type);
 }
 

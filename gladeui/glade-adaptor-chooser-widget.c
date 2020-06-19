@@ -316,7 +316,7 @@ treemodelfilter_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer d
       catalog = glade_widget_adaptor_get_catalog (adaptor);
       glade_project_get_target_version (priv->project, catalog, &major, &minor);
 
-      visible = GWA_VERSION_CHECK (adaptor, major, minor);
+      visible = GLADE_WIDGET_ADAPTOR_VERSION_CHECK (adaptor, major, minor);
     }
 
   if (visible && priv->flags)
@@ -325,13 +325,13 @@ treemodelfilter_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer d
       _GladeAdaptorChooserWidgetFlags flags = priv->flags;
 
        /* Skip adaptors according to flags */
-       if (flags & GLADE_ADAPTOR_CHOOSER_WIDGET_SKIP_DEPRECATED && GWA_DEPRECATED (adaptor))
+       if (flags & GLADE_ADAPTOR_CHOOSER_WIDGET_SKIP_DEPRECATED && GLADE_WIDGET_ADAPTOR_DEPRECATED (adaptor))
          visible = FALSE;
-       else if (flags & GLADE_ADAPTOR_CHOOSER_WIDGET_SKIP_TOPLEVEL && GWA_IS_TOPLEVEL (adaptor))
+       else if (flags & GLADE_ADAPTOR_CHOOSER_WIDGET_SKIP_TOPLEVEL && GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor))
          visible = FALSE;
        else if (flags & GLADE_ADAPTOR_CHOOSER_WIDGET_WIDGET && !g_type_is_a (type, GTK_TYPE_WIDGET))
          visible = FALSE;
-       else if (flags & GLADE_ADAPTOR_CHOOSER_WIDGET_TOPLEVEL && !GWA_IS_TOPLEVEL (adaptor))
+       else if (flags & GLADE_ADAPTOR_CHOOSER_WIDGET_TOPLEVEL && !GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor))
          visible = FALSE;
     }
 

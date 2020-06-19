@@ -58,5 +58,5 @@ glade_webkit_web_view_set_property (GladeWidgetAdaptor *adaptor,
       webkit_web_view_load_uri (WEBKIT_WEB_VIEW (object), full_url);
     }
   else
-    GWA_GET_CLASS(GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS(GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }

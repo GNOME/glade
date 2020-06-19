@@ -94,7 +94,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
         }
 
       if (glade_widget_get_parent (*gimage) ||
-          GWA_IS_TOPLEVEL (glade_widget_get_adaptor (*gimage)))
+          GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (glade_widget_get_adaptor (*gimage)))
         return MD_IMAGE_ACTION_INVALID;
 
       return MD_IMAGE_ACTION_SET;
@@ -163,7 +163,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       /* Chain up, even if property us message-type because
        * it's not fully handled here
        */
-      GWA_GET_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object,
                                                      id, value);
     }
 }
@@ -187,8 +187,8 @@ glade_gtk_message_dialog_verify_property (GladeWidgetAdaptor * adaptor,
 
       return retval;
     }
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
                                                                 id, value);
   else
     return TRUE;
@@ -213,6 +213,6 @@ G_GNUC_END_IGNORE_DEPRECATIONS
         g_value_set_object (value, image);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_DIALOG)->get_property (adaptor, object,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_DIALOG)->get_property (adaptor, object,
                                                    property_name, value);
 }

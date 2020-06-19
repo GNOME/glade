@@ -39,7 +39,7 @@ glade_gtk_combo_box_create_editable (GladeWidgetAdaptor *adaptor,
       return (GladeEditable *) glade_combo_box_editor_new ();
     }
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 void
@@ -50,7 +50,7 @@ glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *widget;
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, object, reason);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, object, reason);
 
   widget = glade_widget_get_from_gobject (object);
   if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (object)))
@@ -75,7 +75,7 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
     {
       /* Avoid warnings */
       if (g_value_get_int (value) >= 0)
-        GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
+        GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
                                                           object, id, value);
     }
   else if (!strcmp (id, "text-column"))
@@ -95,7 +95,7 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
                                              _("Tearoff menus are disabled"));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
                                                       object, id, value);
 }
 

@@ -55,7 +55,7 @@ glade_gtk_menu_item_action_activate (GladeWidgetAdaptor *adaptor,
         glade_gtk_menu_shell_launch_editor (object, _("Edit Menu"));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object, action_path);
 
   if (shell)
@@ -70,7 +70,7 @@ glade_gtk_menu_item_constructor (GType type,
   GladeWidgetAdaptor *adaptor;
   GObject *ret_obj;
 
-  ret_obj = GWA_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
+  ret_obj = GLADE_WIDGET_ADAPTOR_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
       (type, n_construct_properties, construct_properties);
 
   adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
@@ -224,7 +224,7 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
     glade_gtk_menu_item_set_label (object, value);
   else if (GLADE_PROPERTY_DEF_VERSION_CHECK
            (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
                                                       value);
 }
 
@@ -235,5 +235,5 @@ glade_gtk_activatable_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_activatable_editor_new (adaptor, NULL);
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }

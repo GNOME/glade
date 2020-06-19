@@ -35,7 +35,7 @@ glade_gtk_tool_button_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_tool_button_editor_new ();
   else
-    return GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->create_editable (adaptor, type);
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_TOOL_ITEM)->create_editable (adaptor, type);
 }
 
 static void
@@ -152,7 +152,7 @@ glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
   else if (!strcmp (id, "custom-label"))
     glade_gtk_tool_button_set_custom_label (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->set_property (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_TOOL_ITEM)->set_property (adaptor,
                                                       object, id, value);
 }
 
@@ -204,7 +204,7 @@ glade_gtk_tool_button_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_TOOL_ITEM)->read_widget (adaptor, widget, node);
 
   /* Run this after the load so that icon-widget is resolved. */
   g_signal_connect (glade_widget_get_project (widget),

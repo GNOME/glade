@@ -2989,7 +2989,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
                         glade_catalog_get_domain (catalog));
 
   /* Finalize the icon and overlay it if it's deprecated */
-  if (GWA_DEPRECATED (adaptor))
+  if (GLADE_WIDGET_ADAPTOR_DEPRECATED (adaptor))
     {
       gchar *deprecated_icon = generate_deprecated_icon (priv->icon_name);
 

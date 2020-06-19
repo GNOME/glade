@@ -170,7 +170,7 @@ glade_gtk_overlay_add_child (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->add (adaptor, object, child);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->add (adaptor, object, child);
 }
 
 void

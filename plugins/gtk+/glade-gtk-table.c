@@ -242,7 +242,7 @@ glade_gtk_table_replace_child (GladeWidgetAdaptor *adaptor,
                                GtkWidget          *new_widget)
 {
   /* Chain Up */
-  GWA_GET_CLASS
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
       (GTK_TYPE_CONTAINER)->replace_child (adaptor,
                                            G_OBJECT (container),
                                            G_OBJECT (current),
@@ -367,7 +367,7 @@ glade_gtk_table_set_property (GladeWidgetAdaptor *adaptor,
   else if (!strcmp (id, "n-columns"))
     glade_gtk_table_set_n_common (object, value, FALSE);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
                                                       id, value);
 }
 
@@ -399,8 +399,8 @@ glade_gtk_table_verify_property (GladeWidgetAdaptor *adaptor,
     return glade_gtk_table_verify_n_common (object, value, TRUE);
   else if (!strcmp (id, "n-columns"))
     return glade_gtk_table_verify_n_common (object, value, FALSE);
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
                                                          id, value);
 
   return TRUE;
@@ -413,7 +413,7 @@ glade_gtk_table_set_child_property (GladeWidgetAdaptor *adaptor,
                                     const gchar        *property_name,
                                     GValue             *value)
 {
-  GWA_GET_CLASS
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
       (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                 container, child,
                                                 property_name, value);
@@ -514,8 +514,8 @@ glade_gtk_table_child_verify_property (GladeWidgetAdaptor *adaptor,
     return glade_gtk_table_verify_right_bottom_attach (child,
                                                        value,
                                                        "top-attach", "n-rows");
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_verify_property)
-    GWA_GET_CLASS
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_verify_property)
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_verify_property (adaptor,
                                                      container, child,
                                                      id, value);
@@ -716,7 +716,7 @@ glade_gtk_table_child_action_activate (GladeWidgetAdaptor *adaptor,
                                                   "bottom-attach", TRUE, FALSE);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
                                                                container,
                                                                object,
                                                                action_path);

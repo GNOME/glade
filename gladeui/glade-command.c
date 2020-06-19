@@ -1216,7 +1216,7 @@ glade_command_add (GList            *widgets,
   widget  = GLADE_WIDGET (widgets->data);
   adaptor = glade_widget_get_adaptor (widget);
 
-  if (placeholder && GWA_IS_TOPLEVEL (adaptor) == FALSE)
+  if (placeholder && GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor) == FALSE)
     priv->project = glade_placeholder_get_project (placeholder);
   else
     priv->project = project;
@@ -1245,7 +1245,7 @@ glade_command_add (GList            *widgets,
       /* Parent */
       if (parent == NULL)
         cdata->parent = glade_widget_get_parent (widget);
-      else if (placeholder && GWA_IS_TOPLEVEL (adaptor) == FALSE)
+      else if (placeholder && GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor) == FALSE)
         cdata->parent = glade_placeholder_get_parent (placeholder);
       else
         cdata->parent = parent;

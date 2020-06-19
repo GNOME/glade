@@ -44,7 +44,7 @@ glade_gtk_radio_button_set_property (GladeWidgetAdaptor * adaptor,
     }
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_CHECK_BUTTON)->set_property (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CHECK_BUTTON)->set_property (adaptor,
                                                        object,
                                                        property_name, value);
 }

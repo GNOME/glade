@@ -80,7 +80,7 @@ glade_gtk_widget_destroy_object (GladeWidgetAdaptor *adaptor,
 {
   gtk_widget_destroy (GTK_WIDGET (object));
 
-  GWA_GET_CLASS (G_TYPE_OBJECT)->destroy_object (adaptor, object);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->destroy_object (adaptor, object);
 }
 
 static void
@@ -326,7 +326,7 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
   /* Read in accelerators */
   glade_gtk_read_accels (widget, node, TRUE);
@@ -607,7 +607,7 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
     glade_property_write (prop, context, node);
 
   /* Finally chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 }
 
 void
@@ -624,7 +624,7 @@ glade_gtk_widget_write_widget_after (GladeWidgetAdaptor *adaptor,
   glade_gtk_widget_write_style_classes (widget, context, node);
 
   /* Finally chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget_after (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->write_widget_after (adaptor, widget, context, node);
 }
 
 GladeEditorProperty *
@@ -645,7 +645,7 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
   else if (pspec->value_type == GLADE_TYPE_STRING_LIST)
     eprop = glade_eprop_string_list_new (def, use_command, FALSE, FALSE);
   else
-    eprop = GWA_GET_CLASS
+    eprop = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
 
   return eprop;
@@ -661,7 +661,7 @@ glade_gtk_widget_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_COMMON)
     editable = (GladeEditable *)glade_widget_editor_new ();
   else
-    editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+    editable = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
 
   return editable;
 }
@@ -684,7 +684,7 @@ glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
       return glade_string_list_to_string (list);
     }
   else
-    return GWA_GET_CLASS
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (G_TYPE_OBJECT)->string_from_value (adaptor, def, value);
 }
 
@@ -723,7 +723,7 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
 
   glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
 
-  if (GWA_IS_TOPLEVEL (adaptor) || glade_widget_get_internal (gwidget))
+  if (GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor) || glade_widget_get_internal (gwidget))
     glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);
 
   /* Watch parents/projects and set actions sensitive/insensitive */
@@ -778,7 +778,7 @@ glade_gtk_widget_set_property (GladeWidgetAdaptor *adaptor,
                               (GDestroyNotify) glade_string_list_free);
     }
   else
-      GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
 void
@@ -791,7 +791,7 @@ glade_gtk_widget_get_property (GladeWidgetAdaptor * adaptor,
       id = "tooltip-text";
     }
 
-  GWA_GET_CLASS (G_TYPE_OBJECT)->get_property (adaptor, object, id, value);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->get_property (adaptor, object, id, value);
 }
 
 
@@ -997,7 +997,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
                              NULL);
     }
   else
-    GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
                                                     object, action_path);
 }
 
@@ -1128,8 +1128,8 @@ glade_gtk_widget_action_submenu (GladeWidgetAdaptor *adaptor,
 
       return menu;
     }
-  else if (GWA_GET_CLASS (G_TYPE_OBJECT)->action_submenu)
-    return GWA_GET_CLASS (G_TYPE_OBJECT)->action_submenu (adaptor,
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->action_submenu)
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->action_submenu (adaptor,
                                                           object, action_path);
 
   return NULL;

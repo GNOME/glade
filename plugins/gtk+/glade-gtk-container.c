@@ -81,7 +81,7 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
 
       return FALSE;
     }
-  else if (GWA_USE_PLACEHOLDERS (adaptor) &&
+  else if (GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (adaptor) &&
            glade_util_count_placeholders (gwidget) == 0)
     {
       if (user_feedback)
@@ -224,8 +224,8 @@ glade_gtk_container_get_children (GladeWidgetAdaptor *adaptor,
   children = glade_util_container_get_all_children (GTK_CONTAINER (container));
   
   /* Chain up */
-  if (GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_children)
-    parent_children = GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_children (adaptor, container);
+  if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->get_children)
+    parent_children = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->get_children (adaptor, container);
   else
     parent_children = NULL;
   
@@ -237,5 +237,5 @@ GladeEditable *
 glade_gtk_container_create_editable (GladeWidgetAdaptor *adaptor,
                                      GladeEditorPageType type)
 {
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }

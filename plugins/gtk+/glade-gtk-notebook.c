@@ -49,7 +49,7 @@ glade_gtk_notebook_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_notebook_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static gint
@@ -583,7 +583,7 @@ glade_gtk_notebook_set_property (GladeWidgetAdaptor *adaptor,
         gtk_notebook_set_action_widget (GTK_NOTEBOOK (object), NULL, GTK_PACK_END); 
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
                                                       id, value);
 }
 
@@ -604,7 +604,7 @@ glade_gtk_notebook_get_property (GladeWidgetAdaptor *adaptor,
       g_value_set_boolean (value, gtk_notebook_get_action_widget (GTK_NOTEBOOK (object), GTK_PACK_END) != NULL);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
                                                       value);
 }
 
@@ -641,8 +641,8 @@ glade_gtk_notebook_verify_property (GladeWidgetAdaptor *adaptor,
 {
   if (!strcmp (id, "pages"))
     return glade_gtk_notebook_verify_n_pages (object, value);
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
                                                          id, value);
 
   return TRUE;
@@ -867,8 +867,8 @@ glade_gtk_notebook_child_verify_property (GladeWidgetAdaptor *adaptor,
     return g_value_get_int (value) >= 0 &&
         g_value_get_int (value) <
         gtk_notebook_get_n_pages (GTK_NOTEBOOK (container));
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_verify_property)
-    GWA_GET_CLASS
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_verify_property)
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_verify_property (adaptor,
                                                      container, child,
                                                      id, value);
@@ -897,7 +897,7 @@ glade_gtk_notebook_set_child_property (GladeWidgetAdaptor *adaptor,
     }
   /* packing properties are unsupported on tabs ... except "position" */
   else if (g_object_get_data (child, "special-child-type") == NULL)
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                   container, child,
                                                   property_name, value);
@@ -959,7 +959,7 @@ glade_gtk_notebook_child_action_activate (GladeWidgetAdaptor *adaptor,
                                                          object, TRUE, TRUE);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
                                                                container,
                                                                object,
                                                                action_path);

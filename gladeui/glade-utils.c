@@ -299,7 +299,7 @@ glade_util_check_and_warn_scrollable (GladeWidget *parent,
                                       GtkWidget *parent_widget)
 {
   if (GTK_IS_SCROLLED_WINDOW (glade_widget_get_object (parent)) &&
-      GWA_SCROLLABLE_WIDGET (child_adaptor) == FALSE)
+      GLADE_WIDGET_ADAPTOR_SCROLLABLE_WIDGET (child_adaptor) == FALSE)
     {
       GladeWidgetAdaptor *vadaptor =
           glade_widget_adaptor_get_by_type (GTK_TYPE_VIEWPORT);

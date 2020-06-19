@@ -1841,10 +1841,10 @@ glade_project_introspect_gtk_version (GladeProject *project)
 
       /* Check widget class version */
       if (is_gtk_adaptor &&
-          !GWA_VERSION_CHECK (glade_widget_get_adaptor (widget), target_major, target_minor))
+          !GLADE_WIDGET_ADAPTOR_VERSION_CHECK (glade_widget_get_adaptor (widget), target_major, target_minor))
         {
-          target_major = GWA_VERSION_SINCE_MAJOR (glade_widget_get_adaptor (widget));
-          target_minor = GWA_VERSION_SINCE_MINOR (glade_widget_get_adaptor (widget));
+          target_major = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (glade_widget_get_adaptor (widget));
+          target_minor = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR (glade_widget_get_adaptor (widget));
         }
 
       /* Check all properties */
@@ -3569,7 +3569,7 @@ glade_project_verify_adaptor (GladeProject       *project,
       /* Only one versioning message (builder or otherwise)...
        */
       if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
-          !GWA_VERSION_CHECK (adaptor_iter, target_major, target_minor))
+          !GLADE_WIDGET_ADAPTOR_VERSION_CHECK (adaptor_iter, target_major, target_minor))
         {
           GLADE_NOTE (VERIFY, g_print ("VERIFY: Adaptor '%s' not available in version %d.%d\n",
                                        glade_widget_adaptor_get_name (adaptor_iter),
@@ -3579,8 +3579,8 @@ glade_project_verify_adaptor (GladeProject       *project,
             g_string_append_printf (string,
                                     WIDGET_VERSION_CONFLICT_MSGFMT,
                                     catalog,
-                                    GWA_VERSION_SINCE_MAJOR (adaptor_iter),
-                                    GWA_VERSION_SINCE_MINOR (adaptor_iter),
+                                    GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (adaptor_iter),
+                                    GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR (adaptor_iter),
                                     catalog, target_major, target_minor);
           else
             g_string_append_printf (string,
@@ -3588,15 +3588,15 @@ glade_project_verify_adaptor (GladeProject       *project,
                                     path_name, 
                                     glade_widget_adaptor_get_title (adaptor_iter),
                                     catalog,
-                                    GWA_VERSION_SINCE_MAJOR (adaptor_iter),
-                                    GWA_VERSION_SINCE_MINOR (adaptor_iter));
+                                    GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (adaptor_iter),
+                                    GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR (adaptor_iter));
 
           support_mask |= GLADE_SUPPORT_MISMATCH;
         }
 
       if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
-          (GWA_DEPRECATED (adaptor_iter) ||
-           GWA_DEPRECATED_SINCE_CHECK (adaptor_iter, target_major, target_minor)))
+          (GLADE_WIDGET_ADAPTOR_DEPRECATED (adaptor_iter) ||
+           GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_CHECK (adaptor_iter, target_major, target_minor)))
         {
           GLADE_NOTE (VERIFY, g_print ("VERIFY: Adaptor '%s' is deprecated\n",
                                        glade_widget_adaptor_get_name (adaptor_iter)));
@@ -5383,7 +5383,7 @@ glade_project_command_paste (GladeProject     *project,
   /* Ignore parent argument if we are pasting a toplevel
    */
   if (g_list_length (glade_clipboard_widgets (clipboard)) == 1 &&
-      widget && GWA_IS_TOPLEVEL (glade_widget_get_adaptor (widget)))
+      widget && GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (glade_widget_get_adaptor (widget)))
     parent = NULL;
 
   /* Check if parent is actually a container of any sort */
@@ -5435,7 +5435,7 @@ glade_project_command_paste (GladeProject     *project,
     {
       widget = list->data;
 
-      if (!GWA_IS_TOPLEVEL (glade_widget_get_adaptor (widget)) && parent)
+      if (!GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (glade_widget_get_adaptor (widget)) && parent)
         {
           /* Count placeholder relations
            */
@@ -5452,7 +5452,7 @@ glade_project_command_paste (GladeProject     *project,
    * XXX: Not sure if this has to be true.
    */
   if (GTK_IS_WIDGET (glade_widget_get_object (widget)) &&
-      parent && !GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
+      parent && !GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
       g_list_length (glade_clipboard_widgets (clipboard)) != 1)
     {
       glade_util_ui_message (glade_app_get_window (),
@@ -5464,7 +5464,7 @@ glade_project_command_paste (GladeProject     *project,
 
   /* Check that enough placeholders are available */
   if (parent &&
-      GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
+      GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
       glade_util_count_placeholders (parent) < placeholder_relations)
     {
       glade_util_ui_message (glade_app_get_window (),

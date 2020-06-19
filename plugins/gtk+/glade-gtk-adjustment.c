@@ -47,7 +47,7 @@ glade_gtk_adjustment_write_widget (GladeWidgetAdaptor *adaptor,
   prop = glade_widget_get_property (widget, "value");
   glade_property_write (prop, context, node);
 
-  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 }
 
 static gint
@@ -109,7 +109,7 @@ glade_gtk_adjustment_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
   glade_widget_property_set (widget, "glade-digits", get_digits (widget), NULL);
 }
@@ -139,7 +139,7 @@ glade_gtk_adjustment_set_property (GladeWidgetAdaptor *adaptor,
                     "precision", digits, NULL);
     }
   else
-    GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object,
                                                  property_name, value);
 }
 

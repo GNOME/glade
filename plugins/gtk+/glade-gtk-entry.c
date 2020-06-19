@@ -72,7 +72,7 @@ glade_gtk_entry_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_entry_editor_new ();
   else
-    return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
 void
@@ -165,7 +165,7 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
       /* Avoid a silly crash in GTK+ */
       if (gtk_entry_get_icon_storage_type (GTK_ENTRY (object),
                                            GTK_ENTRY_ICON_PRIMARY) != GTK_IMAGE_EMPTY)
-        GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+        GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (!strcmp (id, "secondary-icon-tooltip-text") ||
            !strcmp (id, "secondary-icon-tooltip-markup"))
@@ -173,7 +173,7 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
       /* Avoid a silly crash in GTK+ */
       if (gtk_entry_get_icon_storage_type (GTK_ENTRY (object),
                                            GTK_ENTRY_ICON_SECONDARY) != GTK_IMAGE_EMPTY)
-        GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+        GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (!strcmp (id, "text"))
     {
@@ -197,7 +197,7 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
                                              _("This property is only available\n"
                                                "if the entry has a frame"));
 
-      GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (!strcmp (id, "visibility"))
     {
@@ -208,11 +208,11 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
       else
         glade_widget_property_set_sensitive (gwidget, "invisible-char", TRUE, NULL);
 
-      GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (GLADE_PROPERTY_DEF_VERSION_CHECK
            (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
 
 void
@@ -227,7 +227,7 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
   if (!glade_widget_property_original_default (widget, "text"))
     {

@@ -35,7 +35,7 @@ glade_gtk_app_chooser_button_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *gwidget;
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->post_create (adaptor, object, reason);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_COMBO_BOX)->post_create (adaptor, object, reason);
 
   /* No customization of the cell renderers on a GtkAppChooserButton. */
   gwidget = glade_widget_get_from_gobject (object);
@@ -51,5 +51,5 @@ glade_gtk_app_chooser_button_create_editable (GladeWidgetAdaptor *adaptor,
       return (GladeEditable *) glade_app_chooser_button_editor_new ();
     }
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }

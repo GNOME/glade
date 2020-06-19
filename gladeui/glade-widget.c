@@ -911,8 +911,8 @@ glade_widget_constructor (GType                  type,
     }
 
   /* Setup width/height */
-  gwidget->priv->width = GWA_DEFAULT_WIDTH (gwidget->priv->adaptor);
-  gwidget->priv->height = GWA_DEFAULT_HEIGHT (gwidget->priv->adaptor);
+  gwidget->priv->width = GLADE_WIDGET_ADAPTOR_DEFAULT_WIDTH (gwidget->priv->adaptor);
+  gwidget->priv->height = GLADE_WIDGET_ADAPTOR_DEFAULT_HEIGHT (gwidget->priv->adaptor);
 
   /* Introspect object properties before passing it to post_create,
    * but only when its freshly created (depend on glade file at
@@ -1257,7 +1257,7 @@ glade_widget_drag_can_drop (_GladeDrag *dest, gint x, gint y, GObject *data)
     {
       GType otype = glade_widget_adaptor_get_object_type (GLADE_WIDGET_ADAPTOR (data));
 
-      if (g_type_is_a (otype, GTK_TYPE_WIDGET) && !GWA_IS_TOPLEVEL (data))
+      if (g_type_is_a (otype, GTK_TYPE_WIDGET) && !GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (data))
         return TRUE;
     }
   else
@@ -1764,7 +1764,7 @@ glade_widget_dup_internal (GladeWidget *main_target,
   for (l = gwidget->priv->properties; l; l = l->next)
     glade_property_load (GLADE_PROPERTY (l->data));
 
-  if (GWA_IS_TOPLEVEL (gwidget->priv->adaptor) && GTK_IS_WIDGET (gwidget->priv->object))
+  if (GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (gwidget->priv->adaptor) && GTK_IS_WIDGET (gwidget->priv->object))
     g_object_set (gwidget,
                   "toplevel-width", template_widget->priv->width,
                   "toplevel-height", template_widget->priv->height, NULL);
@@ -4588,7 +4588,7 @@ glade_widget_placeholder_relation (GladeWidget *parent, GladeWidget *widget)
 
   return (GTK_IS_CONTAINER (parent->priv->object) &&
           GTK_IS_WIDGET (widget->priv->object) &&
-          GWA_USE_PLACEHOLDERS (parent->priv->adaptor));
+          GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (parent->priv->adaptor));
 }
 
 static GladeWidgetAction *

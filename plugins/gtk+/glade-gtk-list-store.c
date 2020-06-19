@@ -137,7 +137,7 @@ glade_gtk_store_set_property (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
                                                  object, property_name, value);
 }
 
@@ -161,7 +161,7 @@ glade_gtk_store_create_eprop (GladeWidgetAdaptor *adaptor,
                           "property-def", def,
                           "use-command", use_command, NULL);
   else
-    eprop = GWA_GET_CLASS
+    eprop = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
   return eprop;
 }
@@ -236,7 +236,7 @@ glade_gtk_store_create_editable (GladeWidgetAdaptor *adaptor,
   GladeEditable *editable;
 
   /* Get base editable */
-  editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+  editable = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
 
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_store_editor_new (adaptor, editable);
@@ -319,7 +319,7 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
       return g_string_free (string, FALSE);
     }
   else
-    return GWA_GET_CLASS
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (G_TYPE_OBJECT)->string_from_value (adaptor, def, value);
 }
 
@@ -449,7 +449,7 @@ glade_gtk_store_write_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and write all the normal properties.. */
-  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
   glade_gtk_store_write_columns (widget, context, node);
   glade_gtk_store_write_data (widget, context, node);
@@ -658,7 +658,7 @@ glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
   glade_gtk_store_read_columns (widget, node);
 

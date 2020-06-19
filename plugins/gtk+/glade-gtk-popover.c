@@ -35,7 +35,7 @@ glade_gtk_popover_constructor (GType type,
   GladeWidgetAdaptor *adaptor;
   GObject *ret_obj;
 
-  ret_obj = GWA_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
+  ret_obj = GLADE_WIDGET_ADAPTOR_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
       (type, n_construct_properties, construct_properties);
 
   adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
@@ -53,7 +53,7 @@ glade_gtk_popover_create_editable (GladeWidgetAdaptor * adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_popover_editor_new ();
   else
-    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static gint
@@ -78,5 +78,5 @@ glade_gtk_popover_post_create (GladeWidgetAdaptor *adaptor,
   gtk_popover_set_modal (GTK_POPOVER (popover), FALSE);
   gtk_popover_set_relative_to (GTK_POPOVER (popover), NULL);
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, popover, reason);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, popover, reason);
 }

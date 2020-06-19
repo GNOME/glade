@@ -108,7 +108,7 @@ glade_gtk_listbox_get_child_property (GladeWidgetAdaptor *adaptor,
   else
     {
       /* Chain Up */
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
                                                               container,
                                                               child,
                                                               property_name,
@@ -141,7 +141,7 @@ glade_gtk_listbox_set_child_property (GladeWidgetAdaptor *adaptor,
   else
     {
       /* Chain Up */
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                               container,
                                                               child,
                                                               property_name,
@@ -203,7 +203,7 @@ glade_gtk_listbox_get_property (GladeWidgetAdaptor *adaptor,
       g_value_set_boolean (value, glade_listbox_get_placeholder (GTK_LIST_BOX (object)) != NULL);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
                                                       value);
 }
 
@@ -243,7 +243,7 @@ glade_gtk_listbox_set_property (GladeWidgetAdaptor *adaptor,
       gtk_list_box_set_placeholder (GTK_LIST_BOX (object), child);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
                                                       value);
 }
 
@@ -288,7 +288,7 @@ glade_gtk_listbox_replace_child (GladeWidgetAdaptor *adaptor,
       return;
     }
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
                                                      container,
                                                      current, new_widget);
 }
@@ -367,7 +367,7 @@ glade_gtk_listbox_action_activate (GladeWidgetAdaptor *adaptor,
       glade_project_selection_set (project, object, TRUE);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object, action_path);
 }
 
@@ -389,7 +389,7 @@ glade_gtk_listbox_child_action_activate (GladeWidgetAdaptor *adaptor,
     }
   else
     {
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
                                                                  container,
                                                                  object,
                                                                  action_path);

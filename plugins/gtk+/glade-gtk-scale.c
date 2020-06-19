@@ -38,7 +38,7 @@ glade_gtk_scale_create_editable (GladeWidgetAdaptor *adaptor,
       return (GladeEditable *)glade_scale_editor_new ();
     }
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 void
@@ -65,5 +65,5 @@ glade_gtk_scale_set_property (GladeWidgetAdaptor *adaptor,
     }
 
   if (GLADE_PROPERTY_DEF_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }

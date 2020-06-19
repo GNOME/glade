@@ -55,7 +55,7 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_icon_factory_remove_default (GTK_ICON_FACTORY (object));
 G_GNUC_END_IGNORE_DEPRECATIONS
 
-  GWA_GET_CLASS (G_TYPE_OBJECT)->destroy_object (adaptor, object);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->destroy_object (adaptor, object);
 }
 
 static void
@@ -202,7 +202,7 @@ glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in any normal properties.. */
-  GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
   glade_gtk_icon_factory_read_sources (widget, node);
 }
@@ -319,7 +319,7 @@ glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and write all the normal properties.. */
-  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
   glade_gtk_icon_factory_write_sources (widget, context, node);
 }
@@ -366,7 +366,7 @@ glade_gtk_icon_factory_set_property (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
                                                  object, property_name, value);
 }
 
@@ -447,7 +447,7 @@ glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
       return g_string_free (string, FALSE);
     }
   else
-    return GWA_GET_CLASS
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (G_TYPE_OBJECT)->string_from_value (adaptor, def, value);
 }
 
@@ -467,7 +467,7 @@ glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
                           "property-def", def,
                           "use-command", use_command, NULL);
   else
-    eprop = GWA_GET_CLASS
+    eprop = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
   return eprop;
 }
@@ -479,7 +479,7 @@ glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor *adaptor,
   GladeEditable *editable;
 
   /* Get base editable */
-  editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+  editable = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
 
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_icon_factory_editor_new (adaptor, editable);

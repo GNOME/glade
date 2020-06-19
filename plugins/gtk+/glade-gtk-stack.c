@@ -210,7 +210,7 @@ glade_gtk_stack_child_action_activate (GladeWidgetAdaptor * adaptor,
       glade_command_pop_group ();
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
                                                                container,
                                                                object,
                                                                action_path);
@@ -223,7 +223,7 @@ glade_gtk_stack_create_editable (GladeWidgetAdaptor * adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_stack_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 typedef struct {
@@ -368,7 +368,7 @@ glade_gtk_stack_set_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "page"))
     glade_gtk_stack_set_page (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
 void
@@ -388,7 +388,7 @@ glade_gtk_stack_get_property (GladeWidgetAdaptor * adaptor,
       g_value_set_int (value, gtk_stack_get_page (GTK_STACK (object)));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
 }
 
 static void
@@ -432,7 +432,7 @@ glade_gtk_stack_set_child_property (GladeWidgetAdaptor * adaptor,
   if (!strcmp (id, "position"))
     glade_gtk_stack_set_child_position (container, child, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_set_property (adaptor, container, child, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_set_property (adaptor, container, child, id, value);
 }
 
 static gboolean
@@ -470,8 +470,8 @@ glade_gtk_stack_verify_property (GladeWidgetAdaptor * adaptor,
     return glade_gtk_stack_verify_n_pages (object, value);
   else if (!strcmp (id, "page"))
     return glade_gtk_stack_verify_page (object, value);
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object, id, value);
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object, id, value);
 
   return TRUE;
 }
@@ -542,7 +542,7 @@ glade_gtk_stack_replace_child (GladeWidgetAdaptor * adaptor,
   GladeWidget *gbox;
   gint pages, page;
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
                                                      container,
                                                      current,
                                                      new_widget);

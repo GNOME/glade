@@ -33,7 +33,7 @@ glade_gtk_tool_item_constructor (GType type,
   GladeWidgetAdaptor *adaptor;
   GObject *ret_obj;
 
-  ret_obj = GWA_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
+  ret_obj = GLADE_WIDGET_ADAPTOR_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
       (type, n_construct_properties, construct_properties);
 
   adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
@@ -68,6 +68,6 @@ glade_gtk_tool_item_set_property (GladeWidgetAdaptor *adaptor,
 
   if (GLADE_PROPERTY_DEF_VERSION_CHECK
       (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
                                                       value);
 }

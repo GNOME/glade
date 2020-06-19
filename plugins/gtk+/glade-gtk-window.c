@@ -153,7 +153,7 @@ glade_gtk_window_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
   /* Sync the icon mode */
   if (glade_widget_property_original_default (widget, "icon") == FALSE)
@@ -206,7 +206,7 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context,
                                                  node);
 
   glade_gtk_window_write_accel_groups (widget, context, node);
@@ -242,7 +242,7 @@ glade_gtk_window_create_editable (GladeWidgetAdaptor *adaptor,
         editable = (GladeEditable *) glade_window_editor_new ();
     }
   else
-    editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+    editable = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 
   return editable;
 }
@@ -291,7 +291,7 @@ glade_gtk_window_set_property (GladeWidgetAdaptor *adaptor,
         }
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
 void
@@ -312,7 +312,7 @@ glade_gtk_window_replace_child (GladeWidgetAdaptor *adaptor,
     }
 
   /* Chain Up */
-  GWA_GET_CLASS
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
       (GTK_TYPE_CONTAINER)->replace_child (adaptor,
                                            G_OBJECT (container),
                                            G_OBJECT (current),

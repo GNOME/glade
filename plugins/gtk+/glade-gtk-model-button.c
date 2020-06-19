@@ -29,7 +29,7 @@ glade_gtk_model_button_read_widget (GladeWidgetAdaptor *adaptor,
                                     GladeWidget        *widget,
                                     GladeXmlNode       *node)
 {
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
 }
 
 void
@@ -38,7 +38,7 @@ glade_gtk_model_button_write_widget (GladeWidgetAdaptor *adaptor,
                                      GladeXmlContext    *context,
                                      GladeXmlNode       *node)
 {
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
 }
 
 GladeEditable *
@@ -48,5 +48,5 @@ glade_gtk_model_button_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_model_button_editor_new ();
   else
-    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }

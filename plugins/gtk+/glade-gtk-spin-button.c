@@ -34,7 +34,7 @@ glade_gtk_spin_button_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_spin_button_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static void
@@ -75,5 +75,5 @@ glade_gtk_spin_button_set_property (GladeWidgetAdaptor *adaptor,
   if (!strcmp (id, "adjustment"))
     glade_gtk_spin_button_set_adjustment (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_ENTRY)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_ENTRY)->set_property (adaptor, object, id, value);
 }

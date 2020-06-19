@@ -116,7 +116,7 @@ glade_gtk_menu_shell_get_child_property (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
                                                   container,
                                                   child, property_name, value);
@@ -158,7 +158,7 @@ glade_gtk_menu_shell_set_child_property (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                   container, child,
                                                   property_name, value);
@@ -177,7 +177,7 @@ glade_gtk_menu_shell_action_activate (GladeWidgetAdaptor *adaptor,
         glade_gtk_menu_shell_launch_editor (object, _("Edit Menu"));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object, action_path);
 
   gtk_menu_shell_deactivate (GTK_MENU_SHELL (object));

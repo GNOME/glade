@@ -138,7 +138,7 @@ glade_gtk_paned_set_child_property (GladeWidgetAdaptor * adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                   container, child,
                                                   property_name, value);
@@ -155,7 +155,7 @@ glade_gtk_paned_get_child_property (GladeWidgetAdaptor * adaptor,
                          gtk_paned_get_child1 (GTK_PANED (container)));
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
                                                   container, child,
                                                   property_name, value);

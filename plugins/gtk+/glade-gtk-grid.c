@@ -63,7 +63,7 @@ glade_gtk_grid_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_grid_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static void
@@ -307,7 +307,7 @@ glade_gtk_grid_replace_child (GladeWidgetAdaptor *adaptor,
   g_return_if_fail (GTK_IS_WIDGET (new_widget));
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
                                                      container,
                                                      current,
                                                      new_widget);
@@ -363,7 +363,7 @@ glade_gtk_grid_set_property (GladeWidgetAdaptor *adaptor,
   else if (!strcmp (id, "n-columns"))
     glade_gtk_grid_set_n_common (object, value, FALSE);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
                                                       id, value);
 }
 
@@ -398,8 +398,8 @@ glade_gtk_grid_verify_property (GladeWidgetAdaptor  *adaptor,
     return glade_gtk_grid_verify_n_common (object, value, TRUE);
   else if (!strcmp (id, "n-columns"))
     return glade_gtk_grid_verify_n_common (object, value, FALSE);
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
                                                          id, value);
 
   return TRUE;
@@ -416,7 +416,7 @@ glade_gtk_grid_set_child_property (GladeWidgetAdaptor *adaptor,
   g_return_if_fail (GTK_IS_WIDGET (child));
   g_return_if_fail (property_name != NULL && value != NULL);
 
-  GWA_GET_CLASS
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
     (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                               container, child,
                                               property_name, value);
@@ -471,8 +471,8 @@ glade_gtk_grid_child_verify_property (GladeWidgetAdaptor *adaptor,
     return glade_gtk_grid_verify_attach_common (child, value, "height", "n-rows");
   else if (!strcmp (id, "height"))
     return glade_gtk_grid_verify_attach_common (child, value, "top-attach", "n-rows");
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_verify_property)
-    GWA_GET_CLASS
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_verify_property)
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
     (GTK_TYPE_CONTAINER)->child_verify_property (adaptor,
                                                  container, child,
                                                  id, value);
@@ -659,7 +659,7 @@ glade_gtk_grid_child_action_activate (GladeWidgetAdaptor *adaptor,
                                                  "height", TRUE, FALSE);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
                                                                container,
                                                                object,
                                                                action_path);

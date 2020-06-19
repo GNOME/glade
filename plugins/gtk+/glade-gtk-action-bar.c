@@ -39,7 +39,7 @@ glade_gtk_action_bar_create_editable (GladeWidgetAdaptor * adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_action_bar_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static void
@@ -107,7 +107,7 @@ glade_gtk_action_bar_get_children (GladeWidgetAdaptor * adaptor,
 {
   GList *children;
 
-  children = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_children (adaptor, container);
+  children = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_children (adaptor, container);
 
   return g_list_sort_with_data (children, (GCompareDataFunc) sort_children, container);
 }
@@ -176,7 +176,7 @@ glade_gtk_action_bar_set_child_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "pack-type"))
     glade_gtk_action_bar_set_child_pack_type (container, child, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_set_property (adaptor, container,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_set_property (adaptor, container,
                                                             child, id, value);
 
   gtk_container_check_resize (GTK_CONTAINER (container));
@@ -210,7 +210,7 @@ glade_gtk_action_bar_get_property (GladeWidgetAdaptor * adaptor,
       g_value_set_int (value, glade_gtk_action_bar_get_num_children (object));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
 }
 
 static gint
@@ -333,7 +333,7 @@ glade_gtk_action_bar_set_property (GladeWidgetAdaptor * adaptor,
   else if (!strcmp (id, "size"))
     glade_gtk_action_bar_set_size (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
 static gboolean
@@ -371,8 +371,8 @@ glade_gtk_action_bar_verify_property (GladeWidgetAdaptor * adaptor,
 {
   if (!strcmp (id, "size"))
     return glade_gtk_action_bar_verify_size (object, value);
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object, id, value);
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object, id, value);
 
   return TRUE;
 }

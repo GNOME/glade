@@ -118,7 +118,7 @@ glade_gtk_toolbar_get_child_property (GladeWidgetAdaptor *adaptor,
     }
   else
     {                           /* Chain Up */
-      GWA_GET_CLASS
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
           (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
                                                     container, child,
                                                     property_name, value);
@@ -155,7 +155,7 @@ glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                   container, child,
                                                   property_name, value);
@@ -293,7 +293,7 @@ glade_gtk_toolbar_action_activate (GladeWidgetAdaptor *adaptor,
       glade_gtk_toolbar_launch_editor (adaptor, object);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object, action_path);
 }
 
@@ -309,7 +309,7 @@ glade_gtk_toolbar_write_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and write all the normal properties (including "use-stock")... */
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
 
   glade_gtk_write_icon_size (widget, context, node, "icon-size");
 }

@@ -94,7 +94,7 @@ glade_gtk_tool_item_group_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_TOOL_ITEM)->read_widget (adaptor, widget, node);
 
   /* Run this after the load so that icon-widget is resolved. */
   g_signal_connect (glade_widget_get_project (widget),
@@ -149,7 +149,7 @@ glade_gtk_tool_item_group_set_property (GladeWidgetAdaptor *adaptor,
         gtk_tool_item_group_set_label_widget (GTK_TOOL_ITEM_GROUP (object), label);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
 GladeEditable *
@@ -160,7 +160,7 @@ glade_gtk_tool_item_group_create_editable (GladeWidgetAdaptor *adaptor,
 
   /* Get base editable */
   editable =
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_tool_item_group_editor_new (adaptor, editable);

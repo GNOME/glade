@@ -42,7 +42,7 @@ glade_gtk_treeview_create_editable (GladeWidgetAdaptor *adaptor,
       return (GladeEditable *)glade_real_tree_view_editor_new ();
     }
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 gboolean
@@ -116,7 +116,7 @@ glade_gtk_treeview_action_activate (GladeWidgetAdaptor *adaptor,
       glade_gtk_treeview_launch_editor (object);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object, action_path);
 }
 
@@ -149,7 +149,7 @@ glade_gtk_treeview_get_child_property (GladeWidgetAdaptor *adaptor,
                                                           (child)));
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
                                                   container, child,
                                                   property_name, value);
@@ -173,7 +173,7 @@ glade_gtk_treeview_set_child_property (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                   container, child,
                                                   property_name, value);
@@ -307,5 +307,5 @@ glade_gtk_treeview_set_property (GladeWidgetAdaptor *adaptor,
     }
 
   if (GLADE_PROPERTY_DEF_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }

@@ -31,7 +31,7 @@ glade_gtk_info_bar_read_child (GladeWidgetAdaptor *adaptor,
                                GladeWidget *widget,
                                GladeXmlNode *node)
 {
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_child (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->read_child (adaptor, widget, node);
 
   node = glade_xml_node_get_parent (node);
   
@@ -56,7 +56,7 @@ glade_gtk_info_bar_write_child (GladeWidgetAdaptor *adaptor,
   if (g_strcmp0 (glade_widget_get_internal (widget), "action_area"))
     glade_gtk_action_widgets_ensure_names (parent, "action_area");
 
-  GWA_GET_CLASS (GTK_TYPE_BOX)->write_child (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_BOX)->write_child (adaptor, widget, context, node);
 
   if (g_strcmp0 (glade_widget_get_internal (widget), "action_area"))
     glade_gtk_action_widgets_write_child (parent, context, node, "action_area");

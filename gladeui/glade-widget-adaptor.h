@@ -17,34 +17,34 @@ G_BEGIN_DECLS
 G_DECLARE_DERIVABLE_TYPE (GladeWidgetAdaptor, glade_widget_adaptor, GLADE, WIDGET_ADAPTOR, GObject)
 
 /**
- * GWA_DEPRECATED:
+ * GLADE_WIDGET_ADAPTOR_DEPRECATED:
  * @obj: A #GladeWidgetAdaptor
  *
  * Checks whether this widget class is marked as deprecated
  */
-#define GWA_DEPRECATED(obj) \
+#define GLADE_WIDGET_ADAPTOR_DEPRECATED(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->deprecated : FALSE)
 
 /**
- * GWA_VERSION_SINCE_MAJOR:
+ * GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR:
  * @obj: A #GladeWidgetAdaptor
  *
  * Checks major version in which this widget was introduced
  */
-#define GWA_VERSION_SINCE_MAJOR(obj) \
+#define GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_major : 0)
 
 /**
- * GWA_VERSION_SINCE_MINOR:
+ * GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR:
  * @obj: A #GladeWidgetAdaptor
  *
  * Checks minor version in which this widget was introduced
  */
-#define GWA_VERSION_SINCE_MINOR(obj) \
+#define GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_minor : 0)
 
 /**
- * GWA_VERSION_CHECK:
+ * GLADE_WIDGET_ADAPTOR_VERSION_CHECK:
  * @adaptor: A #GladeWidgetAdaptor
  * @major_version: The major version to check
  * @minor_version: The minor version to check
@@ -52,31 +52,31 @@ G_DECLARE_DERIVABLE_TYPE (GladeWidgetAdaptor, glade_widget_adaptor, GLADE, WIDGE
  * Evaluates to %TRUE if @adaptor is available in its owning library version-@major_verion.@minor_version.
  *
  */
-#define GWA_VERSION_CHECK(adaptor, major_version, minor_version) \
-  ((GWA_VERSION_SINCE_MAJOR (adaptor) == major_version) ?        \
-   (GWA_VERSION_SINCE_MINOR (adaptor) <= minor_version) :        \
-   (GWA_VERSION_SINCE_MAJOR (adaptor) <= major_version))
+#define GLADE_WIDGET_ADAPTOR_VERSION_CHECK(adaptor, major_version, minor_version) \
+  ((GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (adaptor) == major_version) ?        \
+   (GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR (adaptor) <= minor_version) :        \
+   (GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (adaptor) <= major_version))
 
 /**
- * GWA_DEPRECATED_SINCE_MAJOR:
+ * GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MAJOR:
  * @obj: A #GladeWidgetAdaptor
  *
  * Checks major version in which this widget was deprecated
  */
-#define GWA_DEPRECATED_SINCE_MAJOR(obj) \
+#define GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MAJOR(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->deprecated_since_major : 0)
 
 /**
- * GWA_DEPRECATED_SINCE_MINOR:
+ * GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MINOR:
  * @obj: A #GladeWidgetAdaptor
  *
  * Checks minor version in which this widget was deprecated
  */
-#define GWA_DEPRECATED_SINCE_MINOR(obj) \
+#define GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MINOR(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->deprecated_since_minor : 0)
 
 /**
- * GWA_DEPRECATED_SINCE_CHECK:
+ * GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_CHECK:
  * @adaptor: A #GladeWidgetAdaptor
  * @major_version: The major version to check
  * @minor_version: The minor version to check
@@ -84,87 +84,87 @@ G_DECLARE_DERIVABLE_TYPE (GladeWidgetAdaptor, glade_widget_adaptor, GLADE, WIDGE
  * Evaluates to %TRUE if @adaptor is deprecated in its owning library version-@major_verion.@minor_version.
  *
  */
-#define GWA_DEPRECATED_SINCE_CHECK(adaptor, major_version, minor_version)           \
-  ((GWA_DEPRECATED_SINCE_MAJOR (adaptor) || GWA_DEPRECATED_SINCE_MINOR (adaptor)) ? \
-    ((GWA_DEPRECATED_SINCE_MAJOR (adaptor) == major_version)  ?                     \
-      (GWA_DEPRECATED_SINCE_MINOR (adaptor) <= minor_version)  :                    \
-      (GWA_DEPRECATED_SINCE_MAJOR (adaptor) <= major_version)) :                    \
+#define GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_CHECK(adaptor, major_version, minor_version)           \
+  ((GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MAJOR (adaptor) || GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MINOR (adaptor)) ? \
+    ((GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MAJOR (adaptor) == major_version)  ?                     \
+      (GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MINOR (adaptor) <= minor_version)  :                    \
+      (GLADE_WIDGET_ADAPTOR_DEPRECATED_SINCE_MAJOR (adaptor) <= major_version)) :                    \
     FALSE)
 
 /**
- * GWA_IS_TOPLEVEL:
+ * GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL:
  * @obj: A #GladeWidgetAdaptor
  *
  * Checks whether this widget class has been marked as
  * a toplevel one.
  */
-#define GWA_IS_TOPLEVEL(obj) \
+#define GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->toplevel : FALSE)
 
 /**
- * GWA_USE_PLACEHOLDERS:
+ * GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS:
  * @obj: A #GladeWidgetAdaptor
  *
  * Checks whether this widget class has been marked to
  * use placeholders in child widget operations
  */
-#define GWA_USE_PLACEHOLDERS(obj) \
+#define GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->use_placeholders : FALSE)
 
 
 /**
- * GWA_DEFAULT_WIDTH:
+ * GLADE_WIDGET_ADAPTOR_DEFAULT_WIDTH:
  * @obj: A #GladeWidgetAdaptor
  *
  * Returns: the default width to be used when this widget
  * is toplevel in the GladeDesignLayout
  */
-#define GWA_DEFAULT_WIDTH(obj) \
+#define GLADE_WIDGET_ADAPTOR_DEFAULT_WIDTH(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->default_width : -1)
 
 
 /**
- * GWA_DEFAULT_HEIGHT:
+ * GLADE_WIDGET_ADAPTOR_DEFAULT_HEIGHT:
  * @obj: A #GladeWidgetAdaptor
  *
  * Returns: the default width to be used when this widget
  * is toplevel in the GladeDesignLayout
  */
-#define GWA_DEFAULT_HEIGHT(obj) \
+#define GLADE_WIDGET_ADAPTOR_DEFAULT_HEIGHT(obj) \
   ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->default_height : -1)
 
 
 /**
- * GWA_SCROLLABLE_WIDGET:
+ * GLADE_WIDGET_ADAPTOR_SCROLLABLE_WIDGET:
  * @obj: A #GladeWidgetAdaptor
  *
  * Checks whether this is a GtkWidgetClass with scrolling capabilities.
  */
-#define GWA_SCROLLABLE_WIDGET(obj)                   \
+#define GLADE_WIDGET_ADAPTOR_SCROLLABLE_WIDGET(obj)                   \
   ((obj) ?                                           \
    g_type_is_a (glade_widget_adaptor_get_object_type \
                 (GLADE_WIDGET_ADAPTOR (obj)),        \
                 GTK_TYPE_SCROLLABLE) : FALSE)
 
 /**
- * GWA_GET_CLASS:
+ * GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS:
  * @type: A #GType
  *
  * Shorthand for referencing glade adaptor classes from
- * the plugin eg. GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor...
+ * the plugin eg. GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor...
  */
-#define GWA_GET_CLASS(type)                                                   \
+#define GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS(type)                                                   \
   (((type) == G_TYPE_OBJECT) ?                                                \
    (GladeWidgetAdaptorClass *)g_type_class_peek (GLADE_TYPE_WIDGET_ADAPTOR) : \
    GLADE_WIDGET_ADAPTOR_GET_CLASS (glade_widget_adaptor_get_by_type(type)))
 
 /**
- * GWA_GET_OCLASS:
+ * GLADE_WIDGET_ADAPTOR_GET_OCLASS:
  * @type: A #GType.
  *
- * Same as GWA_GET_CLASS but casted to GObjectClass
+ * Same as GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS but casted to GObjectClass
  */
-#define GWA_GET_OCLASS(type) ((GObjectClass*)GWA_GET_CLASS(type))
+#define GLADE_WIDGET_ADAPTOR_GET_OCLASS(type) ((GObjectClass*)GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS(type))
 
 
 #define GLADE_VALID_CREATE_REASON(reason) (reason >= 0 && reason < GLADE_CREATE_REASONS)

@@ -970,7 +970,7 @@ glade_fixed_event (GladeWidget *gwidget_fixed, GdkEvent *event)
     }
 
   /* If the container uses placeholder adding widget is already taken care of */
-  if (GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (gwidget_fixed)))
+  if (GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (glade_widget_get_adaptor (gwidget_fixed)))
     return FALSE;
   
   switch (event->type)

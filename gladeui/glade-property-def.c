@@ -236,9 +236,9 @@ glade_property_def_new (GladeWidgetAdaptor *adaptor,
   property_def->create_type = NULL;
 
   /* Initialize property versions & deprecated to adaptor */
-  property_def->version_since_major = GWA_VERSION_SINCE_MAJOR (adaptor);
-  property_def->version_since_minor = GWA_VERSION_SINCE_MINOR (adaptor);
-  property_def->deprecated          = GWA_DEPRECATED (adaptor);
+  property_def->version_since_major = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (adaptor);
+  property_def->version_since_minor = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR (adaptor);
+  property_def->deprecated          = GLADE_WIDGET_ADAPTOR_DEPRECATED (adaptor);
 
   return property_def;
 }

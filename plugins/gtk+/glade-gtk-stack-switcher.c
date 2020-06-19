@@ -35,6 +35,6 @@ glade_gtk_stack_switcher_create_editable (GladeWidgetAdaptor * adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_stack_switcher_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 

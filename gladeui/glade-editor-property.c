@@ -2952,7 +2952,7 @@ glade_eprop_object_populate_view_real (GtkTreeStore *model,
 
           widget_name = glade_widget_get_display_name (widget);
           if (parentless)
-            good_type = good_type && !GWA_IS_TOPLEVEL (adaptor);
+            good_type = good_type && !GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor);
 
           if (good_type || has_decendant)
             {

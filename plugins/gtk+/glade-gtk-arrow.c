@@ -36,7 +36,7 @@ glade_gtk_arrow_create_editable (GladeWidgetAdaptor * adaptor,
   if (type == GLADE_PAGE_GENERAL)
     editable = (GladeEditable *) glade_arrow_editor_new ();
   else
-    editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+    editable = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 
   return editable;
 }

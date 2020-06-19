@@ -119,7 +119,7 @@ glade_gtk_header_bar_action_activate (GladeWidgetAdaptor *adaptor,
       glade_command_pop_group ();
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor, object, action_path);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor, object, action_path);
 }
 
 void
@@ -155,7 +155,7 @@ glade_gtk_header_bar_child_action_activate (GladeWidgetAdaptor *adaptor,
       glade_command_pop_group ();
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
                                                                container,
                                                                object,
                                                                action_path);
@@ -178,7 +178,7 @@ glade_gtk_header_bar_get_property (GladeWidgetAdaptor *adaptor,
       g_value_set_int (value, glade_gtk_header_bar_get_num_children (object));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
 }
 
 static void
@@ -307,7 +307,7 @@ glade_gtk_header_bar_set_property (GladeWidgetAdaptor *adaptor,
   else if (!strcmp (id, "size"))
     glade_gtk_header_bar_set_size (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
 void
@@ -335,7 +335,7 @@ glade_gtk_header_bar_add_child (GladeWidgetAdaptor *adaptor,
       return;
     }
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->add (adaptor, parent, child);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->add (adaptor, parent, child);
   
   gbox = glade_widget_get_from_gobject (parent);
   if (!glade_widget_superuser ())
@@ -410,7 +410,7 @@ glade_gtk_header_bar_replace_child (GladeWidgetAdaptor *adaptor,
   else
     g_object_set_data (G_OBJECT (new_widget), "special-child-type", NULL);
 
-  GWA_GET_CLASS
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
       (GTK_TYPE_CONTAINER)->replace_child (adaptor, container, current, new_widget);
 
   gbox = glade_widget_get_from_gobject (container);
@@ -429,8 +429,8 @@ glade_gtk_header_bar_verify_property (GladeWidgetAdaptor *adaptor,
 {
   if (!strcmp (id, "size"))
     return glade_gtk_header_bar_verify_size (object, value);
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object, id, value);
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object, id, value);
 
   return TRUE;
 }
@@ -477,7 +477,7 @@ glade_gtk_header_bar_get_children (GladeWidgetAdaptor *adaptor,
 {
   GList *children;
 
-  children = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_children (adaptor, container);
+  children = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_children (adaptor, container);
   return g_list_sort_with_data (children, (GCompareDataFunc) sort_children, container);
 }
 
@@ -578,7 +578,7 @@ glade_gtk_header_bar_child_set_property (GladeWidgetAdaptor *adaptor,
 
   /* Chain Up */
   if (!is_position)
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                   container,
                                                   child, property_name, value);
@@ -592,5 +592,5 @@ glade_gtk_header_bar_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_header_bar_editor_new ();
   else
-    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }

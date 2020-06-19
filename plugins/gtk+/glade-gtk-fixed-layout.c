@@ -36,7 +36,7 @@ glade_gtk_layout_create_editable (GladeWidgetAdaptor *adaptor,
       return (GladeEditable *)glade_layout_editor_new ();
     }
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static void

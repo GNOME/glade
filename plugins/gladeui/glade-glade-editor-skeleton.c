@@ -37,7 +37,7 @@ glade_glade_editor_skeleton_read_widget (GladeWidgetAdaptor *adaptor,
   GladeProperty *property;
   gchar *string = NULL;
 
-  GWA_GET_CLASS (GTK_TYPE_BOX)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_BOX)->read_widget (adaptor, widget, node);
 
   if ((editors_node =
        glade_xml_search_child (node, GLADE_TAG_SKELETON_EDITORS)) != NULL)
@@ -91,7 +91,7 @@ glade_glade_editor_skeleton_write_widget_after (GladeWidgetAdaptor *adaptor,
   GList *editors = NULL, *list;
   GladeWidget *awidget;
 
-  GWA_GET_CLASS (GTK_TYPE_BOX)->write_widget_after (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_BOX)->write_widget_after (adaptor, widget, context, node);
 
   widgets_node = glade_xml_node_new (context, GLADE_TAG_SKELETON_EDITORS);
 

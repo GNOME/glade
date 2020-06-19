@@ -53,7 +53,7 @@ glade_gtk_box_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_box_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static void
@@ -140,7 +140,7 @@ glade_gtk_box_get_children (GladeWidgetAdaptor *adaptor, GObject *container)
 {
   GList *children;
 
-  children = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_children (adaptor, container);
+  children = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_children (adaptor, container);
 
   return g_list_sort_with_data (children, (GCompareDataFunc) sort_box_children, container);
 }
@@ -239,7 +239,7 @@ glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
 
   /* Chain Up */
   if (!is_position)
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                   container,
                                                   child, property_name, value);
@@ -276,7 +276,7 @@ glade_gtk_box_get_property (GladeWidgetAdaptor *adaptor,
       g_value_set_int (value, glade_gtk_box_get_num_children (object));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
                                                       value);
 }
 
@@ -402,7 +402,7 @@ glade_gtk_box_set_property (GladeWidgetAdaptor *adaptor,
   else if (!strcmp (id, "size"))
     glade_gtk_box_set_size (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
                                                       value);
 }
 
@@ -442,8 +442,8 @@ glade_gtk_box_verify_property (GladeWidgetAdaptor *adaptor,
 {
   if (!strcmp (id, "size"))
     return glade_gtk_box_verify_size (object, value);
-  else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-    return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
+  else if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
                                                                 id, value);
 
   return TRUE;
@@ -597,7 +597,7 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
 
   g_object_ref (G_OBJECT (current));
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
                                                      container,
                                                      current, new_widget);
   gbox = glade_widget_get_from_gobject (container);
@@ -636,7 +636,7 @@ glade_gtk_box_child_action_activate (GladeWidgetAdaptor *adaptor,
                                                          object, TRUE, FALSE);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
                                                                container,
                                                                object,
                                                                action_path);

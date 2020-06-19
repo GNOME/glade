@@ -71,7 +71,7 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
   GtkDialog *dialog;
 
   /* Chain Up first */
-  GWA_GET_CLASS (GTK_TYPE_WINDOW)->post_create (adaptor, object, reason);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->post_create (adaptor, object, reason);
 
   g_return_if_fail (GTK_IS_DIALOG (object));
 
@@ -162,7 +162,7 @@ void
 glade_gtk_dialog_read_child (GladeWidgetAdaptor * adaptor,
                              GladeWidget * widget, GladeXmlNode * node)
 {
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_child (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->read_child (adaptor, widget, node);
 
   node = glade_xml_node_get_parent (node);
 
@@ -185,7 +185,7 @@ glade_gtk_dialog_write_child (GladeWidgetAdaptor * adaptor,
    */
   glade_gtk_action_widgets_ensure_names (parent, "action_area");
   
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
 
   if (parent && GTK_IS_DIALOG (glade_widget_get_object (parent)))
     glade_gtk_action_widgets_write_child (parent, context, node, "action_area");

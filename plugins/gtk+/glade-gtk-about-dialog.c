@@ -64,7 +64,7 @@ glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
       g_value_set_int (&use_header->value, 0);
     }
 
-  retval = GWA_GET_CLASS (GTK_TYPE_DIALOG)->construct_object (adaptor, n_parameters, new_params);
+  retval = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_DIALOG)->construct_object (adaptor, n_parameters, new_params);
   g_free (new_params);
   return retval;
 }
@@ -80,7 +80,7 @@ glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
   /* Sync the logo icon mode */
   if (glade_widget_property_original_default (widget, "logo") == FALSE)
@@ -109,5 +109,5 @@ glade_gtk_about_dialog_set_property (GladeWidgetAdaptor *adaptor,
       glade_property_set_enabled (logo, as_file);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object, id, value);
 }

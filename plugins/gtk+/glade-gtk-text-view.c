@@ -36,7 +36,7 @@ glade_gtk_text_view_create_editable (GladeWidgetAdaptor *adaptor,
       return (GladeEditable *)glade_text_view_editor_new ();
     }
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static gboolean
@@ -73,7 +73,7 @@ glade_gtk_text_view_set_property (GladeWidgetAdaptor *adaptor,
         return;
     }
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
                                                     object,
                                                     property_name, value);
 }

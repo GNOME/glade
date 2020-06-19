@@ -243,7 +243,7 @@ palette_item_toggled_cb (GtkToggleToolButton *button, GladePalette *palette)
     return;
 
   /* Auto-create toplevel types */
-  if (GWA_IS_TOPLEVEL (adaptor))
+  if (GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor))
     {
       glade_command_create (adaptor, NULL, NULL, priv->project);
 

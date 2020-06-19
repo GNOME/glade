@@ -33,7 +33,7 @@ glade_gtk_menu_constructor (GType type,
   GladeWidgetAdaptor *adaptor;
   GObject *ret_obj;
 
-  ret_obj = GWA_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
+  ret_obj = GLADE_WIDGET_ADAPTOR_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
       (type, n_construct_properties, construct_properties);
 
   adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);

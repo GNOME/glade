@@ -32,7 +32,7 @@ glade_gtk_switch_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_activatable_editor_new (adaptor, NULL);
 
-  return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
 void

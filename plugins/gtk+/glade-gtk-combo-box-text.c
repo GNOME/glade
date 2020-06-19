@@ -40,7 +40,7 @@ glade_gtk_combo_box_text_create_editable (GladeWidgetAdaptor *adaptor,
       return (GladeEditable *) glade_combo_box_text_editor_new ();
     }
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 void
@@ -51,7 +51,7 @@ glade_gtk_combo_box_text_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *gwidget;
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->post_create (adaptor, object, reason);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_COMBO_BOX)->post_create (adaptor, object, reason);
 
   /* No editor, no model, no cells on a GtkComboBoxText, just the items. */
   gwidget = glade_widget_get_from_gobject (object);
@@ -73,7 +73,7 @@ glade_gtk_combo_box_text_create_eprop (GladeWidgetAdaptor *adaptor,
       eprop = glade_eprop_string_list_new (def, use_command, TRUE, TRUE);
     }
   else
-    eprop = GWA_GET_CLASS
+    eprop = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_WIDGET)->create_eprop (adaptor, def, use_command);
 
   return eprop;
@@ -95,7 +95,7 @@ glade_gtk_combo_box_text_string_from_value (GladeWidgetAdaptor *adaptor,
       return glade_string_list_to_string (list);
     }
   else
-    return GWA_GET_CLASS
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_COMBO_BOX)->string_from_value (adaptor, def, value);
 }
 
@@ -129,7 +129,7 @@ glade_gtk_combo_box_text_set_property (GladeWidgetAdaptor *adaptor,
                                 CLAMP (active, 0, g_list_length (string_list) - 1));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_COMBO_BOX)->set_property (adaptor, object, id, value);
 }
 
 static void
@@ -186,7 +186,7 @@ glade_gtk_combo_box_text_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_COMBO_BOX)->read_widget (adaptor, widget, node);
 
   glade_gtk_combo_box_text_read_items (widget, node);
 }
@@ -247,7 +247,7 @@ glade_gtk_combo_box_text_write_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_COMBO_BOX)->write_widget (adaptor, widget, context, node);
 
   attrs_node = glade_xml_node_new (context, GLADE_TAG_ITEMS);
 

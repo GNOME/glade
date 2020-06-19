@@ -41,7 +41,7 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
   if (glade_widget_property_original_default (widget, "icon-name") == FALSE)
     {
@@ -80,7 +80,7 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and write all the normal properties (including "use-stock")... */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context, node);
 
   glade_gtk_write_icon_size (widget, context, node, "icon-size");
 }
@@ -147,13 +147,13 @@ glade_gtk_image_get_property (GladeWidgetAdaptor *adaptor,
       /* Make the int an enum... */
       GValue int_value = { 0, };
       g_value_init (&int_value, G_TYPE_INT);
-      GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_property (adaptor, object, id,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->get_property (adaptor, object, id,
                                                      &int_value);
       g_value_set_enum (value, g_value_get_int (&int_value));
       g_value_unset (&int_value);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->get_property (adaptor, object, id, value);
 }
 
 void
@@ -170,7 +170,7 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
       GValue int_value = { 0, };
       g_value_init (&int_value, G_TYPE_INT);
       g_value_set_int (&int_value, g_value_get_enum (value));
-      GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id,
                                                      &int_value);
       g_value_unset (&int_value);
     }
@@ -201,7 +201,7 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
             break;
         }
 
-      GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object,
                                                      id, value);
 
       /* Set icon size back to what it should be */
@@ -217,7 +217,7 @@ glade_gtk_image_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_image_editor_new ();
   else
-    return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+    return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
 /* Shared with other classes */

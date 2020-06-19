@@ -52,7 +52,7 @@ glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
         }
     }
   else
-    GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor, object, action_path);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->action_activate (adaptor, object, action_path);
 }
 
 void
@@ -93,7 +93,7 @@ glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
                           "property-def", def,
                           "use-command", use_command, NULL);
   else
-    eprop = GWA_GET_CLASS
+    eprop = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (G_TYPE_OBJECT)->create_eprop (adaptor, def, use_command);
   return eprop;
 }
@@ -106,7 +106,7 @@ glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor *adaptor,
   GladeEditable *editable;
 
   /* Get base editable */
-  editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+  editable = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
 
   if (type == GLADE_PAGE_GENERAL || type == GLADE_PAGE_COMMON)
     return (GladeEditable *) glade_cell_renderer_editor_new (adaptor, type,
@@ -202,7 +202,7 @@ glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor *adaptor,
     glade_gtk_cell_renderer_sync_attributes (object);
   else if (glade_gtk_cell_renderer_property_enabled (object, property_name))
     /* Chain Up */
-    GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
                                                  object, property_name, value);
 }
 
@@ -265,7 +265,7 @@ glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
    */
   glade_gtk_cell_renderer_write_properties (widget, context, node);
 
-  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 }
 
 static void
@@ -319,7 +319,7 @@ glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the properties... */
-  GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
   g_signal_connect (glade_widget_get_project (widget), "parse-finished",
                     G_CALLBACK (glade_gtk_cell_renderer_parse_finished),

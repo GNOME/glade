@@ -34,7 +34,7 @@ glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_recent_chooser_menu_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_MENU)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_MENU)->create_editable (adaptor, type);
 }
 
 void
@@ -47,5 +47,5 @@ glade_gtk_recent_chooser_menu_set_property (GladeWidgetAdaptor *adaptor,
   GladeProperty *property = glade_widget_get_property (widget, id);
 
   if (GLADE_PROPERTY_DEF_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_MENU)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_MENU)->set_property (adaptor, object, id, value);
 }

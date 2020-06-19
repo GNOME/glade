@@ -45,7 +45,7 @@ glade_gtk_file_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_file_chooser_widget_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
 
@@ -63,7 +63,7 @@ glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor *adaptor,
         return;
     }
 
-  GWA_GET_CLASS (GTK_TYPE_BOX)->set_property (adaptor, object, id, value);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_BOX)->set_property (adaptor, object, id, value);
 }
 
 
@@ -74,5 +74,5 @@ glade_gtk_file_chooser_button_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_file_chooser_button_editor_new ();
 
-  return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }

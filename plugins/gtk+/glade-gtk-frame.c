@@ -78,7 +78,7 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor *adaptor,
     }
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, frame, reason);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, frame, reason);
 }
 
 void
@@ -101,7 +101,7 @@ glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
     }
 
   /* Chain Up */
-  GWA_GET_CLASS
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
       (GTK_TYPE_CONTAINER)->replace_child (adaptor,
                                            G_OBJECT (container),
                                            G_OBJECT (current),
@@ -173,9 +173,9 @@ glade_gtk_frame_write_child (GladeWidgetAdaptor *adaptor,
 {
 
   if (!glade_gtk_write_special_child_label_item (adaptor, widget, context, node,
-                                                 GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child))
+                                                 GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->write_child))
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
 }
 

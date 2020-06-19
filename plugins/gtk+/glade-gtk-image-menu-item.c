@@ -130,11 +130,11 @@ glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
   else if (!strcmp (id, "label"))
     {
       if (!glade_gtk_image_menu_item_set_label (object, value))
-        GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
+        GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
                                                           id, value);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
                                                       id, value);
 }
 
@@ -164,7 +164,7 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_MENU_ITEM)->read_widget (adaptor, widget, node);
 
   glade_widget_property_get (widget, "use-stock", &use_stock);
   if (use_stock)
@@ -217,7 +217,7 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
   g_object_unref (G_OBJECT (label_prop));
 
   /* Chain up and write all the normal properties ... */
-  GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->write_widget (adaptor, widget, context,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_MENU_ITEM)->write_widget (adaptor, widget, context,
                                                     node);
 
 }
@@ -234,7 +234,7 @@ glade_gtk_image_menu_item_create_editable (GladeWidgetAdaptor *adaptor,
 
   /* Get base editable */
   editable =
-      GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->create_editable (adaptor, type);
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_MENU_ITEM)->create_editable (adaptor, type);
 
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_image_item_editor_new (adaptor, editable);

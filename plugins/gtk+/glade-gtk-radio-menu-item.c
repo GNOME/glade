@@ -50,6 +50,6 @@ glade_gtk_radio_menu_item_set_property (GladeWidgetAdaptor * adaptor,
   if (!strcmp (id, "group"))
     glade_gtk_radio_menu_item_set_group (object, value);
   else
-    GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
                                                       id, value);
 }

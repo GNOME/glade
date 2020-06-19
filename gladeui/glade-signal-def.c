@@ -81,9 +81,9 @@ glade_signal_def_new  (GladeWidgetAdaptor *adaptor,
   def->type = g_type_name (for_type);
 
   /* Initialize signal versions & deprecated to adaptor version */
-  def->version_since_major = GWA_VERSION_SINCE_MAJOR (adaptor);
-  def->version_since_minor = GWA_VERSION_SINCE_MINOR (adaptor);
-  def->deprecated          = GWA_DEPRECATED (adaptor);
+  def->version_since_major = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (adaptor);
+  def->version_since_minor = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR (adaptor);
+  def->deprecated          = GLADE_WIDGET_ADAPTOR_DEPRECATED (adaptor);
 
   return def;
 }

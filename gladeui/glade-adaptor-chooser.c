@@ -126,7 +126,7 @@ on_adaptor_selected (GtkWidget           *widget,
   GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
 
   /* Auto-create toplevel types */
-  if (GWA_IS_TOPLEVEL (adaptor))
+  if (GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor))
     {
       glade_command_create (adaptor, NULL, NULL, priv->project);
     }

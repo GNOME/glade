@@ -143,8 +143,8 @@ glade_gtk_assistant_get_children (GladeWidgetAdaptor *adaptor,
   GList *children = NULL, *parent_children;
 
   /* Chain up */
-  if (GWA_GET_CLASS (GTK_TYPE_WINDOW)->get_children)
-    parent_children = GWA_GET_CLASS (GTK_TYPE_WINDOW)->get_children (adaptor, container);
+  if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->get_children)
+    parent_children = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->get_children (adaptor, container);
   else
     parent_children = NULL;
   
@@ -285,9 +285,9 @@ glade_gtk_assistant_verify_property (GladeWidgetAdaptor *adaptor,
         gtk_assistant_get_n_pages (GTK_ASSISTANT (object));
 
   /* Chain Up */
-  if (GWA_GET_CLASS (GTK_TYPE_WINDOW)->verify_property == NULL)
+  if (GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->verify_property == NULL)
     return TRUE;
-  return GWA_GET_CLASS (GTK_TYPE_WINDOW)->verify_property (adaptor,
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->verify_property (adaptor,
                                                            object,
                                                            property_name,
                                                            value);
@@ -316,7 +316,7 @@ glade_gtk_assistant_set_property (GladeWidgetAdaptor *adaptor,
     }
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_WINDOW)->set_property (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->set_property (adaptor,
                                                  object, property_name, value);
 }
 
@@ -334,7 +334,7 @@ glade_gtk_assistant_get_property (GladeWidgetAdaptor *adaptor,
     }
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_WINDOW)->get_property (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->get_property (adaptor,
                                                  object, property_name, value);
 }
 
@@ -375,7 +375,7 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
     }
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_WINDOW)->child_set_property (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->child_set_property (adaptor,
                                                        container,
                                                        child,
                                                        property_name, value);
@@ -399,7 +399,7 @@ glade_gtk_assistant_get_child_property (GladeWidgetAdaptor *adaptor,
     }
 
   /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_WINDOW)->child_get_property (adaptor,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->child_get_property (adaptor,
                                                        container,
                                                        child,
                                                        property_name, value);

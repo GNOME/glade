@@ -70,7 +70,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
         editable = (GladeEditable *) glade_action_editor_new ();
     }
   else
-    editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+    editable = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
 
   return editable;
 }

@@ -101,7 +101,7 @@ glade_gtk_flowbox_get_child_property (GladeWidgetAdaptor *adaptor,
   else
     {
       /* Chain Up */
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
                                                               container,
                                                               child,
                                                               property_name,
@@ -133,7 +133,7 @@ glade_gtk_flowbox_set_child_property (GladeWidgetAdaptor *adaptor,
   else
     {
       /* Chain Up */
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                               container,
                                                               child,
                                                               property_name,
@@ -232,7 +232,7 @@ glade_gtk_flowbox_action_activate (GladeWidgetAdaptor *adaptor,
       glade_project_selection_set (project, object, TRUE);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object, action_path);
 }
 
@@ -254,7 +254,7 @@ glade_gtk_flowbox_child_action_activate (GladeWidgetAdaptor *adaptor,
     }
   else
     {
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
                                                                  container,
                                                                  object,
                                                                  action_path);

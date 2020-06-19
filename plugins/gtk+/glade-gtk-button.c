@@ -113,7 +113,7 @@ glade_gtk_color_button_set_property (GladeWidgetAdaptor *adaptor,
                                     (GdkRGBA *) g_value_get_boxed (value));
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_BUTTON)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_BUTTON)->set_property (adaptor, object, id, value);
 }
 
 /* ----------------------------- GtkButton ------------------------------ */
@@ -133,7 +133,7 @@ glade_gtk_button_create_editable (GladeWidgetAdaptor *adaptor,
         return (GladeEditable *) glade_button_editor_new ();
     }
 
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static void
@@ -234,12 +234,12 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
       /* I guess its my bug in GTK+, we need to resync the appearance property
        * on GtkButton when the GtkButton:use-stock property changes.
        */
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
                                                         id, value);
       glade_gtk_sync_use_appearance (widget);
     }
   else if (GLADE_PROPERTY_DEF_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 
   /* GtkLockButton hides itself after setting a property so we need to make sure
    * we keep it visible.
@@ -260,7 +260,7 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
     return;
 
   /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
 
   glade_gtk_button_update_stock (widget);
 
@@ -320,7 +320,7 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
     }
 
   /* Write out other normal properties and any other class derived custom properties after ... */
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context,
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context,
                                                     node);
 
 }
@@ -337,7 +337,7 @@ glade_gtk_button_create_eprop (GladeWidgetAdaptor *adaptor,
       eprop = glade_eprop_enum_int_new (def, GTK_TYPE_RESPONSE_TYPE, use_command);
     }
   else
-    eprop = GWA_GET_CLASS
+    eprop = GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_WIDGET)->create_eprop (adaptor, def, use_command);
 
   return eprop;

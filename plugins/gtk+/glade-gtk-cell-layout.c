@@ -138,7 +138,7 @@ glade_gtk_cell_layout_get_child_property (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_get_property (adaptor,
                                                   container, child,
                                                   property_name, value);
@@ -160,7 +160,7 @@ glade_gtk_cell_layout_set_child_property (GladeWidgetAdaptor *adaptor,
     }
   else
     /* Chain Up */
-    GWA_GET_CLASS
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS
         (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                   container, child,
                                                   property_name, value);
@@ -473,7 +473,7 @@ glade_gtk_cell_layout_action_activate (GladeWidgetAdaptor *adaptor,
   if (strcmp (action_path, "launch_editor") == 0)
     glade_gtk_cell_layout_launch_editor_action (object);
   else
-    GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
                                                     object, action_path);
 }
 
@@ -485,7 +485,7 @@ glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor *adaptor,
   if (strcmp (action_path, "launch_editor") == 0)
     glade_gtk_cell_layout_launch_editor_action (object);
   else
-    GWA_GET_CLASS (GTK_TYPE_WIDGET)->action_activate (adaptor,
+    GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->action_activate (adaptor,
                                                       object, action_path);
 }
 
