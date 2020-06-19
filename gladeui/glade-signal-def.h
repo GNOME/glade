@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 /**
- * GSC_VERSION_CHECK:
+ * GLADE_SIGNALS_DEF_VERSION_CHECK:
  * @klass: A #GladeSignalDef
  * @major_version: The major version to check
  * @minor_version: The minor version to check
@@ -37,7 +37,7 @@ G_BEGIN_DECLS
  * Evaluates to %TRUE if @klass is available in its owning library version-@major_verion.@minor_version.
  *
  */
-#define GSC_VERSION_CHECK(klass, major_version, minor_version)                      \
+#define GLADE_SIGNALS_DEF_VERSION_CHECK(klass, major_version, minor_version)                      \
   ((glade_signal_def_since_major (GLADE_SIGNAL_DEF (klass)) == major_version) ? \
    (glade_signal_def_since_minor (GLADE_SIGNAL_DEF (klass)) <= minor_version) : \
    (glade_signal_def_since_major (GLADE_SIGNAL_DEF (klass)) <= major_version))

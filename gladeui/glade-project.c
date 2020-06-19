@@ -1810,7 +1810,7 @@ glade_project_introspect_signal_versions (GladeSignal *signal,
   g_free (catalog);
 
   if (is_gtk_adaptor && 
-      !GSC_VERSION_CHECK (signal_def, data->major, data->minor))
+      !GLADE_SIGNALS_DEF_VERSION_CHECK (signal_def, data->major, data->minor))
     {
       data->major = glade_signal_def_since_major (signal_def);
       data->minor = glade_signal_def_since_minor (signal_def);
@@ -3293,7 +3293,7 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
                                             &target_major, &target_minor);
 
   if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
-      !GSC_VERSION_CHECK (signal_def, target_major, target_minor))
+      !GLADE_SIGNALS_DEF_VERSION_CHECK (signal_def, target_major, target_minor))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s not available in version %d.%d\n",
                                    glade_signal_get_name (signal),
