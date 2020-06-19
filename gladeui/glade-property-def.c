@@ -509,7 +509,7 @@ glade_property_def_make_string_from_gvalue (GladePropertyDef *
   GList *objects;
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  if (DEPRECATED_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
+  if (GLADE_PROPERTY_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
     {
       G_GNUC_END_IGNORE_DEPRECATIONS;
       GValueArray *value_array = g_value_get_boxed (value);
@@ -846,7 +846,7 @@ glade_property_def_make_gvalue_from_string (GladePropertyDef *property_def,
   g_value_init (value, property_def->pspec->value_type);
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  if (DEPRECATED_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
+  if (GLADE_PROPERTY_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
     {
       G_GNUC_END_IGNORE_DEPRECATIONS;
       GValueArray *value_array;

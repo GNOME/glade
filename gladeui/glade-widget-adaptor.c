@@ -1240,7 +1240,7 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
   GType type = 0;
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  if (DEPRECATED_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
+  if (GLADE_PROPERTY_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
     {
       /* Require deprecated code */
       if (pspec->value_type == g_value_array_get_type ())
