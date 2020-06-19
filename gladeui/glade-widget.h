@@ -61,7 +61,7 @@ struct _GladeWidgetClass
  */
 #define GLADE_UNNAMED_PREFIX   "__glade_unnamed_"
 
-#define IS_GLADE_WIDGET_EVENT(event)       \
+#define GLADE_WIDGET_IS_EVENT(event)       \
         ((event) == GDK_BUTTON_PRESS ||    \
          (event) == GDK_BUTTON_RELEASE ||  \
          (event) == GDK_MOTION_NOTIFY)

@@ -4502,7 +4502,7 @@ glade_widget_depends (GladeWidget *widget, GladeWidget *other)
  * glade_widget_get_device_from_event:
  * @event: a GdkEvent
  * 
- * Currently only motion and button events are handled (see IS_GLADE_WIDGET_EVENT)
+ * Currently only motion and button events are handled (see GLADE_WIDGET_IS_EVENT)
  * 
  * Returns: (transfer none): the associated #GdkDevice for this glade widget event.
  *
