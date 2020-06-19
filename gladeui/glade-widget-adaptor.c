@@ -3282,7 +3282,7 @@ glade_widget_adaptor_get_pack_property_def (GladeWidgetAdaptor *adaptor,
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /**
- * glade_widget_class_default_params:
+ * glade_widget_adaptor_default_params:
  * @adaptor: a #GladeWidgetAdaptor
  * @construct: whether to return construct params or not construct params
  * @n_params: return location if any defaults are specified for this class.

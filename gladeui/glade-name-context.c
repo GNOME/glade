@@ -38,6 +38,13 @@ struct _GladeNameContext
   GHashTable *names;
 };
 
+/**
+ * glade_name_context_new: (skip)
+ *
+ * Creates a new name context
+ *
+ * Returns: a new GladeNameContext
+ */
 GladeNameContext *
 glade_name_context_new (void)
 {

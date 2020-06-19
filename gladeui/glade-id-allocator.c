@@ -37,7 +37,7 @@ struct _GladeIDAllocator
 };
 
 /**
- * glade_id_allocator_new:
+ * glade_id_allocator_new: (skip)
  *
  * Returns: a new #GladeIDAllocator
  */

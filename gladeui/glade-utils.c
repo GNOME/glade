@@ -907,7 +907,7 @@ try_load_library (const gchar *library_path, const gchar *library_name)
 }
 
 /**
- * glade_util_load_library:
+ * glade_util_load_library: (skip)
  * @library_name: name of the library
  *
  * Loads the named library from the Glade modules and lib directory or failing that
