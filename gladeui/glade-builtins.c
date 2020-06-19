@@ -292,6 +292,9 @@ glade_standard_stock_get_type (void)
                                       (GEnumValue *) g_array_free (values,
                                                                    FALSE));
 
+      if (gdk_display_get_default () == NULL)
+        return etype;
+
       /* Register displayable by GType, i.e. after the types been created. */
       for (i = 0; i < n_values; i++)
         {
@@ -328,6 +331,9 @@ glade_standard_stock_image_get_type (void)
       etype = g_enum_register_static ("GladeStockImage",
                                       (GEnumValue *) g_array_free (values,
                                                                    FALSE));
+
+      if (gdk_display_get_default () == NULL)
+        return etype;
 
       /* Register displayable by GType, i.e. after the types been created. */
       for (i = 0; i < n_values; i++)
