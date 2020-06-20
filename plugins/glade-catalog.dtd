@@ -1,4 +1,5 @@
-<!ELEMENT glade-catalog (glade-widget-classes?, 
+<!ELEMENT glade-catalog (init-function?,
+                         glade-widget-classes?,
 			 glade-widget-group*)>
 
 <!ATTLIST glade-catalog name     CDATA #REQUIRED
@@ -9,7 +10,6 @@
                         domain   CDATA #IMPLIED
                         book     CDATA #IMPLIED
                         icon-prefix CDATA #IMPLIED
-                        init-function CDATA #IMPLIED
 			requires CDATA #IMPLIED>
 
 <!ELEMENT glade-widget-classes (glade-widget-class+)>
@@ -148,4 +148,6 @@
 <!ELEMENT child-property EMPTY>
 <!ATTLIST child-property id      CDATA #REQUIRED
                          default CDATA #REQUIRED>
+
+<!ELEMENT init-function (#PCDATA)>
 
