@@ -4437,7 +4437,8 @@ glade_widget_write (GladeWidget     *widget,
 
           if (child)
             glade_widget_write_child (widget, child, context, widget_node);
-          else if (GLADE_IS_PLACEHOLDER (l->data))
+          /* Only write visible placeholder, since the plugins could use invisible ones for convenience */
+          else if (GLADE_IS_PLACEHOLDER (l->data) && gtk_widget_get_visible (l->data))
             glade_widget_write_placeholder (widget,
                                             G_OBJECT (l->data),
                                             context, widget_node);
