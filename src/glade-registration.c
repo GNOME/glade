@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include "glade-registration.h"
+#include "glade-window.h"
 #include "glade-http.h"
 #include "glade-logo.h"
 #include <gladeui/glade.h>
@@ -196,67 +197,6 @@ glade_registration_show_message (GladeRegistration *registration,
     gtk_widget_show (priv->infobar);
 }
 
-
-#ifdef GDK_WINDOWING_X11
-#include "gdk/gdkx.h"
-#endif
-
-#ifdef GDK_WINDOWING_QUARTZ
-#include "gdk/gdkquartz.h"
-#endif
-
-#ifdef GDK_WINDOWING_WIN32
-#include "gdk/gdkwin32.h"
-#endif
-
-#ifdef GDK_WINDOWING_WAYLAND
-#include "gdk/gdkwayland.h"
-#endif
-
-#ifdef GDK_WINDOWING_BROADWAY
-#include "gdk/gdkbroadway.h"
-#endif
-
-static const gchar *
-get_gdk_backend (GtkWidget *widget)
-{
-  GdkDisplay *display = gtk_widget_get_display (widget);
-
-#ifdef GDK_WINDOWING_X11
-  if (GDK_IS_X11_DISPLAY (display))
-    return "X11";
-  else
-#endif
-
-#ifdef GDK_WINDOWING_QUARTZ
-  if (GDK_IS_QUARTZ_DISPLAY (display))
-    return "Quartz";
-  else
-#endif
-
-#ifdef GDK_WINDOWING_WIN32
-  if (GDK_IS_WIN32_DISPLAY (display))
-    return "Win32";
-  else
-#endif
-
-#ifdef GDK_WINDOWING_WAYLAND
-  if (GDK_IS_WAYLAND_DISPLAY (display))
-    return "Wayland";
-  else
-#endif
-
-#ifdef GDK_WINDOWING_BROADWAY
-  if (GDK_IS_BROADWAY_DISPLAY (display))
-    return "Broadway";
-  else
-#endif
-  {
-    return "Unknown";
-  }
-}
-
-
 static void
 glade_registration_http_post (GladeRegistration *registration,
                               GladeHTTP         *http,
@@ -278,7 +218,7 @@ glade_registration_http_post (GladeRegistration *registration,
                                  "\r\n%s",
                                  url,                                                       /* POST url */
                                  glade_http_get_host (http),                                /* Host */
-                                 get_gdk_backend (GTK_WIDGET (registration)),               /* User-Agent backend */
+                                 glade_window_get_gdk_backend (),                           /* User-Agent backend */
                                  GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,   /* User-Agent gtk version */
                                  glib_major_version, glib_minor_version, glib_micro_version,/* User-Agent glib version */
                                  lang,                                                      /* User-Agent language */
