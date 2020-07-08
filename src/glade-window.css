@@ -110,3 +110,21 @@ stackswitcher.glade-intro-highlight > button,
   animation: widget-highlight 1s infinite alternate;
 }
 
+/* Quartz workarounds to improve performance (issue #442) */
+
+/* Disable window shadow */
+GladeWindow.Quartz > decoration {
+  box-shadow: none;
+}
+
+/* Disable Glade logo shadow animation */
+GladeWindow.Quartz #glade-brand-image {
+  animation: none;
+}
+
+/* Add window border since there is no shadow */
+GladeWindow.Quartz {
+  border: 1px solid lightgray;
+  border-top: unset;
+}
+

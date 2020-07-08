@@ -2101,6 +2101,7 @@ static void
 glade_window_init (GladeWindow *window)
 {
   GladeWindowPrivate *priv;
+  GtkStyleContext *ctx;
 
   window->priv = priv = glade_window_get_instance_private (window);
 
@@ -2119,6 +2120,10 @@ glade_window_init (GladeWindow *window)
   gtk_box_set_homogeneous (GTK_BOX (priv->save_button_box), FALSE);
 
   priv->registration = glade_registration_new ();
+
+  /* Add Gdk backend as a class */
+  ctx = gtk_widget_get_style_context (GTK_WIDGET (window));
+  gtk_style_context_add_class (ctx, glade_window_get_gdk_backend ());
 }
 
 static void
@@ -2555,3 +2560,63 @@ glade_window_registration_notify_user (GladeWindow *window)
                               /* translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again */
                               _("Go to Help -> Registration & User Survey and complete our survey!"));
 }
+
+#ifdef GDK_WINDOWING_X11
+#include "gdk/gdkx.h"
+#endif
+
+#ifdef GDK_WINDOWING_QUARTZ
+#include "gdk/gdkquartz.h"
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+#include "gdk/gdkwin32.h"
+#endif
+
+#ifdef GDK_WINDOWING_WAYLAND
+#include "gdk/gdkwayland.h"
+#endif
+
+#ifdef GDK_WINDOWING_BROADWAY
+#include "gdk/gdkbroadway.h"
+#endif
+
+const gchar *
+glade_window_get_gdk_backend ()
+{
+  GdkDisplay *display = gdk_display_get_default ();
+
+#ifdef GDK_WINDOWING_X11
+  if (GDK_IS_X11_DISPLAY (display))
+    return "X11";
+  else
+#endif
+
+#ifdef GDK_WINDOWING_QUARTZ
+  if (GDK_IS_QUARTZ_DISPLAY (display))
+    return "Quartz";
+  else
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+  if (GDK_IS_WIN32_DISPLAY (display))
+    return "Win32";
+  else
+#endif
+
+#ifdef GDK_WINDOWING_WAYLAND
+  if (GDK_IS_WAYLAND_DISPLAY (display))
+    return "Wayland";
+  else
+#endif
+
+#ifdef GDK_WINDOWING_BROADWAY
+  if (GDK_IS_BROADWAY_DISPLAY (display))
+    return "Broadway";
+  else
+#endif
+  {
+    return "Unknown";
+  }
+}
+

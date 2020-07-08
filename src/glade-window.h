@@ -47,18 +47,20 @@ struct _GladeWindowClass
   GtkWindowClass parent_class;
 };
 
-GType       glade_window_get_type      (void) G_GNUC_CONST;
+GType        glade_window_get_type      (void) G_GNUC_CONST;
 
-GtkWidget  *glade_window_new           (void);
+GtkWidget   *glade_window_new           (void);
 
-void        glade_window_new_project   (GladeWindow *window);
+void         glade_window_new_project   (GladeWindow *window);
 
-gboolean    glade_window_open_project  (GladeWindow *window,
-                                        const gchar *path);
+gboolean     glade_window_open_project  (GladeWindow *window,
+                                         const gchar *path);
 
-void        glade_window_check_devhelp (GladeWindow *window);
+void         glade_window_check_devhelp (GladeWindow *window);
 
-void        glade_window_registration_notify_user (GladeWindow *window);
+void         glade_window_registration_notify_user (GladeWindow *window);
+
+const gchar *glade_window_get_gdk_backend (void);
 
 G_END_DECLS
 
