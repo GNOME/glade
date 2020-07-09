@@ -733,6 +733,9 @@ value_text_edited (GtkCellRendererText *cell,
       else
         val = *new_text;
 
+      if (!g_ascii_isprint (val))
+        return;
+
       value = g_new0 (GValue, 1);
       g_value_init (value, G_VALUE_TYPE (&data->value));
 
