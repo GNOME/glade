@@ -1473,9 +1473,9 @@ pdef_from_gtype (GType type)
                                    G_MININT8, G_MAXINT8, 0,
                                    G_PARAM_READABLE | G_PARAM_WRITABLE);
       else if (type == G_TYPE_UCHAR)
-        pspec = g_param_spec_char ("dummy", "dummy", "dummy",
-                                   0, G_MAXUINT8, 0,
-                                   G_PARAM_READABLE | G_PARAM_WRITABLE);
+        pspec = g_param_spec_uchar ("dummy", "dummy", "dummy",
+                                    0, G_MAXUINT8, 0,
+                                    G_PARAM_READABLE | G_PARAM_WRITABLE);
       else if (type == G_TYPE_BOOLEAN)
         pspec = g_param_spec_boolean ("dummy", "dummy", "dummy",
                                       FALSE,
