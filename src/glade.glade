@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.0 
+<!-- Generated with glade 3.37.0 
 
 Glade - A user interface designer for GTK+ and GNOME.
-Copyright (C) 2012-2017 Juan Pablo Ugarte
+Copyright (C) 2012-2018 Juan Pablo Ugarte
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -30,20 +30,20 @@ Author: Juan Pablo Ugarte
   <!-- interface-copyright 2012-2018 Juan Pablo Ugarte -->
   <!-- interface-authors Juan Pablo Ugarte -->
   <object class="GtkPopoverMenu" id="main_menu">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">4</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">4</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkModelButton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.close</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="action-name">app.close</property>
             <property name="text" translatable="yes">Close Project</property>
           </object>
           <packing>
@@ -55,7 +55,7 @@ Author: Juan Pablo Ugarte
         <child>
           <object class="GtkSeparator">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -66,9 +66,9 @@ Author: Juan Pablo Ugarte
         <child>
           <object class="GtkModelButton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.registration</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="action-name">app.registration</property>
             <property name="text" translatable="yes">Registration &amp; User Survey</property>
           </object>
           <packing>
@@ -80,9 +80,9 @@ Author: Juan Pablo Ugarte
         <child>
           <object class="GtkModelButton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.reference</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="action-name">app.reference</property>
             <property name="text" translatable="yes">_Developer Reference</property>
           </object>
           <packing>
@@ -94,9 +94,9 @@ Author: Juan Pablo Ugarte
         <child>
           <object class="GtkModelButton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.intro</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="action-name">app.intro</property>
             <property name="text" translatable="yes">Interactive Intro</property>
           </object>
           <packing>
@@ -108,9 +108,9 @@ Author: Juan Pablo Ugarte
         <child>
           <object class="GtkModelButton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.preferences</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="action-name">app.preferences</property>
             <property name="text" translatable="yes">Preferences</property>
           </object>
           <packing>
@@ -122,7 +122,7 @@ Author: Juan Pablo Ugarte
         <child>
           <object class="GtkSeparator">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -133,9 +133,9 @@ Author: Juan Pablo Ugarte
         <child>
           <object class="GtkModelButton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.about</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="action-name">app.about</property>
             <property name="text" translatable="yes">About Glade</property>
           </object>
           <packing>
@@ -158,24 +158,24 @@ Author: Juan Pablo Ugarte
   </object>
   <object class="GtkRecentChooserMenu" id="recent_menu">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="filter">recentfilter</property>
     <property name="limit">10</property>
-    <property name="show_not_found">False</property>
-    <property name="sort_type">mru</property>
-    <property name="show_numbers">True</property>
+    <property name="show-not-found">False</property>
+    <property name="sort-type">mru</property>
+    <property name="show-numbers">True</property>
     <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
   </object>
   <template class="GladeWindow" parent="GtkWindow">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <child>
       <object class="GtkStack" id="stack">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkBox" id="start_page">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
             <property name="orientation">vertical</property>
@@ -183,10 +183,10 @@ Author: Juan Pablo Ugarte
               <object class="GtkImage">
                 <property name="name">glade-brand-image</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_top">64</property>
-                <property name="pixel_size">250</property>
-                <property name="icon_name">glade-brand-symbolic</property>
+                <property name="can-focus">False</property>
+                <property name="margin-top">64</property>
+                <property name="pixel-size">250</property>
+                <property name="icon-name">glade-brand-symbolic</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -198,7 +198,7 @@ Author: Juan Pablo Ugarte
               <object class="GtkLabel">
                 <property name="name">glade-label</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Glade</property>
               </object>
               <packing>
@@ -211,8 +211,8 @@ Author: Juan Pablo Ugarte
               <object class="GtkLabel" id="version_label">
                 <property name="name">version-label</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="width_chars">32</property>
+                <property name="can-focus">False</property>
+                <property name="width-chars">32</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -228,33 +228,31 @@ Author: Juan Pablo Ugarte
         </child>
         <child>
           <object class="GtkPaned" id="center_paned">
-            <property name="height_request">380</property>
+            <property name="height-request">380</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="position_set">True</property>
-            <property name="wide_handle">False</property>
+            <property name="can-focus">True</property>
+            <property name="position-set">True</property>
             <child>
               <object class="GtkPaned" id="left_paned">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="position">150</property>
-                <property name="position_set">True</property>
-                <property name="wide_handle">False</property>
+                <property name="position-set">True</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkStack" id="inspectors_stack">
                         <property name="name">inspector</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_left">3</property>
-                        <property name="margin_right">3</property>
-                        <property name="margin_bottom">3</property>
-                        <property name="transition_duration">128</property>
-                        <property name="transition_type">crossfade</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-start">3</property>
+                        <property name="margin-end">3</property>
+                        <property name="margin-bottom">3</property>
+                        <property name="transition-duration">128</property>
+                        <property name="transition-type">crossfade</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -268,15 +266,15 @@ Author: Juan Pablo Ugarte
                     <child>
                       <object class="GtkToolbar" id="toolbar">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <child>
                           <object class="GtkToolButton" id="selector_button">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="action_name">app.pointer-mode</property>
-                            <property name="action_target">'select'</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">glade-selector</property>
+                            <property name="can-focus">False</property>
+                            <property name="action-name">app.pointer-mode</property>
+                            <property name="action-target">'select'</property>
+                            <property name="use-underline">True</property>
+                            <property name="icon-name">glade-selector</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -286,11 +284,11 @@ Author: Juan Pablo Ugarte
                         <child>
                           <object class="GtkToolButton" id="drag_resize_button">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="action_name">app.pointer-mode</property>
-                            <property name="action_target">'drag-resize'</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">glade-drag-resize</property>
+                            <property name="can-focus">False</property>
+                            <property name="action-name">app.pointer-mode</property>
+                            <property name="action-target">'drag-resize'</property>
+                            <property name="use-underline">True</property>
+                            <property name="icon-name">glade-drag-resize</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -300,11 +298,11 @@ Author: Juan Pablo Ugarte
                         <child>
                           <object class="GtkToolButton" id="margin_edit_button">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="action_name">app.pointer-mode</property>
-                            <property name="action_target">'margin-edit'</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">glade-margin-edit</property>
+                            <property name="can-focus">False</property>
+                            <property name="action-name">app.pointer-mode</property>
+                            <property name="action-target">'margin-edit'</property>
+                            <property name="use-underline">True</property>
+                            <property name="icon-name">glade-margin-edit</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -314,11 +312,11 @@ Author: Juan Pablo Ugarte
                         <child>
                           <object class="GtkToolButton" id="align_edit_button">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="action_name">app.pointer-mode</property>
-                            <property name="action_target">'align-edit'</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">glade-align-edit</property>
+                            <property name="can-focus">False</property>
+                            <property name="action-name">app.pointer-mode</property>
+                            <property name="action-target">'align-edit'</property>
+                            <property name="use-underline">True</property>
+                            <property name="icon-name">glade-align-edit</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -341,18 +339,18 @@ Author: Juan Pablo Ugarte
                 <child>
                   <object class="GtkOverlay">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GladeAdaptorChooser" id="adaptor_chooser">
                             <property name="name">adaptor-chooser</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="border_width">2</property>
+                            <property name="can-focus">False</property>
+                            <property name="border-width">2</property>
                             <property name="spacing">4</property>
                           </object>
                           <packing>
@@ -364,7 +362,7 @@ Author: Juan Pablo Ugarte
                         <child>
                           <object class="GtkSeparator">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -376,9 +374,9 @@ Author: Juan Pablo Ugarte
                           <object class="GtkStack" id="view_stack">
                             <property name="name">workspace</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="transition_duration">128</property>
-                            <property name="transition_type">crossfade</property>
+                            <property name="can-focus">False</property>
+                            <property name="transition-duration">128</property>
+                            <property name="transition-type">crossfade</property>
                             <signal name="notify::visible-child" handler="on_stack_visible_child_notify" swapped="no"/>
                             <child>
                               <placeholder/>
@@ -398,13 +396,13 @@ Author: Juan Pablo Ugarte
                     <child type="overlay">
                       <object class="GtkStatusbar" id="statusbar">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="valign">end</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">2</property>
                       </object>
                       <packing>
-                        <property name="pass_through">True</property>
+                        <property name="pass-through">True</property>
                       </packing>
                     </child>
                   </object>
@@ -422,11 +420,11 @@ Author: Juan Pablo Ugarte
             <child>
               <object class="GladeEditor" id="editor">
                 <property name="name">editor</property>
-                <property name="width_request">256</property>
+                <property name="width-request">256</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="show_class_field">False</property>
-                <property name="show_boder">False</property>
+                <property name="can-focus">False</property>
+                <property name="show-class-field">False</property>
+                <property name="show-boder">False</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -449,44 +447,72 @@ Author: Juan Pablo Ugarte
       <object class="GtkHeaderBar" id="headerbar">
         <property name="name">headerbar</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="show_close_button">True</property>
+        <property name="can-focus">False</property>
+        <property name="show-close-button">True</property>
+        <child type="title">
+          <object class="GtkStackSwitcher" id="project_switcher">
+            <property name="name">project-switcher</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="stack">view_stack</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkMenuButton">
+            <property name="name">menu-button</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="popover">main_menu</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">open-menu-symbolic</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
         <child>
           <object class="GtkButtonBox" id="open_button_box">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">expand</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">expand</property>
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">_Open</property>
                 <property name="name">open-button</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Open a project</property>
-                <property name="action_name">app.open</property>
-                <property name="use_underline">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="tooltip-text" translatable="yes">Open a project</property>
+                <property name="action-name">app.open</property>
+                <property name="use-underline">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
-                <property name="non_homogeneous">True</property>
+                <property name="non-homogeneous">True</property>
               </packing>
             </child>
             <child>
               <object class="GtkMenuButton" id="recent_menu_button">
                 <property name="name">recent-button</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="popup">recent_menu</property>
-                <property name="use_popover">False</property>
+                <property name="use-popover">False</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">pan-down-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">pan-down-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -494,7 +520,7 @@ Author: Juan Pablo Ugarte
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
-                <property name="non_homogeneous">True</property>
+                <property name="non-homogeneous">True</property>
               </packing>
             </child>
           </object>
@@ -506,15 +532,15 @@ Author: Juan Pablo Ugarte
           <object class="GtkButton">
             <property name="name">new-button</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Create a new project</property>
-            <property name="action_name">app.new</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes">Create a new project</property>
+            <property name="action-name">app.new</property>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">document-new-symbolic</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">document-new-symbolic</property>
               </object>
             </child>
           </object>
@@ -523,32 +549,96 @@ Author: Juan Pablo Ugarte
           </packing>
         </child>
         <child>
-          <object class="GtkSeparator">
+          <object class="GtkButton">
+            <property name="name">properties-button</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes">Edit project properties</property>
+            <property name="action-name">app.properties</property>
+            <property name="use-underline">True</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">document-properties-symbolic</property>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="position">6</property>
+            <property name="pack-type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButtonBox" id="save_button_box">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">expand</property>
+            <child>
+              <object class="GtkButton">
+                <property name="label" translatable="yes">_Save</property>
+                <property name="name">save-button</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="tooltip-text" translatable="yes">Save the current project</property>
+                <property name="action-name">app.save</property>
+                <property name="use-underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="name">save-as-button</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="tooltip-text" translatable="yes">Save the current project with a different name</property>
+                <property name="action-name">app.save_as</property>
+                <property name="use-underline">True</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">document-save-as-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkButtonBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">expand</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">expand</property>
             <child>
               <object class="GtkButton" id="undo_button">
                 <property name="name">undo-button</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="action_name">app.undo</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="action-name">app.undo</property>
                 <signal name="button-press-event" handler="on_undo_button_button_press_event" swapped="no"/>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">edit-undo-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">edit-undo-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -562,16 +652,16 @@ Author: Juan Pablo Ugarte
               <object class="GtkButton" id="redo_button">
                 <property name="name">redo-button</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="action_name">app.redo</property>
-                <property name="use_underline">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="action-name">app.redo</property>
+                <property name="use-underline">True</property>
                 <signal name="button-press-event" handler="on_redo_button_button_press_event" swapped="no"/>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">edit-redo-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">edit-redo-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -586,123 +676,31 @@ Author: Juan Pablo Ugarte
             <property name="position">5</property>
           </packing>
         </child>
-        <child type="title">
-          <object class="GtkStackSwitcher" id="project_switcher">
-            <property name="name">project-switcher</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="stack">view_stack</property>
-          </object>
-        </child>
         <child>
-          <object class="GtkMenuButton">
-            <property name="name">menu-button</property>
+          <object class="GtkSeparator">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="popover">main_menu</property>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">open-menu-symbolic</property>
-              </object>
-            </child>
+            <property name="can-focus">False</property>
           </object>
           <packing>
-            <property name="pack_type">end</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton">
-            <property name="name">properties-button</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Edit project properties</property>
-            <property name="action_name">app.properties</property>
-            <property name="use_underline">True</property>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">document-properties-symbolic</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButtonBox" id="save_button_box">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">expand</property>
-            <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">_Save</property>
-                <property name="name">save-button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Save the current project</property>
-                <property name="action_name">app.save</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton">
-                <property name="name">save-as-button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Save the current project with a different name</property>
-                <property name="action_name">app.save_as</property>
-                <property name="use_underline">True</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">document-save-as-symbolic</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="pack_type">end</property>
-            <property name="position">3</property>
+            <property name="position">6</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="intro_button">
             <property name="name">intro-button</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Start/resume interactive UI introduction</property>
-            <property name="action_name">app.intro</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes">Start/resume interactive UI introduction</property>
+            <property name="action-name">app.intro</property>
             <property name="relief">none</property>
-            <property name="use_underline">True</property>
+            <property name="use-underline">True</property>
             <child>
               <object class="GtkImage">
                 <property name="name">glade-brand-image</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">glade-brand-symbolic</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">glade-brand-symbolic</property>
                 <property name="icon_size">3</property>
                 <style>
                   <class name="glade-tight-fit"/>
@@ -711,7 +709,7 @@ Author: Juan Pablo Ugarte
             </child>
           </object>
           <packing>
-            <property name="pack_type">end</property>
+            <property name="pack-type">end</property>
             <property name="position">7</property>
           </packing>
         </child>
@@ -719,32 +717,19 @@ Author: Juan Pablo Ugarte
     </child>
   </template>
   <object class="GtkAboutDialog" id="about_dialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
+    <property name="can-focus">False</property>
+    <property name="border-width">5</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="transient_for">GladeWindow</property>
-    <property name="copyright" translatable="yes">Copyright © 2001-2006 Ximian, Inc.
-Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
-Copyright © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.</property>
+    <property name="type-hint">dialog</property>
+    <property name="transient-for">GladeWindow</property>
+    <property name="copyright" translatable="yes">© 2018-2020 Juan Pablo Ugarte, et al.
+© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.
+© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
+© 2001-2006 Ximian, Inc.</property>
     <property name="comments" translatable="yes">A user interface designer for GTK+ and GNOME.</property>
     <property name="website">http://glade.gnome.org</property>
-    <property name="website_label" translatable="yes">Visit Glade web site</property>
-    <property name="license" translatable="yes">Glade is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as 
-published by the Free Software Foundation; either version 2 of the 
-License, or (at your option) any later version.
-
-Glade is distributed in the hope that it will be useful
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License 
-along with Glade; if not, write to the Free Software 
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
-MA 02110-1301, USA.</property>
+    <property name="website-label" translatable="yes">Visit Glade web site</property>
     <property name="authors">Chema Celorio &lt;chema@ximian.com&gt;
 Joaquin Cuenca Abela &lt;e98cuenc@yahoo.com&gt;
 Paolo Borelli &lt;pborelli@katamail.com&gt;
@@ -756,34 +741,32 @@ Juan Pablo Ugarte &lt;juanpablougarte@gmail.com&gt;
 Vincent Geddes &lt;vincent.geddes@gmail.com&gt;</property>
     <property name="documenters">GNOME Documentation Team &lt;gnome-doc-list@gnome.org&gt;
 Sun GNOME Documentation Team &lt;gdocteam@sun.com&gt;</property>
-    <property name="translator_credits" translatable="yes">translator-credits</property>
+    <property name="translator-credits" translatable="yes">translator-credits</property>
     <property name="artists">Vincent Geddes &lt;vgeddes@gnome.org&gt;
 Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
-    <property name="logo_icon_name">org.gnome.Glade</property>
+    <property name="logo-icon-name">org.gnome.Glade</property>
+    <property name="license-type">gpl-2-0</property>
     <signal name="delete-event" handler="gtk_true" swapped="no"/>
     <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="response" handler="gtk_widget_hide" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="aboutdialog-action_area1">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="pack_type">end</property>
+            <property name="pack-type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
       </object>
-    </child>
-    <child>
-      <placeholder/>
     </child>
   </object>
 </interface>
