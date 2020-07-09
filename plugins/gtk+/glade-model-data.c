@@ -723,6 +723,24 @@ value_text_edited (GtkCellRendererText *cell,
                                            (G_VALUE_TYPE (&data->value),
                                             new_text),
                                            glade_widget_get_project (glade_property_get_widget (property)));
+  else if (G_VALUE_HOLDS_CHAR (&data->value) ||
+           G_VALUE_HOLDS_UCHAR (&data->value))
+    {
+      gint val = 0;
+
+      if (strlen (new_text) > 1)
+        val = g_ascii_strtoll (new_text, NULL, 10);
+      else
+        val = *new_text;
+
+      value = g_new0 (GValue, 1);
+      g_value_init (value, G_VALUE_TYPE (&data->value));
+
+      if (G_VALUE_HOLDS_CHAR (value))
+        g_value_set_schar (value, val);
+      else
+        g_value_set_uchar (value, val);
+    }
   else
     value =
         glade_utils_value_from_string (G_VALUE_TYPE (&data->value), new_text,
@@ -803,6 +821,78 @@ data_editing_canceled (GtkCellRenderer *renderer, GladeEditorProperty *eprop)
   g_idle_add ((GSourceFunc) focus_data_tree_idle, eprop);
 }
 
+static gint
+value_get_char_as_int (GValue *value)
+{
+  if (G_VALUE_HOLDS_CHAR (value))
+    return g_value_get_schar (value);
+  else
+    return g_value_get_uchar (value);
+}
+
+static void
+char_column_data_func (GtkTreeViewColumn *tree_column,
+                       GtkCellRenderer   *cell,
+                       GtkTreeModel      *tree_model,
+                       GtkTreeIter       *iter,
+                       gpointer           data)
+{
+  gint colnum =
+      GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
+  GValue value = { 0, };
+  gint c;
+
+  gtk_tree_model_get_value (tree_model, iter, NUM_COLUMNS + colnum, &value);
+
+  c = value_get_char_as_int (&value);
+
+  /* Only allow printable chars */
+  if (g_ascii_isprint (c)) {
+    g_autofree gchar *string = g_strdup_printf ("'%c' (%d)", c, c);
+    g_object_set (cell, "text", string, NULL);
+  }
+  else
+    g_object_set (cell, "text", "", NULL);
+
+  g_value_unset (&value);
+}
+
+static void
+char_column_editing_started (GtkCellRenderer     *cell,
+                             GtkCellEditable     *editable,
+                             const gchar         *path,
+                             GladeEditorProperty *eprop)
+{
+  GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+  gint colnum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
+  GtkTreeIter iter;
+
+  if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_data->store),
+                                            &iter, path))
+    return;
+
+  if (GTK_IS_ENTRY (editable))
+    {
+      GValue value = { 0, };
+      gint c;
+
+      gtk_tree_model_get_value (GTK_TREE_MODEL (eprop_data->store), &iter,
+                                NUM_COLUMNS + colnum, &value);
+
+      c = value_get_char_as_int (&value);
+
+      /* Only allow printable chars */
+      if (g_ascii_isprint (c)) {
+        g_autofree gchar *string = g_strdup_printf ("%c", c);
+        gtk_entry_set_text (GTK_ENTRY (editable), string);
+      }
+      else
+        gtk_entry_set_text (GTK_ENTRY (editable), "");
+
+      g_value_unset (&value);
+    }
+}
+
 static GtkTreeViewColumn *
 eprop_model_generate_column (GladeEditorProperty *eprop,
                              gint                 colnum,
@@ -822,7 +912,9 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 
   /* Support enum and flag types, and a hardcoded list of fundamental types */
   if (type == G_TYPE_CHAR ||
-      type == G_TYPE_UCHAR || type == G_TYPE_STRING || type == GDK_TYPE_PIXBUF)
+      type == G_TYPE_UCHAR ||
+      type == G_TYPE_STRING ||
+      type == GDK_TYPE_PIXBUF)
     {
       /* Text renderer */
       renderer = gtk_cell_renderer_text_new ();
@@ -837,7 +929,16 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 
       if (type == G_TYPE_CHAR || type == G_TYPE_UCHAR)
         {
-          /* XXX restrict to 1 char !! */
+          g_object_set (G_OBJECT (renderer),
+                        "placeholder-text",
+                        "<printable chars only>",
+                        NULL);
+
+          gtk_tree_view_column_set_cell_data_func (column, renderer,
+                                                   char_column_data_func,
+                                                   NULL, NULL);
+          g_signal_connect (G_OBJECT (renderer), "editing-started",
+                            G_CALLBACK (char_column_editing_started), eprop);
         }
 
       g_signal_connect (G_OBJECT (renderer), "edited",
