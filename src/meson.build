@@ -29,6 +29,7 @@ sources += gnome.compile_resources(
 deps = [
   gmodule_export_dep,
   libgladeui_dep,
+  libxml_dep,
 ]
 
 ldflags = []
