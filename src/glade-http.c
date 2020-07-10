@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Juan Pablo Ugarte.
+ * Copyright (C) 2014, 2020 Juan Pablo Ugarte.
    *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -23,8 +23,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#define HTTP_BUFFER_SIZE 16
-
 struct _GladeHTTPPrivate
 {
   gchar *host;
@@ -33,12 +31,23 @@ struct _GladeHTTPPrivate
 
   GladeHTTPStatus status;
   GSocketConnection *connection;
+  GDataInputStream *data_stream;
   GCancellable *cancellable;
-  
+
   GString *data;
   GString *response;
 
-  gchar response_buffer[HTTP_BUFFER_SIZE];
+  gint http_major;
+  gint http_minor;
+  gint code;
+
+  gchar *transfer_encoding_value;
+  gchar *content_length_value;
+
+  GHashTable *cookies;
+
+  gint content_length;
+  gboolean chunked;
 };
 
 enum
@@ -65,55 +74,48 @@ static guint http_signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE_WITH_PRIVATE (GladeHTTP, glade_http, G_TYPE_OBJECT);
 
 static void
-glade_http_emit_request_done (GladeHTTP *http, gchar *response)
+glade_http_close (GladeHTTP *http)
 {
-  gint http_major, http_minor, code, i;
-  gchar **headers, **values, *blank, *data, tmp;
+  GladeHTTPPrivate *priv = http->priv;
 
-  if ((blank = g_strstr_len (response, -1, "\r\n\r\n")))
-    data = blank + 4;
-  else if ((blank = g_strstr_len (response, -1, "\n\n")))
-    data = blank + 2;
-  else
-    return;
+  g_clear_object (&priv->data_stream);
+  g_clear_object (&priv->connection);
+  g_clear_object (&priv->cancellable);
+}
 
-  tmp = *blank;
-  *blank = '\0';
-  headers = g_strsplit (response, "\n", 0);
-  *blank = tmp;
+static void
+glade_http_clear (GladeHTTP *http)
+{
+  GladeHTTPPrivate *priv = http->priv;
 
-  values = g_new0 (gchar *, g_strv_length (headers));
+  glade_http_close (http);
   
-  for (i = 0; headers[i]; i++)
-    {
-      g_strchug (headers[i]);
+  g_string_assign (priv->data, "");
+  g_string_assign (priv->response, "");
 
-      if (i)
-        {
-          gchar *colon = g_strstr_len (headers[i], -1, ":");
+  priv->http_major = priv->http_minor = priv->code = 0;
 
-          if (colon)
-            {
-              *colon++ = '\0';
-              values[i-1] = g_strstrip (colon);
-            }
-          else
-            values[i-1] = "";
-        }
-      else
-        {
-          if (sscanf (response, "HTTP/%d.%d %d", &http_major, &http_minor, &code) != 3)
-            http_major = http_minor = code = 0;
-        }
-    }
+  g_clear_pointer (&priv->transfer_encoding_value, g_free);
+  g_clear_pointer (&priv->content_length_value, g_free);
+
+  priv->chunked = FALSE;
+  priv->content_length = 0;
+
+  g_hash_table_remove_all (priv->cookies);
+
+  priv->status = GLADE_HTTP_READY;
+}
+
+static void
+glade_http_emit_request_done (GladeHTTP *http)
+{
+  GladeHTTPPrivate *priv = http->priv;
   
+  g_file_set_contents ("response.html", priv->response->str, -1, NULL);
+
   /* emit request-done */
-  g_signal_emit (http, http_signals[REQUEST_DONE], 0, code,
-                 (headers[0]) ? &headers[1] : NULL, values, 
-                 data);
-
-  g_strfreev (headers);
-  g_free (values);
+  g_signal_emit (http, http_signals[REQUEST_DONE], 0,
+                 priv->code, priv->response->str);
 }
 
 static void
@@ -129,49 +131,143 @@ glade_http_emit_status (GladeHTTP *http, GladeHTTPStatus status, GError *error)
   g_signal_emit (http, http_signals[STATUS], 0, status, error);
 }
 
+static gboolean
+parse_cookie (const gchar *str, gchar **key, gchar **value)
+{
+  gchar **tokens, *colon;
+
+  if (str == NULL)
+    return FALSE;
+
+  tokens = g_strsplit(str, "=", 2);
+
+  if ((colon = g_strstr_len (tokens[1], -1, ";")))
+    *colon = '\0';
+
+  *key = g_strstrip (tokens[0]);
+  *value = g_strstrip (tokens[1]);
+
+  g_free (tokens);
+
+  return TRUE;
+}
+
 static void
-on_read_ready (GObject *source, GAsyncResult *res, gpointer data)
+on_read_line_ready (GObject *source, GAsyncResult *res, gpointer data)
 {
   GladeHTTPPrivate *priv = GLADE_HTTP (data)->priv;
-  GError *error = NULL;
-  gssize bytes_read;
+  g_autoptr (GError) error = NULL;
+  g_autofree gchar *line;
+  gsize length;
 
   glade_http_emit_status (data, GLADE_HTTP_RECEIVING, NULL);
 
-  bytes_read = g_input_stream_read_finish (G_INPUT_STREAM (source), res, &error);
-  
-  if (bytes_read > 0)
-    {
-      g_string_append_len (priv->response, priv->response_buffer, bytes_read);
+  line = g_data_input_stream_read_line_finish (priv->data_stream, res, &length, &error);
 
-      /* NOTE: We do not need to parse content-length because we do not support
-       * multiples HTTP requests in the same connection.
-       */
-      if (priv->cancellable)
-        g_cancellable_reset (priv->cancellable);
-      
-      g_input_stream_read_async (g_io_stream_get_input_stream (G_IO_STREAM (priv->connection)),
-                                 priv->response_buffer, HTTP_BUFFER_SIZE,
-                                 G_PRIORITY_DEFAULT, priv->cancellable,
-                                 on_read_ready, data);
-      return;
-    }
-  else if (bytes_read < 0)
+  if (error)
     {
       glade_http_emit_status (data, GLADE_HTTP_ERROR, error);
       g_error_free (error);
-      return;
     }
 
-  /* emit request-done */
-  glade_http_emit_request_done (data, priv->response->str);
-  glade_http_emit_status (data, GLADE_HTTP_READY, NULL);
+  if (!line)
+    return;
+
+  if (priv->http_major == 0)
+    {
+      /* Reading HTTP version */
+      if (sscanf (line, "HTTP/%d.%d %d",
+                  &priv->http_major,
+                  &priv->http_minor,
+                  &priv->code) != 3)
+        {
+          error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
+                                       "Could not parse HTTP header");
+          glade_http_emit_status (data, GLADE_HTTP_ERROR, error);
+          return;
+        }
+    }
+  else if (priv->response->len < priv->content_length)
+    {
+      /* We are reading a chunk or the whole response */
+      g_string_append_len (priv->response, line, length);
+    }
+  else
+    {
+      /* Reading HTTP Headers */
+
+      if (priv->chunked)
+        {
+          gint chunk;
+
+          if (sscanf (line, "%x", &chunk) != 1)
+            {
+              error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
+                                           "Could not parse chunk size");
+              glade_http_emit_status (data, GLADE_HTTP_ERROR, error);
+              return;
+            }
+
+          priv->content_length += chunk;
+        }
+      /* Check if this is the last line of the headers */
+      else if (length == 0)
+        {
+          if (g_strcmp0 (priv->transfer_encoding_value, "chunked") == 0)
+            priv->chunked = TRUE;
+          else
+            priv->content_length = atoi (priv->content_length_value);
+        }
+      else
+        {
+          g_auto(GStrv) tokens = g_strsplit (line, ":", 2);
+
+          if (tokens)
+            {
+              gchar *key = g_strstrip (tokens[0]);
+              gchar *val = g_strstrip (tokens[1]);
+
+              if (g_strcmp0 ("Transfer-Encoding", key) == 0)
+                {
+                  priv->transfer_encoding_value = g_strdup (val);
+                }
+              else if (g_strcmp0 ("Content-Length", key) == 0)
+                {
+                  priv->content_length_value = g_strdup (val);
+                }
+              else if (g_strcmp0 ("Set-Cookie", key) == 0)
+                {
+                  gchar *cookie = NULL, *value = NULL;
+
+                  /* Take cookie/value ownership */
+                  if (parse_cookie (val, &cookie, &value))
+                    g_hash_table_insert (priv->cookies, cookie, value);
+                }
+            }
+        }
+    }
+
+  if (priv->content_length && priv->response->len >= priv->content_length)
+    {
+      glade_http_close (data);
+
+      /* emit request-done */
+      glade_http_emit_request_done (data);
+      glade_http_emit_status (data, GLADE_HTTP_READY, NULL);
+    }
+  else
+    g_data_input_stream_read_line_async (priv->data_stream,
+                                         G_PRIORITY_DEFAULT,
+                                         priv->cancellable,
+                                         on_read_line_ready,
+                                         data);
 }
 
 static void
 on_write_ready (GObject *source, GAsyncResult *res, gpointer data)
 {
   GladeHTTPPrivate *priv = GLADE_HTTP (data)->priv;
+  GInputStream *input_stream;
   GError *error = NULL;
   gsize count;
 
@@ -190,9 +286,20 @@ on_write_ready (GObject *source, GAsyncResult *res, gpointer data)
     }
 
   glade_http_emit_status (data, GLADE_HTTP_WAITING, NULL);
-  g_input_stream_read_async (g_io_stream_get_input_stream (G_IO_STREAM (priv->connection)),
-                             priv->response_buffer, HTTP_BUFFER_SIZE,
-                             G_PRIORITY_DEFAULT, priv->cancellable, on_read_ready, data);
+
+  /* Get connection stream */
+  input_stream = g_io_stream_get_input_stream (G_IO_STREAM (priv->connection));
+
+  /* Create stream to read structured data */
+  priv->data_stream = g_data_input_stream_new (input_stream);
+  g_data_input_stream_set_newline_type (priv->data_stream, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
+
+  /* Start reading headers line by line */
+  g_data_input_stream_read_line_async (priv->data_stream,
+                                       G_PRIORITY_DEFAULT,
+                                       priv->cancellable,
+                                       on_read_line_ready,
+                                       data);
 }
 
 static void
@@ -226,25 +333,9 @@ glade_http_init (GladeHTTP *http)
   
   priv = http->priv = glade_http_get_instance_private (http);
 
+  priv->cookies = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   priv->data = g_string_new ("");
   priv->response = g_string_new ("");
-}
-
-static void
-glade_http_clear (GladeHTTP *http)
-{
-  GladeHTTPPrivate *priv = http->priv;
-
-  if (priv->cancellable)
-    g_cancellable_cancel (priv->cancellable);
-
-  g_clear_object (&priv->connection);
-  g_clear_object (&priv->cancellable);
-
-  g_string_assign (priv->data, "");
-  g_string_assign (priv->response, "");
-
-  priv->status = GLADE_HTTP_READY;
 }
 
 static void
@@ -256,7 +347,8 @@ glade_http_finalize (GObject *object)
   
   g_string_free (priv->data, TRUE);
   g_string_free (priv->response, TRUE);
-  
+  g_hash_table_destroy (priv->cookies);
+
   G_OBJECT_CLASS (glade_http_parent_class)->finalize (object);
 }
 
@@ -340,11 +432,11 @@ glade_http_class_init (GladeHTTPClass *klass)
   
   http_signals[REQUEST_DONE] =
     g_signal_new ("request-done",
-                  G_OBJECT_CLASS_TYPE (klass), 0,
+                  G_OBJECT_CLASS_TYPE (klass), G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GladeHTTPClass, request_done),
                   NULL, NULL, NULL,
-                  G_TYPE_NONE, 4,
-                  G_TYPE_INT, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_STRING);
+                  G_TYPE_NONE, 2,
+                  G_TYPE_INT,  G_TYPE_STRING);
 
   http_signals[STATUS] =
     g_signal_new ("status",
@@ -377,6 +469,41 @@ glade_http_get_port (GladeHTTP *http)
 {
   g_return_val_if_fail (GLADE_IS_HTTP (http), 0);
   return http->priv->port;
+}
+
+gchar *
+glade_http_get_cookie (GladeHTTP *http, const gchar *key)
+{
+  g_return_val_if_fail (GLADE_IS_HTTP (http), NULL);
+  return g_hash_table_lookup (http->priv->cookies, key);
+}
+
+static void
+collect_cookies (gpointer key, gpointer value, gpointer user_data)
+{
+  GString *cookies = user_data;
+
+  if (cookies->len)
+    g_string_append_printf (cookies, "; %s=%s", (gchar *)key, (gchar *)value);
+  else
+    g_string_append_printf (cookies, "%s=%s", (gchar *)key, (gchar *)value);
+}
+
+gchar *
+glade_http_get_cookies (GladeHTTP *http)
+{
+  GString *cookies;
+  gchar *retval;
+
+  g_return_val_if_fail (GLADE_IS_HTTP (http), NULL);
+
+  cookies = g_string_new ("");
+  g_hash_table_foreach (http->priv->cookies, collect_cookies, cookies);
+
+  retval = cookies->str;
+  g_string_free (cookies, FALSE);
+
+  return retval;
 }
 
 void
