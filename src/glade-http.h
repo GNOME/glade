@@ -52,15 +52,13 @@ struct _GladeHTTPClass
   GObjectClass parent_class;
 
   /* Signals */
-  void (*request_done) (GladeHTTP    *self,
-                        gint          code,
-                        const gchar **headers,
-                        const gchar **values,
+  void (*request_done) (GladeHTTP   *self,
+                        gint         code,
                         const gchar *response);
   
-  void (*status)       (GladeHTTP      *self,
-                        GladeHTTPStatus status,
-                        GError         *error);
+  void (*status)       (GladeHTTP       *self,
+                        GladeHTTPStatus  status,
+                        GError          *error);
 };
 
 struct _GladeHTTP
@@ -78,6 +76,11 @@ GladeHTTP *glade_http_new                (const gchar *host,
 
 const gchar *glade_http_get_host         (GladeHTTP    *http);
 gint         glade_http_get_port         (GladeHTTP    *http);
+
+gchar       *glade_http_get_cookie       (GladeHTTP    *http,
+                                          const gchar  *key);
+
+gchar       *glade_http_get_cookies      (GladeHTTP    *http);
 
 void         glade_http_request_send_async (GladeHTTP    *http,
                                             GCancellable *cancellable,
