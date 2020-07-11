@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-07-09 22:35+0000\n"
-"PO-Revision-Date: 2020-07-10 08:40+0300\n"
+"POT-Creation-Date: 2020-07-10 22:37+0000\n"
+"PO-Revision-Date: 2020-07-11 09:30+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "Language: uk\n"
@@ -185,13 +185,13 @@ msgid "Close _without Saving"
 msgstr "_Закрити без збереження"
 
 #: src/glade-window.c:1059 src/glade-window.c:1744
-#: src/glade-preferences.glade:447 src/glade-registration.glade:101
-#: gladeui/glade-editor.c:795 gladeui/glade-editor.c:1151
-#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
-#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3218
-#: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3337
-#: gladeui/glade-editor-property.c:3648 gladeui/glade-utils.c:483
-#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1062
+#: src/glade-preferences.glade:447 gladeui/glade-editor.c:795
+#: gladeui/glade-editor.c:1151 gladeui/glade-editor-property.c:1776
+#: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
+#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
+#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3648
+#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:522
+#: plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Скасувати"
 
@@ -576,7 +576,8 @@ msgstr "Додати новий шлях пошуку у каталозі"
 msgid "Extra catalog paths"
 msgstr "Додаткові шляхи у каталозі"
 
-#: src/glade-preferences.glade:399 gladeui/glade-editor-property.c:1380
+#: src/glade-preferences.glade:399 src/glade-registration.glade:63
+#: gladeui/glade-editor-property.c:1380
 msgid "_Close"
 msgstr "З_акрити"
 
@@ -584,171 +585,75 @@ msgstr "З_акрити"
 msgid "Select a catalog search path"
 msgstr "Вибрати шлях пошуку у каталозі"
 
-#. translators: Email subject sent to the user after completing the survey
-#: src/glade-registration.c:33 src/glade-registration.glade:773
-msgid "Glade User Survey"
-msgstr "Опитування користувачів Glade"
-
-#. translators: Email body sent to the user after completing the survey
-#: src/glade-registration.c:35
-msgid ""
-"Thank you for taking Glade Users survey, we appreciate it!\n"
-"\n"
-"To validate this email address open the following link\n"
-"\n"
-"https://people.gnome.org/~jpu/glade/registration.php?email="
-"$email&validation_token=$new_validation_token\n"
-"\n"
-"In case you want to change or update the survey, your current update token "
-"is:\n"
-"$new_token\n"
-"\n"
-"Cheers\n"
-"\n"
-"\tThe Glade team\n"
-msgstr ""
-"Дякуємо вам за участь в опитуванні користувачів Glade, вона є дуже цінною "
-"для нас!\n"
-"\n"
-"Щоб підтвердити цю адресу електронної пошти, відкрийте це посилання\n"
-"\n"
-"https://people.gnome.org/~jpu/glade/registration.php?email="
-"$email&validation_token=$new_validation_token\n"
-"\n"
-"Якщо ви хочете змінити або оновити відповіді на опитування, вашим поточним "
-"ключем для оновлення є:\n"
-"$new_token\n"
-"\n"
-"З найкращими побажаннями,\n"
-"\n"
-"\tКоманда Glade\n"
-
-#. translators: Email subject sent to the user after updating the survey
-#: src/glade-registration.c:38
-msgid "Glade User Survey (update)"
-msgstr "Опитування користувачів Glade (оновлення)"
-
-#. translators: Email body sent to the user after updating the survey
-#: src/glade-registration.c:40
-msgid ""
-"Thank you for updating your Glade Users survey data, we appreciate it!\n"
-"\n"
-"In case you want to change something again, your current update token is:\n"
-"$new_token\n"
-"\n"
-"Cheers\n"
-"\n"
-"\tThe Glade team\n"
-msgstr ""
-"Дякуємо за оновлення ваших даних опитування користувачів Glade — для нас це "
-"важливо!\n"
-"\n"
-"Якщо ви знову захочете щось змінити, вашим поточним ключем оновлення є:\n"
-"$new_token\n"
-"\n"
-"З найкращими побажаннями,\n"
-"\n"
-"\tКоманда Glade\n"
-
-#: src/glade-registration.c:246
+#: src/glade-registration.c:282
 #, c-format
 msgid "Connecting to %s"
 msgstr "З'єднання з %s"
 
-#: src/glade-registration.c:249
+#: src/glade-registration.c:285
 #, c-format
 msgid "Sending data to %s"
 msgstr "Надсилаємо дані до %s"
 
-#: src/glade-registration.c:252
+#: src/glade-registration.c:288
 #, c-format
 msgid "Waiting for %s"
 msgstr "Очікування на %s"
 
-#: src/glade-registration.c:255
+#: src/glade-registration.c:291
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Отримання даних від %s"
 
-#: src/glade-registration.c:287
-msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+#: src/glade-registration.c:350
+msgid ""
+"Your subscription to the users list has been received!\n"
+"Check you email!"
 msgstr ""
-"Вибачте, не вдалося автоматично підписатися на список листування "
-"користувачів Glade"
+"Ваш запит щодо підписки на список листування користувачів отримано!\n"
+"Перевірте вашу поштову скриньку!"
 
-#: src/glade-registration.c:290
-msgid "Open Glade Users Website"
-msgstr "Відкрити сайт користувачів Glade"
-
-#: src/glade-registration.c:342
-msgid "Internal server error"
-msgstr "Внутрішня помилка сервера"
-
-#: src/glade-registration.c:366
+#: src/glade-registration.c:510
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
 msgstr ""
 "Дякуємо вам за час, який ви витратили на заповнення опитування — ваша "
 "допомога важлива для нас!"
 
-#: src/glade-registration.c:374
-msgid "Name and Email fields are required"
-msgstr "Поля імені і адреси електронної пошти є слід обов'язково заповнити"
-
-#: src/glade-registration.c:377
-msgid ""
-"Oops! Email address is already in use!\n"
-"To update information you need to provide the token that was sent to your "
-"inbox."
-msgstr ""
-"Оце тобі! Адресу електронної пошти вже використано!\n"
-"Щоб оновити відомості, вам слід надати ключ, який було надіслано до вашої "
-"поштової скриньки."
-
-#: src/glade-registration.c:380
-#, c-format
-msgid "Oops! Error saving user information: %s"
-msgstr "Оце тобі! Не вдалося зберегти дані щодо користувача: %s"
-
-#: src/glade-registration.c:383
-#, c-format
-msgid "Oops! Error saving survey data: %s"
-msgstr "Оце тобі! Помилка під час спроби зберегти дані опитування: %s"
-
-#: src/glade-registration.c:386
-#, c-format
-msgid "Oops! Error accessing DB: %s"
-msgstr "Оце тобі! Помилка під час спроби доступу до бази даних: %s"
+#: src/glade-registration.c:771
+msgid "Completed and submitted!"
+msgstr "Завершено і подано!"
 
 #: src/glade-registration.glade:44
 msgid "Glade Registration & User Survey"
 msgstr "Реєстрація і опитування користувачів Glade"
 
-#: src/glade-registration.glade:114
+#: src/glade-registration.glade:77
 msgid "_Submit"
 msgstr "_Надіслати"
 
-#: src/glade-registration.glade:118
-msgid "Information will be sent to https://people.gnome.org/~jpu"
-msgstr "Ці відомості буде надіслано https://people.gnome.org/~jpu"
+#: src/glade-registration.glade:82
+#| msgid "Information will be sent to https://people.gnome.org/~jpu"
+msgid "Information will be sent to https://survey.gnome.org"
+msgstr "Ці відомості буде надіслано на https://survey.gnome.org"
 
-#: src/glade-registration.glade:211
+#: src/glade-registration.glade:183
 msgid "User Information"
 msgstr "Відомості щодо користувача"
 
-#: src/glade-registration.glade:245
+#: src/glade-registration.glade:217
 msgid "<Your name or nickname is required>"
 msgstr "<Слід вказати ваше ім'я або псевдонім>"
 
-#: src/glade-registration.glade:256 gladeui/glade-project-properties.ui:450
+#: src/glade-registration.glade:230 gladeui/glade-project-properties.ui:450
 #: plugins/gtk+/glade-about-dialog-editor.ui:69
 msgid "Name:"
 msgstr "Назва:"
 
-#: src/glade-registration.glade:268
+#: src/glade-registration.glade:242
 msgid "Email:"
 msgstr "Ел. пошта:"
 
-#: src/glade-registration.glade:280
+#: src/glade-registration.glade:254
 msgid ""
 "Tokens are processed manually in batches.\n"
 "Please be patient."
@@ -756,39 +661,39 @@ msgstr ""
 "Ключі обробляються серіями вручну.\n"
 "Будь ласка, майте терпіння."
 
-#: src/glade-registration.glade:283
+#: src/glade-registration.glade:256
 msgid "<Required to send back registration token>"
 msgstr "<Потрібна для надсилання ключа реєстрації>"
 
-#: src/glade-registration.glade:294
+#: src/glade-registration.glade:269
 msgid "Country:"
 msgstr "Країна:"
 
-#: src/glade-registration.glade:306
+#: src/glade-registration.glade:281
 msgid "City:"
 msgstr "Місто:"
 
-#: src/glade-registration.glade:320
+#: src/glade-registration.glade:295
 msgid "Company"
 msgstr "Компанія"
 
-#: src/glade-registration.glade:321
+#: src/glade-registration.glade:296
 msgid "Organization"
 msgstr "Організація"
 
-#: src/glade-registration.glade:322
+#: src/glade-registration.glade:297
 msgid "Personal"
 msgstr "Особисте"
 
-#: src/glade-registration.glade:334
+#: src/glade-registration.glade:309
 msgid "Website"
 msgstr "Сайт"
 
-#: src/glade-registration.glade:375
+#: src/glade-registration.glade:353
 msgid "Subscribe me to the mailing list"
 msgstr "Підписати мене на список листування"
 
-#: src/glade-registration.glade:379
+#: src/glade-registration.glade:357
 msgid ""
 "Subscribe to Glade Users mailing list.\n"
 "You will be sent email requesting confirmation!"
@@ -797,15 +702,15 @@ msgstr ""
 "Вам буде надіслано повідомлення електронної пошти із запитом щодо "
 "підтвердження!"
 
-#: src/glade-registration.glade:397
+#: src/glade-registration.glade:373
 msgid "Choose your country"
 msgstr "Виберіть вашу країну"
 
-#: src/glade-registration.glade:677
+#: src/glade-registration.glade:653
 msgid "We care about privacy!"
 msgstr "Ми дбаємо про вашу конфіденційність!"
 
-#: src/glade-registration.glade:695
+#: src/glade-registration.glade:671
 msgid ""
 "All the data will be stored in a private location and will not be shared "
 "with the public or any third party."
@@ -813,313 +718,417 @@ msgstr ""
 "Усі дані буде збережено у закритому сховищі. Ми не ділитимемося ними із "
 "громадськістю або будь-ким стороннім."
 
-#: src/glade-registration.glade:734
-msgid "Update Info"
-msgstr "Оновлення даних"
+#: src/glade-registration.glade:705
+msgid "Glade User Survey"
+msgstr "Опитування користувачів Glade"
 
-#: src/glade-registration.glade:754
-msgid "<Insert update token, if you want to update previously sent data>"
-msgstr "<Вставте ключ оновлення, якщо ви хочете оновити раніше надіслані дані>"
-
-#: src/glade-registration.glade:804
+#: src/glade-registration.glade:735
 msgid "How long have you been programming?"
 msgstr "Як довго ви займаєтеся програмуванням?"
 
-#: src/glade-registration.glade:822 src/glade-registration.glade:1076
+#: src/glade-registration.glade:753 src/glade-registration.glade:1022
 msgid "0"
 msgstr "0"
 
-#: src/glade-registration.glade:838 src/glade-registration.glade:1092
+#: src/glade-registration.glade:769 src/glade-registration.glade:1038
 msgid "years"
 msgstr "років"
 
-#: src/glade-registration.glade:839 src/glade-registration.glade:1093
+#: src/glade-registration.glade:770 src/glade-registration.glade:1039
 msgid "months"
 msgstr "місяців"
 
-#: src/glade-registration.glade:850
+#: src/glade-registration.glade:781
 msgid "I am not a programmer"
 msgstr "Я не є програмістом"
 
-#: src/glade-registration.glade:886
+#: src/glade-registration.glade:817
 msgid "Which programming languages do you prefer?"
 msgstr "Якій мові програмування ви надаєте перевагу?"
 
-#: src/glade-registration.glade:902
+#: src/glade-registration.glade:833
 msgid "C"
 msgstr "C"
 
-#: src/glade-registration.glade:917
+#: src/glade-registration.glade:848
 msgid "C++"
 msgstr "C++"
 
-#: src/glade-registration.glade:932
+#: src/glade-registration.glade:863
 msgid "C#"
 msgstr "C#"
 
-#: src/glade-registration.glade:947
+#: src/glade-registration.glade:878
 msgid "Java"
 msgstr "Java"
 
-#: src/glade-registration.glade:962
+#: src/glade-registration.glade:893
 msgid "Python"
 msgstr "Python"
 
-#: src/glade-registration.glade:977
+#: src/glade-registration.glade:908
 msgid "JavaScript"
 msgstr "JavaScript"
 
-#: src/glade-registration.glade:992
+#: src/glade-registration.glade:923
 msgid "Vala"
 msgstr "Vala"
 
-#: src/glade-registration.glade:1007
+#: src/glade-registration.glade:938
 msgid "Perl"
 msgstr "Perl"
 
-#: src/glade-registration.glade:1022 src/glade-registration.glade:1227
-#: src/glade-registration.glade:1314 src/glade-registration.glade:1331
-#: src/glade-registration.glade:1348 src/glade-registration.glade:1379
-#: src/glade-registration.glade:1399 src/glade-registration.glade:1494
-#: src/glade-registration.glade:1985 src/glade-registration.glade:2192
+#: src/glade-registration.glade:953
+msgid "Rust"
+msgstr "Rust"
+
+#: src/glade-registration.glade:968 src/glade-registration.glade:1173
+#: src/glade-registration.glade:1278 src/glade-registration.glade:1295
+#: src/glade-registration.glade:1312 src/glade-registration.glade:1344
+#: src/glade-registration.glade:1370 src/glade-registration.glade:1465
+#: src/glade-registration.glade:1956 src/glade-registration.glade:2158
 #: gladeui/glade-project-properties.ui:577 plugins/gtk+/gtk+.xml:3193
 #: plugins/gtk+/gtk+.xml:4906
 msgid "Other"
 msgstr "Інше"
 
-#: src/glade-registration.glade:1058
+#: src/glade-registration.glade:1004
 msgid "When did you start using Glade?"
 msgstr "Коли ви почали користуватися Glade?"
 
-#: src/glade-registration.glade:1106
+#: src/glade-registration.glade:1052
 msgid "ago"
 msgstr "тому"
 
-#: src/glade-registration.glade:1138
+#: src/glade-registration.glade:1084
 msgid "Which version do you normally use?"
 msgstr "Якою версією ви зазвичай користуєтеся?"
 
-#: src/glade-registration.glade:1155
+#: src/glade-registration.glade:1101
 msgid "What is available in my OS"
 msgstr "Тією, яка доступна для моєї ОС"
 
-#: src/glade-registration.glade:1172
+#: src/glade-registration.glade:1118
 msgid "Latest stable from sources"
 msgstr "Найсвіжішою стабільною з початкового коду"
 
-#: src/glade-registration.glade:1189
+#: src/glade-registration.glade:1135
 msgid "3.8 for GTK+ 2"
 msgstr "3.8 для GTK+ 2"
 
-#: src/glade-registration.glade:1206
+#: src/glade-registration.glade:1152
 msgid "Master"
 msgstr "Для розробників"
 
-#: src/glade-registration.glade:1283
+#: src/glade-registration.glade:1229
 msgid "On what operating systems?"
 msgstr "На яких операційних системах?"
 
-#: src/glade-registration.glade:1302
+#: src/glade-registration.glade:1249
 msgid "distribution"
 msgstr "дистрибутив"
 
-#: src/glade-registration.glade:1303
+#: src/glade-registration.glade:1250
+msgid "Alpine"
+msgstr "Alpine"
+
+#: src/glade-registration.glade:1251
 msgid "Arch Linux"
 msgstr "Arch Linux"
 
-#: src/glade-registration.glade:1304
+#: src/glade-registration.glade:1252
+#| msgid "Arch Linux"
+msgid "Ataraxia Linux"
+msgstr "Ataraxia Linux"
+
+#: src/glade-registration.glade:1253
+#| msgid "Center"
+msgid "CentOS"
+msgstr "CentOS"
+
+#: src/glade-registration.glade:1254
+msgid "Chrome OS"
+msgstr "Chrome OS"
+
+#: src/glade-registration.glade:1255
+#| msgid "Arch Linux"
+msgid "Clear Linux"
+msgstr "Clear Linux"
+
+#: src/glade-registration.glade:1256
 msgid "Debian"
 msgstr "Debian"
 
-#: src/glade-registration.glade:1305
-msgid "openSUSE"
-msgstr "openSUSE"
+#: src/glade-registration.glade:1257
+msgid "elementary OS"
+msgstr "elementary OS"
 
-#: src/glade-registration.glade:1306
+#: src/glade-registration.glade:1258
+msgid "Endless OS"
+msgstr "Endless OS"
+
+#: src/glade-registration.glade:1259
 msgid "Fedora"
 msgstr "Fedora"
 
-#: src/glade-registration.glade:1307
+#: src/glade-registration.glade:1260
 msgid "Gentoo"
 msgstr "Gentoo"
 
-#: src/glade-registration.glade:1308
+#: src/glade-registration.glade:1261
+#| msgid "Ubuntu"
+msgid "Kubuntu"
+msgstr "Kubuntu"
+
+#: src/glade-registration.glade:1262
+msgid "Linux Mint"
+msgstr "Linux Mint"
+
+#: src/glade-registration.glade:1263
+msgid "Mageia"
+msgstr "Mageia"
+
+#: src/glade-registration.glade:1264
 msgid "Mandriva"
 msgstr "Mandriva"
 
-#: src/glade-registration.glade:1309
-msgid "Red Hat"
-msgstr "Red Hat"
+#: src/glade-registration.glade:1265
+msgid "Nix OS"
+msgstr "Nix OS"
 
-#: src/glade-registration.glade:1310
-msgid "Turbolinux"
-msgstr "Turbolinux"
+#: src/glade-registration.glade:1266
+msgid "openSUSE"
+msgstr "openSUSE"
 
-#: src/glade-registration.glade:1311
-msgid "Ubuntu"
-msgstr "Ubuntu"
-
-#: src/glade-registration.glade:1312
-msgid "Xandros"
-msgstr "Xandros"
-
-#: src/glade-registration.glade:1313
+#: src/glade-registration.glade:1267
 msgid "Oracle"
 msgstr "Oracle"
 
-#: src/glade-registration.glade:1327 src/glade-registration.glade:1344
+#: src/glade-registration.glade:1268
+msgid "Pop!_OS"
+msgstr "Pop!_OS"
+
+#: src/glade-registration.glade:1269
+msgid "PureOS"
+msgstr "PureOS"
+
+#: src/glade-registration.glade:1270
+msgid "Raspbian"
+msgstr "Raspbian"
+
+#: src/glade-registration.glade:1271
+msgid "Red Hat"
+msgstr "Red Hat"
+
+#: src/glade-registration.glade:1272
+msgid "Solus"
+msgstr "Solus"
+
+#: src/glade-registration.glade:1273
+msgid "SulinOS"
+msgstr "SulinOS"
+
+#: src/glade-registration.glade:1274
+msgid "Turbolinux"
+msgstr "Turbolinux"
+
+#: src/glade-registration.glade:1275
+msgid "Ubuntu"
+msgstr "Ubuntu"
+
+#: src/glade-registration.glade:1276
+#| msgid "Arch Linux"
+msgid "Void Linux"
+msgstr "Void Linux"
+
+#: src/glade-registration.glade:1277
+msgid "Xandros"
+msgstr "Xandros"
+
+#: src/glade-registration.glade:1291 src/glade-registration.glade:1308
 msgid "variant"
 msgstr "варіант"
 
-#: src/glade-registration.glade:1328
+#: src/glade-registration.glade:1292
 msgid "FreeBSD"
 msgstr "FreeBSD"
 
-#: src/glade-registration.glade:1329
+#: src/glade-registration.glade:1293
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
-#: src/glade-registration.glade:1330
+#: src/glade-registration.glade:1294
 msgid "NetBSD"
 msgstr "NetBSD"
 
-#: src/glade-registration.glade:1345
+#: src/glade-registration.glade:1309
 msgid "Oracle Solaris"
 msgstr "Oracle Solaris"
 
-#: src/glade-registration.glade:1346
+#: src/glade-registration.glade:1310
 msgid "OpenSolaris"
 msgstr "OpenSolaris"
 
-#: src/glade-registration.glade:1347
+#: src/glade-registration.glade:1311
 msgid "illumos"
 msgstr "illumos"
 
-#: src/glade-registration.glade:1370 src/glade-registration.glade:1392
+#: src/glade-registration.glade:1334 src/glade-registration.glade:1357
 msgid "version"
 msgstr "версія"
 
-#: src/glade-registration.glade:1371
-msgid "2000"
-msgstr "2000"
+#: src/glade-registration.glade:1335
+#| msgid "0"
+msgid "10"
+msgstr "10"
 
-#: src/glade-registration.glade:1372
-msgid "XP"
-msgstr "XP"
-
-#: src/glade-registration.glade:1373
-msgid "2003"
-msgstr "2003"
-
-#: src/glade-registration.glade:1374
-msgid "Vista"
-msgstr "Vista"
-
-#: src/glade-registration.glade:1375
-msgid "2008"
-msgstr "2008"
-
-#: src/glade-registration.glade:1376
-msgid "7"
-msgstr "7"
-
-#: src/glade-registration.glade:1377
+#: src/glade-registration.glade:1336
 msgid "8"
 msgstr "8"
 
-#: src/glade-registration.glade:1378
+#: src/glade-registration.glade:1337
+msgid "7"
+msgstr "7"
+
+#: src/glade-registration.glade:1338
+msgid "Vista"
+msgstr "Vista"
+
+#: src/glade-registration.glade:1339
 msgid "2012"
 msgstr "2012"
 
-#: src/glade-registration.glade:1393
-msgid "Tiger"
-msgstr "Tiger"
+#: src/glade-registration.glade:1340
+msgid "2008"
+msgstr "2008"
 
-#: src/glade-registration.glade:1394
-msgid "Leopard"
-msgstr "Leopard"
+#: src/glade-registration.glade:1341
+msgid "2003"
+msgstr "2003"
 
-#: src/glade-registration.glade:1395
-msgid "Snow Leopard"
-msgstr "Snow Leopard"
+#: src/glade-registration.glade:1342
+msgid "XP"
+msgstr "XP"
 
-#: src/glade-registration.glade:1396
-msgid "Lion"
-msgstr "Lion"
+#: src/glade-registration.glade:1343
+msgid "2000"
+msgstr "2000"
 
-#: src/glade-registration.glade:1397
-msgid "Mountain Lion"
-msgstr "Mountain Lion"
+#: src/glade-registration.glade:1358
+#| msgid "Catalog"
+msgid "Catalina"
+msgstr "Catalina"
 
-#: src/glade-registration.glade:1398
+#: src/glade-registration.glade:1359
+msgid "Mojave"
+msgstr "Mojave"
+
+#: src/glade-registration.glade:1360
+msgid "High Sierra"
+msgstr "High Sierra"
+
+#: src/glade-registration.glade:1361
+msgid "Sierra"
+msgstr "Sierra"
+
+#: src/glade-registration.glade:1362
+#| msgid "Small Capitals"
+msgid "El Capitan"
+msgstr "El Capitan"
+
+#: src/glade-registration.glade:1363
+msgid "Yosemite"
+msgstr "Yosemite"
+
+#: src/glade-registration.glade:1364
 msgid "Mavericks"
 msgstr "Mavericks"
 
-#: src/glade-registration.glade:1409
+#: src/glade-registration.glade:1365
+msgid "Mountain Lion"
+msgstr "Mountain Lion"
+
+#: src/glade-registration.glade:1366
+msgid "Lion"
+msgstr "Lion"
+
+#: src/glade-registration.glade:1367
+msgid "Snow Leopard"
+msgstr "Snow Leopard"
+
+#: src/glade-registration.glade:1368
+msgid "Leopard"
+msgstr "Leopard"
+
+#: src/glade-registration.glade:1369
+msgid "Tiger"
+msgstr "Tiger"
+
+#: src/glade-registration.glade:1380
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: src/glade-registration.glade:1426 plugins/gtk+/gtk+.xml:3338
+#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3338
 msgid "BSD"
 msgstr "BSD"
 
-#: src/glade-registration.glade:1443
+#: src/glade-registration.glade:1414
 msgid "Windows"
 msgstr "Windows"
 
-#: src/glade-registration.glade:1460
+#: src/glade-registration.glade:1431
 msgid "Mac OS X"
 msgstr "Mac OS X"
 
-#: src/glade-registration.glade:1477
+#: src/glade-registration.glade:1448
 msgid "Solaris"
 msgstr "Solaris"
 
-#: src/glade-registration.glade:1532
+#: src/glade-registration.glade:1503
 msgid "How often do you use it?"
 msgstr "Як часто ви користуєтеся програмою?"
 
-#: src/glade-registration.glade:1549
+#: src/glade-registration.glade:1520
 msgid "Every day"
 msgstr "Щодня"
 
-#: src/glade-registration.glade:1566
+#: src/glade-registration.glade:1537
 msgid "Few days a week"
 msgstr "Декілька днів на тиждень"
 
-#: src/glade-registration.glade:1583
+#: src/glade-registration.glade:1554
 msgid "Every week"
 msgstr "Щотижня"
 
-#: src/glade-registration.glade:1600
+#: src/glade-registration.glade:1571
 msgid "A few times a month"
 msgstr "Декілька разів на місяць"
 
-#: src/glade-registration.glade:1617
+#: src/glade-registration.glade:1588
 msgid "Once a month"
 msgstr "Раз на місяць"
 
-#: src/glade-registration.glade:1634
+#: src/glade-registration.glade:1605
 msgid "A few times a year"
 msgstr "Декілька разів на рік"
 
-#: src/glade-registration.glade:1672
+#: src/glade-registration.glade:1643
 msgid "What level of Glade user would you say you are?"
 msgstr "Як ви вважаєте, якого рівня знання ви маєте як користувач Glade?"
 
-#: src/glade-registration.glade:1688
+#: src/glade-registration.glade:1659
 msgid "Beginner"
 msgstr "Початківець"
 
-#: src/glade-registration.glade:1705
+#: src/glade-registration.glade:1676
 msgid "Intermediate"
 msgstr "Середній рівень"
 
-#: src/glade-registration.glade:1722
+#: src/glade-registration.glade:1693
 msgid "Advanced"
 msgstr "Знавець"
 
-#: src/glade-registration.glade:1760
+#: src/glade-registration.glade:1731
 msgid ""
 "Under what kind of license(s) do you release the software you used Glade to "
 "create?"
@@ -1127,126 +1136,126 @@ msgstr ""
 "Які умови ліцензування ви використовуєте для випуску програмного "
 "забезпечення, для створення якого ви використовуєте Glade?"
 
-#: src/glade-registration.glade:1776
+#: src/glade-registration.glade:1747
 msgid "Free software"
 msgstr "Вільне програмне забезпечення"
 
-#: src/glade-registration.glade:1790
+#: src/glade-registration.glade:1761
 msgid "Open source software"
 msgstr "Програмне забезпечення із відкритим кодом"
 
-#: src/glade-registration.glade:1804
+#: src/glade-registration.glade:1775
 msgid "Commercial/Closed software"
 msgstr "Комерційне або закрите програмне забезпечення"
 
-#: src/glade-registration.glade:1818
+#: src/glade-registration.glade:1789
 msgid "None - distributed internally"
 msgstr "Ніякі — не поширюється"
 
-#: src/glade-registration.glade:1853
+#: src/glade-registration.glade:1824
 msgid ""
 "In what field(s) is the software you used Glade to create generally used?"
 msgstr ""
 "У яких галузях використовується програмне забезпечення, яке ви створюєте за "
 "допомогою Glade?"
 
-#: src/glade-registration.glade:1868
+#: src/glade-registration.glade:1839
 msgid "Academic"
 msgstr "Вища школа"
 
-#: src/glade-registration.glade:1882
+#: src/glade-registration.glade:1853
 msgid "Embedded applications"
 msgstr "Програми для вбудованих пристроїв"
 
-#: src/glade-registration.glade:1896
+#: src/glade-registration.glade:1867
 msgid "Accounting"
 msgstr "Бухгалтерський облік"
 
-#: src/glade-registration.glade:1910
+#: src/glade-registration.glade:1881
 msgid "Desktop applications"
 msgstr "Програми для робочих станцій"
 
-#: src/glade-registration.glade:1924
+#: src/glade-registration.glade:1895
 msgid "Educational"
 msgstr "Освіта"
 
-#: src/glade-registration.glade:1938
+#: src/glade-registration.glade:1909
 msgid "Medical"
 msgstr "Медицина"
 
-#: src/glade-registration.glade:1952
+#: src/glade-registration.glade:1923
 msgid "Industrial applications"
 msgstr "Промисловість"
 
-#: src/glade-registration.glade:1966
+#: src/glade-registration.glade:1937
 msgid "Scientific"
 msgstr "Наука"
 
-#: src/glade-registration.glade:2039
+#: src/glade-registration.glade:2010
 msgid "What aspect of the software needs the most improvement?"
 msgstr "Який аспект програмного забезпечення найбільше потребує удосконалення?"
 
-#: src/glade-registration.glade:2084
+#: src/glade-registration.glade:2055
 msgid "In your opinion what is the biggest problem with Glade?"
 msgstr "Якою на вашу думку є найбільша проблема у Glade?"
 
-#: src/glade-registration.glade:2101
+#: src/glade-registration.glade:2072
 msgid "Lack of documentation"
 msgstr "Брак документації"
 
-#: src/glade-registration.glade:2120
+#: src/glade-registration.glade:2090
 msgid "Lack of professional support"
 msgstr "Брак професійної підтримки"
 
-#: src/glade-registration.glade:2138
+#: src/glade-registration.glade:2107
 msgid "Lack of professional training"
 msgstr "Брак професійного навчання"
 
-#: src/glade-registration.glade:2156
+#: src/glade-registration.glade:2124
 msgid "Lack of publicity/exposure"
 msgstr "Брак публічності або відкритості"
 
-#: src/glade-registration.glade:2174
+#: src/glade-registration.glade:2141
 msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
 msgstr ""
 "Брак офіційних бінарних випусків для інших операційних систем (Windows, Mac "
 "OS X)"
 
-#: src/glade-registration.glade:2252
+#: src/glade-registration.glade:2217
 msgid "Have you ever encountered a bug?"
 msgstr "Чи траплялися вам вади?"
 
-#: src/glade-registration.glade:2269 src/glade-registration.glade:2341
-#: src/glade-registration.glade:2420 plugins/gtk+/gtk+.xml:1746
+#: src/glade-registration.glade:2233 src/glade-registration.glade:2305
+#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1746
 msgid "Yes"
 msgstr "Так"
 
-#: src/glade-registration.glade:2286 src/glade-registration.glade:2358
-#: src/glade-registration.glade:2437 plugins/gtk+/gtk+.xml:1748
+#: src/glade-registration.glade:2250 src/glade-registration.glade:2322
+#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1748
 msgid "No"
 msgstr "Ні"
 
-#: src/glade-registration.glade:2325
+#: src/glade-registration.glade:2289
 msgid "If so, did you file a bug report?"
 msgstr "Якщо так, чи створювали ви звіт щодо вади?"
 
-#: src/glade-registration.glade:2401
+#: src/glade-registration.glade:2365
 msgid "Have you ever thought about contributing?"
 msgstr "Чи виникала у вас думка про участь у проєкті?"
 
-#: src/glade-registration.glade:2476
+#: src/glade-registration.glade:2440
 msgid "Why not?"
 msgstr "Чому ні?"
 
-#: src/glade-registration.glade:2526
+#: src/glade-registration.glade:2490
 msgid "Comments:"
 msgstr "Коментарі:"
 
-#: src/glade-registration.glade:2577
+#: src/glade-registration.glade:2541
 msgid "Privacy Note:"
 msgstr "Нотатка щодо конфіденційності:"
 
-#: src/glade-registration.glade:2597
+#: src/glade-registration.glade:2561
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -7481,15 +7490,15 @@ msgstr "Керування"
 msgid "Display"
 msgstr "Показ"
 
-#: plugins/gtk+/gtk+.xml:5733
+#: plugins/gtk+/gtk+.xml:5734
 msgid "Composite Widgets"
 msgstr "Складні віджети"
 
-#: plugins/gtk+/gtk+.xml:5744
+#: plugins/gtk+/gtk+.xml:5745
 msgid "Miscellaneous"
 msgstr "Різні віджети"
 
-#: plugins/gtk+/gtk+.xml:5774
+#: plugins/gtk+/gtk+.xml:5775
 msgid "Deprecated"
 msgstr "Застаріле"
 
@@ -8186,6 +8195,101 @@ msgstr "На вимогу"
 #: plugins/webkit2gtk/webkit2gtk.xml:57
 msgid "WebKit2GTK+ Widgets"
 msgstr "Віджети WebKit2GTK+"
+
+#~ msgid ""
+#~ "Thank you for taking Glade Users survey, we appreciate it!\n"
+#~ "\n"
+#~ "To validate this email address open the following link\n"
+#~ "\n"
+#~ "https://people.gnome.org/~jpu/glade/registration.php?email="
+#~ "$email&validation_token=$new_validation_token\n"
+#~ "\n"
+#~ "In case you want to change or update the survey, your current update "
+#~ "token is:\n"
+#~ "$new_token\n"
+#~ "\n"
+#~ "Cheers\n"
+#~ "\n"
+#~ "\tThe Glade team\n"
+#~ msgstr ""
+#~ "Дякуємо вам за участь в опитуванні користувачів Glade, вона є дуже цінною "
+#~ "для нас!\n"
+#~ "\n"
+#~ "Щоб підтвердити цю адресу електронної пошти, відкрийте це посилання\n"
+#~ "\n"
+#~ "https://people.gnome.org/~jpu/glade/registration.php?email="
+#~ "$email&validation_token=$new_validation_token\n"
+#~ "\n"
+#~ "Якщо ви хочете змінити або оновити відповіді на опитування, вашим "
+#~ "поточним ключем для оновлення є:\n"
+#~ "$new_token\n"
+#~ "\n"
+#~ "З найкращими побажаннями,\n"
+#~ "\n"
+#~ "\tКоманда Glade\n"
+
+#~ msgid "Glade User Survey (update)"
+#~ msgstr "Опитування користувачів Glade (оновлення)"
+
+#~ msgid ""
+#~ "Thank you for updating your Glade Users survey data, we appreciate it!\n"
+#~ "\n"
+#~ "In case you want to change something again, your current update token "
+#~ "is:\n"
+#~ "$new_token\n"
+#~ "\n"
+#~ "Cheers\n"
+#~ "\n"
+#~ "\tThe Glade team\n"
+#~ msgstr ""
+#~ "Дякуємо за оновлення ваших даних опитування користувачів Glade — для нас "
+#~ "це важливо!\n"
+#~ "\n"
+#~ "Якщо ви знову захочете щось змінити, вашим поточним ключем оновлення є:\n"
+#~ "$new_token\n"
+#~ "\n"
+#~ "З найкращими побажаннями,\n"
+#~ "\n"
+#~ "\tКоманда Glade\n"
+
+#~ msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+#~ msgstr ""
+#~ "Вибачте, не вдалося автоматично підписатися на список листування "
+#~ "користувачів Glade"
+
+#~ msgid "Open Glade Users Website"
+#~ msgstr "Відкрити сайт користувачів Glade"
+
+#~ msgid "Internal server error"
+#~ msgstr "Внутрішня помилка сервера"
+
+#~ msgid "Name and Email fields are required"
+#~ msgstr "Поля імені і адреси електронної пошти є слід обов'язково заповнити"
+
+#~ msgid ""
+#~ "Oops! Email address is already in use!\n"
+#~ "To update information you need to provide the token that was sent to your "
+#~ "inbox."
+#~ msgstr ""
+#~ "Оце тобі! Адресу електронної пошти вже використано!\n"
+#~ "Щоб оновити відомості, вам слід надати ключ, який було надіслано до вашої "
+#~ "поштової скриньки."
+
+#~ msgid "Oops! Error saving user information: %s"
+#~ msgstr "Оце тобі! Не вдалося зберегти дані щодо користувача: %s"
+
+#~ msgid "Oops! Error saving survey data: %s"
+#~ msgstr "Оце тобі! Помилка під час спроби зберегти дані опитування: %s"
+
+#~ msgid "Oops! Error accessing DB: %s"
+#~ msgstr "Оце тобі! Помилка під час спроби доступу до бази даних: %s"
+
+#~ msgid "Update Info"
+#~ msgstr "Оновлення даних"
+
+#~ msgid "<Insert update token, if you want to update previously sent data>"
+#~ msgstr ""
+#~ "<Вставте ключ оновлення, якщо ви хочете оновити раніше надіслані дані>"
 
 #~ msgid ""
 #~ "Copyright © 2001-2006 Ximian, Inc.\n"
