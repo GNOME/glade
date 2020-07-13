@@ -36,9 +36,9 @@
     <id>glade.desktop</id>
   </provides>
   <launchable type="desktop-id">org.gnome.Glade.desktop</launchable>
-  <url type="homepage">http://glade.gnome.org/</url>
+  <url type="homepage">https://glade.gnome.org/</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/glade/issues</url>
-  <url type="donation">http://www.gnome.org/friends/</url>
+  <url type="donation">https://www.gnome.org/friends/</url>
   <url type="help">https://help.gnome.org/users/glade/stable/</url>
   <update_contact>juanpablougarte_at_gmail.com</update_contact>
   <kudos>
@@ -49,6 +49,45 @@
   <project_group>GNOME</project_group>
   <translation type="gettext">glade</translation>
   <releases>
+    <release version="3.37.0" date="2020-07-13" type="development">
+      <description>
+        <p>Glade 3.37.0 Development release!</p>
+        <ul>
+          <li>Added JavaScript widget support</li>
+          <li>Implement survey using new backend at surveys.gnome.org</li>
+          <li>Keep survey state in config file</li>
+          <li>Associate with application/x-gtk-builder (Caolán McNamara)</li>
+          <li>Improve toolkit target version selection in project properties dialog</li>
+          <li>Improve treemodel char data type handling</li>
+          <li>Remove autotools (Iñigo Martínez)</li>
+          <li>New gjs-1.0 1.64 dependency</li>
+          <li>Bump Gtk dependency to 3.24</li>
+          <li>Bump webkit2gtk dependency to 2.28</li>
+          <li>Fixed all compiler/gir warnings</li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/412">Issue #412: Fix inconsistent "top-level", "top level", "toplevel" spelling in translatable strings</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/281">Issue #281: GladeProperty: Do not replace - with _</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/389">Issue #389: GladeProject: show message on invalid GtkBuilder file</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/446">Issue #446: GladeGtkListBox: fix size request issue</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/432">Issue #432: GladeStandarStock, GladeStandarStockImage: fix get_type() functions for introspection</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/447">Issue #447: GladeGtkWindow: Fix CSD support</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/456">Issue #456: Utils: use g_param_spec_uchar() for uchar types</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/459">Issue #459: Gtk catalog: add GtkRecentChooserMenu to Display group</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/433">Issue #433: Implement survey using new backend at surveys.gnome.org</issue>
+        <issue>Build: use gtk-mac-integration only when creating bundle (Tom Schoonjans)</issue>
+        <issue>Ignore locale when saving numeric values (Alberto Fanjul)</issue>
+        <issue>Remove config for external builds (Alberto Fanjul)</issue>
+        <issue>Python plugin: fix linking error</issue>
+        <issue>Tests: add python and javascript test case</issue>
+        <issue>gtk: Add GtkScrolledWindow propagate-natural-width property (Corentin Noël)</issue>
+        <issue>GladeScrolledWindowEditor: Squeeze width/height properties in two columns</issue>
+        <issue>Gtk plugin: add missing displayable values</issue>
+        <issue>Webkit2gtk plugin: add missing displayable values and sandbox web view</issue>
+        <issue>dtd: Make init-function an element, not an attribute (Adrien Plazas)</issue>
+      </issues>
+    </release>
     <release version="3.36.0" date="2020-05-06">
       <description>
         <p>
@@ -204,19 +243,19 @@
         </p>
         <ul>
            <li>Fix bug 774994 &quot;in treeview columns editor contextual menu does nothing&quot;</li>
-	        <li>Simplified GladeBaseEditor</li>
-	        <li>Fix formatting / layout of project verification details (Daniel P. Berrange)</li>
-	        <li>Widget chooser: activate treeview with single click and enable Drag &amp; Drop</li>
-	        <li>Fix Design view selected state</li>
-	        <li>Fixes bug 793036 &quot;GtkCellRenderer Properties not loaded from glade file&quot; (peter Onion)</li>
-	        <li>Fix bug in action widgets response-id parsing on 32bits system</li>
-	        <li>Fix bug 772485 &quot;File Name property of GtkImage is copied to all other GtkImage&quot;</li>
-	        <li>GladeProject: always treat resource properties as relative</li>
-	        <li>Fix bug 793652 &quot;Crash when deleting a list&quot;</li>
-	        <li>Fix bug 793757 &quot;Gtk-CRITICAL **: _gtk_window_add_popover: assertion &apos;_gtk_widget_get_parent (popover) == NULL&apos; failed&quot;</li>
-	        <li>Add GDK_SUPER_MASK accelerator handling (Sebastian Stang)</li>
-	        <li>Fix bug #778537 &quot;ActionBar need placeholder&quot;</li>
-	        <li>Fix bug #794141 - Gtk.IconView disappeared from glade (Albfan)</li>
+           <li>Simplified GladeBaseEditor</li>
+           <li>Fix formatting / layout of project verification details (Daniel P. Berrange)</li>
+           <li>Widget chooser: activate treeview with single click and enable Drag &amp; Drop</li>
+           <li>Fix Design view selected state</li>
+           <li>Fixes bug 793036 &quot;GtkCellRenderer Properties not loaded from glade file&quot; (peter Onion)</li>
+           <li>Fix bug in action widgets response-id parsing on 32bits system</li>
+           <li>Fix bug 772485 &quot;File Name property of GtkImage is copied to all other GtkImage&quot;</li>
+           <li>GladeProject: always treat resource properties as relative</li>
+           <li>Fix bug 793652 &quot;Crash when deleting a list&quot;</li>
+           <li>Fix bug 793757 &quot;Gtk-CRITICAL **: _gtk_window_add_popover: assertion &apos;_gtk_widget_get_parent (popover) == NULL&apos; failed&quot;</li>
+           <li>Add GDK_SUPER_MASK accelerator handling (Sebastian Stang)</li>
+           <li>Fix bug #778537 &quot;ActionBar need placeholder&quot;</li>
+           <li>Fix bug #794141 - Gtk.IconView disappeared from glade (Albfan)</li>
         </ul>
       </description>
     </release>

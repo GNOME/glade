@@ -40,7 +40,7 @@ in the COPYING file.
 
 ## Requirements
 
-* GTK+ 3.10.0 or above - <http://www.gtk.org>  
+* GTK+ 3.24.0 or above - <http://www.gtk.org>  
   You also need the glib, pango and atk libraries.
   Make sure you have the devel packages as well, as these will contain the
   header files which you will need to compile C applications.

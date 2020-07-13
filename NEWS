@@ -1,4 +1,51 @@
 ============
+Glade 3.37.0
+============
+
+	- Build: Remove autotools (Iñigo Martínez)
+	- Plugins: Added GJS plugin for JavaScript objects support (NEW gjs-1.0 dependency)
+	- Issue #433: Implement survey using new backend at surveys.gnome.org
+	- Bump GTK dependency and toolkit target to 3.24
+	- Webkit plugin: bump dependency to 2.28
+	- Build: use gtk-mac-integration only when creating bundle (Tom Schoonjans)
+	- Ignore locale when saving numeric values (Alberto Fanjul)
+	- Remove config for external builds (Alberto Fanjul)
+	- Associate application/x-gtk-builder with glade's .desktop file (Caolán McNamara)
+	- GladeProjectProperties: improve toolkit target version selection
+	- Python plugin: fix linking error
+	- Plugins: Added GJS plugin for JavaScript objects support
+	- Tests: add python and javascript test case
+	- gtk: Add GtkScrolledWindow propagate-natural-width property (Corentin Noël)
+	- GladeScrolledWindowEditor: Squeeze width/height properties in two columns
+	- Gtk plugin: add missing displayable values
+	- Webkit2gtk plugin: add missing displayable values and sandbox web view
+	- Issue #412: Fix inconsistent "top-level", "top level", "toplevel" spelling in translatable strings
+	- Issue #281: GladeProperty: Do not replace - with _
+	- Issue #389: GladeProject: show message on invalid GtkBuilder file
+	- Issue #446: GladeGtkListBox: fix size request issue
+	- Issue #432: GladeStandarStock, GladeStandarStockImage: fix get_type() functions for introspection
+	- dtd: Make init-function an element, not an attribute (Adrien Plazas)
+	- Issue #447: GladeGtkWindow: Fix CSD support
+	- Issue #456: Utils: use g_param_spec_uchar() for uchar types
+	- Gtk plugin / GladeDataModel: Improve treemodel char data type handling
+	- Issue #459: Gtk catalog: add GtkRecentChooserMenu to Display group
+	- Fixed all compiler/gir warnings
+
+Added/updated translations
+
+	- de, courtesy of Tim Sabsch
+	- es, courtesy of Daniel Mustieles
+	- fr, courtesy of Charles Monzat
+	- id, courtesy of Kukuh Syafaat
+	- kk, courtesy of Baurzhan Muftakhidinov
+	- lt, courtesy of Aurimas Černius
+	- pl, courtesy of Piotr Drąg
+	- pt_BR, courtesy of Rafael Fontenelle
+	- ro, courtesy of Florentina Mușat
+	- tr, courtesy of Emin Tufan Çetin
+	- uk, courtesy of Yuri Chornoivan
+
+============
 Glade 3.36.0
 ============
 
