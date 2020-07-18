@@ -2401,6 +2401,8 @@
         <set-property-function>glade_gtk_grid_set_property</set-property-function>
         <verify-function>glade_gtk_grid_verify_property</verify-function>
         <child-action-activate-function>glade_gtk_grid_child_action_activate</child-action-activate-function>
+        <read-widget-function>glade_gtk_grid_read_widget</read-widget-function>
+        <write-widget-function>glade_gtk_grid_write_widget</write-widget-function>
         
         <packing-actions>
           <action id="insert_row" name="Insert Row" stock="list-add">

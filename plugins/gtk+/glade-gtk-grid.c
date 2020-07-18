@@ -154,15 +154,20 @@ static void
 glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+  gint initial_rows = 0, initial_columns = 0;
   GladeGridAttachments attach;
   GList *list, *children;
-  gint row = 0, column = 0, n_row = 0, n_column = 0;
+  gint row = 0, column = 0;
+
+  glade_widget_property_get (gwidget, "n-columns", &initial_columns);
+  glade_widget_property_get (gwidget, "n-rows", &initial_rows);
 
   children = gtk_container_get_children (GTK_CONTAINER (container));
 
   for (list = children; list; list = list->next)
     {
       GtkWidget *widget = list->data;
+      gint n_row = 0, n_column = 0;
 
       if (GLADE_IS_PLACEHOLDER (widget)) continue;
 
@@ -174,6 +179,10 @@ glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
       if (row < n_row) row = n_row;
       if (column < n_column) column = n_column;
     }
+
+  /* Initial values are saved by glade as a hint but are not always present */
+  column = MAX (column, initial_columns);
+  row = MAX (row, initial_rows);
 
   if (column) glade_widget_property_set (gwidget, "n-columns", column);
   if (row) glade_widget_property_set (gwidget, "n-rows", row);
@@ -1038,3 +1047,62 @@ glade_gtk_grid_configure_end (GladeFixed  *fixed,
 
   return TRUE;
 }
+
+void
+glade_gtk_grid_read_widget (GladeWidgetAdaptor *adaptor,
+                            GladeWidget        *widget,
+                            GladeXmlNode       *node)
+{
+  GladeXmlNode *comment;
+
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+    return;
+
+  /* First chain up and read in all the normal properties.. */
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
+
+  /* Read n-columns and n-rows values */
+  if ((comment = glade_xml_node_prev_with_comments (node)) &&
+      glade_xml_node_is_comment (comment))
+    {
+      g_autofree gchar *str = g_strstrip (glade_xml_get_content (comment));
+      gint ncolumns, nrows;
+
+      if (sscanf (str, "n-columns=%d n-rows=%d", &ncolumns, &nrows) == 2)
+        {
+          if (ncolumns)
+            glade_widget_property_set (widget, "n-columns", ncolumns);
+
+          if (nrows)
+            glade_widget_property_set (widget, "n-rows", nrows);
+        }
+    }
+}
+
+void
+glade_gtk_grid_write_widget (GladeWidgetAdaptor *adaptor,
+                             GladeWidget        *widget,
+                             GladeXmlContext    *context,
+                             GladeXmlNode       *node)
+{
+  g_autofree gchar *comment = NULL;
+  GladeXmlNode *comment_node;
+  gint ncolumns, nrows;
+
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+        glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+    return;
+
+  /* First chain up and write all the normal properties.. */
+  GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
+
+  /* Write n-columns and n-rows in a comment since its only usefull for Glade */
+  glade_widget_property_get (widget, "n-columns", &ncolumns);
+  glade_widget_property_get (widget, "n-rows", &nrows);
+
+  comment = g_strdup_printf (" n-columns=%d n-rows=%d ", ncolumns, nrows);
+  comment_node = glade_xml_node_new_comment (context, comment);
+  glade_xml_node_add_prev_sibling (node, comment_node);
+}
+
