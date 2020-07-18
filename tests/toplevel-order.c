@@ -34,7 +34,7 @@ test_tsort_order (gconstpointer userdata)
     g_assert_cmpstr (l->data, ==, *orig_nodes);
 
   /* make sure all items where tested */
-  g_assert (l == NULL && *orig_nodes == NULL);
+  g_assert_true (l == NULL && *orig_nodes == NULL);
 
   g_list_free (nodes);
 }
@@ -72,38 +72,38 @@ test_toplevel_order (gconstpointer userdata)
   gsize xml_size;
   GBytes *xml;
 
-  g_assert (g_close (g_file_open_tmp ("glade-toplevel-order-XXXXXX.glade", &temp_path, NULL), NULL));
+  g_assert_true (g_close (g_file_open_tmp ("glade-toplevel-order-XXXXXX.glade", &temp_path, NULL), NULL));
 
   /* Dump contents to a temp file */
-  g_assert ((xml = g_resources_lookup_data (project_path, 0, NULL)));
+  g_assert_true ((xml = g_resources_lookup_data (project_path, 0, NULL)));
   xml_data = g_bytes_get_data (xml, &xml_size);
-  g_assert (g_file_set_contents (temp_path, xml_data, xml_size, NULL));
+  g_assert_true (g_file_set_contents (temp_path, xml_data, xml_size, NULL));
   g_bytes_unref (xml);
 
   /* Load project */
-  g_assert ((project = glade_project_load (temp_path)));
+  g_assert_true ((project = glade_project_load (temp_path)));
 
   /* And save it, order should be the same */
-  g_assert (glade_project_save (project, temp_path, NULL));
+  g_assert_true (glade_project_save (project, temp_path, NULL));
   g_object_unref (project);
 
   /* Reload saved project */
-  g_assert ((project = glade_project_load (temp_path)));
+  g_assert_true ((project = glade_project_load (temp_path)));
 
   g_unlink (temp_path);
 
   /* And get toplevels to check order */
-  g_assert ((toplevels = glade_project_toplevels (project)));
+  g_assert_true ((toplevels = glade_project_toplevels (project)));
 
   for (l = toplevels; l && names; l = g_list_next (l), names++)
     {
       GladeWidget *toplevel;
-      g_assert ((toplevel = glade_widget_get_from_gobject (l->data)));
+      g_assert_true ((toplevel = glade_widget_get_from_gobject (l->data)));
       g_assert_cmpstr (glade_widget_get_name (toplevel), ==, *names);
     }
 
   /* make sure all items where tested */
-  g_assert (!l && !*names);
+  g_assert_true (!l && !*names);
   
   g_list_free (toplevels);
   g_object_unref (project);

@@ -11,15 +11,15 @@ test_object_class (gconstpointer data)
   GladeWidget        *widget;
   GObject            *object;
 
-  g_assert (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+  g_assert_true (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
   widget = glade_widget_adaptor_create_widget (adaptor, FALSE, NULL);
-  g_assert (GLADE_IS_WIDGET (widget));
+  g_assert_true (GLADE_IS_WIDGET (widget));
 
   object = glade_widget_get_object (widget);
-  g_assert (G_IS_OBJECT (object));
+  g_assert_true (G_IS_OBJECT (object));
 
-  g_assert (g_strcmp0 (G_OBJECT_TYPE_NAME (object), data) == 0);
+  g_assert_true (g_strcmp0 (G_OBJECT_TYPE_NAME (object), data) == 0);
 
   g_object_unref (widget);
 }

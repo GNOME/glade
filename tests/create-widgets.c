@@ -46,10 +46,10 @@ test_create_widget (gconstpointer data)
 
 
   widget = glade_widget_adaptor_create_widget (adaptor, FALSE, NULL);
-  g_assert (GLADE_IS_WIDGET (widget));
+  g_assert_true (GLADE_IS_WIDGET (widget));
 
   object = glade_widget_get_object (widget);
-  g_assert (G_IS_OBJECT (object));
+  g_assert_true (G_IS_OBJECT (object));
 
   g_object_weak_ref (G_OBJECT (widget),  check_finalized, &widget_finalized);
   g_object_weak_ref (G_OBJECT (object),  check_finalized, &object_finalized);
@@ -72,8 +72,8 @@ test_create_widget (gconstpointer data)
    */
   g_object_unref (widget);
 
-  g_assert (widget_finalized);
-  g_assert (object_finalized);
+  g_assert_true (widget_finalized);
+  g_assert_true (object_finalized);
 }
 
 static gint

@@ -70,7 +70,7 @@ test_add_child (gconstpointer data)
   /* Pass ownership to the parent */
   g_object_unref (gchild);
 
-  g_assert (glade_widget_get_parent (gchild) == gparent);
+  g_assert_true (glade_widget_get_parent (gchild) == gparent);
 
   if (test->func)
     test->func (parent, child);
@@ -96,10 +96,10 @@ test_add_child (gconstpointer data)
 
   g_object_unref (gparent);
 
-  g_assert (gparent_finalized);
-  g_assert (gchild_finalized);
-  g_assert (parent_finalized);
-  g_assert (child_finalized);
+  g_assert_true (gparent_finalized);
+  g_assert_true (gchild_finalized);
+  g_assert_true (parent_finalized);
+  g_assert_true (child_finalized);
 }
 
 static void
@@ -126,7 +126,7 @@ static void
 assert_widget_parented (GObject *parent,
 			GObject *child)
 {
-  g_assert (gtk_widget_get_parent (GTK_WIDGET (child)) == GTK_WIDGET (parent));
+  g_assert_true (gtk_widget_get_parent (GTK_WIDGET (child)) == GTK_WIDGET (parent));
 }
 
 static void
@@ -134,11 +134,11 @@ assert_submenu (GObject *parent,
 		GObject *child)
 {
   if (GTK_IS_MENU_ITEM (parent))
-    g_assert (gtk_menu_item_get_submenu (GTK_MENU_ITEM (parent)) == GTK_WIDGET (child));
+    g_assert_true (gtk_menu_item_get_submenu (GTK_MENU_ITEM (parent)) == GTK_WIDGET (child));
   else if (GTK_IS_MENU_TOOL_BUTTON (parent))
-    g_assert (gtk_menu_tool_button_get_menu (GTK_MENU_TOOL_BUTTON (parent)) == GTK_WIDGET (child));
+    g_assert_true (gtk_menu_tool_button_get_menu (GTK_MENU_TOOL_BUTTON (parent)) == GTK_WIDGET (child));
   else
-    g_assert_not_reached ();
+    g_assert_true (FALSE);
 }
 
 static void
@@ -148,7 +148,7 @@ assert_cell_parented (GObject *parent,
   GList *cells;
 
   cells = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (parent));
-  g_assert (g_list_find (cells, child) != NULL);
+  g_assert_true (g_list_find (cells, child) != NULL);
   g_list_free (cells);
 }
 
@@ -156,7 +156,7 @@ static void
 assert_column_parented (GObject *parent,
 			GObject *child)
 {
-  g_assert (gtk_tree_view_get_column (GTK_TREE_VIEW (parent), 0) == GTK_TREE_VIEW_COLUMN (child));
+  g_assert_true (gtk_tree_view_get_column (GTK_TREE_VIEW (parent), 0) == GTK_TREE_VIEW_COLUMN (child));
 }
 
 /* Ignore deprecated classes, we test them regardless */
