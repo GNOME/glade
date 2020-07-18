@@ -858,6 +858,13 @@ glade_xml_node_is_comment (GladeXmlNode *node_in)
 }
 
 static inline gboolean
+glade_xml_node_is_text (GladeXmlNode *node_in)
+{
+  xmlNodePtr node = (xmlNodePtr) node_in;
+  return (node) ? node->type == XML_TEXT_NODE : FALSE;
+}
+
+static inline gboolean
 glade_xml_node_is_comment_or_text (GladeXmlNode *node_in)
 {
   xmlNodePtr node = (xmlNodePtr) node_in;
@@ -911,7 +918,11 @@ glade_xml_node_next_with_comments (GladeXmlNode *node_in)
 {
   xmlNodePtr node = (xmlNodePtr) node_in;
 
-  return (GladeXmlNode *) node->next;
+  node = node->next;
+  while (glade_xml_node_is_text ((GladeXmlNode *) node))
+    node = node->next;
+
+  return (GladeXmlNode *) node;
 }
 
 GladeXmlNode *
@@ -919,7 +930,11 @@ glade_xml_node_prev_with_comments (GladeXmlNode *node_in)
 {
   xmlNodePtr node = (xmlNodePtr) node_in;
 
-  return (GladeXmlNode *) node->prev;
+  node = node->prev;
+  while (glade_xml_node_is_text ((GladeXmlNode *) node))
+    node = node->prev;
+
+  return (GladeXmlNode *) node;
 }
 
 const gchar *
