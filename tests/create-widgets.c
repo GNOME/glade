@@ -6,9 +6,9 @@
 /* Avoid warnings from GVFS-RemoteVolumeMonitor */
 static gboolean
 ignore_gvfs_warning (const gchar *log_domain,
-		     GLogLevelFlags log_level,
-		     const gchar *message,
-		     gpointer user_data)
+                     GLogLevelFlags log_level,
+                     const gchar *message,
+                     gpointer user_data)
 {
   if (g_strcmp0 (log_domain, "GVFS-RemoteVolumeMonitor") == 0)
     return FALSE;
@@ -26,7 +26,7 @@ main_loop_quit_cb (gpointer data)
 
 static void
 check_finalized (gpointer data,
-		 GObject *where_the_object_was)
+                 GObject *where_the_object_was)
 {
   gboolean *did_finalize = (gboolean *)data;
 
@@ -104,27 +104,27 @@ main (int   argc,
       adaptor_type = glade_widget_adaptor_get_object_type (adaptor);
 
       if (G_TYPE_IS_INSTANTIATABLE (adaptor_type) && !G_TYPE_IS_ABSTRACT (adaptor_type) &&
-	  /* FIXME: FileChooserButton leaks a GTask which will crash in the following test */
-	  adaptor_type != GTK_TYPE_FILE_CHOOSER_BUTTON &&
+          /* FIXME: FileChooserButton leaks a GTask which will crash in the following test */
+          adaptor_type != GTK_TYPE_FILE_CHOOSER_BUTTON &&
           /* FIXME: GtkRecentChooser tries to remove an unknown source id */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER) &&
-	  /* FIXME: can not create a themed icon without a name */
-	  !g_type_is_a (adaptor_type, G_TYPE_THEMED_ICON) &&
-	  /* FIXME: Dialogs now use a headerbar by default making gtk give a warning when adding a widget to the action area */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_DIALOG) &&
-	  /* FIXME: The same goes for assistant */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_ASSISTANT) &&
-	  /* FIXME: GtkPopoverMenu gives a few warnings */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_POPOVER_MENU) &&
-	  /* FIXME: GtkFileChooserNative is hard to test here */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_FILE_CHOOSER_NATIVE))
-	{
-	  gchar *test_path = g_strdup_printf ("/CreateWidget/%s", glade_widget_adaptor_get_name (adaptor));
+          !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER) &&
+          /* FIXME: can not create a themed icon without a name */
+          !g_type_is_a (adaptor_type, G_TYPE_THEMED_ICON) &&
+          /* FIXME: Dialogs now use a headerbar by default making gtk give a warning when adding a widget to the action area */
+          !g_type_is_a (adaptor_type, GTK_TYPE_DIALOG) &&
+          /* FIXME: The same goes for assistant */
+          !g_type_is_a (adaptor_type, GTK_TYPE_ASSISTANT) &&
+          /* FIXME: GtkPopoverMenu gives a few warnings */
+          !g_type_is_a (adaptor_type, GTK_TYPE_POPOVER_MENU) &&
+          /* FIXME: GtkFileChooserNative is hard to test here */
+          !g_type_is_a (adaptor_type, GTK_TYPE_FILE_CHOOSER_NATIVE))
+        {
+          gchar *test_path = g_strdup_printf ("/CreateWidget/%s", glade_widget_adaptor_get_name (adaptor));
 
-	  g_test_add_data_func (test_path, adaptor, test_create_widget);
+          g_test_add_data_func (test_path, adaptor, test_create_widget);
 
-	  g_free (test_path);
-	}
+          g_free (test_path);
+        }
     }
   g_list_free (adaptors);
 

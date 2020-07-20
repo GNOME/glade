@@ -14,9 +14,9 @@ typedef struct {
 /* Avoid warnings from GVFS-RemoteVolumeMonitor */
 static gboolean
 ignore_gvfs_warning (const gchar *log_domain,
-		     GLogLevelFlags log_level,
-		     const gchar *message,
-		     gpointer user_data)
+                     GLogLevelFlags log_level,
+                     const gchar *message,
+                     gpointer user_data)
 {
   if (g_strcmp0 (log_domain, "GVFS-RemoteVolumeMonitor") == 0)
     return FALSE;
@@ -34,7 +34,7 @@ main_loop_quit_cb (gpointer data)
 
 static void
 check_finalized (gpointer data,
-		 GObject *where_the_object_was)
+                 GObject *where_the_object_was)
 {
   gboolean *did_finalize = (gboolean *)data;
 
@@ -104,15 +104,15 @@ test_add_child (gconstpointer data)
 
 static void
 add_test (GType parent_type,
-	  GType child_type,
-	  AssertParentedFunc func)
+          GType child_type,
+          AssertParentedFunc func)
 {
   gchar *test_path;
   TestData *data = g_new (TestData, 1);
 
   test_path = g_strdup_printf ("/AddChild/%s/%s",
-			       g_type_name (parent_type),
-			       g_type_name (child_type));
+                               g_type_name (parent_type),
+                               g_type_name (child_type));
 
   data->parent_type = parent_type;
   data->child_type  = child_type;
@@ -124,14 +124,14 @@ add_test (GType parent_type,
 
 static void
 assert_widget_parented (GObject *parent,
-			GObject *child)
+                        GObject *child)
 {
   g_assert_true (gtk_widget_get_parent (GTK_WIDGET (child)) == GTK_WIDGET (parent));
 }
 
 static void
 assert_submenu (GObject *parent,
-		GObject *child)
+                GObject *child)
 {
   if (GTK_IS_MENU_ITEM (parent))
     g_assert_true (gtk_menu_item_get_submenu (GTK_MENU_ITEM (parent)) == GTK_WIDGET (child));
@@ -143,7 +143,7 @@ assert_submenu (GObject *parent,
 
 static void
 assert_cell_parented (GObject *parent,
-		      GObject *child)
+                      GObject *child)
 {
   GList *cells;
 
@@ -154,7 +154,7 @@ assert_cell_parented (GObject *parent,
 
 static void
 assert_column_parented (GObject *parent,
-			GObject *child)
+                        GObject *child)
 {
   g_assert_true (gtk_tree_view_get_column (GTK_TREE_VIEW (parent), 0) == GTK_TREE_VIEW_COLUMN (child));
 }
