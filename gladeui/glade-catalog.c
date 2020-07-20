@@ -668,13 +668,10 @@ glade_catalog_load_all (void)
   for (l = catalogs; l; l = g_list_next (l))
     {
       catalog = l->data;
+
       if (catalog->init_function)
         catalog->init_function (catalog->name);
-    }
 
-  for (l = catalogs; l; l = g_list_next (l))
-    {
-      catalog = l->data;
       catalog_load (catalog);
     }
 
