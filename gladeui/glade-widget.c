@@ -1095,8 +1095,7 @@ glade_widget_set_real_property (GObject      *object,
         widget->priv->anarchist = g_value_get_boolean (value);
         break;
       case PROP_OBJECT:
-        if (g_value_get_object (value))
-          glade_widget_set_object (widget, g_value_get_object (value));
+        glade_widget_set_object (widget, g_value_get_object (value));
         break;
       case PROP_PROJECT:
         glade_widget_set_project (widget,
@@ -3617,9 +3616,12 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
   GObject *old_object;
 
   g_return_if_fail (GLADE_IS_WIDGET (gwidget));
-  g_return_if_fail (new_object == NULL ||
-                    g_type_is_a (G_OBJECT_TYPE (new_object),
-                                 glade_widget_adaptor_get_object_type (gwidget->priv->adaptor)));
+
+  if (new_object)
+    {
+      GType type = glade_widget_adaptor_get_object_type (gwidget->priv->adaptor);
+      g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (new_object), type));
+    }
 
   if (gwidget->priv->object == new_object)
     return;
