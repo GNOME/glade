@@ -305,6 +305,15 @@ glade_adaptor_chooser_update_adaptor (GladeAdaptorChooser *chooser)
     }
 }
 
+static void
+on_project_weak_notify (gpointer data, GObject *project)
+{
+  GladeAdaptorChooser *chooser = data;
+  GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
+
+  priv->project = NULL;
+}
+
 void
 glade_adaptor_chooser_set_project (GladeAdaptorChooser *chooser,
                                    GladeProject        *project)
@@ -320,12 +329,15 @@ glade_adaptor_chooser_set_project (GladeAdaptorChooser *chooser,
       g_signal_handlers_disconnect_by_func (G_OBJECT (priv->project),
                                             G_CALLBACK (glade_adaptor_chooser_update_adaptor),
                                             chooser);
-      g_clear_object (&priv->project);
+      g_object_weak_unref (G_OBJECT (priv->project), on_project_weak_notify, chooser);
+      priv->project = NULL;
     }
 
   if (project)
     {
-      priv->project = g_object_ref (project);
+      priv->project = project;
+      g_object_weak_ref (G_OBJECT (project), on_project_weak_notify, chooser);
+
       g_signal_connect_swapped (G_OBJECT (project), "notify::add-item",
                                 G_CALLBACK (glade_adaptor_chooser_update_adaptor),
                                 chooser);

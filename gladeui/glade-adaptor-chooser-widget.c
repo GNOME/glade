@@ -574,6 +574,15 @@ _glade_adaptor_chooser_widget_new (_GladeAdaptorChooserWidgetFlags flags, GladeP
                                    NULL));
 }
 
+static void
+on_project_weak_notify (gpointer data, GObject *project)
+{
+  _GladeAdaptorChooserWidget *chooser = data;
+  _GladeAdaptorChooserWidgetPrivate *priv = GET_PRIVATE (chooser);
+
+  priv->project = NULL;
+}
+
 void
 _glade_adaptor_chooser_widget_set_project (_GladeAdaptorChooserWidget *chooser,
                                            GladeProject               *project)
@@ -583,10 +592,18 @@ _glade_adaptor_chooser_widget_set_project (_GladeAdaptorChooserWidget *chooser,
   g_return_if_fail (GLADE_IS_ADAPTOR_CHOOSER_WIDGET (chooser));
   priv = GET_PRIVATE (chooser);
 
-  g_clear_object (&priv->project);
+  if (priv->project)
+    {
+      g_object_weak_unref (G_OBJECT (priv->project), on_project_weak_notify, chooser);
+      priv->project = NULL;
+    }
 
   if (project)
-    priv->project = g_object_ref (project);
+    {
+      priv->project = project;
+      g_object_weak_ref (G_OBJECT (project), on_project_weak_notify, chooser);
+    }
+
 
   gtk_tree_model_filter_refilter (priv->treemodelfilter);
 }
