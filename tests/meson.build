@@ -20,6 +20,7 @@ test_unit = [
   ['add-child', {'sources': 'add-child.c'}, envs],
   ['create-widgets', {'sources': 'create-widgets.c'}, envs],
   ['modules', {'sources': 'modules.c'}, modenvs],
+  ['refcount', {'sources': 'refcount.c'}, envs],
 ]
 
 sources = files('toplevel-order.c')
