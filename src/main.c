@@ -59,6 +59,21 @@ static GOptionEntry option_entries[] = {
   {NULL}
 };
 
+static gint
+handle_local_options (GApplication *application,
+                      GVariantDict *options,
+                      gpointer      user_data)
+{
+  if (version != FALSE)
+    {
+      /* Print version information and exit */
+      g_print ("%s\n", PACKAGE_STRING);
+      return 0;
+    }
+
+  return -1;
+}
+
 static void
 startup (GApplication *application)
 {
@@ -81,17 +96,8 @@ static void
 activate (GApplication *application)
 
 {
-  GladeWindow *window;
+  GladeWindow *window = GLADE_WINDOW (glade_window_new ());
 
-  if (version != FALSE)
-    {
-      /* Print version information and exit */
-      g_print ("%s\n", PACKAGE_STRING);
-      g_application_quit (application);
-      return;
-    }
-
-  window = GLADE_WINDOW (glade_window_new ());
   gtk_application_add_window (GTK_APPLICATION (application),
                               GTK_WINDOW (window));
 
@@ -109,14 +115,17 @@ open (GApplication  *application,
       gint           n_files,
       const gchar   *hint)
 {
+  GtkApplication *app = GTK_APPLICATION (application);
   GTimer *timer = NULL;
   GtkWindow *window;
   gint i;
 
-  g_application_activate (application);
+  if (!(window = gtk_application_get_active_window (app)))
+    {
+      g_application_activate (application);
+      window = gtk_application_get_active_window (app);
+    }
 
-  window = gtk_application_get_active_window (GTK_APPLICATION (application));
-  
   if (verbose) timer = g_timer_new ();
 
   for (i = 0; i < n_files; i++)
@@ -179,6 +188,7 @@ main (int argc, char *argv[])
                                             N_("Create or edit user interface designs for GTK+ or GNOME applications."));
   g_application_add_main_option_entries (G_APPLICATION (app), option_entries);
 
+  g_signal_connect (app, "handle-local-options", G_CALLBACK (handle_local_options), NULL);
   g_signal_connect (app, "startup", G_CALLBACK (startup), NULL);
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
   g_signal_connect (app, "open", G_CALLBACK (open), NULL);
