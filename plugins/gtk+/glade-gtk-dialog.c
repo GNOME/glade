@@ -27,6 +27,19 @@
 
 #include "glade-gtk-action-widgets.h"
 #include "glade-gtk-dialog.h"
+#include "glade-gtk.h"
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GObject *
+glade_gtk_dialog_construct_object (GladeWidgetAdaptor *adaptor,
+                                   guint               n_parameters,
+                                   GParameter         *parameters)
+{
+  g_autofree GParameter *params = glade_gtk_get_params_without_use_header_bar (&n_parameters, parameters);
+
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->construct_object (adaptor, n_parameters, params);
+}
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy,

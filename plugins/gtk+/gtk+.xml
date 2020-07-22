@@ -2321,6 +2321,7 @@
 
       <glade-widget-class name="GtkDialog" generic-name="dialog" title="Dialog Box"
                           default-width="320" default-height="260">
+        <construct-object-function>glade_gtk_dialog_construct_object</construct-object-function>
         <post-create-function>glade_gtk_dialog_post_create</post-create-function>
         <read-child-function>glade_gtk_dialog_read_child</read-child-function>
         <write-child-function>glade_gtk_dialog_write_child</write-child-function>
@@ -3302,8 +3303,6 @@
     -->
 
       <glade-widget-class name="GtkAboutDialog" generic-name="aboutdialog" title="About Dialog">
-        
-        <construct-object-function>glade_gtk_about_dialog_construct_object</construct-object-function>
         <read-widget-function>glade_gtk_about_dialog_read_widget</read-widget-function>
         <set-property-function>glade_gtk_about_dialog_set_property</set-property-function>
         
@@ -3445,6 +3444,7 @@
         <verify-function>glade_gtk_message_dialog_verify_property</verify-function>
         
         <properties>
+          <property id="use-csd" disabled="True"/>
           <property id="default-width"  default="400" optional="True" optional-default="False"/>
           <property id="default-height" default="115" optional="True" optional-default="False"/>
           
@@ -3529,6 +3529,7 @@
       <glade-widget-class name="GtkFontSelection" deprecated="True" generic-name="fontselection" title="Font Selection"/>
 
       <glade-widget-class name="GtkAssistant" generic-name="assistant" title="Assistant" since="2.10">
+        <construct-object-function>glade_gtk_assistant_construct_object</construct-object-function>
         <post-create-function>glade_gtk_assistant_post_create</post-create-function>
         <add-child-function>glade_gtk_assistant_add_child</add-child-function>
         <remove-child-function>glade_gtk_assistant_remove_child</remove-child-function>
@@ -3543,6 +3544,7 @@
           <object name="action_area"/>
         </internal-children>
         <properties>
+          <property id="use-header-bar" since="3.12" disabled="True"/>
           <property save="False" id="n-pages" name="Number of Pages">
             <parameter-spec>
               <type>GParamInt</type>
