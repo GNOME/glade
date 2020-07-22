@@ -88,7 +88,8 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
                         G_CALLBACK (glade_gtk_window_parse_finished),
                         object);
     }
-  else if (reason == GLADE_CREATE_USER)
+  else if (reason == GLADE_CREATE_USER &&
+           gtk_bin_get_child (GTK_BIN (object)) == NULL)
     {
       gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
     }
@@ -268,6 +269,13 @@ glade_gtk_window_set_property (GladeWidgetAdaptor *adaptor,
   else if (!strcmp (id, "use-csd"))
     {
       GtkWidget *titlebar = gtk_window_get_titlebar (GTK_WINDOW (object));
+      GladeWidget *gtitlebar = glade_widget_get_from_gobject (titlebar);
+
+      /* Safeguard for subclasses that do not properly implement this property */
+      if (!titlebar ||
+          (!GLADE_IS_PLACEHOLDER (titlebar) &&
+           !(gtitlebar = glade_widget_get_from_gobject (titlebar))))
+        return;
 
       if (g_value_get_boolean (value))
         {
@@ -289,7 +297,7 @@ glade_gtk_window_set_property (GladeWidgetAdaptor *adaptor,
               GList this_widget = { 0, };
 
               /* Remove titlebar widget */
-              this_widget.data = glade_widget_get_from_gobject (titlebar);
+              this_widget.data = gtitlebar;
               glade_command_delete (&this_widget);
 
               /* Set a hidden placeholder as the titlebar */
