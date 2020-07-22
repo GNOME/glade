@@ -27,7 +27,7 @@
 
 #include <glib/gi18n-lib.h>
 
-#include <gladeui/glade-widget-adaptor.h>
+#include <glib-object.h>
 
 /* --------------------------------- Constants ------------------------------ */
 
@@ -42,5 +42,14 @@
 
 #define GLADE_TAG_ATTRIBUTES        "attributes"
 #define GLADE_TAG_ATTRIBUTE         "attribute"
+
+G_BEGIN_DECLS
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GParameter *glade_gtk_get_params_without_use_header_bar (guint *n_parameters,
+                                                         GParameter *parameters);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+G_END_DECLS
 
 #endif /* __GLADE_GTK_H__ */

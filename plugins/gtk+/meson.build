@@ -28,6 +28,7 @@ sources = files(
   'glade-font-chooser-editor.c',
   'glade-font-chooser-widget-editor.c',
   'glade-grid-editor.c',
+  'glade-gtk.c',
   'glade-gtk-about-dialog.c',
   'glade-gtk-action-bar.c',
   'glade-gtk-action.c',
