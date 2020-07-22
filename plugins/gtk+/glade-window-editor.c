@@ -103,18 +103,26 @@ glade_window_editor_load (GladeEditable *editable,
 
   if (gwidget)
     {
+      GladeProperty *use_csd_prop = glade_widget_get_property (gwidget, "use-csd");
+      GladePropertyDef *use_csd_def = glade_property_get_def (use_csd_prop);
       gboolean icon_name;
       gboolean use_csd;
 
       glade_widget_property_get (gwidget, "glade-window-icon-name", &icon_name);
-      glade_widget_property_get (gwidget, "use-csd", &use_csd);
+      glade_property_get (use_csd_prop, &use_csd);
 
       if (icon_name)
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->icon_name_radio), TRUE);
       else
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->icon_file_radio), TRUE);
 
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->use_csd_check), use_csd);
+      if (glade_property_def_is_visible (use_csd_def))
+        {
+          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->use_csd_check), use_csd);
+          gtk_widget_show (priv->use_csd_check);
+        }
+      else
+        gtk_widget_hide (priv->use_csd_check);
     }
 }
 
