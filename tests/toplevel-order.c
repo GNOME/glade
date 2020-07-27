@@ -105,7 +105,6 @@ test_toplevel_order (gconstpointer userdata)
   /* make sure all items where tested */
   g_assert_true (!l && !*names);
   
-  g_list_free (toplevels);
   g_object_unref (project);
   g_free (temp_path);
 }
