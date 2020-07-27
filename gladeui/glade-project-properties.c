@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2013 Tristan Van Berkom.
+ *               2020 Juan Pablo Ugarte.
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -17,6 +18,7 @@
  *
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
+ *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
 #include <config.h>
@@ -30,6 +32,7 @@
 #include "glade-private.h"
 
 /* GObjectClass */
+static void     glade_project_properties_dispose      (GObject                *object);
 static void     glade_project_properties_finalize     (GObject                *object);
 static void     glade_project_properties_set_property (GObject                *object,
                                                        guint                   prop_id,
@@ -92,9 +95,19 @@ static void     project_css_provider_path_changed     (GladeProject           *p
                                                        GParamSpec             *pspec,
                                                        GladeProjectProperties *properties);
 
+/* Toplevels model */
+enum
+{
+  COLUMN_ICON_NAME,
+  COLUMN_NAME,
+  COLUMN_ID,
+  COLUMN_WIDGET
+};
+
 typedef struct
 {
   GladeProject *project;
+  GtkListStore *toplevels;
 
   /* Properties */
   GtkWidget *project_wide_radio;
@@ -167,6 +180,7 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   gobject_class = G_OBJECT_CLASS (klass);
   widget_class  = GTK_WIDGET_CLASS (klass);
 
+  gobject_class->dispose = glade_project_properties_dispose;
   gobject_class->finalize = glade_project_properties_finalize;
   gobject_class->set_property = glade_project_properties_set_property;
 
@@ -175,7 +189,7 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
      g_param_spec_object ("project", _("Project"),
                           _("The project this properties dialog was created for"),
                           GLADE_TYPE_PROJECT,
-                          G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+                          G_PARAM_WRITABLE));
 
   /* Setup the template GtkBuilder xml for this class
    */
@@ -183,6 +197,7 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
 
   /* Define the relationship of the private entry and the entry defined in the xml
    */
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, toplevels);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, resource_default_radio);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, resource_relative_radio);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, resource_fullpath_radio);
@@ -227,6 +242,15 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
 /********************************************************
  *                     GObjectClass                     *
  ********************************************************/
+static void
+glade_project_properties_dispose (GObject *object)
+{
+  /* Unset project to disconnect callbacks */
+  g_object_set (object, "project", NULL, NULL);
+
+  G_OBJECT_CLASS (glade_project_properties_parent_class)->dispose (object);
+}
+
 static void
 glade_project_properties_finalize (GObject *object)
 {
@@ -361,14 +385,123 @@ update_prefs_for_resource_path (GladeProjectProperties *properties)
 }
 
 static void
+on_project_add_widget (GladeProject *project,
+                       GladeWidget *widget,
+                       GladeProjectProperties *properties)
+{
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE (properties);
+  GladeWidgetAdaptor *adaptor;
+  const gchar *name;
+  GtkTreeIter iter;
+
+  if (glade_widget_get_parent (widget))
+    return;
+
+  adaptor = glade_widget_get_adaptor (widget);
+  name = glade_widget_get_name (widget);
+
+  gtk_list_store_append (priv->toplevels, &iter);
+  gtk_list_store_set (priv->toplevels, &iter,
+                      COLUMN_ICON_NAME,
+                      glade_widget_adaptor_get_icon_name (adaptor),
+                      COLUMN_NAME,
+                      g_str_has_prefix (name, "__glade_unnamed") ?
+                        glade_widget_adaptor_get_name (adaptor) : name,
+                      COLUMN_ID,
+                      name,
+                      COLUMN_WIDGET,
+                      widget,
+                      -1);
+}
+
+static gboolean
+get_iter_by_widget (GtkTreeModel *model, GladeWidget *widget, GtkTreeIter *iter)
+{
+  gboolean valid = gtk_tree_model_get_iter_first (model, iter);
+
+  while (valid)
+    {
+      GladeWidget *gwidget;
+
+      gtk_tree_model_get (model, iter, COLUMN_WIDGET, &gwidget, -1);
+      g_object_unref (gwidget);
+
+      if (widget == gwidget)
+        return TRUE;
+
+      valid = gtk_tree_model_iter_next (model, iter);
+   }
+
+  return FALSE;
+}
+
+static void
+on_project_remove_widget (GladeProject *project,
+                          GladeWidget *widget,
+                          GladeProjectProperties *properties)
+{
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE (properties);
+  GtkTreeIter iter;
+
+  if (glade_widget_get_parent (widget))
+    return;
+
+  if (get_iter_by_widget (GTK_TREE_MODEL (priv->toplevels), widget, &iter))
+    gtk_list_store_remove (priv->toplevels, &iter);
+}
+
+static void
+on_project_widget_name_change (GladeProject *project,
+                               GladeWidget *widget,
+                               GladeProjectProperties *properties)
+{
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE (properties);
+  GtkTreeIter iter;
+
+  if (glade_widget_get_parent (widget))
+    return;
+
+  if (get_iter_by_widget (GTK_TREE_MODEL (priv->toplevels), widget, &iter))
+    {
+      GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
+      const gchar *name = glade_widget_get_name (widget);
+
+      gtk_list_store_set (priv->toplevels, &iter,
+                          COLUMN_NAME,
+                          g_str_has_prefix (name, "__glade_unnamed") ?
+                            glade_widget_adaptor_get_name (adaptor) : name,
+                          COLUMN_ID,
+                          name,
+                          -1);
+    }
+}
+
+static void
 glade_project_properties_set_project (GladeProjectProperties *properties,
                                       GladeProject           *project)
 {
   GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
+#define PROJECT_DISCONNECT(func) g_signal_handlers_disconnect_by_func (priv->project, G_CALLBACK (func), properties)
+
+  if (priv->project)
+    {
+      PROJECT_DISCONNECT (project_resource_path_changed);
+      PROJECT_DISCONNECT (project_template_changed);
+      PROJECT_DISCONNECT (project_domain_changed);
+      PROJECT_DISCONNECT (project_css_provider_path_changed);
+      PROJECT_DISCONNECT (project_targets_changed);
+      PROJECT_DISCONNECT (project_license_changed);
+      PROJECT_DISCONNECT (on_project_add_widget);
+      PROJECT_DISCONNECT (on_project_remove_widget);
+      PROJECT_DISCONNECT (on_project_widget_name_change);
+    }
+
   /* No strong reference, we belong to the project */
-  g_assert (priv->project == NULL);
   priv->project = project;
+
+  if (!priv->project)
+    return;
 
   g_signal_connect (priv->project, "notify::resource-path",
                     G_CALLBACK (project_resource_path_changed), properties);
@@ -377,11 +510,17 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
   g_signal_connect (priv->project, "notify::translation-domain",
                     G_CALLBACK (project_domain_changed), properties);
   g_signal_connect (priv->project, "notify::css-provider-path",
-                    G_CALLBACK (project_css_provider_path_changed), properties);  
+                    G_CALLBACK (project_css_provider_path_changed), properties);
   g_signal_connect (priv->project, "targets-changed",
                     G_CALLBACK (project_targets_changed), properties);
   g_signal_connect (priv->project, "notify::license",
                     G_CALLBACK (project_license_changed), properties);
+  g_signal_connect (priv->project, "add-widget",
+                    G_CALLBACK (on_project_add_widget), properties);
+  g_signal_connect (priv->project, "remove-widget",
+                    G_CALLBACK (on_project_remove_widget), properties);
+  g_signal_connect (priv->project, "widget-name-changed",
+                    G_CALLBACK (on_project_widget_name_change), properties);
 
   target_version_box_fill (properties);
   update_prefs_for_resource_path (properties);
@@ -531,12 +670,11 @@ on_template_combo_box_changed (GtkComboBox            *combo,
   if (gtk_combo_box_get_active_iter (combo, &iter))
     {
       GladeWidget *gwidget;
-      GObject *object;
 
       gtk_tree_model_get (gtk_combo_box_get_model (combo), &iter,
-                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object, -1);
-      
-      gwidget = glade_widget_get_from_gobject (object);
+                          COLUMN_WIDGET, &gwidget,
+                          -1);
+      g_object_unref (gwidget);
 
       glade_command_set_project_template (priv->project, gwidget);
     }
@@ -576,40 +714,6 @@ on_template_checkbutton_toggled (GtkToggleButton        *togglebutton,
     }
   else
     glade_command_set_project_template (priv->project, NULL);
-}
-
-static gboolean
-template_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
-{
-  GtkTreeIter parent;
-  gboolean visible;
-  GObject *object;
-
-  visible = !gtk_tree_model_iter_parent (model, &parent, iter);
-
-  if (visible)
-    {
-      gtk_tree_model_get (model, iter,
-                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
-                          -1);
-
-      visible = GTK_IS_WIDGET (object);
-      g_object_unref (object);
-    }
-
-  return visible;
-}
-
-static GtkTreeModel *
-glade_project_toplevel_model_filter_new (GladeProjectProperties *properties)
-{
-  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
-  GtkTreeModel *model;
-
-  model = gtk_tree_model_filter_new (GTK_TREE_MODEL (priv->project), NULL);
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (model),
-                                          template_visible_func, NULL, NULL);
-  return model;
 }
 
 static void
@@ -930,6 +1034,9 @@ on_glade_project_properties_hide (GtkWidget              *widget,
   GtkTextIter start, end;
   gchar *license;
 
+  if (!priv->project)
+    return;
+
   gtk_text_buffer_get_bounds (priv->license_textbuffer, &start, &end);
   license = gtk_text_buffer_get_text (priv->license_textbuffer, &start, &end, FALSE);
   g_strstrip (license);
@@ -1045,51 +1152,24 @@ project_template_changed (GladeProject           *project,
                           GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
-  GtkTreeModel *model;
-  GtkTreeIter iter;
-  gboolean valid;
-  gboolean template_found = FALSE;
+  GladeWidget *gwidget;
 
   priv->ignore_ui_cb = TRUE;
 
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (priv->template_combobox));
-  if (!model)
+  if ((gwidget = glade_project_get_template (priv->project)))
     {
-      model = glade_project_toplevel_model_filter_new (properties);
+      gtk_combo_box_set_active_id (GTK_COMBO_BOX (priv->template_combobox),
+                                   glade_widget_get_name (gwidget));
 
-      gtk_combo_box_set_model (GTK_COMBO_BOX (priv->template_combobox), model);
-      g_object_unref (model);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->template_checkbutton), TRUE);
+      gtk_widget_set_sensitive (priv->template_combobox, TRUE);
     }
-
-  valid = gtk_tree_model_get_iter_first (model, &iter);
-  while (valid)
+  else
     {
-      GladeWidget *gwidget;
-      GObject *obj;
-      
-      gtk_tree_model_get (model, &iter,
-                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
-                          -1);
-
-      gwidget = glade_widget_get_from_gobject (obj);
-      g_object_unref (obj);
-
-      if (gwidget == glade_project_get_template (priv->project))
-        {
-          gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), &iter);
-
-          template_found = TRUE;
-          break;
-        }
-
-      valid = gtk_tree_model_iter_next (model, &iter);
+      gtk_combo_box_set_active_id (GTK_COMBO_BOX (priv->template_combobox), NULL);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->template_checkbutton), FALSE);
+      gtk_widget_set_sensitive (priv->template_combobox, FALSE);
     }
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->template_checkbutton), template_found);
-  gtk_widget_set_sensitive (priv->template_combobox, template_found);
-
-  if (!template_found && gtk_combo_box_get_model (GTK_COMBO_BOX (priv->template_combobox)))
-    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), NULL);
 
   priv->ignore_ui_cb = FALSE;
 }
