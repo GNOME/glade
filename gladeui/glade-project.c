@@ -247,36 +247,15 @@ glade_project_list_unref (GList *original_list)
 }
 
 static void
-unparent_objects_recurse (GladeWidget *widget)
-{
-  GladeWidget *child;
-  GList *children, *list;
-
-  /* Unparent all children */
-  if ((children = glade_widget_get_children (widget)) != NULL)
-    {
-      for (list = children; list; list = list->next)
-        {
-          child = glade_widget_get_from_gobject (list->data);
-
-          unparent_objects_recurse (child);
-
-          if (!glade_widget_get_internal (child))
-            glade_widget_remove_child (widget, child);
-        }
-      g_list_free (children);
-    }
-}
-
-static void
 glade_project_dispose (GObject *object)
 {
   GladeProject *project = GLADE_PROJECT (object);
   GladeProjectPrivate *priv = project->priv;
-  GList *list, *tree;
 
   /* Emit close signal */
   g_signal_emit (object, glade_project_signals[CLOSE], 0);
+
+  gtk_widget_destroy (priv->prefs_dialog);
 
   /* Destroy running previews */
   if (priv->previews)
@@ -298,17 +277,19 @@ glade_project_dispose (GObject *object)
   priv->undo_stack = NULL;
 
   /* Remove objects from the project */
-  tree = g_list_copy (priv->tree);
-  for (list = tree; list; list = list->next)
-    {
-      GladeWidget *gwidget = glade_widget_get_from_gobject (list->data);
-
-      unparent_objects_recurse (gwidget);
-    }
-  g_list_free (tree);
-
   while (priv->tree)
-    glade_project_remove_object (project, priv->tree->data);
+    {
+      GObject *toplevel = priv->tree->data;
+
+      glade_project_remove_object (project, toplevel);
+
+      /* NOTE: Due to Gtk+ keeping a reference to the window internally,
+       * gtk_window_new() does not return a reference to the caller.
+       * To delete a GtkWindow, call gtk_widget_destroy().
+       */
+      if (GTK_IS_WINDOW (toplevel))
+        gtk_widget_destroy (GTK_WIDGET (toplevel));
+    }
 
   while (priv->objects)
     glade_project_remove_object (project, priv->objects->data);
@@ -341,8 +322,6 @@ glade_project_finalize (GObject *object)
 {
   GladeProject *project = GLADE_PROJECT (object);
   GladeProjectPrivate *priv = project->priv;
-
-  gtk_widget_destroy (priv->prefs_dialog);
 
   g_free (priv->path);
   g_free (priv->license);
@@ -4148,6 +4127,10 @@ glade_project_remove_object (GladeProject *project, GObject *object)
         glade_project_remove_object (project, G_OBJECT (list->data));
       g_list_free (children);
     }
+
+  /* Update UI since this could take a while, specially disposing a large project */
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
 
   /* Remove selection and release name from the name context */
   glade_project_selection_remove (project, object, TRUE);
