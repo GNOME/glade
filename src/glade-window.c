@@ -101,8 +101,7 @@ struct _GladeWindowPrivate
   GtkWidget *undo_button;       /* undo/redo button, right click for history */
   GtkWidget *redo_button;
 
-  GtkWidget *toolbar;           /* Actions are added to the toolbar */
-  gint actions_start;           /* start of action items */
+  GtkButtonBox *actions;        /* Actions are added to the headerbar */
 
   GtkWidget *center_paned;
   GtkWidget *left_paned;
@@ -235,36 +234,24 @@ action_disconnect (gpointer data, GClosure *closure)
 static void
 clean_actions (GladeWindow *window)
 {
-  GtkContainer *container = GTK_CONTAINER (window->priv->toolbar);
-  GtkToolbar *bar = GTK_TOOLBAR (window->priv->toolbar);
-  GtkToolItem *item;
+  GtkContainer *container = GTK_CONTAINER (window->priv->actions);
+  g_autoptr (GList) children = gtk_container_get_children (container);
+  GList *l;
 
-  if (window->priv->actions_start)
-    {
-      while ((item =
-              gtk_toolbar_get_nth_item (bar, window->priv->actions_start)))
-        gtk_container_remove (container, GTK_WIDGET (item));
-    }
+  for (l = children; l; l = g_list_next(l))
+    gtk_container_remove (container, l->data);
 }
 
 static void
 add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
 {
-  GtkToolbar *bar = GTK_TOOLBAR (window->priv->toolbar);
-  GtkToolItem *item = gtk_separator_tool_item_new ();
-  gint n = 0;
   GList *l;
-
-  gtk_toolbar_insert (bar, item, -1);
-  gtk_widget_show (GTK_WIDGET (item));
-
-  if (window->priv->actions_start == 0)
-    window->priv->actions_start = gtk_toolbar_get_item_index (bar, item);
 
   for (l = actions; l; l = g_list_next (l))
     {
       GladeWidgetAction    *action = l->data;
       GladeWidgetActionDef *adef   = glade_widget_action_get_def (action);
+      GtkWidget *button;
 
       if (!adef->important || !glade_widget_action_get_visible (action))
         continue;
@@ -275,37 +262,30 @@ add_actions (GladeWindow *window, GladeWidget *widget, GList *actions)
           continue;
         }
 
-      item = gtk_tool_button_new (NULL, adef->label);
-      gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item),
-                                     (adef->stock) ? adef->stock : "system-run");
+      button = gtk_button_new_from_icon_name ((adef->stock) ? adef->stock : "system-run-symbolic",
+                                              GTK_ICON_SIZE_MENU);
 
       if (adef->label)
-        gtk_widget_set_tooltip_text (GTK_WIDGET (item), adef->label);
+        gtk_widget_set_tooltip_text (button, adef->label);
 
-      g_object_set_data (G_OBJECT (item), "glade-widget", widget);
+      g_object_set_data (G_OBJECT (button), "glade-widget", widget);
 
       /* We use destroy_data to keep track of notify::sensitive callbacks
        * on the action object and disconnect them when the toolbar item
        * gets destroyed.
        */
-      g_signal_connect_data (item, "clicked",
+      g_signal_connect_data (button, "clicked",
                              G_CALLBACK (activate_action),
                              action, action_disconnect, 0);
 
-      gtk_widget_set_sensitive (GTK_WIDGET (item), 
-                                glade_widget_action_get_sensitive (action));
+      gtk_widget_set_sensitive (button, glade_widget_action_get_sensitive (action));
 
       g_signal_connect (action, "notify::sensitive",
-                        G_CALLBACK (activate_action), GTK_WIDGET (item));
+                        G_CALLBACK (activate_action), button);
 
-      gtk_toolbar_insert (bar, item, -1);
-      gtk_tool_item_set_homogeneous (item, FALSE);
-      gtk_widget_show_all (GTK_WIDGET (item));
-      n++;
+      gtk_widget_show (button);
+      gtk_box_pack_start (GTK_BOX (window->priv->actions), button, FALSE, FALSE, 0);
     }
-
-  if (n == 0)
-    clean_actions (window);
 }
 
 static GladeProject *
@@ -324,6 +304,8 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
   GladeWidget  *glade_widget = NULL;
   GList        *list;
   gint          num;
+
+  clean_actions (window);
 
   active_project = get_active_project (window);
 
@@ -344,7 +326,6 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
         {
           glade_widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
 
-          clean_actions (window);
           if (glade_widget_get_actions (glade_widget))
             add_actions (window, glade_widget, glade_widget_get_actions (glade_widget));
         }
@@ -2480,7 +2461,7 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, inspectors_stack);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, statusbar);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, toolbar);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, actions);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, undo_button);
   gtk_widget_class_bind_template_child_private (widget_class, GladeWindow, redo_button);
 
