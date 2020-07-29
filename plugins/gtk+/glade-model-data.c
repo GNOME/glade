@@ -954,7 +954,7 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 
           g_object_set (G_OBJECT (icon_renderer),
                         "activatable", TRUE,
-                        "icon-name", "gtk-edit",
+                        "icon-name", "document-edit-symbolic",
                         NULL);
 
           gtk_tree_view_column_pack_start (column, icon_renderer, FALSE);

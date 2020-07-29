@@ -599,7 +599,7 @@ glade_eprop_accel_create_input (GladeEditorProperty * eprop)
   gtk_editable_set_editable (GTK_EDITABLE (eprop_accel->entry), FALSE);
   gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_accel->entry),
                                      GTK_ENTRY_ICON_SECONDARY,
-                                     "gtk-edit");
+                                     "document-edit-symbolic");
   g_signal_connect_swapped (eprop_accel->entry, "icon-release",
                             G_CALLBACK (glade_eprop_accel_show_dialog), eprop);
 

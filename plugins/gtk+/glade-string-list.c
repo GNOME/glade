@@ -708,7 +708,7 @@ glade_eprop_string_list_create_input (GladeEditorProperty *eprop)
 
   /* i18n icon renderer */
   renderer = glade_cell_renderer_icon_new ();
-  g_object_set (G_OBJECT (renderer), "icon-name", "gtk-edit", NULL);
+  g_object_set (G_OBJECT (renderer), "icon-name", "document-edit-symbolic", NULL);
   g_signal_connect (G_OBJECT (renderer), "activate",
                     G_CALLBACK (i18n_icon_activate), eprop);
 

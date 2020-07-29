@@ -35,10 +35,10 @@
       </signals>
       
       <actions>
-        <action id="preview" name="Preview snapshot" stock="system-run" important="True"/>
-        <action id="edit_separate" name="Edit Separately" stock="gtk-edit"/>
-        <action id="remove_parent" name="Remove Parent" stock="list-remove"/>
-        <action id="add_parent" name="Add Parent" stock="list-add">
+        <action id="preview" name="Preview snapshot" stock="system-run-symbolic" important="True"/>
+        <action id="edit_separate" name="Edit Separately" stock="document-edit-symbolic"/>
+        <action id="remove_parent" name="Remove Parent" stock="list-remove-symbolic"/>
+        <action id="add_parent" name="Add Parent" stock="list-add-symbolic">
           <action id="alignment" name="Alignment"/>
           <action id="viewport" name="Viewport"/>
           <action id="eventbox" name="Event Box"/>
@@ -52,8 +52,8 @@
           <action id="stack" name="Stack"/>
         </action>
         <action id="sizegroup_add" name="Add to Size Group"/>
-        <action id="clear_properties" name="Clear properties" stock="edit-clear"/>
-        <action id="read_documentation" name="Read documentation" stock="glade-devhelp" important="True"/>
+        <action id="clear_properties" name="Clear properties" stock="edit-clear-symbolic"/>
+        <action id="read_documentation" name="Read documentation" stock="system-help-symbolic" important="True"/>
       </actions>
         
         <properties>
@@ -660,9 +660,9 @@
         <special-child-type>type</special-child-type>
         
         <packing-actions>
-          <action id="insert_before" name="Insert Before" stock="list-add"/>
-          <action id="insert_after" name="Insert After" stock="list-add"/>
-          <action id="remove_slot" name="Remove Slot" stock="list-remove"/>
+          <action id="insert_before" name="Insert Before" stock="list-add-symbolic"/>
+          <action id="insert_after" name="Insert After" stock="list-add-symbolic"/>
+          <action id="remove_slot" name="Remove Slot" stock="list-remove-symbolic"/>
         </packing-actions>
         
         <properties>
@@ -1000,7 +1000,7 @@
         <special-child-type>submenu</special-child-type>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         <properties>
           <property id="accel-path" since="2.14"/>
@@ -1073,7 +1073,7 @@
         <post-create-function>glade_gtk_menu_bar_post_create</post-create-function>
         <!-- menubar is a container you can't add placeholders to it -->
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         <properties>
           <property id="child-pack-direction">
@@ -1107,7 +1107,7 @@
         <write-widget-function>glade_gtk_toolbar_write_widget</write-widget-function>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         <properties>
           <property id="icon-size-set" since="2.10" disabled="True"/>
@@ -1189,7 +1189,7 @@
         <action-activate-function>glade_gtk_tool_palette_action_activate</action-activate-function>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         <properties>
           <property id="icon-size-set" disabled="True"/>
@@ -2125,7 +2125,7 @@
         <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         
         <internal-children>
@@ -2354,16 +2354,16 @@
         <child-action-activate-function>glade_gtk_table_child_action_activate</child-action-activate-function>
         
         <packing-actions>
-          <action id="insert_row" name="Insert Row" stock="list-add">
+          <action id="insert_row" name="Insert Row" stock="list-add-symbolic">
             <action id="before" name="Before"/>
             <action id="after" name="After"/>
           </action>
-          <action id="insert_column" name="Insert Column" stock="list-add">
+          <action id="insert_column" name="Insert Column" stock="list-add-symbolic">
             <action id="before" name="Before"/>
             <action id="after" name="After"/>
           </action>
-          <action id="remove_row" name="Remove Row" stock="list-remove"/>
-          <action id="remove_column" name="Remove Column" stock="list-remove"/>
+          <action id="remove_row" name="Remove Row" stock="list-remove-symbolic"/>
+          <action id="remove_column" name="Remove Column" stock="list-remove-symbolic"/>
         </packing-actions>
         
         <properties>
@@ -2406,16 +2406,16 @@
         <write-widget-function>glade_gtk_grid_write_widget</write-widget-function>
         
         <packing-actions>
-          <action id="insert_row" name="Insert Row" stock="list-add">
+          <action id="insert_row" name="Insert Row" stock="list-add-symbolic">
             <action id="before" name="Before"/>
             <action id="after" name="After"/>
           </action>
-          <action id="insert_column" name="Insert Column" stock="list-add">
+          <action id="insert_column" name="Insert Column" stock="list-add-symbolic">
             <action id="before" name="Before"/>
             <action id="after" name="After"/>
           </action>
-          <action id="remove_row" name="Remove Row" stock="list-remove"/>
-          <action id="remove_column" name="Remove Column" stock="list-remove"/>
+          <action id="remove_row" name="Remove Row" stock="list-remove-symbolic"/>
+          <action id="remove_column" name="Remove Column" stock="list-remove-symbolic"/>
         </packing-actions>
         
         <properties>
@@ -2502,9 +2502,9 @@
         </signals>
         
         <packing-actions>
-          <action id="insert_page_before" name="Insert Page Before" stock="list-add"/>
-          <action id="insert_page_after" name="Insert Page After" stock="list-add"/>
-          <action id="remove_page" name="Remove Page"  stock="list-remove"/>
+          <action id="insert_page_before" name="Insert Page Before" stock="list-add-symbolic"/>
+          <action id="insert_page_after" name="Insert Page After" stock="list-add-symbolic"/>
+          <action id="remove_page" name="Remove Page"  stock="list-remove-symbolic"/>
         </packing-actions>
         
         <properties>
@@ -2587,10 +2587,10 @@
          <property id="pack-type" transfer-on-paste="True" />
       </packing-properties>
       <packing-actions>
-        <action id="remove_slot" name="Remove Slot" stock="gtk-remove"/>
+        <action id="remove_slot" name="Remove Slot" stock="list-remove-symbolic"/>
       </packing-actions>
       <actions>
-        <action id="add_slot" name="Add Slot" stock="gtk-add"/>
+        <action id="add_slot" name="Add Slot" stock="list-add-symbolic"/>
       </actions>
     </glade-widget-class>
 
@@ -2606,9 +2606,9 @@
         <child-set-property-function>glade_gtk_stack_set_child_property</child-set-property-function>
         <verify-function>glade_gtk_stack_verify_property</verify-function>
         <packing-actions>
-          <action id="insert_page_before" name="Insert Page Before" stock="list-add"/>
-          <action id="insert_page_after" name="Insert Page After" stock="list-add"/>
-          <action id="remove_page" name="Remove Page"  stock="list-remove"/>
+          <action id="insert_page_before" name="Insert Page Before" stock="list-add-symbolic"/>
+          <action id="insert_page_after" name="Insert Page After" stock="list-add-symbolic"/>
+          <action id="remove_page" name="Remove Page"  stock="list-remove-symbolic"/>
         </packing-actions>
         <properties>
           <property id="pages" name="Number of pages" save="False" default="1" custom-layout="True">
@@ -2739,12 +2739,12 @@
         <special-child-type>type</special-child-type>
         
         <actions>
-          <action id="add_row" name="Add Row" stock="list-add" important="True"/>
+          <action id="add_row" name="Add Row" stock="list-add-symbolic" important="True"/>
         </actions>
         
         <packing-actions>
-          <action id="insert_before" name="Insert Before" stock="list-add"/>
-          <action id="insert_after" name="Insert After" stock="list-add"/>
+          <action id="insert_before" name="Insert Before" stock="list-add-symbolic"/>
+          <action id="insert_after" name="Insert After" stock="list-add-symbolic"/>
         </packing-actions>
         
         <properties>
@@ -2807,12 +2807,12 @@
         <child-get-property-function>glade_gtk_flowbox_get_child_property</child-get-property-function>
         
         <actions>
-          <action id="add_child" name="Add Child" stock="list-add" important="True"/>
+          <action id="add_child" name="Add Child" stock="list-add-symbolic" important="True"/>
         </actions>
         
         <packing-actions>
-          <action id="insert_before" name="Insert Before" stock="list-add"/>
-          <action id="insert_after" name="Insert After" stock="list-add"/>
+          <action id="insert_before" name="Insert Before" stock="list-add-symbolic"/>
+          <action id="insert_after" name="Insert After" stock="list-add-symbolic"/>
         </packing-actions>
         
         <properties>
@@ -2901,7 +2901,7 @@
         <!-- We do not want glade_gtk_container_post_create be executed -->
         <post-create-function>empty</post-create-function>
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         <properties>
           <property id="accel-group" since="2.14"/>
@@ -3802,7 +3802,7 @@
         <action-activate-function>glade_gtk_action_action_activate</action-activate-function>
         <create-editable-function>glade_gtk_action_create_editable</create-editable-function>
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         
         <properties>
@@ -3877,7 +3877,7 @@
         <write-child-function>glade_gtk_action_group_write_child</write-child-function>
         <action-activate-function>glade_gtk_action_action_activate</action-activate-function>
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
       </glade-widget-class>
 
@@ -3893,7 +3893,7 @@
         <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         <signals>
           <signal id="no-matches" since="3.14"/>
@@ -3998,7 +3998,7 @@
         <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         
         <internal-children>
@@ -4068,7 +4068,7 @@
         <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         
         <properties>
@@ -4121,7 +4121,7 @@
         <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         
         <properties>
@@ -4179,7 +4179,7 @@
         <action-activate-function>glade_gtk_cell_renderer_action_activate</action-activate-function>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
         
         <properties>
@@ -5563,7 +5563,7 @@
         <special-child-type>tag</special-child-type>
         
         <actions>
-          <action id="launch_editor" name="Edit&#8230;" stock="gtk-edit" important="True"/>
+          <action id="launch_editor" name="Edit&#8230;" stock="document-edit-symbolic" important="True"/>
         </actions>
       </glade-widget-class>
 

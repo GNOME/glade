@@ -936,7 +936,7 @@ add_columns (GtkTreeView *view)
   /* Warning cell */
   renderer = gtk_cell_renderer_pixbuf_new ();
   g_object_set (renderer,
-                "stock-id", "gtk-dialog-warning",
+                "icon-name", "dialog-warning-symbolic",
                 "xpad", 2,
                 NULL);
   gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);

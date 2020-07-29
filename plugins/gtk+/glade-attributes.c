@@ -927,7 +927,7 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 
   /* Icon renderer */
   renderer = glade_cell_renderer_icon_new ();
-  g_object_set (G_OBJECT (renderer), "icon-name", "gtk-edit", NULL);
+  g_object_set (G_OBJECT (renderer), "icon-name", "document-edit-symbolic", NULL);
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
   gtk_tree_view_column_set_attributes (column, renderer,
                                        "activatable", COLUMN_BUTTON_ACTIVE,

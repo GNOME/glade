@@ -1424,7 +1424,7 @@ glade_eprop_flags_create_input (GladeEditorProperty *eprop)
   gtk_editable_set_editable (GTK_EDITABLE (eprop_flags->entry), FALSE);
   gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_flags->entry),
                                      GTK_ENTRY_ICON_SECONDARY,
-                                     "gtk-edit");
+                                     "document-edit-symbolic");
 
   g_signal_connect_swapped (eprop_flags->entry, "icon-release",
                             G_CALLBACK (glade_eprop_flags_show_dialog),
@@ -1808,7 +1808,7 @@ glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
   gtk_widget_set_valign (eprop_named_icon->entry, GTK_ALIGN_CENTER);
   gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_named_icon->entry),
                                      GTK_ENTRY_ICON_SECONDARY,
-                                     "gtk-edit");
+                                     "document-edit-symbolic");
 
   eprop_named_icon->current_context = NULL;
 
@@ -2535,7 +2535,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
         {
           gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_text->text_entry),
                                              GTK_ENTRY_ICON_SECONDARY,
-                                             "document-open");
+                                             "document-open-symbolic");
 
           g_signal_connect_swapped (eprop_text->text_entry, "icon-release",
                                     G_CALLBACK (glade_eprop_text_show_resource_dialog),
@@ -2549,16 +2549,15 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
         {
           gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_text->text_entry),
                                              GTK_ENTRY_ICON_SECONDARY,
-                                             "gtk-edit");
+                                             "document-edit-symbolic");
           g_signal_connect_swapped (eprop_text->text_entry, "icon-release",
                                     G_CALLBACK (glade_eprop_text_show_i18n_dialog),
                                     eprop);
         }
       else
         {
-          GtkWidget *button = gtk_button_new ();
-          gtk_button_set_image (GTK_BUTTON (button),
-                                gtk_image_new_from_icon_name ("gtk-edit", GTK_ICON_SIZE_MENU));
+          GtkWidget *button = gtk_button_new_from_icon_name ("document-edit-symbolic",
+                                                             GTK_ICON_SIZE_MENU);
           gtk_widget_show (button);
           gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
           g_signal_connect_swapped (button, "clicked",
@@ -3540,7 +3539,7 @@ glade_eprop_object_create_input (GladeEditorProperty *eprop)
   gtk_editable_set_editable (GTK_EDITABLE (eprop_object->entry), FALSE);
   gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_object->entry), 
                                      GTK_ENTRY_ICON_SECONDARY,
-                                     "gtk-edit");
+                                     "document-edit-symbolic");
   g_signal_connect_swapped (eprop_object->entry, "icon-release",
                             G_CALLBACK (glade_eprop_object_show_dialog), eprop);
   
@@ -3758,7 +3757,7 @@ glade_eprop_objects_create_input (GladeEditorProperty *eprop)
   gtk_editable_set_editable (GTK_EDITABLE (eprop_objects->entry), FALSE);
   gtk_entry_set_icon_from_icon_name (GTK_ENTRY (eprop_objects->entry),
                                      GTK_ENTRY_ICON_SECONDARY,
-                                     "gtk-edit");
+                                     "document-edit-symbolic");
   g_signal_connect_swapped (eprop_objects->entry, "icon-release",
                             G_CALLBACK (glade_eprop_objects_show_dialog), eprop);
   
