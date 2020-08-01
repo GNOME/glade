@@ -24,14 +24,6 @@ ignore_gvfs_warning (const gchar *log_domain,
   return TRUE;
 }
 
-static gboolean
-main_loop_quit_cb (gpointer data)
-{
-  gtk_main_quit ();
-
-  return FALSE;
-}
-
 static void
 check_finalized (gpointer data,
                  GObject *where_the_object_was)
@@ -75,19 +67,6 @@ test_add_child (gconstpointer data)
   if (test->func)
     test->func (parent, child);
 
-  /* filechoosers hold a reference until an async operation is complete */
-  if (GTK_IS_FILE_CHOOSER (parent) || GTK_IS_FILE_CHOOSER (child))
-    {
-      g_timeout_add (2000, main_loop_quit_cb, NULL);
-      gtk_main();
-    }
-  /* Our plugin code adds an idle when cell renderers are created */
-  else if (GTK_IS_CELL_RENDERER (child))
-    {
-      g_timeout_add (50, main_loop_quit_cb, NULL);
-      gtk_main();
-    }
-
   /* Unreffing the parent should finalize the parent and child runtime objects */
   g_object_weak_ref (G_OBJECT (gparent), check_finalized, &gparent_finalized);
   g_object_weak_ref (G_OBJECT (gchild),  check_finalized, &gchild_finalized);
@@ -126,7 +105,8 @@ static void
 assert_widget_parented (GObject *parent,
                         GObject *child)
 {
-  g_assert_true (gtk_widget_get_parent (GTK_WIDGET (child)) == GTK_WIDGET (parent));
+  g_assert_true (gtk_widget_get_parent (GTK_WIDGET (child)) == GTK_WIDGET (parent) ||
+                 G_OBJECT (gtk_widget_get_ancestor (GTK_WIDGET (child), G_OBJECT_TYPE (parent))) == parent);
 }
 
 static void
@@ -194,8 +174,7 @@ add_child_widgets (GType parent_type)
   add_test (parent_type, GTK_TYPE_FONT_BUTTON,         assert_widget_parented);
   add_test (parent_type, GTK_TYPE_COLOR_BUTTON,        assert_widget_parented);
 
-  /* FIXME: FileChooserButton leaks a GTask which will crash in the following test */
-  /* add_test (parent_type, GTK_TYPE_FILE_CHOOSER_BUTTON, assert_widget_parented); */
+  add_test (parent_type, GTK_TYPE_FILE_CHOOSER_BUTTON, assert_widget_parented);
   add_test (parent_type, GTK_TYPE_APP_CHOOSER_BUTTON,  assert_widget_parented);
   add_test (parent_type, GTK_TYPE_TEXT_VIEW,           assert_widget_parented);
   add_test (parent_type, GTK_TYPE_TREE_VIEW,           assert_widget_parented);
@@ -247,9 +226,13 @@ main (int   argc,
 
   /* Normal GtkContainer / GtkWidget parenting */
   add_child_widgets (GTK_TYPE_WINDOW);
+  add_child_widgets (GTK_TYPE_OFFSCREEN_WINDOW);
+  add_child_widgets (GTK_TYPE_APPLICATION_WINDOW);
   add_child_widgets (GTK_TYPE_BOX);
   add_child_widgets (GTK_TYPE_GRID);
   add_child_widgets (GTK_TYPE_NOTEBOOK);
+  //add_child_widgets (GTK_TYPE_FRAME);
+  add_child_widgets (GTK_TYPE_ASPECT_FRAME);
   add_child_widgets (GTK_TYPE_OVERLAY);
   add_child_widgets (GTK_TYPE_PANED);
   add_child_widgets (GTK_TYPE_BUTTON_BOX);
@@ -259,6 +242,24 @@ main (int   argc,
   add_child_widgets (GTK_TYPE_EXPANDER);
   add_child_widgets (GTK_TYPE_VIEWPORT);
   add_child_widgets (GTK_TYPE_ALIGNMENT);
+  add_child_widgets (GTK_TYPE_STACK);
+  add_child_widgets (GTK_TYPE_REVEALER);
+  add_child_widgets (GTK_TYPE_POPOVER);
+  add_child_widgets (GTK_TYPE_HEADER_BAR);
+  add_child_widgets (GTK_TYPE_ACTION_BAR);
+  add_child_widgets (GTK_TYPE_SEARCH_BAR);
+  //add_child_widgets (GTK_TYPE_POPOVER_MENU);
+
+  /* Scrolled window */
+  add_test (GTK_TYPE_SCROLLED_WINDOW, GTK_TYPE_ICON_VIEW, assert_widget_parented);
+  add_test (GTK_TYPE_SCROLLED_WINDOW, GTK_TYPE_LAYOUT, assert_widget_parented);
+  add_test (GTK_TYPE_SCROLLED_WINDOW, GTK_TYPE_TEXT_VIEW, assert_widget_parented);
+  add_test (GTK_TYPE_SCROLLED_WINDOW, GTK_TYPE_TOOL_PALETTE, assert_widget_parented);
+  add_test (GTK_TYPE_SCROLLED_WINDOW, GTK_TYPE_TREE_VIEW, assert_widget_parented);
+  add_test (GTK_TYPE_SCROLLED_WINDOW, GTK_TYPE_VIEWPORT, assert_widget_parented);
+
+  add_test (GTK_TYPE_LIST_BOX, GTK_TYPE_LIST_BOX_ROW, assert_widget_parented);
+  add_test (GTK_TYPE_FLOW_BOX, GTK_TYPE_FLOW_BOX_CHILD, assert_widget_parented);
 
   /* Actions */
   add_test (GTK_TYPE_ACTION_GROUP, GTK_TYPE_ACTION, NULL);
