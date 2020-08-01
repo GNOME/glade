@@ -55,12 +55,12 @@ glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor *adaptor,
                                             const gchar        *id,
                                             const GValue       *value)
 {
-  /* Avoid a warning */
-  if (!strcmp (id, "action"))
+  if (!strcmp (id, "filter") && !g_value_get_object (value))
     {
-      if (g_value_get_enum (value) == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER ||
-          g_value_get_enum (value) == GTK_FILE_CHOOSER_ACTION_SAVE)
-        return;
+      /* Filter can not be NULL, so we use a empty filter instead */
+      gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (object),
+                                   gtk_file_filter_new ());
+      return;
     }
 
   GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_BOX)->set_property (adaptor, object, id, value);
@@ -74,5 +74,5 @@ glade_gtk_file_chooser_button_create_editable (GladeWidgetAdaptor *adaptor,
   if (type == GLADE_PAGE_GENERAL)
     return (GladeEditable *) glade_file_chooser_button_editor_new ();
 
-  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+  return GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_BOX)->create_editable (adaptor, type);
 }

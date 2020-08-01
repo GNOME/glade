@@ -1942,13 +1942,13 @@
           <property id="action" custom-layout="True">
             <displayable-values>
               <!-- GtkFileChooserAction enumeration value -->
-              <value id="GTK_FILE_CHOOSER_ACTION_SAVE" name="Save"/>
+              <value id="GTK_FILE_CHOOSER_ACTION_SAVE" name="Save" disabled="True"/>
               <!-- GtkFileChooserAction enumeration value -->
               <value id="GTK_FILE_CHOOSER_ACTION_OPEN" name="Open"/>
               <!-- GtkFileChooserAction enumeration value -->
               <value id="GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER" name="Select Folder"/>
               <!-- GtkFileChooserAction enumeration value -->
-              <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" name="Create Folder"/>
+              <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" name="Create Folder" disabled="True"/>
             </displayable-values>
           </property>
           <property id="filter" custom-layout="True"/>
@@ -1957,7 +1957,7 @@
           <property id="do-overwrite-confirmation" custom-layout="True"/>
           <property id="preview-widget-active" custom-layout="True"/>
           <property id="use-preview-label" custom-layout="True"/>
-          <property id="select-multiple" custom-layout="True"/>
+          <property id="select-multiple" custom-layout="True" disabled="True"/>
         </properties>
       </glade-widget-class>
 
