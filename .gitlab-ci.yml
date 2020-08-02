@@ -16,13 +16,5 @@ flatpak:
     MESON_ARGS: "-Dman=false"
     APP_ID: "org.gnome.Glade"
 
-review:
-  dependencies:
-    - 'flatpak'
-  extends: '.review'
-
-stop_review:
-  extends: '.stop_review'
-
 nightly:
   extends: '.publish_nightly'
