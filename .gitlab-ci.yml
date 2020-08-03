@@ -1,20 +1,13 @@
 include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
-stages:
-  - test
-  - deploy
-
-variables:
-    BUNDLE: "glade-git.flatpak"
-
 flatpak:
   extends: '.flatpak'
   variables:
     MANIFEST_PATH: "org.gnome.Glade.json"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     FLATPAK_MODULE: "glade"
-    MESON_ARGS: "-Dman=false"
     APP_ID: "org.gnome.Glade"
+    BUNDLE: "glade-git.flatpak"
 
 nightly:
   extends: '.publish_nightly'
