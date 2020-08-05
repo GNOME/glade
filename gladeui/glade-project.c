@@ -255,7 +255,29 @@ glade_project_dispose (GObject *object)
   /* Emit close signal */
   g_signal_emit (object, glade_project_signals[CLOSE], 0);
 
-  gtk_widget_destroy (priv->prefs_dialog);
+  /* Disconnect from model */
+#define MODEL_DISCONNECT(func) g_signal_handlers_disconnect_by_func (priv->model, G_CALLBACK (func), project)
+  MODEL_DISCONNECT (gtk_tree_model_row_changed);
+  MODEL_DISCONNECT (gtk_tree_model_row_inserted);
+  MODEL_DISCONNECT (gtk_tree_model_row_has_child_toggled);
+  MODEL_DISCONNECT (gtk_tree_model_row_deleted);
+  MODEL_DISCONNECT (gtk_tree_model_rows_reordered);
+
+  /* Destroy preferences dialog */
+  g_clear_pointer (&priv->prefs_dialog, gtk_widget_destroy);
+
+  /* Clear selection */
+  g_clear_pointer (&priv->selection, g_list_free);
+  g_clear_handle_id (&priv->selection_changed_id,  g_source_remove);
+
+  /* Clear undo/redo stack */
+  g_clear_pointer (&priv->undo_stack, glade_project_list_unref);
+
+  /* NOTE: prev_redo_item and first_modification always point to undo_stack
+   * So we should never try to free it
+   */
+  priv->prev_redo_item = NULL;
+  priv->first_modification = NULL;
 
   /* Destroy running previews */
   if (priv->previews)
@@ -264,17 +286,8 @@ glade_project_dispose (GObject *object)
       priv->previews = NULL;
     }
 
-  if (priv->selection_changed_id > 0)
-    priv->selection_changed_id = 
-      (g_source_remove (priv->selection_changed_id), 0);
-
-  glade_project_selection_clear (project, TRUE);
-
   g_clear_object (&priv->css_provider);
   g_clear_object (&priv->css_monitor);
-  
-  glade_project_list_unref (priv->undo_stack);
-  priv->undo_stack = NULL;
 
   /* Remove objects from the project */
   while (priv->tree)
@@ -283,11 +296,11 @@ glade_project_dispose (GObject *object)
 
       glade_project_remove_object (project, toplevel);
 
-      /* NOTE: Due to Gtk+ keeping a reference to the window internally,
-       * gtk_window_new() does not return a reference to the caller.
-       * To delete a GtkWindow, call gtk_widget_destroy().
+      /*
+       * FIXME: GladeWidgets are leaked so this is a workaround to make sure
+       * at least the runtime widgets (including windows) are destroyed!
        */
-      if (GTK_IS_WINDOW (toplevel))
+      if (GTK_IS_WIDGET (toplevel))
         gtk_widget_destroy (GTK_WIDGET (toplevel));
     }
 
@@ -296,6 +309,7 @@ glade_project_dispose (GObject *object)
 
   g_assert (priv->tree == NULL);
   g_assert (priv->objects == NULL);
+  g_assert (gtk_tree_model_iter_n_children (priv->model, NULL) == 0);
 
   if (priv->unknown_catalogs)
     {
@@ -313,7 +327,7 @@ glade_project_dispose (GObject *object)
     }
 
   g_object_unref (priv->model);
-  
+
   G_OBJECT_CLASS (glade_project_parent_class)->dispose (object);
 }
 
@@ -1662,7 +1676,7 @@ glade_project_read_comment_properties (GladeProject *project,
                                        GladeXmlNode *root_node)
 {
   GladeProjectPrivate *priv = project->priv;
-  gchar *license, *name, *description, *copyright, *authors;
+  g_autofree gchar *license = NULL, *name = NULL, *description = NULL, *copyright = NULL, *authors = NULL;
   GladeXmlNode *node;
 
   license = name = description = copyright = authors = NULL;
@@ -1706,17 +1720,13 @@ glade_project_read_comment_properties (GladeProject *project,
       g_free (val);
     }
 
-  _glade_project_properties_set_license_data (GLADE_PROJECT_PROPERTIES (priv->prefs_dialog),
-                                              license,
-                                              name,
-                                              description,
-                                              copyright,
-                                              authors);
-  g_free (license);
-  g_free (name);
-  g_free (description);
-  g_free (copyright);
-  g_free (authors);
+  if (priv->prefs_dialog)
+    _glade_project_properties_set_license_data (GLADE_PROJECT_PROPERTIES (priv->prefs_dialog),
+                                                license,
+                                                name,
+                                                description,
+                                                copyright,
+                                                authors);
 }
 
 static inline void
@@ -2210,7 +2220,9 @@ glade_project_update_properties_title (GladeProject *project)
   /* Update prefs dialogs here... */
   name = glade_project_get_name (project);
   title = g_strdup_printf (_("%s document properties"), name);
-  gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
+
+  if (project->priv->prefs_dialog)
+    gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
   g_free (title);
   g_free (name); 
 }
@@ -2392,7 +2404,10 @@ glade_project_write_license_data (GladeProject    *project,
                                   GladeXmlContext *context,
                                   GladeXmlNode    *root)
 {
-  gchar *license, *name, *description, *copyright, *authors;
+  g_autofree gchar *license = NULL, *name = NULL, *description = NULL, *copyright = NULL, *authors = NULL;
+
+  if (!project->priv->prefs_dialog)
+    return;
   
   _glade_project_properties_get_license_data (GLADE_PROJECT_PROPERTIES (project->priv->prefs_dialog),
                                               &license,
@@ -2401,9 +2416,6 @@ glade_project_write_license_data (GladeProject    *project,
                                               &copyright,
                                               &authors);
 
-  if (!license)
-    return;
-  
   glade_project_write_comment_property (project, context, root,
                                         "interface-license-type",
                                         license);
@@ -2419,12 +2431,6 @@ glade_project_write_license_data (GladeProject    *project,
   glade_project_write_comment_property (project, context, root,
                                         "interface-authors",
                                         authors);
-
-  g_free (license);
-  g_free (name);
-  g_free (description);
-  g_free (copyright);
-  g_free (authors);
 }
 
 static gint
@@ -4410,17 +4416,16 @@ glade_project_selection_changed (GladeProject *project)
                  glade_project_signals[SELECTION_CHANGED], 0);
 
   /* Cancel any idle we have */
-  if (project->priv->selection_changed_id > 0)
-    project->priv->selection_changed_id = 
-      (g_source_remove (project->priv->selection_changed_id), 0);
+  g_clear_handle_id (&project->priv->selection_changed_id,  g_source_remove);
 }
 
 static gboolean
-selection_change_idle (GladeProject *project)
+selection_change_idle (gpointer data)
 {
+  GladeProject *project = data;
   project->priv->selection_changed_id = 0;
   glade_project_selection_changed (project);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 void
@@ -4428,9 +4433,10 @@ glade_project_queue_selection_changed (GladeProject *project)
 {
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
-  if (project->priv->selection_changed_id == 0)
-    project->priv->selection_changed_id = 
-      g_idle_add ((GSourceFunc) selection_change_idle, project);
+  if (project->priv->selection_changed_id)
+    return;
+
+  project->priv->selection_changed_id = g_idle_add (selection_change_idle, project);
 }
 
 static void
@@ -5025,7 +5031,8 @@ glade_project_properties (GladeProject *project)
 {
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
-  gtk_window_present (GTK_WINDOW (project->priv->prefs_dialog));
+  if (project->priv->prefs_dialog)
+    gtk_window_present (GTK_WINDOW (project->priv->prefs_dialog));
 }
 
 gchar *

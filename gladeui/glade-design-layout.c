@@ -1841,13 +1841,7 @@ glade_design_layout_set_property (GObject *object,
   switch (prop_id)
     {
       case PROP_DESIGN_VIEW:
-        {
-          priv->view = GLADE_DESIGN_VIEW (g_value_get_object (value));
-          priv->project = glade_design_view_get_project (priv->view);
-          g_signal_connect (priv->project, "notify::pointer-mode",
-                            G_CALLBACK (on_pointer_mode_notify),
-                            GLADE_DESIGN_LAYOUT (object));
-        }
+        priv->view = GLADE_DESIGN_VIEW (g_value_get_object (value));
         break;
 
       default:
@@ -1907,8 +1901,15 @@ glade_design_layout_constructor (GType                  type,
   self = GLADE_DESIGN_LAYOUT (object);
   priv = glade_design_layout_get_instance_private (self);
 
-  g_signal_connect (priv->project,
-                    "selection-changed",
+  /* Keep a weak reference to project */
+  priv->project = glade_design_view_get_project (priv->view);
+  g_object_add_weak_pointer (G_OBJECT (priv->project), (gpointer *) &priv->project);
+
+  g_signal_connect (priv->project, "notify::pointer-mode",
+                    G_CALLBACK (on_pointer_mode_notify),
+                    self);
+
+  g_signal_connect (priv->project, "selection-changed",
                     G_CALLBACK (on_project_selection_changed),
                     self);
 
@@ -1941,12 +1942,17 @@ glade_design_layout_finalize (GObject *object)
   g_clear_object (&priv->default_context);
   g_clear_object (&priv->drag_dest);
   
-  g_signal_handlers_disconnect_by_func (priv->project,
-                                        on_project_selection_changed,
-                                        layout);
-  g_signal_handlers_disconnect_by_func (priv->project,
-                                        on_pointer_mode_notify,
-                                        layout);
+  if (priv->project)
+    {
+      g_signal_handlers_disconnect_by_func (priv->project,
+                                            on_project_selection_changed,
+                                            layout);
+      g_signal_handlers_disconnect_by_func (priv->project,
+                                            on_pointer_mode_notify,
+                                            layout);
+
+      priv->project = NULL;
+    }
 
   G_OBJECT_CLASS (glade_design_layout_parent_class)->finalize (object);
 }

@@ -90,12 +90,19 @@ _glade_adaptor_chooser_widget_init (_GladeAdaptorChooserWidget *chooser)
 }
 
 static void
+_glade_adaptor_chooser_widget_dispose (GObject *object)
+{
+  _glade_adaptor_chooser_widget_set_project (GLADE_ADAPTOR_CHOOSER_WIDGET (object), NULL);
+
+  G_OBJECT_CLASS (_glade_adaptor_chooser_widget_parent_class)->dispose (object);
+}
+
+static void
 _glade_adaptor_chooser_widget_finalize (GObject *object)
 {
   _GladeAdaptorChooserWidgetPrivate *priv = GET_PRIVATE (object);
 
   g_clear_pointer (&priv->search_text, g_free);
-  g_clear_object (&priv->project);
 
   G_OBJECT_CLASS (_glade_adaptor_chooser_widget_parent_class)->finalize (object);
 }
@@ -513,6 +520,7 @@ _glade_adaptor_chooser_widget_class_init (_GladeAdaptorChooserWidgetClass *klass
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->dispose = _glade_adaptor_chooser_widget_dispose;
   object_class->finalize = _glade_adaptor_chooser_widget_finalize;
   object_class->set_property = _glade_adaptor_chooser_widget_set_property;
   object_class->get_property = _glade_adaptor_chooser_widget_get_property;
@@ -574,15 +582,6 @@ _glade_adaptor_chooser_widget_new (_GladeAdaptorChooserWidgetFlags flags, GladeP
                                    NULL));
 }
 
-static void
-on_project_weak_notify (gpointer data, GObject *project)
-{
-  _GladeAdaptorChooserWidget *chooser = data;
-  _GladeAdaptorChooserWidgetPrivate *priv = GET_PRIVATE (chooser);
-
-  priv->project = NULL;
-}
-
 void
 _glade_adaptor_chooser_widget_set_project (_GladeAdaptorChooserWidget *chooser,
                                            GladeProject               *project)
@@ -594,18 +593,17 @@ _glade_adaptor_chooser_widget_set_project (_GladeAdaptorChooserWidget *chooser,
 
   if (priv->project)
     {
-      g_object_weak_unref (G_OBJECT (priv->project), on_project_weak_notify, chooser);
+      g_object_remove_weak_pointer (G_OBJECT (priv->project), (gpointer *) &priv->project);
       priv->project = NULL;
     }
 
   if (project)
     {
       priv->project = project;
-      g_object_weak_ref (G_OBJECT (project), on_project_weak_notify, chooser);
+      g_object_add_weak_pointer (G_OBJECT (project), (gpointer *) &priv->project);
+
+      gtk_tree_model_filter_refilter (priv->treemodelfilter);
     }
-
-
-  gtk_tree_model_filter_refilter (priv->treemodelfilter);
 }
 
 void

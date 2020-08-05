@@ -79,7 +79,7 @@ glade_editable_load_default (GladeEditable  *editable,
 
   if (old_widget != widget)
     {
-      if (old_widget)
+      if (old_project)
         {
           g_signal_handlers_disconnect_by_func (old_project, G_CALLBACK (project_changed), editable);
           g_signal_handlers_disconnect_by_func (old_project, G_CALLBACK (project_closed), editable);
@@ -95,9 +95,9 @@ glade_editable_load_default (GladeEditable  *editable,
           g_object_set_qdata (G_OBJECT (editable), glade_editable_widget_quark, widget);
           g_object_set_qdata (G_OBJECT (editable), glade_editable_project_quark, project);
 
-          g_signal_connect (project, "changed", 
+          g_signal_connect (project, "changed",
                             G_CALLBACK (project_changed), editable);
-          g_signal_connect (project, "close", 
+          g_signal_connect (project, "close",
                             G_CALLBACK (project_closed), editable);
         }
     }

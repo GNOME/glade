@@ -252,18 +252,22 @@ glade_design_view_set_project (GladeDesignView *view, GladeProject *project)
 
   if (priv->project)
     {
+      g_object_remove_weak_pointer (G_OBJECT (priv->project), (gpointer *) &priv->project);
+
       g_signal_handlers_disconnect_by_data (priv->project, view);
       g_signal_handlers_disconnect_by_data (priv->project, priv->scrolled_window);
 
       g_object_set_data (G_OBJECT (priv->project), GLADE_DESIGN_VIEW_KEY, NULL);
     }
 
-  g_set_object (&priv->project, project);
+  priv->project = project;
 
   if (!project)
     return;
 
   g_assert (GLADE_IS_PROJECT (project));
+
+  g_object_add_weak_pointer (G_OBJECT (project), (gpointer *) &priv->project);
 
   g_signal_connect (project, "add-widget",
                     G_CALLBACK (on_project_add_widget), view);
