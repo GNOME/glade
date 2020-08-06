@@ -347,7 +347,7 @@ on_subscribe_http_request_done (GladeHTTP         *http,
             }
           else
             glade_registration_show_message (registration, GTK_MESSAGE_INFO, "%s",
-                                             _("Your subscription to the users list has been received!\nCheck you email!"));
+                                             _("Your subscription to the users list has been received!\nCheck your email!"));
         }
       break;
       default:
