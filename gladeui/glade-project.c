@@ -2201,36 +2201,16 @@ glade_project_load_internal (GladeProject *project)
 
 }
 
-static void
-glade_project_update_properties_title (GladeProject *project)
-{
-  gchar *name, *title;
-
-  /* Update prefs dialogs here... */
-  name = glade_project_get_name (project);
-  title = g_strdup_printf (_("%s document properties"), name);
-
-  if (project->priv->prefs_dialog)
-    gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
-  g_free (title);
-  g_free (name); 
-}
-
 gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
-  gboolean retval;
-
   g_return_val_if_fail (path != NULL, FALSE);
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
   project->priv->path = glade_util_canonical_path (path);
   g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_PATH]);
 
-  if ((retval = glade_project_load_internal (project)))
-    glade_project_update_properties_title (project);
-
-  return retval;
+  return glade_project_load_internal (project);
 }
 
 /**
@@ -2254,15 +2234,10 @@ glade_project_load (const gchar *path)
   project->priv->path = glade_util_canonical_path (path);
 
   if (glade_project_load_internal (project))
-    {
-      glade_project_update_properties_title (project);
-      return project;
-    }
-  else
-    {
-      g_object_unref (project);
-      return NULL;
-    }
+    return project;
+
+  g_object_unref (project);
+  return NULL;
 }
 
 /*******************************************************************
@@ -2948,8 +2923,6 @@ glade_project_save_verify (GladeProject      *project,
                              g_strdup (canonical_path));
       g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_PATH]);
 
-      glade_project_update_properties_title (project);
-
       /* Sync selected objects pixbuf properties */
       sync_project_resource_path (project);
     }
@@ -3080,12 +3053,12 @@ glade_project_writing_preview (GladeProject       *project)
                                          "while project targets %s %d.%d")
 
 /* translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
-#define WIDGET_VERSION_CONFLICT_FMT    _("[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n")
+#define WIDGET_VERSION_CONFLICT_FMT    _("[%s]\n\tObject class '<b>%s</b>' was introduced in %s %d.%d\n")
 
 #define WIDGET_DEPRECATED_MSG          _("This widget is deprecated")
 
 /* translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
-#define WIDGET_DEPRECATED_FMT          _("[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n")
+#define WIDGET_DEPRECATED_FMT          _("[%s]\n\tObject class '<b>%s</b>' from %s %d.%d is deprecated\n")
 
 
 /* translators: refers to a property in toolkit version '%s %d.%d' 
@@ -3094,17 +3067,17 @@ glade_project_writing_preview (GladeProject       *project)
                                          "while project targets %s %d.%d")
 
 /* translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define PROP_VERSION_CONFLICT_FMT      _("[%s] Property '<b>%s</b>' of object class '<b>%s</b>' " \
+#define PROP_VERSION_CONFLICT_FMT      _("[%s]\n\tProperty '<b>%s</b>' of object class '<b>%s</b>' " \
                                          "was introduced in %s %d.%d\n")
 
 /* translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define PACK_PROP_VERSION_CONFLICT_FMT _("[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' " \
+#define PACK_PROP_VERSION_CONFLICT_FMT _("[%s]\n\tPacking property '<b>%s</b>' of object class '<b>%s</b>' " \
                                          "was introduced in %s %d.%d\n")
 
 #define PROP_DEPRECATED_MSG            _("This property is deprecated")
 
 /* translators: refers to a property '%s' of widget '[%s]' */
-#define PROP_DEPRECATED_FMT            _("[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n")
+#define PROP_DEPRECATED_FMT            _("[%s]\n\tProperty '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n")
 
 /* translators: refers to a signal in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
@@ -3112,13 +3085,13 @@ glade_project_writing_preview (GladeProject       *project)
                                          "while project targets %s %d.%d")
 
 /* translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define SIGNAL_VERSION_CONFLICT_FMT    _("[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' " \
+#define SIGNAL_VERSION_CONFLICT_FMT    _("[%s]\n\tSignal '<b>%s</b>' of object class '<b>%s</b>' " \
                                          "was introduced in %s %d.%d\n")
 
 #define SIGNAL_DEPRECATED_MSG          _("This signal is deprecated")
 
 /* translators: refers to a signal '%s' of widget '[%s]' */
-#define SIGNAL_DEPRECATED_FMT          _("[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n")
+#define SIGNAL_DEPRECATED_FMT          _("[%s]\n\tSignal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n")
 
 
 static void
@@ -3400,9 +3373,7 @@ glade_project_verify_properties (GladeWidget *widget)
 }
 
 static gboolean
-glade_project_verify_dialog (GladeProject *project,
-                             GString      *string,
-                             gboolean      saving)
+glade_project_verify_dialog (GladeProject *project, GString *string)
 {
   GtkWidget *swindow;
   GtkWidget *textview;
@@ -3429,12 +3400,10 @@ glade_project_verify_dialog (GladeProject *project,
 
   name = glade_project_get_name (project);
   ret = glade_util_ui_message (glade_app_get_window (),
-                               saving ? GLADE_UI_YES_OR_NO : GLADE_UI_INFO,
+                               GLADE_UI_YES_OR_NO,
                                expander,
-                               saving ?
-                               _("Project \"%s\" has errors. Save anyway?") :
-                               _("Project \"%s\" has deprecated widgets "
-                                 "and/or version mismatches."), name);
+                               _("Project \"%s\" has errors. Save anyway?"),
+                               name);
   g_free (name);
 
   return ret;
@@ -3446,6 +3415,7 @@ glade_project_verify (GladeProject    *project,
                       gboolean         saving,
                       GladeVerifyFlags flags)
 {
+  GladeProjectPrivate *priv = project->priv;
   GString *string = g_string_new (NULL);
   GList *list;
   gboolean ret = TRUE;
@@ -3458,7 +3428,7 @@ glade_project_verify (GladeProject    *project,
       glade_project_get_target_version (project, "gtk+", &major, &minor);
 
       if (major == 3 && minor < 10)
-        g_string_append_printf (string, _("Object %s is a class template but this is not supported in gtk+ %d.%d"),
+        g_string_append_printf (string, _("Object %s is a class template but this is not supported in gtk+ %d.%d\n"),
                                 glade_widget_get_name (project->priv->template),
                                 major, minor); 
     }
@@ -3490,11 +3460,15 @@ glade_project_verify (GladeProject    *project,
         }
     }
 
+  /* Update project warnings */
+  _glade_project_properties_set_warnings (GLADE_PROJECT_PROPERTIES (priv->prefs_dialog),
+                                          string->str);
+
   if (string->len > 0)
     {
-      ret = glade_project_verify_dialog (project, string, saving);
-
-      if (!saving)
+      if (saving)
+        ret = glade_project_verify_dialog (project, string);
+      else
         ret = FALSE;
     }
 
@@ -5022,7 +4996,13 @@ glade_project_properties (GladeProject *project)
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
   if (project->priv->prefs_dialog)
-    gtk_window_present (GTK_WINDOW (project->priv->prefs_dialog));
+    {
+      glade_project_verify (project, FALSE,
+                            GLADE_VERIFY_VERSIONS     |
+                            GLADE_VERIFY_DEPRECATIONS |
+                            GLADE_VERIFY_UNRECOGNIZED);
+      gtk_window_present (GTK_WINDOW (project->priv->prefs_dialog));
+    }
 }
 
 gchar *

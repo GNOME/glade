@@ -77,6 +77,9 @@ static void     on_license_comboboxtext_changed       (GtkComboBox *widget,
 static void     on_license_data_changed               (GladeProjectProperties *properties);
 
 /* Project callbacks */
+static void     project_path_changed                  (GladeProject           *project,
+                                                       GParamSpec             *pspec,
+                                                       GladeProjectProperties *properties);
 static void     project_resource_path_changed         (GladeProject           *project,
                                                        GParamSpec             *pspec,
                                                        GladeProjectProperties *properties);
@@ -136,6 +139,7 @@ typedef struct
   GtkTextBuffer  *authors_textbuffer;
   GtkTextBuffer  *copyright_textbuffer;
   GtkTextBuffer  *license_textbuffer;
+  GtkTextBuffer  *warnings_textbuffer;
   
   gboolean ignore_ui_cb;
 } GladeProjectPropertiesPrivate;
@@ -217,6 +221,7 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, authors_textbuffer);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, copyright_textbuffer);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, license_textbuffer);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, warnings_textbuffer);
 
   
   /* Declare the callback ports that this widget class exposes, to bind with <signal>
@@ -486,6 +491,7 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
 
   if (priv->project)
     {
+      PROJECT_DISCONNECT (project_path_changed);
       PROJECT_DISCONNECT (project_resource_path_changed);
       PROJECT_DISCONNECT (project_template_changed);
       PROJECT_DISCONNECT (project_domain_changed);
@@ -503,6 +509,8 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
   if (!priv->project)
     return;
 
+  g_signal_connect (priv->project, "notify::path",
+                    G_CALLBACK (project_path_changed), properties);
   g_signal_connect (priv->project, "notify::resource-path",
                     G_CALLBACK (project_resource_path_changed), properties);
   g_signal_connect (priv->project, "notify::template",
@@ -525,6 +533,7 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
   target_version_box_fill (properties);
   update_prefs_for_resource_path (properties);
 
+  project_path_changed (project, NULL, properties);
   project_template_changed (project, NULL, properties);
   project_domain_changed (project, NULL, properties);
   project_css_provider_path_changed (project, NULL, properties);
@@ -726,12 +735,13 @@ verify_clicked (GtkWidget *button, GladeProjectProperties *properties)
                             GLADE_VERIFY_DEPRECATIONS |
                             GLADE_VERIFY_UNRECOGNIZED))
     {
-      gchar *name = glade_project_get_name (priv->project);
-      glade_util_ui_message (glade_app_get_window (),
-                             GLADE_UI_INFO, NULL,
-                             _("Project %s has no deprecated widgets "
+      g_autofree gchar *name = NULL, *msg = NULL;
+
+      name = glade_project_get_name (priv->project);
+      msg = g_strdup_printf (_("Project %s has no deprecated widgets "
                                "or version mismatches."), name);
-      g_free (name);
+
+      gtk_text_buffer_set_text (priv->warnings_textbuffer, msg, -1);
     }
 }
 
@@ -1116,6 +1126,12 @@ project_targets_changed (GladeProject           *project,
           gtk_combo_box_set_active_id(GTK_COMBO_BOX(combobox), id);
         }
     }
+
+  glade_project_verify (priv->project, FALSE,
+                        GLADE_VERIFY_VERSIONS     |
+                        GLADE_VERIFY_DEPRECATIONS |
+                        GLADE_VERIFY_UNRECOGNIZED);
+
   priv->ignore_ui_cb = FALSE;
 }
 
@@ -1133,6 +1149,38 @@ project_domain_changed (GladeProject           *project,
   gtk_entry_set_text (GTK_ENTRY (priv->domain_entry), domain ? domain : "");
 
   priv->ignore_ui_cb = FALSE;
+}
+
+static void
+project_path_changed (GladeProject           *project,
+                      GParamSpec             *pspec,
+                      GladeProjectProperties *properties)
+{
+  g_autofree gchar *name = NULL;
+  GtkHeaderBar *headerbar;
+  const gchar *path;
+
+  if (!(headerbar = GTK_HEADER_BAR (gtk_dialog_get_header_bar (GTK_DIALOG (properties)))))
+    return;
+
+  name = glade_project_get_name (project);
+
+  gtk_header_bar_set_title (headerbar, name);
+
+  if ((path = glade_project_get_path (project)))
+    {
+      g_autofree gchar *dirname = g_path_get_dirname (path);
+      const gchar *home = g_get_home_dir ();
+
+      if (g_str_has_prefix (dirname, home))
+        {
+          char *subtitle = &dirname[g_utf8_strlen (home, -1) - 1];
+          subtitle[0] = '~';
+          gtk_header_bar_set_subtitle (headerbar, subtitle);
+        }
+      else
+        gtk_header_bar_set_subtitle (headerbar, dirname);
+    }
 }
 
 static void
@@ -1216,6 +1264,18 @@ project_css_provider_path_changed (GladeProject           *project,
 }
 
 /* Private API */
+void
+_glade_project_properties_set_warnings (GladeProjectProperties *props,
+                                        const gchar            *warnings)
+{
+  GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(props);
+  GtkTextIter iter;
+
+  gtk_text_buffer_set_text (priv->warnings_textbuffer, "", -1);
+  gtk_text_buffer_get_start_iter (priv->warnings_textbuffer, &iter);
+  gtk_text_buffer_insert_markup (priv->warnings_textbuffer, &iter,
+                                 warnings ? warnings : "", -1);
+}
 
 void
 _glade_project_properties_set_license_data (GladeProjectProperties *props,
@@ -1275,5 +1335,8 @@ _glade_project_properties_get_license_data (GladeProjectProperties *props,
 GtkWidget *
 glade_project_properties_new (GladeProject *project)
 {
-  return g_object_new (GLADE_TYPE_PROJECT_PROPERTIES, "project", project, NULL);
+  return g_object_new (GLADE_TYPE_PROJECT_PROPERTIES,
+                       "use-header-bar", TRUE,
+                       "project", project,
+                       NULL);
 }

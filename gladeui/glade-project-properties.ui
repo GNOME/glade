@@ -2,8 +2,8 @@
 <!-- Generated with glade 3.37.0 
 
 libgladeui - Glade UI Designer core library
-Copyright (C) 	2013 Tristan Van Berkom <tvb@gnome.org>
-		2013 Juan Pablo Ugarte <juanpablougarte@gmail.com>
+Copyright (C)   2013 Tristan Van Berkom
+                          2013-2020 Juan Pablo Ugarte
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -20,17 +20,17 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 Authors:
-	Tristan Van Berkom <tvb@gnome.org>
-	Juan Pablo Ugarte <juanpablougarte@gmail.com>
+    Tristan Van Berkom <tvb@gnome.org>
+    Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 -->
 <interface domain="glade">
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk+" version="3.12"/>
   <!-- interface-license-type lgplv2 -->
   <!-- interface-name libgladeui -->
   <!-- interface-description Glade UI Designer core library -->
-  <!-- interface-copyright \t2013 Tristan Van Berkom <tvb@gnome.org>\n\t\t2013 Juan Pablo Ugarte <juanpablougarte@gmail.com> -->
-  <!-- interface-authors \tTristan Van Berkom <tvb@gnome.org>\n\tJuan Pablo Ugarte <juanpablougarte@gmail.com> -->
+  <!-- interface-copyright   2013 Tristan Van Berkom\n                          2013-2020 Juan Pablo Ugarte -->
+  <!-- interface-authors     Tristan Van Berkom <tvb@gnome.org>\n    Juan Pablo Ugarte <juanpablougarte@gmail.com> -->
   <object class="GtkTextBuffer" id="authors_textbuffer">
     <signal name="changed" handler="on_license_data_changed" swapped="yes"/>
   </object>
@@ -46,6 +46,11 @@ Authors:
     </patterns>
   </object>
   <object class="GtkEntryBuffer" id="description_entrybuffer"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">view-refresh-symbolic</property>
+  </object>
   <object class="GtkTextBuffer" id="license_textbuffer"/>
   <object class="GtkEntryBuffer" id="name_entrybuffer"/>
   <object class="GtkListStore" id="toplevels">
@@ -60,6 +65,7 @@ Authors:
       <column type="GObject"/>
     </columns>
   </object>
+  <object class="GtkTextBuffer" id="warnings_textbuffer"/>
   <template class="GladeProjectProperties" parent="GtkDialog">
     <property name="can-focus">False</property>
     <property name="border-width">5</property>
@@ -68,83 +74,67 @@ Authors:
     <signal name="hide" handler="on_glade_project_properties_hide" swapped="no"/>
     <signal name="response" handler="gtk_widget_hide" swapped="no"/>
     <child internal-child="vbox">
-      <object class="GtkBox" id="dialog-vbox1">
+      <object class="GtkBox">
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">4</property>
+        <property name="spacing">6</property>
         <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox">
             <property name="can-focus">False</property>
             <property name="layout-style">end</property>
             <child>
-              <object class="GtkButton" id="verify_button">
-                <property name="label" translatable="yes">_Verify</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="tooltip-text" translatable="yes">Verify that the project does not use any properties,
-signals or widgets which are not available in the target version</property>
-                <property name="use-underline">True</property>
-                <signal name="clicked" handler="verify_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-                <property name="secondary">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="close_button">
-                <property name="label">_Close</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="pack-type">end</property>
-            <property name="position">6</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="notebook">
+          <object class="GtkStackSwitcher" id="switcher">
             <property name="visible">True</property>
-            <property name="can-focus">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="stack">stack</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStack" id="stack">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="transition-type">crossfade</property>
             <child>
-              <object class="GtkBox" id="box1">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="border-width">5</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">6</property>
+                <property name="spacing">12</property>
                 <child>
-                  <object class="GtkFrame" id="frame1">
+                  <object class="GtkFrame">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label-xalign">0</property>
                     <property name="shadow-type">none</property>
                     <child>
-                      <!-- n-columns=3 n-rows=3 -->
-                      <object class="GtkGrid" id="grid2">
+                      <!-- n-columns=2 n-rows=3 -->
+                      <object class="GtkGrid">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">12</property>
-                        <property name="margin-top">6</property>
                         <property name="row-spacing">4</property>
                         <property name="column-spacing">4</property>
                         <property name="row-homogeneous">True</property>
                         <child>
-                          <object class="GtkLabel" id="label1">
+                          <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="halign">start</property>
@@ -179,13 +169,13 @@ signals or widgets which are not available in the target version</property>
                             <property name="id-column">2</property>
                             <signal name="changed" handler="on_template_combo_box_changed" swapped="no"/>
                             <child>
-                              <object class="GtkCellRendererPixbuf" id="cellrenderertext1"/>
+                              <object class="GtkCellRendererPixbuf"/>
                               <attributes>
                                 <attribute name="icon-name">0</attribute>
                               </attributes>
                             </child>
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                              <object class="GtkCellRendererText"/>
                               <attributes>
                                 <attribute name="text">1</attribute>
                               </attributes>
@@ -239,15 +229,6 @@ signals or widgets which are not available in the target version</property>
                             <property name="top-attach">2</property>
                           </packing>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
                       </object>
                     </child>
                     <child type="label_item">
@@ -261,14 +242,14 @@ signals or widgets which are not available in the target version</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkFrame" id="frame2">
+                  <object class="GtkFrame">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label-xalign">0</property>
                     <property name="shadow-type">none</property>
                     <child>
-                      <!-- n-columns=3 n-rows=3 -->
-                      <object class="GtkGrid" id="grid1">
+                      <!-- n-columns=2 n-rows=3 -->
+                      <object class="GtkGrid">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">12</property>
@@ -354,19 +335,10 @@ signals or widgets which are not available in the target version</property>
                             <property name="top-attach">1</property>
                           </packing>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
                       </object>
                     </child>
                     <child type="label">
-                      <object class="GtkLabel" id="label2">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Image resources are loaded locally:</property>
@@ -383,13 +355,13 @@ signals or widgets which are not available in the target version</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkFrame" id="frame3">
+                  <object class="GtkFrame">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label-xalign">0</property>
                     <property name="shadow-type">none</property>
                     <child>
-                      <!-- n-columns=3 n-rows=3 -->
+                      <!-- n-columns=3 n-rows=1 -->
                       <object class="GtkGrid" id="toolkit_grid">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -406,28 +378,10 @@ signals or widgets which are not available in the target version</property>
                         <child>
                           <placeholder/>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
                       </object>
                     </child>
                     <child type="label">
-                      <object class="GtkLabel" id="label3">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Toolkit version required:</property>
@@ -443,24 +397,108 @@ signals or widgets which are not available in the target version</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
-              </object>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label5">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Properties</property>
-                <property name="use-markup">True</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
+                <child>
+                  <object class="GtkFrame">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label-xalign">0</property>
+                    <property name="shadow-type">none</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-start">12</property>
+                        <property name="margin-top">6</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">4</property>
+                        <child>
+                          <object class="GtkScrolledWindow">
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="shadow-type">in</property>
+                            <property name="min-content-height">128</property>
+                            <child>
+                              <object class="GtkTextView">
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="wrap-mode">word</property>
+                                <property name="buffer">warnings_textbuffer</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="spacing">4</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Verify objects, properties and signals deprecations</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="verify_button">
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">False</property>
+                                <property name="image">image1</property>
+                                <property name="always-show-image">True</property>
+                                <signal name="clicked" handler="verify_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes">Warnings:</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="tab-fill">False</property>
+                <property name="name">page0</property>
+                <property name="title" translatable="yes">Properties</property>
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box3">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-start">12</property>
@@ -470,14 +508,14 @@ signals or widgets which are not available in the target version</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
-                  <!-- n-columns=3 n-rows=5 -->
-                  <object class="GtkGrid" id="grid3">
+                  <!-- n-columns=2 n-rows=5 -->
+                  <object class="GtkGrid">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="row-spacing">6</property>
                     <property name="column-spacing">6</property>
                     <child>
-                      <object class="GtkLabel" id="label7">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Name:</property>
@@ -489,7 +527,7 @@ signals or widgets which are not available in the target version</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label8">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Copyright:</property>
@@ -515,7 +553,7 @@ signals or widgets which are not available in the target version</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label9">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Author(s):</property>
@@ -527,7 +565,7 @@ signals or widgets which are not available in the target version</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label6">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">License:</property>
@@ -539,7 +577,7 @@ signals or widgets which are not available in the target version</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow2">
+                      <object class="GtkScrolledWindow">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="shadow-type">in</property>
@@ -557,7 +595,7 @@ signals or widgets which are not available in the target version</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow3">
+                      <object class="GtkScrolledWindow">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="shadow-type">in</property>
@@ -575,7 +613,7 @@ signals or widgets which are not available in the target version</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label10">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Description:</property>
@@ -625,21 +663,6 @@ signals or widgets which are not available in the target version</property>
                         <property name="top-attach">4</property>
                       </packing>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -648,7 +671,7 @@ signals or widgets which are not available in the target version</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow1">
+                  <object class="GtkScrolledWindow">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
@@ -673,34 +696,19 @@ signals or widgets which are not available in the target version</property>
                 </child>
               </object>
               <packing>
+                <property name="name">page1</property>
+                <property name="title" translatable="yes">License</property>
                 <property name="position">1</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label4">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">License</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="position">1</property>
-                <property name="tab-fill">False</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
     </child>
-    <action-widgets>
-      <action-widget response="-3">close_button</action-widget>
-    </action-widgets>
   </template>
 </interface>

@@ -63,6 +63,10 @@ _glade_project_emit_activate_signal_handler (GladeWidget       *widget,
 
 /* glade-project-properties.c */
 void
+_glade_project_properties_set_warnings     (GladeProjectProperties *props,
+                                            const gchar            *warnings);
+
+void
 _glade_project_properties_set_license_data (GladeProjectProperties *props,
                                             const gchar *license,
                                             const gchar *name,
