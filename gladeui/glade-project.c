@@ -291,18 +291,7 @@ glade_project_dispose (GObject *object)
 
   /* Remove objects from the project */
   while (priv->tree)
-    {
-      GObject *toplevel = priv->tree->data;
-
-      glade_project_remove_object (project, toplevel);
-
-      /*
-       * FIXME: GladeWidgets are leaked so this is a workaround to make sure
-       * at least the runtime widgets (including windows) are destroyed!
-       */
-      if (GTK_IS_WIDGET (toplevel))
-        gtk_widget_destroy (GTK_WIDGET (toplevel));
-    }
+    glade_project_remove_object (project, priv->tree->data);
 
   while (priv->objects)
     glade_project_remove_object (project, priv->objects->data);
@@ -1163,7 +1152,7 @@ glade_project_model_get_value (GtkTreeModel *model,
                                gint          column,
                                GValue       *value)
 {
-  GladeWidget *widget;
+  g_autoptr(GladeWidget) widget = NULL;
 
   gtk_tree_model_get (GLADE_PROJECT (model)->priv->model, iter, 0, &widget, -1);
 
@@ -1325,7 +1314,7 @@ glade_project_drag_data_get (GtkTreeDragSource *drag_source,
 
   if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_source), &iter, path))
     {
-      GObject *object;
+      g_autoptr (GObject) object = NULL;
 
       gtk_tree_model_get (GTK_TREE_MODEL (drag_source), &iter,
                           GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
@@ -3806,6 +3795,7 @@ glade_project_get_iter_for_object (GladeProject *project,
   do
     {
       gtk_tree_model_get (model, iter, 0, &widget_iter, -1);
+      g_object_unref (widget_iter);
       
       if (widget_iter == widget)
         {
