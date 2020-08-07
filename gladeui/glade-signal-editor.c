@@ -826,6 +826,7 @@ glade_signal_editor_dispose (GObject *object)
   GladeSignalEditor *editor = GLADE_SIGNAL_EDITOR (object);
   GladeSignalEditorPrivate *priv = glade_signal_editor_get_instance_private (editor);
 
+  g_clear_object (&priv->widget);
   g_clear_object (&priv->detail_store);
   g_clear_object (&priv->handler_store);
   
