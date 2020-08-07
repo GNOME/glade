@@ -21,6 +21,8 @@ G_BEGIN_DECLS
 typedef struct _GladeWidgetClass   GladeWidgetClass;
 typedef struct _GladeWidgetPrivate GladeWidgetPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GladeWidget, g_object_unref)
+
 struct _GladeWidget
 {
   GInitiallyUnowned parent_instance;
