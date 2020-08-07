@@ -2762,10 +2762,8 @@ glade_widget_get_name (GladeWidget *widget)
  *
  * Returns: a pointer to @widget's displayable name
  *
- * This should be used to display the widget's ID in
- * the UI, it will automatically return an "(unnamed)"
- * string if the widget is not intended to be serialized
- * with an ID (i.e. the user did not provide a name).
+ * This should be used to display the widget's ID in the UI,
+ * it will automatically return the class name if the widget has no name.
  */
 const gchar *
 glade_widget_get_display_name (GladeWidget *widget)
@@ -2773,7 +2771,7 @@ glade_widget_get_display_name (GladeWidget *widget)
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
   if (g_str_has_prefix (widget->priv->name, GLADE_UNNAMED_PREFIX))
-    return _("(unnamed)");
+    return G_OBJECT_TYPE_NAME (widget->priv->object);
 
   return widget->priv->name;
 }
@@ -4844,13 +4842,12 @@ glade_widget_generate_path_name (GladeWidget *widget)
 
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-  string = g_string_new (widget->priv->name);
+  string = g_string_new (glade_widget_get_display_name (widget));
 
   for (iter = widget->priv->parent; iter; iter = iter->priv->parent)
     {
-      gchar *str = g_strdup_printf ("%s:", iter->priv->name);
-      g_string_prepend (string, str);
-      g_free (str);
+      g_string_prepend (string, " > ");
+      g_string_prepend (string, glade_widget_get_display_name (iter));
     }
 
   return g_string_free (string, FALSE);
