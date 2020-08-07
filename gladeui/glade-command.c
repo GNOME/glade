@@ -373,7 +373,7 @@ glade_command_property_enabled_finalize (GObject *obj)
 
   me = GLADE_COMMAND_PROPERTY_ENABLED (obj);
 
-  g_object_unref (me->property);
+  g_clear_object (&me->property);
   glade_command_finalize (obj);
 }
 
@@ -1714,35 +1714,34 @@ glade_command_add_remove_undo (GladeCommand *cmd)
 }
 
 static void
+glade_command_data_free (gpointer data)
+{
+  CommandData *cdata = data;
+
+  if (cdata->placeholder)
+    {
+      g_clear_signal_handler (&cdata->handler_id, cdata->placeholder);
+
+      if (g_object_is_floating (G_OBJECT (cdata->placeholder)))
+        gtk_widget_destroy (GTK_WIDGET (cdata->placeholder));
+    }
+
+  g_clear_object (&cdata->widget);
+  g_list_free_full (cdata->reffed, g_object_unref);
+
+  g_free (cdata);
+}
+
+static void
 glade_command_add_remove_finalize (GObject *obj)
 {
   GladeCommandAddRemove *cmd;
-  CommandData *cdata;
-  GList *list;
 
   g_return_if_fail (GLADE_IS_COMMAND_ADD_REMOVE (obj));
 
   cmd = GLADE_COMMAND_ADD_REMOVE (obj);
 
-  for (list = cmd->widgets; list && list->data; list = list->next)
-    {
-      cdata = list->data;
-
-      if (cdata->placeholder)
-        {
-          if (cdata->handler_id)
-            g_signal_handler_disconnect (cdata->placeholder, cdata->handler_id);
-          if (g_object_is_floating (G_OBJECT (cdata->placeholder)))
-            gtk_widget_destroy (GTK_WIDGET (cdata->placeholder));
-        }
-
-      if (cdata->widget)
-        g_object_unref (G_OBJECT (cdata->widget));
-
-      g_list_foreach (cdata->reffed, (GFunc) g_object_unref, NULL);
-      g_list_free (cdata->reffed);
-    }
-  g_list_free (cmd->widgets);
+  g_list_free_full (cmd->widgets, glade_command_data_free);
 
   glade_command_finalize (obj);
 }
@@ -2049,12 +2048,9 @@ glade_command_add_signal_finalize (GObject *obj)
 {
   GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (obj);
 
-  g_object_unref (cmd->widget);
-
-  if (cmd->signal)
-    g_object_unref (cmd->signal);
-  if (cmd->new_signal)
-    g_object_unref (cmd->new_signal);
+  g_clear_object (&cmd->widget);
+  g_clear_object (&cmd->signal);
+  g_clear_object (&cmd->new_signal);
 
   glade_command_finalize (obj);
 }
