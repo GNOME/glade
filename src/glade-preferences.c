@@ -327,6 +327,7 @@ GtkWidget *
 glade_preferences_new (GladeSettings *settings)
 {
   return g_object_new (GLADE_TYPE_PREFERENCES,
+                       "use-header-bar", TRUE,
                        "settings", settings,
                        NULL);
 }
