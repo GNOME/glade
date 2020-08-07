@@ -290,19 +290,16 @@ search_common_matches (GtkTreeModel    *model,
                        GtkTreeIter     *iter,
                        CommonMatchData *data)
 {
+  g_autoptr(GObject) obj = NULL;
   GladeWidget *gwidget;
   const gchar *name;
-  GObject *obj;
   gboolean match;
 
   gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj, -1);
   gwidget = glade_widget_get_from_gobject (obj);
 
   if (!glade_widget_has_name (gwidget))
-    {
-      g_object_unref (obj);
-      return FALSE;
-    }
+    return FALSE;
 
   name  = glade_widget_get_name (gwidget);
   match = (strncmp (data->text, name, strlen (data->text)) == 0);
@@ -318,7 +315,6 @@ search_common_matches (GtkTreeModel    *model,
         data->common_text = g_strdup (name);
     }
 
-  g_object_unref (obj);
   return FALSE;
 }
 
@@ -728,16 +724,14 @@ selection_foreach_func (GtkTreeModel *model,
                         GtkTreeIter  *iter,
                         GList       **selection)
 {
-  GObject *object;
+  g_autoptr(GObject) object = NULL;
 
-  gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
+  gtk_tree_model_get (model, iter,
+                      GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
                       -1);
 
   if (object)
-    {
-      *selection = g_list_prepend (*selection, object);
-      g_object_unref (object);
-    }
+    *selection = g_list_prepend (*selection, object);
 }
 
 static void
@@ -807,10 +801,11 @@ button_press_cb (GtkWidget      *widget,
                                          NULL, NULL) && path != NULL)
         {
           GtkTreeIter iter;
-          GladeWidget *object = NULL;
           if (gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->project),
                                        &iter, path))
             {
+              g_autoptr (GladeWidget) object = NULL;
+
               /* now we can obtain the widget from the iter.
                */
               gtk_tree_model_get (GTK_TREE_MODEL (priv->project), &iter,
@@ -862,8 +857,8 @@ glade_inspector_name_cell_data_func (GtkTreeViewColumn *column,
                                      GtkTreeIter       *iter,
                                      gpointer           data)
 {
+  g_autoptr(GObject) obj = NULL;
   GladeWidget *gwidget;
-  GObject *obj;
 
   gtk_tree_model_get (model, iter,
                       GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
@@ -875,8 +870,6 @@ glade_inspector_name_cell_data_func (GtkTreeViewColumn *column,
                 (glade_widget_has_name (gwidget)) ? 
                   glade_widget_get_display_name (gwidget) : NULL,
                 NULL);
-
-  g_object_unref (obj);
 }
 
 
@@ -1098,7 +1091,7 @@ glade_inspector_get_selected_items (GladeInspector *inspector)
       GtkTreeIter filter_iter;
       GtkTreeIter iter;
       GtkTreePath *path = (GtkTreePath *) paths->data;
-      GObject *object = NULL;
+      g_autoptr(GObject) object = NULL;
 
       gtk_tree_model_get_iter (priv->filter, &filter_iter, path);
       gtk_tree_model_filter_convert_iter_to_child_iter (GTK_TREE_MODEL_FILTER
@@ -1107,7 +1100,6 @@ glade_inspector_get_selected_items (GladeInspector *inspector)
       gtk_tree_model_get (GTK_TREE_MODEL (priv->project), &iter,
                           GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object, -1);
 
-      g_object_unref (object);
       items = g_list_prepend (items, glade_widget_get_from_gobject (object));
     }
 
