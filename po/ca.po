@@ -1702,10 +1702,9 @@ msgstr "Propietats de %s - %s [%s]"
 #. translators: %s(Class Title) Properties - %s (ClassName)
 #. * example: Window Properties - GtkWindow
 #: gladeui/glade-editor.c:347
-#, c-format, fuzzy
-#| msgid "%s Properties - %s [%s]"
+#, c-format
 msgid "%s Properties - %s"
-msgstr "les propietats del percentatge -%s"
+msgstr "Propietats de %s -%s"
 
 #: gladeui/glade-editor.c:361 gladeui/glade-widget.c:1390
 #: gladeui/glade-project-properties.ui:420
@@ -2098,18 +2097,16 @@ msgstr "Després"
 #. translators: this will be shown in glade previewer when a signal %s::%s is
 #. emitted one time
 #: gladeui/glade-previewer.c:782
-#, c-format, fuzzy
-#| msgid "%s::%s emited %d time(s)"
+#, c-format
 msgid "%s::%s emitted one time"
-msgstr "per cents% emesos una vegada"
+msgstr "%s::%s emès una vegada"
 
 #. translators: this will be shown in glade previewer when a signal %s::%s is
 #. emitted %d times
 #: gladeui/glade-previewer.c:786
-#, c-format, fuzzy
-#| msgid "%s::%s emited %d time(s)"
+#, c-format
 msgid "%s::%s emitted %d times"
-msgstr "per cents% emesos vegades per cent"
+msgstr "%s::%s emès %d vegades"
 
 #: gladeui/glade-previewer.c:791
 msgid "Run First"
@@ -2566,8 +2563,6 @@ msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "El projecte %s no té ginys desfasats o versions mal aparellades."
 
 #: gladeui/glade-property.c:671
-#, fuzzy
-#| msgid "The GladePropertyClass for this property"
 msgid "The GladePropertyDef for this property"
 msgstr "El GladePropertyDef per a aquesta propietat"
 
@@ -2688,7 +2683,7 @@ msgstr "Nom del tipus d'editor de propietats"
 msgid "Specify the actual editor property type name to use for this shell"
 msgstr ""
 "Especifica el nom del tipus d'editor de propietats actual que es fa servir "
-"per aquest entorn"
+"per a aquest entorn"
 
 #: gladeui/glade-signal.c:167
 msgid "SignalClass"
@@ -3795,12 +3790,9 @@ msgstr "Suprimeix la fila a %s"
 
 #. --------------------------------- Constants ------------------------------
 #: plugins/gtk+/glade-gtk.h:34
-#, fuzzy
-#| msgid ""
-#| "This property only applies when configuring the label with text"
 msgid "This property does not apply unless Use Underline is set."
 msgstr ""
-"Aquesta propietat no s'aplica a menys que s'estableixi Usa subratllat."
+"Aquesta propietat no s'aplica a menys que s'estableixi l'ús del subratllat."
 
 #: plugins/gtk+/glade-gtk.h:35
 msgid "Property not selected"
@@ -4137,31 +4129,29 @@ msgstr ""
 #. Translators: %s is the name of a widget here, the sentence means:
 #. * Make the widget use a custom title
 #: plugins/gtk+/glade-header-bar-editor.c:139
-#, c-format, fuzzy
+#, c-format
 #| msgid "Setting %s to use a custom child"
 msgid "Setting %s to use a custom title"
-msgstr "Establint els percentatges per utilitzar un títol personalitzat"
+msgstr "Configura %s per a utilitzar un títol personalitzat"
 
 #. Translators: %s is the name of a widget here, the sentence means:
 #. * Make the widget use the standard title
 #: plugins/gtk+/glade-header-bar-editor.c:145
-#, c-format, fuzzy
+#, c-format
 #| msgid "Setting %s to use standard label text"
 msgid "Setting %s to use the standard title"
-msgstr "Establint els percentatges per utilitzar el títol estàndard"
+msgstr "Configura %s per a utilitzar el títol estàndard"
 
 #: plugins/gtk+/glade-header-bar-editor.c:193
-#, c-format, fuzzy
-#| msgid "Setting %s to use a named icon"
+#, c-format
 msgid "Setting %s to show window controls"
-msgstr "Establint els percentatges per mostrar els controls de les finestres"
+msgstr "Configura %s per a mostrar els controls de les finestres"
 
 #: plugins/gtk+/glade-header-bar-editor.c:196
-#, c-format, fuzzy
+#, c-format
 #| msgid "Setting %s to not use tooltip markup"
 msgid "Setting %s to not show window controls"
-msgstr ""
-"Establint els percentatges per no mostrar els controls de les finestres"
+msgstr "Configura %s per a no mostrar els controls de les finestres"
 
 #. Add descriptive label
 #: plugins/gtk+/glade-icon-factory-editor.c:147
@@ -4306,28 +4296,27 @@ msgid "Add and remove rows:"
 msgstr "Afegeix i suprimeix files:"
 
 #: plugins/gtk+/glade-notebook-editor.c:158
-#, c-format, fuzzy
-#| msgid "Setting %s to use a stock button"
+#, c-format
 msgid "Setting %s to have a start action"
-msgstr "S'han de configurar els percentatges per a iniciar l'acció"
+msgstr "Configura %s per a tenir una acció d'inici"
 
 #: plugins/gtk+/glade-notebook-editor.c:161
-#, c-format, fuzzy
+#, c-format
 #| msgid "Setting %s to use a named icon"
 msgid "Setting %s to have an end action"
-msgstr "S'han de configurar els percentatges per a tenir una acció final"
+msgstr "Configura %s per a tenir una acció final"
 
 #: plugins/gtk+/glade-notebook-editor.c:164
-#, c-format, fuzzy
+#, c-format
 #| msgid "Setting %s to use a stock button"
 msgid "Setting %s to not have a start action"
-msgstr "S'estan establint els percentatges per no tenir una acció inicial"
+msgstr "Configura %s per no a tenir una acció inicial"
 
 #: plugins/gtk+/glade-notebook-editor.c:167
-#, c-format, fuzzy
+#, c-format
 #| msgid "Setting %s to use a named icon"
 msgid "Setting %s to not have an end action"
-msgstr "S'està establint que els zeros no tenen acció final"
+msgstr "Configura %s per a no tenir zeros en l'acció final"
 
 #. Add descriptive label
 #: plugins/gtk+/glade-store-editor.c:155
@@ -4412,18 +4401,17 @@ msgid "Setting %s to use an icon file"
 msgstr "S'està establint %s perquè utilitzi un fitxer d'icona"
 
 #: plugins/gtk+/glade-window-editor.c:225
-#, c-format, fuzzy
+#, c-format
 #| msgid "Setting %s to use a custom child"
 msgid "Setting %s to use a custom titlebar"
 msgstr ""
-"Establint els percentatges per utilitzar una barra de títol personalitzada"
+"Configura %s per a utilitzar una barra de títol personalitzada"
 
 #: plugins/gtk+/glade-window-editor.c:228
-#, c-format, fuzzy
-#| msgid "Setting %s to use a stock item"
+#, c-format
 msgid "Setting %s to use a system provided titlebar"
 msgstr ""
-"Establint els percentatges per utilitzar una barra de títol proporcionada "
+"Configura %s per a utilitzar una barra de títol proporcionada "
 "pel sistema"
 
 #: plugins/gtk+/gtkunixprint.xml:10
@@ -5360,9 +5348,8 @@ msgid "Immediate"
 msgstr "Immediat"
 
 #: plugins/gtk+/gtk+.xml:645
-#, fuzzy
 msgid "Bin"
-msgstr "Safata"
+msgstr "Bin"
 
 #: plugins/gtk+/gtk+.xml:663 plugins/gtk+/gtk+.xml:2743
 #: plugins/gtk+/gtk+.xml:2811
@@ -6343,53 +6330,42 @@ msgid "Move Over Right"
 msgstr "Mou per damunt a la dreta"
 
 #: plugins/gtk+/gtk+.xml:2644
-#, fuzzy
 msgid "Move Over Up-Down"
-msgstr "Mou a dalt i avall"
+msgstr "Mou per damunt de dalt a avall"
 
 #: plugins/gtk+/gtk+.xml:2645
-#, fuzzy
 msgid "Move Over Down-Up"
-msgstr "Mou cap a baix"
+msgstr "Mou per damunt d'avall a dalt"
 
 #: plugins/gtk+/gtk+.xml:2646
-#, fuzzy
 msgid "Move Over Left-Right"
-msgstr "Mou per l'esquerra-dreta"
+msgstr "Mou per damunt d'esquerra a dreta"
 
 #: plugins/gtk+/gtk+.xml:2647
-#, fuzzy
 msgid "Move Over Right-Left"
-msgstr "Mou per la dreta-esquerra"
+msgstr "Mou per damunt d'esquerra a dreta"
 
 #: plugins/gtk+/gtk+.xml:2648
-#, fuzzy
 msgid "Move Under Up"
-msgstr "Mou sota amunt"
+msgstr "Mou per sota cap a amunt"
 
 #: plugins/gtk+/gtk+.xml:2649
-#, fuzzy
 msgid "Move Under Down"
-msgstr "Mou avall"
+msgstr "Mou per sota cap a avall"
 
 #: plugins/gtk+/gtk+.xml:2650
-#, fuzzy
 msgid "Move Under Left"
-msgstr "Mou a sota esquerra"
+msgstr "Mou per sota cap a l'esquerra"
 
 #: plugins/gtk+/gtk+.xml:2651
-#, fuzzy
 msgid "Move Under Right"
-msgstr "Mou sota la dreta"
+msgstr "Mou per sota cap a la dreta"
 
 #: plugins/gtk+/gtk+.xml:2661
-#, fuzzy
-#| msgid "Switch"
 msgid "Stack Switcher"
 msgstr "Commutador de pila"
 
 #: plugins/gtk+/gtk+.xml:2677
-#, fuzzy
 msgid "Stack Sidebar"
 msgstr "Barra lateral de la pila"
 
@@ -6418,13 +6394,12 @@ msgid "Placeholder"
 msgstr "Espai reservat"
 
 #: plugins/gtk+/gtk+.xml:2765
-#, fuzzy
 msgid ""
 "Whether this listbox should have a placeholder widget that is shown in the "
 "list when it doesn't display any visible children"
 msgstr ""
-"Si aquest quadre de llista hauria de tenir un giny de marcadors de posició "
-"que es mostri a la llista quan no mostri cap fill visible"
+"Si aquest quadre de llista hauria de tenir un giny amb espai reservat "
+"que es mostri a la llista quan no es mostri cap fill visible"
 
 #: plugins/gtk+/gtk+.xml:2775
 msgid "The position of the row item in the listbox"
@@ -6435,8 +6410,6 @@ msgid "List Box Row"
 msgstr "Fila de caixa de llista"
 
 #: plugins/gtk+/gtk+.xml:2793
-#, fuzzy
-#| msgid "Flows To"
 msgid "Flow Box"
 msgstr "Caixa de flux"
 
@@ -6445,10 +6418,8 @@ msgid "Add Child"
 msgstr "Afegeix un fill"
 
 #: plugins/gtk+/gtk+.xml:2825
-#, fuzzy
-#| msgid "The position of the row item in the listbox"
 msgid "The position of the child in the flowbox"
-msgstr "La posició del fill al quadre de flux"
+msgstr "La posició del fill a la caixa de flux"
 
 #: plugins/gtk+/gtk+.xml:2831
 #, fuzzy
@@ -8253,20 +8224,15 @@ msgid "Client side window decorations"
 msgstr "Decoració de les finestres laterals de client"
 
 #: plugins/gtk+/glade-window-editor.ui:702
-#, fuzzy
 msgid "Whether this window should include a custom titlebar."
 msgstr ""
 "Si aquesta finestra hauria d'incloure una barra de títol personalitzada."
 
 #: plugins/webkit2gtk/webkit2gtk.xml:15
-#, fuzzy
 msgid "WebKit Web View"
 msgstr "Vista web del WebKit"
 
 #: plugins/webkit2gtk/webkit2gtk.xml:22
-#, fuzzy
-#| msgid ""
-#| "Set the currently active page to edit, this property will not be saved"
 msgid "The URL to load in Glade (this property will not be saved)"
 msgstr "L'URL a carregar al Glade (aquesta propietat no es desarà)"
 
