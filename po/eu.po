@@ -4,14 +4,14 @@
 #
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2008, 2009, 2010, 2011.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2013, 2017.
-# Asier Sarasua Garmendia <asier.sarasua@gmail.com>, 2019, 2020.
+# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2019, 2020.
 #
 msgid ""
 msgstr "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-01-14 04:15+0000\n"
-"PO-Revision-Date: 2020-02-15 10:00+0100\n"
-"Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
+"POT-Creation-Date: 2020-08-07 23:08+0000\n"
+"PO-Revision-Date: 2020-08-10 10:00+0100\n"
+"Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
@@ -60,271 +60,272 @@ msgid ""
 "languages including C, C++, C#, Vala, Java, Perl, Python, and others."
 msgstr "GtkBuilder erabilita, Glade-n XML fitxategiak programazio-lengoiaia askotan erabil daitezke: C, C++, C#, Vala, Java, Perl, Python eta beste hainbat."
 
-#: src/glade-window.c:59
+#: src/glade-window.c:50
 msgid "[Read Only]"
 msgstr "[Irakurtzeko soilik]"
 
-#: src/glade-window.c:196
+#: src/glade-window.c:181
 msgid "User Interface Designer"
 msgstr "Erabiltzaile-interfazeen diseinatzailea"
 
-#: src/glade-window.c:461 src/glade-window.c:468
+#: src/glade-window.c:428 src/glade-window.c:435
 msgid "the last action"
 msgstr "azken ekintza"
 
-#: src/glade-window.c:462
+#: src/glade-window.c:429
 #, c-format
 msgid "Undo: %s"
 msgstr "Desegin: %s"
 
-#: src/glade-window.c:469
+#: src/glade-window.c:436
 #, c-format
 msgid "Redo: %s"
 msgstr "Berregin: %s"
 
-#: src/glade-window.c:494
+#: src/glade-window.c:461
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "'%s' automatikoki gordetzen"
 
-#: src/glade-window.c:499
+#: src/glade-window.c:466
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Errorea '%s' automatikoki gordetzean"
 
-#: src/glade-window.c:721
+#: src/glade-window.c:688
 msgid "Open…"
 msgstr "Ireki…"
 
-#: src/glade-window.c:755
+#: src/glade-window.c:722
 #, c-format
 msgid "Project %s is still loading."
 msgstr "'%s' proiektua oraindik kargatzen ari da."
 
-#: src/glade-window.c:774
+#: src/glade-window.c:741
 msgid "Failed to backup existing file, continue saving?"
 msgstr "Huts egin du fitxategiaren babeskopiak, jarraitu gordetzen?"
 
-#: src/glade-window.c:789
+#: src/glade-window.c:756
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Huts egin du %s gordetzean: %s"
 
-#: src/glade-window.c:828
+#: src/glade-window.c:795
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "%s fitxategia aldatu egin da irakurri zenetik"
 
-#: src/glade-window.c:832
+#: src/glade-window.c:799
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "Gordetzen baduzu kanpoko aldaketak galdu egingo dira. Gorde dena den?"
 
-#: src/glade-window.c:837
+#: src/glade-window.c:804
 msgid "_Save Anyway"
 msgstr "_Gorde hala ere"
 
-#: src/glade-window.c:845
+#: src/glade-window.c:812
 msgid "_Don't Save"
 msgstr "_Ez gorde"
 
-#: src/glade-window.c:878
+#: src/glade-window.c:845
 #, c-format
 msgid "Project '%s' saved"
 msgstr "'%s' proiektua gorde da"
 
-#: src/glade-window.c:909
+#: src/glade-window.c:876
 msgid "Save As…"
 msgstr "Gorde honela…"
 
-#: src/glade-window.c:973
+#: src/glade-window.c:940
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Ezin izan da gorde %s fitxategia"
 
-#: src/glade-window.c:977
+#: src/glade-window.c:944
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Ez duzu behar adina baimenik fitxategia gordetzeko."
 
-#: src/glade-window.c:999
+#: src/glade-window.c:966
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "Ezin da %s fitxategia gorde. Bide-izen hori duen beste proiektu ireki bat dago."
 
-#: src/glade-window.c:1027
+#: src/glade-window.c:994
 msgid "No open projects to save"
 msgstr "Ez dago gordetzeko proiektu irekirik"
 
-#: src/glade-window.c:1060
+#: src/glade-window.c:1027
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Gorde aldaketak “%s” proiektuan itxi aurretik?"
 
-#: src/glade-window.c:1068
+#: src/glade-window.c:1035
 msgid "Your changes will be lost if you don't save them."
 msgstr "Zure aldaketak galdu egingo dira ez badituzu gordetzen."
 
-#: src/glade-window.c:1072
+#: src/glade-window.c:1039
 msgid "Close _without Saving"
 msgstr "Itxi gorde _gabe"
 
-#: src/glade-window.c:1073 src/glade-window.c:1758 gladeui/glade-editor.c:795
+#: src/glade-window.c:1040 src/glade-window.c:1725
+#: src/glade-preferences.glade:422 gladeui/glade-editor.c:795
 #: gladeui/glade-editor.c:1151 gladeui/glade-editor-property.c:1776
 #: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
-#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
-#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3648
+#: gladeui/glade-editor-property.c:3217 gladeui/glade-editor-property.c:3325
+#: gladeui/glade-editor-property.c:3336 gladeui/glade-editor-property.c:3647
 #: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:522
 #: plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Utzi"
 
-#: src/glade-window.c:1074 gladeui/glade-utils.c:486
+#: src/glade-window.c:1041 src/glade.glade:597 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Gorde"
 
-#: src/glade-window.c:1105
+#: src/glade-window.c:1072
 msgid "Save…"
 msgstr "Gorde…"
 
-#: src/glade-window.c:1665
+#: src/glade-window.c:1632
 msgid "Could not create a new project."
 msgstr "Ezin izan da proiektu berria sortu."
 
-#: src/glade-window.c:1726
+#: src/glade-window.c:1693
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Gorde gabeko aldaketak ditu %s proiektuak"
 
-#: src/glade-window.c:1731
+#: src/glade-window.c:1698
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr "Berritzen baduzu, gorde gabeko aldaketa guztiak gal daitezke. Berritu hala ere?"
 
-#: src/glade-window.c:1741
+#: src/glade-window.c:1708
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Proiektuko %s fitxategia kanpotik aldatu dute"
 
-#: src/glade-window.c:1746
+#: src/glade-window.c:1713
 msgid "Do you want to reload the project?"
 msgstr "Proiektua berriro kargatu nahi duzu?"
 
-#: src/glade-window.c:1752
+#: src/glade-window.c:1719
 msgid "_Reload"
 msgstr "Bir_kargatu"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2265
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Kaixo, Glade aplikazioak dituen berritasunak erakutsiko dizkizut"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2266
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Menu-barra eta tresna-barra goiburu-barran batu dira"
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2268
 msgid "You can open a project"
 msgstr "Proiektu bat ireki dezakezu"
 
-#: src/glade-window.c:2296
+#: src/glade-window.c:2269
 msgid "find recently used"
 msgstr "erabili berriak aurkitu"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2270
 msgid "or create a new one"
 msgstr "edo berria sortu"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2274
 msgid "Undo"
 msgstr "Desegin"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2275
 msgid "Redo"
 msgstr "Berregin"
 
-#: src/glade-window.c:2303
+#: src/glade-window.c:2276
 msgid "Project switcher"
 msgstr "Proiektuen aldatzailea"
 
-#: src/glade-window.c:2305
+#: src/glade-window.c:2278
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "eta gordetzeko batoia zuzenean goiburu-barran daude"
 
-#: src/glade-window.c:2306
+#: src/glade-window.c:2279
 msgid "just like Save As"
 msgstr "'Gorde honela' bezala"
 
-#: src/glade-window.c:2307
+#: src/glade-window.c:2280
 msgid "project properties"
 msgstr "proiektuaren propietateak"
 
-#: src/glade-window.c:2308
+#: src/glade-window.c:2281
 msgid "and less commonly used actions"
 msgstr "eta gutxiago erabilitako ekintzak"
 
-#: src/glade-window.c:2310
+#: src/glade-window.c:2283
 msgid "The object inspector took the palette's place"
 msgstr "Objektuen ikuskatzaileak paletaren tokia hartu zuen"
 
-#: src/glade-window.c:2311
+#: src/glade-window.c:2284
 msgid "To free up space for the property editor"
 msgstr "Propietateen editorerako espazioa askatzea"
 
-#: src/glade-window.c:2313
+#: src/glade-window.c:2286
 msgid "The palette was replaced with a new object chooser"
 msgstr "Paleta beste objektu-aukeratzaile batekin ordeztu zen"
 
-#: src/glade-window.c:2314
+#: src/glade-window.c:2287
 msgid "Where you can search all supported classes"
 msgstr "Onartutako klase guztiak bilatu ditzakezun tokia"
 
-#: src/glade-window.c:2315
+#: src/glade-window.c:2288
 msgid "investigate GTK+ object groups"
 msgstr "ikertu GTK+ objektu multzoak"
 
-#: src/glade-window.c:2316
+#: src/glade-window.c:2289
 msgid "and find classes introduced by other libraries"
 msgstr "eta bilatu beste liburutegi batzuk sartu dituzten klaseak"
 
-#: src/glade-window.c:2318
+#: src/glade-window.c:2291
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr "Ikuspegi orokorra ikusi dugunez gero, has gaitezen lan-fluxu berriarekin"
 
-#: src/glade-window.c:2320
+#: src/glade-window.c:2293
 msgid "First of all, create a new project"
 msgstr "Lehenengo, sortu proiektu berria"
 
-#: src/glade-window.c:2321
+#: src/glade-window.c:2294
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
 msgstr "Orain, gehitu GtkWindow bat trepeta-aukeratzaile berria erabilita edo laneko arean klik bikoitza eginda"
 
-#: src/glade-window.c:2322
+#: src/glade-window.c:2295
 msgid "Excellent!"
 msgstr "Bikain!"
 
-#: src/glade-window.c:2323
+#: src/glade-window.c:2296
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr "Bide batez, ba zenekien edozein leku-markatan klik bikoitza egin dezakezula trepetak sortzeko?"
 
-#: src/glade-window.c:2324
+#: src/glade-window.c:2297
 msgid "Try adding a grid"
 msgstr "Sakatu sareta bat"
 
-#: src/glade-window.c:2325
+#: src/glade-window.c:2298
 msgid "and a button"
 msgstr "eta botoi bat gehitzen"
 
-#: src/glade-window.c:2327
+#: src/glade-window.c:2300
 msgid "Quite easy! Isn't it?"
 msgstr "Erraza, ezta?"
 
-#: src/glade-window.c:2328
+#: src/glade-window.c:2301
 msgid "Enjoy!"
 msgstr "Ongi pasa!"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2546
+#: src/glade-window.c:2515
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -332,16 +333,16 @@ msgstr "Inkesta bat ari gara egiten erabiltzaileen artean\n"
 "bete nahi al duzu?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2550
+#: src/glade-window.c:2519
 msgid "If not, you can always find it in the Help menu."
 msgstr "Ez baduzu nahi orain, 'Laguntza' menuan izango duzu."
 
-#: src/glade-window.c:2552
+#: src/glade-window.c:2521
 msgid "_Do not show this dialog again"
 msgstr "_Ez erakutsi elkarrizketa-koadro hau berriro"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2573
+#: src/glade-window.c:2542
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr "Joan 'Laguntza -> Erregistroa eta erabiltzaileen inkesta' atalera eta bete gure inkesta!"
 
@@ -357,17 +358,17 @@ msgstr "Desgaitu Devhelp-ren integrazioa"
 msgid "be verbose"
 msgstr "eman xehetasunak"
 
-#: src/main.c:133
+#: src/main.c:142
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Ezin da '%s' ireki. Fitxategia ez da existitzen.\n"
 
-#: src/main.c:159
+#: src/main.c:170
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr "Ez da aurkitu gmodule euskarririk. Gmodule euskarria behar da Glade-k funtzionatzeko"
 
-#: src/main.c:167
+#: src/main.c:188
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr "Sortu edo editatu erabiltzaile-interfazeen diseinuak GTK+ edo GNOME aplikazioentzat."
 
@@ -395,87 +396,55 @@ msgstr "Hobespenak"
 msgid "About Glade"
 msgstr "Glade aplikazioari buruz"
 
-#: src/glade.glade:461 plugins/gtk+/gtk+.xml:1937
-msgid "Open"
-msgstr "Ireki"
+#: src/glade.glade:504 src/glade-preferences.glade:436
+#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
+msgid "_Open"
+msgstr "_Ireki"
 
-#: src/glade.glade:466
+#: src/glade.glade:509
 msgid "Open a project"
 msgstr "Proiektu bat irekitzen du"
 
-#: src/glade.glade:511
+#: src/glade.glade:554
 msgid "Create a new project"
 msgstr "Proiektu berria sortzen du"
 
-#: src/glade.glade:623
+#: src/glade.glade:574
 msgid "Edit project properties"
 msgstr "Editatu proiektuaren propietateak"
 
-#: src/glade.glade:646 plugins/gtk+/gtk+.xml:1935
-msgid "Save"
-msgstr "Gorde"
-
-#: src/glade.glade:651
+#: src/glade.glade:602
 msgid "Save the current project"
 msgstr "Uneko proiektua gordetzen du"
 
-#: src/glade.glade:667
+#: src/glade.glade:618
 msgid "Save the current project with a different name"
 msgstr "Uneko proiektua beste izen batekin gordetzen du"
 
-#: src/glade.glade:696
+#: src/glade.glade:647
 msgid "Start/resume interactive UI introduction"
 msgstr "Hasi/berrabiarazi erabiltzaile-interfazearen sarrera interaktiboa"
 
-#: src/glade.glade:728
+#: src/glade.glade:746
 msgid ""
-"Copyright © 2001-2006 Ximian, Inc.\n"
-"Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al."
-msgstr "Copyright © 2001-2006 Ximian, Inc.\n"
-"Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+"© 2018-2020 Juan Pablo Ugarte, et al.\n"
+"© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
+"© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+"© 2001-2006 Ximian, Inc."
+msgstr "© 2018-2020 Juan Pablo Ugarte, et al.\n"
+"© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
+"© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+"© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:731
+#: src/glade.glade:750
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+ eta GNOMErako erabiltzaile-interfazeen diseinatzailea."
 
-#: src/glade.glade:733
+#: src/glade.glade:752
 msgid "Visit Glade web site"
 msgstr "Bisitatu Glade-ren webgunea"
 
-#: src/glade.glade:734
-msgid ""
-"Glade is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as \n"
-"published by the Free Software Foundation; either version 2 of the \n"
-"License, or (at your option) any later version.\n"
-"\n"
-"Glade is distributed in the hope that it will be useful\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the \n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License \n"
-"along with Glade; if not, write to the Free Software \n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
-"MA 02110-1301, USA."
-msgstr "Glade software librea da; birbana eta/edo alda dezakezu Free Software\n"
-"Foundation-ek argitaratutako GNU Lizentzia Publiko Orokorraren 2. bertsioan,\n"
-"edo (nahiago baduzu) bertsio berriago batean, jasotako baldintzak betez\n"
-"gero.\n"
-"\n"
-"Glade erabilgarria izango delakoan banatzen da, baina INOLAKO BERMERIK GABE;\n"
-"era berean, ez da bermatzen beraren EGOKITASUNA MERKATURATZEKO edo HELBURU\n"
-"PARTIKULARRETARAKO ERABILTZEKO. Argibide gehiago nahi izanez gero, ikus GNU\n"
-"Lizentzia Publiko Orokorra.\n"
-"\n"
-"Programa honekin batera GNU Lizentzia Publiko Orokorraren kopia bat ere jaso\n"
-"beharko zenuke; horrela ez bada, idatzi helbide honetara: Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02111-1301,\n"
-"USA."
-
-#: src/glade.glade:759
+#: src/glade.glade:764
 msgid "translator-credits"
 msgstr "translator-credits"
 
@@ -483,41 +452,41 @@ msgstr "translator-credits"
 msgid "Glade Preferences"
 msgstr "Glade-ren hobespenak"
 
-#: src/glade-preferences.glade:78
+#: src/glade-preferences.glade:88
 msgid "Create backups"
 msgstr "Sortu babeskopiak"
 
-#: src/glade-preferences.glade:82
+#: src/glade-preferences.glade:92
 msgid ""
 "Create a backup of the last version of the project every time the project is "
 "saved"
 msgstr "Sortu proiektuaren azken bertsioaren babeskopia bat proiektua gordetzen den bakoitzean"
 
-#: src/glade-preferences.glade:97 src/glade-preferences.glade:114
-#: src/glade-preferences.glade:135
+#: src/glade-preferences.glade:106 src/glade-preferences.glade:121
+#: src/glade-preferences.glade:140
 msgid ""
 "Automatically save the project to an alternate file whenever\n"
 "the project is modified and the specified timeout elapses"
 msgstr "Gorde proiektua automatikoki ordezko fitxategi batean\n"
 "proiektua aldatu eta adierazitako denbora-muga igarotzen denean"
 
-#: src/glade-preferences.glade:101
+#: src/glade-preferences.glade:110
 msgid "seconds"
 msgstr "segundo"
 
-#: src/glade-preferences.glade:131
+#: src/glade-preferences.glade:136
 msgid "Automatically save project after"
 msgstr "Gorde proiektua automatikoki honen ondoren:"
 
-#: src/glade-preferences.glade:156
+#: src/glade-preferences.glade:158
 msgid "Load and Save"
 msgstr "Kargatu eta gorde"
 
-#: src/glade-preferences.glade:186
+#: src/glade-preferences.glade:188
 msgid "Versioning errors"
 msgstr "Erroreak bertsioetan"
 
-#: src/glade-preferences.glade:190
+#: src/glade-preferences.glade:192
 msgid ""
 "Prompt the user at save time if the project uses any widgets, properties\n"
 "or signals which are not available in the project's target version"
@@ -535,18 +504,18 @@ msgid ""
 msgstr "Esan erabiltzaileari, gordetzeko unean, proiektuak zaharkituta\n"
 "dagoen trepeta, propietate edo seinalerik erabiltzen duen"
 
-#: src/glade-preferences.glade:222
+#: src/glade-preferences.glade:220
 msgid "Unrecognized types"
 msgstr "Mota ezezagunak"
 
-#: src/glade-preferences.glade:226
+#: src/glade-preferences.glade:224
 msgid ""
 "Prompt the user at save time if the project\n"
 "contains any unrecognized types"
 msgstr "Esan erabiltzaileari, gordetzeko unean, proiektuak\n"
 "mota ezezagunak dituen"
 
-#: src/glade-preferences.glade:247
+#: src/glade-preferences.glade:243
 msgid "Show warnings when saving"
 msgstr "Erakutsi abisuak gordetzean"
 
@@ -554,665 +523,674 @@ msgstr "Erakutsi abisuak gordetzean"
 msgid "column"
 msgstr "zutabea"
 
-#: src/glade-preferences.glade:322
-msgid "Remove the selected catalog search path"
-msgstr "Kendu hautatutako katalogoaren bilaketaren bide-izena"
-
-#: src/glade-preferences.glade:346
+#: src/glade-preferences.glade:328
 msgid "Add a new catalog search path"
 msgstr "Gehitu katalogoaren bilaketaren bide-izen berria"
 
-#: src/glade-preferences.glade:372
+#: src/glade-preferences.glade:353
+msgid "Remove the selected catalog search path"
+msgstr "Kendu hautatutako katalogoaren bilaketaren bide-izena"
+
+#: src/glade-preferences.glade:384
 msgid "Extra catalog paths"
 msgstr "Katalogoaren bide-izen gehigarriak"
 
-#: src/glade-preferences.glade:428
+#: src/glade-preferences.glade:403
 msgid "Select a catalog search path"
 msgstr "Hautatu katalogoaren bilaketaren bide-izena"
 
-#. translators: Email subject sent to the user after completing the survey
-#: src/glade-registration.c:32 src/glade-registration.glade:773
-msgid "Glade User Survey"
-msgstr "Glade erabiltzaileen inkesta"
-
-#. translators: Email body sent to the user after completing the survey
-#: src/glade-registration.c:34
-msgid ""
-"Thank you for taking Glade Users survey, we appreciate it!\n"
-"\n"
-"To validate this email address open the folowing link\n"
-"\n"
-"https://people.gnome.org/~jpu/glade/registration.php?email="
-"$email&validation_token=$new_validation_token\n"
-"\n"
-"In case you want to change or update the survey, your current update token "
-"is:\n"
-"$new_token\n"
-"\n"
-"Cheers\n"
-"\n"
-"\tThe Glade team\n"
-msgstr "Eskerrik asko Glade-n erabiltzaileen inkesta betetzeagatik!\n"
-"\n"
-"Posta-helbide hau balioztatzeko, ireki honako esteka:\n"
-"\n"
-"https://people.gnome.org/~jpu/glade/registration.php?email=$email&validation_token=$new_validation_token\n"
-"\n"
-"Inkesta aldatu edo eguneratu nahi baduzu, zure uneko eguneratze-tokena honakoa da: $new_token\n"
-"\n"
-"Ongi izan\n"
-"\n"
-"Glade taldea\n"
-
-#. translators: Email subject sent to the user after updating the survey
-#: src/glade-registration.c:37
-msgid "Glade User Survey (update)"
-msgstr "Glade erabiltzaileen inkesta (eguneraketa)"
-
-#. translators: Email body sent to the user after updating the survey
-#: src/glade-registration.c:39
-msgid ""
-"Thank you for updating your Glade Users survey data, we appreciate it!\n"
-"\n"
-"In case you want to change something again, your current update token is:\n"
-"$new_token\n"
-"\n"
-"Cheers\n"
-"\n"
-"\tThe Glade team\n"
-msgstr "Eskerrik asko Glade-n erabiltzaileen inkesta eguneratzeagatik!\n"
-"\n"
-"Inkesta berriro aldatu nahi baduzu, zure uneko eguneratze-tokena honakoa da: $new_token\n"
-"\n"
-"Ongi izan\n"
-"\n"
-"Glade taldea\n"
-
-#: src/glade-registration.c:306
+#: src/glade-registration.c:282
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s(e)ra konektatzen"
 
-#: src/glade-registration.c:309
+#: src/glade-registration.c:285
 #, c-format
 msgid "Sending data to %s"
 msgstr "Datuak %s(e)ra bidaltzen"
 
-#: src/glade-registration.c:312
+#: src/glade-registration.c:288
 #, c-format
 msgid "Waiting for %s"
 msgstr "%s(r)en zain"
 
-#: src/glade-registration.c:315
+#: src/glade-registration.c:291
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Datuak %s(e)ndik jasotzen"
 
-#: src/glade-registration.c:347
-msgid "Sorry, automatic subscription to Glade Users mailing list failed"
-msgstr "Glade erabiltzaileen posta-zerrendan automatikoki izena emateak huts egin du"
-
 #: src/glade-registration.c:350
-msgid "Open Glade Users Website"
-msgstr "Ireki Glade erabiltzaileen webgunea"
+msgid ""
+"Your subscription to the users list has been received!\n"
+"Check your email!"
+msgstr "Erabiltzaile-zerrendan egin duzun erregistroa jaso dugu!\n"
+"Begiratu zure posta elektronikoa!"
 
-#: src/glade-registration.c:402
-msgid "Internal server error"
-msgstr "Barneko zerbitzari-errorea"
-
-#: src/glade-registration.c:426
+#: src/glade-registration.c:510
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
 msgstr "Eskerrik asko inkesta betetzeagatik, benetan!"
 
-#: src/glade-registration.c:434
-msgid "Name and Email fields are required"
-msgstr "Izena eta helbide elektronikoa derrigorrezkoak dira"
-
-#: src/glade-registration.c:437
-msgid ""
-"Oops! Email address is already in use!\n"
-"To update information you need to provide the token that was sent to your "
-"inbox."
-msgstr "Posta-helbide elektronikoa dagoeneko erabiltzen ari da!\n"
-"Informazioa eguneratzeko, zure sarrerako postontzira bidali genizun tokena eman behar duzu."
-
-#: src/glade-registration.c:440
-#, c-format
-msgid "Oops! Error saving user information: %s"
-msgstr "Errorea erabiltzailearen informazioa gordetzean: %s"
-
-#: src/glade-registration.c:443
-#, c-format
-msgid "Oops! Error saving survey data: %s"
-msgstr "Errorea inkestaren datuak gordetzean: %s"
-
-#: src/glade-registration.c:446
-#, c-format
-msgid "Oops! Error accessing DB: %s"
-msgstr "Errorea datu-basea atzitzean: %s"
+#: src/glade-registration.c:771
+msgid "Completed and submitted!"
+msgstr "Osatu da eta bidali da!"
 
 #: src/glade-registration.glade:44
 msgid "Glade Registration & User Survey"
 msgstr "Gladen erregistroa eta erabiltzaileen inkesta"
 
-#: src/glade-registration.glade:101 plugins/gtk+/gtk+.xml:1732
-#: plugins/gtk+/gtk+.xml:3448
-msgid "Cancel"
-msgstr "Utzi"
+#: src/glade-registration.glade:63 gladeui/glade-editor-property.c:1380
+msgid "_Close"
+msgstr "It_xi"
 
-#: src/glade-registration.glade:114
-msgid "Submit"
-msgstr "Bidali"
+#: src/glade-registration.glade:77
+msgid "_Submit"
+msgstr "_Bidali"
 
-#: src/glade-registration.glade:118
-msgid "Information will be sent to https://people.gnome.org/~jpu"
-msgstr "Informazioa https://people.gnome.org/~jpu helbidera bidaliko da"
+#: src/glade-registration.glade:82
+msgid "Information will be sent to https://survey.gnome.org"
+msgstr "Informazioa hona bidaliko da: https://survey.gnome.org"
 
-#: src/glade-registration.glade:211
+#: src/glade-registration.glade:183
 msgid "User Information"
 msgstr "Erabiltzaile-informazioa"
 
-#: src/glade-registration.glade:245
+#: src/glade-registration.glade:217
 msgid "<Your name or nickname is required>"
 msgstr "<Zure izena edo ezizena derrigorrezkoak dira>"
 
-#: src/glade-registration.glade:256 gladeui/glade-project-properties.ui:399
+#: src/glade-registration.glade:230 gladeui/glade-project-properties.ui:521
 #: plugins/gtk+/glade-about-dialog-editor.ui:69
 msgid "Name:"
 msgstr "Izena:"
 
-#: src/glade-registration.glade:268
+#: src/glade-registration.glade:242
 msgid "Email:"
 msgstr "Helb. el.:"
 
-#: src/glade-registration.glade:280
+#: src/glade-registration.glade:254
 msgid ""
 "Tokens are processed manually in batches.\n"
 "Please be patient."
 msgstr "Tokenak eskuz prozesatzen dira, multzoka.\n"
 "Lasai hartu."
 
-#: src/glade-registration.glade:283
+#: src/glade-registration.glade:256
 msgid "<Required to send back registration token>"
 msgstr "<Derrigorrezkoa erregistro-tokena bidaltzeko>"
 
-#: src/glade-registration.glade:294
+#: src/glade-registration.glade:269
 msgid "Country:"
 msgstr "Herrialdea:"
 
-#: src/glade-registration.glade:306
+#: src/glade-registration.glade:281
 msgid "City:"
 msgstr "Hiria:"
 
-#: src/glade-registration.glade:320
+#: src/glade-registration.glade:295
 msgid "Company"
 msgstr "Enpresa"
 
-#: src/glade-registration.glade:321
+#: src/glade-registration.glade:296
 msgid "Organization"
 msgstr "Erakundea"
 
-#: src/glade-registration.glade:322
+#: src/glade-registration.glade:297
 msgid "Personal"
 msgstr "Pertsonala"
 
-#: src/glade-registration.glade:334
+#: src/glade-registration.glade:309
 msgid "Website"
 msgstr "Webgunea"
 
-#: src/glade-registration.glade:375
+#: src/glade-registration.glade:353
 msgid "Subscribe me to the mailing list"
 msgstr "Harpidetu posta-zerrendara"
 
-#: src/glade-registration.glade:379
+#: src/glade-registration.glade:357
 msgid ""
 "Subscribe to Glade Users mailing list.\n"
 "You will be sent email requesting confirmation!"
 msgstr "Harpidetu Gladen erabiltzaileen posta-zerrendan.\n"
 "Posta bat bidaliko dizugu harpidetza baieztatzeko!"
 
-#: src/glade-registration.glade:397
+#: src/glade-registration.glade:373
 msgid "Choose your country"
 msgstr "Aukeratu zure herrialdea edo estatua"
 
-#: src/glade-registration.glade:677
+#: src/glade-registration.glade:653
 msgid "We care about privacy!"
 msgstr "Pribatutasunak axola digu"
 
-#: src/glade-registration.glade:695
+#: src/glade-registration.glade:671
 msgid ""
 "All the data will be stored in a private location and will not be shared "
 "with the public or any third party."
 msgstr "Datu guztiak kokaleku pribatu batean biltegiratuko dira eta ez dira publikoki edo hirugarrenekin partekatuko."
 
-#: src/glade-registration.glade:734
-msgid "Update Info"
-msgstr "Eguneratze-informazioa"
+#: src/glade-registration.glade:705
+msgid "Glade User Survey"
+msgstr "Glade erabiltzaileen inkesta"
 
-#: src/glade-registration.glade:754
-msgid "<Insert update token, if you want to update previously sent data>"
-msgstr "<Txertatu eguneratze-toketan, aurretik bidalitako datuak eguneratu nahi badituzu>"
-
-#: src/glade-registration.glade:804
+#: src/glade-registration.glade:735
 msgid "How long have you been programming?"
 msgstr "Zenbat denbora aritu zara programazioan?"
 
-#: src/glade-registration.glade:822 src/glade-registration.glade:1076
+#: src/glade-registration.glade:753 src/glade-registration.glade:1022
 msgid "0"
 msgstr "0"
 
-#: src/glade-registration.glade:838 src/glade-registration.glade:1092
+#: src/glade-registration.glade:769 src/glade-registration.glade:1038
 msgid "years"
 msgstr "urte"
 
-#: src/glade-registration.glade:839 src/glade-registration.glade:1093
+#: src/glade-registration.glade:770 src/glade-registration.glade:1039
 msgid "months"
 msgstr "hilabete"
 
-#: src/glade-registration.glade:850
+#: src/glade-registration.glade:781
 msgid "I am not a programmer"
 msgstr "Ez naiz programatzailea"
 
-#: src/glade-registration.glade:886
+#: src/glade-registration.glade:817
 msgid "Which programming languages do you prefer?"
 msgstr "Zein programazio-lengoaia nahiago duzu?"
 
-#: src/glade-registration.glade:902
+#: src/glade-registration.glade:833
 msgid "C"
 msgstr "C"
 
-#: src/glade-registration.glade:917
+#: src/glade-registration.glade:848
 msgid "C++"
 msgstr "C++"
 
-#: src/glade-registration.glade:932
+#: src/glade-registration.glade:863
 msgid "C#"
 msgstr "C#"
 
-#: src/glade-registration.glade:947
+#: src/glade-registration.glade:878
 msgid "Java"
 msgstr "Java"
 
-#: src/glade-registration.glade:962
+#: src/glade-registration.glade:893
 msgid "Python"
 msgstr "Python"
 
-#: src/glade-registration.glade:977
+#: src/glade-registration.glade:908
 msgid "JavaScript"
 msgstr "JavaScript"
 
-#: src/glade-registration.glade:992
+#: src/glade-registration.glade:923
 msgid "Vala"
 msgstr "Vala"
 
-#: src/glade-registration.glade:1007
+#: src/glade-registration.glade:938
 msgid "Perl"
 msgstr "Perl"
 
-#: src/glade-registration.glade:1022 src/glade-registration.glade:1227
-#: src/glade-registration.glade:1314 src/glade-registration.glade:1331
-#: src/glade-registration.glade:1348 src/glade-registration.glade:1379
-#: src/glade-registration.glade:1399 src/glade-registration.glade:1494
-#: src/glade-registration.glade:1985 src/glade-registration.glade:2192
-#: gladeui/glade-project-properties.ui:543 plugins/gtk+/gtk+.xml:3184
-#: plugins/gtk+/gtk+.xml:4890
+#: src/glade-registration.glade:953
+msgid "Rust"
+msgstr "Rust"
+
+#: src/glade-registration.glade:968 src/glade-registration.glade:1173
+#: src/glade-registration.glade:1278 src/glade-registration.glade:1295
+#: src/glade-registration.glade:1312 src/glade-registration.glade:1344
+#: src/glade-registration.glade:1370 src/glade-registration.glade:1465
+#: src/glade-registration.glade:1956 src/glade-registration.glade:2158
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3196
+#: plugins/gtk+/gtk+.xml:4910
 msgid "Other"
 msgstr "Bestelakoa"
 
-#: src/glade-registration.glade:1058
+#: src/glade-registration.glade:1004
 msgid "When did you start using Glade?"
 msgstr "Noiz hasi zinen Glade erabiltzen?"
 
-#: src/glade-registration.glade:1106
+#: src/glade-registration.glade:1052
 msgid "ago"
 msgstr "duela"
 
-#: src/glade-registration.glade:1138
+#: src/glade-registration.glade:1084
 msgid "Which version do you normally use?"
 msgstr "Zein bertsio erabili ohi duzu?"
 
-#: src/glade-registration.glade:1155
+#: src/glade-registration.glade:1101
 msgid "What is available in my OS"
 msgstr "Nire sisteman erabilgarri dagoena"
 
-#: src/glade-registration.glade:1172
+#: src/glade-registration.glade:1118
 msgid "Latest stable from sources"
 msgstr "Iturburuetatik hartutako azken bertsio egonkorra"
 
-#: src/glade-registration.glade:1189
+#: src/glade-registration.glade:1135
 msgid "3.8 for GTK+ 2"
 msgstr "3.8 GTK+ 2 bertsioa"
 
-#: src/glade-registration.glade:1206
+#: src/glade-registration.glade:1152
 msgid "Master"
 msgstr "Maisua"
 
-#: src/glade-registration.glade:1283
+#: src/glade-registration.glade:1229
 msgid "On what operating systems?"
 msgstr "Zein sistema eragiletan?"
 
-#: src/glade-registration.glade:1302
+#: src/glade-registration.glade:1249
 msgid "distribution"
 msgstr "banaketa"
 
-#: src/glade-registration.glade:1303
+#: src/glade-registration.glade:1250
+msgid "Alpine"
+msgstr "Alpine"
+
+#: src/glade-registration.glade:1251
 msgid "Arch Linux"
 msgstr "Arch Linux"
 
-#: src/glade-registration.glade:1304
+#: src/glade-registration.glade:1252
+msgid "Ataraxia Linux"
+msgstr "Ataraxia Linux"
+
+#: src/glade-registration.glade:1253
+msgid "CentOS"
+msgstr "CentOS"
+
+#: src/glade-registration.glade:1254
+msgid "Chrome OS"
+msgstr "Chrome OS"
+
+#: src/glade-registration.glade:1255
+msgid "Clear Linux"
+msgstr "Clear Linux"
+
+#: src/glade-registration.glade:1256
 msgid "Debian"
 msgstr "Debian"
 
-#: src/glade-registration.glade:1305
-msgid "openSUSE"
-msgstr "openSUSE"
+#: src/glade-registration.glade:1257
+msgid "elementary OS"
+msgstr "elementary OS"
 
-#: src/glade-registration.glade:1306
+#: src/glade-registration.glade:1258
+msgid "Endless OS"
+msgstr "Endless OS"
+
+#: src/glade-registration.glade:1259
 msgid "Fedora"
 msgstr "Fedora"
 
-#: src/glade-registration.glade:1307
+#: src/glade-registration.glade:1260
 msgid "Gentoo"
 msgstr "Gentoo"
 
-#: src/glade-registration.glade:1308
+#: src/glade-registration.glade:1261
+msgid "Kubuntu"
+msgstr "Kubuntu"
+
+#: src/glade-registration.glade:1262
+msgid "Linux Mint"
+msgstr "Linux Mint"
+
+#: src/glade-registration.glade:1263
+msgid "Mageia"
+msgstr "Mageia"
+
+#: src/glade-registration.glade:1264
 msgid "Mandriva"
 msgstr "Mandriva"
 
-#: src/glade-registration.glade:1309
-msgid "Red Hat"
-msgstr "Red Hat"
+#: src/glade-registration.glade:1265
+msgid "Nix OS"
+msgstr "Nix OS"
 
-#: src/glade-registration.glade:1310
-msgid "Turbolinux"
-msgstr "Turbolinux"
+#: src/glade-registration.glade:1266
+msgid "openSUSE"
+msgstr "openSUSE"
 
-#: src/glade-registration.glade:1311
-msgid "Ubuntu"
-msgstr "Ubuntu"
-
-#: src/glade-registration.glade:1312
-msgid "Xandros"
-msgstr "Xandros"
-
-#: src/glade-registration.glade:1313
+#: src/glade-registration.glade:1267
 msgid "Oracle"
 msgstr "Oracle"
 
-#: src/glade-registration.glade:1327 src/glade-registration.glade:1344
+#: src/glade-registration.glade:1268
+msgid "Pop!_OS"
+msgstr "Pop!_OS"
+
+#: src/glade-registration.glade:1269
+msgid "PureOS"
+msgstr "PureOS"
+
+#: src/glade-registration.glade:1270
+msgid "Raspbian"
+msgstr "Raspbian"
+
+#: src/glade-registration.glade:1271
+msgid "Red Hat"
+msgstr "Red Hat"
+
+#: src/glade-registration.glade:1272
+msgid "Solus"
+msgstr "Solus"
+
+#: src/glade-registration.glade:1273
+msgid "SulinOS"
+msgstr "SulinOS"
+
+#: src/glade-registration.glade:1274
+msgid "Turbolinux"
+msgstr "Turbolinux"
+
+#: src/glade-registration.glade:1275
+msgid "Ubuntu"
+msgstr "Ubuntu"
+
+#: src/glade-registration.glade:1276
+msgid "Void Linux"
+msgstr "Void Linux"
+
+#: src/glade-registration.glade:1277
+msgid "Xandros"
+msgstr "Xandros"
+
+#: src/glade-registration.glade:1291 src/glade-registration.glade:1308
 msgid "variant"
 msgstr "aldagaia"
 
-#: src/glade-registration.glade:1328
+#: src/glade-registration.glade:1292
 msgid "FreeBSD"
 msgstr "FreeBSD"
 
-#: src/glade-registration.glade:1329
+#: src/glade-registration.glade:1293
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
-#: src/glade-registration.glade:1330
+#: src/glade-registration.glade:1294
 msgid "NetBSD"
 msgstr "NetBSD"
 
-#: src/glade-registration.glade:1345
+#: src/glade-registration.glade:1309
 msgid "Oracle Solaris"
 msgstr "Oracle Solaris"
 
-#: src/glade-registration.glade:1346
+#: src/glade-registration.glade:1310
 msgid "OpenSolaris"
 msgstr "OpenSolaris"
 
-#: src/glade-registration.glade:1347
+#: src/glade-registration.glade:1311
 msgid "illumos"
 msgstr "illumos"
 
-#: src/glade-registration.glade:1370 src/glade-registration.glade:1392
+#: src/glade-registration.glade:1334 src/glade-registration.glade:1357
 msgid "version"
 msgstr "bertsioa"
 
-#: src/glade-registration.glade:1371
-msgid "2000"
-msgstr "2000"
+#: src/glade-registration.glade:1335
+msgid "10"
+msgstr "10"
 
-#: src/glade-registration.glade:1372
-msgid "XP"
-msgstr "XP"
-
-#: src/glade-registration.glade:1373
-msgid "2003"
-msgstr "2003"
-
-#: src/glade-registration.glade:1374
-msgid "Vista"
-msgstr "Vista"
-
-#: src/glade-registration.glade:1375
-msgid "2008"
-msgstr "2008"
-
-#: src/glade-registration.glade:1376
-msgid "7"
-msgstr "7"
-
-#: src/glade-registration.glade:1377
+#: src/glade-registration.glade:1336
 msgid "8"
 msgstr "8"
 
-#: src/glade-registration.glade:1378
+#: src/glade-registration.glade:1337
+msgid "7"
+msgstr "7"
+
+#: src/glade-registration.glade:1338
+msgid "Vista"
+msgstr "Vista"
+
+#: src/glade-registration.glade:1339
 msgid "2012"
 msgstr "2012"
 
-#: src/glade-registration.glade:1393
-msgid "Tiger"
-msgstr "Tiger"
+#: src/glade-registration.glade:1340
+msgid "2008"
+msgstr "2008"
 
-#: src/glade-registration.glade:1394
-msgid "Leopard"
-msgstr "Leopard"
+#: src/glade-registration.glade:1341
+msgid "2003"
+msgstr "2003"
 
-#: src/glade-registration.glade:1395
-msgid "Snow Leopard"
-msgstr "Snow Leopard"
+#: src/glade-registration.glade:1342
+msgid "XP"
+msgstr "XP"
 
-#: src/glade-registration.glade:1396
-msgid "Lion"
-msgstr "Lion"
+#: src/glade-registration.glade:1343
+msgid "2000"
+msgstr "2000"
 
-#: src/glade-registration.glade:1397
-msgid "Mountain Lion"
-msgstr "Mountain Lion"
+#: src/glade-registration.glade:1358
+msgid "Catalina"
+msgstr "Catalina"
 
-#: src/glade-registration.glade:1398
+#: src/glade-registration.glade:1359
+msgid "Mojave"
+msgstr "Mojave"
+
+#: src/glade-registration.glade:1360
+msgid "High Sierra"
+msgstr "High Sierra"
+
+#: src/glade-registration.glade:1361
+msgid "Sierra"
+msgstr "Sierra"
+
+#: src/glade-registration.glade:1362
+msgid "El Capitan"
+msgstr "El Capitan"
+
+#: src/glade-registration.glade:1363
+msgid "Yosemite"
+msgstr "Yosemite"
+
+#: src/glade-registration.glade:1364
 msgid "Mavericks"
 msgstr "Mavericks"
 
-#: src/glade-registration.glade:1409
+#: src/glade-registration.glade:1365
+msgid "Mountain Lion"
+msgstr "Mountain Lion"
+
+#: src/glade-registration.glade:1366
+msgid "Lion"
+msgstr "Lion"
+
+#: src/glade-registration.glade:1367
+msgid "Snow Leopard"
+msgstr "Snow Leopard"
+
+#: src/glade-registration.glade:1368
+msgid "Leopard"
+msgstr "Leopard"
+
+#: src/glade-registration.glade:1369
+msgid "Tiger"
+msgstr "Tiger"
+
+#: src/glade-registration.glade:1380
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: src/glade-registration.glade:1426 plugins/gtk+/gtk+.xml:3329
+#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3339
 msgid "BSD"
 msgstr "BSD"
 
-#: src/glade-registration.glade:1443
+#: src/glade-registration.glade:1414
 msgid "Windows"
 msgstr "Leihoak"
 
-#: src/glade-registration.glade:1460
+#: src/glade-registration.glade:1431
 msgid "Mac OS X"
 msgstr "Mac OS X"
 
-#: src/glade-registration.glade:1477
+#: src/glade-registration.glade:1448
 msgid "Solaris"
 msgstr "Solaris"
 
-#: src/glade-registration.glade:1532
+#: src/glade-registration.glade:1503
 msgid "How often do you use it?"
 msgstr "Zenbatero erabiltzen duzu?"
 
-#: src/glade-registration.glade:1549
+#: src/glade-registration.glade:1520
 msgid "Every day"
 msgstr "Egunero"
 
-#: src/glade-registration.glade:1566
+#: src/glade-registration.glade:1537
 msgid "Few days a week"
 msgstr "Astean zenbait egunetan"
 
-#: src/glade-registration.glade:1583
+#: src/glade-registration.glade:1554
 msgid "Every week"
 msgstr "Astero"
 
-#: src/glade-registration.glade:1600
+#: src/glade-registration.glade:1571
 msgid "A few times a month"
 msgstr "Hilean zenbait egunetan"
 
-#: src/glade-registration.glade:1617
+#: src/glade-registration.glade:1588
 msgid "Once a month"
 msgstr "Hilean behin"
 
-#: src/glade-registration.glade:1634
+#: src/glade-registration.glade:1605
 msgid "A few times a year"
 msgstr "Urtean zenbait alditan"
 
-#: src/glade-registration.glade:1672
+#: src/glade-registration.glade:1643
 msgid "What level of Glade user would you say you are?"
 msgstr "Zein mailatako Glade erabiltzailea zarela esango zenuke?"
 
-#: src/glade-registration.glade:1688
+#: src/glade-registration.glade:1659
 msgid "Beginner"
 msgstr "Hasiberria"
 
-#: src/glade-registration.glade:1705
+#: src/glade-registration.glade:1676
 msgid "Intermediate"
 msgstr "Tartekoa"
 
-#: src/glade-registration.glade:1722
+#: src/glade-registration.glade:1693
 msgid "Advanced"
 msgstr "Aurreratua"
 
-#: src/glade-registration.glade:1760
+#: src/glade-registration.glade:1731
 msgid ""
 "Under what kind of license(s) do you release the software you used Glade to "
 "create?"
 msgstr "Zein lizentzia erabiltzen duzu Gladekin erabiltzen duzun softwarea argitaratzeko?"
 
-#: src/glade-registration.glade:1776
+#: src/glade-registration.glade:1747
 msgid "Free software"
 msgstr "Software librea"
 
-#: src/glade-registration.glade:1790
+#: src/glade-registration.glade:1761
 msgid "Open source software"
 msgstr "Kode irekiko softwarea"
 
-#: src/glade-registration.glade:1804
+#: src/glade-registration.glade:1775
 msgid "Commercial/Closed software"
 msgstr "Software itxia/komertziala"
 
-#: src/glade-registration.glade:1818
+#: src/glade-registration.glade:1789
 msgid "None - distributed internally"
 msgstr "Bat ere ez - nire enpresarako edo niretzako soilik"
 
-#: src/glade-registration.glade:1853
+#: src/glade-registration.glade:1824
 msgid ""
 "In what field(s) is the software you used Glade to create generally used?"
 msgstr "Zein lan-esparrutan erabiltzen da orokorrean Gladekin sortu duzun softwarea?"
 
-#: src/glade-registration.glade:1868
+#: src/glade-registration.glade:1839
 msgid "Academic"
 msgstr "Akademikoa"
 
-#: src/glade-registration.glade:1882
+#: src/glade-registration.glade:1853
 msgid "Embedded applications"
 msgstr "Aplikazio kapsulatuak"
 
-#: src/glade-registration.glade:1896
+#: src/glade-registration.glade:1867
 msgid "Accounting"
 msgstr "Kontabilitatea"
 
-#: src/glade-registration.glade:1910
+#: src/glade-registration.glade:1881
 msgid "Desktop applications"
 msgstr "Mahaigaineko aplikazioak"
 
-#: src/glade-registration.glade:1924
+#: src/glade-registration.glade:1895
 msgid "Educational"
 msgstr "Hezkuntza"
 
-#: src/glade-registration.glade:1938
+#: src/glade-registration.glade:1909
 msgid "Medical"
 msgstr "Medikuntza"
 
-#: src/glade-registration.glade:1952
+#: src/glade-registration.glade:1923
 msgid "Industrial applications"
 msgstr "Industriako aplikazioak"
 
-#: src/glade-registration.glade:1966
+#: src/glade-registration.glade:1937
 msgid "Scientific"
 msgstr "Zientzia"
 
-#: src/glade-registration.glade:2039
+#: src/glade-registration.glade:2010
 msgid "What aspect of the software needs the most improvement?"
 msgstr "Softwarearen zein alderdik hobetu behar du gehien?"
 
-#: src/glade-registration.glade:2084
+#: src/glade-registration.glade:2055
 msgid "In your opinion what is the biggest problem with Glade?"
 msgstr "Zure ustez, zein da Glade aplikazioaren arazorik handiena?"
 
-#: src/glade-registration.glade:2101
+#: src/glade-registration.glade:2072
 msgid "Lack of documentation"
 msgstr "Dokumentazioa falta da"
 
-#: src/glade-registration.glade:2120
+#: src/glade-registration.glade:2090
 msgid "Lack of professional support"
 msgstr "Euskarri profesionalaren falta"
 
-#: src/glade-registration.glade:2138
+#: src/glade-registration.glade:2107
 msgid "Lack of professional training"
 msgstr "Prestakuntza profesionalaren falta"
 
-#: src/glade-registration.glade:2156
+#: src/glade-registration.glade:2124
 msgid "Lack of publicity/exposure"
 msgstr "Publizitatearen/ikusgaitasunaren falta"
 
-#: src/glade-registration.glade:2174
+#: src/glade-registration.glade:2141
 msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
 msgstr "Beste SE batzuetarako (Windows, Mac OS X) bertsio bitar ofizialen falta"
 
-#: src/glade-registration.glade:2252
+#: src/glade-registration.glade:2217
 msgid "Have you ever encountered a bug?"
 msgstr "Aurkitu duzu akatsen bat inoiz?"
 
-#: src/glade-registration.glade:2269 src/glade-registration.glade:2341
-#: src/glade-registration.glade:2420 plugins/gtk+/gtk+.xml:1736
+#: src/glade-registration.glade:2233 src/glade-registration.glade:2305
+#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1746
 msgid "Yes"
 msgstr "Bai"
 
-#: src/glade-registration.glade:2286 src/glade-registration.glade:2358
-#: src/glade-registration.glade:2437 plugins/gtk+/gtk+.xml:1738
+#: src/glade-registration.glade:2250 src/glade-registration.glade:2322
+#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1748
 msgid "No"
 msgstr "Ez"
 
-#: src/glade-registration.glade:2325
+#: src/glade-registration.glade:2289
 msgid "If so, did you file a bug report?"
 msgstr "Hala bada, jakinarazi duzu?"
 
-#: src/glade-registration.glade:2401
+#: src/glade-registration.glade:2365
 msgid "Have you ever thought about contributing?"
 msgstr "Pentsatu al duzu inoiz lagundu ahal diguzula?"
 
-#: src/glade-registration.glade:2476
+#: src/glade-registration.glade:2440
 msgid "Why not?"
 msgstr "Zergatik ez?"
 
-#: src/glade-registration.glade:2526
+#: src/glade-registration.glade:2490
 msgid "Comments:"
 msgstr "Iruzkinak:"
 
-#: src/glade-registration.glade:2577
+#: src/glade-registration.glade:2541
 msgid "Privacy Note:"
 msgstr "Pribatutasun-oharra:"
 
-#: src/glade-registration.glade:2597
+#: src/glade-registration.glade:2561
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -1297,7 +1275,7 @@ msgid "Reorder %s's children"
 msgstr "Berrordenatu %s(r)en haurrak"
 
 #: gladeui/glade-base-editor.c:1583 plugins/gtk+/gtk+.xml:280
-#: plugins/gtk+/gtk+.xml:1001 plugins/gtk+/gtk+.xml:1396
+#: plugins/gtk+/gtk+.xml:1009 plugins/gtk+/gtk+.xml:1404
 #: plugins/gtk+/glade-about-dialog-editor.ui:316
 #: plugins/gtk+/glade-tool-button-editor.ui:86
 msgid "Label"
@@ -1309,7 +1287,7 @@ msgstr "Etiketa"
 msgid "Type"
 msgstr "Mota"
 
-#: gladeui/glade-base-editor.c:1626 plugins/gtk+/gtk+.xml:610
+#: gladeui/glade-base-editor.c:1626 plugins/gtk+/gtk+.xml:618
 msgid "Container"
 msgstr "Edukiontzia"
 
@@ -1348,7 +1326,7 @@ msgid "Authentication"
 msgstr "Autentifikazioa"
 
 #. GTK_STOCK_DND
-#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:840
+#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:848
 msgid "Drag and Drop"
 msgstr "Arrastatu eta jaregin"
 
@@ -1377,51 +1355,51 @@ msgstr "Fitxategia"
 msgid "Missing Image"
 msgstr "Irudia falta da"
 
-#: gladeui/glade-builtins.c:370
+#: gladeui/glade-builtins.c:376
 msgid "Stock"
 msgstr "Katalogoa"
 
-#: gladeui/glade-builtins.c:371
+#: gladeui/glade-builtins.c:377
 msgid "A builtin stock item"
 msgstr "Katalogoko elementu barneratua"
 
-#: gladeui/glade-builtins.c:383
+#: gladeui/glade-builtins.c:389
 msgid "Stock Image"
 msgstr "Katalogoko irudia"
 
-#: gladeui/glade-builtins.c:384
+#: gladeui/glade-builtins.c:390
 msgid "A builtin stock image"
 msgstr "Katalogoko irudi barneratua"
 
-#: gladeui/glade-builtins.c:538
+#: gladeui/glade-builtins.c:544
 msgid "Objects"
 msgstr "Objektuak"
 
-#: gladeui/glade-builtins.c:539
+#: gladeui/glade-builtins.c:545
 msgid "A list of objects"
 msgstr "Objektu-zerrenda"
 
-#: gladeui/glade-builtins.c:551
+#: gladeui/glade-builtins.c:557
 msgid "Image File Name"
 msgstr "Irudiaren fitxategi-izena"
 
-#: gladeui/glade-builtins.c:552
+#: gladeui/glade-builtins.c:558
 msgid "Enter a filename, relative path or full path to load the image"
 msgstr "Sartu fitxategi-izena, bide-izen erlatibo edo osoarekin irudia kargatzeko"
 
-#: gladeui/glade-builtins.c:565
+#: gladeui/glade-builtins.c:571
 msgid "Color"
 msgstr "Kolorea"
 
-#: gladeui/glade-builtins.c:566
+#: gladeui/glade-builtins.c:572
 msgid "A GDK color value"
 msgstr "GDK kolorearen balioa"
 
-#: gladeui/glade-builtins.c:608
+#: gladeui/glade-builtins.c:614
 msgid "String"
 msgstr "Katea"
 
-#: gladeui/glade-builtins.c:609
+#: gladeui/glade-builtins.c:615
 msgid "An entry"
 msgstr "Sarrera bat"
 
@@ -1436,15 +1414,16 @@ msgid "Disabling property %s on widget %s"
 msgstr "%s propietatea desgaitzen %s trepetan"
 
 #: gladeui/glade-command.c:785
+#, c-format
 msgid "Setting multiple properties"
 msgstr "Hainbat propietate ezartzea"
 
-#: gladeui/glade-command.c:797 gladeui/glade-editor-property.c:3714
+#: gladeui/glade-command.c:797 gladeui/glade-editor-property.c:3713
 #, c-format
 msgid "Setting %s of %s"
 msgstr "%s / %s ezartzen"
 
-#: gladeui/glade-command.c:803 gladeui/glade-editor-property.c:3422
+#: gladeui/glade-command.c:803 gladeui/glade-editor-property.c:3421
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "%s / %s ezartzen %s gisa"
@@ -1454,9 +1433,9 @@ msgstr "%s / %s ezartzen %s gisa"
 msgid "Renaming %s to %s"
 msgstr "%s izenaren ordez %s ipintzea"
 
-#: gladeui/glade-command.c:1226 gladeui/glade-command.c:1840
-#: gladeui/glade-command.c:1866 gladeui/glade-command.c:1969
-#: gladeui/glade-command.c:2011
+#: gladeui/glade-command.c:1226 gladeui/glade-command.c:1839
+#: gladeui/glade-command.c:1865 gladeui/glade-command.c:1968
+#: gladeui/glade-command.c:2010
 msgid "multiple"
 msgstr "hainbat"
 
@@ -1478,95 +1457,96 @@ msgstr "Kendu %s"
 msgid "Remove multiple"
 msgstr "Kendu hainbat"
 
-#: gladeui/glade-command.c:1812
+#: gladeui/glade-command.c:1811
 #, c-format
 msgid "Create %s"
 msgstr "Sortu %s"
 
-#: gladeui/glade-command.c:1838
+#: gladeui/glade-command.c:1837
 #, c-format
 msgid "Delete %s"
 msgstr "Ezabatu %s"
 
-#: gladeui/glade-command.c:1864
+#: gladeui/glade-command.c:1863
 #, c-format
 msgid "Cut %s"
 msgstr "Ebaki %s"
 
-#: gladeui/glade-command.c:1967
+#: gladeui/glade-command.c:1966
 #, c-format
 msgid "Paste %s"
 msgstr "Itsatsi %s"
 
-#: gladeui/glade-command.c:2009
+#: gladeui/glade-command.c:2008
 #, c-format
 msgid "Drag %s and Drop to %s"
 msgstr "Arrastatu '%s' eta jaregin hemen: %s"
 
-#: gladeui/glade-command.c:2012
+#: gladeui/glade-command.c:2011
 msgid "root"
 msgstr "erroa"
 
-#: gladeui/glade-command.c:2133
+#: gladeui/glade-command.c:2129
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Gehitu %s seinale-maneiatzailea"
 
-#: gladeui/glade-command.c:2134
+#: gladeui/glade-command.c:2130
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Kendu %s seinale-maneiatzailea"
 
-#: gladeui/glade-command.c:2135
+#: gladeui/glade-command.c:2131
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Aldatu %s seinale-maneiatzailea"
 
-#: gladeui/glade-command.c:2350
+#: gladeui/glade-command.c:2346
+#, c-format
 msgid "Setting i18n metadata"
 msgstr "i18n metadatuak ezartzea"
 
-#: gladeui/glade-command.c:2467
+#: gladeui/glade-command.c:2463
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr "%s %s trepetak blokeatzen"
 
-#: gladeui/glade-command.c:2512
+#: gladeui/glade-command.c:2508
 #, c-format
 msgid "Unlocking %s"
 msgstr "%s desblokeatzen"
 
-#: gladeui/glade-command.c:2634 gladeui/glade-command.c:2681
+#: gladeui/glade-command.c:2630 gladeui/glade-command.c:2677
 #, c-format
 msgid "Setting target version of '%s' to %d.%d"
 msgstr "'%s' helburuaren bertsioa %d.%d gisa ezartzen"
 
-#: gladeui/glade-command.c:2837
+#: gladeui/glade-command.c:2833
 #, c-format
 msgid "Setting project's %s property"
 msgstr "Proiektuaren %s propietatea ezartzen"
 
-#: gladeui/glade-command.c:2944
+#: gladeui/glade-command.c:2940
 #, c-format
 msgid "Setting resource path to '%s'"
 msgstr "Baliabidearen bide-izena '%s' gisa ezartzen"
 
-#: gladeui/glade-command.c:2975
+#: gladeui/glade-command.c:2971
 #, c-format
 msgid "Setting translation domain to '%s'"
 msgstr "Itzulpen-domeinua '%s' gisa ezartzen"
 
-#: gladeui/glade-command.c:3010
+#: gladeui/glade-command.c:3006
 #, c-format
 msgid "Unsetting widget '%s' as template"
 msgstr "'%s' trepetaren ezarpena kentzen txantiloi gisa"
 
-#: gladeui/glade-command.c:3013
+#: gladeui/glade-command.c:3009
 #, c-format
 msgid "Setting widget '%s' as template"
 msgstr "'%s' trepeta txantiloi gisa ezartzen"
 
-#: gladeui/glade-command.c:3016
+#: gladeui/glade-command.c:3012
 msgid "Unsetting template"
 msgstr "Txantiloiaren ezarpena kentzen"
 
@@ -1585,11 +1565,11 @@ msgstr "%s(r)en lerrokatzeen edizioa"
 msgid "Editing margins of %s"
 msgstr "%s(r)en marjinen edizioa"
 
-#: gladeui/glade-design-layout.c:2033
+#: gladeui/glade-design-layout.c:2039
 msgid "Design View"
 msgstr "Diseinuaren ikuspegia"
 
-#: gladeui/glade-design-layout.c:2034
+#: gladeui/glade-design-layout.c:2040
 msgid "The GladeDesignView that contains this layout"
 msgstr "Diseinu hau daukan GladeDesignView"
 
@@ -1657,8 +1637,8 @@ msgstr "%s(r)en propietateak - %s [%s]"
 msgid "%s Properties - %s"
 msgstr "%s(r)en propietateak - %s"
 
-#: gladeui/glade-editor.c:361 gladeui/glade-widget.c:1390
-#: gladeui/glade-project-properties.ui:368
+#: gladeui/glade-editor.c:361 gladeui/glade-widget.c:1389
+#: gladeui/glade-project-properties.ui:497
 #: plugins/gtk+/glade-gtk-action-group.c:188
 #: plugins/gtk+/glade-gtk-cell-layout.c:365
 #: plugins/gtk+/glade-gtk-menu-shell.c:525
@@ -1694,7 +1674,7 @@ msgstr "Orokorra"
 msgid "Common"
 msgstr "Arrunta"
 
-#: gladeui/glade-editor.c:965 gladeui/glade-editor.ui:300
+#: gladeui/glade-editor.c:965 gladeui/glade-editor.ui:296
 msgid "Accessibility"
 msgstr "Erabilerraztasuna"
 
@@ -1711,9 +1691,9 @@ msgid "Reset Widget Properties"
 msgstr "Berrezarri trepeten propietateak"
 
 #: gladeui/glade-editor.c:1152 gladeui/glade-editor-property.c:1777
-#: gladeui/glade-editor-property.c:2085 gladeui/glade-editor-property.c:3220
-#: gladeui/glade-editor-property.c:3329 gladeui/glade-editor-property.c:3339
-#: gladeui/glade-editor-property.c:3649 plugins/gtk+/glade-accels.c:523
+#: gladeui/glade-editor-property.c:2085 gladeui/glade-editor-property.c:3219
+#: gladeui/glade-editor-property.c:3328 gladeui/glade-editor-property.c:3338
+#: gladeui/glade-editor-property.c:3648 plugins/gtk+/glade-accels.c:523
 #: plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_Ados"
@@ -1779,10 +1759,6 @@ msgstr "Propietatearen etiketan bistaratuko den testu pertsonalizatua"
 msgid "Select Fields"
 msgstr "Hautatu eremuak"
 
-#: gladeui/glade-editor-property.c:1380
-msgid "_Close"
-msgstr "It_xi"
-
 #: gladeui/glade-editor-property.c:1393
 msgid "_Select individual fields:"
 msgstr "_Hautatu banakako eremuak"
@@ -1805,7 +1781,7 @@ msgstr "_Testua:"
 msgid "T_ranslatable"
 msgstr "_Itzulgarria"
 
-#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:705
+#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:703
 msgid "Whether this property is translatable"
 msgstr "Propietate hau itzulgarria den edo ez adierazten du"
 
@@ -1828,62 +1804,58 @@ msgstr "_Itzultzaileentzako iruzkinak:"
 msgid "Select a file from the project resource directory"
 msgstr "Hautatu fitxategia proiektuaren baliabideen direktoriorik"
 
-#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
-msgid "_Open"
-msgstr "_Ireki"
-
-#: gladeui/glade-editor-property.c:3137 gladeui/glade-widget-adaptor.c:1461
-#: gladeui/glade-widget.c:1354 plugins/gtk+/gtk+.xml:1511
+#: gladeui/glade-editor-property.c:3136 gladeui/glade-widget-adaptor.c:1461
+#: gladeui/glade-widget.c:1353 plugins/gtk+/gtk+.xml:1519
 msgid "Name"
 msgstr "Izena"
 
-#: gladeui/glade-editor-property.c:3146 gladeui/glade-property.c:672
+#: gladeui/glade-editor-property.c:3145 gladeui/glade-property.c:670
 msgid "Class"
 msgstr "Klasea"
 
-#: gladeui/glade-editor-property.c:3167
+#: gladeui/glade-editor-property.c:3166
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Aukeratu gurasorik gabeko %s objektu motak proiektu honetan"
 
-#: gladeui/glade-editor-property.c:3169
+#: gladeui/glade-editor-property.c:3168
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Aukeratu %s objektu motak proiektu honetan"
 
-#: gladeui/glade-editor-property.c:3189
+#: gladeui/glade-editor-property.c:3188
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Aukeratu gurasorik gabeko %s proiektu honentzako"
 
-#: gladeui/glade-editor-property.c:3191
+#: gladeui/glade-editor-property.c:3190
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Hautatu %s proiektu honentzako"
 
-#: gladeui/glade-editor-property.c:3219 gladeui/glade-editor-property.c:3327
-#: gladeui/glade-editor-property.c:3338 gladeui/glade-editor-property.c:3647
+#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
+#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3646
 #: plugins/gtk+/glade-accels.c:521 plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "_Garbitu"
 
 #. Checklist
-#: gladeui/glade-editor-property.c:3236 gladeui/glade-editor-property.c:3356
+#: gladeui/glade-editor-property.c:3235 gladeui/glade-editor-property.c:3355
 msgid "O_bjects:"
 msgstr "O_bjektuak:"
 
-#: gladeui/glade-editor-property.c:3328
+#: gladeui/glade-editor-property.c:3327
 msgid "_New"
 msgstr "_Berria"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: gladeui/glade-editor-property.c:3464
+#: gladeui/glade-editor-property.c:3463
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "%1$s sortzen %3$s(r)en %2$s(r)entzako"
 
 #. Checklist
-#: gladeui/glade-editor-property.c:3665
+#: gladeui/glade-editor-property.c:3664
 msgid "Objects:"
 msgstr "Objektuak:"
 
@@ -1903,7 +1875,7 @@ msgstr "Klase-izena:"
 msgid "The object's unique identifier"
 msgstr "Objektuaren identifikatzaile bakarra"
 
-#: gladeui/glade-editor-table.c:608 gladeui/glade-widget.c:1448
+#: gladeui/glade-editor-table.c:608 gladeui/glade-widget.c:1447
 msgid "Composite"
 msgstr "Konposatua"
 
@@ -1911,8 +1883,8 @@ msgstr "Konposatua"
 msgid "Whether this widget is a composite template"
 msgstr "Trepeta hau konposatutako txantiloi bat den edo ez"
 
-#: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:168
-#: gladeui/glade-widget.c:1383
+#: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:193
+#: gladeui/glade-widget.c:1382
 msgid "Project"
 msgstr "Proiektua"
 
@@ -1920,11 +1892,11 @@ msgstr "Proiektua"
 msgid "The project being inspected"
 msgstr "Ikuskatzen ari den proiektua"
 
-#: gladeui/glade-inspector.c:572
+#: gladeui/glade-inspector.c:568
 msgid " < Search Widgets >"
 msgstr " < Bilaketa trepetak >"
 
-#: gladeui/glade-inspector.c:611
+#: gladeui/glade-inspector.c:607
 msgid "Expand all"
 msgstr "Zabaldu dena"
 
@@ -2036,19 +2008,19 @@ msgstr "Trukatuta"
 
 #. translators: GConnectFlags value
 #: gladeui/glade-previewer.c:759 gladeui/glade-signal.c:197
-#: gladeui/glade-signal-editor.c:1405 plugins/gtk+/gtk+.xml:2348
-#: plugins/gtk+/gtk+.xml:2352 plugins/gtk+/gtk+.xml:2398
-#: plugins/gtk+/gtk+.xml:2402
+#: gladeui/glade-signal-editor.c:1406 plugins/gtk+/gtk+.xml:2359
+#: plugins/gtk+/gtk+.xml:2363 plugins/gtk+/gtk+.xml:2411
+#: plugins/gtk+/gtk+.xml:2415
 msgid "After"
 msgstr "Ondoren"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted one time
 #: gladeui/glade-previewer.c:782
 #, c-format
 msgid "%s::%s emitted one time"
 msgstr "%s::%s behin igorria"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted %d times
 #: gladeui/glade-previewer.c:786
 #, c-format
 msgid "%s::%s emitted %d times"
@@ -2145,111 +2117,112 @@ msgstr "%s\n"
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "--listen edo --filename bietako bat zehaztu egin behar da.\n"
 
-#: gladeui/glade-project.c:1036
+#: gladeui/glade-project.c:1018
 msgid "Whether project has been modified since it was last saved"
 msgstr "Azkenekoz gorde zenetik proiektua aldatu den adierazten du"
 
-#: gladeui/glade-project.c:1042
+#: gladeui/glade-project.c:1024
 msgid "Has Selection"
 msgstr "Hautapena du"
 
-#: gladeui/glade-project.c:1043
+#: gladeui/glade-project.c:1025
 msgid "Whether project has a selection"
 msgstr "Proiektuak hautapenik baduen adierazten du"
 
-#: gladeui/glade-project.c:1049
+#: gladeui/glade-project.c:1031
 msgid "Path"
 msgstr "Bide-izena"
 
-#: gladeui/glade-project.c:1050
+#: gladeui/glade-project.c:1032
 msgid "The filesystem path of the project"
 msgstr "Proiektuaren fitxategi-sistemako bide-izena"
 
-#: gladeui/glade-project.c:1056
+#: gladeui/glade-project.c:1038
 msgid "Read Only"
 msgstr "Irakurtzeko soilik"
 
-#: gladeui/glade-project.c:1057
+#: gladeui/glade-project.c:1039
 msgid "Whether project is read-only"
 msgstr "Proiektua soilik irakurtzeko den edo ez adierazten du"
 
-#: gladeui/glade-project.c:1063
+#: gladeui/glade-project.c:1045
 msgid "Add Item"
 msgstr "Gehitu elementua"
 
-#: gladeui/glade-project.c:1064
+#: gladeui/glade-project.c:1046
 msgid "The current item to add to the project"
 msgstr "Uneko elementua proiektuari gehitzeko"
 
-#: gladeui/glade-project.c:1070
+#: gladeui/glade-project.c:1052
 msgid "Pointer Mode"
 msgstr "Erakuslearen modua"
 
-#: gladeui/glade-project.c:1071
+#: gladeui/glade-project.c:1053
 msgid "The currently effective GladePointerMode"
 msgstr "Uneko GladePointerMode eraginkorra"
 
-#: gladeui/glade-project.c:1078
+#: gladeui/glade-project.c:1060
 msgid "Translation Domain"
 msgstr "Itzulpenaren domeinua"
 
-#: gladeui/glade-project.c:1079
+#: gladeui/glade-project.c:1061
 msgid "The project translation domain"
 msgstr "Proiektuaren itzulpenaren domeinua"
 
-#: gladeui/glade-project.c:1085 gladeui/glade-widget.c:1406
+#: gladeui/glade-project.c:1067 gladeui/glade-widget.c:1405
 msgid "Template"
 msgstr "Txantiloia"
 
-#: gladeui/glade-project.c:1086
+#: gladeui/glade-project.c:1068
 msgid "The project's template widget, if any"
 msgstr "Proiektuaren txantiloi-trepeta, baldin badado"
 
-#: gladeui/glade-project.c:1092
+#: gladeui/glade-project.c:1074
 msgid "Resource Path"
 msgstr "Baliabidearen bide-izena"
 
-#: gladeui/glade-project.c:1093
+#: gladeui/glade-project.c:1075
 msgid "Path to load images and resources in Glade's runtime"
 msgstr "Bide-izena irudiak eta baliabideak Glade-ren exekuzio-denboran kargatzeko"
 
-#: gladeui/glade-project.c:1099 gladeui/glade-project-properties.ui:603
+#: gladeui/glade-project.c:1081 gladeui/glade-project-properties.ui:700
 msgid "License"
 msgstr "Lizentzia"
 
-#: gladeui/glade-project.c:1100
+#: gladeui/glade-project.c:1082
 msgid "License for this project, it will be added as a document level comment."
 msgstr "Proiektu honen lizentzia, dokumentu mailako iruzkin gisa gehituko da."
 
-#: gladeui/glade-project.c:1106
+#: gladeui/glade-project.c:1088
 msgid "CSS Provider Path"
 msgstr "CSS hornitzailearen bide-izena"
 
-#: gladeui/glade-project.c:1107
+#: gladeui/glade-project.c:1089
 msgid "Path to use as the custom CSS provider for this project."
 msgstr "Proiektu honen CSS hornitzaile pertsonalizatu gisa erabiliko den bide-izena."
 
-#: gladeui/glade-project.c:1204
+#: gladeui/glade-project.c:1186
 #, c-format
 msgid "(internal %s)"
 msgstr "(barneko %s)"
 
-#: gladeui/glade-project.c:1209
+#: gladeui/glade-project.c:1191
 #, c-format
 msgid "(%s child)"
 msgstr "(%s haurra)"
 
-#: gladeui/glade-project.c:1211
+#: gladeui/glade-project.c:1193
+#, c-format
 msgid "(template)"
 msgstr "(txantiloia)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: gladeui/glade-project.c:1219
+#: gladeui/glade-project.c:1201
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%s / %s)"
 
-#: gladeui/glade-project.c:1580
+#: gladeui/glade-project.c:1562
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -2258,17 +2231,17 @@ msgstr "Huts egin du %s kargatzean.\n"
 "Katalogo hauek behar dira, baina ez daude erabilgarri: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: gladeui/glade-project.c:1952
+#: gladeui/glade-project.c:1930
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "'%s' proiektuak Gtk+ %d.%d darabil"
 
-#: gladeui/glade-project.c:1995
+#: gladeui/glade-project.c:1973
 #, c-format
 msgid ", %s"
 msgstr ", %s"
 
-#: gladeui/glade-project.c:2003
+#: gladeui/glade-project.c:1981
 #, c-format
 msgid ""
 "Especially because there is %d object that can not be built with type: %s"
@@ -2277,7 +2250,7 @@ msgid_plural ""
 msgstr[0] "Bereziki objektu %d dagoelako %s motarekin eraiki ezin daitekeena."
 msgstr[1] "Bereziki %d objektu daudelako %s motarekin eraiki ezin daitezkeenak."
 
-#: gladeui/glade-project.c:2021
+#: gladeui/glade-project.c:1999
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -2289,7 +2262,7 @@ msgstr "Baina Glade-ren bertsio hau GTK+ · bertsiorako da soilik.\n"
 "eta zaharkitutako trepetarik gabe exekuta dezakezula.\n"
 "%s"
 
-#: gladeui/glade-project.c:2082
+#: gladeui/glade-project.c:2060
 #, c-format
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
@@ -2299,222 +2272,229 @@ msgstr "Automatikoki gorde den`%s' bertsio bat berriagoa da.\n"
 "\n"
 "Automatikoki gordetako bertsioa erabili nahi duzu?"
 
-#: gladeui/glade-project.c:2227
-#, c-format
-msgid "%s document properties"
-msgstr "%s dokumentuaren propietateak"
-
 #. ******************************************************************
-#. Verify code here (versioning, incompatability checks)
+#. Verify code here (versioning, incompatibility checks)
 #. ******************************************************************
 #. Defined here for pretty translator comments (bug in intl tools, for some reason
 #. * you can only comment about the line directly following, forcing you to write
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3099
+#: gladeui/glade-project.c:3052
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Trepeta hau %s %d.%d bertsioan sartu zen, proiektuko helburua %s %d.%d zenean"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3103
+#: gladeui/glade-project.c:3056
 #, c-format
-msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
-msgstr "[%s] '<b>%s</b>' objektu-klasea %s %d.%d bertsioan sartu zen\n"
+msgid ""
+"[%s]\n"
+"\tObject class '<b>%s</b>' was introduced in %s %d.%d\n"
+msgstr "[%s]\n"
+"\t'<b>%s</b>' objektu-klasea %s %d.%d bertsioan sartu zen\n"
 
-#: gladeui/glade-project.c:3105
+#: gladeui/glade-project.c:3058
 msgid "This widget is deprecated"
 msgstr "Trepeta hau zaharkituta dago"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3108
+#: gladeui/glade-project.c:3061
 #, c-format
-msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
-msgstr "[%s] '<b>%s</b>' objektu-klasea, %s %d.%d bertsiokoa, zaharkituta dago\n"
+msgid ""
+"[%s]\n"
+"\tObject class '<b>%s</b>' from %s %d.%d is deprecated\n"
+msgstr "[%s]\n"
+"\t'<b>%s</b>' objektu-klasea, %s %d.%d bertsiokoa, zaharkituta dago\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3113
+#: gladeui/glade-project.c:3066
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Propietate hau %s %d.%d bertsioan sartu zen, proiektuaren helburua %s %d.%d den bitartean"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3117
+#: gladeui/glade-project.c:3070
 #, c-format
 msgid ""
-"[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
-"%d.%d\n"
-msgstr "[%s] '<b>%s</b>' propietatea, '<b>%s</b>' objektu-klasearena, %s %d.%d bertsioan sartu zen\n"
+"[%s]\n"
+"\tProperty '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
+"%d\n"
+msgstr "[%s]\n"
+"\t'<b>%s</b>' propietatea, '<b>%s</b>' objektu-klasearena, %s %d.%d bertsioan sartu zen\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3121
+#: gladeui/glade-project.c:3074
 #, c-format
 msgid ""
-"[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was introduced "
-"in %s %d.%d\n"
-msgstr "[%s] '<b>%s</b>' paketatze-propietatea, '<b>%s</b>' objektu-klasearena, %s %d.%d bertsioan sartu zen\n"
+"[%s]\n"
+"\tPacking property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
+"%s %d.%d\n"
+msgstr "[%s]\n"
+"\t'<b>%s</b>' paketatze-propietatea, '<b>%s</b>' objektu-klasearena, %s %d.%d bertsioan sartu zen\n"
 
-#: gladeui/glade-project.c:3124
+#: gladeui/glade-project.c:3077
 msgid "This property is deprecated"
 msgstr "Propietate hau zaharkituta dago"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3127
+#: gladeui/glade-project.c:3080
 #, c-format
-msgid "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
-msgstr "[%s] '<b>%s</b>' propietatea, '<b>%s</b>' objektu-klasearena, zaharkituta dago\n"
+msgid ""
+"[%s]\n"
+"\tProperty '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
+msgstr "[%s]\n"
+"\t'<b>%s</b>' propietatea, '<b>%s</b>' objektu-klasearena, zaharkituta dago\n"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3131
+#: gladeui/glade-project.c:3084
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Seinale hau %s %d.%d bertsioan sartu zen, baina proiektuaren helburua %s %d.%d da"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3135
+#: gladeui/glade-project.c:3088
 #, c-format
 msgid ""
-"[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
-"%d\n"
-msgstr "[%s] '<b>%s</b>' seinalea, '<b>%s</b>' objektu-klasearena, %s %d.%d bertsioan sartu zen\n"
+"[%s]\n"
+"\tSignal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d.%d\n"
+msgstr "[%s]\n"
+"\t'<b>%s</b>' seinalea, '<b>%s</b>' objektu-klasearena, %s %d.%d bertsioan sartu zen\n"
 
-#: gladeui/glade-project.c:3138
+#: gladeui/glade-project.c:3091
 msgid "This signal is deprecated"
 msgstr "Seinale hau zaharkituta dago"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3141
+#: gladeui/glade-project.c:3094
 #, c-format
-msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
-msgstr "[%s] '<b>%s</b>' seinalea, '<b>%s</b>' objektu-klasearena, zaharkituta dago\n"
+msgid ""
+"[%s]\n"
+"\tSignal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
+msgstr "[%s]\n"
+"\t'<b>%s</b>' seinalea, '<b>%s</b>' objektu-klasearena, zaharkituta dago\n"
 
-#: gladeui/glade-project.c:3438
+#: gladeui/glade-project.c:3389
 msgid "Details"
 msgstr "Xehetasunak"
 
-#: gladeui/glade-project.c:3455
+#: gladeui/glade-project.c:3405
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "“%s” proiektuak erroreak ditu. Gorde dena den?"
 
-#: gladeui/glade-project.c:3456
+#: gladeui/glade-project.c:3431
 #, c-format
-msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
-msgstr "“%s” proiektuak zaharkitutako trepetak ditu eta/edo bertsioen arteko inkoherentziak daude."
+msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
+msgstr "%s objektua klase-txantiloi bat da baina ez dago onartuta gtk+ %d.%d bertsioan\n"
 
-#: gladeui/glade-project.c:3481
-#, c-format
-msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
-msgstr "%s objektua klase-txantiloi bat da baina ez dago onartuta gtk+ %d.%d bertsioan"
-
-#: gladeui/glade-project.c:3496
+#: gladeui/glade-project.c:3446
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "%s objektuak %s mota ezezaguna du\n"
 
-#: gladeui/glade-project.c:4988
+#: gladeui/glade-project.c:4947
 #, c-format
 msgid "Unsaved %i"
 msgstr "%i gorde gabea"
 
-#: gladeui/glade-project.c:5288 gladeui/glade-project.c:5339
-#: gladeui/glade-project.c:5496
+#: gladeui/glade-project.c:5254 gladeui/glade-project.c:5305
+#: gladeui/glade-project.c:5462
 msgid "No widget selected."
 msgstr "Ez dago trepeta hautaturik."
 
-#: gladeui/glade-project.c:5304
+#: gladeui/glade-project.c:5270
 msgid "Unable to copy unrecognized widget type."
 msgstr "Ezin izan da kopiatu trepeta mota ezezaguna."
 
-#: gladeui/glade-project.c:5336
+#: gladeui/glade-project.c:5302
 msgid "Unable to cut unrecognized widget type"
 msgstr "Ezin da trepeta mota ezezaguna ebaki"
 
-#: gladeui/glade-project.c:5388
+#: gladeui/glade-project.c:5354
 msgid "Unable to paste to the selected parent"
 msgstr "Ezin izan zaio itsatsi hautatutako gurasoari"
 
-#: gladeui/glade-project.c:5399
+#: gladeui/glade-project.c:5365
 msgid "Unable to paste to multiple widgets"
 msgstr "Ezin izan zaie itsatsi hainbat trepetari"
 
-#: gladeui/glade-project.c:5409
+#: gladeui/glade-project.c:5375
 msgid "No widget on the clipboard"
 msgstr "Arbelean ez dago trepetarik"
 
-#: gladeui/glade-project.c:5454
+#: gladeui/glade-project.c:5420
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Aldiko trepeta bat soilik itsats daiteke edukiontzi honetan"
 
-#: gladeui/glade-project.c:5466
+#: gladeui/glade-project.c:5432
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Helburuko edukiontzian ez dago nahikoa leku-markarik"
 
-#: gladeui/glade-project-properties.c:169
+#: gladeui/glade-project-properties.c:194
 msgid "The project this properties dialog was created for"
 msgstr "Proiektua (propietateen elkarrizketa-koadro hau sortu zaiona)"
 
-#: gladeui/glade-project-properties.c:620
+#: gladeui/glade-project-properties.c:741
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "%s proiektuak ez dauka zaharkitutako trepetarik edo bertsioen arteko inkoherentziarik."
 
-#: gladeui/glade-property.c:673
+#: gladeui/glade-property.c:671
 msgid "The GladePropertyDef for this property"
 msgstr "Propietate honen GladePropertyDef"
 
-#: gladeui/glade-property.c:678
+#: gladeui/glade-property.c:676
 msgid "Enabled"
 msgstr "Gaituta"
 
-#: gladeui/glade-property.c:679
+#: gladeui/glade-property.c:677
 msgid "If the property is optional, this is its enabled state"
 msgstr "Propietatea hautazkoa bada, egoera honetan gaituta dago"
 
-#: gladeui/glade-property.c:684 gladeui/glade-widget-action.c:191
+#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:191
 msgid "Sensitive"
 msgstr "Sentikorra"
 
-#: gladeui/glade-property.c:685
+#: gladeui/glade-property.c:683
 msgid "This gives backends control to set property sensitivity"
 msgstr "Propietateen sentikortasuna ezartzeko kontrola ematen die honek moduluei"
 
-#: gladeui/glade-property.c:690
+#: gladeui/glade-property.c:688
 msgid "Context"
 msgstr "Testuingurua"
 
-#: gladeui/glade-property.c:691
+#: gladeui/glade-property.c:689
 msgid "Context for translation"
 msgstr "Itzulpenerako testuingurua"
 
-#: gladeui/glade-property.c:697 plugins/gtk+/gtk+.xml:414
+#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:414
 msgid "Comment"
 msgstr "Iruzkina"
 
-#: gladeui/glade-property.c:698
+#: gladeui/glade-property.c:696
 msgid "Comment for translators"
 msgstr "Itzultzaileentzako iruzkina"
 
-#: gladeui/glade-property.c:704
+#: gladeui/glade-property.c:702
 msgid "Translatable"
 msgstr "Itzulgarria"
 
-#: gladeui/glade-property.c:711
+#: gladeui/glade-property.c:709
 msgid "Visual State"
 msgstr "Egoera bisuala"
 
-#: gladeui/glade-property.c:712
+#: gladeui/glade-property.c:710
 msgid "Priority information for the property editor to act on"
 msgstr "Lehentasunezko informazioa propietateen editoreak horren gainean ekintza lantzeko"
 
-#: gladeui/glade-property.c:720
+#: gladeui/glade-property.c:718
 msgid "Precision"
 msgstr "Doitasuna"
 
-#: gladeui/glade-property.c:721
+#: gladeui/glade-property.c:719
 msgid "Where applicable, precision to use on editors"
 msgstr "Aplikagarria denean, editorean erabiliko den doitasuna"
 
@@ -2589,7 +2569,7 @@ msgstr "Seinale-klasea"
 msgid "The signal class of this signal"
 msgstr "Seinale honen seinale-klasea"
 
-#: gladeui/glade-signal.c:173 gladeui/glade-signal-editor.c:1320
+#: gladeui/glade-signal.c:173 gladeui/glade-signal-editor.c:1321
 msgid "Detail"
 msgstr "Xehetasuna"
 
@@ -2597,7 +2577,7 @@ msgstr "Xehetasuna"
 msgid "The detail for this signal"
 msgstr "Seinale honen xehetasuna"
 
-#: gladeui/glade-signal.c:179 gladeui/glade-signal-editor.c:1335
+#: gladeui/glade-signal.c:179 gladeui/glade-signal-editor.c:1336
 msgid "Handler"
 msgstr "Maneiatzailea"
 
@@ -2613,7 +2593,7 @@ msgstr "Erabiltzailearen datuak"
 msgid "The user data for this signal"
 msgstr "Seinale honen erabiltzailearen datuak"
 
-#: gladeui/glade-signal.c:191 gladeui/glade-widget.c:1438
+#: gladeui/glade-signal.c:191 gladeui/glade-widget.c:1437
 msgid "Support Warning"
 msgstr "Onartu abisua"
 
@@ -2633,23 +2613,23 @@ msgstr "Erabiltzailearen datuak maneiatzailearen instantziarekin trukatuko diren
 msgid "Select an object to pass to the handler"
 msgstr "Hautatu objektu bat maneatzaileari igarotzeko"
 
-#: gladeui/glade-signal-editor.c:1313 plugins/gtk+/glade-accels.c:448
+#: gladeui/glade-signal-editor.c:1314 plugins/gtk+/glade-accels.c:448
 msgid "Signal"
 msgstr "Seinalea"
 
-#: gladeui/glade-signal-editor.c:1373
+#: gladeui/glade-signal-editor.c:1374
 msgid "User data"
 msgstr "Erabiltzailearen datuak"
 
-#: gladeui/glade-signal-editor.c:1388
+#: gladeui/glade-signal-editor.c:1389
 msgid "Swap"
 msgstr "Trukatze-espazioa"
 
-#: gladeui/glade-signal-editor.c:1548
+#: gladeui/glade-signal-editor.c:1549
 msgid "Glade Widget"
 msgstr "Glade-ren trepeta"
 
-#: gladeui/glade-signal-editor.c:1549
+#: gladeui/glade-signal-editor.c:1550
 msgid "The glade widget to edit signals"
 msgstr "Glade-ren trepeta seinaleak editatzeko"
 
@@ -2701,15 +2681,15 @@ msgstr "Ezin izan da esteka erakutsi:"
 
 #. Reset the column
 #: gladeui/glade-utils.c:1703 plugins/gtk+/glade-attributes.c:829
-#: plugins/gtk+/gtk+.xml:863 plugins/gtk+/gtk+.xml:1249
-#: plugins/gtk+/gtk+.xml:1265 plugins/gtk+/gtk+.xml:1380
-#: plugins/gtk+/gtk+.xml:1521 plugins/gtk+/gtk+.xml:1668
-#: plugins/gtk+/gtk+.xml:1722 plugins/gtk+/gtk+.xml:2622
-#: plugins/gtk+/gtk+.xml:2676 plugins/gtk+/gtk+.xml:2743
-#: plugins/gtk+/gtk+.xml:3074 plugins/gtk+/gtk+.xml:3442
-#: plugins/gtk+/gtk+.xml:3579 plugins/gtk+/gtk+.xml:3696
-#: plugins/gtk+/gtk+.xml:3739 plugins/gtk+/gtk+.xml:4001
-#: plugins/gtk+/gtk+.xml:4705 plugins/gtk+/gtk+.xml:5526
+#: plugins/gtk+/gtk+.xml:871 plugins/gtk+/gtk+.xml:1257
+#: plugins/gtk+/gtk+.xml:1273 plugins/gtk+/gtk+.xml:1388
+#: plugins/gtk+/gtk+.xml:1531 plugins/gtk+/gtk+.xml:1678
+#: plugins/gtk+/gtk+.xml:1732 plugins/gtk+/gtk+.xml:2635
+#: plugins/gtk+/gtk+.xml:2689 plugins/gtk+/gtk+.xml:2755
+#: plugins/gtk+/gtk+.xml:3086 plugins/gtk+/gtk+.xml:3460
+#: plugins/gtk+/gtk+.xml:3599 plugins/gtk+/gtk+.xml:3716
+#: plugins/gtk+/gtk+.xml:3759 plugins/gtk+/gtk+.xml:4021
+#: plugins/gtk+/gtk+.xml:4725 plugins/gtk+/gtk+.xml:5546
 msgid "None"
 msgstr "Bat ere ez"
 
@@ -2725,8 +2705,8 @@ msgstr "GladeWidgetActionDef egitura-erakuslea"
 msgid "Whether this action is sensitive"
 msgstr "Ekintza hau sentikorra den edo ez adierazten du"
 
-#: gladeui/glade-widget-action.c:198 gladeui/glade-widget.c:1443
-#: plugins/gtk+/gtk+.xml:4314
+#: gladeui/glade-widget-action.c:198 gladeui/glade-widget.c:1442
+#: plugins/gtk+/gtk+.xml:4334
 msgid "Visible"
 msgstr "Ikusgai"
 
@@ -2768,7 +2748,7 @@ msgstr "Izen generikoa"
 msgid "Used to generate names of new widgets"
 msgstr "Trepeta berrien izenak sortzeko erabilia"
 
-#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2283
+#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2293
 #: plugins/gtk+/glade-window-editor.ui:262
 msgid "Icon Name"
 msgstr "Ikono-izena"
@@ -2819,119 +2799,114 @@ msgstr "Kontsulta"
 msgid "Whether the adaptor should query the use or not"
 msgstr "Moldagiluak erabilera kontsultatuko duen ala ez"
 
-#: gladeui/glade-widget.c:1355
+#: gladeui/glade-widget.c:1354
 msgid "The name of the widget"
 msgstr "Trepetaren izena"
 
-#: gladeui/glade-widget.c:1359
+#: gladeui/glade-widget.c:1358
 msgid "Internal name"
 msgstr "Barne-izena"
 
-#: gladeui/glade-widget.c:1360
+#: gladeui/glade-widget.c:1359
 msgid "The internal name of the widget"
 msgstr "Trepetaren barne-izena"
 
-#: gladeui/glade-widget.c:1364
+#: gladeui/glade-widget.c:1363
 msgid "Anarchist"
 msgstr "Anarkista"
 
-#: gladeui/glade-widget.c:1365
+#: gladeui/glade-widget.c:1364
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "Ume konposatu hori arbaso-haurra den edo ume anarkista den adierazten du"
 
-#: gladeui/glade-widget.c:1371
+#: gladeui/glade-widget.c:1370
 msgid "Object"
 msgstr "Objektua"
 
-#: gladeui/glade-widget.c:1372
+#: gladeui/glade-widget.c:1371
 msgid "The object associated"
 msgstr "Esleitutako objektua"
 
-#: gladeui/glade-widget.c:1377
+#: gladeui/glade-widget.c:1376
 msgid "Adaptor"
 msgstr "Moldagailua"
 
-#: gladeui/glade-widget.c:1378
+#: gladeui/glade-widget.c:1377
 msgid "The class adaptor for the associated widget"
 msgstr "Esleitutako trepetaren klase-moldagailua"
 
-#: gladeui/glade-widget.c:1384
+#: gladeui/glade-widget.c:1383
 msgid "The glade project that this widget belongs to"
 msgstr "Zer glade proiektukoa den trepeta hori"
 
-#: gladeui/glade-widget.c:1391
+#: gladeui/glade-widget.c:1390
 msgid "A list of GladeProperties"
 msgstr "GladeProperties-en zerrenda bat"
 
-#: gladeui/glade-widget.c:1395 plugins/gtk+/gtk+.xml:626
+#: gladeui/glade-widget.c:1394 plugins/gtk+/gtk+.xml:634
 msgid "Parent"
 msgstr "Gurasoa"
 
-#: gladeui/glade-widget.c:1396
+#: gladeui/glade-widget.c:1395
 msgid "A pointer to the parenting GladeWidget"
 msgstr "Erakuslea, GladeWidget gurasorantz"
 
-#: gladeui/glade-widget.c:1401
+#: gladeui/glade-widget.c:1400
 msgid "Internal Name"
 msgstr "Barne-izena"
 
-#: gladeui/glade-widget.c:1402
+#: gladeui/glade-widget.c:1401
 msgid "A generic name prefix for internal widgets"
 msgstr "Barne-trepeten izen-aurrizki generikoa"
 
-#: gladeui/glade-widget.c:1407
+#: gladeui/glade-widget.c:1406
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Trepeta berria oinarritzeko GladeWidget txantiloia"
 
-#: gladeui/glade-widget.c:1412
+#: gladeui/glade-widget.c:1411
 msgid "Exact Template"
 msgstr "Txantiloi zehatza"
 
-#: gladeui/glade-widget.c:1414
+#: gladeui/glade-widget.c:1413
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr "Txantiloi bat erabiltzean zehazki bikoiztua sortzen ari garen edo ez"
 
-#: gladeui/glade-widget.c:1418
+#: gladeui/glade-widget.c:1417
 msgid "Reason"
 msgstr "Arrazoia"
 
-#: gladeui/glade-widget.c:1419
+#: gladeui/glade-widget.c:1418
 msgid "A GladeCreateReason for this creation"
 msgstr "Sorkuntza honen GladeCreateReason"
 
-#: gladeui/glade-widget.c:1426
+#: gladeui/glade-widget.c:1425
 msgid "Toplevel Width"
 msgstr "Goi-mailako zabalera"
 
-#: gladeui/glade-widget.c:1427
+#: gladeui/glade-widget.c:1426
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "Trepetaren zabalera GladeDesignLayout-eko goi-mailan dagoenean"
 
-#: gladeui/glade-widget.c:1432
+#: gladeui/glade-widget.c:1431
 msgid "Toplevel Height"
 msgstr "Goi-mailako altuera"
 
-#: gladeui/glade-widget.c:1433
+#: gladeui/glade-widget.c:1432
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "Trepetaren altuera GladeDesignLayout-eko goi-mailan dagoenean"
 
-#: gladeui/glade-widget.c:1439
+#: gladeui/glade-widget.c:1438
 msgid "A warning string about version mismatches"
 msgstr "Bertsioen inkoherentziei buruzko abisua"
 
-#: gladeui/glade-widget.c:1444
-msgid "Wether the widget is visible or not"
-msgstr "Trepetan ikusgai dagoen edo ez"
+#: gladeui/glade-widget.c:1443
+msgid "Whether the widget is visible or not"
+msgstr "Trepeta ikusgai dagoen ala ez"
 
-#: gladeui/glade-widget.c:1449
+#: gladeui/glade-widget.c:1448
 msgid "Whether this widget is the template for a composite widget"
-msgstr "Konposatuta trepeta baten txantiloia izango den trepeta hau edo ez"
-
-#: gladeui/glade-widget.c:2777 plugins/gtk+/glade-gtk-widget.c:1038
-#: plugins/gtk+/glade-gtk-widget.c:1102
-msgid "(unnamed)"
-msgstr "(izengabea)"
+msgstr "Konposizio-trepeta baten txantiloia izango den trepeta hau ala ez"
 
 #: gladeui/glade-widget.c:4882
 msgid "Template classes are only usable in GTK+ 3.10 and later."
@@ -2962,7 +2937,7 @@ msgstr "Zenbait seinalek bertsio-arazoak dituzte: "
 msgid "Actions"
 msgstr "Ekintzak"
 
-#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5595
+#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5615
 msgid "Applications"
 msgstr "Aplikazioak"
 
@@ -3017,128 +2992,130 @@ msgstr "GTK+ ez diren trepetak eta objektuak"
 msgid "Extra GTK+ objects"
 msgstr "GTK+ objektu gehigarriak"
 
-#: gladeui/glade-editor.ui:126
+#: gladeui/glade-editor.ui:125
 msgid "_General"
 msgstr "_Orokorra"
 
-#: gladeui/glade-editor.ui:174
+#: gladeui/glade-editor.ui:172
 msgid "_Packing"
 msgstr "_Paketatzea"
 
-#: gladeui/glade-editor.ui:223
+#: gladeui/glade-editor.ui:220
 msgid "_Common"
 msgstr "_Arrunta"
 
-#: gladeui/glade-editor.ui:251
+#: gladeui/glade-editor.ui:248
 msgid "_Signals"
 msgstr "_Seinaleak"
 
-#: gladeui/glade-project-properties.ui:94
+#: gladeui/glade-project-properties.ui:141
 msgid "Translation domain:"
 msgstr "Itzulpenaren domeinua:"
 
-#: gladeui/glade-project-properties.ui:147
+#: gladeui/glade-project-properties.ui:191
 msgid "Composite template toplevel:"
 msgstr "Konposatuen txantiloiaren goi-maila:"
 
-#: gladeui/glade-project-properties.ui:167
+#: gladeui/glade-project-properties.ui:209
 msgid "Select a CSS to use as custom style provider"
 msgstr "Hautatu CSS bat estiloaren hornitzaile pertsonalizatu bat erabiltzeko"
 
-#: gladeui/glade-project-properties.ui:179
+#: gladeui/glade-project-properties.ui:219
 msgid "Custom CSS style provider:"
 msgstr "CSS estilo pertsonalizatuaren hornitzailea:"
 
-#: gladeui/glade-project-properties.ui:222
+#: gladeui/glade-project-properties.ui:261
 msgid "From the project directory"
 msgstr "Proiektuko direktoriotik"
 
-#: gladeui/glade-project-properties.ui:240
+#: gladeui/glade-project-properties.ui:278
 msgid "From a project relative directory"
 msgstr "Proiektuaren direktorio erlatibotik"
 
-#: gladeui/glade-project-properties.ui:259
+#: gladeui/glade-project-properties.ui:295
 msgid "From this directory"
 msgstr "Direktorio honetatik"
 
-#: gladeui/glade-project-properties.ui:282
+#: gladeui/glade-project-properties.ui:316
 msgid "Choose a path to load image resources"
 msgstr "Aukeratu bide-izena irudien baliabideak kargatzeko"
 
-#: gladeui/glade-project-properties.ui:314
+#: gladeui/glade-project-properties.ui:344
 msgid "Image resources are loaded locally:"
 msgstr "Irudien baliabideak lokalki kargatzen dira:"
 
-#: gladeui/glade-project-properties.ui:349
+#: gladeui/glade-project-properties.ui:387
 msgid "Toolkit version required:"
 msgstr "Toolkitaren beharrezko bertsioa:"
 
-#: gladeui/glade-project-properties.ui:413
+#: gladeui/glade-project-properties.ui:444
+msgid "Verify objects, properties and signals deprecations"
+msgstr "Egiaztatu objektuak, propietateak eta seinaleen zaharkitzeak"
+
+#: gladeui/glade-project-properties.ui:481
+msgid "Warnings:"
+msgstr "Abisuak:"
+
+#: gladeui/glade-project-properties.ui:533
 msgid "Copyright:"
 msgstr "Copyright-a:"
 
-#: gladeui/glade-project-properties.ui:428
+#: gladeui/glade-project-properties.ui:547
 msgid "program or library name"
 msgstr "programaren edo liburutegiaren izena"
 
-#: gladeui/glade-project-properties.ui:443
+#: gladeui/glade-project-properties.ui:559
 msgid "Author(s):"
 msgstr "Egilea(k):"
 
-#: gladeui/glade-project-properties.ui:457
+#: gladeui/glade-project-properties.ui:571
 #: plugins/gtk+/glade-about-dialog-editor.ui:99
 msgid "License:"
 msgstr "Lizentzia:"
 
-#: gladeui/glade-project-properties.ui:511
+#: gladeui/glade-project-properties.ui:619
 msgid "Description:"
 msgstr "Azalpena:"
 
-#: gladeui/glade-project-properties.ui:527
+#: gladeui/glade-project-properties.ui:634
 msgid "program or library short description"
 msgstr "programaren edo liburutegiaren deskribapen laburra"
 
-#: gladeui/glade-project-properties.ui:544
+#: gladeui/glade-project-properties.ui:649
 msgid "GNU GPL version 2"
 msgstr "GNU GPL 2 bertsioa"
 
-#: gladeui/glade-project-properties.ui:545
+#: gladeui/glade-project-properties.ui:650
 msgid "GNU GPL version 3"
 msgstr "GNU GPL 3 bertsioa"
 
-#: gladeui/glade-project-properties.ui:546
+#: gladeui/glade-project-properties.ui:651
 msgid "GNU LGPL version 2.1"
 msgstr "GNU GPL 2.1 bertsioa"
 
-#: gladeui/glade-project-properties.ui:547
+#: gladeui/glade-project-properties.ui:652
 msgid "GNU LGPL version 3"
 msgstr "GNU LGPL 3 bertsioa"
 
-#: gladeui/glade-project-properties.ui:548
+#: gladeui/glade-project-properties.ui:653
 msgid "BSD 2-clause"
 msgstr "BSD 2-klausula"
 
-#: gladeui/glade-project-properties.ui:549
+#: gladeui/glade-project-properties.ui:654
 msgid "BSD 3-clause"
 msgstr "BSD 3-klausula"
 
-#: gladeui/glade-project-properties.ui:550
+#: gladeui/glade-project-properties.ui:655
 msgid "Apache 2"
 msgstr "Apache 2"
 
-#: gladeui/glade-project-properties.ui:551
+#: gladeui/glade-project-properties.ui:656
 msgid "MIT"
 msgstr "MIT"
 
-#: gladeui/glade-project-properties.ui:552
+#: gladeui/glade-project-properties.ui:657
 msgid "GNU All permissive"
 msgstr "GNU Dena Baimenduta"
-
-#: gladeui/glade-project-properties.ui:630
-msgid ""
-"Verify that the project does not use any properties,\n"
-"signals or widgets which are not available in the target version"
-msgstr "Egiaztatu proiektuak ez duela helburuko bertsioan erabilgarri ez dagoen propietaterik, seinalerik edo trepetarik erabiltzen"
 
 #: plugins/gtk+/glade-about-dialog-editor.c:141
 #, c-format
@@ -3420,7 +3397,7 @@ msgstr "%s(r)en ikono nagusia ezartzen argibidearen marka ez erabiltzeko"
 msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr "%s(r)en bigarren ikonoa ezartzen argibidearen marka ez erabiltzeko"
 
-#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1018
+#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1027
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "%s %s(r)en barruan kokatzea"
@@ -3466,7 +3443,7 @@ msgid "Whether this container supports resizes of child widgets"
 msgstr "Edukiontzi honek trepeta umeen tamaina aldatzea onartzen duen adierazten du"
 
 #: plugins/gtk+/glade-gtk-action-group.c:184
-#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3778
+#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3798
 msgid "Action"
 msgstr "Ekintza"
 
@@ -3495,15 +3472,15 @@ msgstr "Azken aldikoak"
 msgid "Action Group Editor"
 msgstr "Ekintzen taldearen editorea"
 
-#: plugins/gtk+/glade-gtk-assistant.c:196
+#: plugins/gtk+/glade-gtk-assistant.c:213
 msgid "Introduction page"
 msgstr "Sarrera-orria"
 
-#: plugins/gtk+/glade-gtk-assistant.c:200
+#: plugins/gtk+/glade-gtk-assistant.c:217
 msgid "Content page"
 msgstr "Eduki-orria"
 
-#: plugins/gtk+/glade-gtk-assistant.c:204
+#: plugins/gtk+/glade-gtk-assistant.c:221
 msgid "Confirmation page"
 msgstr "Berrespen-orria"
 
@@ -3512,11 +3489,11 @@ msgstr "Berrespen-orria"
 msgid "Ordering children of %s"
 msgstr "%s(r)en haurrak ordenatzea"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4039
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4059
 msgid "Tree View Column"
 msgstr "Zuhaitz-ikuspegiaren zutabea"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4152
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4172
 msgid "Cell Renderer"
 msgstr "Gelaxka errendatzailea"
 
@@ -3535,12 +3512,12 @@ msgid "Text"
 msgstr "Testua"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:412
-#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3808
+#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3828
 msgid "Accelerator"
 msgstr "Bizkortzailea"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:413
-#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:838
+#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:846
 msgid "Combo"
 msgstr "Konbinazioa"
 
@@ -3555,13 +3532,13 @@ msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:416
-#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3554
+#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3574
 #: plugins/gtk+/glade-entry-editor.ui:471
 msgid "Progress"
 msgstr "Aurrerapena"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:418
-#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1394
+#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1402
 msgid "Spinner"
 msgstr "Birakaria"
 
@@ -3636,23 +3613,23 @@ msgstr "Propietate hau soilik erabilgarri dago\n"
 msgid "Insert Child on %s"
 msgstr "Txertatu haurra %s(e)n"
 
-#: plugins/gtk+/glade-gtk-grid.c:507 plugins/gtk+/glade-gtk-list-box.c:333
+#: plugins/gtk+/glade-gtk-grid.c:516 plugins/gtk+/glade-gtk-list-box.c:333
 #: plugins/gtk+/glade-gtk-table.c:549
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Txertatu errenkada %s(e)n"
 
-#: plugins/gtk+/glade-gtk-grid.c:510 plugins/gtk+/glade-gtk-table.c:552
+#: plugins/gtk+/glade-gtk-grid.c:519 plugins/gtk+/glade-gtk-table.c:552
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Txertatu zutabea %s(e)n"
 
-#: plugins/gtk+/glade-gtk-grid.c:513 plugins/gtk+/glade-gtk-table.c:555
+#: plugins/gtk+/glade-gtk-grid.c:522 plugins/gtk+/glade-gtk-table.c:555
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Kendu zutabea %s(e)tik"
 
-#: plugins/gtk+/glade-gtk-grid.c:516 plugins/gtk+/glade-gtk-table.c:558
+#: plugins/gtk+/glade-gtk-grid.c:525 plugins/gtk+/glade-gtk-table.c:558
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Kendu errenkada %s(e)tik"
@@ -3809,16 +3786,16 @@ msgstr "Azken aldiko menua"
 msgid "Tool Item"
 msgstr "Tresna-elementua"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1222
+#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1230
 msgid "Tool Item Group"
 msgstr "Tresnen elementuen taldea"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2929
+#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2941
 msgid "Recent Chooser Menu"
 msgstr "Azken aldikoen hautatzailearen menua"
 
 #: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:292
-#: plugins/gtk+/gtk+.xml:982
+#: plugins/gtk+/gtk+.xml:990
 msgid "Menu Item"
 msgstr "Menu-elementua"
 
@@ -3858,20 +3835,20 @@ msgid "Text Tag Table Editor"
 msgstr "Testu-etiketen taularen editorea"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:238
-#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1144
-#: plugins/gtk+/gtk+.xml:1704
+#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1152
+#: plugins/gtk+/gtk+.xml:1714
 msgid "Button"
 msgstr "Botoia"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:241
 #: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:288
-#: plugins/gtk+/gtk+.xml:818 plugins/gtk+/gtk+.xml:1138
+#: plugins/gtk+/gtk+.xml:826 plugins/gtk+/gtk+.xml:1146
 msgid "Menu"
 msgstr "Menua"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:242
-#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3319
-#: plugins/gtk+/gtk+.xml:3556 plugins/gtk+/gtk+.xml:3702
+#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3329
+#: plugins/gtk+/gtk+.xml:3576 plugins/gtk+/gtk+.xml:3722
 #: plugins/gtk+/glade-widget-editor.ui:654
 msgid "Custom"
 msgstr "Pertsonalizatua"
@@ -3881,23 +3858,23 @@ msgstr "Pertsonalizatua"
 #: plugins/gtk+/glade-gtk-tool-palette.c:189
 #: plugins/gtk+/glade-gtk-tool-palette.c:197
 #: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:322
-#: plugins/gtk+/gtk+.xml:3018
+#: plugins/gtk+/gtk+.xml:3030
 msgid "Separator"
 msgstr "Bereizlea"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:248 plugins/gtk+/glade-gtk-toolbar.c:256
 #: plugins/gtk+/glade-gtk-tool-palette.c:193
-#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:814
-#: plugins/gtk+/gtk+.xml:1261 plugins/gtk+/gtk+.xml:2044
-#: plugins/gtk+/gtk+.xml:4626 plugins/gtk+/gtk+.xml:4668
-#: plugins/gtk+/gtk+.xml:4732
+#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:822
+#: plugins/gtk+/gtk+.xml:1269 plugins/gtk+/gtk+.xml:2054
+#: plugins/gtk+/gtk+.xml:4646 plugins/gtk+/gtk+.xml:4688
+#: plugins/gtk+/gtk+.xml:4752
 msgid "Normal"
 msgstr "Arrunta"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:249 plugins/gtk+/glade-gtk-toolbar.c:257
 #: plugins/gtk+/glade-gtk-tool-palette.c:194
 #: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:276
-#: plugins/gtk+/gtk+.xml:2270 plugins/gtk+/glade-image-editor.ui:44
+#: plugins/gtk+/gtk+.xml:2280 plugins/gtk+/glade-image-editor.ui:44
 #: plugins/gtk+/glade-tool-button-editor.ui:215
 msgid "Image"
 msgstr "Irudia"
@@ -3962,6 +3939,10 @@ msgstr "%s(r)en gurasoa kentzea"
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "%s gurasoa %s(r)entzako gehitzen"
+
+#: plugins/gtk+/glade-gtk-widget.c:1038 plugins/gtk+/glade-gtk-widget.c:1102
+msgid "(unnamed)"
+msgstr "(izengabea)"
 
 #: plugins/gtk+/glade-gtk-widget.c:1050
 #, c-format
@@ -4053,7 +4034,7 @@ msgstr "Ezarri '%s'(r)en iturburu honen egoera bat zehaztea nahi duzun edo ez"
 msgid "Set the state for this source of '%s'"
 msgstr "Ezarri '%s'(r)en iturburu honen egoera"
 
-#: plugins/gtk+/glade-icon-sources.c:850 plugins/gtk+/gtk+.xml:2285
+#: plugins/gtk+/glade-icon-sources.c:850 plugins/gtk+/gtk+.xml:2295
 msgid "File Name"
 msgstr "Fitxategi-izena"
 
@@ -4133,7 +4114,11 @@ msgstr "%s ezartzen lerro bakun bat erabiltzeko"
 msgid "Setting %s to use specific Pango word wrapping"
 msgstr "%s ezartzen Pango-ren hitz zehatzaren egokitzea erabiltzeko"
 
-#: plugins/gtk+/glade-model-data.c:1124
+#: plugins/gtk+/glade-model-data.c:937
+msgid "<printable chars only>"
+msgstr "<karaktere inprimagarriak soilik>"
+
+#: plugins/gtk+/glade-model-data.c:1228
 msgid "Add and remove rows:"
 msgstr "Gehitu eta kendu errenkadak:"
 
@@ -4218,22 +4203,22 @@ msgstr "%s ezartzen argibidearen marka erabiltzeko"
 msgid "Setting %s to not use tooltip markup"
 msgstr "%s ezartzen argibidearen marka ez erabiltzeko"
 
-#: plugins/gtk+/glade-window-editor.c:145
+#: plugins/gtk+/glade-window-editor.c:153
 #, c-format
 msgid "Setting %s to use a named icon"
 msgstr "%s ezartzen izendatutako ikonoa erabiltzeko"
 
-#: plugins/gtk+/glade-window-editor.c:179
+#: plugins/gtk+/glade-window-editor.c:187
 #, c-format
 msgid "Setting %s to use an icon file"
 msgstr "%s ezartzen ikono baten fitxategia erabiltzeko"
 
-#: plugins/gtk+/glade-window-editor.c:225
+#: plugins/gtk+/glade-window-editor.c:233
 #, c-format
 msgid "Setting %s to use a custom titlebar"
 msgstr "%s ezartzen titulu-barra pertsonalizatu bat erabiltzeko"
 
-#: plugins/gtk+/glade-window-editor.c:228
+#: plugins/gtk+/glade-window-editor.c:236
 #, c-format
 msgid "Setting %s to use a system provided titlebar"
 msgstr "%s ezartzen sistemak eskainitako titulu-barra erabiltzeko"
@@ -4262,7 +4247,7 @@ msgstr "Tartekatu"
 msgid "Reverse"
 msgstr "Alderantzikatu"
 
-#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2843
+#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2855
 msgid "Scale"
 msgstr "Eskalatu"
 
@@ -4306,51 +4291,51 @@ msgstr "Kendu gurasoa"
 msgid "Add Parent"
 msgstr "Gehitu gurasoa"
 
-#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:2692
+#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:2705
 #: plugins/gtk+/glade-misc-editor.ui:187
 #: plugins/gtk+/glade-widget-editor.ui:841
 msgid "Alignment"
 msgstr "Lerrokatzea"
 
 #: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:358
-#: plugins/gtk+/gtk+.xml:3222
+#: plugins/gtk+/gtk+.xml:3234
 msgid "Viewport"
 msgstr "Leihatila"
 
-#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:3194
+#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:3206
 msgid "Event Box"
 msgstr "Gertaera-koadroa"
 
 #: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:268
-#: plugins/gtk+/gtk+.xml:2694
+#: plugins/gtk+/gtk+.xml:2707
 msgid "Frame"
 msgstr "Markoa"
 
-#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:2711
+#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:2724
 msgid "Aspect Frame"
 msgstr "Aspektu-markoa"
 
-#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3237
+#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3249
 msgid "Scrolled Window"
 msgstr "Korritze-barrak dituen leihoa"
 
-#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:3196
+#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:3208
 msgid "Expander"
 msgstr "Zabaltzailea"
 
-#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:2380
+#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:2391
 msgid "Grid"
 msgstr "Sareta"
 
-#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:639
+#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:647
 msgid "Box"
 msgstr "Kutxa"
 
-#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2435
+#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2448
 msgid "Paned"
 msgstr "Panelean"
 
-#: plugins/gtk+/gtk+.xml:52 plugins/gtk+/gtk+.xml:2584
+#: plugins/gtk+/gtk+.xml:52 plugins/gtk+/gtk+.xml:2597
 msgid "Stack"
 msgstr "Pila"
 
@@ -4374,25 +4359,25 @@ msgstr "Estiloaren klaseak"
 msgid "A list of style class names to apply to this widget"
 msgstr "Estiloen klaseen izenen zerrenda trepeta honi aplikatzeko"
 
-#: plugins/gtk+/gtk+.xml:109 plugins/gtk+/gtk+.xml:1450
-#: plugins/gtk+/gtk+.xml:2371
+#: plugins/gtk+/gtk+.xml:109 plugins/gtk+/gtk+.xml:1458
+#: plugins/gtk+/gtk+.xml:2382
 msgid "Fill"
 msgstr "Bete"
 
-#: plugins/gtk+/gtk+.xml:111 plugins/gtk+/gtk+.xml:697
-#: plugins/gtk+/gtk+.xml:1251 plugins/gtk+/gtk+.xml:2995
+#: plugins/gtk+/gtk+.xml:111 plugins/gtk+/gtk+.xml:705
+#: plugins/gtk+/gtk+.xml:1259 plugins/gtk+/gtk+.xml:3007
 msgid "Start"
 msgstr "Hasiera"
 
-#: plugins/gtk+/gtk+.xml:113 plugins/gtk+/gtk+.xml:676
-#: plugins/gtk+/gtk+.xml:795 plugins/gtk+/gtk+.xml:865
-#: plugins/gtk+/gtk+.xml:1448 plugins/gtk+/gtk+.xml:2999
-#: plugins/gtk+/gtk+.xml:4354
+#: plugins/gtk+/gtk+.xml:113 plugins/gtk+/gtk+.xml:684
+#: plugins/gtk+/gtk+.xml:803 plugins/gtk+/gtk+.xml:873
+#: plugins/gtk+/gtk+.xml:1456 plugins/gtk+/gtk+.xml:3011
+#: plugins/gtk+/gtk+.xml:4374
 msgid "Center"
 msgstr "Erdian"
 
-#: plugins/gtk+/gtk+.xml:115 plugins/gtk+/gtk+.xml:699
-#: plugins/gtk+/gtk+.xml:1255 plugins/gtk+/gtk+.xml:2997
+#: plugins/gtk+/gtk+.xml:115 plugins/gtk+/gtk+.xml:707
+#: plugins/gtk+/gtk+.xml:1263 plugins/gtk+/gtk+.xml:3009
 msgid "End"
 msgstr "Amaiera"
 
@@ -4536,7 +4521,7 @@ msgstr "Funtzioa"
 msgid "The accessible role of this object"
 msgstr "Objektu honen egiteko erabilgarria"
 
-#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:1136
+#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:1144
 msgid "Invalid"
 msgstr "Baliogabea"
 
@@ -4552,11 +4537,11 @@ msgstr "Abisua"
 msgid "Animation"
 msgstr "Animazioa"
 
-#: plugins/gtk+/gtk+.xml:232 plugins/gtk+/gtk+.xml:3060
+#: plugins/gtk+/gtk+.xml:232 plugins/gtk+/gtk+.xml:3072
 msgid "Arrow"
 msgstr "Gezia"
 
-#: plugins/gtk+/gtk+.xml:234 plugins/gtk+/gtk+.xml:2879
+#: plugins/gtk+/gtk+.xml:234 plugins/gtk+/gtk+.xml:2891
 msgid "Calendar"
 msgstr "Egutegia"
 
@@ -4568,7 +4553,7 @@ msgstr "Oihala"
 msgid "Check Box"
 msgstr "Kontrol-koadroa"
 
-#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:1047
+#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:1055
 msgid "Check Menu Item"
 msgstr "Menuko kontrol-elementua"
 
@@ -4580,7 +4565,7 @@ msgstr "Kolore-hautatzailea"
 msgid "Column Header"
 msgstr "Zutabe-goiburua"
 
-#: plugins/gtk+/gtk+.xml:246 plugins/gtk+/gtk+.xml:2103
+#: plugins/gtk+/gtk+.xml:246 plugins/gtk+/gtk+.xml:2113
 msgid "Combo Box"
 msgstr "Konbinazio-koadroa"
 
@@ -4600,8 +4585,8 @@ msgstr "Mahaigaineko markoa"
 msgid "Dial"
 msgstr "Markagailua"
 
-#: plugins/gtk+/gtk+.xml:256 plugins/gtk+/gtk+.xml:816
-#: plugins/gtk+/gtk+.xml:1148
+#: plugins/gtk+/gtk+.xml:256 plugins/gtk+/gtk+.xml:824
+#: plugins/gtk+/gtk+.xml:1156
 msgid "Dialog"
 msgstr "Elkarrizketa-koadroa"
 
@@ -4609,7 +4594,7 @@ msgstr "Elkarrizketa-koadroa"
 msgid "Directory Pane"
 msgstr "Direktorio-panela"
 
-#: plugins/gtk+/gtk+.xml:260 plugins/gtk+/gtk+.xml:3161
+#: plugins/gtk+/gtk+.xml:260 plugins/gtk+/gtk+.xml:3173
 msgid "Drawing Area"
 msgstr "Marrazteko area"
 
@@ -4653,7 +4638,7 @@ msgstr "Zerrenda"
 msgid "List Item"
 msgstr "Zerrendako elementua"
 
-#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1064
+#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1072
 msgid "Menu Bar"
 msgstr "Menu-barra"
 
@@ -4677,8 +4662,8 @@ msgstr "Panela"
 msgid "Password Text"
 msgstr "Pasahitzaren testua"
 
-#: plugins/gtk+/gtk+.xml:304 plugins/gtk+/gtk+.xml:832
-#: plugins/gtk+/gtk+.xml:2887
+#: plugins/gtk+/gtk+.xml:304 plugins/gtk+/gtk+.xml:840
+#: plugins/gtk+/gtk+.xml:2899
 msgid "Popup Menu"
 msgstr "Laster-menua"
 
@@ -4690,11 +4675,11 @@ msgstr "Aurrerapen-barra"
 msgid "Push Button"
 msgstr "Sakatze-botoia"
 
-#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:1869
+#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:1879
 msgid "Radio Button"
 msgstr "Aukera-botoia"
 
-#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:1049
+#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:1057
 msgid "Radio Menu Item"
 msgstr "Menuko aukera-elementua"
 
@@ -4722,15 +4707,15 @@ msgstr "Graduatzailea"
 msgid "Split Pane"
 msgstr "Zatitze-panela"
 
-#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1839
+#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1849
 msgid "Spin Button"
 msgstr "Biratze-botoia"
 
-#: plugins/gtk+/gtk+.xml:330 plugins/gtk+/gtk+.xml:3046
+#: plugins/gtk+/gtk+.xml:330 plugins/gtk+/gtk+.xml:3058
 msgid "Status Bar"
 msgstr "Egoera-barra"
 
-#: plugins/gtk+/gtk+.xml:332 plugins/gtk+/gtk+.xml:2334
+#: plugins/gtk+/gtk+.xml:332 plugins/gtk+/gtk+.xml:2345
 msgid "Table"
 msgstr "Taula"
 
@@ -4742,15 +4727,15 @@ msgstr "Taulako gelaxka"
 msgid "Tear Off Menu Item"
 msgstr "Menu askagarriko elementua"
 
-#: plugins/gtk+/gtk+.xml:342
+#: plugins/gtk+/gtk+.xml:342 plugins/gtk+/gtk+.xml:1525
 msgid "Terminal"
 msgstr "Terminala"
 
-#: plugins/gtk+/gtk+.xml:346 plugins/gtk+/gtk+.xml:1823
+#: plugins/gtk+/gtk+.xml:346 plugins/gtk+/gtk+.xml:1833
 msgid "Toggle Button"
 msgstr "Txandakatze-botoia"
 
-#: plugins/gtk+/gtk+.xml:348 plugins/gtk+/gtk+.xml:1091
+#: plugins/gtk+/gtk+.xml:348 plugins/gtk+/gtk+.xml:1099
 msgid "Tool Bar"
 msgstr "Tresna-barra"
 
@@ -4766,12 +4751,12 @@ msgstr "Zuhaitza"
 msgid "Tree Table"
 msgstr "Zuhaitz-taula"
 
-#: plugins/gtk+/gtk+.xml:356 plugins/gtk+/gtk+.xml:3317
+#: plugins/gtk+/gtk+.xml:356 plugins/gtk+/gtk+.xml:3327
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: plugins/gtk+/gtk+.xml:360 plugins/gtk+/gtk+.xml:750
-#: plugins/gtk+/gtk+.xml:3581
+#: plugins/gtk+/gtk+.xml:360 plugins/gtk+/gtk+.xml:758
+#: plugins/gtk+/gtk+.xml:3601 plugins/webkit2gtk/webkit2gtk.xml:29
 msgid "Window"
 msgstr "Leihoa"
 
@@ -4879,7 +4864,7 @@ msgstr "Web dokumentua"
 msgid "Document Email"
 msgstr "Posta elektronikoaren dokumentua"
 
-#: plugins/gtk+/gtk+.xml:416 plugins/gtk+/gtk+.xml:2713
+#: plugins/gtk+/gtk+.xml:416 plugins/gtk+/gtk+.xml:2726
 msgid "List Box"
 msgstr "Zerrenda-koadroa"
 
@@ -4891,15 +4876,15 @@ msgstr "Taldea"
 msgid "Image Map"
 msgstr "Irudi-mapa"
 
-#: plugins/gtk+/gtk+.xml:422 plugins/gtk+/gtk+.xml:836
+#: plugins/gtk+/gtk+.xml:422 plugins/gtk+/gtk+.xml:844
 msgid "Notification"
 msgstr "Jakinarazpena"
 
-#: plugins/gtk+/gtk+.xml:424 plugins/gtk+/gtk+.xml:3165
+#: plugins/gtk+/gtk+.xml:424 plugins/gtk+/gtk+.xml:3177
 msgid "Info Bar"
 msgstr "Informazio-barra"
 
-#: plugins/gtk+/gtk+.xml:426 plugins/gtk+/gtk+.xml:2251
+#: plugins/gtk+/gtk+.xml:426 plugins/gtk+/gtk+.xml:2261
 msgid "Level Bar"
 msgstr "Maila-barra"
 
@@ -4984,846 +4969,875 @@ msgid "Footnote text"
 msgstr "Orri-oineko testua"
 
 #: plugins/gtk+/gtk+.xml:470
+msgid "Content deletion"
+msgstr "Edukia ezabatzea"
+
+#: plugins/gtk+/gtk+.xml:472
+msgid "Content insertion"
+msgstr "Edukia txertatzea"
+
+#: plugins/gtk+/gtk+.xml:474
+msgid "Marked content"
+msgstr "Markatutako edukia"
+
+#: plugins/gtk+/gtk+.xml:476
+msgid "Change suggestion"
+msgstr "Aldatu iradokizuna"
+
+#: plugins/gtk+/gtk+.xml:478
 msgid "Last Defined"
 msgstr "Definitutako azkena"
 
-#: plugins/gtk+/gtk+.xml:475
+#: plugins/gtk+/gtk+.xml:483
 msgid "Controlled By"
 msgstr "Kontrolatua"
 
-#: plugins/gtk+/gtk+.xml:480
+#: plugins/gtk+/gtk+.xml:488
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "Objektu bat helburu-objektu batek edo gehiagok kontrolatua dagoela adierazten du"
 
-#: plugins/gtk+/gtk+.xml:483
+#: plugins/gtk+/gtk+.xml:491
 msgid "Controller For"
 msgstr "Kontrolatzailea"
 
-#: plugins/gtk+/gtk+.xml:488
+#: plugins/gtk+/gtk+.xml:496
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Objektu bat helburu-objektu baten edo gehiagoren kontrolatzailea dela adierazten du"
 
-#: plugins/gtk+/gtk+.xml:491
+#: plugins/gtk+/gtk+.xml:499
 msgid "Labeled By"
 msgstr "Etiketatua"
 
-#: plugins/gtk+/gtk+.xml:496
+#: plugins/gtk+/gtk+.xml:504
 msgid "Indicates an object is labeled by one or more target objects"
 msgstr "Objektu bat helburu-objektu batek edo gehiagok etiketatua dutela adierazten du"
 
-#: plugins/gtk+/gtk+.xml:499
+#: plugins/gtk+/gtk+.xml:507
 msgid "Label For"
 msgstr "Etiketa"
 
-#: plugins/gtk+/gtk+.xml:504
+#: plugins/gtk+/gtk+.xml:512
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "Objektu bat helburu-objektu baten edo gehiagoren etiketa dela adierazten du"
 
-#: plugins/gtk+/gtk+.xml:507
+#: plugins/gtk+/gtk+.xml:515
 msgid "Member Of"
 msgstr "Kidea"
 
-#: plugins/gtk+/gtk+.xml:512
+#: plugins/gtk+/gtk+.xml:520
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr "Objektu bat helburu-objektu baten edo gehiagoren taldeko kidea dela adierazten du"
 
-#: plugins/gtk+/gtk+.xml:515
+#: plugins/gtk+/gtk+.xml:523
 msgid "Node Child Of"
 msgstr "Nodo haurra"
 
-#: plugins/gtk+/gtk+.xml:520
+#: plugins/gtk+/gtk+.xml:528
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
 msgstr "Objektu bat zuhaitz-taula bateko gelaxka bat dela adierazten du; eta bistaratua dago, zutabe bereko gelaxka bat zabaldua dagoelako eta gelaxka hori identifikatzen duelako"
 
-#: plugins/gtk+/gtk+.xml:525
+#: plugins/gtk+/gtk+.xml:533
 msgid "Flows To"
 msgstr "Jarraipena du"
 
-#: plugins/gtk+/gtk+.xml:530
+#: plugins/gtk+/gtk+.xml:538
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr "Objektu horren edukiren batek beste AtkObject batean modu sekuentzialean jarraipen logikoa duela adierazten du, (adibidez, testu-fluxua)."
 
-#: plugins/gtk+/gtk+.xml:535
+#: plugins/gtk+/gtk+.xml:543
 msgid "Flows From"
 msgstr "Jarraipena da"
 
-#: plugins/gtk+/gtk+.xml:540
+#: plugins/gtk+/gtk+.xml:548
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr "Objektu horren edukiren bat beste AtkObject baten jarraipen logikoa da, modu sekuentzialean (adibidez, testu-fluxua)."
 
-#: plugins/gtk+/gtk+.xml:545
+#: plugins/gtk+/gtk+.xml:553
 msgid "Subwindow Of"
 msgstr "Azpileihoa"
 
-#: plugins/gtk+/gtk+.xml:550
+#: plugins/gtk+/gtk+.xml:558
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
 msgstr "Osagai bati erantsitako azpileihoa adierazten du, baina ez du osagai horrekiko beste loturarik erabiltzaile-interfazearen hierarkian"
 
-#: plugins/gtk+/gtk+.xml:555
+#: plugins/gtk+/gtk+.xml:563
 msgid "Embeds"
 msgstr "Kapsulatzen du"
 
-#: plugins/gtk+/gtk+.xml:560
+#: plugins/gtk+/gtk+.xml:568
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr "Objektuak beste objektu baten edukia bisualki kapsulatzen duela adierazten du; alegia, objektu honen edukia beste objektu baten edukiaren inguruan egokitzen da"
 
-#: plugins/gtk+/gtk+.xml:565
+#: plugins/gtk+/gtk+.xml:573
 msgid "Embedded By"
 msgstr "Kapsulatua"
 
-#: plugins/gtk+/gtk+.xml:570
+#: plugins/gtk+/gtk+.xml:578
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
 msgstr "'Kapsulatzen du'ren aurkakoa; objektu honen edukia beste objektu batek bisualki kapsulatzen duela adierazten du"
 
-#: plugins/gtk+/gtk+.xml:575
+#: plugins/gtk+/gtk+.xml:583
 msgid "Popup For"
 msgstr "Gainerakorra"
 
-#: plugins/gtk+/gtk+.xml:580
+#: plugins/gtk+/gtk+.xml:588
 msgid "Indicates that an object is a popup for another object"
 msgstr "Objektu bat beste bati gaineratzen zaiola adierazten du"
 
-#: plugins/gtk+/gtk+.xml:583
+#: plugins/gtk+/gtk+.xml:591
 msgid "Parent Window Of"
 msgstr "Leiho gurasoa"
 
-#: plugins/gtk+/gtk+.xml:588
+#: plugins/gtk+/gtk+.xml:596
 msgid "Indicates that an object is a parent window of another object"
 msgstr "Objektu bat beste baten leiho gurasoa dela adierazten du"
 
-#: plugins/gtk+/gtk+.xml:591
+#: plugins/gtk+/gtk+.xml:599
 msgid "Described By"
 msgstr "Honek deskribatua:"
 
-#: plugins/gtk+/gtk+.xml:596
+#: plugins/gtk+/gtk+.xml:604
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
 msgstr "Beste objektu batek objektu honi buruzko informazio deskribatzailea duela adierazten du; 'Etiketatua' aukerak baino azalpen luzeagoa du"
 
-#: plugins/gtk+/gtk+.xml:599
+#: plugins/gtk+/gtk+.xml:607
 msgid "Description For"
 msgstr "Honen deskribapena:"
 
-#: plugins/gtk+/gtk+.xml:604
+#: plugins/gtk+/gtk+.xml:612
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
 msgstr "Objektu batek beste bati buruzko informazio deskribatzailea duela adierazten du; 'Etiketa' aukerak baino azalpen luzeagoa du"
 
-#: plugins/gtk+/gtk+.xml:628
+#: plugins/gtk+/gtk+.xml:636
 msgid "Queue"
 msgstr "Ilara"
 
-#: plugins/gtk+/gtk+.xml:630
+#: plugins/gtk+/gtk+.xml:638
 msgid "Immediate"
 msgstr "Berehalakoa"
 
-#: plugins/gtk+/gtk+.xml:637
+#: plugins/gtk+/gtk+.xml:645
 msgid "Bin"
 msgstr "Edukiontzia"
 
-#: plugins/gtk+/gtk+.xml:655 plugins/gtk+/gtk+.xml:2734
-#: plugins/gtk+/gtk+.xml:2802
+#: plugins/gtk+/gtk+.xml:663 plugins/gtk+/gtk+.xml:2746
+#: plugins/gtk+/gtk+.xml:2814
 msgid "Insert Before"
 msgstr "Txertatu aurretik"
 
-#: plugins/gtk+/gtk+.xml:656 plugins/gtk+/gtk+.xml:2735
-#: plugins/gtk+/gtk+.xml:2803
+#: plugins/gtk+/gtk+.xml:664 plugins/gtk+/gtk+.xml:2747
+#: plugins/gtk+/gtk+.xml:2815
 msgid "Insert After"
 msgstr "Txertatu atzetik"
 
-#: plugins/gtk+/gtk+.xml:657 plugins/gtk+/gtk+.xml:2577
+#: plugins/gtk+/gtk+.xml:665 plugins/gtk+/gtk+.xml:2590
 msgid "Remove Slot"
 msgstr "Kendu erretena"
 
-#: plugins/gtk+/gtk+.xml:664 plugins/gtk+/gtk+.xml:730
-#: plugins/gtk+/gtk+.xml:2565
+#: plugins/gtk+/gtk+.xml:672 plugins/gtk+/gtk+.xml:738
+#: plugins/gtk+/gtk+.xml:2578
 msgid "Number of items"
 msgstr "Elementu kopurua"
 
-#: plugins/gtk+/gtk+.xml:669
+#: plugins/gtk+/gtk+.xml:677
 msgid "The number of items in the box"
 msgstr "Koadroko elementu kopurua"
 
-#: plugins/gtk+/gtk+.xml:674 plugins/gtk+/gtk+.xml:1371
+#: plugins/gtk+/gtk+.xml:682 plugins/gtk+/gtk+.xml:1379
 msgid "Top"
 msgstr "Goian"
 
-#: plugins/gtk+/gtk+.xml:678 plugins/gtk+/gtk+.xml:1373
+#: plugins/gtk+/gtk+.xml:686 plugins/gtk+/gtk+.xml:1381
 msgid "Bottom"
 msgstr "Behean"
 
-#: plugins/gtk+/gtk+.xml:681 plugins/gtk+/gtk+.xml:737
+#: plugins/gtk+/gtk+.xml:689 plugins/gtk+/gtk+.xml:745
 msgid "Center Child"
 msgstr "Erdiko haurra"
 
-#: plugins/gtk+/gtk+.xml:705
+#: plugins/gtk+/gtk+.xml:713
 msgid "Horizontal Box"
 msgstr "Kutxa horizontala"
 
-#: plugins/gtk+/gtk+.xml:710
+#: plugins/gtk+/gtk+.xml:718
 msgid "Vertical Box"
 msgstr "Kutxa bertikala"
 
-#: plugins/gtk+/gtk+.xml:716
+#: plugins/gtk+/gtk+.xml:724
 msgid "Action Bar"
 msgstr "Ekintza-barra"
 
-#: plugins/gtk+/gtk+.xml:735
+#: plugins/gtk+/gtk+.xml:743
 msgid "The number of items in the action bar"
 msgstr "Ekintza-barrako elementu kopurua"
 
-#: plugins/gtk+/gtk+.xml:763
+#: plugins/gtk+/gtk+.xml:771
 msgid "Accel Groups"
 msgstr "Laster-teklen taldeak"
 
-#: plugins/gtk+/gtk+.xml:768
+#: plugins/gtk+/gtk+.xml:776
 msgid "A list of accel groups to be added to this window"
 msgstr "bizkortzaile-taldeen zerrenda leiho honi gehitzeko"
 
-#: plugins/gtk+/gtk+.xml:771
+#: plugins/gtk+/gtk+.xml:779
 msgid "CSD"
 msgstr "CSD"
 
-#: plugins/gtk+/gtk+.xml:787
+#: plugins/gtk+/gtk+.xml:795
 msgid "North West"
 msgstr "Ipar-mendebaldea"
 
-#: plugins/gtk+/gtk+.xml:789
+#: plugins/gtk+/gtk+.xml:797
 msgid "North"
 msgstr "Iparra"
 
-#: plugins/gtk+/gtk+.xml:791
+#: plugins/gtk+/gtk+.xml:799
 msgid "North East"
 msgstr "Ipar-ekialdea"
 
-#: plugins/gtk+/gtk+.xml:793
+#: plugins/gtk+/gtk+.xml:801
 msgid "West"
 msgstr "Mendebaldea"
 
-#: plugins/gtk+/gtk+.xml:797
+#: plugins/gtk+/gtk+.xml:805
 msgid "East"
 msgstr "Ekialdea"
 
-#: plugins/gtk+/gtk+.xml:799
+#: plugins/gtk+/gtk+.xml:807
 msgid "South West"
 msgstr "Hego-mendebaldea"
 
-#: plugins/gtk+/gtk+.xml:801
+#: plugins/gtk+/gtk+.xml:809
 msgid "South"
 msgstr "Hegoaldea"
 
-#: plugins/gtk+/gtk+.xml:803
+#: plugins/gtk+/gtk+.xml:811
 msgid "South East"
 msgstr "Hego-ekialdea"
 
-#: plugins/gtk+/gtk+.xml:805
+#: plugins/gtk+/gtk+.xml:813
 msgid "Static"
 msgstr "Estatikoa"
 
-#: plugins/gtk+/gtk+.xml:820
+#: plugins/gtk+/gtk+.xml:828
 msgid "Toolbar"
 msgstr "Tresna-barra"
 
-#: plugins/gtk+/gtk+.xml:822
+#: plugins/gtk+/gtk+.xml:830
 msgid "Splash Screen"
 msgstr "Harrerako pantaila"
 
-#: plugins/gtk+/gtk+.xml:824
+#: plugins/gtk+/gtk+.xml:832
 msgid "Utility"
 msgstr "Utilitatea"
 
-#: plugins/gtk+/gtk+.xml:826
+#: plugins/gtk+/gtk+.xml:834
 msgid "Dock"
 msgstr "Atrakatu"
 
-#: plugins/gtk+/gtk+.xml:828
+#: plugins/gtk+/gtk+.xml:836
 msgid "Desktop"
 msgstr "Mahaigaina"
 
-#: plugins/gtk+/gtk+.xml:830
+#: plugins/gtk+/gtk+.xml:838
 msgid "Drop Down Menu"
 msgstr "Goitibeherako menua"
 
-#: plugins/gtk+/gtk+.xml:834
+#: plugins/gtk+/gtk+.xml:842
 msgid "Tooltip"
 msgstr "Argibidea"
 
-#: plugins/gtk+/gtk+.xml:846
-msgid "Top Level"
+#: plugins/gtk+/gtk+.xml:854
+msgid "Toplevel"
 msgstr "Goi-maila"
 
-#: plugins/gtk+/gtk+.xml:848
+#: plugins/gtk+/gtk+.xml:856
 msgid "Popup"
 msgstr "Bistaratu"
 
-#: plugins/gtk+/gtk+.xml:850
+#: plugins/gtk+/gtk+.xml:858
 msgid "Offscreen"
 msgstr "Pantailatik kanpo"
 
-#: plugins/gtk+/gtk+.xml:867
+#: plugins/gtk+/gtk+.xml:875
 msgid "Mouse"
 msgstr "Sagua"
 
-#: plugins/gtk+/gtk+.xml:869
+#: plugins/gtk+/gtk+.xml:877
 msgid "Always Center"
 msgstr "Beti erdian"
 
-#: plugins/gtk+/gtk+.xml:871
+#: plugins/gtk+/gtk+.xml:879
 msgid "Center on Parent"
 msgstr "Zentratu gurasoan"
 
-#: plugins/gtk+/gtk+.xml:899
+#: plugins/gtk+/gtk+.xml:907
 msgid "Offscreen Window"
 msgstr "Leihoa pantailatik kanpo"
 
-#: plugins/gtk+/gtk+.xml:944
+#: plugins/gtk+/gtk+.xml:952
 msgid "Application Window"
 msgstr "Aplikazioaren leihoa"
 
-#: plugins/gtk+/gtk+.xml:947
+#: plugins/gtk+/gtk+.xml:955
 msgid "Overlay"
 msgstr "Gainjartzea"
 
-#: plugins/gtk+/gtk+.xml:956
+#: plugins/gtk+/gtk+.xml:964
 msgid "Menu Shell"
 msgstr "Menuko shell-a"
 
-#: plugins/gtk+/gtk+.xml:971 plugins/gtk+/gtk+.xml:1154
-#: plugins/gtk+/gtk+.xml:1209 plugins/gtk+/gtk+.xml:2761
-#: plugins/gtk+/gtk+.xml:2811 plugins/gtk+/gtk+.xml:3559
+#: plugins/gtk+/gtk+.xml:979 plugins/gtk+/gtk+.xml:1162
+#: plugins/gtk+/gtk+.xml:1217 plugins/gtk+/gtk+.xml:2773
+#: plugins/gtk+/gtk+.xml:2823 plugins/gtk+/gtk+.xml:3579
 #: plugins/gtk+/glade-button-editor.ui:394
 msgid "Position"
 msgstr "Kokalekua"
 
-#: plugins/gtk+/gtk+.xml:976
+#: plugins/gtk+/gtk+.xml:984
 msgid "The position of the menu item in the menu shell"
 msgstr "Menu-elementuaren posizioa menu-shell-ean"
 
-#: plugins/gtk+/gtk+.xml:995 plugins/gtk+/gtk+.xml:1068
-#: plugins/gtk+/gtk+.xml:1102 plugins/gtk+/gtk+.xml:1184
-#: plugins/gtk+/gtk+.xml:2118 plugins/gtk+/gtk+.xml:2892
-#: plugins/gtk+/gtk+.xml:3785 plugins/gtk+/gtk+.xml:3860
-#: plugins/gtk+/gtk+.xml:3876 plugins/gtk+/gtk+.xml:3981
-#: plugins/gtk+/gtk+.xml:4051 plugins/gtk+/gtk+.xml:4104
-#: plugins/gtk+/gtk+.xml:4162 plugins/gtk+/gtk+.xml:5546
+#: plugins/gtk+/gtk+.xml:1003 plugins/gtk+/gtk+.xml:1076
+#: plugins/gtk+/gtk+.xml:1110 plugins/gtk+/gtk+.xml:1192
+#: plugins/gtk+/gtk+.xml:2128 plugins/gtk+/gtk+.xml:2904
+#: plugins/gtk+/gtk+.xml:3805 plugins/gtk+/gtk+.xml:3880
+#: plugins/gtk+/gtk+.xml:3896 plugins/gtk+/gtk+.xml:4001
+#: plugins/gtk+/gtk+.xml:4071 plugins/gtk+/gtk+.xml:4124
+#: plugins/gtk+/gtk+.xml:4182 plugins/gtk+/gtk+.xml:5566
 msgid "Edit…"
 msgstr "Editatu…"
 
-#: plugins/gtk+/gtk+.xml:1002
+#: plugins/gtk+/gtk+.xml:1010
 msgid "Use Underline"
 msgstr "Erabili azpimarra"
 
-#: plugins/gtk+/gtk+.xml:1006 plugins/gtk+/gtk+.xml:1287
-#: plugins/gtk+/gtk+.xml:1780 plugins/gtk+/gtk+.xml:1887
-#: plugins/gtk+/gtk+.xml:2937
+#: plugins/gtk+/gtk+.xml:1014 plugins/gtk+/gtk+.xml:1295
+#: plugins/gtk+/gtk+.xml:1790 plugins/gtk+/gtk+.xml:1897
+#: plugins/gtk+/gtk+.xml:2949
 msgid "Related Action"
 msgstr "Erlazionatutako ekintza"
 
-#: plugins/gtk+/gtk+.xml:1008 plugins/gtk+/gtk+.xml:1289
-#: plugins/gtk+/gtk+.xml:1782 plugins/gtk+/gtk+.xml:1894
-#: plugins/gtk+/gtk+.xml:2939
+#: plugins/gtk+/gtk+.xml:1016 plugins/gtk+/gtk+.xml:1297
+#: plugins/gtk+/gtk+.xml:1792 plugins/gtk+/gtk+.xml:1904
+#: plugins/gtk+/gtk+.xml:2951
 msgid "Use Action Appearance"
 msgstr "Erabili ekintzaren itxura"
 
-#: plugins/gtk+/gtk+.xml:1011 plugins/gtk+/gtk+.xml:1308
-#: plugins/gtk+/gtk+.xml:1785 plugins/gtk+/gtk+.xml:1897
+#: plugins/gtk+/gtk+.xml:1019 plugins/gtk+/gtk+.xml:1316
+#: plugins/gtk+/gtk+.xml:1795 plugins/gtk+/gtk+.xml:1907
 msgid "Action Name"
 msgstr "Ekintza-izena"
 
-#: plugins/gtk+/gtk+.xml:1012 plugins/gtk+/gtk+.xml:1309
-#: plugins/gtk+/gtk+.xml:1786 plugins/gtk+/gtk+.xml:1898
-#: plugins/gtk+/gtk+.xml:3130
+#: plugins/gtk+/gtk+.xml:1020 plugins/gtk+/gtk+.xml:1317
+#: plugins/gtk+/gtk+.xml:1796 plugins/gtk+/gtk+.xml:1908
+#: plugins/gtk+/gtk+.xml:3142
 msgid "Action Target"
 msgstr "Ekintzaren helburua"
 
-#: plugins/gtk+/gtk+.xml:1016 plugins/gtk+/gtk+.xml:1789
+#: plugins/gtk+/gtk+.xml:1024 plugins/gtk+/gtk+.xml:1799
 msgid "Click"
 msgstr "Egin klik"
 
-#: plugins/gtk+/gtk+.xml:1020 plugins/gtk+/gtk+.xml:1793
+#: plugins/gtk+/gtk+.xml:1028 plugins/gtk+/gtk+.xml:1803
 msgid "Set the description of the Click atk action"
 msgstr "Atk-ren Klik ekintzaren deskribapena ezartzen du"
 
-#: plugins/gtk+/gtk+.xml:1026
+#: plugins/gtk+/gtk+.xml:1034
 msgid "Image Menu Item"
 msgstr "Menuko irudi-elementua"
 
-#: plugins/gtk+/gtk+.xml:1033
+#: plugins/gtk+/gtk+.xml:1041
 msgid "Stock Item"
 msgstr "Katalogoko elementua"
 
-#: plugins/gtk+/gtk+.xml:1037
+#: plugins/gtk+/gtk+.xml:1045
 msgid "The stock item for this menu item"
 msgstr "Katalogoko ikonoa menuko elementu honentzako"
 
-#: plugins/gtk+/gtk+.xml:1043 plugins/gtk+/gtk+.xml:3754
+#: plugins/gtk+/gtk+.xml:1051 plugins/gtk+/gtk+.xml:3774
 msgid "Accel Group"
 msgstr "Laster-teklen taldea"
 
-#: plugins/gtk+/gtk+.xml:1057
+#: plugins/gtk+/gtk+.xml:1065
 msgid "Separator Menu Item"
 msgstr "Menuko elementu bereizlea"
 
-#: plugins/gtk+/gtk+.xml:1074 plugins/gtk+/gtk+.xml:5528
+#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:5548
 msgid "Left to Right"
 msgstr "Ezkerretik eskuinera"
 
-#: plugins/gtk+/gtk+.xml:1076 plugins/gtk+/gtk+.xml:5530
+#: plugins/gtk+/gtk+.xml:1084 plugins/gtk+/gtk+.xml:5550
 msgid "Right to Left"
 msgstr "Eskuinetik ezkerrera"
 
-#: plugins/gtk+/gtk+.xml:1078
+#: plugins/gtk+/gtk+.xml:1086
 msgid "Top to Bottom"
 msgstr "Goitik behera"
 
-#: plugins/gtk+/gtk+.xml:1080
+#: plugins/gtk+/gtk+.xml:1088
 msgid "Bottom to Top"
 msgstr "Behetik gora"
 
-#: plugins/gtk+/gtk+.xml:1109 plugins/gtk+/gtk+.xml:2618
-#: plugins/gtk+/gtk+.xml:3741 plugins/gtk+/gtk+.xml:4003
+#: plugins/gtk+/gtk+.xml:1117 plugins/gtk+/gtk+.xml:2631
+#: plugins/gtk+/gtk+.xml:3761 plugins/gtk+/gtk+.xml:4023
 #: plugins/gtk+/glade-misc-editor.ui:65 plugins/gtk+/glade-misc-editor.ui:127
-#: plugins/gtk+/glade-scrolled-window-editor.ui:305
+#: plugins/gtk+/glade-scrolled-window-editor.ui:156
 msgid "Horizontal"
 msgstr "Horizontala"
 
-#: plugins/gtk+/gtk+.xml:1111 plugins/gtk+/gtk+.xml:2619
-#: plugins/gtk+/gtk+.xml:3743 plugins/gtk+/gtk+.xml:4005
+#: plugins/gtk+/gtk+.xml:1119 plugins/gtk+/gtk+.xml:2632
+#: plugins/gtk+/gtk+.xml:3763 plugins/gtk+/gtk+.xml:4025
 #: plugins/gtk+/glade-misc-editor.ui:82 plugins/gtk+/glade-misc-editor.ui:144
-#: plugins/gtk+/glade-scrolled-window-editor.ui:323
+#: plugins/gtk+/glade-scrolled-window-editor.ui:174
 msgid "Vertical"
 msgstr "Bertikala"
 
-#: plugins/gtk+/gtk+.xml:1117
+#: plugins/gtk+/gtk+.xml:1125
 msgid "Icons only"
 msgstr "Ikonoak bakarrik"
 
-#: plugins/gtk+/gtk+.xml:1119
+#: plugins/gtk+/gtk+.xml:1127
 msgid "Text only"
 msgstr "Testua bakarrik"
 
-#: plugins/gtk+/gtk+.xml:1121
+#: plugins/gtk+/gtk+.xml:1129
 msgid "Text below icons"
 msgstr "Testua ikonoen azpian"
 
-#: plugins/gtk+/gtk+.xml:1123
+#: plugins/gtk+/gtk+.xml:1131
 msgid "Text beside icons"
 msgstr "Testua ikonoen ondoan"
 
-#: plugins/gtk+/gtk+.xml:1133 plugins/gtk+/gtk+.xml:2295
+#: plugins/gtk+/gtk+.xml:1141 plugins/gtk+/gtk+.xml:2305
 msgid "A symbolic icon size for the stock icon"
 msgstr "Ikonoaren tamaina sinbolikoa katalogoko ikonoentzako"
 
-#: plugins/gtk+/gtk+.xml:1140
+#: plugins/gtk+/gtk+.xml:1148
 msgid "Small Toolbar"
 msgstr "Tresna-barra txikia"
 
-#: plugins/gtk+/gtk+.xml:1142
+#: plugins/gtk+/gtk+.xml:1150
 msgid "Large Toolbar"
 msgstr "Tresna-barra handia"
 
-#: plugins/gtk+/gtk+.xml:1146
+#: plugins/gtk+/gtk+.xml:1154
 msgid "Drag &amp; Drop"
 msgstr "Arrastatu eta jaregin"
 
-#: plugins/gtk+/gtk+.xml:1159
+#: plugins/gtk+/gtk+.xml:1167
 msgid "The position of the tool item in the toolbar"
 msgstr "Tresna-elementuaren posizioa tresna-barran"
 
-#: plugins/gtk+/gtk+.xml:1173
+#: plugins/gtk+/gtk+.xml:1181
 msgid "Tool Palette"
 msgstr "Tresnen paleta"
 
-#: plugins/gtk+/gtk+.xml:1195 plugins/gtk+/gtk+.xml:1682
-#: plugins/gtk+/gtk+.xml:3146 plugins/gtk+/gtk+.xml:3229
-#: plugins/gtk+/gtk+.xml:4023 plugins/gtk+/gtk+.xml:4136
+#: plugins/gtk+/gtk+.xml:1203 plugins/gtk+/gtk+.xml:1692
+#: plugins/gtk+/gtk+.xml:3158 plugins/gtk+/gtk+.xml:3241
+#: plugins/gtk+/gtk+.xml:4043 plugins/gtk+/gtk+.xml:4156
 msgid "Whether to start scrolling at less than minimum or natural width"
 msgstr "Korritzea gutxienekoan baino gutxiagoan ala zabalera naturalean hasiko den"
 
-#: plugins/gtk+/gtk+.xml:1198
+#: plugins/gtk+/gtk+.xml:1206
 msgid "Minimum"
 msgstr "Gutxienekoa"
 
-#: plugins/gtk+/gtk+.xml:1200
+#: plugins/gtk+/gtk+.xml:1208
 msgid "Natural"
 msgstr "Naturala"
 
-#: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1685
-#: plugins/gtk+/gtk+.xml:3149 plugins/gtk+/gtk+.xml:3232
-#: plugins/gtk+/gtk+.xml:4026 plugins/gtk+/gtk+.xml:4139
+#: plugins/gtk+/gtk+.xml:1212 plugins/gtk+/gtk+.xml:1695
+#: plugins/gtk+/gtk+.xml:3161 plugins/gtk+/gtk+.xml:3244
+#: plugins/gtk+/gtk+.xml:4046 plugins/gtk+/gtk+.xml:4159
 msgid "Whether to start scrolling at less than minimum or natural height"
 msgstr "Korritzea gutxienekoan baino gutxiagoan ala altuera naturalean hasiko den"
 
-#: plugins/gtk+/gtk+.xml:1214
+#: plugins/gtk+/gtk+.xml:1222
 msgid "The position of the tool item group in the palette"
 msgstr "Tresnen elementuen taldearen posizioa paletan"
 
-#: plugins/gtk+/gtk+.xml:1253
+#: plugins/gtk+/gtk+.xml:1261
 msgid "Middle"
 msgstr "Erdialdean"
 
-#: plugins/gtk+/gtk+.xml:1263
+#: plugins/gtk+/gtk+.xml:1271
 msgid "Half"
 msgstr "Erdia"
 
-#: plugins/gtk+/gtk+.xml:1278
+#: plugins/gtk+/gtk+.xml:1286
 msgid "GtkToolItem"
 msgstr "GtkToolItem"
 
-#: plugins/gtk+/gtk+.xml:1295
+#: plugins/gtk+/gtk+.xml:1303
 msgid "Separator Tool Item"
 msgstr "Tresnen elementu bereizlea"
 
-#: plugins/gtk+/gtk+.xml:1297 plugins/gtk+/glade-tool-button-editor.ui:66
+#: plugins/gtk+/gtk+.xml:1305 plugins/gtk+/glade-tool-button-editor.ui:66
 msgid "Tool Button"
 msgstr "Tresna-botoia"
 
-#: plugins/gtk+/gtk+.xml:1326
+#: plugins/gtk+/gtk+.xml:1334
 msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr "Elementuan bistaratutako katalogoko ikonoa (aukeratu elementu bat GTK+-eko katalogotik edo ikonoen fabrika batetik)"
 
-#: plugins/gtk+/gtk+.xml:1335
+#: plugins/gtk+/gtk+.xml:1343
 msgid "Toggle Tool Button"
 msgstr "Txandakatze-tresnaren botoia"
 
-#: plugins/gtk+/gtk+.xml:1341
+#: plugins/gtk+/gtk+.xml:1349
 msgid "Radio Tool Button"
 msgstr "Aukera-tresnaren botoia"
 
-#: plugins/gtk+/gtk+.xml:1348
+#: plugins/gtk+/gtk+.xml:1356
 msgid "Menu Tool Button"
 msgstr "Menuko tresna-botoia"
 
-#: plugins/gtk+/gtk+.xml:1362
+#: plugins/gtk+/gtk+.xml:1370
 msgid "Handle Box"
 msgstr "Heldulekudun kutxa"
 
-#: plugins/gtk+/gtk+.xml:1367 plugins/gtk+/gtk+.xml:1444
-#: plugins/gtk+/gtk+.xml:3070 plugins/gtk+/gtk+.xml:4352
+#: plugins/gtk+/gtk+.xml:1375 plugins/gtk+/gtk+.xml:1452
+#: plugins/gtk+/gtk+.xml:3082 plugins/gtk+/gtk+.xml:4372
 msgid "Left"
 msgstr "Ezkerrean"
 
-#: plugins/gtk+/gtk+.xml:1369 plugins/gtk+/gtk+.xml:1446
-#: plugins/gtk+/gtk+.xml:3072 plugins/gtk+/gtk+.xml:4356
+#: plugins/gtk+/gtk+.xml:1377 plugins/gtk+/gtk+.xml:1454
+#: plugins/gtk+/gtk+.xml:3084 plugins/gtk+/gtk+.xml:4376
 msgid "Right"
 msgstr "Eskuinean"
 
-#: plugins/gtk+/gtk+.xml:1382
+#: plugins/gtk+/gtk+.xml:1390
 msgid "In"
 msgstr "Barnekoa"
 
-#: plugins/gtk+/gtk+.xml:1384
+#: plugins/gtk+/gtk+.xml:1392
 msgid "Out"
 msgstr "Kanpoan"
 
-#: plugins/gtk+/gtk+.xml:1386
+#: plugins/gtk+/gtk+.xml:1394
 msgid "Etched In"
 msgstr "Grabatua barrurantz"
 
-#: plugins/gtk+/gtk+.xml:1388
+#: plugins/gtk+/gtk+.xml:1396
 msgid "Etched Out"
 msgstr "Grabatua kanporantz"
 
-#: plugins/gtk+/gtk+.xml:1419
+#: plugins/gtk+/gtk+.xml:1427
 msgid "Attributes"
 msgstr "Atributuak"
 
-#: plugins/gtk+/gtk+.xml:1424
+#: plugins/gtk+/gtk+.xml:1432
 msgid "The pango attributes for this label"
 msgstr "Etiketa honen pango atributuak"
 
-#: plugins/gtk+/gtk+.xml:1456 plugins/gtk+/gtk+.xml:1672
+#: plugins/gtk+/gtk+.xml:1464 plugins/gtk+/gtk+.xml:1682
 msgid "Word"
 msgstr "Hitza"
 
-#: plugins/gtk+/gtk+.xml:1458 plugins/gtk+/gtk+.xml:1670
+#: plugins/gtk+/gtk+.xml:1466 plugins/gtk+/gtk+.xml:1680
 msgid "Character"
 msgstr "Karakterea"
 
-#: plugins/gtk+/gtk+.xml:1460 plugins/gtk+/gtk+.xml:1674
+#: plugins/gtk+/gtk+.xml:1468 plugins/gtk+/gtk+.xml:1684
 msgid "Word Character"
 msgstr "Hitz-karakterea"
 
-#: plugins/gtk+/gtk+.xml:1480
+#: plugins/gtk+/gtk+.xml:1488
 msgid "Text Entry"
 msgstr "Testua sartzea"
 
-#: plugins/gtk+/gtk+.xml:1497
+#: plugins/gtk+/gtk+.xml:1505
 msgid "Free Form"
 msgstr "Inprimaki librea"
 
-#: plugins/gtk+/gtk+.xml:1499
+#: plugins/gtk+/gtk+.xml:1507
 msgid "Alpha"
 msgstr "Alfa"
 
-#: plugins/gtk+/gtk+.xml:1501 plugins/gtk+/gtk+.xml:3762
+#: plugins/gtk+/gtk+.xml:1509 plugins/gtk+/gtk+.xml:3782
 msgid "Digits"
 msgstr "Digituak"
 
-#: plugins/gtk+/gtk+.xml:1503
+#: plugins/gtk+/gtk+.xml:1511
 msgid "Number"
 msgstr "Zenbakia"
 
-#: plugins/gtk+/gtk+.xml:1505
+#: plugins/gtk+/gtk+.xml:1513
 msgid "Phone"
 msgstr "Telefonoa"
 
-#: plugins/gtk+/gtk+.xml:1507 plugins/gtk+/glade-about-dialog-editor.ui:287
-#: plugins/webkit2gtk/webkit2gtk.xml:17
+#: plugins/gtk+/gtk+.xml:1515 plugins/gtk+/glade-about-dialog-editor.ui:287
+#: plugins/webkit2gtk/webkit2gtk.xml:18
 msgid "URL"
 msgstr "URLa"
 
-#: plugins/gtk+/gtk+.xml:1509
+#: plugins/gtk+/gtk+.xml:1517
 msgid "Email"
 msgstr "Posta elektronikoa"
 
-#: plugins/gtk+/gtk+.xml:1513
+#: plugins/gtk+/gtk+.xml:1521
 msgid "Password"
 msgstr "Pasahitza"
 
-#: plugins/gtk+/gtk+.xml:1515
+#: plugins/gtk+/gtk+.xml:1523
 msgid "Pin Code"
 msgstr "PIN kodea"
 
-#: plugins/gtk+/gtk+.xml:1523
+#: plugins/gtk+/gtk+.xml:1533
 msgid "Spellcheck"
 msgstr "Ortografia-egiaztatzailea"
 
-#: plugins/gtk+/gtk+.xml:1525
+#: plugins/gtk+/gtk+.xml:1535
 msgid "No Spellcheck"
 msgstr "Ortografia-egiaztatzailerik ez"
 
-#: plugins/gtk+/gtk+.xml:1527
+#: plugins/gtk+/gtk+.xml:1537
 msgid "Word Completion"
 msgstr "Hitz-osaketa"
 
-#: plugins/gtk+/gtk+.xml:1529
+#: plugins/gtk+/gtk+.xml:1539
 msgid "Lowercase"
 msgstr "Minuskulak"
 
-#: plugins/gtk+/gtk+.xml:1531
+#: plugins/gtk+/gtk+.xml:1541
 msgid "Uppercase Chars"
 msgstr "Karaktere maiuskulak"
 
-#: plugins/gtk+/gtk+.xml:1533
+#: plugins/gtk+/gtk+.xml:1543
 msgid "Uppercase Words"
 msgstr "Hitz maiuskulak"
 
-#: plugins/gtk+/gtk+.xml:1535
+#: plugins/gtk+/gtk+.xml:1545
 msgid "Uppercase Sentences"
 msgstr "Esaldi maiuskulak"
 
-#: plugins/gtk+/gtk+.xml:1537
+#: plugins/gtk+/gtk+.xml:1547
 msgid "Inhibit On-screen Keyboard"
 msgstr "Galarazi pantailako teklatua"
 
-#: plugins/gtk+/gtk+.xml:1539
+#: plugins/gtk+/gtk+.xml:1549
 msgid "Vertical Writing"
 msgstr "Idazkera bertikala"
 
-#: plugins/gtk+/gtk+.xml:1541
+#: plugins/gtk+/gtk+.xml:1551
 msgid "Emoji Support"
 msgstr "Emoji euskarria"
 
-#: plugins/gtk+/gtk+.xml:1543
+#: plugins/gtk+/gtk+.xml:1553
 msgid "No Emoji Support"
 msgstr "Emoji euskarririk ez"
 
-#: plugins/gtk+/gtk+.xml:1565
+#: plugins/gtk+/gtk+.xml:1575
 msgid "Primary Stock Icon"
 msgstr "Katalogoko ikono nagusia"
 
-#: plugins/gtk+/gtk+.xml:1567
+#: plugins/gtk+/gtk+.xml:1577
 msgid "Secondary Stock Icon"
 msgstr "Katalogoko bigarren mailako ikonoa"
 
-#: plugins/gtk+/gtk+.xml:1568
+#: plugins/gtk+/gtk+.xml:1578
 msgid "Primary Icon Pixbuf"
 msgstr "Ikono nagusiaren pixbuf-a"
 
-#: plugins/gtk+/gtk+.xml:1569
+#: plugins/gtk+/gtk+.xml:1579
 msgid "Secondary Icon Pixbuf"
 msgstr "Bigarren mailako ikonoaren pixbuf-a"
 
-#: plugins/gtk+/gtk+.xml:1571
+#: plugins/gtk+/gtk+.xml:1581
 msgid "Primary Icon Name"
 msgstr "Ikono nagusiaren izena"
 
-#: plugins/gtk+/gtk+.xml:1573
+#: plugins/gtk+/gtk+.xml:1583
 msgid "Secondary Icon Name"
 msgstr "Bigarren mailako ikono-izena"
 
-#: plugins/gtk+/gtk+.xml:1575
+#: plugins/gtk+/gtk+.xml:1585
 msgid "Primary Icon Activatable"
 msgstr "Ikono nagusi eragingarria"
 
-#: plugins/gtk+/gtk+.xml:1577
+#: plugins/gtk+/gtk+.xml:1587
 msgid "Secondary Icon Activatable"
 msgstr "Bigarren mailako ikono eragingarria"
 
-#: plugins/gtk+/gtk+.xml:1579
+#: plugins/gtk+/gtk+.xml:1589
 msgid "Primary Icon Sensitive"
 msgstr "Ikono nagusiaren sentikortasuna"
 
-#: plugins/gtk+/gtk+.xml:1581
+#: plugins/gtk+/gtk+.xml:1591
 msgid "Secondary Icon Sensitive"
 msgstr "Bigarren mailako ikonoaren sentikortasuna"
 
-#: plugins/gtk+/gtk+.xml:1582
+#: plugins/gtk+/gtk+.xml:1592
 msgid "Progress Fraction"
 msgstr "Aurrerapenaren frakzioa"
 
-#: plugins/gtk+/gtk+.xml:1583
+#: plugins/gtk+/gtk+.xml:1593
 msgid "Progress Pulse Step"
 msgstr "Aurrerapenaren pultsuaren urratsa"
 
-#: plugins/gtk+/gtk+.xml:1589
+#: plugins/gtk+/gtk+.xml:1599
 msgid "Primary Icon Tooltip Text"
 msgstr "Ikono nagusiaren argibidearen testua"
 
-#: plugins/gtk+/gtk+.xml:1591
+#: plugins/gtk+/gtk+.xml:1601
 msgid "Secondary Icon Tooltip Text"
 msgstr "Bigarren mailako ikonoaren argibidearen testua"
 
-#: plugins/gtk+/gtk+.xml:1593
+#: plugins/gtk+/gtk+.xml:1603
 msgid "Primary Icon Tooltip Markup"
 msgstr "Ikono nagusiaren argibidearen markaketa"
 
-#: plugins/gtk+/gtk+.xml:1595
+#: plugins/gtk+/gtk+.xml:1605
 msgid "Secondary Icon Tooltip Markup"
 msgstr "Bigarren mailako ikonoaren argibidearen markaketa"
 
-#: plugins/gtk+/gtk+.xml:1629 plugins/gtk+/gtk+.xml:3213
+#: plugins/gtk+/gtk+.xml:1639 plugins/gtk+/gtk+.xml:3225
 msgid "Activate"
 msgstr "Aktibatu"
 
-#: plugins/gtk+/gtk+.xml:1633 plugins/gtk+/gtk+.xml:3217
+#: plugins/gtk+/gtk+.xml:1643 plugins/gtk+/gtk+.xml:3229
 msgid "Set the description of the Activate atk action"
 msgstr "Atk-ren Aktibatu ekintzaren deskribapena ezartzen du"
 
-#: plugins/gtk+/gtk+.xml:1638
+#: plugins/gtk+/gtk+.xml:1648
 msgid "Search Entry"
 msgstr "Bilaketaren sarrera"
 
-#: plugins/gtk+/gtk+.xml:1640
+#: plugins/gtk+/gtk+.xml:1650
 msgid "Text View"
 msgstr "Testu-ikuspegia"
 
-#: plugins/gtk+/gtk+.xml:1690
+#: plugins/gtk+/gtk+.xml:1700
 msgid "Search Bar"
 msgstr "Bilaketa-barra"
 
-#: plugins/gtk+/gtk+.xml:1724
+#: plugins/gtk+/gtk+.xml:1734
 msgid "Reject"
 msgstr "Baztertu"
 
-#: plugins/gtk+/gtk+.xml:1726
+#: plugins/gtk+/gtk+.xml:1736
 msgid "Accept"
 msgstr "Onartu"
 
-#: plugins/gtk+/gtk+.xml:1728
+#: plugins/gtk+/gtk+.xml:1738
 msgid "Delete Event"
 msgstr "Ezabatu gertaera"
 
-#: plugins/gtk+/gtk+.xml:1730
+#: plugins/gtk+/gtk+.xml:1740
 msgid "OK"
 msgstr "Ados"
 
-#: plugins/gtk+/gtk+.xml:1734 plugins/gtk+/gtk+.xml:3446
+#: plugins/gtk+/gtk+.xml:1742 plugins/gtk+/gtk+.xml:3466
+msgid "Cancel"
+msgstr "Utzi"
+
+#: plugins/gtk+/gtk+.xml:1744 plugins/gtk+/gtk+.xml:3464
 msgid "Close"
 msgstr "Itxi"
 
-#: plugins/gtk+/gtk+.xml:1740
+#: plugins/gtk+/gtk+.xml:1750
 msgid "Apply"
 msgstr "Aplikatu"
 
-#: plugins/gtk+/gtk+.xml:1742
+#: plugins/gtk+/gtk+.xml:1752
 msgid "Help"
 msgstr "Laguntza"
 
-#: plugins/gtk+/gtk+.xml:1758 plugins/gtk+/glade-button-editor.ui:351
+#: plugins/gtk+/gtk+.xml:1768 plugins/gtk+/glade-button-editor.ui:351
 msgid "Stock Button"
 msgstr "Katalogoko botoia"
 
-#: plugins/gtk+/gtk+.xml:1762
+#: plugins/gtk+/gtk+.xml:1772
 msgid "The stock item for this button"
 msgstr "Botoi honen katalogoko elementua"
 
-#: plugins/gtk+/gtk+.xml:1771
+#: plugins/gtk+/gtk+.xml:1781
 msgid "Response ID"
 msgstr "Erantzunaren IDa"
 
-#: plugins/gtk+/gtk+.xml:1775
+#: plugins/gtk+/gtk+.xml:1785
 msgid "The response ID of this button in a dialog"
 msgstr "Botoi honen erantzun IDa elkarrizketa-koadroan"
 
-#: plugins/gtk+/gtk+.xml:1797 plugins/gtk+/gtk+.xml:2161
+#: plugins/gtk+/gtk+.xml:1807 plugins/gtk+/gtk+.xml:2171
 msgid "Press"
 msgstr "Sakatu"
 
-#: plugins/gtk+/gtk+.xml:1801 plugins/gtk+/gtk+.xml:2165
+#: plugins/gtk+/gtk+.xml:1811 plugins/gtk+/gtk+.xml:2175
 msgid "Set the description of the Press atk action"
 msgstr "Atk-ren Sakatu ekintzaren deskribapena ezartzen du"
 
-#: plugins/gtk+/gtk+.xml:1806
+#: plugins/gtk+/gtk+.xml:1816
 msgid "Release"
 msgstr "Argitalpena"
 
-#: plugins/gtk+/gtk+.xml:1810
+#: plugins/gtk+/gtk+.xml:1820
 msgid "Set the description of the Release atk action"
 msgstr "Atk-ren Askatu ekintzaren deskribapena ezartzen du"
 
-#: plugins/gtk+/gtk+.xml:1832
+#: plugins/gtk+/gtk+.xml:1842
 msgid "Check Button"
 msgstr "Kontrol-laukia"
 
-#: plugins/gtk+/gtk+.xml:1861 plugins/gtk+/gtk+.xml:3256
+#: plugins/gtk+/gtk+.xml:1871 plugins/gtk+/gtk+.xml:3268
+#: plugins/webkit2gtk/webkit2gtk.xml:48
 msgid "Always"
 msgstr "Beti"
 
-#: plugins/gtk+/gtk+.xml:1863
+#: plugins/gtk+/gtk+.xml:1873
 msgid "If Valid"
 msgstr "Baliozkoa bada"
 
-#: plugins/gtk+/gtk+.xml:1877
+#: plugins/gtk+/gtk+.xml:1887
 msgid "Switch"
 msgstr "Aldatu"
 
-#: plugins/gtk+/gtk+.xml:1906
+#: plugins/gtk+/gtk+.xml:1916
 #: plugins/gtk+/glade-file-chooser-button-editor.ui:69
 msgid "File Chooser Button"
 msgstr "Fitxategi-hautatzailearen botoia"
 
-#: plugins/gtk+/gtk+.xml:1939
+#: plugins/gtk+/gtk+.xml:1945
+msgid "Save"
+msgstr "Gorde"
+
+#: plugins/gtk+/gtk+.xml:1947
+msgid "Open"
+msgstr "Ireki"
+
+#: plugins/gtk+/gtk+.xml:1949
 msgid "Select Folder"
 msgstr "Hautatu karpeta"
 
-#: plugins/gtk+/gtk+.xml:1941
+#: plugins/gtk+/gtk+.xml:1951
 msgid "Create Folder"
 msgstr "Sortu karpeta"
 
-#: plugins/gtk+/gtk+.xml:1954
+#: plugins/gtk+/gtk+.xml:1964
 msgid "Scale Button"
 msgstr "Eskalaren botoia"
 
-#: plugins/gtk+/gtk+.xml:1961
+#: plugins/gtk+/gtk+.xml:1971
 msgid ""
 "The names of the icons to be used by the scale button. The first item in the "
 "array will be used in the button when the current value is the lowest value, "
@@ -5831,1461 +5845,1473 @@ msgid ""
 "for all the other values, spread evenly over the range of values"
 msgstr "Eskala-botoiak erabiliko dituen ikonoen izenak. Matrizeko lehen elementua uneko balioa baliorik baxuena denean erabiliko da botoian, bigarren elementua baliorik altuenarekin. Ondorengo ikonoak beste balioetarako erabiliko dira, balioen barrutian modu uniformean sakabanatuta"
 
-#: plugins/gtk+/gtk+.xml:1978
+#: plugins/gtk+/gtk+.xml:1988
 msgid "Volume Button"
 msgstr "Bolumenaren botoia"
 
-#: plugins/gtk+/gtk+.xml:1985
+#: plugins/gtk+/gtk+.xml:1995
 msgid "File Chooser Widget"
 msgstr "Fitxategi-hautatzailearen trepeta"
 
-#: plugins/gtk+/gtk+.xml:2019
+#: plugins/gtk+/gtk+.xml:2029
 msgid "Application Chooser Widget"
 msgstr "Aplikazioaren hautatzailearen trepeta"
 
-#: plugins/gtk+/gtk+.xml:2038
+#: plugins/gtk+/gtk+.xml:2048
 msgid "Places Sidebar"
 msgstr "Lekuen alboko barra"
 
-#: plugins/gtk+/gtk+.xml:2046
+#: plugins/gtk+/gtk+.xml:2056
 msgid "New Tab"
 msgstr "Fitxa berria"
 
-#: plugins/gtk+/gtk+.xml:2048
+#: plugins/gtk+/gtk+.xml:2058
 msgid "New Window"
 msgstr "_Leiho berria"
 
-#: plugins/gtk+/gtk+.xml:2058
+#: plugins/gtk+/gtk+.xml:2068
 msgid "Color Button"
 msgstr "Kolore-botoia"
 
-#: plugins/gtk+/gtk+.xml:2075
+#: plugins/gtk+/gtk+.xml:2085
 msgid "Font Button"
 msgstr "Letra-tipoen botoia"
 
-#: plugins/gtk+/gtk+.xml:2151 plugins/gtk+/gtk+.xml:3258
-#: plugins/gtk+/gtk+.xml:4073
+#: plugins/gtk+/gtk+.xml:2161 plugins/gtk+/gtk+.xml:3270
+#: plugins/gtk+/gtk+.xml:4093
 msgid "Automatic"
 msgstr "Automatikoa"
 
-#: plugins/gtk+/gtk+.xml:2153
+#: plugins/gtk+/gtk+.xml:2163
 msgid "On"
 msgstr "Aktibatuta"
 
-#: plugins/gtk+/gtk+.xml:2155
+#: plugins/gtk+/gtk+.xml:2165
 msgid "Off"
 msgstr "Desaktibatuta"
 
-#: plugins/gtk+/gtk+.xml:2171
+#: plugins/gtk+/gtk+.xml:2181
 msgid "Combo Box Text"
 msgstr "Konbinazio-koadroko testua"
 
-#: plugins/gtk+/gtk+.xml:2198
+#: plugins/gtk+/gtk+.xml:2208
 msgid "Items"
 msgstr "Elementuak"
 
-#: plugins/gtk+/gtk+.xml:2203
+#: plugins/gtk+/gtk+.xml:2213
 msgid "The list of items to show in the combo box"
 msgstr "Elementuen zerrenda konbinazio-koadroan erakusteko"
 
-#: plugins/gtk+/gtk+.xml:2209
+#: plugins/gtk+/gtk+.xml:2219
 msgid "Application Chooser Button"
 msgstr "Aplikazioen hautatzailearen botoia"
 
-#: plugins/gtk+/gtk+.xml:2237
+#: plugins/gtk+/gtk+.xml:2247
 msgid "Progress Bar"
 msgstr "Aurrerapen-barra"
 
-#: plugins/gtk+/gtk+.xml:2262 plugins/gtk+/gtk+.xml:2833
+#: plugins/gtk+/gtk+.xml:2272 plugins/gtk+/gtk+.xml:2845
 msgid "Continuous"
 msgstr "Jarraitua"
 
-#: plugins/gtk+/gtk+.xml:2264
+#: plugins/gtk+/gtk+.xml:2274
 msgid "Discrete"
 msgstr "Diskretua"
 
-#: plugins/gtk+/gtk+.xml:2286
+#: plugins/gtk+/gtk+.xml:2296
 msgid "Resource Name"
 msgstr "Baliabidearen izena"
 
-#: plugins/gtk+/gtk+.xml:2290 plugins/gtk+/gtk+.xml:5362
+#: plugins/gtk+/gtk+.xml:2300 plugins/gtk+/gtk+.xml:5382
 msgid "Icon Size"
 msgstr "Ikonoaren tamaina"
 
-#: plugins/gtk+/gtk+.xml:2313
+#: plugins/gtk+/gtk+.xml:2323
 msgid "Dialog Box"
 msgstr "Elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:2346 plugins/gtk+/gtk+.xml:2396
+#: plugins/gtk+/gtk+.xml:2357 plugins/gtk+/gtk+.xml:2409
 msgid "Insert Row"
 msgstr "Txertatu errenkada"
 
-#: plugins/gtk+/gtk+.xml:2347 plugins/gtk+/gtk+.xml:2351
-#: plugins/gtk+/gtk+.xml:2397 plugins/gtk+/gtk+.xml:2401
+#: plugins/gtk+/gtk+.xml:2358 plugins/gtk+/gtk+.xml:2362
+#: plugins/gtk+/gtk+.xml:2410 plugins/gtk+/gtk+.xml:2414
 msgid "Before"
 msgstr "Aurretik"
 
-#: plugins/gtk+/gtk+.xml:2350 plugins/gtk+/gtk+.xml:2400
+#: plugins/gtk+/gtk+.xml:2361 plugins/gtk+/gtk+.xml:2413
 msgid "Insert Column"
 msgstr "Txertatu zutabea"
 
-#: plugins/gtk+/gtk+.xml:2354 plugins/gtk+/gtk+.xml:2404
+#: plugins/gtk+/gtk+.xml:2365 plugins/gtk+/gtk+.xml:2417
 msgid "Remove Row"
 msgstr "Kendu errenkada"
 
-#: plugins/gtk+/gtk+.xml:2355 plugins/gtk+/gtk+.xml:2405
+#: plugins/gtk+/gtk+.xml:2366 plugins/gtk+/gtk+.xml:2418
 msgid "Remove Column"
 msgstr "Kendu zutabea"
 
-#: plugins/gtk+/gtk+.xml:2367 plugins/gtk+/gtk+.xml:3001
+#: plugins/gtk+/gtk+.xml:2378 plugins/gtk+/gtk+.xml:3013
 #: plugins/gtk+/glade-widget-editor.ui:752
 msgid "Expand"
 msgstr "Zabaldu"
 
-#: plugins/gtk+/gtk+.xml:2369
+#: plugins/gtk+/gtk+.xml:2380
 msgid "Shrink"
 msgstr "Txikitu"
 
-#: plugins/gtk+/gtk+.xml:2415 plugins/gtk+/glade-grid-editor.ui:131
+#: plugins/gtk+/gtk+.xml:2428 plugins/gtk+/glade-grid-editor.ui:131
 msgid "Rows"
 msgstr "Errenkadak"
 
-#: plugins/gtk+/gtk+.xml:2419
+#: plugins/gtk+/gtk+.xml:2432
 msgid "The number of rows for this grid"
 msgstr "Sareta honen errenkada kopurua"
 
-#: plugins/gtk+/gtk+.xml:2421 plugins/gtk+/gtk+.xml:3914
-#: plugins/gtk+/gtk+.xml:3940 plugins/gtk+/glade-grid-editor.ui:149
+#: plugins/gtk+/gtk+.xml:2434 plugins/gtk+/gtk+.xml:3934
+#: plugins/gtk+/gtk+.xml:3960 plugins/gtk+/glade-grid-editor.ui:149
 msgid "Columns"
 msgstr "Zutabeak"
 
-#: plugins/gtk+/gtk+.xml:2425
+#: plugins/gtk+/gtk+.xml:2438
 msgid "The number of columns for this grid"
 msgstr "Sareta honen zutabe kopurua"
 
-#: plugins/gtk+/gtk+.xml:2458
+#: plugins/gtk+/gtk+.xml:2471
 msgid "Horizontal Panes"
 msgstr "Panel horizontalak"
 
-#: plugins/gtk+/gtk+.xml:2463
+#: plugins/gtk+/gtk+.xml:2476
 msgid "Vertical Panes"
 msgstr "Panel bertikalak"
 
-#: plugins/gtk+/gtk+.xml:2469
+#: plugins/gtk+/gtk+.xml:2482
 msgid "Notebook"
 msgstr "Koadernoa"
 
-#: plugins/gtk+/gtk+.xml:2492 plugins/gtk+/gtk+.xml:2596
+#: plugins/gtk+/gtk+.xml:2505 plugins/gtk+/gtk+.xml:2609
 msgid "Insert Page Before"
 msgstr "Txertatu orria aurretik"
 
-#: plugins/gtk+/gtk+.xml:2493 plugins/gtk+/gtk+.xml:2597
+#: plugins/gtk+/gtk+.xml:2506 plugins/gtk+/gtk+.xml:2610
 msgid "Insert Page After"
 msgstr "Txertatu orria atzetik"
 
-#: plugins/gtk+/gtk+.xml:2494 plugins/gtk+/gtk+.xml:2598
+#: plugins/gtk+/gtk+.xml:2507 plugins/gtk+/gtk+.xml:2611
 msgid "Remove Page"
 msgstr "Kendu orria"
 
-#: plugins/gtk+/gtk+.xml:2500 plugins/gtk+/gtk+.xml:2613
+#: plugins/gtk+/gtk+.xml:2513 plugins/gtk+/gtk+.xml:2626
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr "Ezarri uneko orri aktiboa edizioan, propietate hau ez da gordeko"
 
-#: plugins/gtk+/gtk+.xml:2508 plugins/gtk+/gtk+.xml:2601
+#: plugins/gtk+/gtk+.xml:2521 plugins/gtk+/gtk+.xml:2614
 msgid "Number of pages"
 msgstr "Orrialde kopurua"
 
-#: plugins/gtk+/gtk+.xml:2513
+#: plugins/gtk+/gtk+.xml:2526
 msgid "The number of pages in the notebook"
 msgstr "Koadernoko orrialde kopurua"
 
-#: plugins/gtk+/gtk+.xml:2516
+#: plugins/gtk+/gtk+.xml:2529
 msgid "Start Action"
 msgstr "Hasierako ekintza"
 
-#: plugins/gtk+/gtk+.xml:2521
+#: plugins/gtk+/gtk+.xml:2534
 msgid "End Action"
 msgstr "Amaierako ekintza"
 
-#: plugins/gtk+/gtk+.xml:2534
+#: plugins/gtk+/gtk+.xml:2547
 msgid "HeaderBar"
 msgstr "Goiburu-barra"
 
-#: plugins/gtk+/gtk+.xml:2552
+#: plugins/gtk+/gtk+.xml:2565
 msgid "Reserve space for subtitle"
 msgstr "Utzi lekua azpititulurako"
 
-#: plugins/gtk+/gtk+.xml:2553
+#: plugins/gtk+/gtk+.xml:2566
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr "Mantendu goiburu-barraren altuera azpititulua dinamikoki aldatzean."
 
-#: plugins/gtk+/gtk+.xml:2560
+#: plugins/gtk+/gtk+.xml:2573
 msgid "Custom Title"
 msgstr "Titulu pertsonalizatua"
 
-#: plugins/gtk+/gtk+.xml:2570
+#: plugins/gtk+/gtk+.xml:2583
 msgid "The number of items in the header bar"
 msgstr "Elementu kopurua goiburu-barran"
 
-#: plugins/gtk+/gtk+.xml:2580
+#: plugins/gtk+/gtk+.xml:2593
 msgid "Add Slot"
 msgstr "Gehitu erretena"
 
-#: plugins/gtk+/gtk+.xml:2606
+#: plugins/gtk+/gtk+.xml:2619
 msgid "The number of pages in the stack"
 msgstr "Orri kopurua pilan"
 
-#: plugins/gtk+/gtk+.xml:2608
+#: plugins/gtk+/gtk+.xml:2621
 msgid "Edit page"
 msgstr "Editatu orria"
 
-#: plugins/gtk+/gtk+.xml:2616
+#: plugins/gtk+/gtk+.xml:2629
 msgid "Visible child"
 msgstr "Ume ikusgaia"
 
-#: plugins/gtk+/gtk+.xml:2623 plugins/gtk+/gtk+.xml:2678
+#: plugins/gtk+/gtk+.xml:2636 plugins/gtk+/gtk+.xml:2691
 msgid "Crossfade"
 msgstr "Nahaste gurutzatua"
 
-#: plugins/gtk+/gtk+.xml:2624 plugins/gtk+/gtk+.xml:2680
+#: plugins/gtk+/gtk+.xml:2637 plugins/gtk+/gtk+.xml:2693
 msgid "Slide Right"
 msgstr "Irristatu eskuinera"
 
-#: plugins/gtk+/gtk+.xml:2625 plugins/gtk+/gtk+.xml:2682
+#: plugins/gtk+/gtk+.xml:2638 plugins/gtk+/gtk+.xml:2695
 msgid "Slide Left"
 msgstr "Irristatu ezkerrera"
 
-#: plugins/gtk+/gtk+.xml:2626 plugins/gtk+/gtk+.xml:2684
+#: plugins/gtk+/gtk+.xml:2639 plugins/gtk+/gtk+.xml:2697
 msgid "Slide Up"
 msgstr "Irristatu gora"
 
-#: plugins/gtk+/gtk+.xml:2627 plugins/gtk+/gtk+.xml:2686
+#: plugins/gtk+/gtk+.xml:2640 plugins/gtk+/gtk+.xml:2699
 msgid "Slide Down"
 msgstr "Irristatu behera"
 
-#: plugins/gtk+/gtk+.xml:2628
+#: plugins/gtk+/gtk+.xml:2641
 msgid "Slide Left-Right"
 msgstr "Irristatu ezkerretik eskuinera"
 
-#: plugins/gtk+/gtk+.xml:2629
+#: plugins/gtk+/gtk+.xml:2642
 msgid "Slide Up-Down"
 msgstr "Irristatu goitik behera"
 
-#: plugins/gtk+/gtk+.xml:2630
+#: plugins/gtk+/gtk+.xml:2643
 msgid "Move Over Up"
 msgstr "Alboratu gora"
 
-#: plugins/gtk+/gtk+.xml:2631
+#: plugins/gtk+/gtk+.xml:2644
 msgid "Move Over Down"
 msgstr "Alboratu behera"
 
-#: plugins/gtk+/gtk+.xml:2632
+#: plugins/gtk+/gtk+.xml:2645
 msgid "Move Over Left"
 msgstr "Alboratu ezkerrera"
 
-#: plugins/gtk+/gtk+.xml:2633
+#: plugins/gtk+/gtk+.xml:2646
 msgid "Move Over Right"
 msgstr "Alboratu eskuinera"
 
-#: plugins/gtk+/gtk+.xml:2634
+#: plugins/gtk+/gtk+.xml:2647
 msgid "Move Over Up-Down"
 msgstr "Alboratu goitik behera"
 
-#: plugins/gtk+/gtk+.xml:2635
+#: plugins/gtk+/gtk+.xml:2648
 msgid "Move Over Down-Up"
 msgstr "Alboratu behetik gora"
 
-#: plugins/gtk+/gtk+.xml:2636
+#: plugins/gtk+/gtk+.xml:2649
 msgid "Move Over Left-Right"
 msgstr "Alboratu ezkerretik eskuinera"
 
-#: plugins/gtk+/gtk+.xml:2637
+#: plugins/gtk+/gtk+.xml:2650
 msgid "Move Over Right-Left"
 msgstr "Alboratu eskuinetik ezkerrera"
 
-#: plugins/gtk+/gtk+.xml:2638
+#: plugins/gtk+/gtk+.xml:2651
 msgid "Move Under Up"
 msgstr "Beheratu gora"
 
-#: plugins/gtk+/gtk+.xml:2639
+#: plugins/gtk+/gtk+.xml:2652
 msgid "Move Under Down"
 msgstr "Beheratu behera"
 
-#: plugins/gtk+/gtk+.xml:2640
+#: plugins/gtk+/gtk+.xml:2653
 msgid "Move Under Left"
 msgstr "Beheratu ezkerrera"
 
-#: plugins/gtk+/gtk+.xml:2641
+#: plugins/gtk+/gtk+.xml:2654
 msgid "Move Under Right"
 msgstr "Beheratu eskuinera"
 
-#: plugins/gtk+/gtk+.xml:2651
+#: plugins/gtk+/gtk+.xml:2664
 msgid "Stack Switcher"
 msgstr "Pila aldatzailea"
 
-#: plugins/gtk+/gtk+.xml:2667
+#: plugins/gtk+/gtk+.xml:2680
 msgid "Stack Sidebar"
 msgstr "Pilatu alboko barra"
 
-#: plugins/gtk+/gtk+.xml:2669
+#: plugins/gtk+/gtk+.xml:2682
 msgid "Revealer"
 msgstr "Errebelatzailea"
 
-#: plugins/gtk+/gtk+.xml:2730
+#: plugins/gtk+/gtk+.xml:2742
 msgid "Add Row"
 msgstr "Gehitu errenkada"
 
-#: plugins/gtk+/gtk+.xml:2745 plugins/gtk+/gtk+.xml:4707
+#: plugins/gtk+/gtk+.xml:2757 plugins/gtk+/gtk+.xml:4727
 msgid "Single"
 msgstr "Bakarra"
 
-#: plugins/gtk+/gtk+.xml:2747
+#: plugins/gtk+/gtk+.xml:2759
 msgid "Browse"
 msgstr "Arakatu"
 
-#: plugins/gtk+/gtk+.xml:2749
+#: plugins/gtk+/gtk+.xml:2761
 msgid "Multiple"
 msgstr "Anizkoitza"
 
-#: plugins/gtk+/gtk+.xml:2752
+#: plugins/gtk+/gtk+.xml:2764
 msgid "Placeholder"
 msgstr "Leku-marka"
 
-#: plugins/gtk+/gtk+.xml:2756
+#: plugins/gtk+/gtk+.xml:2768
 msgid ""
 "Whether this listbox should have a placeholder widget that is shown in the "
 "list when it doesn't display any visible children"
 msgstr "Zerrenda-koadro honek leku-markako trepeta bat izan behar duen ala ez, zerrendan erakutsia izan dadin ume ikusgairik ez dagoenean"
 
-#: plugins/gtk+/gtk+.xml:2766
+#: plugins/gtk+/gtk+.xml:2778
 msgid "The position of the row item in the listbox"
 msgstr "Errenkada-elementuaren posizioa zerrenda-koadroan"
 
-#: plugins/gtk+/gtk+.xml:2777
+#: plugins/gtk+/gtk+.xml:2789
 msgid "List Box Row"
 msgstr "Zerrenda-koadroaren errenkada"
 
-#: plugins/gtk+/gtk+.xml:2784
+#: plugins/gtk+/gtk+.xml:2796
 msgid "Flow Box"
 msgstr "Fluxu-koadroa"
 
-#: plugins/gtk+/gtk+.xml:2798
+#: plugins/gtk+/gtk+.xml:2810
 msgid "Add Child"
 msgstr "Gehitu haurra"
 
-#: plugins/gtk+/gtk+.xml:2816
+#: plugins/gtk+/gtk+.xml:2828
 msgid "The position of the child in the flowbox"
 msgstr "Umearen posizioa fluxu-koadroan"
 
-#: plugins/gtk+/gtk+.xml:2822
+#: plugins/gtk+/gtk+.xml:2834
 msgid "Flow Box Child"
 msgstr "Fluxu-koadroaren haurra"
 
-#: plugins/gtk+/gtk+.xml:2824
+#: plugins/gtk+/gtk+.xml:2836
 msgid "Range"
 msgstr "Barrutia"
 
-#: plugins/gtk+/gtk+.xml:2835
+#: plugins/gtk+/gtk+.xml:2847
 msgid "Discontinuous"
 msgstr "Etena"
 
-#: plugins/gtk+/gtk+.xml:2837
+#: plugins/gtk+/gtk+.xml:2849
 msgid "Delayed"
 msgstr "Atzeratuta"
 
-#: plugins/gtk+/gtk+.xml:2850 plugins/gtk+/gtk+.xml:2962
+#: plugins/gtk+/gtk+.xml:2862 plugins/gtk+/gtk+.xml:2974
 msgid "The number of digits to round the value to when the value changes"
 msgstr "Digitu kopurua balioa horra biribiltzeko, balioa aldatzen denean"
 
-#: plugins/gtk+/gtk+.xml:2855
+#: plugins/gtk+/gtk+.xml:2867
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr "Trazatuaren area behealdetik ala ezkerraldetik kontroleraino nabarmendu behar den ala ez"
 
-#: plugins/gtk+/gtk+.xml:2868
+#: plugins/gtk+/gtk+.xml:2880
 msgid "Horizontal Scale"
 msgstr "Eskala horizontala"
 
-#: plugins/gtk+/gtk+.xml:2873
+#: plugins/gtk+/gtk+.xml:2885
 msgid "Vertical Scale"
 msgstr "Eskala bertikala"
 
-#: plugins/gtk+/gtk+.xml:2905
+#: plugins/gtk+/gtk+.xml:2917
 msgid "Flip Horizontally"
 msgstr "Irauli horizontalean"
 
-#: plugins/gtk+/gtk+.xml:2907
+#: plugins/gtk+/gtk+.xml:2919
 msgid "Flip Vertically"
 msgstr "Irauli bertikalean"
 
-#: plugins/gtk+/gtk+.xml:2909
+#: plugins/gtk+/gtk+.xml:2921
 msgid "Slide Horizontally"
 msgstr "Irristatu horizontalean"
 
-#: plugins/gtk+/gtk+.xml:2911
+#: plugins/gtk+/gtk+.xml:2923
 msgid "Slide Vertically"
 msgstr "Irristatu bertikalean"
 
-#: plugins/gtk+/gtk+.xml:2913
+#: plugins/gtk+/gtk+.xml:2925
 msgid "Resize Horizontally"
 msgstr "Aldatu tamaina horizontalean"
 
-#: plugins/gtk+/gtk+.xml:2915
+#: plugins/gtk+/gtk+.xml:2927
 msgid "Resize Vertically"
 msgstr "Aldatu tamaina bertikalean"
 
-#: plugins/gtk+/gtk+.xml:2917
+#: plugins/gtk+/gtk+.xml:2929
 msgid "Flip Both Sides"
 msgstr "Irauli bi aldeak"
 
-#: plugins/gtk+/gtk+.xml:2919
+#: plugins/gtk+/gtk+.xml:2931
 msgid "Slide Both Sides"
 msgstr "Irristatu bi aldeak"
 
-#: plugins/gtk+/gtk+.xml:2921
+#: plugins/gtk+/gtk+.xml:2933
 msgid "Resize Both Sides"
 msgstr "Aldatu tamaina bi aldeetan"
 
-#: plugins/gtk+/gtk+.xml:2956
+#: plugins/gtk+/gtk+.xml:2968
 msgid "Scrollbar"
 msgstr "Korritze-barra"
 
-#: plugins/gtk+/gtk+.xml:2973
+#: plugins/gtk+/gtk+.xml:2985
 msgid "Horizontal Scrollbar"
 msgstr "Korritze-barra horizontala"
 
-#: plugins/gtk+/gtk+.xml:2978
+#: plugins/gtk+/gtk+.xml:2990
 msgid "Vertical Scrollbar"
 msgstr "Korritze-barra bertikala"
 
-#: plugins/gtk+/gtk+.xml:2984
+#: plugins/gtk+/gtk+.xml:2996
 msgid "Button Box"
 msgstr "Botoi-kutxa"
 
-#: plugins/gtk+/gtk+.xml:2989
+#: plugins/gtk+/gtk+.xml:3001
 msgid "Default"
 msgstr "Lehenetsia"
 
-#: plugins/gtk+/gtk+.xml:2991
+#: plugins/gtk+/gtk+.xml:3003
 msgid "Spread"
 msgstr "Zabaldu"
 
-#: plugins/gtk+/gtk+.xml:2993
+#: plugins/gtk+/gtk+.xml:3005
 msgid "Edge"
 msgstr "Ertza"
 
-#: plugins/gtk+/gtk+.xml:3007
+#: plugins/gtk+/gtk+.xml:3019
 msgid "Horizontal Button Box"
 msgstr "Botoi-kutxa horizontala"
 
-#: plugins/gtk+/gtk+.xml:3012
+#: plugins/gtk+/gtk+.xml:3024
 msgid "Vertical Button Box"
 msgstr "Botoi-kutxa bertikala"
 
-#: plugins/gtk+/gtk+.xml:3025
+#: plugins/gtk+/gtk+.xml:3037
 msgid "Horizontal Separator"
 msgstr "Bereizle horizontala"
 
-#: plugins/gtk+/gtk+.xml:3035
+#: plugins/gtk+/gtk+.xml:3047
 msgid "Vertical Separator"
 msgstr "Bereizle bertikala"
 
-#: plugins/gtk+/gtk+.xml:3058
+#: plugins/gtk+/gtk+.xml:3070
 msgid "Accel Label"
 msgstr "Laster-teklen etiketa"
 
-#: plugins/gtk+/gtk+.xml:3066
+#: plugins/gtk+/gtk+.xml:3078
 msgid "Up"
 msgstr "Gora"
 
-#: plugins/gtk+/gtk+.xml:3068
+#: plugins/gtk+/gtk+.xml:3080
 msgid "Down"
 msgstr "Behera"
 
-#: plugins/gtk+/gtk+.xml:3087
+#: plugins/gtk+/gtk+.xml:3099
 msgid "Menu Button"
 msgstr "Menu-botoia"
 
-#: plugins/gtk+/gtk+.xml:3099
+#: plugins/gtk+/gtk+.xml:3111
 msgid "Lock Button"
 msgstr "Blokeatzeko botoia"
 
-#: plugins/gtk+/gtk+.xml:3134
+#: plugins/gtk+/gtk+.xml:3146
 msgid "Layout"
 msgstr "Diseinua"
 
-#: plugins/gtk+/gtk+.xml:3154 plugins/gtk+/gtk+.xml:4075
+#: plugins/gtk+/gtk+.xml:3166 plugins/gtk+/gtk+.xml:4095
 msgid "Fixed"
 msgstr "Finkoa"
 
-#: plugins/gtk+/gtk+.xml:3163
+#: plugins/gtk+/gtk+.xml:3175
 msgid "OpenGL Area"
 msgstr "OpenGL area"
 
-#: plugins/gtk+/gtk+.xml:3176
+#: plugins/gtk+/gtk+.xml:3188
 msgid "Info"
 msgstr "Informazioa"
 
-#: plugins/gtk+/gtk+.xml:3178
+#: plugins/gtk+/gtk+.xml:3190
 msgid "Warning"
 msgstr "Abisua"
 
-#: plugins/gtk+/gtk+.xml:3180
+#: plugins/gtk+/gtk+.xml:3192
 msgid "Question"
 msgstr "Galdera"
 
-#: plugins/gtk+/gtk+.xml:3182 plugins/gtk+/gtk+.xml:4713
+#: plugins/gtk+/gtk+.xml:3194 plugins/gtk+/gtk+.xml:4733
 msgid "Error"
 msgstr "Errorea"
 
-#: plugins/gtk+/gtk+.xml:3260
+#: plugins/gtk+/gtk+.xml:3272 plugins/webkit2gtk/webkit2gtk.xml:50
 msgid "Never"
 msgstr "Inoiz ere ez"
 
-#: plugins/gtk+/gtk+.xml:3262
+#: plugins/gtk+/gtk+.xml:3274
 msgid "External"
 msgstr "Kanpokoa"
 
-#: plugins/gtk+/gtk+.xml:3269
+#: plugins/gtk+/gtk+.xml:3281
 msgid "Top Left"
 msgstr "Goian ezkerrean"
 
-#: plugins/gtk+/gtk+.xml:3271
+#: plugins/gtk+/gtk+.xml:3283
 msgid "Bottom Left"
 msgstr "Behean ezkerrean"
 
-#: plugins/gtk+/gtk+.xml:3273
+#: plugins/gtk+/gtk+.xml:3285
 msgid "Top Right"
 msgstr "Goian eskuinean"
 
-#: plugins/gtk+/gtk+.xml:3275
+#: plugins/gtk+/gtk+.xml:3287
 msgid "Bottom Right"
 msgstr "Behean eskuinean"
 
-#: plugins/gtk+/gtk+.xml:3279
+#: plugins/gtk+/gtk+.xml:3291
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
 msgstr "Gainjarritako korritzea gaituta badago, korritze-barrak trepeta tradizional gisa gehituko dira sagua presente dagoenean soilik"
 
-#: plugins/gtk+/gtk+.xml:3293
+#: plugins/gtk+/gtk+.xml:3305
 msgid "About Dialog"
 msgstr "'Honi buruz' elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3321
+#: plugins/gtk+/gtk+.xml:3331
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3323
+#: plugins/gtk+/gtk+.xml:3333
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3325
+#: plugins/gtk+/gtk+.xml:3335
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
-#: plugins/gtk+/gtk+.xml:3327
+#: plugins/gtk+/gtk+.xml:3337
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3331
+#: plugins/gtk+/gtk+.xml:3341
 msgid "MIT X11"
 msgstr "MIT X11"
 
-#: plugins/gtk+/gtk+.xml:3333
+#: plugins/gtk+/gtk+.xml:3343
 msgid "Artistic"
 msgstr "Artistikoa"
 
-#: plugins/gtk+/gtk+.xml:3335
+#: plugins/gtk+/gtk+.xml:3345
 msgid "GPL 2.0 Only"
 msgstr "GPL 2.0 soilik"
 
-#: plugins/gtk+/gtk+.xml:3337
+#: plugins/gtk+/gtk+.xml:3347
 msgid "GPL 3.0 Only"
 msgstr "GPL 3.0 soilik"
 
-#: plugins/gtk+/gtk+.xml:3339
+#: plugins/gtk+/gtk+.xml:3349
 msgid "LGPL 2.1 Only"
 msgstr "LGPL 2.1 soilik"
 
-#: plugins/gtk+/gtk+.xml:3341
+#: plugins/gtk+/gtk+.xml:3351
 msgid "LGPL 3.0 Only"
 msgstr "LGPL 3.0 soilik"
 
-#: plugins/gtk+/gtk+.xml:3343
+#: plugins/gtk+/gtk+.xml:3353
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3345
+#: plugins/gtk+/gtk+.xml:3355
 msgid "AGPL 3.0 Only"
 msgstr "AGPL 3.0 soilik"
 
-#: plugins/gtk+/gtk+.xml:3358
+#: plugins/gtk+/gtk+.xml:3357
+msgid "BSD 3"
+msgstr "BSD 3"
+
+#: plugins/gtk+/gtk+.xml:3359
+msgid "Apache 2.0"
+msgstr "Apache 2.0"
+
+#: plugins/gtk+/gtk+.xml:3361
+msgid "MPL 2.0"
+msgstr "MPL 2.0"
+
+#: plugins/gtk+/gtk+.xml:3375
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
 "translators and unmark this string for translation"
 msgstr "Itzulgarri gisa marka dezakezu hori, eta izen/helbide bat ezarri, itzulpenaren berariazko itzultzaileak bistaratu nahi badituzu; bestela, itzultzaile guztiak zerrendatu, eta kate horri itzultzeko marka kendu behar diozu."
 
-#: plugins/gtk+/gtk+.xml:3367
+#: plugins/gtk+/gtk+.xml:3384
 msgid "Color Selection Dialog"
 msgstr "Kolorea hautatzeko elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3380
+#: plugins/gtk+/gtk+.xml:3397
 msgid "File Chooser Dialog"
 msgstr "Fitxategi-hautatzailearen elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3402
+#: plugins/gtk+/gtk+.xml:3419
 msgid "Font Selection Dialog"
 msgstr "Letra-tipoen hautapenaren elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3416
+#: plugins/gtk+/gtk+.xml:3433
 msgid "Application Chooser Dialog"
 msgstr "Aplikazioen hautatzailearen elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3424
+#: plugins/gtk+/gtk+.xml:3441
 msgid "Message Dialog"
 msgstr "Mezuaren elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3444
+#: plugins/gtk+/gtk+.xml:3462
 msgid "Ok"
 msgstr "Ados"
 
-#: plugins/gtk+/gtk+.xml:3450
+#: plugins/gtk+/gtk+.xml:3468
 msgid "Yes, No"
 msgstr "Bai, ez"
 
-#: plugins/gtk+/gtk+.xml:3452
+#: plugins/gtk+/gtk+.xml:3470
 msgid "Ok, Cancel"
 msgstr "Ados, utzi bertan behera"
 
-#: plugins/gtk+/gtk+.xml:3458
+#: plugins/gtk+/gtk+.xml:3476
 msgid "Color Selection"
 msgstr "Kolore-hautapena"
 
-#: plugins/gtk+/gtk+.xml:3467
+#: plugins/gtk+/gtk+.xml:3485
 msgid "Color Chooser Widget"
 msgstr "Kolore-hautatzailearen trepeta"
 
-#: plugins/gtk+/gtk+.xml:3480
+#: plugins/gtk+/gtk+.xml:3498
 msgid "Color Chooser Dialog"
 msgstr "Kolore-hautatzailearen elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3482
+#: plugins/gtk+/gtk+.xml:3500
 msgid "Font Chooser Widget"
 msgstr "Letra-tipoen hautatzailearen trepeta"
 
-#: plugins/gtk+/gtk+.xml:3502
+#: plugins/gtk+/gtk+.xml:3520
 msgid "Font Chooser Dialog"
 msgstr "Letra-tipoen hautatzailearen elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3511
+#: plugins/gtk+/gtk+.xml:3529
 msgid "Font Selection"
 msgstr "Letra-tipoaren hautapena"
 
-#: plugins/gtk+/gtk+.xml:3513
+#: plugins/gtk+/gtk+.xml:3531
 msgid "Assistant"
 msgstr "Laguntzailea"
 
-#: plugins/gtk+/gtk+.xml:3528
+#: plugins/gtk+/gtk+.xml:3548
 msgid "Number of Pages"
 msgstr "Orrialde kopurua"
 
-#: plugins/gtk+/gtk+.xml:3533
+#: plugins/gtk+/gtk+.xml:3553
 msgid "Number of pages in this assistant"
 msgstr "Laguntzaile honetako orrialde kopurua"
 
-#: plugins/gtk+/gtk+.xml:3540
+#: plugins/gtk+/gtk+.xml:3560
 msgid "Initially Complete"
 msgstr "Hasieran osatuta"
 
-#: plugins/gtk+/gtk+.xml:3541
+#: plugins/gtk+/gtk+.xml:3561
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
 msgstr "Erabiltzailearen sarrera kontutan eduki gabe orrialde hau hasiera osatuta bezala markatuko den edo ez."
 
-#: plugins/gtk+/gtk+.xml:3546
+#: plugins/gtk+/gtk+.xml:3566
 msgid "Content"
 msgstr "Edukia"
 
-#: plugins/gtk+/gtk+.xml:3548
+#: plugins/gtk+/gtk+.xml:3568
 msgid "Intro"
 msgstr "Sartu"
 
-#: plugins/gtk+/gtk+.xml:3550
+#: plugins/gtk+/gtk+.xml:3570
 msgid "Confirm"
 msgstr "Berretsi"
 
-#: plugins/gtk+/gtk+.xml:3552
+#: plugins/gtk+/gtk+.xml:3572
 msgid "Summary"
 msgstr "Laburpena"
 
-#: plugins/gtk+/gtk+.xml:3563
+#: plugins/gtk+/gtk+.xml:3583
 msgid "The page position in the Assistant"
 msgstr "Orriaren posizioa laguntzailean"
 
-#: plugins/gtk+/gtk+.xml:3568
+#: plugins/gtk+/gtk+.xml:3588
 msgid "Popover"
 msgstr "Bunbuiloa"
 
-#: plugins/gtk+/gtk+.xml:3590
+#: plugins/gtk+/gtk+.xml:3610
 msgid "Popover Menu"
 msgstr "Menu-bunbuiloa"
 
-#: plugins/gtk+/gtk+.xml:3606
+#: plugins/gtk+/gtk+.xml:3626
 msgid "Number of submenus"
 msgstr "Azpimenuen kopurua"
 
-#: plugins/gtk+/gtk+.xml:3611
+#: plugins/gtk+/gtk+.xml:3631
 msgid "The number of submenus in the popover menu"
 msgstr "Azpimenuen kopurua menu-bunbuiloan"
 
-#: plugins/gtk+/gtk+.xml:3613
+#: plugins/gtk+/gtk+.xml:3633
 msgid "Edit menu"
 msgstr "Editatu menua"
 
-#: plugins/gtk+/gtk+.xml:3618
+#: plugins/gtk+/gtk+.xml:3638
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr "Ezarri uneko azpimenu aktiboa edizioan, propietate hau ez da gordeko"
 
-#: plugins/gtk+/gtk+.xml:3623
+#: plugins/gtk+/gtk+.xml:3643
 msgid "Model Button"
 msgstr "Eredu-botoia"
 
-#: plugins/gtk+/gtk+.xml:3657
+#: plugins/gtk+/gtk+.xml:3677
 msgid "Link Button"
 msgstr "Esteka-botoia"
 
-#: plugins/gtk+/gtk+.xml:3666
+#: plugins/gtk+/gtk+.xml:3686
 msgid "Recent Chooser"
 msgstr "Azken aldikoen hautatzailea"
 
-#: plugins/gtk+/gtk+.xml:3698
+#: plugins/gtk+/gtk+.xml:3718
 msgid "Most Recently Used first"
 msgstr "Azken aldian erabilitakoak lehen"
 
-#: plugins/gtk+/gtk+.xml:3700
+#: plugins/gtk+/gtk+.xml:3720
 msgid "Least Recently Used first"
 msgstr "Aspaldian erabilitakoak lehen"
 
-#: plugins/gtk+/gtk+.xml:3708
+#: plugins/gtk+/gtk+.xml:3728
 msgid "Recent Chooser Dialog"
 msgstr "Azken aldikoen hautatzailearen elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:3724
+#: plugins/gtk+/gtk+.xml:3744
 msgid "Size Group"
 msgstr "Tamainen taldea"
 
-#: plugins/gtk+/gtk+.xml:3729
+#: plugins/gtk+/gtk+.xml:3749
 msgid "Widgets"
 msgstr "Trepetak"
 
-#: plugins/gtk+/gtk+.xml:3734
+#: plugins/gtk+/gtk+.xml:3754
 msgid "List of widgets in this group"
 msgstr "Talde honetako trepeten zerrenda"
 
-#: plugins/gtk+/gtk+.xml:3745
+#: plugins/gtk+/gtk+.xml:3765
 msgid "Both"
 msgstr "Biak"
 
-#: plugins/gtk+/gtk+.xml:3752
+#: plugins/gtk+/gtk+.xml:3772
 msgid "Window Group"
 msgstr "Leiho taldea"
 
-#: plugins/gtk+/gtk+.xml:3756
+#: plugins/gtk+/gtk+.xml:3776
 msgid "Adjustment"
 msgstr "Egokitzea"
 
-#: plugins/gtk+/gtk+.xml:3813
+#: plugins/gtk+/gtk+.xml:3833
 msgid "An accelerator key for this action"
 msgstr "Ekintza honen teklatu bizkortzailea"
 
-#: plugins/gtk+/gtk+.xml:3818
+#: plugins/gtk+/gtk+.xml:3838
 msgid "Toggle Action"
 msgstr "Txandakatze-botoiaren ekintza"
 
-#: plugins/gtk+/gtk+.xml:3824
+#: plugins/gtk+/gtk+.xml:3844
 msgid "Radio Action"
 msgstr "Aukera-botoiaren ekintza"
 
-#: plugins/gtk+/gtk+.xml:3832
+#: plugins/gtk+/gtk+.xml:3852
 msgid "Recent Action"
 msgstr "Azken aldiko ekintza"
 
-#: plugins/gtk+/gtk+.xml:3850
+#: plugins/gtk+/gtk+.xml:3870
 msgid "Action Group"
 msgstr "Ekintzen taldea"
 
-#: plugins/gtk+/gtk+.xml:3864
+#: plugins/gtk+/gtk+.xml:3884
 msgid "Entry Completion"
 msgstr "Sarreraren osaketa"
 
-#: plugins/gtk+/gtk+.xml:3884
+#: plugins/gtk+/gtk+.xml:3904
 msgid "Icon Factory"
 msgstr "Ikono fabrika"
 
-#: plugins/gtk+/gtk+.xml:3894
+#: plugins/gtk+/gtk+.xml:3914
 msgid "Icon Sources"
 msgstr "Ikonoen iturburuak"
 
-#: plugins/gtk+/gtk+.xml:3899
+#: plugins/gtk+/gtk+.xml:3919
 msgid "A list of sources for this icon factory"
 msgstr "Iturburuen zerrenda ikonoen faktoria honentzako"
 
-#: plugins/gtk+/gtk+.xml:3905
+#: plugins/gtk+/gtk+.xml:3925
 msgid "List Store"
 msgstr "Zerrendaren biltegia"
 
-#: plugins/gtk+/gtk+.xml:3919 plugins/gtk+/gtk+.xml:3945
+#: plugins/gtk+/gtk+.xml:3939 plugins/gtk+/gtk+.xml:3965
 msgid "Enter a list of column types for this data store"
 msgstr "Sartu zutabe moten zerrenda bat datuen biltegi honentzako"
 
-#: plugins/gtk+/gtk+.xml:3921 plugins/gtk+/gtk+.xml:3947
+#: plugins/gtk+/gtk+.xml:3941 plugins/gtk+/gtk+.xml:3967
 msgid "Data"
 msgstr "Datuak"
 
-#: plugins/gtk+/gtk+.xml:3926 plugins/gtk+/gtk+.xml:3952
+#: plugins/gtk+/gtk+.xml:3946 plugins/gtk+/gtk+.xml:3972
 msgid "Enter a list of values to be applied on each row"
 msgstr "Sartu balioen zerrenda bat errenkada bakoitzari aplikatzeko"
 
-#: plugins/gtk+/gtk+.xml:3932
+#: plugins/gtk+/gtk+.xml:3952
 msgid "Tree Store"
 msgstr "Zuhaitzaren biltegia"
 
-#: plugins/gtk+/gtk+.xml:3958
+#: plugins/gtk+/gtk+.xml:3978
 msgid "Tree Model Filter"
 msgstr "Zuhaitz ereduaren iragazkia"
 
-#: plugins/gtk+/gtk+.xml:3960
+#: plugins/gtk+/gtk+.xml:3980
 msgid "Tree Model Sort"
 msgstr "Zuhaitz ereduaren ordena"
 
-#: plugins/gtk+/gtk+.xml:3961
+#: plugins/gtk+/gtk+.xml:3981
 msgid "Tree Selection"
 msgstr "Zuhaitzaren hautapena"
 
-#: plugins/gtk+/gtk+.xml:3967
+#: plugins/gtk+/gtk+.xml:3987
 msgid "Tree View"
 msgstr "Zuhaitz-ikuspegia"
 
-#: plugins/gtk+/gtk+.xml:4007
+#: plugins/gtk+/gtk+.xml:4027
 msgid "Horizontal and Vertical"
 msgstr "Horizontala eta bertikala"
 
-#: plugins/gtk+/gtk+.xml:4062
+#: plugins/gtk+/gtk+.xml:4082
 msgid "Ascending"
 msgstr "Gorantz"
 
-#: plugins/gtk+/gtk+.xml:4064
+#: plugins/gtk+/gtk+.xml:4084
 msgid "Descending"
 msgstr "Beherantz"
 
-#: plugins/gtk+/gtk+.xml:4071
+#: plugins/gtk+/gtk+.xml:4091
 msgid "Grow Only"
 msgstr "Hazi soilik"
 
-#: plugins/gtk+/gtk+.xml:4089
+#: plugins/gtk+/gtk+.xml:4109
 msgid "Icon View"
 msgstr "Ikono-ikuspegia"
 
-#: plugins/gtk+/gtk+.xml:4173
+#: plugins/gtk+/gtk+.xml:4193
 msgid "Cell Background Color name column"
 msgstr "Gelaxkaren atzeko planoaren kolore-izenaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4178 plugins/gtk+/gtk+.xml:4193
-#: plugins/gtk+/gtk+.xml:4208 plugins/gtk+/gtk+.xml:4222
-#: plugins/gtk+/gtk+.xml:4236 plugins/gtk+/gtk+.xml:4250
-#: plugins/gtk+/gtk+.xml:4264 plugins/gtk+/gtk+.xml:4278
-#: plugins/gtk+/gtk+.xml:4292 plugins/gtk+/gtk+.xml:4306
-#: plugins/gtk+/gtk+.xml:4320 plugins/gtk+/gtk+.xml:4364
-#: plugins/gtk+/gtk+.xml:4378 plugins/gtk+/gtk+.xml:4392
-#: plugins/gtk+/gtk+.xml:4407 plugins/gtk+/gtk+.xml:4421
-#: plugins/gtk+/gtk+.xml:4435 plugins/gtk+/gtk+.xml:4449
-#: plugins/gtk+/gtk+.xml:4463 plugins/gtk+/gtk+.xml:4478
-#: plugins/gtk+/gtk+.xml:4493 plugins/gtk+/gtk+.xml:4508
-#: plugins/gtk+/gtk+.xml:4522 plugins/gtk+/gtk+.xml:4536
-#: plugins/gtk+/gtk+.xml:4550 plugins/gtk+/gtk+.xml:4564
-#: plugins/gtk+/gtk+.xml:4579 plugins/gtk+/gtk+.xml:4593
-#: plugins/gtk+/gtk+.xml:4607 plugins/gtk+/gtk+.xml:4643
-#: plugins/gtk+/gtk+.xml:4657 plugins/gtk+/gtk+.xml:4680
-#: plugins/gtk+/gtk+.xml:4694 plugins/gtk+/gtk+.xml:4721
-#: plugins/gtk+/gtk+.xml:4742 plugins/gtk+/gtk+.xml:4756
-#: plugins/gtk+/gtk+.xml:4770 plugins/gtk+/gtk+.xml:4784
-#: plugins/gtk+/gtk+.xml:4798 plugins/gtk+/gtk+.xml:4813
-#: plugins/gtk+/gtk+.xml:4828 plugins/gtk+/gtk+.xml:4843
-#: plugins/gtk+/gtk+.xml:4858 plugins/gtk+/gtk+.xml:4877
-#: plugins/gtk+/gtk+.xml:4898 plugins/gtk+/gtk+.xml:4965
-#: plugins/gtk+/gtk+.xml:4979 plugins/gtk+/gtk+.xml:5002
-#: plugins/gtk+/gtk+.xml:5016 plugins/gtk+/gtk+.xml:5030
-#: plugins/gtk+/gtk+.xml:5049 plugins/gtk+/gtk+.xml:5063
-#: plugins/gtk+/gtk+.xml:5077 plugins/gtk+/gtk+.xml:5096
-#: plugins/gtk+/gtk+.xml:5110 plugins/gtk+/gtk+.xml:5124
-#: plugins/gtk+/gtk+.xml:5138 plugins/gtk+/gtk+.xml:5153
-#: plugins/gtk+/gtk+.xml:5168 plugins/gtk+/gtk+.xml:5182
-#: plugins/gtk+/gtk+.xml:5196 plugins/gtk+/gtk+.xml:5216
-#: plugins/gtk+/gtk+.xml:5234 plugins/gtk+/gtk+.xml:5248
-#: plugins/gtk+/gtk+.xml:5262 plugins/gtk+/gtk+.xml:5277
-#: plugins/gtk+/gtk+.xml:5292 plugins/gtk+/gtk+.xml:5306
-#: plugins/gtk+/gtk+.xml:5320 plugins/gtk+/gtk+.xml:5339
-#: plugins/gtk+/gtk+.xml:5353 plugins/gtk+/gtk+.xml:5367
-#: plugins/gtk+/gtk+.xml:5386 plugins/gtk+/gtk+.xml:5400
-#: plugins/gtk+/gtk+.xml:5414 plugins/gtk+/gtk+.xml:5428
-#: plugins/gtk+/gtk+.xml:5442
+#: plugins/gtk+/gtk+.xml:4198 plugins/gtk+/gtk+.xml:4213
+#: plugins/gtk+/gtk+.xml:4228 plugins/gtk+/gtk+.xml:4242
+#: plugins/gtk+/gtk+.xml:4256 plugins/gtk+/gtk+.xml:4270
+#: plugins/gtk+/gtk+.xml:4284 plugins/gtk+/gtk+.xml:4298
+#: plugins/gtk+/gtk+.xml:4312 plugins/gtk+/gtk+.xml:4326
+#: plugins/gtk+/gtk+.xml:4340 plugins/gtk+/gtk+.xml:4384
+#: plugins/gtk+/gtk+.xml:4398 plugins/gtk+/gtk+.xml:4412
+#: plugins/gtk+/gtk+.xml:4427 plugins/gtk+/gtk+.xml:4441
+#: plugins/gtk+/gtk+.xml:4455 plugins/gtk+/gtk+.xml:4469
+#: plugins/gtk+/gtk+.xml:4483 plugins/gtk+/gtk+.xml:4498
+#: plugins/gtk+/gtk+.xml:4513 plugins/gtk+/gtk+.xml:4528
+#: plugins/gtk+/gtk+.xml:4542 plugins/gtk+/gtk+.xml:4556
+#: plugins/gtk+/gtk+.xml:4570 plugins/gtk+/gtk+.xml:4584
+#: plugins/gtk+/gtk+.xml:4599 plugins/gtk+/gtk+.xml:4613
+#: plugins/gtk+/gtk+.xml:4627 plugins/gtk+/gtk+.xml:4663
+#: plugins/gtk+/gtk+.xml:4677 plugins/gtk+/gtk+.xml:4700
+#: plugins/gtk+/gtk+.xml:4714 plugins/gtk+/gtk+.xml:4741
+#: plugins/gtk+/gtk+.xml:4762 plugins/gtk+/gtk+.xml:4776
+#: plugins/gtk+/gtk+.xml:4790 plugins/gtk+/gtk+.xml:4804
+#: plugins/gtk+/gtk+.xml:4818 plugins/gtk+/gtk+.xml:4833
+#: plugins/gtk+/gtk+.xml:4848 plugins/gtk+/gtk+.xml:4863
+#: plugins/gtk+/gtk+.xml:4878 plugins/gtk+/gtk+.xml:4897
+#: plugins/gtk+/gtk+.xml:4918 plugins/gtk+/gtk+.xml:4985
+#: plugins/gtk+/gtk+.xml:4999 plugins/gtk+/gtk+.xml:5022
+#: plugins/gtk+/gtk+.xml:5036 plugins/gtk+/gtk+.xml:5050
+#: plugins/gtk+/gtk+.xml:5069 plugins/gtk+/gtk+.xml:5083
+#: plugins/gtk+/gtk+.xml:5097 plugins/gtk+/gtk+.xml:5116
+#: plugins/gtk+/gtk+.xml:5130 plugins/gtk+/gtk+.xml:5144
+#: plugins/gtk+/gtk+.xml:5158 plugins/gtk+/gtk+.xml:5173
+#: plugins/gtk+/gtk+.xml:5188 plugins/gtk+/gtk+.xml:5202
+#: plugins/gtk+/gtk+.xml:5216 plugins/gtk+/gtk+.xml:5236
+#: plugins/gtk+/gtk+.xml:5254 plugins/gtk+/gtk+.xml:5268
+#: plugins/gtk+/gtk+.xml:5282 plugins/gtk+/gtk+.xml:5297
+#: plugins/gtk+/gtk+.xml:5312 plugins/gtk+/gtk+.xml:5326
+#: plugins/gtk+/gtk+.xml:5340 plugins/gtk+/gtk+.xml:5359
+#: plugins/gtk+/gtk+.xml:5373 plugins/gtk+/gtk+.xml:5387
+#: plugins/gtk+/gtk+.xml:5406 plugins/gtk+/gtk+.xml:5420
+#: plugins/gtk+/gtk+.xml:5434 plugins/gtk+/gtk+.xml:5448
+#: plugins/gtk+/gtk+.xml:5462
 msgid "The column in the model to load the value from"
 msgstr "Ereduko zutabea hortik balioa kargatzeko"
 
-#: plugins/gtk+/gtk+.xml:4188
+#: plugins/gtk+/gtk+.xml:4208
 msgid "Cell Background Color column"
 msgstr "Gelaxkaren atzeko planoaren kolorearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4203
+#: plugins/gtk+/gtk+.xml:4223
 msgid "Cell Background RGBA column"
 msgstr "Gelaxkaren atzeko planoaren RGBA zutabea"
 
-#: plugins/gtk+/gtk+.xml:4217
+#: plugins/gtk+/gtk+.xml:4237
 msgid "Width column"
 msgstr "Zabaleraren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4231
+#: plugins/gtk+/gtk+.xml:4251
 msgid "Height column"
 msgstr "Altueraren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4244
+#: plugins/gtk+/gtk+.xml:4264
 msgid "Horizontal Padding"
 msgstr "Tarte betegarri horizontala"
 
-#: plugins/gtk+/gtk+.xml:4245
+#: plugins/gtk+/gtk+.xml:4265
 msgid "Horizontal Padding column"
 msgstr "Tarte betegarri horizontalaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4258
+#: plugins/gtk+/gtk+.xml:4278
 msgid "Vertical Padding"
 msgstr "Betegarri bertikala"
 
-#: plugins/gtk+/gtk+.xml:4259
+#: plugins/gtk+/gtk+.xml:4279
 msgid "Vertical Padding column"
 msgstr "Betegarri bertikalaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4272
+#: plugins/gtk+/gtk+.xml:4292
 msgid "Horizontal Alignment"
 msgstr "Lerrokatze horizontala"
 
-#: plugins/gtk+/gtk+.xml:4273
+#: plugins/gtk+/gtk+.xml:4293
 msgid "Horizontal Alignment column"
 msgstr "Lerrokatze horizontalaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4286
+#: plugins/gtk+/gtk+.xml:4306
 msgid "Vertical Alignment"
 msgstr "Lerrokatze bertikala"
 
-#: plugins/gtk+/gtk+.xml:4287
+#: plugins/gtk+/gtk+.xml:4307
 msgid "Vertical Alignment column"
 msgstr "Lerrokatze bertikalaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4301
+#: plugins/gtk+/gtk+.xml:4321
 msgid "Sensitive column"
 msgstr "Sentikortasunaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4315
+#: plugins/gtk+/gtk+.xml:4335
 msgid "Visible column"
 msgstr "Zutabe ikusgaia"
 
-#: plugins/gtk+/gtk+.xml:4330
+#: plugins/gtk+/gtk+.xml:4350
 msgid "Text Renderer"
 msgstr "Testu errendatzailea"
 
-#: plugins/gtk+/gtk+.xml:4359
+#: plugins/gtk+/gtk+.xml:4379
 msgid "Alignment column"
 msgstr "Lerrokatzearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4373
+#: plugins/gtk+/gtk+.xml:4393
 msgid "Attributes column"
 msgstr "Atributuen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4387
+#: plugins/gtk+/gtk+.xml:4407
 msgid "Background Color Name column"
 msgstr "Atzeko planoren kolore-izenaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4402
+#: plugins/gtk+/gtk+.xml:4422
 msgid "Background Color column"
 msgstr "Atzeko planoaren kolorearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4416
+#: plugins/gtk+/gtk+.xml:4436
 msgid "Editable column"
 msgstr "Edizioaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4430
+#: plugins/gtk+/gtk+.xml:4450
 msgid "Ellipsize column"
 msgstr "Elipsiaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4444
+#: plugins/gtk+/gtk+.xml:4464
 msgid "Family column"
 msgstr "Familiaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4458
+#: plugins/gtk+/gtk+.xml:4478
 msgid "Font column"
 msgstr "Letra-tipoen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4473
+#: plugins/gtk+/gtk+.xml:4493
 msgid "Font Description column"
 msgstr "Letra-tipoen deskribapenaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4488
+#: plugins/gtk+/gtk+.xml:4508
 msgid "Foreground Color Name column"
 msgstr "Aurreko planoaren kolore-izenaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4503
+#: plugins/gtk+/gtk+.xml:4523
 msgid "Foreground Color column"
 msgstr "Aurreko planoaren kolorearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4517
+#: plugins/gtk+/gtk+.xml:4537
 msgid "Language column"
 msgstr "Hizkuntzen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4531
+#: plugins/gtk+/gtk+.xml:4551
 msgid "Markup column"
 msgstr "Markaketen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4545
+#: plugins/gtk+/gtk+.xml:4565
 msgid "Rise column"
 msgstr "Biltzearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4559
+#: plugins/gtk+/gtk+.xml:4579
 msgid "Scale column"
 msgstr "Eskalaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4574
+#: plugins/gtk+/gtk+.xml:4594
 msgid "Single Paragraph Mode column"
 msgstr "Paragrafo bakunaren moduaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4588
+#: plugins/gtk+/gtk+.xml:4608
 msgid "Size column"
 msgstr "Tamainen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4602 plugins/gtk+/gtk+.xml:4872
+#: plugins/gtk+/gtk+.xml:4622 plugins/gtk+/gtk+.xml:4892
 msgid "Data column"
 msgstr "Datuen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4618
+#: plugins/gtk+/gtk+.xml:4638
 msgid "Ultra Condensed"
 msgstr "Ultra kondentsatuta"
 
-#: plugins/gtk+/gtk+.xml:4620
+#: plugins/gtk+/gtk+.xml:4640
 msgid "Extra Condensed"
 msgstr "Estra kondentsatuta"
 
-#: plugins/gtk+/gtk+.xml:4622
+#: plugins/gtk+/gtk+.xml:4642
 msgid "Condensed"
 msgstr "Kondentsatuta"
 
-#: plugins/gtk+/gtk+.xml:4624
+#: plugins/gtk+/gtk+.xml:4644
 msgid "Semi Condensed"
 msgstr "Erdi kondentsatuta"
 
-#: plugins/gtk+/gtk+.xml:4628
+#: plugins/gtk+/gtk+.xml:4648
 msgid "Semi Expanded"
 msgstr "Erdi zabalduta"
 
-#: plugins/gtk+/gtk+.xml:4630
+#: plugins/gtk+/gtk+.xml:4650
 msgid "Expanded"
 msgstr "Zabalduta"
 
-#: plugins/gtk+/gtk+.xml:4632
+#: plugins/gtk+/gtk+.xml:4652
 msgid "Extra Expanded"
 msgstr "Estra zabalduta"
 
-#: plugins/gtk+/gtk+.xml:4634
+#: plugins/gtk+/gtk+.xml:4654
 msgid "Ultra Expanded"
 msgstr "Ultra zabalduta"
 
-#: plugins/gtk+/gtk+.xml:4638
+#: plugins/gtk+/gtk+.xml:4658
 msgid "Stretch column"
 msgstr "Tiratzearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4652
+#: plugins/gtk+/gtk+.xml:4672
 msgid "Strikethrough column"
 msgstr "Marratuaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4670
+#: plugins/gtk+/gtk+.xml:4690
 msgid "Oblique"
 msgstr "Zeiharra"
 
-#: plugins/gtk+/gtk+.xml:4672
+#: plugins/gtk+/gtk+.xml:4692
 msgid "Italic"
 msgstr "Etzana"
 
-#: plugins/gtk+/gtk+.xml:4675
+#: plugins/gtk+/gtk+.xml:4695
 msgid "Style column"
 msgstr "Estiloaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4689 plugins/gtk+/gtk+.xml:5257
+#: plugins/gtk+/gtk+.xml:4709 plugins/gtk+/gtk+.xml:5277
 msgid "Text column"
 msgstr "Testuaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4709
+#: plugins/gtk+/gtk+.xml:4729
 msgid "Double"
 msgstr "Bikoitza"
 
-#: plugins/gtk+/gtk+.xml:4711
+#: plugins/gtk+/gtk+.xml:4731
 msgid "Low"
 msgstr "Baxua"
 
-#: plugins/gtk+/gtk+.xml:4716
+#: plugins/gtk+/gtk+.xml:4736
 msgid "Underline column"
 msgstr "Azpimarraren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4734
+#: plugins/gtk+/gtk+.xml:4754
 msgid "Small Capitals"
 msgstr "Maiuskula txikiak"
 
-#: plugins/gtk+/gtk+.xml:4737
+#: plugins/gtk+/gtk+.xml:4757
 msgid "Variant column"
 msgstr "Aldagaiaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4751
+#: plugins/gtk+/gtk+.xml:4771
 msgid "Weight column"
 msgstr "Pisuaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4765
+#: plugins/gtk+/gtk+.xml:4785
 msgid "Width in Characters column"
 msgstr "Zabalera karakteretan zutabea"
 
-#: plugins/gtk+/gtk+.xml:4779
+#: plugins/gtk+/gtk+.xml:4799
 msgid "Wrap Mode column"
 msgstr "Egokitze-moduaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4793
+#: plugins/gtk+/gtk+.xml:4813
 msgid "Wrap Width column"
 msgstr "Egokitze-zabaleraren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4808
+#: plugins/gtk+/gtk+.xml:4828
 msgid "Background RGBA column"
 msgstr "Atzeko planoaren RGBA zutabea"
 
-#: plugins/gtk+/gtk+.xml:4823
+#: plugins/gtk+/gtk+.xml:4843
 msgid "Foreground RGBA column"
 msgstr "Aurreko planoaren RGBA zutabea"
 
-#: plugins/gtk+/gtk+.xml:4838
+#: plugins/gtk+/gtk+.xml:4858
 msgid "Maximum width in characters"
 msgstr "Gehieneko zabalera (karakteretan)"
 
-#: plugins/gtk+/gtk+.xml:4853
+#: plugins/gtk+/gtk+.xml:4873
 msgid "Placeholder text"
 msgstr "Leku-markaren testua"
 
-#: plugins/gtk+/gtk+.xml:4869
+#: plugins/gtk+/gtk+.xml:4889
 msgid "Accelerator Renderer"
 msgstr "Laster-teklen errendatzailea"
 
-#: plugins/gtk+/gtk+.xml:4888
+#: plugins/gtk+/gtk+.xml:4908
 msgid "Gtk"
 msgstr "Gtk"
 
-#: plugins/gtk+/gtk+.xml:4893
+#: plugins/gtk+/gtk+.xml:4913
 msgid "Accelerator Mode column"
 msgstr "Laster-teklen moduaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:4909
+#: plugins/gtk+/gtk+.xml:4929
 msgid "Shift Key"
 msgstr "Maius tekla"
 
-#: plugins/gtk+/gtk+.xml:4911
+#: plugins/gtk+/gtk+.xml:4931
 msgid "Lock Key"
 msgstr "Blokeatu tekla"
 
-#: plugins/gtk+/gtk+.xml:4913
+#: plugins/gtk+/gtk+.xml:4933
 msgid "Control Key"
 msgstr "Kontrol tekla"
 
-#: plugins/gtk+/gtk+.xml:4915
+#: plugins/gtk+/gtk+.xml:4935
 msgid "Alt Key"
 msgstr "Alt tekla"
 
-#: plugins/gtk+/gtk+.xml:4917
+#: plugins/gtk+/gtk+.xml:4937
 msgid "Fifth Key"
 msgstr "Bosgarren tekla"
 
-#: plugins/gtk+/gtk+.xml:4919
+#: plugins/gtk+/gtk+.xml:4939
 msgid "Sixth Key"
 msgstr "Seigarren tekla"
 
-#: plugins/gtk+/gtk+.xml:4921
+#: plugins/gtk+/gtk+.xml:4941
 msgid "Seventh Key"
 msgstr "Zazpigarren tekla"
 
-#: plugins/gtk+/gtk+.xml:4923
+#: plugins/gtk+/gtk+.xml:4943
 msgid "Eighth Key"
 msgstr "Zortzigarren tekla"
 
-#: plugins/gtk+/gtk+.xml:4925
+#: plugins/gtk+/gtk+.xml:4945
 msgid "First Mouse Button"
 msgstr "Saguaren aurreneko botoia"
 
-#: plugins/gtk+/gtk+.xml:4927
+#: plugins/gtk+/gtk+.xml:4947
 msgid "Second Mouse Button"
 msgstr "Saguaren bigarren botoia"
 
-#: plugins/gtk+/gtk+.xml:4929
+#: plugins/gtk+/gtk+.xml:4949
 msgid "Third Mouse Button"
 msgstr "Saguaren hirugarren botoia"
 
-#: plugins/gtk+/gtk+.xml:4931
+#: plugins/gtk+/gtk+.xml:4951
 msgid "Fourth Mouse Button"
 msgstr "Saguaren laugarren botoia"
 
-#: plugins/gtk+/gtk+.xml:4933
+#: plugins/gtk+/gtk+.xml:4953
 msgid "Fifth Mouse Button"
 msgstr "Saguaren bosgarren botoia"
 
-#: plugins/gtk+/gtk+.xml:4935
+#: plugins/gtk+/gtk+.xml:4955
 msgid "Super Modifier"
 msgstr "Super aldatzailea"
 
-#: plugins/gtk+/gtk+.xml:4937
+#: plugins/gtk+/gtk+.xml:4957
 msgid "Hyper Modifier"
 msgstr "Hiper aldatzailea"
 
-#: plugins/gtk+/gtk+.xml:4939
+#: plugins/gtk+/gtk+.xml:4959
 msgid "Meta Modifier"
 msgstr "Meta aldatzailea"
 
-#: plugins/gtk+/gtk+.xml:4941
+#: plugins/gtk+/gtk+.xml:4961
 msgid "Release Modifier"
 msgstr "Askatzearen aldatzailea"
 
-#: plugins/gtk+/gtk+.xml:4943
+#: plugins/gtk+/gtk+.xml:4963
 msgid "All Modifiers"
 msgstr "Eraldatzaile guztiak"
 
-#: plugins/gtk+/gtk+.xml:4960
+#: plugins/gtk+/gtk+.xml:4980
 msgid "Accelerator Modifiers column"
 msgstr "Laster-teklen eraldatzaileen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4974
+#: plugins/gtk+/gtk+.xml:4994
 msgid "Keycode column"
 msgstr "Tekla-kodeen zutabea"
 
-#: plugins/gtk+/gtk+.xml:4989
+#: plugins/gtk+/gtk+.xml:5009
 msgid "Combo Renderer"
 msgstr "Konbinazio-koadroen errendatzailea"
 
-#: plugins/gtk+/gtk+.xml:4997
+#: plugins/gtk+/gtk+.xml:5017
 msgid "Has Entry column"
 msgstr "Sarrerako zutabea du"
 
-#: plugins/gtk+/gtk+.xml:5011
+#: plugins/gtk+/gtk+.xml:5031
 msgid "Model column"
 msgstr "Ereduaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5025
+#: plugins/gtk+/gtk+.xml:5045
 msgid "Text Column column"
 msgstr "Testuaren zutabearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:5041
+#: plugins/gtk+/gtk+.xml:5061
 msgid "Spin Renderer"
 msgstr "Biratze-botoiaren errendatzailea"
 
-#: plugins/gtk+/gtk+.xml:5044
+#: plugins/gtk+/gtk+.xml:5064
 msgid "Adjustment column"
 msgstr "Doitzearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:5058
+#: plugins/gtk+/gtk+.xml:5078
 msgid "Climb Rate column"
 msgstr "Jarraipen-tasaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5072
+#: plugins/gtk+/gtk+.xml:5092
 msgid "Digits column"
 msgstr "Digituen zutabea"
 
-#: plugins/gtk+/gtk+.xml:5087
+#: plugins/gtk+/gtk+.xml:5107
 msgid "Pixbuf Renderer"
 msgstr "Pixbuf errendatzailea"
 
-#: plugins/gtk+/gtk+.xml:5091
+#: plugins/gtk+/gtk+.xml:5111
 msgid "Follow State column"
 msgstr "Egoeraren jarraipenaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5105
+#: plugins/gtk+/gtk+.xml:5125
 msgid "Icon Name column"
 msgstr "Ikono-izenaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5119
+#: plugins/gtk+/gtk+.xml:5139
 msgid "Pixbuf column"
 msgstr "Pixbuf-en zutabea"
 
-#: plugins/gtk+/gtk+.xml:5133
+#: plugins/gtk+/gtk+.xml:5153
 msgid "GIcon column"
 msgstr "GIcon zutabea"
 
-#: plugins/gtk+/gtk+.xml:5148
+#: plugins/gtk+/gtk+.xml:5168
 msgid "Pixbuf Expander Closed column"
 msgstr "Pixbuf zabaltzaile itxiaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5163
+#: plugins/gtk+/gtk+.xml:5183
 msgid "Pixbuf Expander Open column"
 msgstr "Pixbuf zabaltzaile irekiaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5177
+#: plugins/gtk+/gtk+.xml:5197
 msgid "Stock Detail column"
 msgstr "Katalogoko xehetasunaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5191
+#: plugins/gtk+/gtk+.xml:5211
 msgid "Stock column"
 msgstr "Katalogoaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5211
+#: plugins/gtk+/gtk+.xml:5231
 msgid "Stock Size column"
 msgstr "Katalogoko tamainaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5226
+#: plugins/gtk+/gtk+.xml:5246
 msgid "Progress Renderer"
 msgstr "Aurrerapenaren errendatzailea"
 
-#: plugins/gtk+/gtk+.xml:5229
+#: plugins/gtk+/gtk+.xml:5249
 msgid "Orientation column"
 msgstr "Orientazioaren funtzioa"
 
-#: plugins/gtk+/gtk+.xml:5243 plugins/gtk+/gtk+.xml:5348
+#: plugins/gtk+/gtk+.xml:5263 plugins/gtk+/gtk+.xml:5368
 msgid "Pulse column"
 msgstr "Pultsuaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5272
+#: plugins/gtk+/gtk+.xml:5292
 msgid "Text Horizontal Alignment column"
 msgstr "Testua horizontalean lerrokatzearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:5287
+#: plugins/gtk+/gtk+.xml:5307
 msgid "Text Vertical Alignment column"
 msgstr "Testua bertikalean lerrokatzearen zutabea"
 
-#: plugins/gtk+/gtk+.xml:5301
+#: plugins/gtk+/gtk+.xml:5321
 msgid "Value column"
 msgstr "Balioaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5315
+#: plugins/gtk+/gtk+.xml:5335
 msgid "Inverted column"
 msgstr "Zutabe alderantzikatua"
 
-#: plugins/gtk+/gtk+.xml:5331
+#: plugins/gtk+/gtk+.xml:5351
 msgid "Spinner Renderer"
 msgstr "Birakariaren errendatzailea"
 
-#: plugins/gtk+/gtk+.xml:5334 plugins/gtk+/gtk+.xml:5395
+#: plugins/gtk+/gtk+.xml:5354 plugins/gtk+/gtk+.xml:5415
 msgid "Active column"
 msgstr "Zutabe aktiboa"
 
-#: plugins/gtk+/gtk+.xml:5378
+#: plugins/gtk+/gtk+.xml:5398
 msgid "Toggle Renderer"
 msgstr "Txandakatze-botoiaren errendatzailea"
 
-#: plugins/gtk+/gtk+.xml:5381
+#: plugins/gtk+/gtk+.xml:5401
 msgid "Activatable column"
 msgstr "Zutabe eragingarria"
 
-#: plugins/gtk+/gtk+.xml:5409
+#: plugins/gtk+/gtk+.xml:5429
 msgid "Inconsistent column"
 msgstr "Inkoherentzien zutabea"
 
-#: plugins/gtk+/gtk+.xml:5423
+#: plugins/gtk+/gtk+.xml:5443
 msgid "Indicator Size column"
 msgstr "Adierazlearen tamainaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5437
+#: plugins/gtk+/gtk+.xml:5457
 msgid "Radio column"
 msgstr "Aukera-botoiaren zutabea"
 
-#: plugins/gtk+/gtk+.xml:5452
+#: plugins/gtk+/gtk+.xml:5472
 msgid "Status Icon"
 msgstr "Egoeraren ikonoa"
 
-#: plugins/gtk+/gtk+.xml:5463
+#: plugins/gtk+/gtk+.xml:5483
 msgid "Text Buffer"
 msgstr "Testuaren bufferra"
 
-#: plugins/gtk+/gtk+.xml:5476
+#: plugins/gtk+/gtk+.xml:5496
 msgid "Entry Buffer"
 msgstr "Sarrerako bufferra"
 
-#: plugins/gtk+/gtk+.xml:5484
+#: plugins/gtk+/gtk+.xml:5504
 msgid "Text Tag"
 msgstr "Testu-etiketa"
 
-#: plugins/gtk+/gtk+.xml:5537
+#: plugins/gtk+/gtk+.xml:5557
 msgid "Text Tag Table"
 msgstr "Testu-etiketen taula"
 
-#: plugins/gtk+/gtk+.xml:5551
+#: plugins/gtk+/gtk+.xml:5571
 msgid "File Filter"
 msgstr "Fitxategien iragazkia"
 
-#: plugins/gtk+/gtk+.xml:5557 plugins/gtk+/gtk+.xml:5581
+#: plugins/gtk+/gtk+.xml:5577 plugins/gtk+/gtk+.xml:5601
 msgid "Mime Types"
 msgstr "MIME motak"
 
-#: plugins/gtk+/gtk+.xml:5562 plugins/gtk+/gtk+.xml:5586
+#: plugins/gtk+/gtk+.xml:5582 plugins/gtk+/gtk+.xml:5606
 msgid "The list of mime types to add to the filter"
 msgstr "MIME moten zerrenda iragazkiari gehitzeko"
 
-#: plugins/gtk+/gtk+.xml:5564 plugins/gtk+/gtk+.xml:5588
+#: plugins/gtk+/gtk+.xml:5584 plugins/gtk+/gtk+.xml:5608
 msgid "Patterns"
 msgstr "Ereduak"
 
-#: plugins/gtk+/gtk+.xml:5569 plugins/gtk+/gtk+.xml:5593
+#: plugins/gtk+/gtk+.xml:5589 plugins/gtk+/gtk+.xml:5613
 msgid "The list of file name patterns to add to the filter"
 msgstr "Fitxategi-izenen ereduen zerrenda iragazkiari gehitzeko"
 
-#: plugins/gtk+/gtk+.xml:5575
+#: plugins/gtk+/gtk+.xml:5595
 msgid "Recent Filter"
 msgstr "Azken aldikoen iragazkia"
 
-#: plugins/gtk+/gtk+.xml:5600
+#: plugins/gtk+/gtk+.xml:5620
 msgid "The list of application names to add to the filter"
 msgstr "Aplikazioen izenen zerrenda iragazkiari gehitzeko"
 
-#: plugins/gtk+/gtk+.xml:5606
+#: plugins/gtk+/gtk+.xml:5626
 msgid "Recent Manager"
 msgstr "Azken aldikoen kudeatzailea"
 
-#: plugins/gtk+/gtk+.xml:5608
+#: plugins/gtk+/gtk+.xml:5628
 msgid "Themed Icon"
 msgstr "Gaiaren ikonoa"
 
-#: plugins/gtk+/gtk+.xml:5609
+#: plugins/gtk+/gtk+.xml:5629
 msgid "File Icon"
 msgstr "Fitxategiaren ikonoa"
 
-#: plugins/gtk+/gtk+.xml:5611
+#: plugins/gtk+/gtk+.xml:5631
 msgid "Native File Chooser Dialog"
 msgstr "Jatorrizko fitxategi-hautatzailearen elkarrizketa-koadroa"
 
-#: plugins/gtk+/gtk+.xml:5615
+#: plugins/gtk+/gtk+.xml:5635
 msgid "Toplevels"
 msgstr "Goi-mailak"
 
-#: plugins/gtk+/gtk+.xml:5630
+#: plugins/gtk+/gtk+.xml:5650
 msgid "Containers"
 msgstr "Edukiontziak"
 
-#: plugins/gtk+/gtk+.xml:5662
+#: plugins/gtk+/gtk+.xml:5682
 msgid "Control"
 msgstr "Ctrl"
 
-#: plugins/gtk+/gtk+.xml:5696
+#: plugins/gtk+/gtk+.xml:5716
 msgid "Display"
 msgstr "Pantaila"
 
-#: plugins/gtk+/gtk+.xml:5717
+#: plugins/gtk+/gtk+.xml:5738
 msgid "Composite Widgets"
 msgstr "Trepeta konposatua"
 
-#: plugins/gtk+/gtk+.xml:5728
+#: plugins/gtk+/gtk+.xml:5749
 msgid "Miscellaneous"
 msgstr "Bestelakoak"
 
-#: plugins/gtk+/gtk+.xml:5758
+#: plugins/gtk+/gtk+.xml:5779
 msgid "Deprecated"
 msgstr "Zaharkitua"
 
@@ -7778,15 +7804,21 @@ msgstr "Korritze-barra duen leihoaren atributuak"
 msgid "Window Placement:"
 msgstr "Leihoaren kokalekua:"
 
-#: plugins/gtk+/glade-scrolled-window-editor.ui:340
-#: plugins/gtk+/glade-scrolled-window-editor.ui:364
+#: plugins/gtk+/glade-scrolled-window-editor.ui:191
+#: plugins/gtk+/glade-scrolled-window-editor.ui:215
 msgid "Scrollbar Policy:"
 msgstr "Korritze-barraren araua:"
 
-#: plugins/gtk+/glade-scrolled-window-editor.ui:388
-#: plugins/gtk+/glade-scrolled-window-editor.ui:401
+#: plugins/gtk+/glade-scrolled-window-editor.ui:239
+#: plugins/gtk+/glade-scrolled-window-editor.ui:252
 msgid "Adjustment:"
 msgstr "Doitzea;"
+
+#: plugins/gtk+/glade-scrolled-window-editor.ui:332
+#: plugins/gtk+/glade-scrolled-window-editor.ui:370
+#: plugins/gtk+/glade-scrolled-window-editor.ui:409
+msgid "Height: "
+msgstr "Altuera: "
 
 #: plugins/gtk+/glade-spin-button-editor.ui:49
 msgid "Spin Button Attributes"
@@ -7945,21 +7977,186 @@ msgstr "Bezeroaren aldeko leiho-dekorazioa"
 msgid "Whether this window should include a custom titlebar."
 msgstr "Leiho honek titulu-barra pertsonalizatua eduki behar duen ala ez."
 
-#: plugins/webkit2gtk/webkit2gtk.xml:14
+#: plugins/webkit2gtk/webkit2gtk.xml:15
 msgid "WebKit Web View"
 msgstr "WebKit web ikuspegia"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:21
+#: plugins/webkit2gtk/webkit2gtk.xml:22
 msgid "The URL to load in Glade (this property will not be saved)"
 msgstr "Glade-n kargatuko den URLa (propietate hau ez da gordeko)"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:32
+#: plugins/webkit2gtk/webkit2gtk.xml:31
+msgid "Tab"
+msgstr "Tabuladorea"
+
+#: plugins/webkit2gtk/webkit2gtk.xml:41
 msgid "WebKit Settings"
 msgstr "WebKit ezarpenak"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:36
+#: plugins/webkit2gtk/webkit2gtk.xml:46
+msgid "On Demand"
+msgstr "Dinamikoki"
+
+#: plugins/webkit2gtk/webkit2gtk.xml:57
 msgid "WebKit2GTK+ Widgets"
 msgstr "WebKit2GTK+ trepetak"
+
+#~ msgid ""
+#~ "Copyright © 2001-2006 Ximian, Inc.\n"
+#~ "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+#~ "Copyright © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+#~ msgstr ""
+#~ "Copyright © 2001-2006 Ximian, Inc.\n"
+#~ "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+#~ "Copyright © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+
+#~ msgid ""
+#~ "Glade is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as \n"
+#~ "published by the Free Software Foundation; either version 2 of the \n"
+#~ "License, or (at your option) any later version.\n"
+#~ "\n"
+#~ "Glade is distributed in the hope that it will be useful\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the \n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License \n"
+#~ "along with Glade; if not, write to the Free Software \n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
+#~ "MA 02110-1301, USA."
+#~ msgstr ""
+#~ "Glade software librea da; birbana eta/edo alda dezakezu Free Software\n"
+#~ "Foundation-ek argitaratutako GNU Lizentzia Publiko Orokorraren 2. "
+#~ "bertsioan,\n"
+#~ "edo (nahiago baduzu) bertsio berriago batean, jasotako baldintzak betez\n"
+#~ "gero.\n"
+#~ "\n"
+#~ "Glade erabilgarria izango delakoan banatzen da, baina INOLAKO BERMERIK "
+#~ "GABE;\n"
+#~ "era berean, ez da bermatzen beraren EGOKITASUNA MERKATURATZEKO edo "
+#~ "HELBURU\n"
+#~ "PARTIKULARRETARAKO ERABILTZEKO. Argibide gehiago nahi izanez gero, ikus "
+#~ "GNU\n"
+#~ "Lizentzia Publiko Orokorra.\n"
+#~ "\n"
+#~ "Programa honekin batera GNU Lizentzia Publiko Orokorraren kopia bat ere "
+#~ "jaso\n"
+#~ "beharko zenuke; horrela ez bada, idatzi helbide honetara: Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02111-1301,\n"
+#~ "USA."
+
+#~ msgid ""
+#~ "Thank you for taking Glade Users survey, we appreciate it!\n"
+#~ "\n"
+#~ "To validate this email address open the folowing link\n"
+#~ "\n"
+#~ "https://people.gnome.org/~jpu/glade/registration.php?email="
+#~ "$email&validation_token=$new_validation_token\n"
+#~ "\n"
+#~ "In case you want to change or update the survey, your current update "
+#~ "token is:\n"
+#~ "$new_token\n"
+#~ "\n"
+#~ "Cheers\n"
+#~ "\n"
+#~ "\tThe Glade team\n"
+#~ msgstr ""
+#~ "Eskerrik asko Glade-n erabiltzaileen inkesta betetzeagatik!\n"
+#~ "\n"
+#~ "Posta-helbide hau balioztatzeko, ireki honako esteka:\n"
+#~ "\n"
+#~ "https://people.gnome.org/~jpu/glade/registration.php?email="
+#~ "$email&validation_token=$new_validation_token\n"
+#~ "\n"
+#~ "Inkesta aldatu edo eguneratu nahi baduzu, zure uneko eguneratze-tokena "
+#~ "honakoa da: $new_token\n"
+#~ "\n"
+#~ "Ongi izan\n"
+#~ "\n"
+#~ "Glade taldea\n"
+
+#~ msgid "Glade User Survey (update)"
+#~ msgstr "Glade erabiltzaileen inkesta (eguneraketa)"
+
+#~ msgid ""
+#~ "Thank you for updating your Glade Users survey data, we appreciate it!\n"
+#~ "\n"
+#~ "In case you want to change something again, your current update token "
+#~ "is:\n"
+#~ "$new_token\n"
+#~ "\n"
+#~ "Cheers\n"
+#~ "\n"
+#~ "\tThe Glade team\n"
+#~ msgstr ""
+#~ "Eskerrik asko Glade-n erabiltzaileen inkesta eguneratzeagatik!\n"
+#~ "\n"
+#~ "Inkesta berriro aldatu nahi baduzu, zure uneko eguneratze-tokena honakoa "
+#~ "da: $new_token\n"
+#~ "\n"
+#~ "Ongi izan\n"
+#~ "\n"
+#~ "Glade taldea\n"
+
+#~ msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+#~ msgstr ""
+#~ "Glade erabiltzaileen posta-zerrendan automatikoki izena emateak huts egin "
+#~ "du"
+
+#~ msgid "Open Glade Users Website"
+#~ msgstr "Ireki Glade erabiltzaileen webgunea"
+
+#~ msgid "Internal server error"
+#~ msgstr "Barneko zerbitzari-errorea"
+
+#~ msgid "Name and Email fields are required"
+#~ msgstr "Izena eta helbide elektronikoa derrigorrezkoak dira"
+
+#~ msgid ""
+#~ "Oops! Email address is already in use!\n"
+#~ "To update information you need to provide the token that was sent to your "
+#~ "inbox."
+#~ msgstr ""
+#~ "Posta-helbide elektronikoa dagoeneko erabiltzen ari da!\n"
+#~ "Informazioa eguneratzeko, zure sarrerako postontzira bidali genizun "
+#~ "tokena eman behar duzu."
+
+#~ msgid "Oops! Error saving user information: %s"
+#~ msgstr "Errorea erabiltzailearen informazioa gordetzean: %s"
+
+#~ msgid "Oops! Error saving survey data: %s"
+#~ msgstr "Errorea inkestaren datuak gordetzean: %s"
+
+#~ msgid "Oops! Error accessing DB: %s"
+#~ msgstr "Errorea datu-basea atzitzean: %s"
+
+#~ msgid "Update Info"
+#~ msgstr "Eguneratze-informazioa"
+
+#~ msgid "<Insert update token, if you want to update previously sent data>"
+#~ msgstr ""
+#~ "<Txertatu eguneratze-toketan, aurretik bidalitako datuak eguneratu nahi "
+#~ "badituzu>"
+
+#~ msgid "%s document properties"
+#~ msgstr "%s dokumentuaren propietateak"
+
+#~ msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
+#~ msgstr ""
+#~ "“%s” proiektuak zaharkitutako trepetak ditu eta/edo bertsioen arteko "
+#~ "inkoherentziak daude."
+
+#~ msgid ""
+#~ "Verify that the project does not use any properties,\n"
+#~ "signals or widgets which are not available in the target version"
+#~ msgstr ""
+#~ "Egiaztatu proiektuak ez duela helburuko bertsioan erabilgarri ez dagoen "
+#~ "propietaterik, seinalerik edo trepetarik erabiltzen"
+
+#~ msgid "Top Level"
+#~ msgstr "Goi-maila"
 
 #~ msgid "About"
 #~ msgstr "Honi buruz"
