@@ -61,10 +61,10 @@ G_DEFINE_TYPE_WITH_PRIVATE (GladePreferences, glade_preferences, GTK_TYPE_DIALOG
  ********************************************************/
 static void
 autosave_toggled (GtkToggleButton  *button,
-		  GladePreferences *prefs)
+                  GladePreferences *prefs)
 {
   gtk_widget_set_sensitive (prefs->priv->autosave_spin,
-			    gtk_toggle_button_get_active (button));
+                            gtk_toggle_button_get_active (button));
 }
 
 static gboolean 
@@ -106,15 +106,15 @@ on_preferences_filechooserdialog_response (GtkDialog *dialog,
 
       if (canonical)
         {
-	  GtkTreeIter iter;
+          GtkTreeIter iter;
 
           glade_catalog_add_path (canonical);
 
-	  gtk_list_store_append (GTK_LIST_STORE (priv->catalog_path_store), &iter);
-	  gtk_list_store_set (GTK_LIST_STORE (priv->catalog_path_store), &iter,
-			      COLUMN_PATH, display,
-			      COLUMN_CANONICAL_PATH, canonical,
-			      -1);
+          gtk_list_store_append (GTK_LIST_STORE (priv->catalog_path_store), &iter);
+          gtk_list_store_set (GTK_LIST_STORE (priv->catalog_path_store), &iter,
+                              COLUMN_PATH, display,
+                              COLUMN_CANONICAL_PATH, canonical,
+                              -1);
         }
 
       g_free (directory);
@@ -125,7 +125,7 @@ on_preferences_filechooserdialog_response (GtkDialog *dialog,
 
 static void
 remove_catalog_clicked (GtkButton        *button,
-			GladePreferences *preferences)
+                        GladePreferences *preferences)
 {
   GladePreferencesPrivate *priv = preferences->priv;
   GtkTreeIter iter;
@@ -135,14 +135,14 @@ remove_catalog_clicked (GtkButton        *button,
       gchar *path = NULL;
 
       gtk_tree_model_get (priv->catalog_path_store, &iter,
-			  COLUMN_CANONICAL_PATH, &path,
-			  -1);
+                          COLUMN_CANONICAL_PATH, &path,
+                          -1);
 
       if (path)
-	{
-	  glade_catalog_remove_path (path);
-	  g_free (path);
-	}
+        {
+          glade_catalog_remove_path (path);
+          g_free (path);
+        }
 
       gtk_list_store_remove (GTK_LIST_STORE (priv->catalog_path_store), &iter);
     }
@@ -150,7 +150,7 @@ remove_catalog_clicked (GtkButton        *button,
 
 static void
 catalog_selection_changed (GtkTreeSelection *selection,
-			   GladePreferences *preferences)
+                           GladePreferences *preferences)
 {
   gboolean selected = gtk_tree_selection_get_selected (selection, NULL, NULL);
 

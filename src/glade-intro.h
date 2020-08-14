@@ -55,7 +55,7 @@ void        glade_intro_set_toplevel (GladeIntro *intro,
 
 void        glade_intro_script_add   (GladeIntro         *intro,
                                       const gchar        *name,
-				      const gchar        *widget,
+                                      const gchar        *widget,
                                       const gchar        *text,
                                       GladeIntroPosition  position,
                                       gdouble             delay);
