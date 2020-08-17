@@ -48,12 +48,12 @@ Author: Tristan Van Berkom <tvb@gnome.org>
     <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="response" handler="gtk_widget_hide" swapped="no"/>
     <child internal-child="vbox">
-      <object class="GtkBox" id="dialog-vbox1">
+      <object class="GtkBox">
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox">
             <property name="can-focus">False</property>
             <property name="layout-style">end</property>
             <child>
@@ -68,7 +68,7 @@ Author: Tristan Van Berkom <tvb@gnome.org>
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="frame2">
+          <object class="GtkFrame">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="label-xalign">0</property>
@@ -165,11 +165,11 @@ the project is modified and the specified timeout elapses</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="frame3">
+          <object class="GtkFrame">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="label-xalign">0</property>
@@ -251,11 +251,11 @@ contains any unrecognized types</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="frame1">
+          <object class="GtkFrame">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="label-xalign">0</property>
@@ -269,7 +269,7 @@ contains any unrecognized types</property>
                 <property name="margin-top">6</property>
                 <property name="spacing">4</property>
                 <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow1">
+                  <object class="GtkScrolledWindow">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
@@ -279,9 +279,11 @@ contains any unrecognized types</property>
                     <property name="propagate-natural-width">True</property>
                     <property name="propagate-natural-height">True</property>
                     <child>
-                      <object class="GtkTreeView" id="treeview1">
+                      <object class="GtkTreeView">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="tooltip-text" translatable="yes">List of directories where to load widget catalogs and custom templates from.
+Needs to restart.</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
                         <property name="model">catalog_path_store</property>
@@ -295,6 +297,7 @@ contains any unrecognized types</property>
                         <child>
                           <object class="GtkTreeViewColumn" id="column">
                             <property name="title" translatable="yes">column</property>
+                            <property name="expand">True</property>
                             <child>
                               <object class="GtkCellRendererText" id="path_cell"/>
                               <attributes>
@@ -325,11 +328,11 @@ contains any unrecognized types</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="tooltip-text" translatable="yes">Add a new catalog search path</property>
+                        <property name="tooltip-text" translatable="yes">Add a new search path</property>
                         <property name="halign">start</property>
                         <property name="hexpand">False</property>
                         <property name="use-underline">True</property>
-                        <signal name="clicked" handler="gtk_widget_show" object="preferences_filechooserdialog" swapped="yes"/>
+                        <signal name="clicked" handler="on_add_catalog_button_clicked" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="image1">
                             <property name="visible">True</property>
@@ -350,7 +353,7 @@ contains any unrecognized types</property>
                         <property name="sensitive">False</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="tooltip-text" translatable="yes">Remove the selected catalog search path</property>
+                        <property name="tooltip-text" translatable="yes">Remove the selected search path</property>
                         <property name="halign">start</property>
                         <property name="hexpand">True</property>
                         <signal name="clicked" handler="remove_catalog_clicked" swapped="no"/>
@@ -378,10 +381,10 @@ contains any unrecognized types</property>
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="label2">
+              <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Extra catalog paths</property>
+                <property name="label" translatable="yes">Extra Catalog &amp; Templates paths</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -391,78 +394,10 @@ contains any unrecognized types</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">4</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
     </child>
   </template>
-  <object class="GtkFileChooserDialog" id="preferences_filechooserdialog">
-    <property name="can-focus">False</property>
-    <property name="border-width">5</property>
-    <property name="title" translatable="yes">Select a catalog search path</property>
-    <property name="modal">True</property>
-    <property name="type-hint">dialog</property>
-    <property name="transient-for">GladePreferences</property>
-    <property name="action">select-folder</property>
-    <signal name="delete-event" handler="gtk_true" swapped="no"/>
-    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
-    <signal name="response" handler="on_preferences_filechooserdialog_response" swapped="no"/>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="filechooserdialog-vbox1">
-        <property name="can-focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="filechooserdialog-action_area1">
-            <property name="can-focus">False</property>
-            <property name="layout-style">end</property>
-            <child>
-              <object class="GtkButton" id="button3">
-                <property name="label" translatable="yes">_Cancel</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button4">
-                <property name="label" translatable="yes">_Open</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="can-default">True</property>
-                <property name="has-default">True</property>
-                <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack-type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="-6">button3</action-widget>
-      <action-widget response="-3">button4</action-widget>
-    </action-widgets>
-  </object>
 </interface>

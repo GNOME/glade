@@ -19,6 +19,7 @@
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
+#include <glib/gi18n.h>
 #include "glade-preferences.h"
 #include <gladeui/glade-catalog.h>
 #include <gladeui/glade-utils.h>
@@ -54,7 +55,7 @@ enum
 
 static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladePreferences, glade_preferences, GTK_TYPE_DIALOG);
+G_DEFINE_TYPE_WITH_PRIVATE (GladePreferences, glade_preferences, GTK_TYPE_DIALOG)
 
 /********************************************************
  *                       CALLBACKS                      *
@@ -83,44 +84,6 @@ find_row (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer da
     }
   
   return FALSE;
-}
-
-static void
-on_preferences_filechooserdialog_response (GtkDialog *dialog,
-                                           gint response_id,
-                                           GladePreferences *preferences)
-{
-  GladePreferencesPrivate *priv = preferences->priv;
-
-  gtk_widget_hide (GTK_WIDGET (dialog));
-
-  if (response_id == GTK_RESPONSE_ACCEPT)
-    {
-      gchar *directory = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-      gchar *canonical, *display;
-
-      canonical = glade_util_canonical_path (directory);
-      display   = glade_utils_replace_home_dir_with_tilde (canonical);
-
-      gtk_tree_model_foreach (priv->catalog_path_store, find_row, &canonical);
-
-      if (canonical)
-        {
-          GtkTreeIter iter;
-
-          glade_catalog_add_path (canonical);
-
-          gtk_list_store_append (GTK_LIST_STORE (priv->catalog_path_store), &iter);
-          gtk_list_store_set (GTK_LIST_STORE (priv->catalog_path_store), &iter,
-                              COLUMN_PATH, display,
-                              COLUMN_CANONICAL_PATH, canonical,
-                              -1);
-        }
-
-      g_free (directory);
-      g_free (canonical);
-      g_free (display);
-    }
 }
 
 static void
@@ -262,6 +225,48 @@ glade_preferences_get_property (GObject    *object,
     }
 }
 
+static void
+on_add_catalog_button_clicked (GtkButton *button, GladePreferences *preferences)
+{
+  GladePreferencesPrivate *priv = preferences->priv;
+  GtkWidget *dialog;
+
+  dialog = gtk_file_chooser_dialog_new ("Select a catalog search path",
+                                        GTK_WINDOW (preferences),
+                                        GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+                                        _("_Cancel"),
+                                        GTK_RESPONSE_CANCEL,
+                                        _("_Open"),
+                                        GTK_RESPONSE_ACCEPT,
+                                        NULL);
+
+  if ((gtk_dialog_run (GTK_DIALOG (dialog))) == GTK_RESPONSE_ACCEPT)
+    {
+      g_autofree gchar *path = NULL, *canonical = NULL, *display = NULL;
+
+      path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      canonical = glade_util_canonical_path (path);
+      display   = glade_utils_replace_home_dir_with_tilde (canonical);
+
+      gtk_tree_model_foreach (priv->catalog_path_store, find_row, &canonical);
+
+      if (canonical)
+        {
+          GtkTreeIter iter;
+
+          glade_catalog_add_path (canonical);
+
+          gtk_list_store_append (GTK_LIST_STORE (priv->catalog_path_store), &iter);
+          gtk_list_store_set (GTK_LIST_STORE (priv->catalog_path_store), &iter,
+                              COLUMN_PATH, display,
+                              COLUMN_CANONICAL_PATH, canonical,
+                              -1);
+        }
+    }
+
+  gtk_widget_destroy (dialog);
+}
+
 /********************************************************
  *                  Class/Instance Init                 *
  ********************************************************/
@@ -315,7 +320,7 @@ glade_preferences_class_init (GladePreferencesClass *klass)
    * connections defined in the GtkBuilder xml
    */
   gtk_widget_class_bind_template_callback (widget_class, autosave_toggled);
-  gtk_widget_class_bind_template_callback (widget_class, on_preferences_filechooserdialog_response);
+  gtk_widget_class_bind_template_callback (widget_class, on_add_catalog_button_clicked);
   gtk_widget_class_bind_template_callback (widget_class, catalog_selection_changed);
   gtk_widget_class_bind_template_callback (widget_class, remove_catalog_clicked);
 }
