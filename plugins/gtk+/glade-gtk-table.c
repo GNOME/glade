@@ -563,7 +563,7 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 
   children = glade_widget_adaptor_get_children (adaptor, container);
   /* Make sure widgets does not get destroyed */
-  g_list_foreach (children, (GFunc) g_object_ref, NULL);
+  glade_util_object_list_ref (children);
 
   glade_widget_property_get (parent, n_row_col, &size);
 
@@ -660,8 +660,7 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
                                   size - 1);
     }
 
-  g_list_foreach (children, (GFunc) g_object_unref, NULL);
-  g_list_free (children);
+  g_list_free_full (children, g_object_unref);
 
   glade_command_pop_group ();
 }

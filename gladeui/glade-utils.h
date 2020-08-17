@@ -103,6 +103,7 @@ void              glade_utils_cairo_draw_rectangle (cairo_t *cr,
                                                     gint height);
 
 /* Lists */
+void             glade_util_list_objects_ref       (GList        *list);
 GList            *glade_util_purify_list           (GList        *list);
 GList            *glade_util_added_in_list         (GList        *old_list,
                                                     GList        *new_list);

@@ -1240,7 +1240,7 @@ glade_command_add (GList            *widgets,
       /* Parentless ref */
       if ((cdata->reffed =
            get_all_parentless_reffed_widgets (cdata->reffed, widget)) != NULL)
-        g_list_foreach (cdata->reffed, (GFunc) g_object_ref, NULL);
+        glade_util_list_objects_ref (cdata->reffed);
 
       /* Parent */
       if (parent == NULL)
@@ -1410,7 +1410,7 @@ glade_command_remove (GList *widgets)
 
       if ((cdata->reffed =
            get_all_parentless_reffed_widgets (cdata->reffed, widget)) != NULL)
-        g_list_foreach (cdata->reffed, (GFunc) g_object_ref, NULL);
+        glade_util_list_objects_ref (cdata->reffed);
 
       /* If we're removing the template widget, then we need to unset it as template */
       if (glade_project_get_template (priv->project) == widget)
@@ -1541,10 +1541,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
               glade_command_transfer_props (cdata->widget, saved_props);
 
               if (saved_props)
-                {
-                  g_list_foreach (saved_props, (GFunc) g_object_unref, NULL);
-                  g_list_free (saved_props);
-                }
+                g_list_free_full (saved_props, g_object_unref);
 
               /* Now that we've added, apply any packing props if nescisary. */
               for (l = cdata->pack_props; l; l = l->next)

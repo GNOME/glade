@@ -774,6 +774,20 @@ glade_util_find_iter_by_widget (GtkTreeModel *model,
 }
 
 /**
+ * glade_util_list_objects_ref: (skip)
+ * @list: (transfer full): A #GList
+ *
+ * Add a reference to each GObject in the list.
+ */
+void
+glade_util_list_objects_ref (GList  *list)
+{
+  GList *l;
+  for (l = list; l; l = g_list_next (l))
+    g_object_ref (l->data);
+}
+
+/**
  * glade_util_purify_list: (skip)
  * @list: (transfer full): A #GList
  *
