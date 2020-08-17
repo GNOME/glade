@@ -12,7 +12,7 @@ G_BEGIN_DECLS
 
 #define GLADE_MAKE_EPROP(type, func, MODULE, OBJ_NAME)            \
 G_DECLARE_FINAL_TYPE (type, func, MODULE, OBJ_NAME, GladeEditorProperty) \
-G_DEFINE_TYPE (type, func, GLADE_TYPE_EDITOR_PROPERTY);           \
+G_DEFINE_TYPE (type, func, GLADE_TYPE_EDITOR_PROPERTY)            \
 static void                                                       \
 func ## _finalize (GObject *object);                              \
 static void                                                       \

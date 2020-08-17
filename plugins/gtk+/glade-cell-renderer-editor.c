@@ -56,7 +56,7 @@ static GladeEditableInterface *parent_editable_iface;
 G_DEFINE_TYPE_WITH_CODE (GladeCellRendererEditor, glade_cell_renderer_editor,
                          GTK_TYPE_BOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_cell_renderer_editor_editable_init));
+                                                glade_cell_renderer_editor_editable_init))
 
 
 static void
@@ -148,8 +148,7 @@ glade_cell_renderer_editor_finalize (GObject * object)
   GladeCellRendererEditor *renderer_editor =
       GLADE_CELL_RENDERER_EDITOR (object);
 
-  g_list_foreach (renderer_editor->checks, (GFunc) g_free, NULL);
-  g_list_free (renderer_editor->checks);
+  g_list_free_full (renderer_editor->checks, g_free);
   g_list_free (renderer_editor->properties);
 
   renderer_editor->properties = NULL;

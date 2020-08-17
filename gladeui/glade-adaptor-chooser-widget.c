@@ -79,7 +79,7 @@ enum
 
 static guint adaptor_chooser_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (_GladeAdaptorChooserWidget, _glade_adaptor_chooser_widget, GTK_TYPE_BOX);
+G_DEFINE_TYPE_WITH_PRIVATE (_GladeAdaptorChooserWidget, _glade_adaptor_chooser_widget, GTK_TYPE_BOX)
 
 #define GET_PRIVATE(d) ((_GladeAdaptorChooserWidgetPrivate *) _glade_adaptor_chooser_widget_get_instance_private((_GladeAdaptorChooserWidget*)d))
 

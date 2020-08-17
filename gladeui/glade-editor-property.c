@@ -118,7 +118,7 @@ static GladeEditableInterface *parent_editable_iface;
 G_DEFINE_TYPE_WITH_CODE (GladeEditorProperty, glade_editor_property, GTK_TYPE_BOX,
                          G_ADD_PRIVATE (GladeEditorProperty)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_editor_property_editable_init));
+                                                glade_editor_property_editable_init))
 
 
 /*******************************************************************************

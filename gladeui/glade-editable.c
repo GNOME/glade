@@ -34,7 +34,7 @@
 #include "glade-widget.h"
 #include "glade-editable.h"
 
-G_DEFINE_INTERFACE (GladeEditable, glade_editable, GTK_TYPE_WIDGET);
+G_DEFINE_INTERFACE (GladeEditable, glade_editable, GTK_TYPE_WIDGET)
 
 static GQuark glade_editable_project_quark = 0;
 static GQuark glade_editable_widget_quark = 0;

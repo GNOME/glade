@@ -37,7 +37,7 @@ static GladeEditableInterface *parent_editable_iface;
 G_DEFINE_TYPE_WITH_CODE (GladeScaleButtonEditor, glade_scale_button_editor, GLADE_TYPE_BUTTON_EDITOR,
                          G_ADD_PRIVATE (GladeScaleButtonEditor)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_scale_button_editor_editable_init));
+                                                glade_scale_button_editor_editable_init))
 
 static void
 glade_scale_button_editor_class_init (GladeScaleButtonEditorClass * klass)

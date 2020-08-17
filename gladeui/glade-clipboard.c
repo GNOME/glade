@@ -55,7 +55,7 @@ enum
 
 static GParamSpec *properties[N_PROPERTIES];
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeClipboard, glade_clipboard, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeClipboard, glade_clipboard, G_TYPE_OBJECT)
 
 static void
 glade_project_get_property (GObject    *object,

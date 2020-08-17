@@ -114,7 +114,7 @@ struct _GladeRegistrationPrivate
   GtkWidget *comments;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeRegistration, glade_registration, GTK_TYPE_DIALOG);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeRegistration, glade_registration, GTK_TYPE_DIALOG)
 
 enum 
 {

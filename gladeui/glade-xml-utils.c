@@ -65,9 +65,9 @@ struct _GladeXmlContext
   xmlNsPtr ns;
 };
 
-G_DEFINE_BOXED_TYPE(GladeXmlNode, glade_xml_node, glade_xml_node_copy, glade_xml_node_delete);
-G_DEFINE_BOXED_TYPE(GladeXmlDoc, glade_xml_doc, glade_xml_doc_ref, glade_xml_doc_unref);
-G_DEFINE_BOXED_TYPE(GladeXmlContext, glade_xml_context, glade_xml_context_copy, glade_xml_context_free);
+G_DEFINE_BOXED_TYPE(GladeXmlNode, glade_xml_node, glade_xml_node_copy, glade_xml_node_delete)
+G_DEFINE_BOXED_TYPE(GladeXmlDoc, glade_xml_doc, glade_xml_doc_ref, glade_xml_doc_unref)
+G_DEFINE_BOXED_TYPE(GladeXmlContext, glade_xml_context, glade_xml_context_copy, glade_xml_context_free)
 
 static GladeXmlDoc *glade_xml_doc_new_from_doc (xmlDocPtr docptr);
 

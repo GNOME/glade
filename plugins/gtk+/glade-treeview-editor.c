@@ -39,7 +39,7 @@ static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeTreeViewEditor, glade_tree_view_editor, GTK_TYPE_BOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_tree_view_editor_editable_init));
+                                                glade_tree_view_editor_editable_init))
 
 
 static void

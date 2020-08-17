@@ -44,7 +44,7 @@ struct _GladePreviewerPrivate
   gboolean print_handlers;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladePreviewer, glade_previewer, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GladePreviewer, glade_previewer, G_TYPE_OBJECT)
 
 static void
 glade_previewer_init (GladePreviewer *preview)

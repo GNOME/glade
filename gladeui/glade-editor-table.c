@@ -103,7 +103,7 @@ enum {
 G_DEFINE_TYPE_WITH_CODE (GladeEditorTable, glade_editor_table, GTK_TYPE_GRID,
                          G_ADD_PRIVATE (GladeEditorTable)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_editor_table_editable_init));
+                                                glade_editor_table_editable_init))
 
 static void
 glade_editor_table_class_init (GladeEditorTableClass *klass)

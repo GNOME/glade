@@ -56,7 +56,7 @@ static GladeEditableInterface *parent_editable_iface;
 G_DEFINE_TYPE_WITH_CODE (GladeWidgetEditor, glade_widget_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeWidgetEditor)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_widget_editor_editable_init));
+                                                glade_widget_editor_editable_init))
 
 static void
 glade_widget_editor_class_init (GladeWidgetEditorClass *klass)

@@ -86,7 +86,7 @@ static GladeEditableInterface *parent_editable_iface;
 G_DEFINE_TYPE_WITH_CODE (GladePropertyLabel, glade_property_label, GTK_TYPE_EVENT_BOX,
                          G_ADD_PRIVATE (GladePropertyLabel)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_property_label_editable_init));
+                                                glade_property_label_editable_init))
 
 static void
 glade_property_label_init (GladePropertyLabel *label)

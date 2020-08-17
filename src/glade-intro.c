@@ -73,7 +73,7 @@ static guint intro_signals[LAST_SIGNAL] = { 0 };
 
 static GParamSpec *properties[N_PROPERTIES];
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeIntro, glade_intro, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeIntro, glade_intro, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(d) ((GladeIntroPrivate *) glade_intro_get_instance_private((GladeIntro*)d))
 

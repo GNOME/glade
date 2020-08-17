@@ -135,7 +135,7 @@ static void settings_save (GladeNamedIconChooserDialog *dialog);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladeNamedIconChooserDialog,
                             glade_named_icon_chooser_dialog,
-                            GTK_TYPE_DIALOG);
+                            GTK_TYPE_DIALOG)
 
 
 static void

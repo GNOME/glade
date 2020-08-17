@@ -158,7 +158,7 @@ enum
   PROP_PROJECT,
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeProjectProperties, glade_project_properties, GTK_TYPE_DIALOG);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeProjectProperties, glade_project_properties, GTK_TYPE_DIALOG)
 #define GLADE_PROJECT_PROPERTIES_PRIVATE(o) ((GladeProjectPropertiesPrivate *) glade_project_properties_get_instance_private((GladeProjectProperties*)o))
 
 /********************************************************

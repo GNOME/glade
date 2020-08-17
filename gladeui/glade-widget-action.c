@@ -53,8 +53,8 @@ struct _GladeWidgetActionPrivate
 
 static GParamSpec *properties[N_PROPERTIES];
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeWidgetAction, glade_widget_action, G_TYPE_OBJECT);
-G_DEFINE_BOXED_TYPE (GladeWidgetActionDef, glade_widget_action_def, glade_widget_action_def_clone, glade_widget_action_def_free);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeWidgetAction, glade_widget_action, G_TYPE_OBJECT)
+G_DEFINE_BOXED_TYPE (GladeWidgetActionDef, glade_widget_action_def, glade_widget_action_def_clone, glade_widget_action_def_free)
 
 static void
 glade_widget_action_init (GladeWidgetAction *object)

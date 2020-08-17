@@ -94,7 +94,7 @@ typedef struct
 
 static guint glade_fixed_signals[FIXED_SIGNALS];
 
-G_DEFINE_TYPE (GladeFixed, glade_fixed, GLADE_TYPE_WIDGET);
+G_DEFINE_TYPE (GladeFixed, glade_fixed, GLADE_TYPE_WIDGET)
 
 /* From gtkmain.c */
 static gboolean

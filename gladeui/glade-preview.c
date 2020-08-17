@@ -62,7 +62,7 @@ struct _GladePreviewPrivate
   GPid pid;                     /* Pid of the corresponding glade-previewer process */
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladePreview, glade_preview, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GladePreview, glade_preview, G_TYPE_OBJECT)
 
 enum
 {

@@ -71,7 +71,7 @@ enum
 static GParamSpec *properties[N_PROPERTIES];
 static guint http_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeHTTP, glade_http, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeHTTP, glade_http, G_TYPE_OBJECT)
 
 static void
 glade_http_close (GladeHTTP *http)

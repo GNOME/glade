@@ -137,7 +137,7 @@ typedef struct _GladeEditorPrivate
   gboolean show_class_field; /* Whether or not to show the class field at the top */
 } GladeEditorPrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (GladeEditor, glade_editor, GTK_TYPE_BOX);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeEditor, glade_editor, GTK_TYPE_BOX)
 
 static GParamSpec *properties[N_PROPERTIES];
 

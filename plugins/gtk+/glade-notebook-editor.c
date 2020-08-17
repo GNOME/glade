@@ -44,7 +44,7 @@ static GladeEditableInterface *parent_editable_iface;
 G_DEFINE_TYPE_WITH_CODE (GladeNotebookEditor, glade_notebook_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_ADD_PRIVATE (GladeNotebookEditor)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_notebook_editor_editable_init));
+                                                glade_notebook_editor_editable_init))
 
 static void
 glade_notebook_editor_class_init (GladeNotebookEditorClass * klass)

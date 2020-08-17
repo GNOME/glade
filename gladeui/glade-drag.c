@@ -24,7 +24,7 @@
 
 #include "glade-drag.h"
 
-G_DEFINE_INTERFACE (_GladeDrag, _glade_drag, G_TYPE_OBJECT);
+G_DEFINE_INTERFACE (_GladeDrag, _glade_drag, G_TYPE_OBJECT)
 
 static void
 _glade_drag_default_init (_GladeDragInterface *iface)

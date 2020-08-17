@@ -55,7 +55,7 @@ G_DEFINE_TYPE_WITH_CODE (GladeEditorSkeleton, glade_editor_skeleton, GTK_TYPE_BO
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_editor_skeleton_editable_init)
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-                                                glade_editor_skeleton_buildable_init));
+                                                glade_editor_skeleton_buildable_init))
 
 static void
 glade_editor_skeleton_init (GladeEditorSkeleton *skeleton)

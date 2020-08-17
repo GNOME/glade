@@ -140,7 +140,7 @@ glade_command_class_init (GladeCommandClass *klass)
 /* Macros for defining the derived command types */
 #define GLADE_MAKE_COMMAND(type, func, upper_type)                   \
 G_DECLARE_FINAL_TYPE (type, func, GLADE, upper_type, GladeCommand)   \
-G_DEFINE_TYPE (type, func, GLADE_TYPE_COMMAND);                      \
+G_DEFINE_TYPE (type, func, GLADE_TYPE_COMMAND)                       \
 static gboolean                                                      \
 func ## _undo (GladeCommand *me);                                    \
 static gboolean                                                      \
@@ -342,7 +342,7 @@ struct _GladeCommandPropertyEnabled
 
 /* standard macros */
 #define GLADE_TYPE_COMMAND_PROPERTY_ENABLED glade_command_property_enabled_get_type ()
-GLADE_MAKE_COMMAND (GladeCommandPropertyEnabled, glade_command_property_enabled, COMMAND_PROPERTY_ENABLED);
+GLADE_MAKE_COMMAND (GladeCommandPropertyEnabled, glade_command_property_enabled, COMMAND_PROPERTY_ENABLED)
 
 static gboolean
 glade_command_property_enabled_execute (GladeCommand *cmd)
@@ -517,7 +517,7 @@ struct _GladeCommandSetProperty
 
 /* standard macros */
 #define GLADE_TYPE_COMMAND_SET_PROPERTY glade_command_set_property_get_type ()
-GLADE_MAKE_COMMAND (GladeCommandSetProperty, glade_command_set_property, COMMAND_SET_PROPERTY);
+GLADE_MAKE_COMMAND (GladeCommandSetProperty, glade_command_set_property, COMMAND_SET_PROPERTY)
 
 /* Undo the last "set property command" */
 static gboolean
@@ -963,7 +963,7 @@ struct _GladeCommandSetName
 
 /* standard macros */
 #define GLADE_TYPE_COMMAND_SET_NAME glade_command_set_name_get_type ()
-GLADE_MAKE_COMMAND (GladeCommandSetName, glade_command_set_name, COMMAND_SET_NAME);
+GLADE_MAKE_COMMAND (GladeCommandSetName, glade_command_set_name, COMMAND_SET_NAME)
 
 /* Undo the last "set name command" */
 static gboolean
@@ -1114,7 +1114,7 @@ struct _GladeCommandAddRemove
 };
 
 #define GLADE_TYPE_COMMAND_ADD_REMOVE glade_command_add_remove_get_type ()
-GLADE_MAKE_COMMAND (GladeCommandAddRemove, glade_command_add_remove, COMMAND_ADD_REMOVE);
+GLADE_MAKE_COMMAND (GladeCommandAddRemove, glade_command_add_remove, COMMAND_ADD_REMOVE)
 
 static void
 glade_command_placeholder_destroyed (GtkWidget *object, CommandData *cdata)
@@ -2041,7 +2041,7 @@ struct _GladeCommandAddSignal
 
 /* standard macros */
 #define GLADE_TYPE_COMMAND_ADD_SIGNAL glade_command_add_signal_get_type ()
-GLADE_MAKE_COMMAND (GladeCommandAddSignal, glade_command_add_signal, COMMAND_ADD_SIGNAL);
+GLADE_MAKE_COMMAND (GladeCommandAddSignal, glade_command_add_signal, COMMAND_ADD_SIGNAL)
 
 static void
 glade_command_add_signal_finalize (GObject *obj)
@@ -2207,7 +2207,7 @@ struct _GladeCommandSetI18n
 };
 
 #define GLADE_TYPE_COMMAND_SET_I18N glade_command_set_i18n_get_type ()
-GLADE_MAKE_COMMAND (GladeCommandSetI18n, glade_command_set_i18n, COMMAND_SET_I18N);
+GLADE_MAKE_COMMAND (GladeCommandSetI18n, glade_command_set_i18n, COMMAND_SET_I18N)
 
 static gboolean
 glade_command_set_i18n_execute (GladeCommand *cmd)
@@ -2706,7 +2706,7 @@ struct _GladeCommandProperty
 };
 
 #define GLADE_TYPE_COMMAND_PROPERTY glade_command_property_get_type ()
-GLADE_MAKE_COMMAND (GladeCommandProperty, glade_command_property, COMMAND_PROPERTY);
+GLADE_MAKE_COMMAND (GladeCommandProperty, glade_command_property, COMMAND_PROPERTY)
 
 /* Return true if a == b, this could be exported in glade_utils */
 static gboolean
