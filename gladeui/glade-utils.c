@@ -65,8 +65,8 @@
  *
  * Returns: the type function getter
  */
-static gchar *
-glade_util_compose_get_type_func (const gchar *name)
+gchar *
+_glade_util_compose_get_type_func (const gchar *name)
 {
   gchar *retval;
   GString *tmp;
@@ -118,23 +118,23 @@ glade_util_get_type_from_name (const gchar *name, gboolean have_func)
   GType type = 0;
   gchar *func_name = (gchar *) name;
 
+  if (g_once_init_enter (&allsymbols))
+    {
+      GModule *symbols = g_module_open (NULL, 0);
+      g_once_init_leave (&allsymbols, symbols);
+    }
+
   if ((type = g_type_from_name (name)) == 0 &&
       (have_func ||
-       (func_name = glade_util_compose_get_type_func (name)) != NULL))
+       (func_name = _glade_util_compose_get_type_func (name)) != NULL))
     {
-
-      if (!allsymbols)
-        allsymbols = g_module_open (NULL, 0);
-
       if (g_module_symbol (allsymbols, func_name, (gpointer) & get_type))
         {
           g_assert (get_type);
           type = get_type ();
         }
       else
-        {
-          g_warning (_("We could not find the symbol \"%s\""), func_name);
-        }
+        g_warning (_("We could not find the symbol \"%s\""), func_name);
 
       if (!have_func)
         g_free (func_name);

@@ -87,6 +87,8 @@ _glade_property_def_reset_version (GladePropertyDef *property_def);
 
 /* glade-utils.c */
 
+gchar *_glade_util_compose_get_type_func (const gchar *name);
+
 void   _glade_util_dialog_set_hig (GtkDialog *dialog);
 
 gchar *_glade_util_strreplace (gchar *str,
@@ -104,9 +106,18 @@ void    _glade_xml_error_reset_last       (void);
 gchar  *_glade_xml_error_get_last_message (void);
 
 /* glade-template.c */
-GType _glade_template_generate_type_from_file (GladeCatalog *catalog,
-                                               const gchar  *parent,
-                                               const gchar  *filename);
+gchar   *_glade_template_load (const gchar *filename,
+                               gchar      **type,
+                               gchar      **parent);
+
+gboolean _glade_template_parse (const gchar *tmpl,
+                                gchar      **type,
+                                gchar      **parent);
+
+GType    _glade_template_generate_type (const gchar *type,
+                                        const gchar *parent);
+
+const gchar *_glade_template_lookup (const gchar *type);
 
 G_END_DECLS
 

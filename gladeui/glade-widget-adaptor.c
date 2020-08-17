@@ -2761,7 +2761,9 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
   gchar *name, *generic_name, *icon_name, *adaptor_icon_name, *adaptor_name,
       *func_name = NULL, *template;
   gchar *title, *translated_title, *parent_name;
-  GType object_type, adaptor_type, parent_type;
+  GType object_type = G_TYPE_INVALID;
+  GType adaptor_type = G_TYPE_INVALID;
+  GType parent_type = G_TYPE_INVALID;
   gchar *missing_icon = NULL;
   GWADerivedClassData data;
 
@@ -2808,7 +2810,31 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
             glade_xml_get_property_string (class_node,
                                            GLADE_XML_TAG_TEMPLATE)) != NULL)
     {
-      object_type = _glade_template_generate_type_from_file (catalog, name, template);
+      g_autofree gchar *tmpl_type = NULL, *tmpl_parent = NULL;
+      const gchar *tmpl = NULL;
+
+      if ((tmpl = _glade_template_lookup (name)))
+        _glade_template_parse (tmpl, &tmpl_type, &tmpl_parent);
+      else
+        {
+          if (g_path_is_absolute (template))
+            tmpl = _glade_template_load (template, &tmpl_type, &tmpl_parent);
+          else
+            {
+              const gchar *prefix = glade_catalog_get_prefix (catalog);
+              g_autofree gchar *fullpath = g_build_filename (prefix, template, NULL);
+              tmpl = _glade_template_load (fullpath, &tmpl_type, &tmpl_parent);
+            }
+        }
+
+      if (tmpl && tmpl_type && tmpl_parent)
+        {
+          if (g_str_equal (name, tmpl_type))
+            object_type = _glade_template_generate_type (tmpl_type, tmpl_parent);
+          else
+            g_warning ("Template %s is for class %s, not %s", template, tmpl_type, name);
+        }
+
       g_free (template);
     }
   else

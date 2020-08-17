@@ -607,6 +607,91 @@ glade_catalog_get_extra_paths (void)
   return catalog_paths;
 }
 
+static void
+load_templates_from_path (GladeCatalog *catalog,
+                          GladeWidgetGroup *group,
+                          const gchar *path)
+{
+  GError *error = NULL;
+  GDir *dir;
+
+  if (!g_file_test (path, G_FILE_TEST_IS_DIR))
+    return;
+
+  if ((dir = g_dir_open (path, 0, &error)) != NULL)
+    {
+      const gchar *filename;
+      GladeXmlNode *class_node = glade_xml_node_new (catalog->context,
+                                                     GLADE_TAG_GLADE_WIDGET_CLASS);
+
+      while ((filename = g_dir_read_name (dir)))
+        {
+          g_autofree gchar *tmpl_type = NULL, *tmpl_parent = NULL;
+          g_autofree gchar *abs_filename = NULL, *generic_name = NULL;
+          GladeWidgetAdaptor *adaptor;
+
+          if (!g_str_has_suffix (filename, ".ui") &&
+              !g_str_has_suffix (filename, ".glade"))
+            continue;
+
+          /* Allways use absolute paths */
+          if (g_path_is_absolute (filename))
+            abs_filename = g_strdup (filename);
+          else
+            abs_filename = g_build_filename (path, filename, NULL);
+
+          /* Load template and parse type and parent */
+          if (!_glade_template_load (abs_filename, &tmpl_type, &tmpl_parent))
+            continue;
+
+          /* Add data to class_node */
+          generic_name = g_ascii_strdown (tmpl_type, -1);
+          glade_xml_node_set_property_string (class_node, GLADE_TAG_NAME, tmpl_type);
+          glade_xml_node_set_property_string (class_node, GLADE_XML_TAG_TEMPLATE, abs_filename);
+          glade_xml_node_set_property_string (class_node, GLADE_TAG_TITLE, tmpl_type);
+          glade_xml_node_set_property_string (class_node, GLADE_TAG_GENERIC_NAME, generic_name);
+
+          /* Load from fake catalog */
+          adaptor = glade_widget_adaptor_from_catalog (catalog, class_node, NULL);
+
+          /* Append adaptor to catalog */
+          catalog->adaptors = g_list_prepend (catalog->adaptors, adaptor);
+
+          /* And group */
+          group->adaptors = g_list_prepend (group->adaptors, adaptor);
+        }
+
+      g_dir_close (dir);
+    }
+}
+
+static GList *
+load_user_templates_catalog (GList *catalogs)
+{
+  GladeWidgetGroup *group;
+  GladeCatalog *catalog;
+  GList *l;
+
+  /* Use just one group for all the adaptors */
+  group = g_slice_new0 (GladeWidgetGroup);
+  group->name = g_strdup ("user-templates");
+  group->title = g_strdup (_("User templates"));
+  group->expanded = FALSE;
+
+  /* Create a runtime catalog for user templates */
+  catalog = catalog_allocate ();
+  catalog->context = glade_xml_context_new (glade_xml_doc_new (), NULL);
+  catalog->name = g_strdup( "user-templates");
+  catalog->widget_groups = g_list_prepend (NULL, group);
+
+  /* Load templates from extra catalog paths */
+  for (l = catalog_paths; l; l = g_list_next (l))
+    load_templates_from_path (catalog, group, l->data);
+
+  /* Prepend instead of append to give priority over other catalogs */
+  return g_list_prepend (catalogs, catalog);
+}
+
 /**
  * glade_catalog_load_all:
  * 
@@ -693,6 +778,9 @@ glade_catalog_load_all (void)
     }
 
   g_list_free (adaptors);
+
+  /* Load User defined templates */
+  catalogs = load_user_templates_catalog (catalogs);
 
   if (icon_warning)
     {
