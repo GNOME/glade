@@ -187,8 +187,9 @@ eprop_find_iter (GladeEpropIterTab * iter_tab, gchar * name)
 }
 
 static void
-iter_tab_free (GladeEpropIterTab * iter_tab)
+iter_tab_free (gpointer data)
 {
+  GladeEpropIterTab *iter_tab = data;
   gtk_tree_iter_free (iter_tab->iter);
   g_free (iter_tab);
 }
@@ -582,8 +583,7 @@ glade_eprop_accel_show_dialog (GladeEditorProperty *eprop)
 
   if (eprop_accel->parent_iters)
     {
-      g_list_foreach (eprop_accel->parent_iters, (GFunc) iter_tab_free, NULL);
-      g_list_free (eprop_accel->parent_iters);
+      g_list_free_full (eprop_accel->parent_iters, iter_tab_free);
       eprop_accel->parent_iters = NULL;
     }
 

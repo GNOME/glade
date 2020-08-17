@@ -49,9 +49,8 @@ static void
 icon_set_free (GList *list)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  g_list_foreach (list, (GFunc) gtk_icon_source_free, NULL);
+  g_list_free_full (list, (GDestroyNotify) gtk_icon_source_free);
 G_GNUC_END_IGNORE_DEPRECATIONS
-  g_list_free (list);
 }
 
 

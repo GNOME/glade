@@ -220,8 +220,7 @@ glade_widget_set_packing_actions (GladeWidget *widget,
 {
   if (widget->priv->packing_actions)
     {
-      g_list_foreach (widget->priv->packing_actions, (GFunc) g_object_unref, NULL);
-      g_list_free (widget->priv->packing_actions);
+      g_list_free_full (widget->priv->packing_actions, g_object_unref);
       widget->priv->packing_actions = NULL;
     }
 
@@ -1029,8 +1028,7 @@ glade_widget_dispose (GObject *object)
    * hence the reset (for object properties) */
   if (widget->priv->properties)
     {
-      g_list_foreach (widget->priv->properties, (GFunc) g_object_unref, NULL);
-      g_list_free (widget->priv->properties);
+      g_list_free_full (widget->priv->properties, g_object_unref);
       widget->priv->properties = NULL;
     }
   if (widget->priv->props_hash)
@@ -1043,22 +1041,19 @@ glade_widget_dispose (GObject *object)
 
   if (widget->priv->packing_properties)
     {
-      g_list_foreach (widget->priv->packing_properties, (GFunc) g_object_unref, NULL);
-      g_list_free (widget->priv->packing_properties);
+      g_list_free_full (widget->priv->packing_properties, g_object_unref);
       widget->priv->packing_properties = NULL;
     }
 
   if (widget->priv->actions)
     {
-      g_list_foreach (widget->priv->actions, (GFunc) g_object_unref, NULL);
-      g_list_free (widget->priv->actions);
+      g_list_free_full (widget->priv->actions, g_object_unref);
       widget->priv->actions = NULL;
     }
 
   if (widget->priv->packing_actions)
     {
-      g_list_foreach (widget->priv->packing_actions, (GFunc) g_object_unref, NULL);
-      g_list_free (widget->priv->packing_actions);
+      g_list_free_full (widget->priv->packing_actions, g_object_unref);
       widget->priv->packing_actions = NULL;
     }
 
@@ -1956,10 +1951,8 @@ glade_widget_set_properties (GladeWidget *widget, GList *properties)
   if (properties)
     {
       if (widget->priv->properties)
-        {
-          g_list_foreach (widget->priv->properties, (GFunc) g_object_unref, NULL);
-          g_list_free (widget->priv->properties);
-        }
+          g_list_free_full (widget->priv->properties, g_object_unref);
+
       if (widget->priv->props_hash)
         g_hash_table_destroy (widget->priv->props_hash);
 
@@ -3863,8 +3856,7 @@ glade_widget_set_packing_properties (GladeWidget *widget,
   if (widget->priv->rebuilding)
     return;
 
-  g_list_foreach (widget->priv->packing_properties, (GFunc) g_object_unref, NULL);
-  g_list_free (widget->priv->packing_properties);
+  g_list_free_full (widget->priv->packing_properties, g_object_unref);
   widget->priv->packing_properties = NULL;
 
   if (widget->priv->pack_props_hash)

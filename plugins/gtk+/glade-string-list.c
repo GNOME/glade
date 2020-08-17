@@ -109,8 +109,7 @@ glade_string_list_copy (GList *string_list)
 void
 glade_string_list_free (GList *string_list)
 {
-  g_list_foreach (string_list, (GFunc)glade_string_free, NULL);
-  g_list_free (string_list);
+  g_list_free_full (string_list, (GDestroyNotify) glade_string_free);
 }
 
 GType
@@ -632,8 +631,7 @@ treeview_key_press (GtkWidget           *treeview,
                 gtk_list_store_remove (GTK_LIST_STORE (eprop_string_list->model), &iter);
             }
 
-          g_list_foreach (selected_rows, (GFunc)gtk_tree_path_free, NULL);
-          g_list_free (selected_rows);
+          g_list_free_full (selected_rows, (GDestroyNotify) gtk_tree_path_free);
         }
       return TRUE;
     }

@@ -218,8 +218,7 @@ glade_editor_dispose (GObject *object)
   glade_editor_load_widget (editor, NULL);
 
   /* Unref all the cached pages */
-  g_list_foreach (priv->editables, (GFunc) g_object_unref, NULL);
-  priv->editables = (g_list_free (priv->editables), NULL);
+  g_list_free_full (priv->editables, g_object_unref);
 
   G_OBJECT_CLASS (glade_editor_parent_class)->dispose (object);
 }
@@ -1034,8 +1033,9 @@ static gboolean
 glade_editor_reset_foreach_selection (GtkTreeModel *model,
                                       GtkTreePath  *path,
                                       GtkTreeIter  *iter,
-                                      gboolean      select)
+                                      gpointer      data)
 {
+  gboolean select = GPOINTER_TO_INT (data);
   gboolean def;
 
   gtk_tree_model_get (model, iter, COLUMN_DEFAULT, &def, -1);
@@ -1052,7 +1052,7 @@ glade_editor_reset_select_all_clicked (GtkButton   *button,
                                        GtkTreeView *tree_view)
 {
   GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
-  gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)
+  gtk_tree_model_foreach (model,
                           glade_editor_reset_foreach_selection,
                           GINT_TO_POINTER (TRUE));
 }
@@ -1062,7 +1062,7 @@ glade_editor_reset_unselect_all_clicked (GtkButton   *button,
                                          GtkTreeView *tree_view)
 {
   GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
-  gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)
+  gtk_tree_model_foreach (model,
                           glade_editor_reset_foreach_selection,
                           GINT_TO_POINTER (FALSE));
 }
@@ -1071,8 +1071,9 @@ static gboolean
 glade_editor_reset_accumulate_selected_props (GtkTreeModel *model,
                                               GtkTreePath  *path,
                                               GtkTreeIter  *iter,
-                                              GList       **accum)
+                                              gpointer      data)
 {
+  GList **accum = data;
   GladeProperty *property;
   gboolean enabled, def;
 
@@ -1095,8 +1096,9 @@ glade_editor_reset_get_selected_props (GtkTreeModel *model)
 {
   GList *ret = NULL;
 
-  gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)
-                          glade_editor_reset_accumulate_selected_props, &ret);
+  gtk_tree_model_foreach (model,
+                          glade_editor_reset_accumulate_selected_props,
+                          &ret);
 
   return ret;
 }

@@ -411,13 +411,18 @@ glade_base_editor_table_attach (GladeBaseEditor *e,
 }
 
 static void
+destroy_widget (GtkWidget *widget, gpointer data)
+{
+  gtk_widget_destroy (widget);
+}
+
+static void
 glade_base_editor_clear (GladeBaseEditor *editor)
 {
   GladeBaseEditorPrivate *priv = glade_base_editor_get_instance_private (editor);
 
   gtk_widget_show (priv->tip_label);
-  gtk_container_foreach (GTK_CONTAINER (priv->table),
-                         (GtkCallback)gtk_widget_destroy, NULL);
+  gtk_container_foreach (GTK_CONTAINER (priv->table), destroy_widget, NULL);
   priv->row = 0;
   gtk_widget_set_sensitive (priv->delete_button, FALSE);
   glade_signal_editor_load_widget (priv->signal_editor, NULL);

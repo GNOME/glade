@@ -72,10 +72,7 @@ glade_widget_action_finalize (GObject *object)
   GladeWidgetAction *action = GLADE_WIDGET_ACTION (object);
 
   if (action->priv->actions)
-    {
-      g_list_foreach (action->priv->actions, (GFunc) g_object_unref, NULL);
-      g_list_free (action->priv->actions);
-    }
+    g_list_free_full (action->priv->actions, g_object_unref);
 
   G_OBJECT_CLASS (glade_widget_action_parent_class)->finalize (object);
 }

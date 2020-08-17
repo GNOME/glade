@@ -186,8 +186,7 @@ glade_column_type_free (GladeColumnType * column)
 void
 glade_column_list_free (GList * list)
 {
-  g_list_foreach (list, (GFunc) glade_column_type_free, NULL);
-  g_list_free (list);
+  g_list_free_full (list, (GDestroyNotify) glade_column_type_free);
 }
 
 GladeColumnType *

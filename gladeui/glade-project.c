@@ -331,10 +331,7 @@ glade_project_finalize (GObject *object)
   g_free (priv->css_provider_path);
 
   if (priv->comments)
-    {
-      g_list_foreach (priv->comments, (GFunc) g_free, NULL);
-      g_list_free (priv->comments);
-    }
+    g_list_free_full (priv->comments, g_free);
 
   if (priv->unsaved_number > 0)
     glade_id_allocator_release (get_unsaved_number_allocator (),

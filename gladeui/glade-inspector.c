@@ -1103,8 +1103,7 @@ glade_inspector_get_selected_items (GladeInspector *inspector)
       items = g_list_prepend (items, glade_widget_get_from_gobject (object));
     }
 
-  g_list_foreach (paths, (GFunc) gtk_tree_path_free, NULL);
-  g_list_free (paths);
+  g_list_free_full (paths, (GDestroyNotify) gtk_tree_path_free);
 
   return items;
 }

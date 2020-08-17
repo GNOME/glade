@@ -151,16 +151,10 @@ catalog_destroy (GladeCatalog *catalog)
   g_free (catalog->init_function_name);
 
   if (catalog->adaptors)
-    {
-      g_list_free (catalog->adaptors);
-    }
+    g_list_free (catalog->adaptors);
 
   if (catalog->widget_groups)
-    {
-      g_list_foreach (catalog->widget_groups, (GFunc) widget_group_destroy,
-                      NULL);
-      g_list_free (catalog->widget_groups);
-    }
+    g_list_free_full (catalog->widget_groups, (GDestroyNotify) widget_group_destroy);
 
   g_clear_pointer (&catalog->context, glade_xml_context_free);
   g_slice_free (GladeCatalog, catalog);

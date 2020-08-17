@@ -563,7 +563,7 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 
   children = glade_widget_adaptor_get_children (adaptor, container);
   /* Make sure widgets does not get destroyed */
-  glade_util_object_list_ref (children);
+  glade_util_list_objects_ref (children);
 
   glade_widget_property_get (parent, n_row_col, &size);
 

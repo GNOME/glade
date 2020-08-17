@@ -978,8 +978,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
               glade_project_undo (project);
             }
 
-          g_list_foreach (saved_props, (GFunc) g_object_unref, NULL);
-          g_list_free (saved_props);
+          g_list_free_full (saved_props, g_object_unref);
         }
     }
   else if (strcmp (action_path, "sizegroup_add") == 0)

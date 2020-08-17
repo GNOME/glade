@@ -95,9 +95,7 @@ glade_placeholder_notify_parent (GObject    *gobject,
 
   if (placeholder->priv->packing_actions)
     {
-      g_list_foreach (placeholder->priv->packing_actions, (GFunc) g_object_unref,
-                      NULL);
-      g_list_free (placeholder->priv->packing_actions);
+      g_list_free_full (placeholder->priv->packing_actions, g_object_unref);
       placeholder->priv->packing_actions = NULL;
     }
 
@@ -141,10 +139,7 @@ glade_placeholder_finalize (GObject *object)
   placeholder = GLADE_PLACEHOLDER (object);
 
   if (placeholder->priv->packing_actions)
-    {
-      g_list_foreach (placeholder->priv->packing_actions, (GFunc) g_object_unref, NULL);
-      g_list_free (placeholder->priv->packing_actions);
-    }
+    g_list_free_full (placeholder->priv->packing_actions, g_object_unref);
 
   G_OBJECT_CLASS (glade_placeholder_parent_class)->finalize (object);
 }
