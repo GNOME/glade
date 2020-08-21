@@ -231,7 +231,7 @@ on_add_catalog_button_clicked (GtkButton *button, GladePreferences *preferences)
   GladePreferencesPrivate *priv = preferences->priv;
   GtkWidget *dialog;
 
-  dialog = gtk_file_chooser_dialog_new ("Select a catalog search path",
+  dialog = gtk_file_chooser_dialog_new (_("Select a catalog search path"),
                                         GTK_WINDOW (preferences),
                                         GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
                                         _("_Cancel"),
