@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-06-19 21:13+0000\n"
-"PO-Revision-Date: 2020-06-21 22:30+0200\n"
+"POT-Creation-Date: 2020-07-22 21:19+0000\n"
+"PO-Revision-Date: 2020-08-21 17:41+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -384,19 +384,19 @@ msgstr "Onemogoči podporo DevHelp"
 msgid "be verbose"
 msgstr "podroben izpis"
 
-#: src/main.c:133
+#: src/main.c:142
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Ni mogoče odpreti »%s«. Datoteka ne obstaja.\n"
 
-#: src/main.c:159
+#: src/main.c:168
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "podpora za gmodule ni na voljo. Podpora je obvezna za pravilno delovanje "
 "okolja glade."
 
-#: src/main.c:167
+#: src/main.c:176
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
 "Ustvarjanje in urejanje uporabniškega vmesnika za GTK+ in GNOME programe."
@@ -614,22 +614,6 @@ msgstr "Anketa med uporabniki Glade"
 
 #. translators: Email body sent to the user after completing the survey
 #: src/glade-registration.c:34
-#, fuzzy
-#| msgid ""
-#| "Thank you for taking Glade Users survey, we appreciate it!\n"
-#| "\n"
-#| "To validate this email address open the folowing link\n"
-#| "\n"
-#| "https://people.gnome.org/~jpu/glade/registration.php?email="
-#| "$email&validation_token=$new_validation_token\n"
-#| "\n"
-#| "In case you want to change or update the survey, your current update "
-#| "token is:\n"
-#| "$new_token\n"
-#| "\n"
-#| "Cheers\n"
-#| "\n"
-#| "\tThe Glade team\n"
 msgid ""
 "Thank you for taking Glade Users survey, we appreciate it!\n"
 "\n"
@@ -648,7 +632,7 @@ msgid ""
 msgstr ""
 "Zahvaljujemo se vam za izpolnjevanje ankete.\n"
 "\n"
-"Za overitev elektronskega naslova, kliknite na link:\n"
+"Za overitev elektronskega naslova, kliknite na povezavo:\n"
 "\n"
 "https://people.gnome.org/~jpu/glade/registration.php?email="
 "$email&validation_token=$new_validation_token\n"
@@ -1831,10 +1815,8 @@ msgid "Property Definition"
 msgstr "Določilo lastnosti"
 
 #: gladeui/glade-editor-property.c:769
-#, fuzzy
-#| msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgid "The GladePropertyDef this GladeEditorProperty was created for"
-msgstr "GladePropertyClass za katerega je bil ustvarjen ta GladeEditorProperty"
+msgstr "GladePropertyDef za katerega je bil ustvarjen ta GladeEditorProperty"
 
 #: gladeui/glade-editor-property.c:775 gladeui/glade-property-shell.c:125
 msgid "Use Command"
@@ -2361,21 +2343,22 @@ msgid ", %s"
 msgstr ", %s"
 
 #: gladeui/glade-project.c:2003
-#, fuzzy, c-format
-#| msgid ""
-#| "Specially because there is an object that can not be build with type "
+#, c-format
 msgid ""
 "Especially because there is %d object that can not be built with type: %s"
 msgid_plural ""
 "Especially because there are %d objects that can not be built with types: %s"
 msgstr[0] ""
-"Posebej zato, ker obstaja predmet, ki ga ni mogoče izgraditi z vrsto"
+"Posebej zato, ker obstaja %d predmetov, ki jih ni mogoče izgraditi z vrsto: "
+"%s"
 msgstr[1] ""
-"Posebej zato, ker obstaja predmet, ki ga ni mogoče izgraditi z vrsto"
+"Posebej zato, ker obstaja %d predmet, ki ga ni mogoče izgraditi z vrsto: %s"
 msgstr[2] ""
-"Posebej zato, ker obstaja predmet, ki ga ni mogoče izgraditi z vrsto"
+"Posebej zato, ker obstajata %d predmeta, ki ju ni mogoče izgraditi z vrsto: "
+"%s"
 msgstr[3] ""
-"Posebej zato, ker obstaja predmet, ki ga ni mogoče izgraditi z vrsto"
+"Posebej zato, ker obstajajo %d predmeti, ki jih ni mogoče izgraditi z vrsto: "
+"%s"
 
 #: gladeui/glade-project.c:2021
 #, c-format
@@ -2573,10 +2556,8 @@ msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "Projekt %s nima opuščenih gradnikov ali neskladnosti različic"
 
 #: gladeui/glade-property.c:673
-#, fuzzy
-#| msgid "The GladePropertyClass for this property"
 msgid "The GladePropertyDef for this property"
-msgstr "GladePropertyClass za to lastnost"
+msgstr "GladePropertyDef za to lastnost"
 
 #: gladeui/glade-property.c:678
 msgid "Enabled"
@@ -3052,28 +3033,28 @@ msgstr "Ali je ta gradnik predloga za združeni gradnik"
 msgid "(unnamed)"
 msgstr "(neimenovano)"
 
-#: gladeui/glade-widget.c:4882
+#: gladeui/glade-widget.c:4883
 msgid "Template classes are only usable in GTK+ 3.10 and later."
 msgstr "Razredi predlog so podprti le v različicah GTK+ 3.10 ali novejših."
 
-#: gladeui/glade-widget.c:4890
+#: gladeui/glade-widget.c:4891
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "Predmet je neprepoznane vrste %s"
 
-#: gladeui/glade-widget.c:4956
+#: gladeui/glade-widget.c:4957
 msgid "Property has versioning problems: "
 msgstr "Pri lastnosti so težave različice:"
 
-#: gladeui/glade-widget.c:4958
+#: gladeui/glade-widget.c:4959
 msgid "Some properties have versioning problems: "
 msgstr "Nekatere lastnosti imajo težave z različico: "
 
-#: gladeui/glade-widget.c:4978
+#: gladeui/glade-widget.c:4979
 msgid "Signal has versioning problems: "
 msgstr "Signal ima težave z različico: "
 
-#: gladeui/glade-widget.c:4980
+#: gladeui/glade-widget.c:4981
 msgid "Some signals have versioning problems: "
 msgstr "Nekateri signali imajo težave z različico:"
 
@@ -4268,7 +4249,7 @@ msgstr "Nastavitev %s na uporabo ene vrstice"
 msgid "Setting %s to use specific Pango word wrapping"
 msgstr "Nastavitev %s na uporabo posebnega pango preloma besed"
 
-#: plugins/gtk+/glade-model-data.c:1124
+#: plugins/gtk+/glade-model-data.c:1228
 msgid "Add and remove rows:"
 msgstr "Dodaj ali odstrani vrstice:"
 
@@ -4614,10 +4595,8 @@ msgid "Proximity In"
 msgstr "Proti predmetu"
 
 #: plugins/gtk+/gtk+.xml:161
-#, fuzzy
-#| msgid "Proximity  Out"
 msgid "Proximity Out"
-msgstr "Od predmeta"
+msgstr "Oddaljenost"
 
 #: plugins/gtk+/gtk+.xml:163
 msgid "Substructure"
@@ -4640,10 +4619,8 @@ msgid "Touchpad Gesture"
 msgstr "Poteze po sledilni ploščici"
 
 #: plugins/gtk+/gtk+.xml:173
-#, fuzzy
-#| msgid "Table"
 msgid "Tablet Pad"
-msgstr "Razpredelnica"
+msgstr "Tablični računalniki"
 
 #: plugins/gtk+/gtk+.xml:175
 msgid "All Events"
@@ -5125,10 +5102,8 @@ msgid "Superscript text"
 msgstr "Nadpisano besedilo"
 
 #: plugins/gtk+/gtk+.xml:468
-#, fuzzy
-#| msgid "Context"
 msgid "Footnote text"
-msgstr "Vsebina"
+msgstr "Besedilo sprotne opombe"
 
 #: plugins/gtk+/gtk+.xml:470
 msgid "Last Defined"
@@ -5359,7 +5334,6 @@ msgid "A list of accel groups to be added to this window"
 msgstr "Seznam imen razredov slogov za dodajanje gradniku"
 
 #: plugins/gtk+/gtk+.xml:771
-#| msgid "BSD"
 msgid "CSD"
 msgstr "CSD"
 
@@ -5646,7 +5620,6 @@ msgid "Half"
 msgstr "Polovica"
 
 #: plugins/gtk+/gtk+.xml:1278
-#| msgid "Tool Item"
 msgid "GtkToolItem"
 msgstr "GtkToolItem"
 
@@ -6015,10 +5988,8 @@ msgid "Application Chooser Widget"
 msgstr "Gradnik izbirnika programov"
 
 #: plugins/gtk+/gtk+.xml:2038
-#, fuzzy
-#| msgid "Stack Sidebar"
 msgid "Places Sidebar"
-msgstr "Stransko okno sklada"
+msgstr "Stransko okno Mest"
 
 #: plugins/gtk+/gtk+.xml:2046
 msgid "New Tab"
@@ -6322,16 +6293,16 @@ msgid "Multiple"
 msgstr "Večkratno"
 
 #: plugins/gtk+/gtk+.xml:2751
-#, fuzzy
-#| msgid "Placeholder text"
 msgid "Placeholder"
-msgstr "Besedilo držala"
+msgstr "Vsebnik"
 
 #: plugins/gtk+/gtk+.xml:2755
 msgid ""
 "Whether this listbox should have a placeholder widget that is shown in the "
 "list when it doesn't display any visible children"
 msgstr ""
+"Ali naj ima polje seznama gradnik vsebnika, ki je prikazan v seznamu, ko ni "
+"prikazanega nobenega podrejenega predmeta"
 
 #: plugins/gtk+/gtk+.xml:2765
 msgid "The position of the row item in the listbox"
@@ -6396,16 +6367,12 @@ msgid "Flip Vertically"
 msgstr "Prevrni navpično"
 
 #: plugins/gtk+/gtk+.xml:2908
-#, fuzzy
-#| msgid "Horizontal"
 msgid "Slide Horizontally"
-msgstr "Vodoravno"
+msgstr "Poteg vodoravno"
 
 #: plugins/gtk+/gtk+.xml:2910
-#, fuzzy
-#| msgid "Vertical"
 msgid "Slide Vertically"
-msgstr "Navpično"
+msgstr "Poteg navpično"
 
 #: plugins/gtk+/gtk+.xml:2912
 msgid "Resize Horizontally"
@@ -6421,7 +6388,7 @@ msgstr "Obrni obe strani"
 
 #: plugins/gtk+/gtk+.xml:2918
 msgid "Slide Both Sides"
-msgstr ""
+msgstr "Poteg v obeh smereh"
 
 #: plugins/gtk+/gtk+.xml:2920
 msgid "Resize Both Sides"
@@ -6596,12 +6563,10 @@ msgid "LGPL 3.0 Only"
 msgstr "Le LGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3342
-#| msgid "GPL 3.0"
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
 #: plugins/gtk+/gtk+.xml:3344
-#| msgid "GPL 3.0 Only"
 msgid "AGPL 3.0 Only"
 msgstr "Le AGPL 3.0"
 
@@ -7448,10 +7413,8 @@ msgid "File Icon"
 msgstr "Ikona datoteke"
 
 #: plugins/gtk+/gtk+.xml:5610
-#, fuzzy
-#| msgid "File Chooser Dialog"
 msgid "Native File Chooser Dialog"
-msgstr "Okno izbire datotek"
+msgstr "Osnovno okno izbire datotek"
 
 #: plugins/gtk+/gtk+.xml:5614
 msgid "Toplevels"
@@ -7469,15 +7432,15 @@ msgstr "Krmilka"
 msgid "Display"
 msgstr "Pokaži"
 
-#: plugins/gtk+/gtk+.xml:5716
+#: plugins/gtk+/gtk+.xml:5717
 msgid "Composite Widgets"
 msgstr "Združeni gradniki"
 
-#: plugins/gtk+/gtk+.xml:5727
+#: plugins/gtk+/gtk+.xml:5728
 msgid "Miscellaneous"
 msgstr "Razno"
 
-#: plugins/gtk+/gtk+.xml:5757
+#: plugins/gtk+/gtk+.xml:5758
 msgid "Deprecated"
 msgstr "Opuščeno"
 
@@ -8144,11 +8107,9 @@ msgid "WebKit Web View"
 msgstr "Spletni pogled WebKit"
 
 #: plugins/webkit2gtk/webkit2gtk.xml:21
-#, fuzzy
-#| msgid ""
-#| "Set the currently active page to edit, this property will not be saved"
 msgid "The URL to load in Glade (this property will not be saved)"
-msgstr "Nastavi trenutno dejavno stran za urejanje. Možnost ne bo shranjena."
+msgstr ""
+"Naslov URL, ki naj bo naloženo v program Glade (Lastnost ne bo shranjena)."
 
 #: plugins/webkit2gtk/webkit2gtk.xml:32
 msgid "WebKit Settings"
