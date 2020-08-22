@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-08-17 22:29+0000\n"
-"PO-Revision-Date: 2020-08-18 09:24+0300\n"
+"POT-Creation-Date: 2020-08-21 21:41+0000\n"
+"PO-Revision-Date: 2020-08-22 09:18+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -184,13 +184,13 @@ msgstr "Якщо не зберегти, зміни будуть втрачені
 msgid "Close _without Saving"
 msgstr "_Закрити без збереження"
 
-#: src/glade-window.c:1040 src/glade-window.c:1725 gladeui/glade-editor.c:794
-#: gladeui/glade-editor.c:1153 gladeui/glade-editor-property.c:1776
-#: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
-#: gladeui/glade-editor-property.c:3217 gladeui/glade-editor-property.c:3325
-#: gladeui/glade-editor-property.c:3336 gladeui/glade-editor-property.c:3647
-#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:523
-#: plugins/gtk+/glade-attributes.c:1062
+#: src/glade-window.c:1040 src/glade-window.c:1725 src/glade-preferences.c:237
+#: gladeui/glade-editor.c:794 gladeui/glade-editor.c:1153
+#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
+#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3217
+#: gladeui/glade-editor-property.c:3325 gladeui/glade-editor-property.c:3336
+#: gladeui/glade-editor-property.c:3647 gladeui/glade-utils.c:483
+#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Скасувати"
 
@@ -424,8 +424,8 @@ msgstr "Налаштування"
 msgid "About Glade"
 msgstr "Про Glade"
 
-#: src/glade.glade:504 gladeui/glade-editor-property.c:2282
-#: gladeui/glade-utils.c:486
+#: src/glade.glade:504 src/glade-preferences.c:239
+#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Відкрити"
 
@@ -478,6 +478,11 @@ msgid "translator-credits"
 msgstr ""
 "Юрій Сирота <rasta@cvs.gnome.org>\n"
 "Максим Дзюманенко <dziumanenko@gmail.com>"
+
+#: src/glade-preferences.c:234
+#| msgid "Select a color"
+msgid "Select a catalog search path"
+msgstr "Вибрати шлях пошуку у каталозі"
 
 #: src/glade-preferences.glade:45
 msgid "Glade Preferences"
@@ -565,8 +570,8 @@ msgid ""
 "from.\n"
 "Needs to restart."
 msgstr ""
-"Список з каталогами, звідки слід завантажувати каталоги віджетів та нетипові"
-" шаблони.\n"
+"Список з каталогами, звідки слід завантажувати каталоги віджетів та нетипові "
+"шаблони.\n"
 "Потребує перезапуску."
 
 #: src/glade-preferences.glade:299
@@ -574,17 +579,14 @@ msgid "column"
 msgstr "позиція"
 
 #: src/glade-preferences.glade:331
-#| msgid "Add a new catalog search path"
 msgid "Add a new search path"
 msgstr "Додати новий шлях пошуку"
 
 #: src/glade-preferences.glade:356
-#| msgid "Remove the selected catalog search path"
 msgid "Remove the selected search path"
 msgstr "Вилучити позначений шлях пошуку"
 
 #: src/glade-preferences.glade:387
-#| msgid "Extra catalog paths"
 msgid "Extra Catalog & Templates paths"
 msgstr "Додаткові шляхи каталогів та шаблонів"
 
@@ -1479,7 +1481,6 @@ msgid "An entry"
 msgstr "Пункт"
 
 #: gladeui/glade-catalog.c:678
-#| msgid "Unsetting template"
 msgid "User templates"
 msgstr "Шаблони користувача"
 
