@@ -36,7 +36,11 @@ typedef struct
   GtkLabel *class_label;
   GtkWidget *all_button;
 
+  GtkWidget *others_chooser;
+  GtkWidget *all_chooser;
   GList *choosers;
+
+  gboolean needs_update;
 } GladeAdaptorChooserPrivate;
 
 struct _GladeAdaptorChooser
@@ -142,13 +146,17 @@ on_adaptor_selected (GtkWidget           *widget,
 static void
 glade_adaptor_chooser_button_add_chooser (GtkWidget *button, GtkWidget *chooser)
 {
-  GtkWidget *popover;
+  GtkPopover *popover = gtk_menu_button_get_popover (GTK_MENU_BUTTON (button));
 
-  popover = gtk_popover_new (button);
+  if (!popover)
+    {
+      popover = GTK_POPOVER (gtk_popover_new (button));
+      gtk_menu_button_set_popover (GTK_MENU_BUTTON (button),
+                                   GTK_WIDGET (popover));
+    }
+
   gtk_container_add (GTK_CONTAINER (popover), chooser);
   gtk_widget_show (chooser);
-
-  gtk_menu_button_set_popover (GTK_MENU_BUTTON (button), popover);
 }
 
 static GtkWidget *
@@ -213,33 +221,92 @@ button_box_populate_from_catalog (GladeAdaptorChooser *chooser,
 }
 
 static void
-glade_adaptor_chooser_constructed (GObject *object)
+remove_chooser_widget (GladeAdaptorChooser *chooser, GtkWidget *widget)
 {
-  GladeAdaptorChooser *chooser = GLADE_ADAPTOR_CHOOSER (object);
-  GladeAdaptorChooserPrivate *priv = GET_PRIVATE (object);
-  GtkWidget *others_chooser, *all_chooser;
+  if (widget)
+    {
+      GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
+      priv->choosers = g_list_remove (priv->choosers, widget);
+      gtk_widget_destroy (widget);
+    }
+}
+
+static void
+update_all_others_chooser (GladeAdaptorChooser *chooser)
+{
+  GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
   GladeCatalog *gtk_catalog;
   GList *l;
 
-  /* GTK+ catalog goes first subdivided by group */
-  gtk_catalog = glade_app_get_catalog ("gtk+");
-  button_box_populate_from_catalog (chooser, gtk_catalog);
+  priv->needs_update = FALSE;
 
-  others_chooser = glade_adaptor_chooser_add_chooser (chooser, TRUE);
-  all_chooser = glade_adaptor_chooser_add_chooser (chooser, TRUE);
-  glade_adaptor_chooser_button_add_chooser (priv->others_button, others_chooser);
-  glade_adaptor_chooser_button_add_chooser (priv->all_button, all_chooser);
+  gtk_catalog = glade_app_get_catalog ("gtk+");
+
+  remove_chooser_widget (chooser, priv->others_chooser);
+  remove_chooser_widget (chooser, priv->all_chooser);
+
+  priv->others_chooser = glade_adaptor_chooser_add_chooser (chooser, TRUE);
+  priv->all_chooser = glade_adaptor_chooser_add_chooser (chooser, TRUE);
+
+  glade_adaptor_chooser_button_add_chooser (priv->others_button, priv->others_chooser);
+  glade_adaptor_chooser_button_add_chooser (priv->all_button, priv->all_chooser);
 
   /* then the rest */
   for (l = glade_app_get_catalogs (); l; l = g_list_next (l))
     {
       GladeCatalog *catalog = l->data;
 
-      _glade_adaptor_chooser_widget_add_catalog (GLADE_ADAPTOR_CHOOSER_WIDGET (all_chooser), catalog);
+      _glade_adaptor_chooser_widget_add_catalog (GLADE_ADAPTOR_CHOOSER_WIDGET (priv->all_chooser), catalog);
 
       if (catalog != gtk_catalog)
-        _glade_adaptor_chooser_widget_add_catalog (GLADE_ADAPTOR_CHOOSER_WIDGET (others_chooser), catalog);
+        _glade_adaptor_chooser_widget_add_catalog (GLADE_ADAPTOR_CHOOSER_WIDGET (priv->others_chooser), catalog);
     }
+
+  _glade_adaptor_chooser_widget_set_project (GLADE_ADAPTOR_CHOOSER_WIDGET (priv->others_chooser), priv->project);
+  _glade_adaptor_chooser_widget_set_project (GLADE_ADAPTOR_CHOOSER_WIDGET (priv->all_chooser), priv->project);
+}
+
+static void
+on_widget_adaptor_registered (GladeApp *app,
+                              GladeWidgetAdaptor *adaptor,
+                              GladeAdaptorChooser *chooser)
+{
+  GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
+  priv->needs_update = TRUE;
+}
+
+static void
+on_button_clicked (GtkButton *button, GladeAdaptorChooser *chooser)
+{
+  GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
+
+  if (priv->needs_update)
+    update_all_others_chooser (chooser);
+}
+
+static void
+glade_adaptor_chooser_constructed (GObject *object)
+{
+  GladeAdaptorChooser *chooser = GLADE_ADAPTOR_CHOOSER (object);
+  GladeAdaptorChooserPrivate *priv = GET_PRIVATE (chooser);
+  GladeCatalog *gtk_catalog;
+
+  /* GTK+ catalog goes first subdivided by group */
+  gtk_catalog = glade_app_get_catalog ("gtk+");
+  button_box_populate_from_catalog (chooser, gtk_catalog);
+
+  update_all_others_chooser (chooser);
+
+  g_signal_connect (glade_app_get(), "widget-adaptor-registered",
+                    G_CALLBACK (on_widget_adaptor_registered),
+                    chooser);
+
+  g_signal_connect (priv->others_button, "clicked",
+                    G_CALLBACK (on_button_clicked),
+                    chooser);
+  g_signal_connect (priv->all_button, "clicked",
+                    G_CALLBACK (on_button_clicked),
+                    chooser);
 }
 
 static void
