@@ -256,6 +256,9 @@ on_add_catalog_button_clicked (GtkButton *button, GladePreferences *preferences)
 
           glade_catalog_add_path (canonical);
 
+          /* Force user templates reload */
+          glade_catalog_load_all ();
+
           gtk_list_store_append (GTK_LIST_STORE (priv->catalog_path_store), &iter);
           gtk_list_store_set (GTK_LIST_STORE (priv->catalog_path_store), &iter,
                               COLUMN_PATH, display,
