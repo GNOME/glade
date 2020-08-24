@@ -27,20 +27,29 @@
 #if HAVE_GTK_TEMPLATE_UNSET
 extern void
 _gtk_widget_class_template_unset_only_for_glade (GtkWidgetClass *widget_class);
-#else
-#define _gtk_widget_class_template_unset_only_for_glade(void)
 #endif
 
 static GHashTable *templates = NULL;
 
 static void
+glade_template_class_init (gpointer g_class, gpointer class_data)
+{
+  const gchar *class_name = G_OBJECT_CLASS_NAME (g_class);
+  GBytes *template = g_hash_table_lookup (templates, class_name);
+
+  gtk_widget_class_set_template (g_class, template);
+}
+
+static void
 glade_template_instance_init (GTypeInstance *instance, gpointer g_class)
 {
-  /* Reset class template */
+#if HAVE_GTK_TEMPLATE_UNSET
+  /* Reset class template since it could have changed */
   _gtk_widget_class_template_unset_only_for_glade (GTK_WIDGET_GET_CLASS (instance));
   gtk_widget_class_set_template (GTK_WIDGET_GET_CLASS (instance), 
                                  g_hash_table_lookup (templates,
                                  G_OBJECT_TYPE_NAME (instance)));
+#endif
 
   /* Regular template initialization*/
   gtk_widget_init_template ((GtkWidget *)instance);
@@ -82,12 +91,6 @@ _glade_template_parse (const gchar *tmpl, gchar **type, gchar **parent)
   context = g_markup_parse_context_new (&parser, 0, &data, NULL);
 
   g_markup_parse_context_parse (context, tmpl, -1, NULL);
-
-  /*
-  while (g_markup_parse_context_parse (context, tmpl, 128, NULL) &&
-         (data.class == NULL || data.parent == NULL))
-    tmpl += 128;
-*/
 
   g_markup_parse_context_end_parse (context, NULL);
 
@@ -144,10 +147,17 @@ _glade_template_load (const gchar *filename, gchar **type, gchar **parent)
   g_file_get_contents (filename, &template, &len, &error);
 
   if (error)
-    g_warning ("Error loading template file %s - %s", filename, error->message);
+    {
+      g_warning ("Error loading template file %s - %s", filename, error->message);
+      g_error_free (error);
+    }
 
   if (!template || !_glade_template_parse (template, type, parent))
-    *type = *parent = NULL;
+    {
+      *type = NULL;
+      *parent = NULL;
+      g_free (template);
+    }
   else
     {
       GType tmpl_type = get_type_from_name (*type);
@@ -196,6 +206,7 @@ _glade_template_generate_type (const gchar *type, const gchar *parent)
 
   info = g_new0 (GTypeInfo, 1);
   info->class_size = query.class_size;
+  info->class_init = glade_template_class_init;
   info->instance_size = query.instance_size;
   info->instance_init = glade_template_instance_init;
 
