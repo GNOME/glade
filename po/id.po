@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-08-07 23:08+0000\n"
-"PO-Revision-Date: 2020-08-14 18:23+0700\n"
+"POT-Creation-Date: 2020-08-24 22:52+0000\n"
+"PO-Revision-Date: 2020-08-26 21:53+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
@@ -181,14 +181,13 @@ msgstr "Perubahan yang Anda buat akan hilang bila tidak Anda simpan."
 msgid "Close _without Saving"
 msgstr "Tutup _tanpa Menyimpan"
 
-#: src/glade-window.c:1040 src/glade-window.c:1725
-#: src/glade-preferences.glade:422 gladeui/glade-editor.c:795
-#: gladeui/glade-editor.c:1151 gladeui/glade-editor-property.c:1776
-#: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
-#: gladeui/glade-editor-property.c:3217 gladeui/glade-editor-property.c:3325
-#: gladeui/glade-editor-property.c:3336 gladeui/glade-editor-property.c:3647
-#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:522
-#: plugins/gtk+/glade-attributes.c:1062
+#: src/glade-window.c:1040 src/glade-window.c:1725 src/glade-preferences.c:237
+#: gladeui/glade-editor.c:794 gladeui/glade-editor.c:1153
+#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
+#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3217
+#: gladeui/glade-editor-property.c:3325 gladeui/glade-editor-property.c:3336
+#: gladeui/glade-editor-property.c:3647 gladeui/glade-utils.c:483
+#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Batal"
 
@@ -425,7 +424,7 @@ msgstr "Preferensi"
 msgid "About Glade"
 msgstr "Tentang Glade"
 
-#: src/glade.glade:504 src/glade-preferences.glade:436
+#: src/glade.glade:504 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Buka"
@@ -479,6 +478,10 @@ msgid "translator-credits"
 msgstr ""
 "Andika Triwidada <andika@gmail.com>, 2010-2014.\n"
 "Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2020."
+
+#: src/glade-preferences.c:234
+msgid "Select a catalog search path"
+msgstr "Pilih sebuah path pencarian katalog"
 
 #: src/glade-preferences.glade:45
 msgid "Glade Preferences"
@@ -555,25 +558,30 @@ msgstr ""
 msgid "Show warnings when saving"
 msgstr "Tampilkan peringatan ketika menyimpan"
 
-#: src/glade-preferences.glade:297
+#: src/glade-preferences.glade:285
+msgid ""
+"List of directories where to load widget catalogs and custom templates "
+"from.\n"
+"Needs to restart."
+msgstr ""
+"Daftar direktori tempat memuat katalog widget dan templat ubahan.\n"
+"Harus dimulai ulang."
+
+#: src/glade-preferences.glade:299
 msgid "column"
 msgstr "kolom"
 
-#: src/glade-preferences.glade:328
-msgid "Add a new catalog search path"
-msgstr "Tambahkan path pencarian katalog baru"
+#: src/glade-preferences.glade:331
+msgid "Add a new search path"
+msgstr "Tambahkan path pencarian baru"
 
-#: src/glade-preferences.glade:353
-msgid "Remove the selected catalog search path"
-msgstr "Hapus path pencarian katalog yang dipilih"
+#: src/glade-preferences.glade:356
+msgid "Remove the selected search path"
+msgstr "Hapus path pencarian yang dipilih"
 
-#: src/glade-preferences.glade:384
-msgid "Extra catalog paths"
-msgstr "Path katalog ekstra"
-
-#: src/glade-preferences.glade:403
-msgid "Select a catalog search path"
-msgstr "Pilih sebuah path pencarian katalog"
+#: src/glade-preferences.glade:387
+msgid "Extra Catalog & Templates paths"
+msgstr "Path Templat & Katalog Ekstra"
 
 #: src/glade-registration.c:282
 #, c-format
@@ -779,7 +787,7 @@ msgstr "Rust"
 #: src/glade-registration.glade:1370 src/glade-registration.glade:1465
 #: src/glade-registration.glade:1956 src/glade-registration.glade:2158
 #: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3196
-#: plugins/gtk+/gtk+.xml:4910
+#: plugins/gtk+/gtk+.xml:4916
 msgid "Other"
 msgstr "Lainnya"
 
@@ -1301,70 +1309,70 @@ msgstr ""
 "Kesalahan membuka %s untuk menulis data privat (%s).\n"
 "Tak ada data privat yang akan disimpan sesi ini"
 
-#: gladeui/glade-base-editor.c:587
+#: gladeui/glade-base-editor.c:592
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "Menata tipe objek pada %s menjadi %s"
 
-#: gladeui/glade-base-editor.c:750
+#: gladeui/glade-base-editor.c:755
 #, c-format
 msgid "Add a %s to %s"
 msgstr "Menambahkan suatu %s ke %s"
 
-#: gladeui/glade-base-editor.c:843 gladeui/glade-command.c:1225
+#: gladeui/glade-base-editor.c:848 gladeui/glade-command.c:1225
 #, c-format
 msgid "Add %s"
 msgstr "Menambah %s"
 
-#: gladeui/glade-base-editor.c:875
+#: gladeui/glade-base-editor.c:880
 #, c-format
 msgid "Add child %s"
 msgstr "Menambah %s anak"
 
-#: gladeui/glade-base-editor.c:967
+#: gladeui/glade-base-editor.c:972
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "Menghapus anak %s dari %s"
 
-#: gladeui/glade-base-editor.c:1096
+#: gladeui/glade-base-editor.c:1101
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Mengurut ulang anak %s"
 
-#: gladeui/glade-base-editor.c:1583 plugins/gtk+/gtk+.xml:280
+#: gladeui/glade-base-editor.c:1588 plugins/gtk+/gtk+.xml:280
 #: plugins/gtk+/gtk+.xml:1009 plugins/gtk+/gtk+.xml:1404
 #: plugins/gtk+/glade-about-dialog-editor.ui:316
 #: plugins/gtk+/glade-tool-button-editor.ui:86
 msgid "Label"
 msgstr "Label"
 
-#: gladeui/glade-base-editor.c:1598 gladeui/glade-widget-adaptor.c:1468
+#: gladeui/glade-base-editor.c:1603 gladeui/glade-widget-adaptor.c:1468
 #: plugins/gtk+/glade-eprop-enum-int.c:70
 #: plugins/gtk+/glade-eprop-enum-int.c:71
 msgid "Type"
 msgstr "Jenis"
 
-#: gladeui/glade-base-editor.c:1626 plugins/gtk+/gtk+.xml:618
+#: gladeui/glade-base-editor.c:1631 plugins/gtk+/gtk+.xml:618
 msgid "Container"
 msgstr "Kontainer"
 
-#: gladeui/glade-base-editor.c:1627
+#: gladeui/glade-base-editor.c:1632
 msgid "The container object this editor is currently editing"
 msgstr "Objek wadah yang kini sedang disunting"
 
 #. Name
 #. translators: The unique identifier of an object in the project
-#: gladeui/glade-base-editor.c:1914 gladeui/glade-editor-table.c:315
+#: gladeui/glade-base-editor.c:1919 gladeui/glade-editor-table.c:315
 #: gladeui/glade-editor-table.c:599
 msgid "ID:"
 msgstr "ID:"
 
 #. Type
-#: gladeui/glade-base-editor.c:1934 plugins/gtk+/glade-window-editor.ui:553
+#: gladeui/glade-base-editor.c:1939 plugins/gtk+/glade-window-editor.ui:553
 msgid "Type:"
 msgstr "Jenis:"
 
-#: gladeui/glade-base-editor.c:2152
+#: gladeui/glade-base-editor.c:2157
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1462,6 +1470,10 @@ msgstr "String"
 msgid "An entry"
 msgstr "Suatu entri"
 
+#: gladeui/glade-catalog.c:730
+msgid "User templates"
+msgstr "Templat pengguna"
+
 #: gladeui/glade-command.c:427 gladeui/glade-command.c:485
 #, c-format
 msgid "Enabling property %s on widget %s"
@@ -1492,9 +1504,9 @@ msgstr "Menata %s dari %s ke %s"
 msgid "Renaming %s to %s"
 msgstr "Mengganti nama %s menjadi %s"
 
-#: gladeui/glade-command.c:1226 gladeui/glade-command.c:1839
-#: gladeui/glade-command.c:1865 gladeui/glade-command.c:1968
-#: gladeui/glade-command.c:2010
+#: gladeui/glade-command.c:1226 gladeui/glade-command.c:1836
+#: gladeui/glade-command.c:1862 gladeui/glade-command.c:1965
+#: gladeui/glade-command.c:2007
 msgid "multiple"
 msgstr "berganda"
 
@@ -1518,96 +1530,96 @@ msgstr "Hapus %s"
 msgid "Remove multiple"
 msgstr "Hapus beberapa"
 
-#: gladeui/glade-command.c:1811
+#: gladeui/glade-command.c:1808
 #, c-format
 msgid "Create %s"
 msgstr "Buat %s"
 
-#: gladeui/glade-command.c:1837
+#: gladeui/glade-command.c:1834
 #, c-format
 msgid "Delete %s"
 msgstr "Hapus %s"
 
-#: gladeui/glade-command.c:1863
+#: gladeui/glade-command.c:1860
 #, c-format
 msgid "Cut %s"
 msgstr "Potong %s"
 
-#: gladeui/glade-command.c:1966
+#: gladeui/glade-command.c:1963
 #, c-format
 msgid "Paste %s"
 msgstr "Tempel %s"
 
-#: gladeui/glade-command.c:2008
+#: gladeui/glade-command.c:2005
 #, c-format
 msgid "Drag %s and Drop to %s"
 msgstr "Seret %s dan Jatuhkan ke %s"
 
-#: gladeui/glade-command.c:2011
+#: gladeui/glade-command.c:2008
 msgid "root"
 msgstr "root"
 
-#: gladeui/glade-command.c:2129
+#: gladeui/glade-command.c:2126
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Tambahkan penangan sinyal %s"
 
-#: gladeui/glade-command.c:2130
+#: gladeui/glade-command.c:2127
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Hapus penangan sinyal %s"
 
-#: gladeui/glade-command.c:2131
+#: gladeui/glade-command.c:2128
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Ubah penangan sinyal %s"
 
-#: gladeui/glade-command.c:2346
+#: gladeui/glade-command.c:2343
 #, c-format
 msgid "Setting i18n metadata"
 msgstr "Menata metadata i18n"
 
-#: gladeui/glade-command.c:2463
+#: gladeui/glade-command.c:2460
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr "Mengunci %s oleh widget %s"
 
-#: gladeui/glade-command.c:2508
+#: gladeui/glade-command.c:2505
 #, c-format
 msgid "Unlocking %s"
 msgstr "Buka kunci %s"
 
-#: gladeui/glade-command.c:2630 gladeui/glade-command.c:2677
+#: gladeui/glade-command.c:2627 gladeui/glade-command.c:2674
 #, c-format
 msgid "Setting target version of '%s' to %d.%d"
 msgstr "Menata versi target '%s' ke %d.%d"
 
-#: gladeui/glade-command.c:2833
+#: gladeui/glade-command.c:2830
 #, c-format
 msgid "Setting project's %s property"
 msgstr "Menata properti projek %s"
 
-#: gladeui/glade-command.c:2940
+#: gladeui/glade-command.c:2937
 #, c-format
 msgid "Setting resource path to '%s'"
 msgstr "Menata path sumber daya ke '%s'"
 
-#: gladeui/glade-command.c:2971
+#: gladeui/glade-command.c:2968
 #, c-format
 msgid "Setting translation domain to '%s'"
 msgstr "Menata domain penerjemahan ke '%s'"
 
-#: gladeui/glade-command.c:3006
+#: gladeui/glade-command.c:3003
 #, c-format
 msgid "Unsetting widget '%s' as template"
 msgstr "Melepas tatanan widget '%s' sebagai templat"
 
-#: gladeui/glade-command.c:3009
+#: gladeui/glade-command.c:3006
 #, c-format
 msgid "Setting widget '%s' as template"
 msgstr "Menata widget '%s' sebagai templat"
 
-#: gladeui/glade-command.c:3012
+#: gladeui/glade-command.c:3009
 msgid "Unsetting template"
 msgstr "Melepas tatanan templat"
 
@@ -1634,58 +1646,58 @@ msgstr "Tilikan Rancangan"
 msgid "The GladeDesignView that contains this layout"
 msgstr "GladeDesignView yang memuat tata letak ini"
 
-#: gladeui/glade-editor.c:240
+#: gladeui/glade-editor.c:239
 msgid "Show info"
 msgstr "Tampilkan info"
 
-#: gladeui/glade-editor.c:241
+#: gladeui/glade-editor.c:240
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "Apakah menampilkan suatu tombol informasi bagi widget yang dimuat"
 
-#: gladeui/glade-editor.c:248 plugins/gtk+/gtk+.xml:11
+#: gladeui/glade-editor.c:247 plugins/gtk+/gtk+.xml:11
 msgid "Widget"
 msgstr "Widget"
 
-#: gladeui/glade-editor.c:249
+#: gladeui/glade-editor.c:248
 msgid "The currently loaded widget in this editor"
 msgstr "Widget yang sedang dimuat di penyunting ini"
 
-#: gladeui/glade-editor.c:255
+#: gladeui/glade-editor.c:254
 msgid "Show Class Field"
 msgstr "Tampilkan Ruas Kelas"
 
-#: gladeui/glade-editor.c:256
+#: gladeui/glade-editor.c:255
 msgid "Whether to show the class field at the top"
 msgstr "Apakah menampilkan ruas kelas di atas"
 
-#: gladeui/glade-editor.c:262
+#: gladeui/glade-editor.c:261
 msgid "Class Field"
 msgstr "Ruas Kelas"
 
-#: gladeui/glade-editor.c:263
+#: gladeui/glade-editor.c:262
 msgid "The class field string"
 msgstr "Kalimat ruas kelas"
 
-#: gladeui/glade-editor.c:269
+#: gladeui/glade-editor.c:268
 msgid "Show Border"
 msgstr "Tampilkan Batas"
 
-#: gladeui/glade-editor.c:270
+#: gladeui/glade-editor.c:269
 msgid "Whether the border should be shown"
 msgstr "Apakah pembatas harus ditunjukkan"
 
-#: gladeui/glade-editor.c:276
+#: gladeui/glade-editor.c:275
 msgid "Signal Editor"
 msgstr "Penyunting Sinyal"
 
-#: gladeui/glade-editor.c:277
+#: gladeui/glade-editor.c:276
 msgid "The signal editor used to edit signals"
 msgstr "Penyunting sinyal digunakan untuk menyunting sinyal"
 
 #. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
 #. * example: Window Properties - GtkWindow [window1]
 #.
-#: gladeui/glade-editor.c:337
+#: gladeui/glade-editor.c:336
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "Properti %s - %s [%s]"
@@ -1693,12 +1705,12 @@ msgstr "Properti %s - %s [%s]"
 #. translators: %s(Class Title) Properties - %s (ClassName)
 #. * example: Window Properties - GtkWindow
 #.
-#: gladeui/glade-editor.c:347
+#: gladeui/glade-editor.c:346
 #, c-format
 msgid "%s Properties - %s"
 msgstr "Properti %s - %s"
 
-#: gladeui/glade-editor.c:361 gladeui/glade-widget.c:1389
+#: gladeui/glade-editor.c:360 gladeui/glade-widget.c:1384
 #: gladeui/glade-project-properties.ui:497
 #: plugins/gtk+/glade-gtk-action-group.c:188
 #: plugins/gtk+/glade-gtk-cell-layout.c:365
@@ -1710,75 +1722,75 @@ msgstr "Properti %s - %s"
 msgid "Properties"
 msgstr "Properti"
 
-#: gladeui/glade-editor.c:791
+#: gladeui/glade-editor.c:790
 #, c-format
 msgid "Create a %s"
 msgstr "Buat suatu %s"
 
-#: gladeui/glade-editor.c:799
+#: gladeui/glade-editor.c:798
 msgid "Crea_te"
 msgstr "Bua_t"
 
-#: gladeui/glade-editor.c:907
+#: gladeui/glade-editor.c:906
 msgid "Reset"
 msgstr "Reset"
 
-#: gladeui/glade-editor.c:918 gladeui/glade-property-label.c:119
+#: gladeui/glade-editor.c:917 gladeui/glade-property-label.c:119
 msgid "Property"
 msgstr "Properti"
 
-#: gladeui/glade-editor.c:949
+#: gladeui/glade-editor.c:948
 msgid "General"
 msgstr "Umum"
 
-#: gladeui/glade-editor.c:957
+#: gladeui/glade-editor.c:956
 msgid "Common"
 msgstr "Biasa"
 
-#: gladeui/glade-editor.c:965 gladeui/glade-editor.ui:296
+#: gladeui/glade-editor.c:964 gladeui/glade-editor.ui:296
 msgid "Accessibility"
 msgstr "Aksesibilitas"
 
-#: gladeui/glade-editor.c:998
+#: gladeui/glade-editor.c:997
 msgid "(default)"
 msgstr "(bawaan)"
 
-#: gladeui/glade-editor.c:1013
+#: gladeui/glade-editor.c:1012
 msgid "Select the properties that you want to reset to their default values"
 msgstr "Pilih properti yang ingin Anda reset ke nilai bawaannya"
 
-#: gladeui/glade-editor.c:1147
+#: gladeui/glade-editor.c:1149
 msgid "Reset Widget Properties"
 msgstr "Reset Properti Widget"
 
-#: gladeui/glade-editor.c:1152 gladeui/glade-editor-property.c:1777
+#: gladeui/glade-editor.c:1154 gladeui/glade-editor-property.c:1777
 #: gladeui/glade-editor-property.c:2085 gladeui/glade-editor-property.c:3219
 #: gladeui/glade-editor-property.c:3328 gladeui/glade-editor-property.c:3338
-#: gladeui/glade-editor-property.c:3648 plugins/gtk+/glade-accels.c:523
+#: gladeui/glade-editor-property.c:3648 plugins/gtk+/glade-accels.c:524
 #: plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_OK"
 
 #. Checklist
-#: gladeui/glade-editor.c:1164
+#: gladeui/glade-editor.c:1166
 msgid "_Properties:"
 msgstr "_Properti:"
 
-#: gladeui/glade-editor.c:1193
+#: gladeui/glade-editor.c:1195
 msgid "_Select All"
 msgstr "Pilih _Semua"
 
-#: gladeui/glade-editor.c:1201
+#: gladeui/glade-editor.c:1203
 msgid "_Unselect All"
 msgstr "Pilih Tak Sat_upun"
 
 #. Description
-#: gladeui/glade-editor.c:1211
+#: gladeui/glade-editor.c:1213
 msgid "Property _Description:"
 msgstr "_Deskripsi Properti:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: gladeui/glade-editor.c:1309
+#: gladeui/glade-editor.c:1311
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - Properti %s"
@@ -1868,7 +1880,7 @@ msgid "Select a file from the project resource directory"
 msgstr "Pilih suatu berkas dari direktori sumber daya projek"
 
 #: gladeui/glade-editor-property.c:3136 gladeui/glade-widget-adaptor.c:1461
-#: gladeui/glade-widget.c:1353 plugins/gtk+/gtk+.xml:1519
+#: gladeui/glade-widget.c:1348 plugins/gtk+/gtk+.xml:1519
 msgid "Name"
 msgstr "Nama"
 
@@ -1898,7 +1910,7 @@ msgstr "Pilih suatu %s di projek ini"
 
 #: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
 #: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3646
-#: plugins/gtk+/glade-accels.c:521 plugins/gtk+/glade-attributes.c:1061
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "Bersi_hkan"
 
@@ -1938,7 +1950,7 @@ msgstr "Nama Kelas:"
 msgid "The object's unique identifier"
 msgstr "Identifier unik objek"
 
-#: gladeui/glade-editor-table.c:608 gladeui/glade-widget.c:1447
+#: gladeui/glade-editor-table.c:608 gladeui/glade-widget.c:1442
 msgid "Composite"
 msgstr "Komposit"
 
@@ -1947,7 +1959,7 @@ msgid "Whether this widget is a composite template"
 msgstr "Apakah widget adalah suatu templat komposit"
 
 #: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:193
-#: gladeui/glade-widget.c:1382
+#: gladeui/glade-widget.c:1377
 msgid "Project"
 msgstr "Projek"
 
@@ -2184,113 +2196,113 @@ msgstr ""
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "Salah satu dari --listen atau --filename mesti dinyatakan.\n"
 
-#: gladeui/glade-project.c:1018
+#: gladeui/glade-project.c:1015
 msgid "Whether project has been modified since it was last saved"
 msgstr "Apakah projek telah diubah sejak terakhir kali disimpan"
 
-#: gladeui/glade-project.c:1024
+#: gladeui/glade-project.c:1021
 msgid "Has Selection"
 msgstr "Punya Pilihan"
 
-#: gladeui/glade-project.c:1025
+#: gladeui/glade-project.c:1022
 msgid "Whether project has a selection"
 msgstr "Apakah projek punya suatu pilihan"
 
-#: gladeui/glade-project.c:1031
+#: gladeui/glade-project.c:1028
 msgid "Path"
 msgstr "Path"
 
-#: gladeui/glade-project.c:1032
+#: gladeui/glade-project.c:1029
 msgid "The filesystem path of the project"
 msgstr "Path sistem berkas dari projek"
 
-#: gladeui/glade-project.c:1038
+#: gladeui/glade-project.c:1035
 msgid "Read Only"
 msgstr "Hanya Baca"
 
-#: gladeui/glade-project.c:1039
+#: gladeui/glade-project.c:1036
 msgid "Whether project is read-only"
 msgstr "Apakah projek hanya dapat dibaca"
 
-#: gladeui/glade-project.c:1045
+#: gladeui/glade-project.c:1042
 msgid "Add Item"
 msgstr "Tambah Butir"
 
-#: gladeui/glade-project.c:1046
+#: gladeui/glade-project.c:1043
 msgid "The current item to add to the project"
 msgstr "Butir saat ini untuk ditambahkan ke projek"
 
-#: gladeui/glade-project.c:1052
+#: gladeui/glade-project.c:1049
 msgid "Pointer Mode"
 msgstr "Mode penunjuk"
 
-#: gladeui/glade-project.c:1053
+#: gladeui/glade-project.c:1050
 msgid "The currently effective GladePointerMode"
 msgstr "GladePointerMode yang kini efektif"
 
-#: gladeui/glade-project.c:1060
+#: gladeui/glade-project.c:1057
 msgid "Translation Domain"
 msgstr "Domain Penerjemahan"
 
-#: gladeui/glade-project.c:1061
+#: gladeui/glade-project.c:1058
 msgid "The project translation domain"
 msgstr "Domain penerjemahan projek"
 
-#: gladeui/glade-project.c:1067 gladeui/glade-widget.c:1405
+#: gladeui/glade-project.c:1064 gladeui/glade-widget.c:1400
 msgid "Template"
 msgstr "Templat"
 
-#: gladeui/glade-project.c:1068
+#: gladeui/glade-project.c:1065
 msgid "The project's template widget, if any"
 msgstr "Widget templat projek, bila ada"
 
-#: gladeui/glade-project.c:1074
+#: gladeui/glade-project.c:1071
 msgid "Resource Path"
 msgstr "Path Sumber Daya"
 
-#: gladeui/glade-project.c:1075
+#: gladeui/glade-project.c:1072
 msgid "Path to load images and resources in Glade's runtime"
 msgstr "Path untuk memuat gambar dan sumber daya gambar dalam runtime Glade"
 
-#: gladeui/glade-project.c:1081 gladeui/glade-project-properties.ui:700
+#: gladeui/glade-project.c:1078 gladeui/glade-project-properties.ui:700
 msgid "License"
 msgstr "Lisensi"
 
-#: gladeui/glade-project.c:1082
+#: gladeui/glade-project.c:1079
 msgid "License for this project, it will be added as a document level comment."
 msgstr ""
 "Lisensi untuk projek ini, akan ditambahkan sebagai komentar tingkat dokumen."
 
-#: gladeui/glade-project.c:1088
+#: gladeui/glade-project.c:1085
 msgid "CSS Provider Path"
 msgstr "Path Penyedia CSS"
 
-#: gladeui/glade-project.c:1089
+#: gladeui/glade-project.c:1086
 msgid "Path to use as the custom CSS provider for this project."
 msgstr "Path yang dipakai sebagai penyedia CSS gubahan bagi projek ini."
 
-#: gladeui/glade-project.c:1186
+#: gladeui/glade-project.c:1183
 #, c-format
 msgid "(internal %s)"
 msgstr "(%s internal)"
 
-#: gladeui/glade-project.c:1191
+#: gladeui/glade-project.c:1188
 #, c-format
 msgid "(%s child)"
 msgstr "(anak %s)"
 
-#: gladeui/glade-project.c:1193
+#: gladeui/glade-project.c:1190
 #, c-format
 msgid "(template)"
 msgstr "(templat)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: gladeui/glade-project.c:1201
+#: gladeui/glade-project.c:1198
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%s dari %s)"
 
-#: gladeui/glade-project.c:1562
+#: gladeui/glade-project.c:1559
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -2300,17 +2312,17 @@ msgstr ""
 "Katalog yang diperlukan tak tersedia: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: gladeui/glade-project.c:1930
+#: gladeui/glade-project.c:1927
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s menarget Gtk+ %d.%d"
 
-#: gladeui/glade-project.c:1973
+#: gladeui/glade-project.c:1970
 #, c-format
 msgid ", %s"
 msgstr ", %s"
 
-#: gladeui/glade-project.c:1981
+#: gladeui/glade-project.c:1978
 #, c-format
 msgid ""
 "Especially because there is %d object that can not be built with type: %s"
@@ -2321,7 +2333,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Khususnya karena ada objek %d yang tak dapat dibangun dengan tipe: %s"
 
-#: gladeui/glade-project.c:1999
+#: gladeui/glade-project.c:1996
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -2334,7 +2346,7 @@ msgstr ""
 "3.8 tanpa widget yang tak dipakai lagi.\n"
 "%s"
 
-#: gladeui/glade-project.c:2060
+#: gladeui/glade-project.c:2057
 #, c-format
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
@@ -2353,13 +2365,13 @@ msgstr ""
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3052
+#: gladeui/glade-project.c:3049
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Widget diperkenalkan di %s %d.%d sedangkan projek menarget %s %d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3056
+#: gladeui/glade-project.c:3053
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2368,12 +2380,12 @@ msgstr ""
 "[%s] \n"
 "\tKelas obyek '<b>%s</b>' diperkenalkan di %s %d.%d\n"
 
-#: gladeui/glade-project.c:3058
+#: gladeui/glade-project.c:3055
 msgid "This widget is deprecated"
 msgstr "Widget ini tak dipakai lagi"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3061
+#: gladeui/glade-project.c:3058
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2384,14 +2396,14 @@ msgstr ""
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3066
+#: gladeui/glade-project.c:3063
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Properti ini diperkenalkan di %s %d.%d sedangkan projek menarget %s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3070
+#: gladeui/glade-project.c:3067
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2403,7 +2415,7 @@ msgstr ""
 "%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3074
+#: gladeui/glade-project.c:3071
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2414,12 +2426,12 @@ msgstr ""
 "\tProperti '<b>%s</b>' packing dari kelas objek '<b>%s</b>' diperkenalkan di "
 "%s %d.%d\n"
 
-#: gladeui/glade-project.c:3077
+#: gladeui/glade-project.c:3074
 msgid "This property is deprecated"
 msgstr "Properti ini tak dipakai lagi"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3080
+#: gladeui/glade-project.c:3077
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2430,14 +2442,14 @@ msgstr ""
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3084
+#: gladeui/glade-project.c:3081
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Sinyal ini diperkenalkan di %s %d.%d sedangkan projek menarget %s %d.%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3088
+#: gladeui/glade-project.c:3085
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2446,12 +2458,12 @@ msgstr ""
 "[%s]\n"
 "\tSinyal '<b>%s</b>' dari kelas objek '<b>%s</b>' diperkenalkan di %s %d.%d\n"
 
-#: gladeui/glade-project.c:3091
+#: gladeui/glade-project.c:3088
 msgid "This signal is deprecated"
 msgstr "Sinyal ini tak dipakai lagi"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3094
+#: gladeui/glade-project.c:3091
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2460,61 +2472,61 @@ msgstr ""
 "[%s]\n"
 "\tSinyal '<b>%s</b>' dari kelas objek '<b>%s</b>' tak berlaku lagi\n"
 
-#: gladeui/glade-project.c:3389
+#: gladeui/glade-project.c:3386
 msgid "Details"
 msgstr "Rincian"
 
-#: gladeui/glade-project.c:3405
+#: gladeui/glade-project.c:3402
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "Projek \"%s\" punya kesalahan. Simpan saja?"
 
-#: gladeui/glade-project.c:3431
+#: gladeui/glade-project.c:3428
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr ""
 "Objek %s adalah suatu templat kelas tapi ini tak didukung dalam gtk+ %d.%d\n"
 
-#: gladeui/glade-project.c:3446
+#: gladeui/glade-project.c:3443
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Objek %s memiliki tipe %s yang tak dikenal\n"
 
-#: gladeui/glade-project.c:4947
+#: gladeui/glade-project.c:4944
 #, c-format
 msgid "Unsaved %i"
 msgstr "Belum disimpan %i"
 
-#: gladeui/glade-project.c:5254 gladeui/glade-project.c:5305
-#: gladeui/glade-project.c:5462
+#: gladeui/glade-project.c:5251 gladeui/glade-project.c:5302
+#: gladeui/glade-project.c:5459
 msgid "No widget selected."
 msgstr "Tak ada widget yang dipilih."
 
-#: gladeui/glade-project.c:5270
+#: gladeui/glade-project.c:5267
 msgid "Unable to copy unrecognized widget type."
 msgstr "Tak bisa menyalin tipe widget yang tak dikenal."
 
-#: gladeui/glade-project.c:5302
+#: gladeui/glade-project.c:5299
 msgid "Unable to cut unrecognized widget type"
 msgstr "Tak bisa memotong widget yang tipenya tak dikenal"
 
-#: gladeui/glade-project.c:5354
+#: gladeui/glade-project.c:5351
 msgid "Unable to paste to the selected parent"
 msgstr "Tak bisa menempel ke induk yang dipilih"
 
-#: gladeui/glade-project.c:5365
+#: gladeui/glade-project.c:5362
 msgid "Unable to paste to multiple widgets"
 msgstr "Tak bisa menempel ke widget berganda"
 
-#: gladeui/glade-project.c:5375
+#: gladeui/glade-project.c:5372
 msgid "No widget on the clipboard"
 msgstr "Tak ada widget pada papan klip"
 
-#: gladeui/glade-project.c:5420
+#: gladeui/glade-project.c:5417
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Hanya satu widget dapat ditempelkan pada suatu saat ke wadah ini"
 
-#: gladeui/glade-project.c:5432
+#: gladeui/glade-project.c:5429
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Cacah placeholder tak mencukupi pada wadah target"
 
@@ -2540,7 +2552,7 @@ msgstr "Diaktifkan"
 msgid "If the property is optional, this is its enabled state"
 msgstr "Bila properti opsional, ini adalah keadaan teraktifkannya"
 
-#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:191
+#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:188
 msgid "Sensitive"
 msgstr "Sensitif"
 
@@ -2680,7 +2692,7 @@ msgstr "Data Pengguna"
 msgid "The user data for this signal"
 msgstr "Data pengguna bagi sinyal ini"
 
-#: gladeui/glade-signal.c:191 gladeui/glade-widget.c:1437
+#: gladeui/glade-signal.c:191 gladeui/glade-widget.c:1432
 msgid "Support Warning"
 msgstr "Peringatan Dukungan"
 
@@ -2700,7 +2712,7 @@ msgstr "Apakah data pengguna ditukar dengan instansi bagi penangan"
 msgid "Select an object to pass to the handler"
 msgstr "Pilih suatu objek untuk dilewatkan ke penangan"
 
-#: gladeui/glade-signal-editor.c:1314 plugins/gtk+/glade-accels.c:448
+#: gladeui/glade-signal-editor.c:1314 plugins/gtk+/glade-accels.c:449
 msgid "Signal"
 msgstr "Sinyal"
 
@@ -2728,7 +2740,7 @@ msgstr "<Tik disini>"
 msgid "<Click here>"
 msgstr "<Klik disini>"
 
-#: gladeui/glade-utils.c:136 gladeui/glade-utils.c:168
+#: gladeui/glade-utils.c:137 gladeui/glade-utils.c:168
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "Simbol \"%s\" tak dapat ditemukan"
@@ -2763,12 +2775,12 @@ msgstr "Berkas GtkBuilder"
 msgid "All Glade Files"
 msgstr "Semua Berkas Glade"
 
-#: gladeui/glade-utils.c:1227
+#: gladeui/glade-utils.c:1241
 msgid "Could not show link:"
 msgstr "Tak dapat menampilkan taut:"
 
 #. Reset the column
-#: gladeui/glade-utils.c:1703 plugins/gtk+/glade-attributes.c:829
+#: gladeui/glade-utils.c:1717 plugins/gtk+/glade-attributes.c:829
 #: plugins/gtk+/gtk+.xml:871 plugins/gtk+/gtk+.xml:1257
 #: plugins/gtk+/gtk+.xml:1273 plugins/gtk+/gtk+.xml:1388
 #: plugins/gtk+/gtk+.xml:1531 plugins/gtk+/gtk+.xml:1678
@@ -2777,28 +2789,28 @@ msgstr "Tak dapat menampilkan taut:"
 #: plugins/gtk+/gtk+.xml:3086 plugins/gtk+/gtk+.xml:3460
 #: plugins/gtk+/gtk+.xml:3599 plugins/gtk+/gtk+.xml:3716
 #: plugins/gtk+/gtk+.xml:3759 plugins/gtk+/gtk+.xml:4021
-#: plugins/gtk+/gtk+.xml:4725 plugins/gtk+/gtk+.xml:5546
+#: plugins/gtk+/gtk+.xml:4725 plugins/gtk+/gtk+.xml:5552
 msgid "None"
 msgstr "Tak Ada"
 
-#: gladeui/glade-widget-action.c:185 plugins/gtk+/gtk+.xml:436
+#: gladeui/glade-widget-action.c:182 plugins/gtk+/gtk+.xml:436
 msgid "Definition"
 msgstr "Definisi"
 
-#: gladeui/glade-widget-action.c:186
+#: gladeui/glade-widget-action.c:183
 msgid "GladeWidgetActionDef structure pointer"
 msgstr "Pointer struktur GladeWidgetActionDef"
 
-#: gladeui/glade-widget-action.c:192
+#: gladeui/glade-widget-action.c:189
 msgid "Whether this action is sensitive"
 msgstr "Apakah aksi ini sensitif"
 
-#: gladeui/glade-widget-action.c:198 gladeui/glade-widget.c:1442
+#: gladeui/glade-widget-action.c:195 gladeui/glade-widget.c:1437
 #: plugins/gtk+/gtk+.xml:4334
 msgid "Visible"
 msgstr "Tampak"
 
-#: gladeui/glade-widget-action.c:199
+#: gladeui/glade-widget-action.c:196
 msgid "Whether this action is visible"
 msgstr "Apakah aksi ini nampak"
 
@@ -2889,138 +2901,138 @@ msgstr "Kueri"
 msgid "Whether the adaptor should query the use or not"
 msgstr "Apakah adaptor harus kueri penggunaan atau tidak"
 
-#: gladeui/glade-widget.c:1354
+#: gladeui/glade-widget.c:1349
 msgid "The name of the widget"
 msgstr "Nama widget"
 
-#: gladeui/glade-widget.c:1358
+#: gladeui/glade-widget.c:1353
 msgid "Internal name"
 msgstr "Nama internal"
 
-#: gladeui/glade-widget.c:1359
+#: gladeui/glade-widget.c:1354
 msgid "The internal name of the widget"
 msgstr "Nama internal dari widget"
 
-#: gladeui/glade-widget.c:1363
+#: gladeui/glade-widget.c:1358
 msgid "Anarchist"
 msgstr "Anarkis"
 
-#: gladeui/glade-widget.c:1364
+#: gladeui/glade-widget.c:1359
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
 "Apakah anak komposit ini suatu anak moyang (ancestral) atau anak anarkis"
 
-#: gladeui/glade-widget.c:1370
+#: gladeui/glade-widget.c:1365
 msgid "Object"
 msgstr "Objek"
 
-#: gladeui/glade-widget.c:1371
+#: gladeui/glade-widget.c:1366
 msgid "The object associated"
 msgstr "Objek yang terkait"
 
-#: gladeui/glade-widget.c:1376
+#: gladeui/glade-widget.c:1371
 msgid "Adaptor"
 msgstr "Adaptor"
 
-#: gladeui/glade-widget.c:1377
+#: gladeui/glade-widget.c:1372
 msgid "The class adaptor for the associated widget"
 msgstr "Adaptor kelas bagi widget terkait"
 
-#: gladeui/glade-widget.c:1383
+#: gladeui/glade-widget.c:1378
 msgid "The glade project that this widget belongs to"
 msgstr "Projek glade pemilik widget ini"
 
-#: gladeui/glade-widget.c:1390
+#: gladeui/glade-widget.c:1385
 msgid "A list of GladeProperties"
 msgstr "Daftar dari GladeProperties"
 
-#: gladeui/glade-widget.c:1394 plugins/gtk+/gtk+.xml:634
+#: gladeui/glade-widget.c:1389 plugins/gtk+/gtk+.xml:634
 msgid "Parent"
 msgstr "Induk"
 
-#: gladeui/glade-widget.c:1395
+#: gladeui/glade-widget.c:1390
 msgid "A pointer to the parenting GladeWidget"
 msgstr "Pointer ke GladeWidget induk"
 
-#: gladeui/glade-widget.c:1400
+#: gladeui/glade-widget.c:1395
 msgid "Internal Name"
 msgstr "Nama Internal"
 
-#: gladeui/glade-widget.c:1401
+#: gladeui/glade-widget.c:1396
 msgid "A generic name prefix for internal widgets"
 msgstr "Awalan nama generik bagi widget internal"
 
-#: gladeui/glade-widget.c:1406
+#: gladeui/glade-widget.c:1401
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Templat GladeWidget sebagai basis widget baru"
 
-#: gladeui/glade-widget.c:1411
+#: gladeui/glade-widget.c:1406
 msgid "Exact Template"
 msgstr "Templat Persis"
 
-#: gladeui/glade-widget.c:1413
+#: gladeui/glade-widget.c:1408
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr "Apakah kita membuat duplikat eksak ketika memakai templat"
 
-#: gladeui/glade-widget.c:1417
+#: gladeui/glade-widget.c:1412
 msgid "Reason"
 msgstr "Alasan"
 
-#: gladeui/glade-widget.c:1418
+#: gladeui/glade-widget.c:1413
 msgid "A GladeCreateReason for this creation"
 msgstr "GladeCreateReason bagi kreasi ini"
 
-#: gladeui/glade-widget.c:1425
+#: gladeui/glade-widget.c:1420
 msgid "Toplevel Width"
 msgstr "Lebar Aras Puncak"
 
-#: gladeui/glade-widget.c:1426
+#: gladeui/glade-widget.c:1421
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "Lebar widget saat aras puncak dalam GladeDesignLayout"
 
-#: gladeui/glade-widget.c:1431
+#: gladeui/glade-widget.c:1426
 msgid "Toplevel Height"
 msgstr "Tinggi Aras Puncak"
 
-#: gladeui/glade-widget.c:1432
+#: gladeui/glade-widget.c:1427
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "Tinggi widget saat aras puncak dalam GladeDesignLayout"
 
-#: gladeui/glade-widget.c:1438
+#: gladeui/glade-widget.c:1433
 msgid "A warning string about version mismatches"
 msgstr "String peringatan tentang ketidakcocokan versi"
 
-#: gladeui/glade-widget.c:1443
+#: gladeui/glade-widget.c:1438
 msgid "Whether the widget is visible or not"
 msgstr "Apakah widget nampak atau tidak"
 
-#: gladeui/glade-widget.c:1448
+#: gladeui/glade-widget.c:1443
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Apakah widget ini adalah templat bagi suatu widget komposit"
 
-#: gladeui/glade-widget.c:4882
+#: gladeui/glade-widget.c:4874
 msgid "Template classes are only usable in GTK+ 3.10 and later."
 msgstr "Kelas templat hanya dapat digunakan di GTK+ 3.10 dan lebih baru."
 
-#: gladeui/glade-widget.c:4890
+#: gladeui/glade-widget.c:4882
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "Objek memiliki tipe %s yang tak dikenal"
 
-#: gladeui/glade-widget.c:4956
+#: gladeui/glade-widget.c:4948
 msgid "Property has versioning problems: "
 msgstr "Properti mengalami masalah pemversian: "
 
-#: gladeui/glade-widget.c:4958
+#: gladeui/glade-widget.c:4950
 msgid "Some properties have versioning problems: "
 msgstr "Beberapa properti mengalami masalah pemversian: "
 
-#: gladeui/glade-widget.c:4978
+#: gladeui/glade-widget.c:4970
 msgid "Signal has versioning problems: "
 msgstr "Sinyal mengalami masalah pemversian: "
 
-#: gladeui/glade-widget.c:4980
+#: gladeui/glade-widget.c:4972
 msgid "Some signals have versioning problems: "
 msgstr "Beberapa sinyal mengalami masalah pemversian: "
 
@@ -3028,7 +3040,7 @@ msgstr "Beberapa sinyal mengalami masalah pemversian: "
 msgid "Actions"
 msgstr "Aksi"
 
-#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5615
+#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5621
 msgid "Applications"
 msgstr "Aplikasi"
 
@@ -3224,15 +3236,15 @@ msgstr "Menata %s untuk memakai berkas logo"
 msgid "Setting %s to use a logo icon"
 msgstr "Menata %s untuk memakai suatu ikon logo"
 
-#: plugins/gtk+/glade-accels.c:320 plugins/gtk+/glade-accels.c:392
+#: plugins/gtk+/glade-accels.c:321 plugins/gtk+/glade-accels.c:393
 msgid "<choose a key>"
 msgstr "<pilih kunci>"
 
-#: plugins/gtk+/glade-accels.c:464
+#: plugins/gtk+/glade-accels.c:465
 msgid "Accelerator Key"
 msgstr "Tombol Akselerator"
 
-#: plugins/gtk+/glade-accels.c:517
+#: plugins/gtk+/glade-accels.c:518
 msgid "Choose accelerator keys..."
 msgstr "Pilih tombol akselerator..."
 
@@ -3383,49 +3395,49 @@ msgstr "Menata %s untuk memakai tombol stok"
 msgid "Setting %s to use a label and image"
 msgstr "Menata %s untuk memakai suatu label dan gambar"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:191
+#: plugins/gtk+/glade-cell-renderer-editor.c:190
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
 msgstr "Menata %s untuk memakai properti %s sebagai suatu atribut"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:212
+#: plugins/gtk+/glade-cell-renderer-editor.c:211
 #, c-format
 msgid "Setting %s to use the %s property directly"
 msgstr "Menata %s untuk memakai properti %s secara langsung"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:356
+#: plugins/gtk+/glade-cell-renderer-editor.c:355
 #, c-format
 msgid "Retrieve %s from model (type %s)"
 msgstr "Mengambil %s dari model (tipe %s)"
 
 #. translators: the adjective not the verb
-#: plugins/gtk+/glade-cell-renderer-editor.c:510
+#: plugins/gtk+/glade-cell-renderer-editor.c:509
 msgid "unset"
 msgstr "tak diset"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:533
+#: plugins/gtk+/glade-cell-renderer-editor.c:532
 msgid "no model"
 msgstr "tanpa model"
 
-#: plugins/gtk+/glade-column-types.c:347 plugins/gtk+/glade-column-types.c:399
-#: plugins/gtk+/glade-column-types.c:472 plugins/gtk+/glade-column-types.c:693
+#: plugins/gtk+/glade-column-types.c:346 plugins/gtk+/glade-column-types.c:398
+#: plugins/gtk+/glade-column-types.c:471 plugins/gtk+/glade-column-types.c:692
 #, c-format
 msgid "Setting columns on %s"
 msgstr "Menata kolom pada %s"
 
-#: plugins/gtk+/glade-column-types.c:500
+#: plugins/gtk+/glade-column-types.c:499
 msgid "< define a new column >"
 msgstr "< definisikan suatu kolom baru >"
 
-#: plugins/gtk+/glade-column-types.c:823
+#: plugins/gtk+/glade-column-types.c:822
 msgid "Add and remove columns:"
 msgstr "Tambah dan hapus kolom:"
 
-#: plugins/gtk+/glade-column-types.c:875
+#: plugins/gtk+/glade-column-types.c:874
 msgid "Column type"
 msgstr "Tipe kolom"
 
-#: plugins/gtk+/glade-column-types.c:897
+#: plugins/gtk+/glade-column-types.c:896
 msgid "Column name"
 msgstr "Nama kolom"
 
@@ -3489,7 +3501,7 @@ msgstr "Menata ikon primer %s untuk tak memakai markup tooltip"
 msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr "Menata ikon sekunder %s untuk tak memakai markup tooltip"
 
-#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1027
+#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1026
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Menempatkan %s di dalam %s"
@@ -3959,7 +3971,7 @@ msgstr "Pemisah"
 #: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:822
 #: plugins/gtk+/gtk+.xml:1269 plugins/gtk+/gtk+.xml:2054
 #: plugins/gtk+/gtk+.xml:4646 plugins/gtk+/gtk+.xml:4688
-#: plugins/gtk+/gtk+.xml:4752
+#: plugins/gtk+/gtk+.xml:4758
 msgid "Normal"
 msgstr "Normal"
 
@@ -4034,22 +4046,22 @@ msgstr "Menghapus induk %s"
 msgid "Adding parent %s for %s"
 msgstr "Menambah induk %s bagi %s"
 
-#: plugins/gtk+/glade-gtk-widget.c:1038 plugins/gtk+/glade-gtk-widget.c:1102
+#: plugins/gtk+/glade-gtk-widget.c:1037 plugins/gtk+/glade-gtk-widget.c:1101
 msgid "(unnamed)"
 msgstr "(tanpa nama)"
 
-#: plugins/gtk+/glade-gtk-widget.c:1050
+#: plugins/gtk+/glade-gtk-widget.c:1049
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Menambahkan %s ke Grup Ukuran %s"
 
-#: plugins/gtk+/glade-gtk-widget.c:1054
+#: plugins/gtk+/glade-gtk-widget.c:1053
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Menambahkan %s ke Grup Ukuran baru"
 
 #. Add trailing new... item
-#: plugins/gtk+/glade-gtk-widget.c:1122
+#: plugins/gtk+/glade-gtk-widget.c:1121
 msgid "New Size Group"
 msgstr "Kelompok Ukuran Baru"
 
@@ -4092,7 +4104,7 @@ msgstr ""
 "Pertama tambahkan suatu nama stok di entri di bawah, lalu tambahkan dan "
 "definisikan sumber bagi ikon itu di treeview."
 
-#: plugins/gtk+/glade-icon-sources.c:759
+#: plugins/gtk+/glade-icon-sources.c:758
 #, c-format
 msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
@@ -4102,41 +4114,41 @@ msgstr ""
 "dari '%s' (Glade hanya akan memuat mereka dalam runtime dari direktori "
 "proyek Anda)."
 
-#: plugins/gtk+/glade-icon-sources.c:767
+#: plugins/gtk+/glade-icon-sources.c:766
 #, c-format
 msgid ""
 "Set whether you want to specify a text direction for this source of '%s'"
 msgstr ""
 "Tata apakah Anda ingin menyatakan suatu arah teks bagi sumber ini dari '%s'"
 
-#: plugins/gtk+/glade-icon-sources.c:774
+#: plugins/gtk+/glade-icon-sources.c:773
 #, c-format
 msgid "Set the text direction for this source of '%s'"
 msgstr "Tata arah teks bagi sumber ini dari '%s'"
 
-#: plugins/gtk+/glade-icon-sources.c:780
+#: plugins/gtk+/glade-icon-sources.c:779
 #, c-format
 msgid "Set whether you want to specify an icon size for this source of '%s'"
 msgstr ""
 "Tata apakah Anda ingin menyatakan suatu ukuran ikon bagi sumber ini dari '%s'"
 
-#: plugins/gtk+/glade-icon-sources.c:787
+#: plugins/gtk+/glade-icon-sources.c:786
 #, c-format
 msgid "Set the icon size for this source of '%s'"
 msgstr "Tata ukuran ikon bagi sumber ini dari '%s'"
 
-#: plugins/gtk+/glade-icon-sources.c:793
+#: plugins/gtk+/glade-icon-sources.c:792
 #, c-format
 msgid "Set whether you want to specify a state for this source of '%s'"
 msgstr ""
 "Tata apakah Anda ingin menyatakan suatu keadaan bagi sumber ini dari '%s'"
 
-#: plugins/gtk+/glade-icon-sources.c:800
+#: plugins/gtk+/glade-icon-sources.c:799
 #, c-format
 msgid "Set the state for this source of '%s'"
 msgstr "Tata keadaan bagi sumber ini dari '%s'"
 
-#: plugins/gtk+/glade-icon-sources.c:850 plugins/gtk+/gtk+.xml:2295
+#: plugins/gtk+/glade-icon-sources.c:849 plugins/gtk+/gtk+.xml:2295
 msgid "File Name"
 msgstr "Nama Berkas"
 
@@ -4263,11 +4275,11 @@ msgstr ""
 "Tambah, hapus, dan sunting baris data (Anda juga dapat memakai Ctrl+N untuk "
 "menambah baris baru dan tombol Delete untuk menghapus baris yang dipilih)"
 
-#: plugins/gtk+/glade-string-list.c:333 plugins/gtk+/glade-string-list.c:378
+#: plugins/gtk+/glade-string-list.c:332 plugins/gtk+/glade-string-list.c:377
 msgid "<Type Here>"
 msgstr "<Tik Disini>"
 
-#: plugins/gtk+/glade-string-list.c:596
+#: plugins/gtk+/glade-string-list.c:595
 msgid "<Enter ID>"
 msgstr "<Masukkan ID>"
 
@@ -5448,7 +5460,7 @@ msgstr "Posisi butir menu pada shell menu"
 #: plugins/gtk+/gtk+.xml:3805 plugins/gtk+/gtk+.xml:3880
 #: plugins/gtk+/gtk+.xml:3896 plugins/gtk+/gtk+.xml:4001
 #: plugins/gtk+/gtk+.xml:4071 plugins/gtk+/gtk+.xml:4124
-#: plugins/gtk+/gtk+.xml:4182 plugins/gtk+/gtk+.xml:5566
+#: plugins/gtk+/gtk+.xml:4182 plugins/gtk+/gtk+.xml:5572
 msgid "Edit…"
 msgstr "Sunting…"
 
@@ -5507,11 +5519,11 @@ msgstr "Grup Aksel"
 msgid "Separator Menu Item"
 msgstr "Butir Menu Pemisah"
 
-#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:5548
+#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:5554
 msgid "Left to Right"
 msgstr "Kiri ke Kanan"
 
-#: plugins/gtk+/gtk+.xml:1084 plugins/gtk+/gtk+.xml:5550
+#: plugins/gtk+/gtk+.xml:1084 plugins/gtk+/gtk+.xml:5556
 msgid "Right to Left"
 msgstr "Kanan ke Kiri"
 
@@ -5929,7 +5941,7 @@ msgid "Check Button"
 msgstr "Tombol Centang"
 
 #: plugins/gtk+/gtk+.xml:1871 plugins/gtk+/gtk+.xml:3268
-#: plugins/webkit2gtk/webkit2gtk.xml:48
+#: plugins/webkit2gtk/webkit2gtk.xml:49
 msgid "Always"
 msgstr "Selalu"
 
@@ -6055,7 +6067,7 @@ msgstr "Diskret"
 msgid "Resource Name"
 msgstr "Nama Sumber Daya"
 
-#: plugins/gtk+/gtk+.xml:2300 plugins/gtk+/gtk+.xml:5382
+#: plugins/gtk+/gtk+.xml:2300 plugins/gtk+/gtk+.xml:5388
 msgid "Icon Size"
 msgstr "Ukuran Ikon"
 
@@ -6488,10 +6500,12 @@ msgid "Question"
 msgstr "Pertanyaan"
 
 #: plugins/gtk+/gtk+.xml:3194 plugins/gtk+/gtk+.xml:4733
+#: plugins/gtk+/gtk+.xml:4735 plugins/gtk+/gtk+.xml:4737
+#: plugins/gtk+/gtk+.xml:4739
 msgid "Error"
 msgstr "Galat"
 
-#: plugins/gtk+/gtk+.xml:3272 plugins/webkit2gtk/webkit2gtk.xml:50
+#: plugins/gtk+/gtk+.xml:3272 plugins/webkit2gtk/webkit2gtk.xml:51
 msgid "Never"
 msgstr "Tak pernah"
 
@@ -6885,29 +6899,29 @@ msgstr "Kolom Nama Warna Latar Sel"
 #: plugins/gtk+/gtk+.xml:4599 plugins/gtk+/gtk+.xml:4613
 #: plugins/gtk+/gtk+.xml:4627 plugins/gtk+/gtk+.xml:4663
 #: plugins/gtk+/gtk+.xml:4677 plugins/gtk+/gtk+.xml:4700
-#: plugins/gtk+/gtk+.xml:4714 plugins/gtk+/gtk+.xml:4741
-#: plugins/gtk+/gtk+.xml:4762 plugins/gtk+/gtk+.xml:4776
-#: plugins/gtk+/gtk+.xml:4790 plugins/gtk+/gtk+.xml:4804
-#: plugins/gtk+/gtk+.xml:4818 plugins/gtk+/gtk+.xml:4833
-#: plugins/gtk+/gtk+.xml:4848 plugins/gtk+/gtk+.xml:4863
-#: plugins/gtk+/gtk+.xml:4878 plugins/gtk+/gtk+.xml:4897
-#: plugins/gtk+/gtk+.xml:4918 plugins/gtk+/gtk+.xml:4985
-#: plugins/gtk+/gtk+.xml:4999 plugins/gtk+/gtk+.xml:5022
-#: plugins/gtk+/gtk+.xml:5036 plugins/gtk+/gtk+.xml:5050
-#: plugins/gtk+/gtk+.xml:5069 plugins/gtk+/gtk+.xml:5083
-#: plugins/gtk+/gtk+.xml:5097 plugins/gtk+/gtk+.xml:5116
-#: plugins/gtk+/gtk+.xml:5130 plugins/gtk+/gtk+.xml:5144
-#: plugins/gtk+/gtk+.xml:5158 plugins/gtk+/gtk+.xml:5173
-#: plugins/gtk+/gtk+.xml:5188 plugins/gtk+/gtk+.xml:5202
-#: plugins/gtk+/gtk+.xml:5216 plugins/gtk+/gtk+.xml:5236
-#: plugins/gtk+/gtk+.xml:5254 plugins/gtk+/gtk+.xml:5268
-#: plugins/gtk+/gtk+.xml:5282 plugins/gtk+/gtk+.xml:5297
-#: plugins/gtk+/gtk+.xml:5312 plugins/gtk+/gtk+.xml:5326
-#: plugins/gtk+/gtk+.xml:5340 plugins/gtk+/gtk+.xml:5359
-#: plugins/gtk+/gtk+.xml:5373 plugins/gtk+/gtk+.xml:5387
-#: plugins/gtk+/gtk+.xml:5406 plugins/gtk+/gtk+.xml:5420
-#: plugins/gtk+/gtk+.xml:5434 plugins/gtk+/gtk+.xml:5448
-#: plugins/gtk+/gtk+.xml:5462
+#: plugins/gtk+/gtk+.xml:4714 plugins/gtk+/gtk+.xml:4747
+#: plugins/gtk+/gtk+.xml:4768 plugins/gtk+/gtk+.xml:4782
+#: plugins/gtk+/gtk+.xml:4796 plugins/gtk+/gtk+.xml:4810
+#: plugins/gtk+/gtk+.xml:4824 plugins/gtk+/gtk+.xml:4839
+#: plugins/gtk+/gtk+.xml:4854 plugins/gtk+/gtk+.xml:4869
+#: plugins/gtk+/gtk+.xml:4884 plugins/gtk+/gtk+.xml:4903
+#: plugins/gtk+/gtk+.xml:4924 plugins/gtk+/gtk+.xml:4991
+#: plugins/gtk+/gtk+.xml:5005 plugins/gtk+/gtk+.xml:5028
+#: plugins/gtk+/gtk+.xml:5042 plugins/gtk+/gtk+.xml:5056
+#: plugins/gtk+/gtk+.xml:5075 plugins/gtk+/gtk+.xml:5089
+#: plugins/gtk+/gtk+.xml:5103 plugins/gtk+/gtk+.xml:5122
+#: plugins/gtk+/gtk+.xml:5136 plugins/gtk+/gtk+.xml:5150
+#: plugins/gtk+/gtk+.xml:5164 plugins/gtk+/gtk+.xml:5179
+#: plugins/gtk+/gtk+.xml:5194 plugins/gtk+/gtk+.xml:5208
+#: plugins/gtk+/gtk+.xml:5222 plugins/gtk+/gtk+.xml:5242
+#: plugins/gtk+/gtk+.xml:5260 plugins/gtk+/gtk+.xml:5274
+#: plugins/gtk+/gtk+.xml:5288 plugins/gtk+/gtk+.xml:5303
+#: plugins/gtk+/gtk+.xml:5318 plugins/gtk+/gtk+.xml:5332
+#: plugins/gtk+/gtk+.xml:5346 plugins/gtk+/gtk+.xml:5365
+#: plugins/gtk+/gtk+.xml:5379 plugins/gtk+/gtk+.xml:5393
+#: plugins/gtk+/gtk+.xml:5412 plugins/gtk+/gtk+.xml:5426
+#: plugins/gtk+/gtk+.xml:5440 plugins/gtk+/gtk+.xml:5454
+#: plugins/gtk+/gtk+.xml:5468
 msgid "The column in the model to load the value from"
 msgstr "Kolom pada model tempat mengambil nilai"
 
@@ -7039,7 +7053,7 @@ msgstr "Kolom Mode Paragraf Tunggal"
 msgid "Size column"
 msgstr "Kolom ukuran"
 
-#: plugins/gtk+/gtk+.xml:4622 plugins/gtk+/gtk+.xml:4892
+#: plugins/gtk+/gtk+.xml:4622 plugins/gtk+/gtk+.xml:4898
 msgid "Data column"
 msgstr "Kolom data"
 
@@ -7095,7 +7109,7 @@ msgstr "Miring"
 msgid "Style column"
 msgstr "Kolom gaya"
 
-#: plugins/gtk+/gtk+.xml:4709 plugins/gtk+/gtk+.xml:5277
+#: plugins/gtk+/gtk+.xml:4709 plugins/gtk+/gtk+.xml:5283
 msgid "Text column"
 msgstr "Kolom teks"
 
@@ -7107,359 +7121,359 @@ msgstr "Ganda"
 msgid "Low"
 msgstr "Rendah"
 
-#: plugins/gtk+/gtk+.xml:4736
+#: plugins/gtk+/gtk+.xml:4742
 msgid "Underline column"
 msgstr "Kolom garis bawah"
 
-#: plugins/gtk+/gtk+.xml:4754
+#: plugins/gtk+/gtk+.xml:4760
 msgid "Small Capitals"
 msgstr "Kapital Kecil"
 
-#: plugins/gtk+/gtk+.xml:4757
+#: plugins/gtk+/gtk+.xml:4763
 msgid "Variant column"
 msgstr "Kolom varian"
 
-#: plugins/gtk+/gtk+.xml:4771
+#: plugins/gtk+/gtk+.xml:4777
 msgid "Weight column"
 msgstr "Kolom bobot"
 
-#: plugins/gtk+/gtk+.xml:4785
+#: plugins/gtk+/gtk+.xml:4791
 msgid "Width in Characters column"
 msgstr "Kolom Lebar dalam Karakter"
 
-#: plugins/gtk+/gtk+.xml:4799
+#: plugins/gtk+/gtk+.xml:4805
 msgid "Wrap Mode column"
 msgstr "Kolom Mode Lipat"
 
-#: plugins/gtk+/gtk+.xml:4813
+#: plugins/gtk+/gtk+.xml:4819
 msgid "Wrap Width column"
 msgstr "Kolom Lebar Lipat"
 
-#: plugins/gtk+/gtk+.xml:4828
+#: plugins/gtk+/gtk+.xml:4834
 msgid "Background RGBA column"
 msgstr "Kolom RGBA Latar"
 
-#: plugins/gtk+/gtk+.xml:4843
+#: plugins/gtk+/gtk+.xml:4849
 msgid "Foreground RGBA column"
 msgstr "Kolom RGBA depan"
 
-#: plugins/gtk+/gtk+.xml:4858
+#: plugins/gtk+/gtk+.xml:4864
 msgid "Maximum width in characters"
 msgstr "Lebar maksimum dalam karakter"
 
-#: plugins/gtk+/gtk+.xml:4873
+#: plugins/gtk+/gtk+.xml:4879
 msgid "Placeholder text"
 msgstr "Teks placeholder"
 
-#: plugins/gtk+/gtk+.xml:4889
+#: plugins/gtk+/gtk+.xml:4895
 msgid "Accelerator Renderer"
 msgstr "Perender Akselerator"
 
-#: plugins/gtk+/gtk+.xml:4908
+#: plugins/gtk+/gtk+.xml:4914
 msgid "Gtk"
 msgstr "Gtk"
 
-#: plugins/gtk+/gtk+.xml:4913
+#: plugins/gtk+/gtk+.xml:4919
 msgid "Accelerator Mode column"
 msgstr "Kolom Mode Akselerator"
 
-#: plugins/gtk+/gtk+.xml:4929
+#: plugins/gtk+/gtk+.xml:4935
 msgid "Shift Key"
 msgstr "Tombol Shift"
 
-#: plugins/gtk+/gtk+.xml:4931
+#: plugins/gtk+/gtk+.xml:4937
 msgid "Lock Key"
 msgstr "Tombol Kunci"
 
-#: plugins/gtk+/gtk+.xml:4933
+#: plugins/gtk+/gtk+.xml:4939
 msgid "Control Key"
 msgstr "Kunci Kendali"
 
-#: plugins/gtk+/gtk+.xml:4935
+#: plugins/gtk+/gtk+.xml:4941
 msgid "Alt Key"
 msgstr "Tombol Alt"
 
-#: plugins/gtk+/gtk+.xml:4937
+#: plugins/gtk+/gtk+.xml:4943
 msgid "Fifth Key"
 msgstr "Kunci Ke Lima"
 
-#: plugins/gtk+/gtk+.xml:4939
+#: plugins/gtk+/gtk+.xml:4945
 msgid "Sixth Key"
 msgstr "Kunci Ke Enam"
 
-#: plugins/gtk+/gtk+.xml:4941
+#: plugins/gtk+/gtk+.xml:4947
 msgid "Seventh Key"
 msgstr "Kunci Ke Tujuh"
 
-#: plugins/gtk+/gtk+.xml:4943
+#: plugins/gtk+/gtk+.xml:4949
 msgid "Eighth Key"
 msgstr "Kunci Ke Delapan"
 
-#: plugins/gtk+/gtk+.xml:4945
+#: plugins/gtk+/gtk+.xml:4951
 msgid "First Mouse Button"
 msgstr "Tombol Mouse Pertama"
 
-#: plugins/gtk+/gtk+.xml:4947
+#: plugins/gtk+/gtk+.xml:4953
 msgid "Second Mouse Button"
 msgstr "Tombol Mouse Kedua"
 
-#: plugins/gtk+/gtk+.xml:4949
+#: plugins/gtk+/gtk+.xml:4955
 msgid "Third Mouse Button"
 msgstr "Tombol Mouse Ke Tiga"
 
-#: plugins/gtk+/gtk+.xml:4951
+#: plugins/gtk+/gtk+.xml:4957
 msgid "Fourth Mouse Button"
 msgstr "Tombol Tetikus Ke-Empat"
 
-#: plugins/gtk+/gtk+.xml:4953
+#: plugins/gtk+/gtk+.xml:4959
 msgid "Fifth Mouse Button"
 msgstr "Tombol Mouse Ke Lima"
 
-#: plugins/gtk+/gtk+.xml:4955
+#: plugins/gtk+/gtk+.xml:4961
 msgid "Super Modifier"
 msgstr "Perubah Super"
 
-#: plugins/gtk+/gtk+.xml:4957
+#: plugins/gtk+/gtk+.xml:4963
 msgid "Hyper Modifier"
 msgstr "Perubah Hiper"
 
-#: plugins/gtk+/gtk+.xml:4959
+#: plugins/gtk+/gtk+.xml:4965
 msgid "Meta Modifier"
 msgstr "Perubah Meta"
 
-#: plugins/gtk+/gtk+.xml:4961
+#: plugins/gtk+/gtk+.xml:4967
 msgid "Release Modifier"
 msgstr "Perubah Rilis"
 
-#: plugins/gtk+/gtk+.xml:4963
+#: plugins/gtk+/gtk+.xml:4969
 msgid "All Modifiers"
 msgstr "Semua Perubah"
 
-#: plugins/gtk+/gtk+.xml:4980
+#: plugins/gtk+/gtk+.xml:4986
 msgid "Accelerator Modifiers column"
 msgstr "Kolom Perubah Akselerator"
 
-#: plugins/gtk+/gtk+.xml:4994
+#: plugins/gtk+/gtk+.xml:5000
 msgid "Keycode column"
 msgstr "Kolom kode tombol"
 
-#: plugins/gtk+/gtk+.xml:5009
+#: plugins/gtk+/gtk+.xml:5015
 msgid "Combo Renderer"
 msgstr "Perender Kombo"
 
-#: plugins/gtk+/gtk+.xml:5017
+#: plugins/gtk+/gtk+.xml:5023
 msgid "Has Entry column"
 msgstr "Kolom Punya Entri"
 
-#: plugins/gtk+/gtk+.xml:5031
+#: plugins/gtk+/gtk+.xml:5037
 msgid "Model column"
 msgstr "Kolom model"
 
-#: plugins/gtk+/gtk+.xml:5045
+#: plugins/gtk+/gtk+.xml:5051
 msgid "Text Column column"
 msgstr "Kolom Kolom Teks"
 
-#: plugins/gtk+/gtk+.xml:5061
+#: plugins/gtk+/gtk+.xml:5067
 msgid "Spin Renderer"
 msgstr "Perender Spin"
 
-#: plugins/gtk+/gtk+.xml:5064
+#: plugins/gtk+/gtk+.xml:5070
 msgid "Adjustment column"
 msgstr "Kolom penyesuaian"
 
-#: plugins/gtk+/gtk+.xml:5078
+#: plugins/gtk+/gtk+.xml:5084
 msgid "Climb Rate column"
 msgstr "Kolom Laju Menanjak"
 
-#: plugins/gtk+/gtk+.xml:5092
+#: plugins/gtk+/gtk+.xml:5098
 msgid "Digits column"
 msgstr "Kolom digit"
 
-#: plugins/gtk+/gtk+.xml:5107
+#: plugins/gtk+/gtk+.xml:5113
 msgid "Pixbuf Renderer"
 msgstr "Perender Pixbuf"
 
-#: plugins/gtk+/gtk+.xml:5111
+#: plugins/gtk+/gtk+.xml:5117
 msgid "Follow State column"
 msgstr "Kolom Ikuti Keadaan"
 
-#: plugins/gtk+/gtk+.xml:5125
+#: plugins/gtk+/gtk+.xml:5131
 msgid "Icon Name column"
 msgstr "Kolom Nama Ikon"
 
-#: plugins/gtk+/gtk+.xml:5139
+#: plugins/gtk+/gtk+.xml:5145
 msgid "Pixbuf column"
 msgstr "Kolom pixbuf"
 
-#: plugins/gtk+/gtk+.xml:5153
+#: plugins/gtk+/gtk+.xml:5159
 msgid "GIcon column"
 msgstr "Kolom GIcon"
 
-#: plugins/gtk+/gtk+.xml:5168
+#: plugins/gtk+/gtk+.xml:5174
 msgid "Pixbuf Expander Closed column"
 msgstr "Kolom Pengembang Pixbux Ditutup"
 
-#: plugins/gtk+/gtk+.xml:5183
+#: plugins/gtk+/gtk+.xml:5189
 msgid "Pixbuf Expander Open column"
 msgstr "Kolom Pengembang Pixbuf Dibuka"
 
-#: plugins/gtk+/gtk+.xml:5197
+#: plugins/gtk+/gtk+.xml:5203
 msgid "Stock Detail column"
 msgstr "Kolom Rincian Stok"
 
-#: plugins/gtk+/gtk+.xml:5211
+#: plugins/gtk+/gtk+.xml:5217
 msgid "Stock column"
 msgstr "Kolom stok"
 
-#: plugins/gtk+/gtk+.xml:5231
+#: plugins/gtk+/gtk+.xml:5237
 msgid "Stock Size column"
 msgstr "Kolom Ukuran Stok"
 
-#: plugins/gtk+/gtk+.xml:5246
+#: plugins/gtk+/gtk+.xml:5252
 msgid "Progress Renderer"
 msgstr "Perender Kemajuan"
 
-#: plugins/gtk+/gtk+.xml:5249
+#: plugins/gtk+/gtk+.xml:5255
 msgid "Orientation column"
 msgstr "Kolom orientasi"
 
-#: plugins/gtk+/gtk+.xml:5263 plugins/gtk+/gtk+.xml:5368
+#: plugins/gtk+/gtk+.xml:5269 plugins/gtk+/gtk+.xml:5374
 msgid "Pulse column"
 msgstr "Kolom pulsa"
 
-#: plugins/gtk+/gtk+.xml:5292
+#: plugins/gtk+/gtk+.xml:5298
 msgid "Text Horizontal Alignment column"
 msgstr "Kolom Perataan Horisontal Teks"
 
-#: plugins/gtk+/gtk+.xml:5307
+#: plugins/gtk+/gtk+.xml:5313
 msgid "Text Vertical Alignment column"
 msgstr "Kolom Perataan Vertikal Teks"
 
-#: plugins/gtk+/gtk+.xml:5321
+#: plugins/gtk+/gtk+.xml:5327
 msgid "Value column"
 msgstr "Kolom nilai"
 
-#: plugins/gtk+/gtk+.xml:5335
+#: plugins/gtk+/gtk+.xml:5341
 msgid "Inverted column"
 msgstr "Kolom yang dibalik"
 
-#: plugins/gtk+/gtk+.xml:5351
+#: plugins/gtk+/gtk+.xml:5357
 msgid "Spinner Renderer"
 msgstr "Perender Spinner"
 
-#: plugins/gtk+/gtk+.xml:5354 plugins/gtk+/gtk+.xml:5415
+#: plugins/gtk+/gtk+.xml:5360 plugins/gtk+/gtk+.xml:5421
 msgid "Active column"
 msgstr "Kolom aktif"
 
-#: plugins/gtk+/gtk+.xml:5398
+#: plugins/gtk+/gtk+.xml:5404
 msgid "Toggle Renderer"
 msgstr "Perender Jungkit"
 
-#: plugins/gtk+/gtk+.xml:5401
+#: plugins/gtk+/gtk+.xml:5407
 msgid "Activatable column"
 msgstr "Kolom yang dapat diaktifkan"
 
-#: plugins/gtk+/gtk+.xml:5429
+#: plugins/gtk+/gtk+.xml:5435
 msgid "Inconsistent column"
 msgstr "Kolom tak konsisten"
 
-#: plugins/gtk+/gtk+.xml:5443
+#: plugins/gtk+/gtk+.xml:5449
 msgid "Indicator Size column"
 msgstr "Kolom Ukuran Indikator"
 
-#: plugins/gtk+/gtk+.xml:5457
+#: plugins/gtk+/gtk+.xml:5463
 msgid "Radio column"
 msgstr "Kolom radio"
 
-#: plugins/gtk+/gtk+.xml:5472
+#: plugins/gtk+/gtk+.xml:5478
 msgid "Status Icon"
 msgstr "Ikon Status"
 
-#: plugins/gtk+/gtk+.xml:5483
+#: plugins/gtk+/gtk+.xml:5489
 msgid "Text Buffer"
 msgstr "Penyangga Teks"
 
-#: plugins/gtk+/gtk+.xml:5496
+#: plugins/gtk+/gtk+.xml:5502
 msgid "Entry Buffer"
 msgstr "Penyangga Entri"
 
-#: plugins/gtk+/gtk+.xml:5504
+#: plugins/gtk+/gtk+.xml:5510
 msgid "Text Tag"
 msgstr "Tag Teks"
 
-#: plugins/gtk+/gtk+.xml:5557
+#: plugins/gtk+/gtk+.xml:5563
 msgid "Text Tag Table"
 msgstr "Tabel Tag Teks"
 
-#: plugins/gtk+/gtk+.xml:5571
+#: plugins/gtk+/gtk+.xml:5577
 msgid "File Filter"
 msgstr "Filter Berkas"
 
-#: plugins/gtk+/gtk+.xml:5577 plugins/gtk+/gtk+.xml:5601
+#: plugins/gtk+/gtk+.xml:5583 plugins/gtk+/gtk+.xml:5607
 msgid "Mime Types"
 msgstr "Tipe MIME"
 
-#: plugins/gtk+/gtk+.xml:5582 plugins/gtk+/gtk+.xml:5606
+#: plugins/gtk+/gtk+.xml:5588 plugins/gtk+/gtk+.xml:5612
 msgid "The list of mime types to add to the filter"
 msgstr "Daftar tipe mime untuk ditambahkan ke penyaring"
 
-#: plugins/gtk+/gtk+.xml:5584 plugins/gtk+/gtk+.xml:5608
+#: plugins/gtk+/gtk+.xml:5590 plugins/gtk+/gtk+.xml:5614
 msgid "Patterns"
 msgstr "Pola"
 
-#: plugins/gtk+/gtk+.xml:5589 plugins/gtk+/gtk+.xml:5613
+#: plugins/gtk+/gtk+.xml:5595 plugins/gtk+/gtk+.xml:5619
 msgid "The list of file name patterns to add to the filter"
 msgstr "Daftar pola nama berkas untuk ditambahkan ke penyaring"
 
-#: plugins/gtk+/gtk+.xml:5595
+#: plugins/gtk+/gtk+.xml:5601
 msgid "Recent Filter"
 msgstr "Tapis Terkini"
 
-#: plugins/gtk+/gtk+.xml:5620
+#: plugins/gtk+/gtk+.xml:5626
 msgid "The list of application names to add to the filter"
 msgstr "Daftar nama aplikasi untuk ditambahkan ke penyaring"
 
-#: plugins/gtk+/gtk+.xml:5626
+#: plugins/gtk+/gtk+.xml:5632
 msgid "Recent Manager"
 msgstr "Manajer Terkini"
 
-#: plugins/gtk+/gtk+.xml:5628
+#: plugins/gtk+/gtk+.xml:5634
 msgid "Themed Icon"
 msgstr "Ikon Bertema"
 
-#: plugins/gtk+/gtk+.xml:5629
+#: plugins/gtk+/gtk+.xml:5635
 msgid "File Icon"
 msgstr "Ikon Berkas"
 
-#: plugins/gtk+/gtk+.xml:5631
+#: plugins/gtk+/gtk+.xml:5637
 msgid "Native File Chooser Dialog"
 msgstr "Dialog Pemilih Berkas Asli"
 
-#: plugins/gtk+/gtk+.xml:5635
+#: plugins/gtk+/gtk+.xml:5641
 msgid "Toplevels"
 msgstr "Aras Puncak"
 
-#: plugins/gtk+/gtk+.xml:5650
+#: plugins/gtk+/gtk+.xml:5656
 msgid "Containers"
 msgstr "Wadah"
 
-#: plugins/gtk+/gtk+.xml:5682
+#: plugins/gtk+/gtk+.xml:5688
 msgid "Control"
 msgstr "Kendali"
 
-#: plugins/gtk+/gtk+.xml:5716
+#: plugins/gtk+/gtk+.xml:5722
 msgid "Display"
 msgstr "Tampilan"
 
-#: plugins/gtk+/gtk+.xml:5738
+#: plugins/gtk+/gtk+.xml:5744
 msgid "Composite Widgets"
 msgstr "Widget Komposit"
 
-#: plugins/gtk+/gtk+.xml:5749
+#: plugins/gtk+/gtk+.xml:5755
 msgid "Miscellaneous"
 msgstr "Serba neka"
 
-#: plugins/gtk+/gtk+.xml:5779
+#: plugins/gtk+/gtk+.xml:5785
 msgid "Deprecated"
 msgstr "Tak berlaku lagi"
 
@@ -8135,19 +8149,19 @@ msgstr "Tampilan Web WebKit"
 msgid "The URL to load in Glade (this property will not be saved)"
 msgstr "URL untuk memuat di Glade (properti ini tidak akan disimpan)"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:31
+#: plugins/webkit2gtk/webkit2gtk.xml:32
 msgid "Tab"
 msgstr "Tab"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:41
+#: plugins/webkit2gtk/webkit2gtk.xml:42
 msgid "WebKit Settings"
 msgstr "Pengaturan WebKit"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:46
+#: plugins/webkit2gtk/webkit2gtk.xml:47
 msgid "On Demand"
 msgstr "Sesuai Permintaan"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:57
+#: plugins/webkit2gtk/webkit2gtk.xml:58
 msgid "WebKit2GTK+ Widgets"
 msgstr "Widget WebKit2GTK+"
 
