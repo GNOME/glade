@@ -2792,9 +2792,7 @@ update_project_resource_path (GladeProject *project, gchar *path)
 
           if (pspec->value_type == GDK_TYPE_PIXBUF)
             {
-              gchar *fullpath, *relpath;
               const gchar *filename;
-              GFile *fullpath_file;
               GObject *pixbuf;
 
               glade_property_get (property, &pixbuf);
@@ -2802,14 +2800,19 @@ update_project_resource_path (GladeProject *project, gchar *path)
                 continue;
 
               filename = g_object_get_data (pixbuf, "GladeFileName");
-              fullpath = glade_project_resource_fullpath (project, filename);
-              fullpath_file = g_file_new_for_path (fullpath);
-              relpath = _glade_util_file_get_relative_path (new_resource_path,
-                                                            fullpath_file);
-              g_object_set_data_full (pixbuf, "GladeFileName", relpath, g_free);
 
-              g_object_unref (fullpath_file);
-              g_free (fullpath);
+              if (!g_str_has_prefix (filename, "resource:///"))
+                {
+                  g_autoptr(GFile) fullpath_file = NULL;
+                  g_autofree gchar *fullpath = NULL;
+                  gchar *relpath;
+
+                  fullpath = glade_project_resource_fullpath (project, filename);
+                  fullpath_file = g_file_new_for_path (fullpath);
+                  relpath = _glade_util_file_get_relative_path (new_resource_path,
+                                                                fullpath_file);
+                  g_object_set_data_full (pixbuf, "GladeFileName", relpath, g_free);
+                }
             }
         }
     }

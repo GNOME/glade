@@ -743,19 +743,22 @@ glade_property_def_make_object_from_string (GladePropertyDef *
                                               GladeProject * project)
 {
   GObject *object = NULL;
-  gchar *fullpath;
 
   if (string == NULL || project == NULL)
     return NULL;
 
   if (property_def->pspec->value_type == GDK_TYPE_PIXBUF)
     {
+      g_autofree gchar *fullpath = NULL;
       GdkPixbuf *pixbuf;
 
       if (*string == '\0')
         return NULL;
 
-      fullpath = glade_project_resource_fullpath (project, string);
+      if (g_str_has_prefix (string, "resource:///"))
+        fullpath = glade_project_resource_fullpath (project, &string[11]);
+      else
+        fullpath = glade_project_resource_fullpath (project, string);
 
       if ((pixbuf = gdk_pixbuf_new_from_file (fullpath, NULL)) == NULL)
         {
@@ -772,8 +775,6 @@ glade_property_def_make_object_from_string (GladePropertyDef *
           g_object_set_data_full (object, "GladeFileName",
                                   g_strdup (string), g_free);
         }
-
-      g_free (fullpath);
     }
   else if (property_def->pspec->value_type == G_TYPE_FILE)
     {
