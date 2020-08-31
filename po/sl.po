@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-08-20 14:35+0000\n"
-"PO-Revision-Date: 2020-08-21 17:46+0200\n"
+"POT-Creation-Date: 2020-08-27 02:58+0000\n"
+"PO-Revision-Date: 2020-08-31 21:04+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -461,6 +461,10 @@ msgid ""
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 msgstr ""
+"© 2018–2020 Juan Pablo Ugarte in drugi\n"
+"© 2004–2018 Tristan Van Berkom, Juan Pablo Ugarte in drugi\n"
+"© 2001–2006 Joaquin Cuenca Abela, Paolo Borelli in drugi\n"
+"© 2001–2006 Ximian, Inc."
 
 #: src/glade.glade:750
 msgid "A user interface designer for GTK+ and GNOME."
@@ -473,6 +477,10 @@ msgstr "Obišči spletišče Glade"
 #: src/glade.glade:764
 msgid "translator-credits"
 msgstr "Matej Urbančič <mateju@svn.gnome.org>"
+
+#: src/glade-preferences.c:234
+msgid "Select a catalog search path"
+msgstr "Izbor poti iskanja kataloga"
 
 #: src/glade-preferences.glade:45
 msgid "Glade Preferences"
@@ -557,28 +565,24 @@ msgid ""
 "from.\n"
 "Needs to restart."
 msgstr ""
+"Seznam map, iz katerih se nalagajo katalogi gradnikov in predloge po meri.\n"
+"Sprememba zahteva ponovni zagon."
 
 #: src/glade-preferences.glade:299
 msgid "column"
 msgstr "stolpec"
 
 #: src/glade-preferences.glade:331
-#, fuzzy
-#| msgid "Add a new catalog search path"
 msgid "Add a new search path"
-msgstr "Dodaj nov katalog poti iskanja"
+msgstr "Dodaj novo pot iskanja"
 
 #: src/glade-preferences.glade:356
-#, fuzzy
-#| msgid "Remove the selected catalog search path"
 msgid "Remove the selected search path"
-msgstr "Odstrani izbrane poti iskanja kataloga"
+msgstr "Odstrani izbrane poti iskanja"
 
 #: src/glade-preferences.glade:387
-#, fuzzy
-#| msgid "Extra catalog paths"
 msgid "Extra Catalog & Templates paths"
-msgstr "Dodatne poti do katalogov"
+msgstr "Dodatne poti do katalogov in predlog"
 
 #: src/glade-registration.c:282
 #, c-format
@@ -605,6 +609,8 @@ msgid ""
 "Your subscription to the users list has been received!\n"
 "Check your email!"
 msgstr ""
+"Naročnina na uporabniški seznam je prejeta!\n"
+"Preverite elektronsko pošto."
 
 #: src/glade-registration.c:510
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
@@ -614,7 +620,7 @@ msgstr ""
 
 #: src/glade-registration.c:771
 msgid "Completed and submitted!"
-msgstr ""
+msgstr "Končano in uveljavljeno!"
 
 #: src/glade-registration.glade:44
 msgid "Glade Registration & User Survey"
@@ -625,16 +631,13 @@ msgid "_Close"
 msgstr "_Zapri↓"
 
 #: src/glade-registration.glade:77
-#, fuzzy
-#| msgid "Submit"
 msgid "_Submit"
-msgstr "Pošlji"
+msgstr "_Uveljavi"
 
 #: src/glade-registration.glade:82
-#, fuzzy
 #| msgid "Information will be sent to https://people.gnome.org/~jpu"
 msgid "Information will be sent to https://survey.gnome.org"
-msgstr "Podrobnosti bodo poslane na https://people.gnome.org/~jpu"
+msgstr "Podrobnosti bodo poslane na https://survey.gnome.org"
 
 #: src/glade-registration.glade:183
 msgid "User Information"
@@ -835,12 +838,10 @@ msgid "Arch Linux"
 msgstr "Arch Linux"
 
 #: src/glade-registration.glade:1252
-#| msgid "Arch Linux"
 msgid "Ataraxia Linux"
 msgstr "Ataraxia Linux"
 
 #: src/glade-registration.glade:1253
-#| msgid "Center"
 msgid "CentOS"
 msgstr "CentOS"
 
@@ -849,7 +850,6 @@ msgid "Chrome OS"
 msgstr "Chrome OS"
 
 #: src/glade-registration.glade:1255
-#| msgid "Arch Linux"
 msgid "Clear Linux"
 msgstr "Clear Linux"
 
@@ -874,7 +874,6 @@ msgid "Gentoo"
 msgstr "Gentoo"
 
 #: src/glade-registration.glade:1261
-#| msgid "Ubuntu"
 msgid "Kubuntu"
 msgstr "Kubuntu"
 
@@ -935,7 +934,6 @@ msgid "Ubuntu"
 msgstr "Ubuntu"
 
 #: src/glade-registration.glade:1276
-#| msgid "Arch Linux"
 msgid "Void Linux"
 msgstr "Void Linux"
 
@@ -976,7 +974,6 @@ msgid "version"
 msgstr "različica"
 
 #: src/glade-registration.glade:1335
-#| msgid "0"
 msgid "10"
 msgstr "10"
 
@@ -1013,7 +1010,6 @@ msgid "2000"
 msgstr "2000"
 
 #: src/glade-registration.glade:1358
-#| msgid "Catalog"
 msgid "Catalina"
 msgstr "Catalina"
 
@@ -1030,7 +1026,6 @@ msgid "Sierra"
 msgstr "Sierra"
 
 #: src/glade-registration.glade:1362
-#| msgid "Small Capitals"
 msgid "El Capitan"
 msgstr "El Capitan"
 
@@ -1477,7 +1472,7 @@ msgstr "Niz"
 msgid "An entry"
 msgstr "Vnos"
 
-#: gladeui/glade-catalog.c:678
+#: gladeui/glade-catalog.c:730
 msgid "User templates"
 msgstr "Uporabniške predloge"
 
@@ -2383,12 +2378,13 @@ msgstr ""
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3053
-#, fuzzy, c-format
-#| msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
+#, c-format
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' was introduced in %s %d.%d\n"
-msgstr "[%s] Razred predmeta »<b>%s</b>« je bil vpeljan %s %d.%d\n"
+msgstr ""
+"[%s]\n"
+"\tRazred predmeta »<b>%s</b>« je bil vpeljan %s %d.%d\n"
 
 #: gladeui/glade-project.c:3055
 msgid "This widget is deprecated"
@@ -2396,12 +2392,13 @@ msgstr "Gradnik je opuščen."
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3058
-#, fuzzy, c-format
-#| msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
+#, c-format
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' from %s %d.%d is deprecated\n"
-msgstr "[%s] Razred predmeta <b>%s</b> od %s %d.%d je opuščen\n"
+msgstr ""
+"[%s]\n"
+"\tRazred predmeta <b>%s</b> od %s %d.%d je opuščen\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
@@ -2414,30 +2411,26 @@ msgstr ""
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3067
-#, fuzzy, c-format
-#| msgid ""
-#| "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
-#| "%s %d.%d\n"
+#, c-format
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
 "%d\n"
 msgstr ""
-"[%s] Lastnost »<b>%s</b>« predmeta razreda »%s« je bila vključena %s %d.%d\n"
+"[%s]\n"
+"\tLastnost »<b>%s</b>« predmeta razreda »%s« je bila vključena %s %d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3071
-#, fuzzy, c-format
-#| msgid ""
-#| "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was "
-#| "introduced in %s %d.%d\n"
+#, c-format
 msgid ""
 "[%s]\n"
 "\tPacking property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
 "%s %d.%d\n"
 msgstr ""
-"[%s] Lastnost pakiranja »<b>%s</b>« razreda predmeta »%s« je bila vpeljan %s "
-"%d.%d\n"
+"[%s]\n"
+"\tLastnost pakiranja »<b>%s</b>« razreda predmeta »%s« je bila vpeljan %s %d."
+"%d\n"
 
 #: gladeui/glade-project.c:3074
 msgid "This property is deprecated"
@@ -2445,13 +2438,13 @@ msgstr "Ta možnost je opuščena."
 
 #. translators: refers to a property '%s' of widget '[%s]'
 #: gladeui/glade-project.c:3077
-#, fuzzy, c-format
-#| msgid ""
-#| "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
+#, c-format
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
-msgstr "[%s] Lastnost »%s« razreda predmetov »%s« je opuščena\n"
+msgstr ""
+"[%s]\n"
+"\tLastnost »%s« razreda predmetov »%s« je opuščena\n"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
@@ -2462,15 +2455,13 @@ msgstr "Signal je bil dodan %s %d.%d, ciljna različica projekta pa je %s %d.%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3085
-#, fuzzy, c-format
-#| msgid ""
-#| "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
-#| "%d.%d\n"
+#, c-format
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d.%d\n"
 msgstr ""
-"[%s] Signal »<b>%s</b>« razreda predmeta »%s« je bil vpeljan %s %d.%d\n"
+"[%s]\n"
+"\tSignal »<b>%s</b>« razreda predmeta »%s« je bil vpeljan %s %d.%d\n"
 
 #: gladeui/glade-project.c:3088
 msgid "This signal is deprecated"
@@ -2478,12 +2469,13 @@ msgstr "Signal je opuščen"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
 #: gladeui/glade-project.c:3091
-#, fuzzy, c-format
-#| msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
+#, c-format
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
-msgstr "[%s] Signal »<b>%s</b>« razreda predmetov »<b>%s</b>« je opuščen\n"
+msgstr ""
+"[%s]\n"
+"\tSignal »<b>%s</b>« razreda predmetov »<b>%s</b>« je opuščen\n"
 
 #: gladeui/glade-project.c:3386
 msgid "Details"
@@ -2495,12 +2487,10 @@ msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "V projektu \"%s\" so napake. Ali naj se projekt vseeno shrani?"
 
 #: gladeui/glade-project.c:3428
-#, fuzzy, c-format
-#| msgid ""
-#| "Object %s is a class template but this is not supported in gtk+ %d.%d"
+#, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr ""
-"Predmet %s je predloga razreda, vendar ni podprta v različici gtk+ %d.%d."
+"Predmet %s je predloga razreda, vendar ni podprta v različici gtk+ %d.%d\n"
 
 #: gladeui/glade-project.c:3443
 #, c-format
@@ -3169,10 +3159,8 @@ msgid "Toolkit version required:"
 msgstr "Zahtevana različica zbirke orodij:"
 
 #: gladeui/glade-project-properties.ui:444
-#, fuzzy
-#| msgid "The project this properties dialog was created for"
 msgid "Verify objects, properties and signals deprecations"
-msgstr "Projekt, za katerega je bilo ustvarjeno to pogovorno okno"
+msgstr "Overi predmete, lastnosti in signale opuščanja"
 
 #: gladeui/glade-project-properties.ui:481
 msgid "Warnings:"
@@ -4251,7 +4239,7 @@ msgstr "Nastavitev %s na uporabo posebnega pango preloma besed"
 
 #: plugins/gtk+/glade-model-data.c:937
 msgid "<printable chars only>"
-msgstr ""
+msgstr "<le natisljivi znaki>"
 
 #: plugins/gtk+/glade-model-data.c:1228
 msgid "Add and remove rows:"
@@ -5123,7 +5111,7 @@ msgstr "Označena vsebina"
 
 #: plugins/gtk+/gtk+.xml:476
 msgid "Change suggestion"
-msgstr ""
+msgstr "Spremeni predlog"
 
 #: plugins/gtk+/gtk+.xml:478
 msgid "Last Defined"
@@ -6610,12 +6598,10 @@ msgid "BSD 3"
 msgstr "BSD 3"
 
 #: plugins/gtk+/gtk+.xml:3359
-#| msgid "Apache 2"
 msgid "Apache 2.0"
 msgstr "Apache 2.0"
 
 #: plugins/gtk+/gtk+.xml:3361
-#| msgid "GPL 2.0"
 msgid "MPL 2.0"
 msgstr "MPL 2.0"
 
@@ -8223,9 +8209,6 @@ msgstr "Gradniki WebKit2GTK+"
 #~ "GNU (GNU General Public License). V primeru, da je niste, pišite na Free "
 #~ "Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
 #~ "02110-1301, USA."
-
-#~ msgid "Select a catalog search path"
-#~ msgstr "Izbor poti iskanja kataloga"
 
 #~ msgid ""
 #~ "Thank you for taking Glade Users survey, we appreciate it!\n"
