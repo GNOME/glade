@@ -1548,9 +1548,9 @@
               <!-- GtkInputHints enumeration value -->
               <value id="GTK_INPUT_HINT_VERTICAL_WRITING" name="Vertical Writing"/>
               <!-- GtkInputHints enumeration value -->
-              <value id="GTK_INPUT_HINT_EMOJI" name="Emoji Support" since="3.22.20"/>
+              <value id="GTK_INPUT_HINT_EMOJI" name="Emoji Support" since="3.24"/>
               <!-- GtkInputHints enumeration value -->
-              <value id="GTK_INPUT_HINT_NO_EMOJI" name="No Emoji Support" since="3.22.20"/>
+              <value id="GTK_INPUT_HINT_NO_EMOJI" name="No Emoji Support" since="3.24"/>
             </displayable-values>
           </property>
           
@@ -1606,6 +1606,8 @@
           
           <property id="im-module" disabled="True"/>
           <property id="completion" since="3.2" custom-layout="True"/>
+          <property id="max-width-chars" since="3.12"/>
+          <property id="show-emoji-icon" since="3.24"/>
           
           <!-- Virtual edit mode properties -->
           <property id="use-entry-buffer" visible="False" save="False" default="False">
@@ -3352,7 +3354,7 @@
               <!-- GtkLicense enumeration value -->
               <value id="GTK_LICENSE_AGPL_3_0" name="AGPL 3.0" since="3.22"/>
               <!-- GtkLicense enumeration value -->
-              <value id="GTK_LICENSE_AGPL_3_0_ONLY" name="AGPL 3.0 Only" since="3.22.27"/>
+              <value id="GTK_LICENSE_AGPL_3_0_ONLY" name="AGPL 3.0 Only" since="3.24"/>
               <!-- GtkLicense enumeration value -->
               <value id="GTK_LICENSE_BSD_3" name="BSD 3"/>
               <!-- GtkLicense enumeration value -->
