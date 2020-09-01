@@ -179,7 +179,10 @@ struct _GladePropertyDef
 
   guint deprecated : 1; /* True if this property is deprecated */
 
-  gdouble weight;       /* This will determine the position of this property in 
+  guint16 deprecated_since_major;
+  guint16 deprecated_since_minor;
+
+  gdouble weight;       /* This will determine the position of this property in
                          * the editor.
                          */
         
@@ -239,6 +242,8 @@ glade_property_def_new (GladeWidgetAdaptor *adaptor,
   property_def->version_since_major = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (adaptor);
   property_def->version_since_minor = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR (adaptor);
   property_def->deprecated          = GLADE_WIDGET_ADAPTOR_DEPRECATED (adaptor);
+  property_def->deprecated_since_major = 0;
+  property_def->deprecated_since_minor = 0;
 
   return property_def;
 }
@@ -1573,6 +1578,22 @@ glade_property_def_since_minor (GladePropertyDef *property_def)
   return property_def->version_since_minor;
 }
 
+guint16
+glade_property_def_deprecated_since_major (GladePropertyDef *property_def)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), 0);
+
+  return property_def->deprecated_since_major;
+}
+
+guint16
+glade_property_def_deprecated_since_minor (GladePropertyDef *property_def)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (property_def), 0);
+
+  return property_def->deprecated_since_minor;
+}
+
 void
 _glade_property_def_reset_version (GladePropertyDef *property_def)
 {
@@ -1580,6 +1601,8 @@ _glade_property_def_reset_version (GladePropertyDef *property_def)
 
   property_def->version_since_major = 0;
   property_def->version_since_minor = 0;
+  property_def->deprecated_since_major = 0;
+  property_def->deprecated_since_minor = 0;
 }
 
 gboolean
@@ -2203,6 +2226,10 @@ glade_property_def_update_from_node (GladeXmlNode      *node,
   glade_xml_get_property_version (node, GLADE_TAG_VERSION_SINCE,
                                   &property_def->version_since_major, 
                                   &property_def->version_since_minor);
+
+  glade_xml_get_property_version (node, GLADE_TAG_DEPRECATED_SINCE,
+                                  &property_def->deprecated_since_major,
+                                  &property_def->deprecated_since_minor);
 
   property_def->deprecated =
     glade_xml_get_property_boolean (node,

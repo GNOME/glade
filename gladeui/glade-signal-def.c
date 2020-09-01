@@ -39,7 +39,9 @@ struct _GladeSignalDef
   const gchar        *type;                /* Name of the object class that this signal 
                                             * belongs to eg GtkButton */
 
-  guint deprecated : 1;                    /* True if this signal is deprecated */
+  guint               deprecated : 1;      /* True if this signal is deprecated */
+  guint16             deprecated_since_major;
+  guint16             deprecated_since_minor;
 };
 
 G_DEFINE_BOXED_TYPE(GladeSignalDef, glade_signal_def, glade_signal_def_clone, glade_signal_def_free)
@@ -84,6 +86,8 @@ glade_signal_def_new  (GladeWidgetAdaptor *adaptor,
   def->version_since_major = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MAJOR (adaptor);
   def->version_since_minor = GLADE_WIDGET_ADAPTOR_VERSION_SINCE_MINOR (adaptor);
   def->deprecated          = GLADE_WIDGET_ADAPTOR_DEPRECATED (adaptor);
+  def->deprecated_since_major = 0;
+  def->deprecated_since_minor = 0;
 
   return def;
 }
@@ -133,6 +137,10 @@ glade_signal_def_update_from_node (GladeSignalDef *signal_def,
   glade_xml_get_property_version (node, GLADE_TAG_VERSION_SINCE,
                                   &signal_def->version_since_major, 
                                   &signal_def->version_since_minor);
+
+  glade_xml_get_property_version (node, GLADE_TAG_DEPRECATED_SINCE,
+                                  &signal_def->deprecated_since_major,
+                                  &signal_def->deprecated_since_minor);
 
   signal_def->deprecated =
     glade_xml_get_property_boolean (node,
@@ -255,6 +263,39 @@ glade_signal_def_since_minor (GladeSignalDef *signal_def)
 
   return signal_def->version_since_minor;
 }
+
+/**
+ * glade_signal_def_deprecated_since_major:
+ * @signal_def: a #GladeSignalDef
+ *
+ * Get the major version that deprecated this signal.
+ *
+ * Returns: the major version
+ */
+guint16
+glade_signal_def_deprecated_since_major (GladeSignalDef *signal_def)
+{
+  g_return_val_if_fail (signal_def != NULL, 0);
+
+  return signal_def->deprecated_since_major;
+}
+
+/**
+ * glade_signal_def_deprecated_since_minor:
+ * @signal_def: a #GladeSignalDef
+ *
+ * Get the minor version that deprecated this signal.
+ *
+ * Returns: the minor version
+ */
+guint16
+glade_signal_def_deprecated_since_minor (GladeSignalDef *signal_def)
+{
+  g_return_val_if_fail (signal_def != NULL, 0);
+
+  return signal_def->deprecated_since_minor;
+}
+
 
 /**
  * glade_signal_def_set_deprecated:

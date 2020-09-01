@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 /**
- * GLADE_SIGNALS_DEF_VERSION_CHECK:
+ * GLADE_SIGNAL_DEF_VERSION_CHECK:
  * @klass: A #GladeSignalDef
  * @major_version: The major version to check
  * @minor_version: The minor version to check
@@ -37,11 +37,26 @@ G_BEGIN_DECLS
  * Evaluates to %TRUE if @klass is available in its owning library version-@major_verion.@minor_version.
  *
  */
-#define GLADE_SIGNALS_DEF_VERSION_CHECK(klass, major_version, minor_version)                      \
+#define GLADE_SIGNAL_DEF_VERSION_CHECK(klass, major_version, minor_version)                      \
   ((glade_signal_def_since_major (GLADE_SIGNAL_DEF (klass)) == major_version) ? \
    (glade_signal_def_since_minor (GLADE_SIGNAL_DEF (klass)) <= minor_version) : \
    (glade_signal_def_since_major (GLADE_SIGNAL_DEF (klass)) <= major_version))
 
+/**
+ * GLADE_SIGNAL_DEF_DEPRECATED_SINCE_CHECK:
+ * @klass: A #GladeSignalDef
+ * @major: The major version to check
+ * @minor: The minor version to check
+ *
+ * Evaluates to %TRUE if @klass is available in its owning library version-@major.@minor.
+ *
+ */
+#define GLADE_SIGNAL_DEF_DEPRECATED_SINCE_CHECK(def, major, minor)           \
+  ((glade_signal_def_deprecated_since_major (def) || glade_signal_def_deprecated_since_minor (def)) ? \
+    ((glade_signal_def_deprecated_since_major (def) == major)  ?             \
+      (glade_signal_def_deprecated_since_minor (def) <= minor)  :            \
+      (glade_signal_def_deprecated_since_major (def) <= major)) :            \
+    FALSE)
 
 #define GLADE_SIGNAL_DEF(klass) ((GladeSignalDef *)(klass))
 
@@ -60,8 +75,8 @@ void                  glade_signal_def_update_from_node         (GladeSignalDef 
                                                                  const gchar          *domain);
 
 GladeWidgetAdaptor   *glade_signal_def_get_adaptor              (const GladeSignalDef *signal_def);
-const gchar *glade_signal_def_get_name                 (const GladeSignalDef *signal_def);
-const gchar *glade_signal_def_get_object_type_name     (const GladeSignalDef *signal_def);
+const gchar          *glade_signal_def_get_name                 (const GladeSignalDef *signal_def);
+const gchar          *glade_signal_def_get_object_type_name     (const GladeSignalDef *signal_def);
 GSignalFlags          glade_signal_def_get_flags                (const GladeSignalDef *signal_def);
 
 void                  glade_signal_def_set_since                (GladeSignalDef       *signal_def,
@@ -69,6 +84,8 @@ void                  glade_signal_def_set_since                (GladeSignalDef 
                                                                  guint16               since_minor);
 guint16               glade_signal_def_since_major              (GladeSignalDef       *signal_def);
 guint16               glade_signal_def_since_minor              (GladeSignalDef       *signal_def);
+guint16               glade_signal_def_deprecated_since_major   (GladeSignalDef       *signal_def);
+guint16               glade_signal_def_deprecated_since_minor   (GladeSignalDef       *signal_def);
 
 void                  glade_signal_def_set_deprecated           (GladeSignalDef       *signal_def,
                                                                  gboolean              deprecated);
