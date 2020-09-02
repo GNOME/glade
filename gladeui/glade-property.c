@@ -298,7 +298,7 @@ glade_property_fix_state (GladeProperty *property)
       if (glade_property_get_enabled (property))
         property->priv->state |= GLADE_STATE_CHANGED;
     }
-  else if (!glade_property_original_default (property))
+  else if (property->priv->sensitive && !glade_property_original_default (property))
     property->priv->state |= GLADE_STATE_CHANGED;
 
   if (property->priv->support_warning)
