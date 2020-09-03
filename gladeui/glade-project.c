@@ -1785,7 +1785,7 @@ glade_project_introspect_signal_versions (GladeSignal *signal,
   g_free (catalog);
 
   if (is_gtk_adaptor && 
-      !GLADE_SIGNALS_DEF_VERSION_CHECK (signal_def, data->major, data->minor))
+      !GLADE_SIGNAL_DEF_VERSION_CHECK (signal_def, data->major, data->minor))
     {
       data->major = glade_signal_def_since_major (signal_def);
       data->minor = glade_signal_def_since_minor (signal_def);
@@ -3148,20 +3148,22 @@ glade_project_verify_property_internal (GladeProject    *project,
         g_string_append_printf (string,
                                 glade_property_def_get_is_packing (pdef) ?
                                 PACK_PROP_VERSION_CONFLICT_FMT :
-                                  PROP_VERSION_CONFLICT_FMT,
-                                  path_name,
-                                  glade_property_def_get_name (pdef),
-                                  glade_widget_adaptor_get_title (adaptor),
-                                  catalog,
-                                  glade_property_def_since_major (pdef),
-                                  glade_property_def_since_minor (pdef));
+                                PROP_VERSION_CONFLICT_FMT,
+                                path_name,
+                                glade_property_def_get_name (pdef),
+                                glade_widget_adaptor_get_title (adaptor),
+                                catalog,
+                                glade_property_def_since_major (pdef),
+                                glade_property_def_since_minor (pdef));
     }
   else if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
-           glade_property_def_deprecated (pdef))
+           GLADE_PROPERTY_DEF_DEPRECATED_SINCE_CHECK (pdef, target_major, target_minor))
     {
-      GLADE_NOTE (VERIFY, g_print ("VERIFY: Property '%s' of adaptor %s is deprecated\n",
+      GLADE_NOTE (VERIFY, g_print ("VERIFY: Property '%s' of adaptor %s is deprecated since version %d.%d\n",
                                    glade_property_def_id (pdef),
-                                   glade_widget_adaptor_get_name (adaptor)));
+                                   glade_widget_adaptor_get_name (adaptor),
+                                   glade_property_def_deprecated_since_major (pdef),
+                                   glade_property_def_deprecated_since_minor (pdef)));
 
       if (forwidget)
         glade_property_set_support_warning (property, FALSE, PROP_DEPRECATED_MSG);
@@ -3240,7 +3242,7 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
                                             &target_major, &target_minor);
 
   if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
-      !GLADE_SIGNALS_DEF_VERSION_CHECK (signal_def, target_major, target_minor))
+      !GLADE_SIGNAL_DEF_VERSION_CHECK (signal_def, target_major, target_minor))
     {
       GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s not available in version %d.%d\n",
                                    glade_signal_get_name (signal),
@@ -3270,11 +3272,13 @@ glade_project_verify_signal_internal (GladeWidget     *widget,
                                 glade_signal_def_since_minor (signal_def));
     }
   else if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
-           glade_signal_def_deprecated (signal_def))
+           GLADE_SIGNAL_DEF_DEPRECATED_SINCE_CHECK (signal_def, target_major, target_minor))
     {
-      GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s is deprecated\n",
+      GLADE_NOTE (VERIFY, g_print ("VERIFY: Signal '%s' of adaptor %s is deprecated since %d.%d\n",
                                    glade_signal_get_name (signal),
-                                   glade_widget_adaptor_get_name (adaptor)));
+                                   glade_widget_adaptor_get_name (adaptor),
+                                   glade_signal_def_deprecated_since_major (signal_def),
+                                   glade_signal_def_deprecated_since_minor (signal_def)));
 
       if (forwidget)
         glade_signal_set_support_warning (signal, SIGNAL_DEPRECATED_MSG);
