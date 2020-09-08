@@ -25,16 +25,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-09-04 05:02+0000\n"
-"PO-Revision-Date: 2020-09-07 19:53+0200\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"POT-Creation-Date: 2020-09-07 18:09+0000\n"
+"PO-Revision-Date: 2020-09-08 20:18+0200\n"
+"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 20.08.1\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Poedit-Bookmarks: -1,-1,49,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
@@ -603,8 +603,8 @@ msgid ""
 "from.\n"
 "Needs to restart."
 msgstr ""
-"Liste der Ordner, aus denen Widget-Kataloge und benutzerdefinierte Vorlagen"
-" geladen werden sollen.\n"
+"Liste der Ordner, aus denen Widget-Kataloge und benutzerdefinierte Vorlagen "
+"geladen werden sollen.\n"
 "Erfordert einen Neustart."
 
 #: src/glade-preferences.glade:299
@@ -612,17 +612,14 @@ msgid "column"
 msgstr "Spalte"
 
 #: src/glade-preferences.glade:331
-#| msgid "Add a new catalog search path"
 msgid "Add a new search path"
 msgstr "Einen neuen Suchpfad hinzufügen"
 
 #: src/glade-preferences.glade:356
-#| msgid "Remove the selected catalog search path"
 msgid "Remove the selected search path"
 msgstr "Den gewählten Suchpfad entfernen"
 
 #: src/glade-preferences.glade:387
-#| msgid "Extra catalog paths"
 msgid "Extra Catalog & Templates paths"
 msgstr "Zusätzliche Katalog- und Vorlagenpfade"
 
@@ -672,12 +669,10 @@ msgid "_Close"
 msgstr "S_chließen"
 
 #: src/glade-registration.glade:77
-#| msgid "Submit"
 msgid "_Submit"
 msgstr "Ab_senden"
 
 #: src/glade-registration.glade:82
-#| msgid "Information will be sent to https://people.gnome.org/~jpu"
 msgid "Information will be sent to https://survey.gnome.org"
 msgstr "Informationen werden an https://survey.gnome.org gesendet"
 
@@ -882,12 +877,10 @@ msgid "Arch Linux"
 msgstr "Arch Linux"
 
 #: src/glade-registration.glade:1252
-#| msgid "Arch Linux"
 msgid "Ataraxia Linux"
 msgstr "Ataraxia Linux"
 
 #: src/glade-registration.glade:1253
-#| msgid "Center"
 msgid "CentOS"
 msgstr "CentOS"
 
@@ -896,7 +889,6 @@ msgid "Chrome OS"
 msgstr "Chrome OS"
 
 #: src/glade-registration.glade:1255
-#| msgid "Arch Linux"
 msgid "Clear Linux"
 msgstr "Clear Linux"
 
@@ -921,7 +913,6 @@ msgid "Gentoo"
 msgstr "Gentoo"
 
 #: src/glade-registration.glade:1261
-#| msgid "Ubuntu"
 msgid "Kubuntu"
 msgstr "Kubuntu"
 
@@ -982,7 +973,6 @@ msgid "Ubuntu"
 msgstr "Ubuntu"
 
 #: src/glade-registration.glade:1276
-#| msgid "Arch Linux"
 msgid "Void Linux"
 msgstr "Void Linux"
 
@@ -1024,7 +1014,6 @@ msgid "version"
 msgstr "Version"
 
 #: src/glade-registration.glade:1335
-#| msgid "0"
 msgid "10"
 msgstr "10"
 
@@ -1061,7 +1050,6 @@ msgid "2000"
 msgstr "2000"
 
 #: src/glade-registration.glade:1358
-#| msgid "Catalog"
 msgid "Catalina"
 msgstr "Catalina"
 
@@ -1078,7 +1066,6 @@ msgid "Sierra"
 msgstr "Sierra"
 
 #: src/glade-registration.glade:1362
-#| msgid "Small Capitals"
 msgid "El Capitan"
 msgstr "El Capitan"
 
@@ -1541,7 +1528,6 @@ msgid "An entry"
 msgstr "Ein Eintrag"
 
 #: gladeui/glade-catalog.c:730
-#| msgid "Unsetting template"
 msgid "User templates"
 msgstr "Benutzervorlagen"
 
@@ -2461,7 +2447,6 @@ msgstr ""
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3056
 #, c-format
-#| msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' was introduced in %s %d.%d\n"
@@ -2476,7 +2461,6 @@ msgstr "Dieses Widget ist veraltet"
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3061
 #, c-format
-#| msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' from %s %d.%d is deprecated\n"
@@ -2496,32 +2480,26 @@ msgstr ""
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3070
 #, c-format
-#| msgid ""
-#| "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
-#| "%s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
 "%d\n"
 msgstr ""
 "[%s]\n"
-"\tEigenschaft »<b>%s</b>« der Objektklasse »<b>%s</b>« wurde eingeführt "
-"in %s %d.%d\n"
+"\tEigenschaft »<b>%s</b>« der Objektklasse »<b>%s</b>« wurde eingeführt in "
+"%s %d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3074
 #, c-format
-#| msgid ""
-#| "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was "
-#| "introduced in %s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tPacking property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
 "%s %d.%d\n"
 msgstr ""
 "[%s]\n"
-"\tPackeigenschaft »<b>%s</b>« der Objektklasse »<b>%s</b>« wurde "
-"eingeführt in %s %d.%d\n"
+"\tPackeigenschaft »<b>%s</b>« der Objektklasse »<b>%s</b>« wurde eingeführt "
+"in %s %d.%d\n"
 
 #: gladeui/glade-project.c:3077
 msgid "This property is deprecated"
@@ -2530,8 +2508,6 @@ msgstr "Diese Eigenschaft ist veraltet"
 #. translators: refers to a property '%s' of widget '[%s]'
 #: gladeui/glade-project.c:3080
 #, c-format
-#| msgid ""
-#| "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
@@ -2551,16 +2527,13 @@ msgstr ""
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3088
 #, c-format
-#| msgid ""
-#| "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
-#| "%d.%d\n"
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d.%d\n"
 msgstr ""
 "[%s]\n"
-"\tSignal »<b>%s</b>« der Objektklasse »<b>%s</b>« wurde eingeführt in %s "
-"%d.%d\n"
+"\tSignal »<b>%s</b>« der Objektklasse »<b>%s</b>« wurde eingeführt in %s %d."
+"%d\n"
 
 #: gladeui/glade-project.c:3091
 msgid "This signal is deprecated"
@@ -2569,7 +2542,6 @@ msgstr "Dieses Signal ist veraltet"
 #. translators: refers to a signal '%s' of widget '[%s]'
 #: gladeui/glade-project.c:3094
 #, c-format
-#| msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
@@ -2588,8 +2560,6 @@ msgstr "Das Projekt »%s« enthält Fehler. Soll es dennoch gespeichert werden?"
 
 #: gladeui/glade-project.c:3435
 #, c-format
-#| msgid ""
-#| "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr ""
 "Objekt %s ist eine Klassenvorlage, die aber nicht in gtk+ %d.%d unterstützt "
@@ -3279,13 +3249,10 @@ msgid "Toolkit version required:"
 msgstr "Erforderliche Version des Toolkits:"
 
 #: gladeui/glade-project-properties.ui:444
-#, fuzzy
-#| msgid "The project this properties dialog was created for"
 msgid "Verify objects, properties and signals deprecations"
-msgstr "Das Projekt, für welches dieser Eigenschaften-Dialog erstellt wurde"
+msgstr "Auf veraltete Objekte, Eigenschaften und Signale prüfen"
 
 #: gladeui/glade-project-properties.ui:481
-#| msgid "Warning"
 msgid "Warnings:"
 msgstr "Warnungen:"
 
@@ -5279,12 +5246,10 @@ msgid "Footnote text"
 msgstr "Fußnotentext"
 
 #: plugins/gtk+/gtk+.xml:450
-#| msgid "Font Selection"
 msgid "Content deletion"
 msgstr "Inhalt löschen"
 
 #: plugins/gtk+/gtk+.xml:452
-#| msgid "Context for translation"
 msgid "Content insertion"
 msgstr "Inhalt einfügen"
 
@@ -5603,7 +5568,6 @@ msgid "Tooltip"
 msgstr "Minihilfe"
 
 #: plugins/gtk+/gtk+.xml:813
-#| msgid "Toplevels"
 msgid "Toplevel"
 msgstr "Oberste Ebene"
 
@@ -6808,12 +6772,10 @@ msgid "BSD 3"
 msgstr "BSD 3"
 
 #: plugins/gtk+/gtk+.xml:3169
-#| msgid "Apache 2"
 msgid "Apache 2.0"
 msgstr "Apache 2.0"
 
 #: plugins/gtk+/gtk+.xml:3171
-#| msgid "GPL 2.0"
 msgid "MPL 2.0"
 msgstr "MPL 2.0"
 
@@ -8205,7 +8167,6 @@ msgstr "Anpassung:"
 #: plugins/gtk+/glade-scrolled-window-editor.ui:332
 #: plugins/gtk+/glade-scrolled-window-editor.ui:370
 #: plugins/gtk+/glade-scrolled-window-editor.ui:409
-#| msgid "Right:"
 msgid "Height: "
 msgstr "Höhe: "
 
@@ -8378,7 +8339,6 @@ msgstr ""
 "Die in Glade zu ladende Adresse (Diese Eigenschaft wird nicht gespeichert)"
 
 #: plugins/webkit2gtk/webkit2gtk.xml:32
-#| msgid "Table"
 msgid "Tab"
 msgstr "Tab"
 
