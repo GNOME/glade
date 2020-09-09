@@ -110,7 +110,7 @@ endif
 add_project_arguments(common_flags, language: 'c')
 
 # Check required libraries
-glib_dep = dependency('glib-2.0', version: '>= 2.53.2')
+glib_dep = dependency('glib-2.0', version: '>= 2.62')
 gmodule_dep = dependency('gmodule-2.0')
 gmodule_export_dep = dependency('gmodule-export-2.0')
 gtk_dep = dependency('gtk+-3.0', version: '>= 3.24.0')
