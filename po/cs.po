@@ -6,14 +6,14 @@
 # Petr Kovar <pknbe@volny.cz>, 2009.
 # Václav Švejcar <xwinus@gmail.com>, 2009.
 # Adam Matoušek <adydas95@gmail.com>, 2012.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019.
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glade\n"
+"Project-Id-Version: glade glade-3.36\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2019-08-15 21:36+0000\n"
-"PO-Revision-Date: 2019-08-16 18:54+0200\n"
+"POT-Creation-Date: 2020-05-27 20:16+0000\n"
+"PO-Revision-Date: 2020-09-01 09:02+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -23,28 +23,28 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: data/glade.desktop.in.in:3 data/glade.appdata.xml.in:6 src/main.c:43
-#: src/glade.glade:202
+#: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
+#: src/main.c:43 src/glade.glade:202
 msgid "Glade"
 msgstr "Glade"
 
-#: data/glade.desktop.in.in:4
+#: data/org.gnome.Glade.desktop.in.in:4
 msgid "Interface Designer"
 msgstr "Návrhář rozhraní"
 
-#: data/glade.desktop.in.in:5 data/glade.appdata.xml.in:7
+#: data/org.gnome.Glade.desktop.in.in:5 data/org.gnome.Glade.appdata.xml.in:7
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr ""
 "Vytvářejte a otevírejte návrhy uživatelského rozhraní pro aplikace "
 "používající GTK+"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/glade.desktop.in.in:7
+#: data/org.gnome.Glade.desktop.in.in:7
 msgid "GUI designer;user interface;ui builder;"
 msgstr "návrhář gui;uživatelské rozhraní;tvorba ui;"
 
 #. To translators: AppData description first paragraph
-#: data/glade.appdata.xml.in:11
+#: data/org.gnome.Glade.appdata.xml.in:11
 msgid ""
 "Glade is a RAD tool to enable quick &amp; easy development of user "
 "interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
@@ -54,7 +54,7 @@ msgstr ""
 "prostředí GNOME."
 
 #. To translators: AppData description second paragraph
-#: data/glade.appdata.xml.in:17
+#: data/org.gnome.Glade.appdata.xml.in:17
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
@@ -67,7 +67,7 @@ msgstr ""
 "podpory nových šablon GTK+."
 
 #. To translators: AppData description third paragraph
-#: data/glade.appdata.xml.in:25
+#: data/org.gnome.Glade.appdata.xml.in:25
 msgid ""
 "By using GtkBuilder, Glade XML files can be used in numerous programming "
 "languages including C, C++, C#, Vala, Java, Perl, Python, and others."
@@ -183,13 +183,13 @@ msgstr "Pokud je neuložíte, budou všechny vaše změny navždy ztraceny."
 msgid "Close _without Saving"
 msgstr "Za_vřít bez uložení"
 
-#: src/glade-window.c:1073 src/glade-window.c:1758 gladeui/glade-editor.c:791
-#: gladeui/glade-editor.c:1147 gladeui/glade-editor-property.c:1763
-#: gladeui/glade-editor-property.c:2072 gladeui/glade-editor-property.c:2269
-#: gladeui/glade-editor-property.c:3214 gladeui/glade-editor-property.c:3321
-#: gladeui/glade-editor-property.c:3332 gladeui/glade-editor-property.c:3645
-#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:525
-#: plugins/gtk+/glade-attributes.c:1066
+#: src/glade-window.c:1073 src/glade-window.c:1758 gladeui/glade-editor.c:795
+#: gladeui/glade-editor.c:1151 gladeui/glade-editor-property.c:1776
+#: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
+#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
+#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3648
+#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:522
+#: plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Zrušit"
 
@@ -421,7 +421,7 @@ msgstr "Předvolby"
 msgid "About Glade"
 msgstr "O aplikaci Glade"
 
-#: src/glade.glade:461 plugins/gtk+/gtk+.xml:1929
+#: src/glade.glade:461 plugins/gtk+/gtk+.xml:1937
 msgid "Open"
 msgstr "Otevřít"
 
@@ -437,7 +437,7 @@ msgstr "Vytvořit nový projekt"
 msgid "Edit project properties"
 msgstr "Upravit vlastnosti projektu"
 
-#: src/glade.glade:646 plugins/gtk+/gtk+.xml:1927
+#: src/glade.glade:646 plugins/gtk+/gtk+.xml:1935
 msgid "Save"
 msgstr "Uložit"
 
@@ -616,7 +616,7 @@ msgstr "Dotazník ke Glade"
 msgid ""
 "Thank you for taking Glade Users survey, we appreciate it!\n"
 "\n"
-"To validate this email address open the folowing link\n"
+"To validate this email address open the following link\n"
 "\n"
 "https://people.gnome.org/~jpu/glade/registration.php?email="
 "$email&validation_token=$new_validation_token\n"
@@ -744,8 +744,8 @@ msgstr "Problém! Chyba při přístupu k DB: %s"
 msgid "Glade Registration & User Survey"
 msgstr "Registrace a dotazník ke Glade"
 
-#: src/glade-registration.glade:101 plugins/gtk+/gtk+.xml:1724
-#: plugins/gtk+/gtk+.xml:3401
+#: src/glade-registration.glade:101 plugins/gtk+/gtk+.xml:1732
+#: plugins/gtk+/gtk+.xml:3448
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -907,8 +907,8 @@ msgstr "Perl"
 #: src/glade-registration.glade:1348 src/glade-registration.glade:1379
 #: src/glade-registration.glade:1399 src/glade-registration.glade:1494
 #: src/glade-registration.glade:1985 src/glade-registration.glade:2192
-#: gladeui/glade-project-properties.ui:543 plugins/gtk+/gtk+.xml:3145
-#: plugins/gtk+/gtk+.xml:4843
+#: gladeui/glade-project-properties.ui:543 plugins/gtk+/gtk+.xml:3184
+#: plugins/gtk+/gtk+.xml:4890
 msgid "Other"
 msgstr "Jiný"
 
@@ -1084,7 +1084,7 @@ msgstr "Mavericks"
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: src/glade-registration.glade:1426 plugins/gtk+/gtk+.xml:3286
+#: src/glade-registration.glade:1426 plugins/gtk+/gtk+.xml:3329
 msgid "BSD"
 msgstr "BSD"
 
@@ -1238,12 +1238,12 @@ msgid "Have you ever encountered a bug?"
 msgstr "Už jste někdy narazili na chybu?"
 
 #: src/glade-registration.glade:2269 src/glade-registration.glade:2341
-#: src/glade-registration.glade:2420 plugins/gtk+/gtk+.xml:1728
+#: src/glade-registration.glade:2420 plugins/gtk+/gtk+.xml:1736
 msgid "Yes"
 msgstr "ano"
 
 #: src/glade-registration.glade:2286 src/glade-registration.glade:2358
-#: src/glade-registration.glade:2437 plugins/gtk+/gtk+.xml:1730
+#: src/glade-registration.glade:2437 plugins/gtk+/gtk+.xml:1738
 msgid "No"
 msgstr "ne"
 
@@ -1286,7 +1286,7 @@ msgstr ""
 "Osobní údaje budou uchovány v soukromé databázi a nebudou sdíleny ani "
 "veřejně, ani se třetími stranami."
 
-#: gladeui/glade-app.c:549
+#: gladeui/glade-app.c:552
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -1295,7 +1295,7 @@ msgstr ""
 "Pokus o uložení soukromých dat do složky %s, ale jedná se o běžný soubor.\n"
 "V tomto sezení nebudou uložena žádná soukromá data."
 
-#: gladeui/glade-app.c:561
+#: gladeui/glade-app.c:564
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -1304,7 +1304,7 @@ msgstr ""
 "Selhalo vytvoření složky %s pro uložení soukromých dat.\n"
 "V tomto sezení nebudou uložena žádná soukromá data."
 
-#: gladeui/glade-app.c:589
+#: gladeui/glade-app.c:592
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -1313,7 +1313,7 @@ msgstr ""
 "Chyba při zapisování soukromých dat do %s (%s).\n"
 "V tomto sezení nebudou uložena žádná soukromá data."
 
-#: gladeui/glade-app.c:601
+#: gladeui/glade-app.c:604
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -1322,7 +1322,7 @@ msgstr ""
 "Chyba při serializaci dat nastavení, která se mají uložit (%s).\n"
 "V tomto sezení nebudou uložena žádná soukromá data."
 
-#: gladeui/glade-app.c:614
+#: gladeui/glade-app.c:617
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -1331,70 +1331,70 @@ msgstr ""
 "Chyba při otevírání %s pro zápis soukromých dat (%s).\n"
 "V tomto sezení nebudou uložena žádná soukromá data."
 
-#: gladeui/glade-base-editor.c:568
+#: gladeui/glade-base-editor.c:587
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "Nastavení typu objektu pro %s na %s"
 
-#: gladeui/glade-base-editor.c:730
+#: gladeui/glade-base-editor.c:750
 #, c-format
 msgid "Add a %s to %s"
 msgstr "Přidat %s do %s"
 
-#: gladeui/glade-base-editor.c:822 gladeui/glade-command.c:1250
+#: gladeui/glade-base-editor.c:843 gladeui/glade-command.c:1225
 #, c-format
 msgid "Add %s"
 msgstr "Přidat %s"
 
-#: gladeui/glade-base-editor.c:854
+#: gladeui/glade-base-editor.c:875
 #, c-format
 msgid "Add child %s"
 msgstr "Přidat potomka %s"
 
-#: gladeui/glade-base-editor.c:942
+#: gladeui/glade-base-editor.c:967
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "Smazat potomka %s z %s"
 
-#: gladeui/glade-base-editor.c:1068
+#: gladeui/glade-base-editor.c:1096
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Přeuspořádat potomky objektu %s"
 
-#: gladeui/glade-base-editor.c:1547 plugins/gtk+/gtk+.xml:278
-#: plugins/gtk+/gtk+.xml:997 plugins/gtk+/gtk+.xml:1392
+#: gladeui/glade-base-editor.c:1583 plugins/gtk+/gtk+.xml:280
+#: plugins/gtk+/gtk+.xml:1001 plugins/gtk+/gtk+.xml:1396
 #: plugins/gtk+/glade-about-dialog-editor.ui:316
 #: plugins/gtk+/glade-tool-button-editor.ui:86
 msgid "Label"
 msgstr "Popisek"
 
-#: gladeui/glade-base-editor.c:1562 gladeui/glade-widget-adaptor.c:1446
+#: gladeui/glade-base-editor.c:1598 gladeui/glade-widget-adaptor.c:1468
 #: plugins/gtk+/glade-eprop-enum-int.c:70
 #: plugins/gtk+/glade-eprop-enum-int.c:71
 msgid "Type"
 msgstr "Typ"
 
-#: gladeui/glade-base-editor.c:1592 plugins/gtk+/gtk+.xml:606
+#: gladeui/glade-base-editor.c:1626 plugins/gtk+/gtk+.xml:610
 msgid "Container"
 msgstr "Kontejner"
 
-#: gladeui/glade-base-editor.c:1593
+#: gladeui/glade-base-editor.c:1627
 msgid "The container object this editor is currently editing"
 msgstr "Kontejnerový objekt, který se v tomto editoru právě upravuje"
 
 #. Name
 #. translators: The unique identifier of an object in the project
-#: gladeui/glade-base-editor.c:1879 gladeui/glade-editor-table.c:315
+#: gladeui/glade-base-editor.c:1914 gladeui/glade-editor-table.c:315
 #: gladeui/glade-editor-table.c:599
 msgid "ID:"
 msgstr "ID:"
 
 #. Type
-#: gladeui/glade-base-editor.c:1899 plugins/gtk+/glade-window-editor.ui:553
+#: gladeui/glade-base-editor.c:1934 plugins/gtk+/glade-window-editor.ui:553
 msgid "Type:"
 msgstr "Typ:"
 
-#: gladeui/glade-base-editor.c:2112
+#: gladeui/glade-base-editor.c:2152
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1414,7 +1414,7 @@ msgid "Authentication"
 msgstr "Ověření"
 
 #. GTK_STOCK_DND
-#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:836
+#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:840
 msgid "Drag and Drop"
 msgstr "Přesun stylem „táhni a pusť“"
 
@@ -1492,148 +1492,148 @@ msgstr "Řetězec"
 msgid "An entry"
 msgstr "Záznam"
 
-#: gladeui/glade-command.c:454 gladeui/glade-command.c:510
+#: gladeui/glade-command.c:427 gladeui/glade-command.c:485
 #, c-format
 msgid "Enabling property %s on widget %s"
 msgstr "Povolení vlastnosti „%s“ u widgetu „%s“"
 
-#: gladeui/glade-command.c:459 gladeui/glade-command.c:515
+#: gladeui/glade-command.c:432 gladeui/glade-command.c:490
 #, c-format
 msgid "Disabling property %s on widget %s"
 msgstr "Zakázání vlastnosti „%s“ u widgetu „%s“"
 
-#: gladeui/glade-command.c:810
+#: gladeui/glade-command.c:785
 msgid "Setting multiple properties"
 msgstr "Nastavení více vlastností"
 
-#: gladeui/glade-command.c:822 gladeui/glade-editor-property.c:3711
+#: gladeui/glade-command.c:797 gladeui/glade-editor-property.c:3714
 #, c-format
 msgid "Setting %s of %s"
 msgstr "Nastavení „%s“ pro „%s“"
 
-#: gladeui/glade-command.c:828 gladeui/glade-editor-property.c:3417
+#: gladeui/glade-command.c:803 gladeui/glade-editor-property.c:3422
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Nastavení „%s“ pro „%s“ na %s"
 
-#: gladeui/glade-command.c:1085 gladeui/glade-command.c:1112
+#: gladeui/glade-command.c:1060 gladeui/glade-command.c:1089
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "Přejmenování „%s“ na „%s“"
 
-#: gladeui/glade-command.c:1251 gladeui/glade-command.c:1860
-#: gladeui/glade-command.c:1886 gladeui/glade-command.c:1989
-#: gladeui/glade-command.c:2031
+#: gladeui/glade-command.c:1226 gladeui/glade-command.c:1840
+#: gladeui/glade-command.c:1866 gladeui/glade-command.c:1969
+#: gladeui/glade-command.c:2011
 msgid "multiple"
 msgstr "vícero"
 
-#: gladeui/glade-command.c:1396
+#: gladeui/glade-command.c:1373
 msgid "You cannot remove a widget internal to a composite widget."
 msgstr "Nemůžete odstranit widget, který je interní součástí složeného widgetu"
 
-#: gladeui/glade-command.c:1403
+#: gladeui/glade-command.c:1380
 #, c-format
 msgid "%s is locked by %s, edit %s first."
 msgstr "%2s zamyká %1s, nejprve upravte %s."
 
-#: gladeui/glade-command.c:1419
+#: gladeui/glade-command.c:1398
 #, c-format
 msgid "Remove %s"
 msgstr "Odstranit %s"
 
-#: gladeui/glade-command.c:1422
+#: gladeui/glade-command.c:1401
 msgid "Remove multiple"
 msgstr "Odstranit více"
 
-#: gladeui/glade-command.c:1832
+#: gladeui/glade-command.c:1812
 #, c-format
 msgid "Create %s"
 msgstr "Vytvoření %s"
 
-#: gladeui/glade-command.c:1858
+#: gladeui/glade-command.c:1838
 #, c-format
 msgid "Delete %s"
 msgstr "Vymazání %s"
 
-#: gladeui/glade-command.c:1884
+#: gladeui/glade-command.c:1864
 #, c-format
 msgid "Cut %s"
 msgstr "Vyjmutí %s"
 
-#: gladeui/glade-command.c:1987
+#: gladeui/glade-command.c:1967
 #, c-format
 msgid "Paste %s"
 msgstr "Vložení %s"
 
-#: gladeui/glade-command.c:2029
+#: gladeui/glade-command.c:2009
 #, c-format
 msgid "Drag %s and Drop to %s"
 msgstr "Přetažení „%s“ a upuštění do %s"
 
-#: gladeui/glade-command.c:2032
+#: gladeui/glade-command.c:2012
 msgid "root"
 msgstr "kořene"
 
-#: gladeui/glade-command.c:2156
+#: gladeui/glade-command.c:2133
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Přidat obslužnou rutinu signálu %s"
 
-#: gladeui/glade-command.c:2157
+#: gladeui/glade-command.c:2134
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Odstranit obslužnou rutinu signálu %s"
 
-#: gladeui/glade-command.c:2158
+#: gladeui/glade-command.c:2135
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Změnit obslužnou rutinu signálu %s"
 
-#: gladeui/glade-command.c:2375
+#: gladeui/glade-command.c:2350
 msgid "Setting i18n metadata"
 msgstr "Nastavení popisných dat i18n"
 
-#: gladeui/glade-command.c:2492
+#: gladeui/glade-command.c:2467
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr "Uzamknutí %s widgetem %s"
 
-#: gladeui/glade-command.c:2533
+#: gladeui/glade-command.c:2512
 #, c-format
 msgid "Unlocking %s"
 msgstr "Odemyká se %s"
 
-#: gladeui/glade-command.c:2655 gladeui/glade-command.c:2698
+#: gladeui/glade-command.c:2634 gladeui/glade-command.c:2681
 #, c-format
 msgid "Setting target version of '%s' to %d.%d"
 msgstr "Nastavení cílové verze katalogu „%s“ na %d.%d"
 
-#: gladeui/glade-command.c:2851
+#: gladeui/glade-command.c:2837
 #, c-format
 msgid "Setting project's %s property"
 msgstr "Nastavení vlastnosti projektu %s"
 
-#: gladeui/glade-command.c:2954
+#: gladeui/glade-command.c:2944
 #, c-format
 msgid "Setting resource path to '%s'"
 msgstr "Nastavení cesty prostředku na „%s“"
 
-#: gladeui/glade-command.c:2985
+#: gladeui/glade-command.c:2975
 #, c-format
 msgid "Setting translation domain to '%s'"
 msgstr "Nastavení domény překladu na „%s“"
 
-#: gladeui/glade-command.c:3020
+#: gladeui/glade-command.c:3010
 #, c-format
 msgid "Unsetting widget '%s' as template"
 msgstr "Zrušení nastavení widgetu „%s“ jako šablony"
 
-#: gladeui/glade-command.c:3023
+#: gladeui/glade-command.c:3013
 #, c-format
 msgid "Setting widget '%s' as template"
 msgstr "Nastavení widgetu „%s“ jako šablony"
 
-#: gladeui/glade-command.c:3026
+#: gladeui/glade-command.c:3016
 msgid "Unsetting template"
 msgstr "Zrušení nastavení šablony"
 
@@ -1642,21 +1642,21 @@ msgstr "Zrušení nastavení šablony"
 msgid "Unable to load image (%s)"
 msgstr "Nelze načíst obrázek (%s)"
 
-#: gladeui/glade-design-layout.c:664
+#: gladeui/glade-design-layout.c:659
 #, c-format
 msgid "Editing alignments of %s"
 msgstr "Úprava zarovnání pro %s"
 
-#: gladeui/glade-design-layout.c:734
+#: gladeui/glade-design-layout.c:727
 #, c-format
 msgid "Editing margins of %s"
 msgstr "Úprava odsazení pro %s"
 
-#: gladeui/glade-design-layout.c:2044
+#: gladeui/glade-design-layout.c:2033
 msgid "Design View"
 msgstr "Zobrazení návrhu"
 
-#: gladeui/glade-design-layout.c:2045
+#: gladeui/glade-design-layout.c:2034
 msgid "The GladeDesignView that contains this layout"
 msgstr "Objekt GladeDesignView, který obsahuje toto rozvržení"
 
@@ -1736,71 +1736,71 @@ msgstr "Vlastnosti pro %s – %s"
 msgid "Properties"
 msgstr "Vlastnosti"
 
-#: gladeui/glade-editor.c:787
+#: gladeui/glade-editor.c:791
 #, c-format
 msgid "Create a %s"
 msgstr "Vytváření %s"
 
-#: gladeui/glade-editor.c:795
+#: gladeui/glade-editor.c:799
 msgid "Crea_te"
 msgstr "Vytvoři_t"
 
-#: gladeui/glade-editor.c:903
+#: gladeui/glade-editor.c:907
 msgid "Reset"
 msgstr "Resetovat"
 
-#: gladeui/glade-editor.c:914 gladeui/glade-property-label.c:119
+#: gladeui/glade-editor.c:918 gladeui/glade-property-label.c:119
 msgid "Property"
 msgstr "Vlastnost"
 
-#: gladeui/glade-editor.c:945
+#: gladeui/glade-editor.c:949
 msgid "General"
 msgstr "Obecné"
 
-#: gladeui/glade-editor.c:953
+#: gladeui/glade-editor.c:957
 msgid "Common"
 msgstr "Běžné"
 
-#: gladeui/glade-editor.c:961 gladeui/glade-editor.ui:300
+#: gladeui/glade-editor.c:965 gladeui/glade-editor.ui:300
 msgid "Accessibility"
 msgstr "Zpřístupnění"
 
-#: gladeui/glade-editor.c:994
+#: gladeui/glade-editor.c:998
 msgid "(default)"
 msgstr "(výchozí)"
 
-#: gladeui/glade-editor.c:1009
+#: gladeui/glade-editor.c:1013
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 "Vyberte vlastnosti, které chcete nastavit zpět na jejich výchozí hodnoty"
 
-#: gladeui/glade-editor.c:1143
+#: gladeui/glade-editor.c:1147
 msgid "Reset Widget Properties"
 msgstr "Nastavit vlastnosti widgetu na počáteční hodnoty"
 
-#: gladeui/glade-editor.c:1148 gladeui/glade-editor-property.c:1764
-#: gladeui/glade-editor-property.c:2073 gladeui/glade-editor-property.c:3216
-#: gladeui/glade-editor-property.c:3324 gladeui/glade-editor-property.c:3334
-#: gladeui/glade-editor-property.c:3646 plugins/gtk+/glade-accels.c:526
-#: plugins/gtk+/glade-attributes.c:1067
+#: gladeui/glade-editor.c:1152 gladeui/glade-editor-property.c:1777
+#: gladeui/glade-editor-property.c:2085 gladeui/glade-editor-property.c:3220
+#: gladeui/glade-editor-property.c:3329 gladeui/glade-editor-property.c:3339
+#: gladeui/glade-editor-property.c:3649 plugins/gtk+/glade-accels.c:523
+#: plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_Budiž"
 
 #. Checklist
-#: gladeui/glade-editor.c:1160
+#: gladeui/glade-editor.c:1164
 msgid "_Properties:"
 msgstr "_Vlastnosti:"
 
-#: gladeui/glade-editor.c:1189
+#: gladeui/glade-editor.c:1193
 msgid "_Select All"
 msgstr "Vybrat _vše"
 
-#: gladeui/glade-editor.c:1197
+#: gladeui/glade-editor.c:1201
 msgid "_Unselect All"
 msgstr "_Zrušit výběr všeho"
 
 #. Description
-#: gladeui/glade-editor.c:1207
+#: gladeui/glade-editor.c:1211
 msgid "Property _Description:"
 msgstr "P_opis vlastnosti:"
 
@@ -1810,78 +1810,78 @@ msgstr "P_opis vlastnosti:"
 msgid "%s - %s Properties"
 msgstr "%s - Vlastnosti %s"
 
-#: gladeui/glade-editor-property.c:743
+#: gladeui/glade-editor-property.c:768
 msgid "Property Definition"
 msgstr "Definice vlastnosti"
 
-#: gladeui/glade-editor-property.c:744
+#: gladeui/glade-editor-property.c:769
 msgid "The GladePropertyDef this GladeEditorProperty was created for"
 msgstr "GladePropertyDef, pro kterou byl tento GladeEditorProperty vytvořen"
 
-#: gladeui/glade-editor-property.c:750 gladeui/glade-property-shell.c:125
+#: gladeui/glade-editor-property.c:775 gladeui/glade-property-shell.c:125
 msgid "Use Command"
 msgstr "Použít příkaz"
 
-#: gladeui/glade-editor-property.c:751
+#: gladeui/glade-editor-property.c:776
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Zda by se mělo použít příkazové API pro zásobník zpět/znovu"
 
-#: gladeui/glade-editor-property.c:757 gladeui/glade-property-shell.c:143
+#: gladeui/glade-editor-property.c:782 gladeui/glade-property-shell.c:143
 msgid "Disable Check"
 msgstr "Zakázat zaškrtávátko"
 
-#: gladeui/glade-editor-property.c:758 gladeui/glade-property-shell.c:144
+#: gladeui/glade-editor-property.c:783 gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
 msgstr "Zda výslovně zakázat zaškrtávací políčko"
 
-#: gladeui/glade-editor-property.c:764 gladeui/glade-property-label.c:152
+#: gladeui/glade-editor-property.c:789 gladeui/glade-property-label.c:152
 #: gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "Vlastní text"
 
-#: gladeui/glade-editor-property.c:765 gladeui/glade-property-shell.c:138
+#: gladeui/glade-editor-property.c:790 gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
 msgstr "Vlastní text pro zobrazení v popisku vlastnosti"
 
-#: gladeui/glade-editor-property.c:1359
+#: gladeui/glade-editor-property.c:1377
 msgid "Select Fields"
 msgstr "Výběr polí"
 
-#: gladeui/glade-editor-property.c:1362
+#: gladeui/glade-editor-property.c:1380
 msgid "_Close"
 msgstr "_Zavřít"
 
-#: gladeui/glade-editor-property.c:1375
+#: gladeui/glade-editor-property.c:1393
 msgid "_Select individual fields:"
 msgstr "_Označte jednotlivá pole:"
 
-#: gladeui/glade-editor-property.c:1759
+#: gladeui/glade-editor-property.c:1772
 msgid "Select Named Icon"
 msgstr "Výběr pojmenované ikony"
 
-#: gladeui/glade-editor-property.c:2067
+#: gladeui/glade-editor-property.c:2079
 msgid "Edit Text"
 msgstr "Úprava textu"
 
 #. Text
-#: gladeui/glade-editor-property.c:2086
+#: gladeui/glade-editor-property.c:2098
 msgid "_Text:"
 msgstr "_Text:"
 
 #. Translatable
-#: gladeui/glade-editor-property.c:2122
+#: gladeui/glade-editor-property.c:2134
 msgid "T_ranslatable"
 msgstr "_Přeložitelný"
 
-#: gladeui/glade-editor-property.c:2128 gladeui/glade-property.c:705
+#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:705
 msgid "Whether this property is translatable"
 msgstr "Zda se má tato vlastnost překládat"
 
-#: gladeui/glade-editor-property.c:2136
+#: gladeui/glade-editor-property.c:2148
 msgid "Conte_xt for translation:"
 msgstr "Konte_xt pro překlad:"
 
-#: gladeui/glade-editor-property.c:2142
+#: gladeui/glade-editor-property.c:2154
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -1890,70 +1890,70 @@ msgstr ""
 "Pro krátké a nejednoznačné řetězce: zadejte zde slovo, které odliší význam "
 "tohoto řetězce od významu dalšího výskytu téhož řetězce"
 
-#: gladeui/glade-editor-property.c:2174
+#: gladeui/glade-editor-property.c:2186
 msgid "Co_mments for translators:"
 msgstr "Pozná_mky pro překladatele:"
 
-#: gladeui/glade-editor-property.c:2265
+#: gladeui/glade-editor-property.c:2277
 msgid "Select a file from the project resource directory"
 msgstr "Vyberte soubor ze složky s prostředky projektu"
 
-#: gladeui/glade-editor-property.c:2270 gladeui/glade-utils.c:486
+#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Otevřít"
 
-#: gladeui/glade-editor-property.c:3134 gladeui/glade-widget-adaptor.c:1439
-#: gladeui/glade-widget.c:1354 plugins/gtk+/gtk+.xml:1507
+#: gladeui/glade-editor-property.c:3137 gladeui/glade-widget-adaptor.c:1461
+#: gladeui/glade-widget.c:1354 plugins/gtk+/gtk+.xml:1511
 msgid "Name"
 msgstr "Název"
 
-#: gladeui/glade-editor-property.c:3143 gladeui/glade-property.c:672
+#: gladeui/glade-editor-property.c:3146 gladeui/glade-property.c:672
 msgid "Class"
 msgstr "Třída"
 
-#: gladeui/glade-editor-property.c:3163
+#: gladeui/glade-editor-property.c:3167
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Výběr objektu typu %s bez rodičů v tomto projektu"
 
-#: gladeui/glade-editor-property.c:3165
+#: gladeui/glade-editor-property.c:3169
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Výběr objektu typu %s v tomto projektu"
 
-#: gladeui/glade-editor-property.c:3185
+#: gladeui/glade-editor-property.c:3189
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Výběr objektu %s bez rodičů v tomto projektu"
 
-#: gladeui/glade-editor-property.c:3187
+#: gladeui/glade-editor-property.c:3191
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Výběr objektu %s v tomto projektu"
 
-#: gladeui/glade-editor-property.c:3215 gladeui/glade-editor-property.c:3322
-#: gladeui/glade-editor-property.c:3333 gladeui/glade-editor-property.c:3644
-#: plugins/gtk+/glade-accels.c:524 plugins/gtk+/glade-attributes.c:1065
+#: gladeui/glade-editor-property.c:3219 gladeui/glade-editor-property.c:3327
+#: gladeui/glade-editor-property.c:3338 gladeui/glade-editor-property.c:3647
+#: plugins/gtk+/glade-accels.c:521 plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "V_ymazat"
 
 #. Checklist
-#: gladeui/glade-editor-property.c:3232 gladeui/glade-editor-property.c:3351
+#: gladeui/glade-editor-property.c:3236 gladeui/glade-editor-property.c:3356
 msgid "O_bjects:"
 msgstr "O_bjekty:"
 
-#: gladeui/glade-editor-property.c:3323
+#: gladeui/glade-editor-property.c:3328
 msgid "_New"
 msgstr "_Nový"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: gladeui/glade-editor-property.c:3459
+#: gladeui/glade-editor-property.c:3464
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Vytvoření %s pro vlastnost %s widgetu %s"
 
 #. Checklist
-#: gladeui/glade-editor-property.c:3662
+#: gladeui/glade-editor-property.c:3665
 msgid "Objects:"
 msgstr "Objekty:"
 
@@ -1981,48 +1981,48 @@ msgstr "Složený"
 msgid "Whether this widget is a composite template"
 msgstr "Zda je widget složenou šablonou"
 
-#: gladeui/glade-inspector.c:196 gladeui/glade-project-properties.c:168
+#: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:168
 #: gladeui/glade-widget.c:1383
 msgid "Project"
 msgstr "Projekt"
 
-#: gladeui/glade-inspector.c:197
+#: gladeui/glade-inspector.c:192
 msgid "The project being inspected"
 msgstr "Projekt, který je prohlížen"
 
-#: gladeui/glade-inspector.c:578
+#: gladeui/glade-inspector.c:572
 msgid " < Search Widgets >"
 msgstr " < hledat widgety >"
 
-#: gladeui/glade-inspector.c:617
+#: gladeui/glade-inspector.c:611
 msgid "Expand all"
 msgstr "Rozbalit vše"
 
-#: gladeui/glade-named-icon-chooser-dialog.c:482
+#: gladeui/glade-named-icon-chooser-dialog.c:489
 msgid "All Contexts"
 msgstr "Všechny kontexty"
 
-#: gladeui/glade-named-icon-chooser-dialog.c:1369
+#: gladeui/glade-named-icon-chooser-dialog.c:1388
 msgid "Named Icon Chooser"
 msgstr "Výběr pojmenované ikony"
 
-#: gladeui/glade-named-icon-chooser-dialog.c:1397
+#: gladeui/glade-named-icon-chooser-dialog.c:1416
 msgid "Icon _Name:"
 msgstr "_Název ikony:"
 
-#: gladeui/glade-named-icon-chooser-dialog.c:1441
+#: gladeui/glade-named-icon-chooser-dialog.c:1460
 msgid "C_ontexts:"
 msgstr "K_ontexty:"
 
-#: gladeui/glade-named-icon-chooser-dialog.c:1464
+#: gladeui/glade-named-icon-chooser-dialog.c:1483
 msgid "Icon Na_mes:"
 msgstr "_Názvy ikon:"
 
-#: gladeui/glade-named-icon-chooser-dialog.c:1488
+#: gladeui/glade-named-icon-chooser-dialog.c:1507
 msgid "_List standard icons only"
 msgstr "_Vypsat pouze standardní ikony"
 
-#: gladeui/glade-named-icon-chooser-dialog.c:1688
+#: gladeui/glade-named-icon-chooser-dialog.c:1709
 #, c-format
 msgid "Could not create directory: %s"
 msgstr "Nelze vytvořit složku: %s"
@@ -2106,19 +2106,19 @@ msgstr "Uvolněna"
 
 #. translators: GConnectFlags value
 #: gladeui/glade-previewer.c:759 gladeui/glade-signal.c:197
-#: gladeui/glade-signal-editor.c:1396 plugins/gtk+/gtk+.xml:2340
-#: plugins/gtk+/gtk+.xml:2344 plugins/gtk+/gtk+.xml:2390
-#: plugins/gtk+/gtk+.xml:2394
+#: gladeui/glade-signal-editor.c:1405 plugins/gtk+/gtk+.xml:2348
+#: plugins/gtk+/gtk+.xml:2352 plugins/gtk+/gtk+.xml:2398
+#: plugins/gtk+/gtk+.xml:2402
 msgid "After"
 msgstr "Za"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited one time
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted one time
 #: gladeui/glade-previewer.c:782
 #, c-format
 msgid "%s::%s emitted one time"
 msgstr "%s::%s vysláno jeden krát"
 
-#. translators: this will be shown in glade previewer when a signal %s::%s is emited %d times
+#. translators: this will be shown in glade previewer when a signal %s::%s is emitted %d times
 #: gladeui/glade-previewer.c:786
 #, c-format
 msgid "%s::%s emitted %d times"
@@ -2380,20 +2380,20 @@ msgstr ""
 "\n"
 "Přejete si místo toho načíst automaticky uloženou verzi?"
 
-#: gladeui/glade-project.c:2224
+#: gladeui/glade-project.c:2227
 #, c-format
 msgid "%s document properties"
 msgstr "Vlastnosti dokumentu %s"
 
 #. ******************************************************************
-#. Verify code here (versioning, incompatability checks)
+#. Verify code here (versioning, incompatibility checks)
 #. ******************************************************************
 #. Defined here for pretty translator comments (bug in intl tools, for some reason
 #. * you can only comment about the line directly following, forcing you to write
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3091
+#: gladeui/glade-project.c:3099
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2401,24 +2401,24 @@ msgstr ""
 "%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3095
+#: gladeui/glade-project.c:3103
 #, c-format
 msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
 msgstr "[%s] Objektová třída „<b>%s</b>“ byla zavedena v %s %d.%d\n"
 
-#: gladeui/glade-project.c:3097
+#: gladeui/glade-project.c:3105
 msgid "This widget is deprecated"
 msgstr "Tento widget je zavržený"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3100
+#: gladeui/glade-project.c:3108
 #, c-format
 msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
 msgstr "[%s] Objektová třída „<b>%s</b>“ z %s %d.%d je zavržená\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3105
+#: gladeui/glade-project.c:3113
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2426,7 +2426,7 @@ msgstr ""
 "%s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3109
+#: gladeui/glade-project.c:3117
 #, c-format
 msgid ""
 "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
@@ -2436,7 +2436,7 @@ msgstr ""
 "%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3113
+#: gladeui/glade-project.c:3121
 #, c-format
 msgid ""
 "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was introduced "
@@ -2445,19 +2445,19 @@ msgstr ""
 "[%s] Vlastnost balení „<b>%s</b>“ objektové třídy „<b>%s</b>“ byla zavedena "
 "v %s %d.%d\n"
 
-#: gladeui/glade-project.c:3116
+#: gladeui/glade-project.c:3124
 msgid "This property is deprecated"
 msgstr "Tato vlastnost je zavržená"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3119
+#: gladeui/glade-project.c:3127
 #, c-format
 msgid "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgstr "[%s] Vlastnost „<b>%s</b>“ objektové třídy „<b>%s</b>“ byla zavržena\n"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3123
+#: gladeui/glade-project.c:3131
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2465,7 +2465,7 @@ msgstr ""
 "%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3127
+#: gladeui/glade-project.c:3135
 #, c-format
 msgid ""
 "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
@@ -2473,76 +2473,76 @@ msgid ""
 msgstr ""
 "[%s] Signál „<b>%s</b>“ objektové třídy „<b>%s</b>“ byl zaveden v %s %d.%d\n"
 
-#: gladeui/glade-project.c:3130
+#: gladeui/glade-project.c:3138
 msgid "This signal is deprecated"
 msgstr "Tento signál je zavržený"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3133
+#: gladeui/glade-project.c:3141
 #, c-format
 msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgstr "[%s] Signál „<b>%s</b>“ objektové třídy „<b>%s</b>“ byl zavržen\n"
 
-#: gladeui/glade-project.c:3430
+#: gladeui/glade-project.c:3438
 msgid "Details"
 msgstr "Detaily"
 
-#: gladeui/glade-project.c:3447
+#: gladeui/glade-project.c:3455
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "Projekt „%s“ obsahuje chyby. Přesto uložit?"
 
-#: gladeui/glade-project.c:3448
+#: gladeui/glade-project.c:3456
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr "Projekt „%s“ obsahuje zavržené widgety a/nebo nesprávné verze."
 
-#: gladeui/glade-project.c:3473
+#: gladeui/glade-project.c:3481
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgstr "Objekt %s je šablona třídy, ale to není v gtk+ %d.%d podporováno"
 
-#: gladeui/glade-project.c:3488
+#: gladeui/glade-project.c:3496
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Objekt %s má nerozpoznaný typ %s\n"
 
-#: gladeui/glade-project.c:4980
+#: gladeui/glade-project.c:4988
 #, c-format
 msgid "Unsaved %i"
 msgstr "Neuložený %i"
 
-#: gladeui/glade-project.c:5280 gladeui/glade-project.c:5331
-#: gladeui/glade-project.c:5488
+#: gladeui/glade-project.c:5288 gladeui/glade-project.c:5339
+#: gladeui/glade-project.c:5496
 msgid "No widget selected."
 msgstr "Není vybrán žádný widget."
 
-#: gladeui/glade-project.c:5296
+#: gladeui/glade-project.c:5304
 msgid "Unable to copy unrecognized widget type."
 msgstr "Nelze kopírovat widget nerozpoznaného typu"
 
-#: gladeui/glade-project.c:5328
+#: gladeui/glade-project.c:5336
 msgid "Unable to cut unrecognized widget type"
 msgstr "Nelze vyjmout widget nerozpoznaného typu"
 
-#: gladeui/glade-project.c:5380
+#: gladeui/glade-project.c:5388
 msgid "Unable to paste to the selected parent"
 msgstr "Do vybraného rodiče není možné vkládat"
 
-#: gladeui/glade-project.c:5391
+#: gladeui/glade-project.c:5399
 msgid "Unable to paste to multiple widgets"
 msgstr "Není možné vkládat do více widgetů"
 
-#: gladeui/glade-project.c:5401
+#: gladeui/glade-project.c:5409
 msgid "No widget on the clipboard"
 msgstr "Ve schránce není žádný widget"
 
-#: gladeui/glade-project.c:5446
+#: gladeui/glade-project.c:5454
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 "Do tohoto kontejneru může být v jednom okamžiku vložen jen jeden widget"
 
-#: gladeui/glade-project.c:5458
+#: gladeui/glade-project.c:5466
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Nedostatečné množství vyhrazených míst v cílovém kontejneru"
 
@@ -2583,7 +2583,7 @@ msgstr "Kontext"
 msgid "Context for translation"
 msgstr "Kontext pro překlad"
 
-#: gladeui/glade-property.c:697 plugins/gtk+/gtk+.xml:412
+#: gladeui/glade-property.c:697 plugins/gtk+/gtk+.xml:414
 msgid "Comment"
 msgstr "Komentář"
 
@@ -2684,7 +2684,7 @@ msgstr "Třída signálu"
 msgid "The signal class of this signal"
 msgstr "Třída signálu tohoto signálu"
 
-#: gladeui/glade-signal.c:173 gladeui/glade-signal-editor.c:1311
+#: gladeui/glade-signal.c:173 gladeui/glade-signal-editor.c:1320
 msgid "Detail"
 msgstr "Detail"
 
@@ -2692,7 +2692,7 @@ msgstr "Detail"
 msgid "The detail for this signal"
 msgstr "Detail tohoto signálu"
 
-#: gladeui/glade-signal.c:179 gladeui/glade-signal-editor.c:1326
+#: gladeui/glade-signal.c:179 gladeui/glade-signal-editor.c:1335
 msgid "Handler"
 msgstr "Obslužná rutina"
 
@@ -2725,29 +2725,37 @@ msgid "Whether the user data is swapped with the instance for the handler"
 msgstr ""
 "Zda se mají uživatelská data uvolnit z paměti s instancí pro obslužnou rutinu"
 
-#: gladeui/glade-signal-editor.c:514
+#: gladeui/glade-signal-editor.c:517
 msgid "Select an object to pass to the handler"
 msgstr "Výběr objektu pro předání do obslužné rutiny"
 
-#: gladeui/glade-signal-editor.c:1304 plugins/gtk+/glade-accels.c:451
+#: gladeui/glade-signal-editor.c:1313 plugins/gtk+/glade-accels.c:448
 msgid "Signal"
 msgstr "Signál"
 
-#: gladeui/glade-signal-editor.c:1364
+#: gladeui/glade-signal-editor.c:1373
 msgid "User data"
 msgstr "Uživatelská data"
 
-#: gladeui/glade-signal-editor.c:1379
+#: gladeui/glade-signal-editor.c:1388
 msgid "Swap"
 msgstr "Zaměnit"
 
-#: gladeui/glade-signal-editor.c:1539
+#: gladeui/glade-signal-editor.c:1548
 msgid "Glade Widget"
 msgstr "Widget Glade"
 
-#: gladeui/glade-signal-editor.c:1540
+#: gladeui/glade-signal-editor.c:1549
 msgid "The glade widget to edit signals"
 msgstr "Widget Glade pro úpravy signálů"
+
+#: gladeui/glade-signal-model.c:29 gladeui/glade-signal-model.c:30
+msgid "<Type here>"
+msgstr "<zde pište>"
+
+#: gladeui/glade-signal-model.c:31
+msgid "<Click here>"
+msgstr "<zde klikněte>"
 
 #: gladeui/glade-utils.c:136 gladeui/glade-utils.c:168
 #, c-format
@@ -2789,20 +2797,20 @@ msgid "Could not show link:"
 msgstr "Nelze zobrazit odkaz:"
 
 #. Reset the column
-#: gladeui/glade-utils.c:1681 plugins/gtk+/glade-attributes.c:833
-#: plugins/gtk+/gtk+.xml:859 plugins/gtk+/gtk+.xml:1245
-#: plugins/gtk+/gtk+.xml:1261 plugins/gtk+/gtk+.xml:1376
-#: plugins/gtk+/gtk+.xml:1517 plugins/gtk+/gtk+.xml:1660
-#: plugins/gtk+/gtk+.xml:1714 plugins/gtk+/gtk+.xml:2614
-#: plugins/gtk+/gtk+.xml:2668 plugins/gtk+/gtk+.xml:2732
-#: plugins/gtk+/gtk+.xml:3035 plugins/gtk+/gtk+.xml:3395
-#: plugins/gtk+/gtk+.xml:3532 plugins/gtk+/gtk+.xml:3649
-#: plugins/gtk+/gtk+.xml:3692 plugins/gtk+/gtk+.xml:3954
-#: plugins/gtk+/gtk+.xml:4658 plugins/gtk+/gtk+.xml:5479
+#: gladeui/glade-utils.c:1703 plugins/gtk+/glade-attributes.c:829
+#: plugins/gtk+/gtk+.xml:863 plugins/gtk+/gtk+.xml:1249
+#: plugins/gtk+/gtk+.xml:1265 plugins/gtk+/gtk+.xml:1380
+#: plugins/gtk+/gtk+.xml:1521 plugins/gtk+/gtk+.xml:1668
+#: plugins/gtk+/gtk+.xml:1722 plugins/gtk+/gtk+.xml:2622
+#: plugins/gtk+/gtk+.xml:2676 plugins/gtk+/gtk+.xml:2743
+#: plugins/gtk+/gtk+.xml:3074 plugins/gtk+/gtk+.xml:3442
+#: plugins/gtk+/gtk+.xml:3579 plugins/gtk+/gtk+.xml:3696
+#: plugins/gtk+/gtk+.xml:3739 plugins/gtk+/gtk+.xml:4001
+#: plugins/gtk+/gtk+.xml:4705 plugins/gtk+/gtk+.xml:5526
 msgid "None"
 msgstr "Nic"
 
-#: gladeui/glade-widget-action.c:185 plugins/gtk+/gtk+.xml:434
+#: gladeui/glade-widget-action.c:185 plugins/gtk+/gtk+.xml:436
 msgid "Definition"
 msgstr "Definice"
 
@@ -2815,7 +2823,7 @@ msgid "Whether this action is sensitive"
 msgstr "Zda je tato akce citlivá"
 
 #: gladeui/glade-widget-action.c:198 gladeui/glade-widget.c:1443
-#: plugins/gtk+/gtk+.xml:4267
+#: plugins/gtk+/gtk+.xml:4314
 msgid "Visible"
 msgstr "Viditelnost"
 
@@ -2823,70 +2831,70 @@ msgstr "Viditelnost"
 msgid "Whether this action is visible"
 msgstr "Zda je tato akce viditelná"
 
-#: gladeui/glade-widget-adaptor.c:242
+#: gladeui/glade-widget-adaptor.c:246
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Odvozený adaptér (%s) pro objekt %s již existuje!"
 
-#: gladeui/glade-widget-adaptor.c:941
+#: gladeui/glade-widget-adaptor.c:959
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s nepodporuje přidávání žádných potomků."
 
-#: gladeui/glade-widget-adaptor.c:1440
+#: gladeui/glade-widget-adaptor.c:1462
 msgid "Name of the class"
 msgstr "Název třídy"
 
-#: gladeui/glade-widget-adaptor.c:1447
+#: gladeui/glade-widget-adaptor.c:1469
 msgid "GType of the class"
 msgstr "GType třídy"
 
-#: gladeui/glade-widget-adaptor.c:1453
+#: gladeui/glade-widget-adaptor.c:1475
 msgid "Title"
 msgstr "Název"
 
-#: gladeui/glade-widget-adaptor.c:1454
+#: gladeui/glade-widget-adaptor.c:1476
 msgid "Translated title for the class used in the glade UI"
 msgstr "Přeložený název pro třídu použitou v uživatelském rozhraní glade"
 
-#: gladeui/glade-widget-adaptor.c:1460
+#: gladeui/glade-widget-adaptor.c:1482
 msgid "Generic Name"
 msgstr "Obecný název"
 
-#: gladeui/glade-widget-adaptor.c:1461
+#: gladeui/glade-widget-adaptor.c:1483
 msgid "Used to generate names of new widgets"
 msgstr "Použito ke generování názvů nových widgetů"
 
-#: gladeui/glade-widget-adaptor.c:1467 plugins/gtk+/gtk+.xml:2275
+#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2283
 #: plugins/gtk+/glade-window-editor.ui:262
 msgid "Icon Name"
 msgstr "Název ikony"
 
-#: gladeui/glade-widget-adaptor.c:1468
+#: gladeui/glade-widget-adaptor.c:1490
 msgid "The icon name"
 msgstr "Název ikony"
 
-#: gladeui/glade-widget-adaptor.c:1474
+#: gladeui/glade-widget-adaptor.c:1496
 msgid "Catalog"
 msgstr "Katalog"
 
-#: gladeui/glade-widget-adaptor.c:1475
+#: gladeui/glade-widget-adaptor.c:1497
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Název katalogu widgetů, který deklaroval tuto třídu"
 
-#: gladeui/glade-widget-adaptor.c:1481
+#: gladeui/glade-widget-adaptor.c:1503
 msgid "Book"
 msgstr "Kniha"
 
-#: gladeui/glade-widget-adaptor.c:1482
+#: gladeui/glade-widget-adaptor.c:1504
 msgid "DevHelp search namespace for this widget class"
 msgstr "Jmenný prostor prohledávaný v DevHelp pro tuto třídu widgetu"
 
-#: gladeui/glade-widget-adaptor.c:1488
+#: gladeui/glade-widget-adaptor.c:1510
 msgid "Special Child Type"
 msgstr "Speciální typ potomka"
 
-#: gladeui/glade-widget-adaptor.c:1489
+#: gladeui/glade-widget-adaptor.c:1511
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -2894,19 +2902,19 @@ msgstr ""
 "Uchovává název vlastnosti balení z důvodu popisu speciálního potomka pro "
 "tuto třídu kontejneru"
 
-#: gladeui/glade-widget-adaptor.c:1496
+#: gladeui/glade-widget-adaptor.c:1518
 msgid "Cursor"
 msgstr "Kurzor"
 
-#: gladeui/glade-widget-adaptor.c:1497
+#: gladeui/glade-widget-adaptor.c:1519
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Kurzor pro vkládání widgetů v uživatelském rozhraní"
 
-#: gladeui/glade-widget-adaptor.c:1501
+#: gladeui/glade-widget-adaptor.c:1523
 msgid "Query"
 msgstr "Dotaz"
 
-#: gladeui/glade-widget-adaptor.c:1502
+#: gladeui/glade-widget-adaptor.c:1524
 msgid "Whether the adaptor should query the use or not"
 msgstr "Zda se má adaptér dotazovat, jestli se má použít či nikoliv"
 
@@ -2955,7 +2963,7 @@ msgstr "Projekt glade, ke kterému tento widget náleží"
 msgid "A list of GladeProperties"
 msgstr "Seznam GladeProperties"
 
-#: gladeui/glade-widget.c:1395 plugins/gtk+/gtk+.xml:622
+#: gladeui/glade-widget.c:1395 plugins/gtk+/gtk+.xml:626
 msgid "Parent"
 msgstr "Rodič"
 
@@ -3012,40 +3020,40 @@ msgid "A warning string about version mismatches"
 msgstr "Varovný řetězec ohledně neodpovídajících verzí"
 
 #: gladeui/glade-widget.c:1444
-msgid "Wether the widget is visible or not"
+msgid "Whether the widget is visible or not"
 msgstr "Zda je widget viditelný nebo ne"
 
 #: gladeui/glade-widget.c:1449
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Zda je tento widget šablona pro složený widget"
 
-#: gladeui/glade-widget.c:2777 plugins/gtk+/glade-gtk-widget.c:1032
-#: plugins/gtk+/glade-gtk-widget.c:1096
+#: gladeui/glade-widget.c:2777 plugins/gtk+/glade-gtk-widget.c:1038
+#: plugins/gtk+/glade-gtk-widget.c:1102
 msgid "(unnamed)"
 msgstr "(bez názvu)"
 
-#: gladeui/glade-widget.c:4878
+#: gladeui/glade-widget.c:4882
 msgid "Template classes are only usable in GTK+ 3.10 and later."
 msgstr "Šablony tříd se dají použít jen v GTK+ 3.10 a novějším."
 
-#: gladeui/glade-widget.c:4886
+#: gladeui/glade-widget.c:4890
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "Objekt je nerozpoznaného typu %s"
 
-#: gladeui/glade-widget.c:4952
+#: gladeui/glade-widget.c:4956
 msgid "Property has versioning problems: "
 msgstr "Vlastnost má problém s verzí:"
 
-#: gladeui/glade-widget.c:4954
+#: gladeui/glade-widget.c:4958
 msgid "Some properties have versioning problems: "
 msgstr "Některé vlastnosti mají problém s verzí:"
 
-#: gladeui/glade-widget.c:4974
+#: gladeui/glade-widget.c:4978
 msgid "Signal has versioning problems: "
 msgstr "Signál má problém s verzí:"
 
-#: gladeui/glade-widget.c:4976
+#: gladeui/glade-widget.c:4980
 msgid "Some signals have versioning problems: "
 msgstr "Některé signály mají problém s verzí:"
 
@@ -3053,7 +3061,7 @@ msgstr "Některé signály mají problém s verzí:"
 msgid "Actions"
 msgstr "Akce"
 
-#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5548
+#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5595
 msgid "Applications"
 msgstr "Aplikace"
 
@@ -3249,15 +3257,15 @@ msgstr "Nastavení %s pro použití souboru s logem"
 msgid "Setting %s to use a logo icon"
 msgstr "Nastavení %s pro použití ikony s logem"
 
-#: plugins/gtk+/glade-accels.c:323 plugins/gtk+/glade-accels.c:395
+#: plugins/gtk+/glade-accels.c:320 plugins/gtk+/glade-accels.c:392
 msgid "<choose a key>"
 msgstr "<vyberte klávesu>"
 
-#: plugins/gtk+/glade-accels.c:467
+#: plugins/gtk+/glade-accels.c:464
 msgid "Accelerator Key"
 msgstr "Klávesová zkratka"
 
-#: plugins/gtk+/glade-accels.c:520
+#: plugins/gtk+/glade-accels.c:517
 msgid "Choose accelerator keys..."
 msgstr "Výběr klávesových zkratek…"
 
@@ -3273,117 +3281,117 @@ msgstr "Nastavení %s, aby používal vystředěného potomka"
 msgid "Setting %s to not use a center child"
 msgstr "Nastavení %s, aby nepoužíval vystředěného potomka"
 
-#: plugins/gtk+/glade-attributes.c:226
+#: plugins/gtk+/glade-attributes.c:222
 msgctxt "textattr"
 msgid "Style"
 msgstr "Styl"
 
-#: plugins/gtk+/glade-attributes.c:230
+#: plugins/gtk+/glade-attributes.c:226
 msgctxt "textattr"
 msgid "Weight"
 msgstr "Tloušťka"
 
-#: plugins/gtk+/glade-attributes.c:234
+#: plugins/gtk+/glade-attributes.c:230
 msgctxt "textattr"
 msgid "Variant"
 msgstr "Varianta"
 
-#: plugins/gtk+/glade-attributes.c:238
+#: plugins/gtk+/glade-attributes.c:234
 msgctxt "textattr"
 msgid "Stretch"
 msgstr "Šířka"
 
-#: plugins/gtk+/glade-attributes.c:242
+#: plugins/gtk+/glade-attributes.c:238
 msgctxt "textattr"
 msgid "Underline"
 msgstr "Podtržení"
 
-#: plugins/gtk+/glade-attributes.c:246
+#: plugins/gtk+/glade-attributes.c:242
 msgctxt "textattr"
 msgid "Strikethrough"
 msgstr "Přeškrtnutí"
 
-#: plugins/gtk+/glade-attributes.c:250
+#: plugins/gtk+/glade-attributes.c:246
 msgctxt "textattr"
 msgid "Gravity"
 msgstr "Přitažlivost"
 
-#: plugins/gtk+/glade-attributes.c:254
+#: plugins/gtk+/glade-attributes.c:250
 msgctxt "textattr"
 msgid "Gravity Hint"
 msgstr "Pokyn pro přitažlivost"
 
-#: plugins/gtk+/glade-attributes.c:266
+#: plugins/gtk+/glade-attributes.c:262
 msgctxt "textattr"
 msgid "Size"
 msgstr "Velikost"
 
-#: plugins/gtk+/glade-attributes.c:271
+#: plugins/gtk+/glade-attributes.c:267
 msgctxt "textattr"
 msgid "Absolute Size"
 msgstr "Absolutní velikost"
 
-#: plugins/gtk+/glade-attributes.c:278
+#: plugins/gtk+/glade-attributes.c:274
 msgctxt "textattr"
 msgid "Foreground Color"
 msgstr "Barva popředí"
 
-#: plugins/gtk+/glade-attributes.c:282
+#: plugins/gtk+/glade-attributes.c:278
 msgctxt "textattr"
 msgid "Background Color"
 msgstr "Barva pozadí"
 
-#: plugins/gtk+/glade-attributes.c:286
+#: plugins/gtk+/glade-attributes.c:282
 msgctxt "textattr"
 msgid "Underline Color"
 msgstr "Barva podtržení"
 
-#: plugins/gtk+/glade-attributes.c:290
+#: plugins/gtk+/glade-attributes.c:286
 msgctxt "textattr"
 msgid "Strikethrough Color"
 msgstr "Barva přeškrtnutí"
 
-#: plugins/gtk+/glade-attributes.c:301
+#: plugins/gtk+/glade-attributes.c:297
 msgctxt "textattr"
 msgid "Scale"
 msgstr "Stupnice"
 
-#: plugins/gtk+/glade-attributes.c:307
+#: plugins/gtk+/glade-attributes.c:303
 msgctxt "textattr"
 msgid "Font Description"
 msgstr "Popis písma"
 
-#: plugins/gtk+/glade-attributes.c:333 plugins/gtk+/glade-attributes.c:370
-#: plugins/gtk+/glade-attributes.c:378 plugins/gtk+/glade-attributes.c:384
-#: plugins/gtk+/glade-attributes.c:836
+#: plugins/gtk+/glade-attributes.c:329 plugins/gtk+/glade-attributes.c:366
+#: plugins/gtk+/glade-attributes.c:374 plugins/gtk+/glade-attributes.c:380
+#: plugins/gtk+/glade-attributes.c:832
 msgid "<Enter Value>"
 msgstr "<zadejte hodnotu>"
 
-#: plugins/gtk+/glade-attributes.c:369
+#: plugins/gtk+/glade-attributes.c:365
 msgid "Unset"
 msgstr "Nenastaveno"
 
-#: plugins/gtk+/glade-attributes.c:730
+#: plugins/gtk+/glade-attributes.c:726
 msgid "Select a color"
 msgstr "Výběr barvy"
 
-#: plugins/gtk+/glade-attributes.c:765
+#: plugins/gtk+/glade-attributes.c:761
 msgid "Select a font"
 msgstr "Výběr písma"
 
-#: plugins/gtk+/glade-attributes.c:900
+#: plugins/gtk+/glade-attributes.c:896
 msgid "Attribute"
 msgstr "Atribut"
 
-#: plugins/gtk+/glade-attributes.c:908
+#: plugins/gtk+/glade-attributes.c:904
 msgid "Value"
 msgstr "Hodnota"
 
-#: plugins/gtk+/glade-attributes.c:1061
+#: plugins/gtk+/glade-attributes.c:1057
 msgid "Setup Text Attributes"
 msgstr "Nastavení atributů textu"
 
-#: plugins/gtk+/glade-attributes.c:1153
+#: plugins/gtk+/glade-attributes.c:1149
 msgid "Edit Attributes"
 msgstr "Upravit atributy"
 
@@ -3424,33 +3432,33 @@ msgid "Retrieve %s from model (type %s)"
 msgstr "Získat %s z modelu (typu %s)"
 
 #. translators: the adjective not the verb
-#: plugins/gtk+/glade-cell-renderer-editor.c:514
+#: plugins/gtk+/glade-cell-renderer-editor.c:510
 msgid "unset"
 msgstr "nenastaven"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:537
+#: plugins/gtk+/glade-cell-renderer-editor.c:533
 msgid "no model"
 msgstr "žádný model"
 
-#: plugins/gtk+/glade-column-types.c:350 plugins/gtk+/glade-column-types.c:402
-#: plugins/gtk+/glade-column-types.c:475 plugins/gtk+/glade-column-types.c:696
+#: plugins/gtk+/glade-column-types.c:347 plugins/gtk+/glade-column-types.c:399
+#: plugins/gtk+/glade-column-types.c:472 plugins/gtk+/glade-column-types.c:693
 #, c-format
 msgid "Setting columns on %s"
 msgstr "Nastavení sloupců na %s"
 
-#: plugins/gtk+/glade-column-types.c:503
+#: plugins/gtk+/glade-column-types.c:500
 msgid "< define a new column >"
 msgstr "<definujte nový sloupec>"
 
-#: plugins/gtk+/glade-column-types.c:826
+#: plugins/gtk+/glade-column-types.c:823
 msgid "Add and remove columns:"
 msgstr "Přidat a odebrat sloupce:"
 
-#: plugins/gtk+/glade-column-types.c:878
+#: plugins/gtk+/glade-column-types.c:875
 msgid "Column type"
 msgstr "Typ sloupce"
 
-#: plugins/gtk+/glade-column-types.c:900
+#: plugins/gtk+/glade-column-types.c:897
 msgid "Column name"
 msgstr "Název sloupce"
 
@@ -3562,7 +3570,7 @@ msgstr ""
 "Zda tento kontejner podporuje změnu velikosti widgetů, kteří jsou potomky"
 
 #: plugins/gtk+/glade-gtk-action-group.c:184
-#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3731
+#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3778
 msgid "Action"
 msgstr "Akce"
 
@@ -3608,11 +3616,11 @@ msgstr "Potvrzovací stránka"
 msgid "Ordering children of %s"
 msgstr "Uspořádání potomků objektu %s"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:3992
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4039
 msgid "Tree View Column"
 msgstr "Sloupec stromového zobrazení"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4105
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4152
 msgid "Cell Renderer"
 msgstr "Vykreslování buňky"
 
@@ -3625,18 +3633,18 @@ msgid "Common Properties and Attributes"
 msgstr "Společné vlastnosti a atributy"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:411
-#: plugins/gtk+/glade-gtk-tree-view.c:85 plugins/gtk+/gtk+.xml:342
+#: plugins/gtk+/glade-gtk-tree-view.c:85 plugins/gtk+/gtk+.xml:344
 #: plugins/gtk+/glade-entry-editor.ui:343
 msgid "Text"
 msgstr "Text"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:412
-#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3761
+#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3808
 msgid "Accelerator"
 msgstr "Zkratka"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:413
-#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:834
+#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:838
 msgid "Combo"
 msgstr "Výběrový seznam"
 
@@ -3651,13 +3659,13 @@ msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:416
-#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3507
+#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3554
 #: plugins/gtk+/glade-entry-editor.ui:471
 msgid "Progress"
 msgstr "Průběh"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:418
-#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1390
+#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1394
 msgid "Spinner"
 msgstr "Káča"
 
@@ -3730,7 +3738,7 @@ msgstr ""
 msgid "Insert Child on %s"
 msgstr "Vložit potomka do %s"
 
-#: plugins/gtk+/glade-gtk-grid.c:507 plugins/gtk+/glade-gtk-list-box.c:207
+#: plugins/gtk+/glade-gtk-grid.c:507 plugins/gtk+/glade-gtk-list-box.c:333
 #: plugins/gtk+/glade-gtk-table.c:549
 #, c-format
 msgid "Insert Row on %s"
@@ -3907,16 +3915,16 @@ msgstr "Nabídka nedávných"
 msgid "Tool Item"
 msgstr "Nástrojová položka"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1218
+#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1222
 msgid "Tool Item Group"
 msgstr "Skupina nástrojových položek"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2890
+#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2929
 msgid "Recent Chooser Menu"
 msgstr "Nabídka výběru nedávných"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:290
-#: plugins/gtk+/gtk+.xml:978
+#: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:292
+#: plugins/gtk+/gtk+.xml:982
 msgid "Menu Item"
 msgstr "Položka nabídky"
 
@@ -3956,20 +3964,20 @@ msgid "Text Tag Table Editor"
 msgstr "Editor tabulek textových značek"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:238
-#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1140
-#: plugins/gtk+/gtk+.xml:1696
+#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1144
+#: plugins/gtk+/gtk+.xml:1704
 msgid "Button"
 msgstr "Tlačítko"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:241
-#: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:286
-#: plugins/gtk+/gtk+.xml:814 plugins/gtk+/gtk+.xml:1134
+#: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:288
+#: plugins/gtk+/gtk+.xml:818 plugins/gtk+/gtk+.xml:1138
 msgid "Menu"
 msgstr "Nabídka"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:242
-#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3276
-#: plugins/gtk+/gtk+.xml:3509 plugins/gtk+/gtk+.xml:3655
+#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3319
+#: plugins/gtk+/gtk+.xml:3556 plugins/gtk+/gtk+.xml:3702
 #: plugins/gtk+/glade-widget-editor.ui:654
 msgid "Custom"
 msgstr "Vlastní"
@@ -3978,24 +3986,24 @@ msgstr "Vlastní"
 #: plugins/gtk+/glade-gtk-toolbar.c:260
 #: plugins/gtk+/glade-gtk-tool-palette.c:189
 #: plugins/gtk+/glade-gtk-tool-palette.c:197
-#: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:320
-#: plugins/gtk+/gtk+.xml:2979
+#: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:322
+#: plugins/gtk+/gtk+.xml:3018
 msgid "Separator"
 msgstr "Oddělovač"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:248 plugins/gtk+/glade-gtk-toolbar.c:256
 #: plugins/gtk+/glade-gtk-tool-palette.c:193
-#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:810
-#: plugins/gtk+/gtk+.xml:1257 plugins/gtk+/gtk+.xml:2036
-#: plugins/gtk+/gtk+.xml:4579 plugins/gtk+/gtk+.xml:4621
-#: plugins/gtk+/gtk+.xml:4685
+#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:814
+#: plugins/gtk+/gtk+.xml:1261 plugins/gtk+/gtk+.xml:2044
+#: plugins/gtk+/gtk+.xml:4626 plugins/gtk+/gtk+.xml:4668
+#: plugins/gtk+/gtk+.xml:4732
 msgid "Normal"
 msgstr "Normální"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:249 plugins/gtk+/glade-gtk-toolbar.c:257
 #: plugins/gtk+/glade-gtk-tool-palette.c:194
-#: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:274
-#: plugins/gtk+/gtk+.xml:2262 plugins/gtk+/glade-image-editor.ui:44
+#: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:276
+#: plugins/gtk+/gtk+.xml:2270 plugins/gtk+/glade-image-editor.ui:44
 #: plugins/gtk+/glade-tool-button-editor.ui:215
 msgid "Image"
 msgstr "Obrázek"
@@ -4053,28 +4061,28 @@ msgstr "Záhlaví jsou neviditelná"
 msgid "Expanders are not shown"
 msgstr "Prvky pro rozbalování nejsou zobrazeny"
 
-#: plugins/gtk+/glade-gtk-widget.c:850
+#: plugins/gtk+/glade-gtk-widget.c:856
 #, c-format
 msgid "Removing parent of %s"
 msgstr "Odstranění rodiče widgetu „%s“"
 
-#: plugins/gtk+/glade-gtk-widget.c:909
+#: plugins/gtk+/glade-gtk-widget.c:915
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "Přidání rodiče „%s“ pro „%s“"
 
-#: plugins/gtk+/glade-gtk-widget.c:1044
+#: plugins/gtk+/glade-gtk-widget.c:1050
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Přidání „%s“ do skupinové velikosti „%s“"
 
-#: plugins/gtk+/glade-gtk-widget.c:1048
+#: plugins/gtk+/glade-gtk-widget.c:1054
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Přidání „%s“ do nové skupinové velikosti"
 
 #. Add trailing new... item
-#: plugins/gtk+/glade-gtk-widget.c:1116
+#: plugins/gtk+/glade-gtk-widget.c:1122
 msgid "New Size Group"
 msgstr "Nová skupinová velikost"
 
@@ -4117,7 +4125,7 @@ msgstr ""
 "Nejdříve do následujícího kombinovaného seznamu přidejte standardní název a "
 "potom ve stromu přidávejte a definujte zdroje pro ikony."
 
-#: plugins/gtk+/glade-icon-sources.c:762
+#: plugins/gtk+/glade-icon-sources.c:759
 #, c-format
 msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
@@ -4126,38 +4134,38 @@ msgstr ""
 "Zadejte název souboru nebo relativní či úplnou cestu k tomuto zdroji pro "
 "„%s“ (Glade jej načte jen jednou za běhu z vaší složky projektu)."
 
-#: plugins/gtk+/glade-icon-sources.c:770
+#: plugins/gtk+/glade-icon-sources.c:767
 #, c-format
 msgid ""
 "Set whether you want to specify a text direction for this source of '%s'"
 msgstr "Nastavit, zda chcete určit směr textu tohoto zdroje pro „%s“"
 
-#: plugins/gtk+/glade-icon-sources.c:777
+#: plugins/gtk+/glade-icon-sources.c:774
 #, c-format
 msgid "Set the text direction for this source of '%s'"
 msgstr "Nastavit směr textu tohoto zdroje pro „%s“"
 
-#: plugins/gtk+/glade-icon-sources.c:783
+#: plugins/gtk+/glade-icon-sources.c:780
 #, c-format
 msgid "Set whether you want to specify an icon size for this source of '%s'"
 msgstr "Nastavit, zda chcete určit velikost ikony tohoto zdroje pro „%s“"
 
-#: plugins/gtk+/glade-icon-sources.c:790
+#: plugins/gtk+/glade-icon-sources.c:787
 #, c-format
 msgid "Set the icon size for this source of '%s'"
 msgstr "Nastavit velikost ikony tohoto zdroje pro „%s“"
 
-#: plugins/gtk+/glade-icon-sources.c:796
+#: plugins/gtk+/glade-icon-sources.c:793
 #, c-format
 msgid "Set whether you want to specify a state for this source of '%s'"
 msgstr "Nastavit, zda chcete určit stav tohoto zdroje pro „%s“"
 
-#: plugins/gtk+/glade-icon-sources.c:803
+#: plugins/gtk+/glade-icon-sources.c:800
 #, c-format
 msgid "Set the state for this source of '%s'"
 msgstr "Nastavit stav tohoto zdroje pro „%s“"
 
-#: plugins/gtk+/glade-icon-sources.c:853 plugins/gtk+/gtk+.xml:2277
+#: plugins/gtk+/glade-icon-sources.c:850 plugins/gtk+/gtk+.xml:2285
 msgid "File Name"
 msgstr "Název souboru"
 
@@ -4237,7 +4245,7 @@ msgstr "Nastavení %s, aby použil jeden řádek"
 msgid "Setting %s to use specific Pango word wrapping"
 msgstr "Nastavení %s, aby použil určeného zalamování slov Pango"
 
-#: plugins/gtk+/glade-model-data.c:1129
+#: plugins/gtk+/glade-model-data.c:1124
 msgid "Add and remove rows:"
 msgstr "Přidat a odebrat řádky:"
 
@@ -4280,11 +4288,11 @@ msgstr ""
 "Přidat, odstranit a upravit řádky dat (případně můžete použít Ctrl+N pro "
 "přidání nového řádku a klávesu Delete pro odstranění vybraného řádku)"
 
-#: plugins/gtk+/glade-string-list.c:335 plugins/gtk+/glade-string-list.c:380
+#: plugins/gtk+/glade-string-list.c:333 plugins/gtk+/glade-string-list.c:378
 msgid "<Type Here>"
 msgstr "<zde pište>"
 
-#: plugins/gtk+/glade-string-list.c:598
+#: plugins/gtk+/glade-string-list.c:596
 msgid "<Enter ID>"
 msgstr "<zadejte ID>"
 
@@ -4372,7 +4380,7 @@ msgstr "Seřadit"
 msgid "Reverse"
 msgstr "Obrátit"
 
-#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2826
+#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2843
 msgid "Scale"
 msgstr "Stupnice"
 
@@ -4416,51 +4424,51 @@ msgstr "Odstranit rodiče"
 msgid "Add Parent"
 msgstr "Přidat rodiče"
 
-#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:2684
+#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:2692
 #: plugins/gtk+/glade-misc-editor.ui:187
 #: plugins/gtk+/glade-widget-editor.ui:841
 msgid "Alignment"
 msgstr "Zarovnání"
 
-#: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:356
-#: plugins/gtk+/gtk+.xml:3183
+#: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:358
+#: plugins/gtk+/gtk+.xml:3222
 msgid "Viewport"
 msgstr "Výřez"
 
-#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:3155
+#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:3194
 msgid "Event Box"
 msgstr "Schránka událostí"
 
-#: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:266
-#: plugins/gtk+/gtk+.xml:2686
+#: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:268
+#: plugins/gtk+/gtk+.xml:2694
 msgid "Frame"
 msgstr "Rám"
 
-#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:2703
+#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:2711
 msgid "Aspect Frame"
 msgstr "Rám s poměrem"
 
-#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3198
+#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3237
 msgid "Scrolled Window"
 msgstr "Okno s posuvníky"
 
-#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:3157
+#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:3196
 msgid "Expander"
 msgstr "Rozbalování"
 
-#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:2372
+#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:2380
 msgid "Grid"
 msgstr "Mřížka"
 
-#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:635
+#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:639
 msgid "Box"
 msgstr "Box"
 
-#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2427
+#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2435
 msgid "Paned"
 msgstr "V panelu"
 
-#: plugins/gtk+/gtk+.xml:52 plugins/gtk+/gtk+.xml:2576
+#: plugins/gtk+/gtk+.xml:52 plugins/gtk+/gtk+.xml:2584
 msgid "Stack"
 msgstr "Zásobník"
 
@@ -4484,25 +4492,25 @@ msgstr "Třídy stylu"
 msgid "A list of style class names to apply to this widget"
 msgstr "Seznam názvů tříd stylů k použití na tento widget"
 
-#: plugins/gtk+/gtk+.xml:109 plugins/gtk+/gtk+.xml:1446
-#: plugins/gtk+/gtk+.xml:2363
+#: plugins/gtk+/gtk+.xml:109 plugins/gtk+/gtk+.xml:1450
+#: plugins/gtk+/gtk+.xml:2371
 msgid "Fill"
 msgstr "Vyplnit"
 
-#: plugins/gtk+/gtk+.xml:111 plugins/gtk+/gtk+.xml:693
-#: plugins/gtk+/gtk+.xml:1247 plugins/gtk+/gtk+.xml:2956
+#: plugins/gtk+/gtk+.xml:111 plugins/gtk+/gtk+.xml:697
+#: plugins/gtk+/gtk+.xml:1251 plugins/gtk+/gtk+.xml:2995
 msgid "Start"
 msgstr "Začátek"
 
-#: plugins/gtk+/gtk+.xml:113 plugins/gtk+/gtk+.xml:672
-#: plugins/gtk+/gtk+.xml:791 plugins/gtk+/gtk+.xml:861
-#: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:2960
-#: plugins/gtk+/gtk+.xml:4307
+#: plugins/gtk+/gtk+.xml:113 plugins/gtk+/gtk+.xml:676
+#: plugins/gtk+/gtk+.xml:795 plugins/gtk+/gtk+.xml:865
+#: plugins/gtk+/gtk+.xml:1448 plugins/gtk+/gtk+.xml:2999
+#: plugins/gtk+/gtk+.xml:4354
 msgid "Center"
 msgstr "Střed"
 
-#: plugins/gtk+/gtk+.xml:115 plugins/gtk+/gtk+.xml:695
-#: plugins/gtk+/gtk+.xml:1251 plugins/gtk+/gtk+.xml:2958
+#: plugins/gtk+/gtk+.xml:115 plugins/gtk+/gtk+.xml:699
+#: plugins/gtk+/gtk+.xml:1255 plugins/gtk+/gtk+.xml:2997
 msgid "End"
 msgstr "Konec"
 
@@ -4607,536 +4615,544 @@ msgid "Touchpad Gesture"
 msgstr "Dotyková gesta"
 
 #: plugins/gtk+/gtk+.xml:173
+msgid "Tablet Pad"
+msgstr "Grafický tablet"
+
+#: plugins/gtk+/gtk+.xml:175
 msgid "All Events"
 msgstr "Všechny události"
 
-#: plugins/gtk+/gtk+.xml:188
+#: plugins/gtk+/gtk+.xml:190
 msgid "Accelerators"
 msgstr "Zkratky"
 
-#: plugins/gtk+/gtk+.xml:193
+#: plugins/gtk+/gtk+.xml:195
 msgid "A list of accelerator keys"
 msgstr "Seznam klávesových zkratek"
 
-#: plugins/gtk+/gtk+.xml:198
+#: plugins/gtk+/gtk+.xml:200
 msgid "Accessible Name"
 msgstr "Název pro zpřístupnění"
 
-#: plugins/gtk+/gtk+.xml:202
+#: plugins/gtk+/gtk+.xml:204
 msgid "Object instance's name formatted for assistive technology access"
 msgstr ""
 "Název instance objektu formátovaný pro přístup pomocí technologie "
 "zpřístupnění"
 
-#: plugins/gtk+/gtk+.xml:206
+#: plugins/gtk+/gtk+.xml:208
 msgid "Accessible Description"
 msgstr "Popis pro zpřístupnění"
 
-#: plugins/gtk+/gtk+.xml:210
+#: plugins/gtk+/gtk+.xml:212
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "Popis objektu, formátovaný pro přístup pomocí technologie zpřístupnění"
 
-#: plugins/gtk+/gtk+.xml:214
+#: plugins/gtk+/gtk+.xml:216
 msgid "Role"
 msgstr "Role"
 
-#: plugins/gtk+/gtk+.xml:219
+#: plugins/gtk+/gtk+.xml:221
 msgid "The accessible role of this object"
 msgstr "Přístupová role pro tento objekt"
 
-#: plugins/gtk+/gtk+.xml:222 plugins/gtk+/gtk+.xml:1132
+#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:1136
 msgid "Invalid"
 msgstr "Neplatná"
 
-#: plugins/gtk+/gtk+.xml:224
+#: plugins/gtk+/gtk+.xml:226
 msgid "Accelerator Label"
 msgstr "Popisek zkratky"
 
-#: plugins/gtk+/gtk+.xml:226
+#: plugins/gtk+/gtk+.xml:228
 msgid "Alert"
 msgstr "Výstraha"
 
-#: plugins/gtk+/gtk+.xml:228
+#: plugins/gtk+/gtk+.xml:230
 msgid "Animation"
 msgstr "Animace"
 
-#: plugins/gtk+/gtk+.xml:230 plugins/gtk+/gtk+.xml:3021
+#: plugins/gtk+/gtk+.xml:232 plugins/gtk+/gtk+.xml:3060
 msgid "Arrow"
 msgstr "Šipka"
 
-#: plugins/gtk+/gtk+.xml:232 plugins/gtk+/gtk+.xml:2862
+#: plugins/gtk+/gtk+.xml:234 plugins/gtk+/gtk+.xml:2879
 msgid "Calendar"
 msgstr "Kalendář"
 
-#: plugins/gtk+/gtk+.xml:234
+#: plugins/gtk+/gtk+.xml:236
 msgid "Canvas"
 msgstr "Plátno"
 
-#: plugins/gtk+/gtk+.xml:236
+#: plugins/gtk+/gtk+.xml:238
 msgid "Check Box"
 msgstr "Zaškrtávací pole"
 
-#: plugins/gtk+/gtk+.xml:238 plugins/gtk+/gtk+.xml:1043
+#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:1047
 msgid "Check Menu Item"
 msgstr "Zaškrtávací položka nabídky"
 
-#: plugins/gtk+/gtk+.xml:240
+#: plugins/gtk+/gtk+.xml:242
 msgid "Color Chooser"
 msgstr "Výběr barvy"
 
-#: plugins/gtk+/gtk+.xml:242 plugins/gtk+/gtk+.xml:334
+#: plugins/gtk+/gtk+.xml:244 plugins/gtk+/gtk+.xml:336
 msgid "Column Header"
 msgstr "Záhlaví sloupce"
 
-#: plugins/gtk+/gtk+.xml:244 plugins/gtk+/gtk+.xml:2095
+#: plugins/gtk+/gtk+.xml:246 plugins/gtk+/gtk+.xml:2103
 msgid "Combo Box"
 msgstr "Rozbalovací seznam"
 
-#: plugins/gtk+/gtk+.xml:246
+#: plugins/gtk+/gtk+.xml:248
 msgid "Date Editor"
 msgstr "Editor data"
 
-#: plugins/gtk+/gtk+.xml:248
+#: plugins/gtk+/gtk+.xml:250
 msgid "Desktop Icon"
 msgstr "Ikona pracovní plochy"
 
-#: plugins/gtk+/gtk+.xml:250
+#: plugins/gtk+/gtk+.xml:252
 msgid "Desktop Frame"
 msgstr "Rámec pracovní plochy"
 
-#: plugins/gtk+/gtk+.xml:252
+#: plugins/gtk+/gtk+.xml:254
 msgid "Dial"
 msgstr "Kruhová stupnice"
 
-#: plugins/gtk+/gtk+.xml:254 plugins/gtk+/gtk+.xml:812
-#: plugins/gtk+/gtk+.xml:1144
+#: plugins/gtk+/gtk+.xml:256 plugins/gtk+/gtk+.xml:816
+#: plugins/gtk+/gtk+.xml:1148
 msgid "Dialog"
 msgstr "Dialogové okno"
 
-#: plugins/gtk+/gtk+.xml:256
+#: plugins/gtk+/gtk+.xml:258
 msgid "Directory Pane"
 msgstr "Panel se složkami"
 
-#: plugins/gtk+/gtk+.xml:258 plugins/gtk+/gtk+.xml:3122
+#: plugins/gtk+/gtk+.xml:260 plugins/gtk+/gtk+.xml:3161
 msgid "Drawing Area"
 msgstr "Kreslicí oblast"
 
-#: plugins/gtk+/gtk+.xml:260
+#: plugins/gtk+/gtk+.xml:262
 msgid "File Chooser"
 msgstr "Výběr souboru"
 
-#: plugins/gtk+/gtk+.xml:262
+#: plugins/gtk+/gtk+.xml:264
 msgid "Filler"
 msgstr "Výplň"
 
-#: plugins/gtk+/gtk+.xml:264
+#: plugins/gtk+/gtk+.xml:266
 msgid "Font Chooser"
 msgstr "Výběr písma"
 
-#: plugins/gtk+/gtk+.xml:268
+#: plugins/gtk+/gtk+.xml:270
 msgid "Glass Pane"
 msgstr "Průhledný panel"
 
-#: plugins/gtk+/gtk+.xml:270
+#: plugins/gtk+/gtk+.xml:272
 msgid "HTML Container"
 msgstr "Kontejner HTML"
 
-#: plugins/gtk+/gtk+.xml:272 plugins/gtk+/glade-about-dialog-editor.ui:213
+#: plugins/gtk+/gtk+.xml:274 plugins/gtk+/glade-about-dialog-editor.ui:213
 msgid "Icon"
 msgstr "Ikona"
 
-#: plugins/gtk+/gtk+.xml:276
+#: plugins/gtk+/gtk+.xml:278
 msgid "Internal Frame"
 msgstr "Interní rámec"
 
-#: plugins/gtk+/gtk+.xml:280
+#: plugins/gtk+/gtk+.xml:282
 msgid "Layered Pane"
 msgstr "Vrstvený panel"
 
-#: plugins/gtk+/gtk+.xml:282
+#: plugins/gtk+/gtk+.xml:284
 msgid "List"
 msgstr "Seznam"
 
-#: plugins/gtk+/gtk+.xml:284
+#: plugins/gtk+/gtk+.xml:286
 msgid "List Item"
 msgstr "Položka seznamu"
 
-#: plugins/gtk+/gtk+.xml:288 plugins/gtk+/gtk+.xml:1060
+#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1064
 msgid "Menu Bar"
 msgstr "Nabídková lišta"
 
-#: plugins/gtk+/gtk+.xml:292
+#: plugins/gtk+/gtk+.xml:294
 msgid "Option Pane"
 msgstr "Panel s volbami"
 
-#: plugins/gtk+/gtk+.xml:294
+#: plugins/gtk+/gtk+.xml:296
 msgid "Page Tab"
 msgstr "Karta"
 
-#: plugins/gtk+/gtk+.xml:296
+#: plugins/gtk+/gtk+.xml:298
 msgid "Page Tab List"
 msgstr "Seznam karet"
 
-#: plugins/gtk+/gtk+.xml:298
+#: plugins/gtk+/gtk+.xml:300
 msgid "Panel"
 msgstr "Panel"
 
-#: plugins/gtk+/gtk+.xml:300
+#: plugins/gtk+/gtk+.xml:302
 msgid "Password Text"
 msgstr "Texta hesla"
 
-#: plugins/gtk+/gtk+.xml:302 plugins/gtk+/gtk+.xml:828
-#: plugins/gtk+/gtk+.xml:2870
+#: plugins/gtk+/gtk+.xml:304 plugins/gtk+/gtk+.xml:832
+#: plugins/gtk+/gtk+.xml:2887
 msgid "Popup Menu"
 msgstr "Vyskakovací nabídka"
 
-#: plugins/gtk+/gtk+.xml:304
+#: plugins/gtk+/gtk+.xml:306
 msgid "Progress bar"
 msgstr "Ukazatel průběhu"
 
-#: plugins/gtk+/gtk+.xml:306
+#: plugins/gtk+/gtk+.xml:308
 msgid "Push Button"
 msgstr "Mačkací tlačítko"
 
-#: plugins/gtk+/gtk+.xml:308 plugins/gtk+/gtk+.xml:1861
+#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:1869
 msgid "Radio Button"
 msgstr "Skupinový přepínač"
 
-#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:1045
+#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:1049
 msgid "Radio Menu Item"
 msgstr "Přepínací položka nabídky"
 
-#: plugins/gtk+/gtk+.xml:312
+#: plugins/gtk+/gtk+.xml:314
 msgid "Root Pane"
 msgstr "Kořenový panel"
 
-#: plugins/gtk+/gtk+.xml:314 plugins/gtk+/gtk+.xml:336
+#: plugins/gtk+/gtk+.xml:316 plugins/gtk+/gtk+.xml:338
 msgid "Row Header"
 msgstr "Záhlaví řádku"
 
-#: plugins/gtk+/gtk+.xml:316
+#: plugins/gtk+/gtk+.xml:318
 msgid "Scroll Bar"
 msgstr "Posuvník"
 
-#: plugins/gtk+/gtk+.xml:318
+#: plugins/gtk+/gtk+.xml:320
 msgid "Scroll pane"
 msgstr "Panel s posuvníky"
 
-#: plugins/gtk+/gtk+.xml:322
+#: plugins/gtk+/gtk+.xml:324
 msgid "Slider"
 msgstr "Táhlo"
 
-#: plugins/gtk+/gtk+.xml:324
+#: plugins/gtk+/gtk+.xml:326
 msgid "Split Pane"
 msgstr "Rozdělený panel"
 
-#: plugins/gtk+/gtk+.xml:326 plugins/gtk+/gtk+.xml:1831
+#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1839
 msgid "Spin Button"
 msgstr "Číselník"
 
-#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:3007
+#: plugins/gtk+/gtk+.xml:330 plugins/gtk+/gtk+.xml:3046
 msgid "Status Bar"
 msgstr "Stavová lišta"
 
-#: plugins/gtk+/gtk+.xml:330 plugins/gtk+/gtk+.xml:2326
+#: plugins/gtk+/gtk+.xml:332 plugins/gtk+/gtk+.xml:2334
 msgid "Table"
 msgstr "Tabulka"
 
-#: plugins/gtk+/gtk+.xml:332
+#: plugins/gtk+/gtk+.xml:334
 msgid "Table Cell"
 msgstr "Buňka tabulky"
 
-#: plugins/gtk+/gtk+.xml:338
+#: plugins/gtk+/gtk+.xml:340
 msgid "Tear Off Menu Item"
 msgstr "Odpojovací položka nabídky"
 
-#: plugins/gtk+/gtk+.xml:340
+#: plugins/gtk+/gtk+.xml:342
 msgid "Terminal"
 msgstr "Terminál"
 
-#: plugins/gtk+/gtk+.xml:344 plugins/gtk+/gtk+.xml:1815
+#: plugins/gtk+/gtk+.xml:346 plugins/gtk+/gtk+.xml:1823
 msgid "Toggle Button"
 msgstr "Přepínací tlačítko"
 
-#: plugins/gtk+/gtk+.xml:346 plugins/gtk+/gtk+.xml:1087
+#: plugins/gtk+/gtk+.xml:348 plugins/gtk+/gtk+.xml:1091
 msgid "Tool Bar"
 msgstr "Nástrojová lišta"
 
-#: plugins/gtk+/gtk+.xml:348
+#: plugins/gtk+/gtk+.xml:350
 msgid "Tool Tip"
 msgstr "Vysvětlivka"
 
-#: plugins/gtk+/gtk+.xml:350
+#: plugins/gtk+/gtk+.xml:352
 msgid "Tree"
 msgstr "Strom"
 
-#: plugins/gtk+/gtk+.xml:352
+#: plugins/gtk+/gtk+.xml:354
 msgid "Tree Table"
 msgstr "Stromová tabulka"
 
-#: plugins/gtk+/gtk+.xml:354 plugins/gtk+/gtk+.xml:3274
+#: plugins/gtk+/gtk+.xml:356 plugins/gtk+/gtk+.xml:3317
 msgid "Unknown"
 msgstr "Neznámá"
 
-#: plugins/gtk+/gtk+.xml:358 plugins/gtk+/gtk+.xml:746
-#: plugins/gtk+/gtk+.xml:3534
+#: plugins/gtk+/gtk+.xml:360 plugins/gtk+/gtk+.xml:750
+#: plugins/gtk+/gtk+.xml:3581
 msgid "Window"
 msgstr "Okno"
 
-#: plugins/gtk+/gtk+.xml:360
+#: plugins/gtk+/gtk+.xml:362
 msgid "Header"
 msgstr "Záhlaví"
 
-#: plugins/gtk+/gtk+.xml:362
+#: plugins/gtk+/gtk+.xml:364
 msgid "Footer"
 msgstr "Zápatí"
 
-#: plugins/gtk+/gtk+.xml:364
+#: plugins/gtk+/gtk+.xml:366
 msgid "Paragraph"
 msgstr "Odstavec"
 
-#: plugins/gtk+/gtk+.xml:366
+#: plugins/gtk+/gtk+.xml:368
 msgid "Ruler"
 msgstr "Pravítko"
 
-#: plugins/gtk+/gtk+.xml:368
+#: plugins/gtk+/gtk+.xml:370
 msgid "Application"
 msgstr "Aplikace"
 
-#: plugins/gtk+/gtk+.xml:370
+#: plugins/gtk+/gtk+.xml:372
 msgid "Autocomplete"
 msgstr "Automatické dokončování"
 
-#: plugins/gtk+/gtk+.xml:372
+#: plugins/gtk+/gtk+.xml:374
 msgid "Editbar"
 msgstr "Editační lišta"
 
-#: plugins/gtk+/gtk+.xml:374
+#: plugins/gtk+/gtk+.xml:376
 msgid "Embedded"
 msgstr "Vložené"
 
-#: plugins/gtk+/gtk+.xml:376 plugins/gtk+/glade-entry-editor.ui:43
+#: plugins/gtk+/gtk+.xml:378 plugins/gtk+/glade-entry-editor.ui:43
 msgid "Entry"
 msgstr "Vstup"
 
-#: plugins/gtk+/gtk+.xml:378
+#: plugins/gtk+/gtk+.xml:380
 msgid "Chart"
 msgstr "Graf"
 
-#: plugins/gtk+/gtk+.xml:380
+#: plugins/gtk+/gtk+.xml:382
 msgid "Caption"
 msgstr "Legenda"
 
-#: plugins/gtk+/gtk+.xml:382
+#: plugins/gtk+/gtk+.xml:384
 msgid "Document Frame"
 msgstr "Rámec dokumentu"
 
-#: plugins/gtk+/gtk+.xml:384
+#: plugins/gtk+/gtk+.xml:386
 msgid "Heading"
 msgstr "Nadpis"
 
-#: plugins/gtk+/gtk+.xml:386
+#: plugins/gtk+/gtk+.xml:388
 msgid "Page"
 msgstr "Strana"
 
-#: plugins/gtk+/gtk+.xml:388
+#: plugins/gtk+/gtk+.xml:390
 msgid "Section"
 msgstr "Oddíl"
 
-#: plugins/gtk+/gtk+.xml:390
+#: plugins/gtk+/gtk+.xml:392
 msgid "Redundant Object"
 msgstr "Přebytečný objekt"
 
-#: plugins/gtk+/gtk+.xml:392
+#: plugins/gtk+/gtk+.xml:394
 msgid "Form"
 msgstr "Formulář"
 
-#: plugins/gtk+/gtk+.xml:394
+#: plugins/gtk+/gtk+.xml:396
 msgid "Link"
 msgstr "Odkaz"
 
-#: plugins/gtk+/gtk+.xml:396
+#: plugins/gtk+/gtk+.xml:398
 msgid "Input Method Window"
 msgstr "Okno vstupní metody"
 
-#: plugins/gtk+/gtk+.xml:398
+#: plugins/gtk+/gtk+.xml:400
 msgid "Table Row"
 msgstr "Řádek tabulky"
 
-#: plugins/gtk+/gtk+.xml:400
+#: plugins/gtk+/gtk+.xml:402
 msgid "Tree Item"
 msgstr "Položka stromu"
 
-#: plugins/gtk+/gtk+.xml:402
+#: plugins/gtk+/gtk+.xml:404
 msgid "Document Spreadsheet"
 msgstr "Dokument s tabulkou"
 
-#: plugins/gtk+/gtk+.xml:404
+#: plugins/gtk+/gtk+.xml:406
 msgid "Document Presentation"
 msgstr "Dokument s prezentací"
 
-#: plugins/gtk+/gtk+.xml:406
+#: plugins/gtk+/gtk+.xml:408
 msgid "Document Text"
 msgstr "Dokument s textem"
 
-#: plugins/gtk+/gtk+.xml:408
+#: plugins/gtk+/gtk+.xml:410
 msgid "Document Web"
 msgstr "Dokument s webem"
 
-#: plugins/gtk+/gtk+.xml:410
+#: plugins/gtk+/gtk+.xml:412
 msgid "Document Email"
 msgstr "Dokument s e-mailem"
 
-#: plugins/gtk+/gtk+.xml:414 plugins/gtk+/gtk+.xml:2705
+#: plugins/gtk+/gtk+.xml:416 plugins/gtk+/gtk+.xml:2713
 msgid "List Box"
 msgstr "Seznam"
 
-#: plugins/gtk+/gtk+.xml:416
+#: plugins/gtk+/gtk+.xml:418
 msgid "Grouping"
 msgstr "Seskupení"
 
-#: plugins/gtk+/gtk+.xml:418
+#: plugins/gtk+/gtk+.xml:420
 msgid "Image Map"
 msgstr "Obrázková mapa"
 
-#: plugins/gtk+/gtk+.xml:420 plugins/gtk+/gtk+.xml:832
+#: plugins/gtk+/gtk+.xml:422 plugins/gtk+/gtk+.xml:836
 msgid "Notification"
 msgstr "Oznámení"
 
-#: plugins/gtk+/gtk+.xml:422 plugins/gtk+/gtk+.xml:3126
+#: plugins/gtk+/gtk+.xml:424 plugins/gtk+/gtk+.xml:3165
 msgid "Info Bar"
 msgstr "Informační lišta"
 
-#: plugins/gtk+/gtk+.xml:424 plugins/gtk+/gtk+.xml:2243
+#: plugins/gtk+/gtk+.xml:426 plugins/gtk+/gtk+.xml:2251
 msgid "Level Bar"
 msgstr "Ukazatel úrovně"
 
-#: plugins/gtk+/gtk+.xml:426
+#: plugins/gtk+/gtk+.xml:428
 msgid "Title Bar"
 msgstr "Lišta záhlaví"
 
-#: plugins/gtk+/gtk+.xml:428
+#: plugins/gtk+/gtk+.xml:430
 msgid "Block Quote"
 msgstr "Citace"
 
-#: plugins/gtk+/gtk+.xml:430
+#: plugins/gtk+/gtk+.xml:432
 msgid "Audio"
 msgstr "Zvuk"
 
-#: plugins/gtk+/gtk+.xml:432
+#: plugins/gtk+/gtk+.xml:434
 msgid "Video"
 msgstr "Video"
 
-#: plugins/gtk+/gtk+.xml:436
+#: plugins/gtk+/gtk+.xml:438
 msgid "Article"
 msgstr "Článek"
 
-#: plugins/gtk+/gtk+.xml:438
+#: plugins/gtk+/gtk+.xml:440
 msgid "Landmark"
 msgstr "Záchytný bod"
 
-#: plugins/gtk+/gtk+.xml:440
+#: plugins/gtk+/gtk+.xml:442
 msgid "Log"
 msgstr "Záznam"
 
-#: plugins/gtk+/gtk+.xml:442
+#: plugins/gtk+/gtk+.xml:444
 msgid "Marquee"
 msgstr "Posouvající se text"
 
-#: plugins/gtk+/gtk+.xml:444
+#: plugins/gtk+/gtk+.xml:446
 msgid "Math"
 msgstr "Matematika"
 
-#: plugins/gtk+/gtk+.xml:446
+#: plugins/gtk+/gtk+.xml:448
 msgid "Rating"
 msgstr "Hodnocení"
 
-#: plugins/gtk+/gtk+.xml:448
+#: plugins/gtk+/gtk+.xml:450
 msgid "Time"
 msgstr "Čas"
 
-#: plugins/gtk+/gtk+.xml:450
+#: plugins/gtk+/gtk+.xml:452
 msgid "Description List"
 msgstr "Seznam popisů"
 
-#: plugins/gtk+/gtk+.xml:452
+#: plugins/gtk+/gtk+.xml:454
 msgid "Description Term"
 msgstr "Výraz v popisu"
 
-#: plugins/gtk+/gtk+.xml:454
+#: plugins/gtk+/gtk+.xml:456
 msgid "Description Value"
 msgstr "Význam v popisu"
 
-#: plugins/gtk+/gtk+.xml:456
+#: plugins/gtk+/gtk+.xml:458
 msgid "Generic object"
 msgstr "Obecný objekt"
 
-#: plugins/gtk+/gtk+.xml:458
+#: plugins/gtk+/gtk+.xml:460
 msgid "Mathematical fraction"
 msgstr "Matematický zlomek"
 
-#: plugins/gtk+/gtk+.xml:460
+#: plugins/gtk+/gtk+.xml:462
 msgid "A radical expression (in math)"
 msgstr "Odmocnina"
 
-#: plugins/gtk+/gtk+.xml:462
+#: plugins/gtk+/gtk+.xml:464
 msgid "Subscript text"
 msgstr "Dolní index"
 
-#: plugins/gtk+/gtk+.xml:464
+#: plugins/gtk+/gtk+.xml:466
 msgid "Superscript text"
 msgstr "Horní index"
 
-#: plugins/gtk+/gtk+.xml:466
+#: plugins/gtk+/gtk+.xml:468
+msgid "Footnote text"
+msgstr "Text zápatí"
+
+#: plugins/gtk+/gtk+.xml:470
 msgid "Last Defined"
 msgstr "Poslední definovaný"
 
-#: plugins/gtk+/gtk+.xml:471
+#: plugins/gtk+/gtk+.xml:475
 msgid "Controlled By"
 msgstr "Ovládáno prvkem"
 
-#: plugins/gtk+/gtk+.xml:476
+#: plugins/gtk+/gtk+.xml:480
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "Udává objekt řízený jedním nebo více cílovými objekty"
 
-#: plugins/gtk+/gtk+.xml:479
+#: plugins/gtk+/gtk+.xml:483
 msgid "Controller For"
 msgstr "Ovládací objekt pro"
 
-#: plugins/gtk+/gtk+.xml:484
+#: plugins/gtk+/gtk+.xml:488
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Udává že objekt je ovládací pro jeden nebo více cílových objektů"
 
-#: plugins/gtk+/gtk+.xml:487
+#: plugins/gtk+/gtk+.xml:491
 msgid "Labeled By"
 msgstr "Popisek od"
 
-#: plugins/gtk+/gtk+.xml:492
+#: plugins/gtk+/gtk+.xml:496
 msgid "Indicates an object is labeled by one or more target objects"
 msgstr "Udává, že objekt má popisky od jednoho nebo více cílových objektů"
 
-#: plugins/gtk+/gtk+.xml:495
+#: plugins/gtk+/gtk+.xml:499
 msgid "Label For"
 msgstr "Popisek pro"
 
-#: plugins/gtk+/gtk+.xml:500
+#: plugins/gtk+/gtk+.xml:504
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "Udává, že objekt je popisek pro jeden nebo více cílových objektů"
 
-#: plugins/gtk+/gtk+.xml:503
+#: plugins/gtk+/gtk+.xml:507
 msgid "Member Of"
 msgstr "Členem"
 
-#: plugins/gtk+/gtk+.xml:508
+#: plugins/gtk+/gtk+.xml:512
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr "Udává, že objekt je členem skupiny jednoho nebo více cílových objektů"
 
-#: plugins/gtk+/gtk+.xml:511
+#: plugins/gtk+/gtk+.xml:515
 msgid "Node Child Of"
 msgstr "Potomek uzlu od"
 
-#: plugins/gtk+/gtk+.xml:516
+#: plugins/gtk+/gtk+.xml:520
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
@@ -5144,11 +5160,11 @@ msgstr ""
 "Udává, že objekt je buňkou ve stromové tabulce, který je zobrazený protože "
 "buňka ve stejném sloupci je roztažená, a identifikuje tuto buňku"
 
-#: plugins/gtk+/gtk+.xml:521
+#: plugins/gtk+/gtk+.xml:525
 msgid "Flows To"
 msgstr "Pokračuje do"
 
-#: plugins/gtk+/gtk+.xml:526
+#: plugins/gtk+/gtk+.xml:530
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -5156,11 +5172,11 @@ msgstr ""
 "Udává, že objekt má obsah, který v návaznosti logicky pokračuje do jiného "
 "objektu AtkObject (pro instanci text-flow)"
 
-#: plugins/gtk+/gtk+.xml:531
+#: plugins/gtk+/gtk+.xml:535
 msgid "Flows From"
 msgstr "Pokračuje z"
 
-#: plugins/gtk+/gtk+.xml:536
+#: plugins/gtk+/gtk+.xml:540
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -5168,11 +5184,11 @@ msgstr ""
 "Udává, že objekt má obsah, který v návaznosti logicky pokračuje z jiného "
 "objektu AtkObject (pro instanci text-flow)"
 
-#: plugins/gtk+/gtk+.xml:541
+#: plugins/gtk+/gtk+.xml:545
 msgid "Subwindow Of"
 msgstr "Podokno pro"
 
-#: plugins/gtk+/gtk+.xml:546
+#: plugins/gtk+/gtk+.xml:550
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
@@ -5180,11 +5196,11 @@ msgstr ""
 "Udává podřízené okno připojené ke komponentě, ale na druhou stranu nemá "
 "žádné napojení k této komponentě v hierarchii uživatelského rozhraní"
 
-#: plugins/gtk+/gtk+.xml:551
+#: plugins/gtk+/gtk+.xml:555
 msgid "Embeds"
 msgstr "Vkládá"
 
-#: plugins/gtk+/gtk+.xml:556
+#: plugins/gtk+/gtk+.xml:560
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
@@ -5192,11 +5208,11 @@ msgstr ""
 "Udává, že objekt vizuálně vkládá jako obsah jiný objekt, např. obsah tohoto "
 "objektu obtéká okolo jiného obsahu"
 
-#: plugins/gtk+/gtk+.xml:561
+#: plugins/gtk+/gtk+.xml:565
 msgid "Embedded By"
 msgstr "Vloženo do objektu"
 
-#: plugins/gtk+/gtk+.xml:566
+#: plugins/gtk+/gtk+.xml:570
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
@@ -5204,27 +5220,27 @@ msgstr ""
 "Opak k „Vkládá“, udává, že obsah tohoto objektu je vizuálně vložen do jiného "
 "objektu"
 
-#: plugins/gtk+/gtk+.xml:571
+#: plugins/gtk+/gtk+.xml:575
 msgid "Popup For"
 msgstr "Vyskakuje pro"
 
-#: plugins/gtk+/gtk+.xml:576
+#: plugins/gtk+/gtk+.xml:580
 msgid "Indicates that an object is a popup for another object"
 msgstr "Udává, že objekt je vyskakovací pro jiný objekt"
 
-#: plugins/gtk+/gtk+.xml:579
+#: plugins/gtk+/gtk+.xml:583
 msgid "Parent Window Of"
 msgstr "Rodičovské okno pro"
 
-#: plugins/gtk+/gtk+.xml:584
+#: plugins/gtk+/gtk+.xml:588
 msgid "Indicates that an object is a parent window of another object"
 msgstr "Udává, že objekt je rodičovským oknem jiného objektu"
 
-#: plugins/gtk+/gtk+.xml:587
+#: plugins/gtk+/gtk+.xml:591
 msgid "Described By"
 msgstr "Popsáno kým"
 
-#: plugins/gtk+/gtk+.xml:592
+#: plugins/gtk+/gtk+.xml:596
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
@@ -5232,11 +5248,11 @@ msgstr ""
 "Udává, že jiný objekt poskytuje popisné informace o tomto objektu; více "
 "podrobné než „Popisek od“"
 
-#: plugins/gtk+/gtk+.xml:595
+#: plugins/gtk+/gtk+.xml:599
 msgid "Description For"
 msgstr "Popis pro"
 
-#: plugins/gtk+/gtk+.xml:600
+#: plugins/gtk+/gtk+.xml:604
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
@@ -5244,378 +5260,378 @@ msgstr ""
 "Udává, že objekt poskytuje popisné informace o jiném objektu; více podrobné "
 "než „Popisek pro“"
 
-#: plugins/gtk+/gtk+.xml:624
+#: plugins/gtk+/gtk+.xml:628
 msgid "Queue"
 msgstr "Fronta"
 
-#: plugins/gtk+/gtk+.xml:626
+#: plugins/gtk+/gtk+.xml:630
 msgid "Immediate"
 msgstr "Okamžitě"
 
-#: plugins/gtk+/gtk+.xml:633
+#: plugins/gtk+/gtk+.xml:637
 msgid "Bin"
 msgstr "Koš"
 
-#: plugins/gtk+/gtk+.xml:651 plugins/gtk+/gtk+.xml:2723
-#: plugins/gtk+/gtk+.xml:2785
+#: plugins/gtk+/gtk+.xml:655 plugins/gtk+/gtk+.xml:2734
+#: plugins/gtk+/gtk+.xml:2802
 msgid "Insert Before"
 msgstr "Vložit před"
 
-#: plugins/gtk+/gtk+.xml:652 plugins/gtk+/gtk+.xml:2724
-#: plugins/gtk+/gtk+.xml:2786
+#: plugins/gtk+/gtk+.xml:656 plugins/gtk+/gtk+.xml:2735
+#: plugins/gtk+/gtk+.xml:2803
 msgid "Insert After"
 msgstr "Vložit za"
 
-#: plugins/gtk+/gtk+.xml:653 plugins/gtk+/gtk+.xml:2569
+#: plugins/gtk+/gtk+.xml:657 plugins/gtk+/gtk+.xml:2577
 msgid "Remove Slot"
 msgstr "Odstranit pozici"
 
-#: plugins/gtk+/gtk+.xml:660 plugins/gtk+/gtk+.xml:726
-#: plugins/gtk+/gtk+.xml:2557
+#: plugins/gtk+/gtk+.xml:664 plugins/gtk+/gtk+.xml:730
+#: plugins/gtk+/gtk+.xml:2565
 msgid "Number of items"
 msgstr "Počet položek"
 
-#: plugins/gtk+/gtk+.xml:665
+#: plugins/gtk+/gtk+.xml:669
 msgid "The number of items in the box"
 msgstr "Počet položek v boxu"
 
-#: plugins/gtk+/gtk+.xml:670 plugins/gtk+/gtk+.xml:1367
+#: plugins/gtk+/gtk+.xml:674 plugins/gtk+/gtk+.xml:1371
 msgid "Top"
 msgstr "Nahoře"
 
-#: plugins/gtk+/gtk+.xml:674 plugins/gtk+/gtk+.xml:1369
+#: plugins/gtk+/gtk+.xml:678 plugins/gtk+/gtk+.xml:1373
 msgid "Bottom"
 msgstr "Dole"
 
-#: plugins/gtk+/gtk+.xml:677 plugins/gtk+/gtk+.xml:733
+#: plugins/gtk+/gtk+.xml:681 plugins/gtk+/gtk+.xml:737
 msgid "Center Child"
 msgstr "Vystředěný potomek"
 
-#: plugins/gtk+/gtk+.xml:701
+#: plugins/gtk+/gtk+.xml:705
 msgid "Horizontal Box"
 msgstr "Vodorovné boxy"
 
-#: plugins/gtk+/gtk+.xml:706
+#: plugins/gtk+/gtk+.xml:710
 msgid "Vertical Box"
 msgstr "Svislé boxy"
 
-#: plugins/gtk+/gtk+.xml:712
+#: plugins/gtk+/gtk+.xml:716
 msgid "Action Bar"
 msgstr "Akční lišta"
 
-#: plugins/gtk+/gtk+.xml:731
+#: plugins/gtk+/gtk+.xml:735
 msgid "The number of items in the action bar"
 msgstr "Počet položek v akční liště"
 
-#: plugins/gtk+/gtk+.xml:759
+#: plugins/gtk+/gtk+.xml:763
 msgid "Accel Groups"
 msgstr "Skupiny zkratek"
 
-#: plugins/gtk+/gtk+.xml:764
+#: plugins/gtk+/gtk+.xml:768
 msgid "A list of accel groups to be added to this window"
 msgstr "Seznam skupin zkratek k přidání do tohoto okna"
 
-#: plugins/gtk+/gtk+.xml:767
+#: plugins/gtk+/gtk+.xml:771
 msgid "CSD"
 msgstr "Dekorace na klientské straně"
 
-#: plugins/gtk+/gtk+.xml:783
+#: plugins/gtk+/gtk+.xml:787
 msgid "North West"
 msgstr "Severozápad"
 
-#: plugins/gtk+/gtk+.xml:785
+#: plugins/gtk+/gtk+.xml:789
 msgid "North"
 msgstr "Sever"
 
-#: plugins/gtk+/gtk+.xml:787
+#: plugins/gtk+/gtk+.xml:791
 msgid "North East"
 msgstr "Severovýchod"
 
-#: plugins/gtk+/gtk+.xml:789
+#: plugins/gtk+/gtk+.xml:793
 msgid "West"
 msgstr "Západ"
 
-#: plugins/gtk+/gtk+.xml:793
+#: plugins/gtk+/gtk+.xml:797
 msgid "East"
 msgstr "Východ"
 
-#: plugins/gtk+/gtk+.xml:795
+#: plugins/gtk+/gtk+.xml:799
 msgid "South West"
 msgstr "Jihozápad"
 
-#: plugins/gtk+/gtk+.xml:797
+#: plugins/gtk+/gtk+.xml:801
 msgid "South"
 msgstr "Jih"
 
-#: plugins/gtk+/gtk+.xml:799
+#: plugins/gtk+/gtk+.xml:803
 msgid "South East"
 msgstr "Jihovýchod"
 
-#: plugins/gtk+/gtk+.xml:801
+#: plugins/gtk+/gtk+.xml:805
 msgid "Static"
 msgstr "Staticky"
 
-#: plugins/gtk+/gtk+.xml:816
+#: plugins/gtk+/gtk+.xml:820
 msgid "Toolbar"
 msgstr "Nástrojová lišta"
 
-#: plugins/gtk+/gtk+.xml:818
+#: plugins/gtk+/gtk+.xml:822
 msgid "Splash Screen"
 msgstr "Úvodní obrazovka"
 
-#: plugins/gtk+/gtk+.xml:820
+#: plugins/gtk+/gtk+.xml:824
 msgid "Utility"
 msgstr "Pomůcka"
 
-#: plugins/gtk+/gtk+.xml:822
+#: plugins/gtk+/gtk+.xml:826
 msgid "Dock"
 msgstr "Dok"
 
-#: plugins/gtk+/gtk+.xml:824
+#: plugins/gtk+/gtk+.xml:828
 msgid "Desktop"
 msgstr "Pracovní plocha"
 
-#: plugins/gtk+/gtk+.xml:826
+#: plugins/gtk+/gtk+.xml:830
 msgid "Drop Down Menu"
 msgstr "Rozbalovací nabídka"
 
-#: plugins/gtk+/gtk+.xml:830
+#: plugins/gtk+/gtk+.xml:834
 msgid "Tooltip"
 msgstr "Vysvětlivka"
 
-#: plugins/gtk+/gtk+.xml:842
+#: plugins/gtk+/gtk+.xml:846
 msgid "Top Level"
 msgstr "Nejvyšší úroveň"
 
-#: plugins/gtk+/gtk+.xml:844
+#: plugins/gtk+/gtk+.xml:848
 msgid "Popup"
 msgstr "Vyskakovací"
 
-#: plugins/gtk+/gtk+.xml:846
+#: plugins/gtk+/gtk+.xml:850
 msgid "Offscreen"
 msgstr "V paměti"
 
-#: plugins/gtk+/gtk+.xml:863
+#: plugins/gtk+/gtk+.xml:867
 msgid "Mouse"
 msgstr "Myš"
 
-#: plugins/gtk+/gtk+.xml:865
+#: plugins/gtk+/gtk+.xml:869
 msgid "Always Center"
 msgstr "Vždy vystředit"
 
-#: plugins/gtk+/gtk+.xml:867
+#: plugins/gtk+/gtk+.xml:871
 msgid "Center on Parent"
 msgstr "Střed rodiče"
 
-#: plugins/gtk+/gtk+.xml:895
+#: plugins/gtk+/gtk+.xml:899
 msgid "Offscreen Window"
 msgstr "Okno v paměti"
 
-#: plugins/gtk+/gtk+.xml:940
+#: plugins/gtk+/gtk+.xml:944
 msgid "Application Window"
 msgstr "Okno aplikace"
 
-#: plugins/gtk+/gtk+.xml:943
+#: plugins/gtk+/gtk+.xml:947
 msgid "Overlay"
 msgstr "Vrstvy"
 
-#: plugins/gtk+/gtk+.xml:952
+#: plugins/gtk+/gtk+.xml:956
 msgid "Menu Shell"
 msgstr "Kostra nabídky"
 
-#: plugins/gtk+/gtk+.xml:967 plugins/gtk+/gtk+.xml:1150
-#: plugins/gtk+/gtk+.xml:1205 plugins/gtk+/gtk+.xml:2744
-#: plugins/gtk+/gtk+.xml:2794 plugins/gtk+/gtk+.xml:3512
+#: plugins/gtk+/gtk+.xml:971 plugins/gtk+/gtk+.xml:1154
+#: plugins/gtk+/gtk+.xml:1209 plugins/gtk+/gtk+.xml:2761
+#: plugins/gtk+/gtk+.xml:2811 plugins/gtk+/gtk+.xml:3559
 #: plugins/gtk+/glade-button-editor.ui:394
 msgid "Position"
 msgstr "Pozice"
 
-#: plugins/gtk+/gtk+.xml:972
+#: plugins/gtk+/gtk+.xml:976
 msgid "The position of the menu item in the menu shell"
 msgstr "Pořadí položky nabídky v kostře nabídky"
 
-#: plugins/gtk+/gtk+.xml:991 plugins/gtk+/gtk+.xml:1064
-#: plugins/gtk+/gtk+.xml:1098 plugins/gtk+/gtk+.xml:1180
-#: plugins/gtk+/gtk+.xml:2110 plugins/gtk+/gtk+.xml:2875
-#: plugins/gtk+/gtk+.xml:3738 plugins/gtk+/gtk+.xml:3813
-#: plugins/gtk+/gtk+.xml:3829 plugins/gtk+/gtk+.xml:3934
-#: plugins/gtk+/gtk+.xml:4004 plugins/gtk+/gtk+.xml:4057
-#: plugins/gtk+/gtk+.xml:4115 plugins/gtk+/gtk+.xml:5499
+#: plugins/gtk+/gtk+.xml:995 plugins/gtk+/gtk+.xml:1068
+#: plugins/gtk+/gtk+.xml:1102 plugins/gtk+/gtk+.xml:1184
+#: plugins/gtk+/gtk+.xml:2118 plugins/gtk+/gtk+.xml:2892
+#: plugins/gtk+/gtk+.xml:3785 plugins/gtk+/gtk+.xml:3860
+#: plugins/gtk+/gtk+.xml:3876 plugins/gtk+/gtk+.xml:3981
+#: plugins/gtk+/gtk+.xml:4051 plugins/gtk+/gtk+.xml:4104
+#: plugins/gtk+/gtk+.xml:4162 plugins/gtk+/gtk+.xml:5546
 msgid "Edit…"
 msgstr "Upravit…"
 
-#: plugins/gtk+/gtk+.xml:998
+#: plugins/gtk+/gtk+.xml:1002
 msgid "Use Underline"
 msgstr "Použít podtržítko"
 
-#: plugins/gtk+/gtk+.xml:1002 plugins/gtk+/gtk+.xml:1283
-#: plugins/gtk+/gtk+.xml:1772 plugins/gtk+/gtk+.xml:1879
-#: plugins/gtk+/gtk+.xml:2898
+#: plugins/gtk+/gtk+.xml:1006 plugins/gtk+/gtk+.xml:1287
+#: plugins/gtk+/gtk+.xml:1780 plugins/gtk+/gtk+.xml:1887
+#: plugins/gtk+/gtk+.xml:2937
 msgid "Related Action"
 msgstr "Odpovídající akce"
 
-#: plugins/gtk+/gtk+.xml:1004 plugins/gtk+/gtk+.xml:1285
-#: plugins/gtk+/gtk+.xml:1774 plugins/gtk+/gtk+.xml:1886
-#: plugins/gtk+/gtk+.xml:2900
+#: plugins/gtk+/gtk+.xml:1008 plugins/gtk+/gtk+.xml:1289
+#: plugins/gtk+/gtk+.xml:1782 plugins/gtk+/gtk+.xml:1894
+#: plugins/gtk+/gtk+.xml:2939
 msgid "Use Action Appearance"
 msgstr "Použít vzhled akce"
 
-#: plugins/gtk+/gtk+.xml:1007 plugins/gtk+/gtk+.xml:1304
-#: plugins/gtk+/gtk+.xml:1777 plugins/gtk+/gtk+.xml:1889
+#: plugins/gtk+/gtk+.xml:1011 plugins/gtk+/gtk+.xml:1308
+#: plugins/gtk+/gtk+.xml:1785 plugins/gtk+/gtk+.xml:1897
 msgid "Action Name"
 msgstr "Název akce"
 
-#: plugins/gtk+/gtk+.xml:1008 plugins/gtk+/gtk+.xml:1305
-#: plugins/gtk+/gtk+.xml:1778 plugins/gtk+/gtk+.xml:1890
-#: plugins/gtk+/gtk+.xml:3091
+#: plugins/gtk+/gtk+.xml:1012 plugins/gtk+/gtk+.xml:1309
+#: plugins/gtk+/gtk+.xml:1786 plugins/gtk+/gtk+.xml:1898
+#: plugins/gtk+/gtk+.xml:3130
 msgid "Action Target"
 msgstr "Cíl akce"
 
-#: plugins/gtk+/gtk+.xml:1012 plugins/gtk+/gtk+.xml:1781
+#: plugins/gtk+/gtk+.xml:1016 plugins/gtk+/gtk+.xml:1789
 msgid "Click"
 msgstr "Kliknutí"
 
-#: plugins/gtk+/gtk+.xml:1016 plugins/gtk+/gtk+.xml:1785
+#: plugins/gtk+/gtk+.xml:1020 plugins/gtk+/gtk+.xml:1793
 msgid "Set the description of the Click atk action"
 msgstr "Nastavit popis pro akci atk Kliknutí"
 
-#: plugins/gtk+/gtk+.xml:1022
+#: plugins/gtk+/gtk+.xml:1026
 msgid "Image Menu Item"
 msgstr "Obrázková položka nabídky"
 
-#: plugins/gtk+/gtk+.xml:1029
+#: plugins/gtk+/gtk+.xml:1033
 msgid "Stock Item"
 msgstr "Standardní položka"
 
-#: plugins/gtk+/gtk+.xml:1033
+#: plugins/gtk+/gtk+.xml:1037
 msgid "The stock item for this menu item"
 msgstr "Standardní položka pro tuto položku nabídky"
 
-#: plugins/gtk+/gtk+.xml:1039 plugins/gtk+/gtk+.xml:3707
+#: plugins/gtk+/gtk+.xml:1043 plugins/gtk+/gtk+.xml:3754
 msgid "Accel Group"
 msgstr "Skupina zkratek"
 
-#: plugins/gtk+/gtk+.xml:1053
+#: plugins/gtk+/gtk+.xml:1057
 msgid "Separator Menu Item"
 msgstr "Oddělovací položka nabídky"
 
-#: plugins/gtk+/gtk+.xml:1070 plugins/gtk+/gtk+.xml:5481
+#: plugins/gtk+/gtk+.xml:1074 plugins/gtk+/gtk+.xml:5528
 msgid "Left to Right"
 msgstr "Zleva doprava"
 
-#: plugins/gtk+/gtk+.xml:1072 plugins/gtk+/gtk+.xml:5483
+#: plugins/gtk+/gtk+.xml:1076 plugins/gtk+/gtk+.xml:5530
 msgid "Right to Left"
 msgstr "Zprava doleva"
 
-#: plugins/gtk+/gtk+.xml:1074
+#: plugins/gtk+/gtk+.xml:1078
 msgid "Top to Bottom"
 msgstr "Shora dolů"
 
-#: plugins/gtk+/gtk+.xml:1076
+#: plugins/gtk+/gtk+.xml:1080
 msgid "Bottom to Top"
 msgstr "Zdola nahoru"
 
-#: plugins/gtk+/gtk+.xml:1105 plugins/gtk+/gtk+.xml:2610
-#: plugins/gtk+/gtk+.xml:3694 plugins/gtk+/gtk+.xml:3956
+#: plugins/gtk+/gtk+.xml:1109 plugins/gtk+/gtk+.xml:2618
+#: plugins/gtk+/gtk+.xml:3741 plugins/gtk+/gtk+.xml:4003
 #: plugins/gtk+/glade-misc-editor.ui:65 plugins/gtk+/glade-misc-editor.ui:127
-#: plugins/gtk+/glade-scrolled-window-editor.ui:197
+#: plugins/gtk+/glade-scrolled-window-editor.ui:305
 msgid "Horizontal"
 msgstr "Vodorovně"
 
-#: plugins/gtk+/gtk+.xml:1107 plugins/gtk+/gtk+.xml:2611
-#: plugins/gtk+/gtk+.xml:3696 plugins/gtk+/gtk+.xml:3958
+#: plugins/gtk+/gtk+.xml:1111 plugins/gtk+/gtk+.xml:2619
+#: plugins/gtk+/gtk+.xml:3743 plugins/gtk+/gtk+.xml:4005
 #: plugins/gtk+/glade-misc-editor.ui:82 plugins/gtk+/glade-misc-editor.ui:144
-#: plugins/gtk+/glade-scrolled-window-editor.ui:215
+#: plugins/gtk+/glade-scrolled-window-editor.ui:323
 msgid "Vertical"
 msgstr "Svisle"
 
-#: plugins/gtk+/gtk+.xml:1113
+#: plugins/gtk+/gtk+.xml:1117
 msgid "Icons only"
 msgstr "Pouze ikony"
 
-#: plugins/gtk+/gtk+.xml:1115
+#: plugins/gtk+/gtk+.xml:1119
 msgid "Text only"
 msgstr "Pouze text"
 
-#: plugins/gtk+/gtk+.xml:1117
+#: plugins/gtk+/gtk+.xml:1121
 msgid "Text below icons"
 msgstr "Text pod ikonami"
 
-#: plugins/gtk+/gtk+.xml:1119
+#: plugins/gtk+/gtk+.xml:1123
 msgid "Text beside icons"
 msgstr "Text vedle ikon"
 
-#: plugins/gtk+/gtk+.xml:1129 plugins/gtk+/gtk+.xml:2287
+#: plugins/gtk+/gtk+.xml:1133 plugins/gtk+/gtk+.xml:2295
 msgid "A symbolic icon size for the stock icon"
 msgstr "Velikost symbolické ikony pro standardní ikonu"
 
-#: plugins/gtk+/gtk+.xml:1136
+#: plugins/gtk+/gtk+.xml:1140
 msgid "Small Toolbar"
 msgstr "Malá nástrojová lišta"
 
-#: plugins/gtk+/gtk+.xml:1138
+#: plugins/gtk+/gtk+.xml:1142
 msgid "Large Toolbar"
 msgstr "Velká nástrojová lišta"
 
-#: plugins/gtk+/gtk+.xml:1142
+#: plugins/gtk+/gtk+.xml:1146
 msgid "Drag &amp; Drop"
 msgstr "Přetáhnout"
 
-#: plugins/gtk+/gtk+.xml:1155
+#: plugins/gtk+/gtk+.xml:1159
 msgid "The position of the tool item in the toolbar"
 msgstr "Poloha nástrojové položky na liště nástrojů"
 
-#: plugins/gtk+/gtk+.xml:1169
+#: plugins/gtk+/gtk+.xml:1173
 msgid "Tool Palette"
 msgstr "Paleta nástrojů"
 
-#: plugins/gtk+/gtk+.xml:1191 plugins/gtk+/gtk+.xml:1674
-#: plugins/gtk+/gtk+.xml:3107 plugins/gtk+/gtk+.xml:3190
-#: plugins/gtk+/gtk+.xml:3976 plugins/gtk+/gtk+.xml:4089
+#: plugins/gtk+/gtk+.xml:1195 plugins/gtk+/gtk+.xml:1682
+#: plugins/gtk+/gtk+.xml:3146 plugins/gtk+/gtk+.xml:3229
+#: plugins/gtk+/gtk+.xml:4023 plugins/gtk+/gtk+.xml:4136
 msgid "Whether to start scrolling at less than minimum or natural width"
 msgstr ""
 "Jestli se má začít s posuvem při menší než minimální nebo přirozené šířce"
 
-#: plugins/gtk+/gtk+.xml:1194
+#: plugins/gtk+/gtk+.xml:1198
 msgid "Minimum"
 msgstr "Minimum"
 
-#: plugins/gtk+/gtk+.xml:1196
+#: plugins/gtk+/gtk+.xml:1200
 msgid "Natural"
 msgstr "Přirozeně"
 
-#: plugins/gtk+/gtk+.xml:1200 plugins/gtk+/gtk+.xml:1677
-#: plugins/gtk+/gtk+.xml:3110 plugins/gtk+/gtk+.xml:3193
-#: plugins/gtk+/gtk+.xml:3979 plugins/gtk+/gtk+.xml:4092
+#: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1685
+#: plugins/gtk+/gtk+.xml:3149 plugins/gtk+/gtk+.xml:3232
+#: plugins/gtk+/gtk+.xml:4026 plugins/gtk+/gtk+.xml:4139
 msgid "Whether to start scrolling at less than minimum or natural height"
 msgstr ""
 "Jestli se má začít s posuvem při menší než minimální nebo přirozené výšce"
 
-#: plugins/gtk+/gtk+.xml:1210
+#: plugins/gtk+/gtk+.xml:1214
 msgid "The position of the tool item group in the palette"
 msgstr "Poloha skupiny nástrojových položek v paletě"
 
-#: plugins/gtk+/gtk+.xml:1249
+#: plugins/gtk+/gtk+.xml:1253
 msgid "Middle"
 msgstr "Uprostřed"
 
-#: plugins/gtk+/gtk+.xml:1259
+#: plugins/gtk+/gtk+.xml:1263
 msgid "Half"
 msgstr "Poloviční"
 
-#: plugins/gtk+/gtk+.xml:1274
+#: plugins/gtk+/gtk+.xml:1278
 msgid "GtkToolItem"
 msgstr "Nástrojová položka Gtk"
 
-#: plugins/gtk+/gtk+.xml:1291
+#: plugins/gtk+/gtk+.xml:1295
 msgid "Separator Tool Item"
 msgstr "Oddělovač položky nástrojů"
 
-#: plugins/gtk+/gtk+.xml:1293 plugins/gtk+/glade-tool-button-editor.ui:66
+#: plugins/gtk+/gtk+.xml:1297 plugins/gtk+/glade-tool-button-editor.ui:66
 msgid "Tool Button"
 msgstr "Nástrojové tlačítko"
 
-#: plugins/gtk+/gtk+.xml:1322
+#: plugins/gtk+/gtk+.xml:1326
 msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
@@ -5623,323 +5639,331 @@ msgstr ""
 "Standardní ikona zobrazená u položky (zvolte položku ze standardních v GTK+ "
 "nebo z generátoru ikon)"
 
-#: plugins/gtk+/gtk+.xml:1331
+#: plugins/gtk+/gtk+.xml:1335
 msgid "Toggle Tool Button"
 msgstr "Přepínací nástrojové tlačítko"
 
-#: plugins/gtk+/gtk+.xml:1337
+#: plugins/gtk+/gtk+.xml:1341
 msgid "Radio Tool Button"
 msgstr "Nástrojové tlačítko skupinového přepínače"
 
-#: plugins/gtk+/gtk+.xml:1344
+#: plugins/gtk+/gtk+.xml:1348
 msgid "Menu Tool Button"
 msgstr "Nástrojové tlačítko s nabídkou"
 
-#: plugins/gtk+/gtk+.xml:1358
+#: plugins/gtk+/gtk+.xml:1362
 msgid "Handle Box"
 msgstr "Úchyt"
 
-#: plugins/gtk+/gtk+.xml:1363 plugins/gtk+/gtk+.xml:1440
-#: plugins/gtk+/gtk+.xml:3031 plugins/gtk+/gtk+.xml:4305
+#: plugins/gtk+/gtk+.xml:1367 plugins/gtk+/gtk+.xml:1444
+#: plugins/gtk+/gtk+.xml:3070 plugins/gtk+/gtk+.xml:4352
 msgid "Left"
 msgstr "Vlevo"
 
-#: plugins/gtk+/gtk+.xml:1365 plugins/gtk+/gtk+.xml:1442
-#: plugins/gtk+/gtk+.xml:3033 plugins/gtk+/gtk+.xml:4309
+#: plugins/gtk+/gtk+.xml:1369 plugins/gtk+/gtk+.xml:1446
+#: plugins/gtk+/gtk+.xml:3072 plugins/gtk+/gtk+.xml:4356
 msgid "Right"
 msgstr "Vpravo"
 
-#: plugins/gtk+/gtk+.xml:1378
+#: plugins/gtk+/gtk+.xml:1382
 msgid "In"
 msgstr "Uvnitř"
 
-#: plugins/gtk+/gtk+.xml:1380
+#: plugins/gtk+/gtk+.xml:1384
 msgid "Out"
 msgstr "Vně"
 
-#: plugins/gtk+/gtk+.xml:1382
+#: plugins/gtk+/gtk+.xml:1386
 msgid "Etched In"
 msgstr "Utopený rámeček"
 
-#: plugins/gtk+/gtk+.xml:1384
+#: plugins/gtk+/gtk+.xml:1388
 msgid "Etched Out"
 msgstr "Vystouplý rámeček"
 
-#: plugins/gtk+/gtk+.xml:1415
+#: plugins/gtk+/gtk+.xml:1419
 msgid "Attributes"
 msgstr "Atributy"
 
-#: plugins/gtk+/gtk+.xml:1420
+#: plugins/gtk+/gtk+.xml:1424
 msgid "The pango attributes for this label"
 msgstr "Atributy Pango pro tento popisek"
 
-#: plugins/gtk+/gtk+.xml:1452 plugins/gtk+/gtk+.xml:1664
+#: plugins/gtk+/gtk+.xml:1456 plugins/gtk+/gtk+.xml:1672
 msgid "Word"
 msgstr "Slovo"
 
-#: plugins/gtk+/gtk+.xml:1454 plugins/gtk+/gtk+.xml:1662
+#: plugins/gtk+/gtk+.xml:1458 plugins/gtk+/gtk+.xml:1670
 msgid "Character"
 msgstr "Znak"
 
-#: plugins/gtk+/gtk+.xml:1456 plugins/gtk+/gtk+.xml:1666
+#: plugins/gtk+/gtk+.xml:1460 plugins/gtk+/gtk+.xml:1674
 msgid "Word Character"
 msgstr "Znak slova"
 
-#: plugins/gtk+/gtk+.xml:1476
+#: plugins/gtk+/gtk+.xml:1480
 msgid "Text Entry"
 msgstr "Textové pole"
 
-#: plugins/gtk+/gtk+.xml:1493
+#: plugins/gtk+/gtk+.xml:1497
 msgid "Free Form"
 msgstr "Volný formulář"
 
-#: plugins/gtk+/gtk+.xml:1495
+#: plugins/gtk+/gtk+.xml:1499
 msgid "Alpha"
 msgstr "Písmena"
 
-#: plugins/gtk+/gtk+.xml:1497 plugins/gtk+/gtk+.xml:3715
+#: plugins/gtk+/gtk+.xml:1501 plugins/gtk+/gtk+.xml:3762
 msgid "Digits"
 msgstr "Číslice"
 
-#: plugins/gtk+/gtk+.xml:1499
+#: plugins/gtk+/gtk+.xml:1503
 msgid "Number"
 msgstr "Číslo"
 
-#: plugins/gtk+/gtk+.xml:1501
+#: plugins/gtk+/gtk+.xml:1505
 msgid "Phone"
 msgstr "Telefonní číslo"
 
-#: plugins/gtk+/gtk+.xml:1503 plugins/gtk+/glade-about-dialog-editor.ui:287
+#: plugins/gtk+/gtk+.xml:1507 plugins/gtk+/glade-about-dialog-editor.ui:287
 #: plugins/webkit2gtk/webkit2gtk.xml:17
 msgid "URL"
 msgstr "URL"
 
-#: plugins/gtk+/gtk+.xml:1505
+#: plugins/gtk+/gtk+.xml:1509
 msgid "Email"
 msgstr "E-mail"
 
-#: plugins/gtk+/gtk+.xml:1509
+#: plugins/gtk+/gtk+.xml:1513
 msgid "Password"
 msgstr "Heslo"
 
-#: plugins/gtk+/gtk+.xml:1511
+#: plugins/gtk+/gtk+.xml:1515
 msgid "Pin Code"
 msgstr "PIN kód"
 
-#: plugins/gtk+/gtk+.xml:1519
+#: plugins/gtk+/gtk+.xml:1523
 msgid "Spellcheck"
 msgstr "Kontrola pravopisu"
 
-#: plugins/gtk+/gtk+.xml:1521
+#: plugins/gtk+/gtk+.xml:1525
 msgid "No Spellcheck"
 msgstr "Bez kontroly pravopisu"
 
-#: plugins/gtk+/gtk+.xml:1523
+#: plugins/gtk+/gtk+.xml:1527
 msgid "Word Completion"
 msgstr "Dokončování slov"
 
-#: plugins/gtk+/gtk+.xml:1525
+#: plugins/gtk+/gtk+.xml:1529
 msgid "Lowercase"
 msgstr "Malá písmena"
 
-#: plugins/gtk+/gtk+.xml:1527
+#: plugins/gtk+/gtk+.xml:1531
 msgid "Uppercase Chars"
 msgstr "Velká písmena"
 
-#: plugins/gtk+/gtk+.xml:1529
+#: plugins/gtk+/gtk+.xml:1533
 msgid "Uppercase Words"
 msgstr "Začátek slova velkým"
 
-#: plugins/gtk+/gtk+.xml:1531
+#: plugins/gtk+/gtk+.xml:1535
 msgid "Uppercase Sentences"
 msgstr "Začátek věty velkým"
 
-#: plugins/gtk+/gtk+.xml:1533
+#: plugins/gtk+/gtk+.xml:1537
 msgid "Inhibit On-screen Keyboard"
 msgstr "Potlačit klávesnici na obrazovce"
 
-#: plugins/gtk+/gtk+.xml:1535
+#: plugins/gtk+/gtk+.xml:1539
 msgid "Vertical Writing"
 msgstr "Svislé psaní"
 
-#: plugins/gtk+/gtk+.xml:1557
+#: plugins/gtk+/gtk+.xml:1541
+msgid "Emoji Support"
+msgstr "Podpora emodži"
+
+#: plugins/gtk+/gtk+.xml:1543
+msgid "No Emoji Support"
+msgstr "Bez podpory emodži"
+
+#: plugins/gtk+/gtk+.xml:1565
 msgid "Primary Stock Icon"
 msgstr "Hlavní standardní ikona"
 
-#: plugins/gtk+/gtk+.xml:1559
+#: plugins/gtk+/gtk+.xml:1567
 msgid "Secondary Stock Icon"
 msgstr "Sekundární standardní ikona"
 
-#: plugins/gtk+/gtk+.xml:1560
+#: plugins/gtk+/gtk+.xml:1568
 msgid "Primary Icon Pixbuf"
 msgstr "Pixbuf hlavní ikony"
 
-#: plugins/gtk+/gtk+.xml:1561
+#: plugins/gtk+/gtk+.xml:1569
 msgid "Secondary Icon Pixbuf"
 msgstr "Pixbuf sekundární ikony"
 
-#: plugins/gtk+/gtk+.xml:1563
+#: plugins/gtk+/gtk+.xml:1571
 msgid "Primary Icon Name"
 msgstr "Název hlavní ikony"
 
-#: plugins/gtk+/gtk+.xml:1565
+#: plugins/gtk+/gtk+.xml:1573
 msgid "Secondary Icon Name"
 msgstr "Název sekundární ikony"
 
-#: plugins/gtk+/gtk+.xml:1567
+#: plugins/gtk+/gtk+.xml:1575
 msgid "Primary Icon Activatable"
 msgstr "Hlavní ikona aktivovatelná"
 
-#: plugins/gtk+/gtk+.xml:1569
+#: plugins/gtk+/gtk+.xml:1577
 msgid "Secondary Icon Activatable"
 msgstr "Sekundární ikona aktivovatelná"
 
-#: plugins/gtk+/gtk+.xml:1571
+#: plugins/gtk+/gtk+.xml:1579
 msgid "Primary Icon Sensitive"
 msgstr "Hlavní ikona citlivá"
 
-#: plugins/gtk+/gtk+.xml:1573
+#: plugins/gtk+/gtk+.xml:1581
 msgid "Secondary Icon Sensitive"
 msgstr "Sekundární ikona citlivá"
 
-#: plugins/gtk+/gtk+.xml:1574
+#: plugins/gtk+/gtk+.xml:1582
 msgid "Progress Fraction"
 msgstr "Rozdělení ukazatele průběhu"
 
-#: plugins/gtk+/gtk+.xml:1575
+#: plugins/gtk+/gtk+.xml:1583
 msgid "Progress Pulse Step"
 msgstr "Krok pulsu ukazatele průběhu"
 
-#: plugins/gtk+/gtk+.xml:1581
+#: plugins/gtk+/gtk+.xml:1589
 msgid "Primary Icon Tooltip Text"
 msgstr "Text hlavní ikony bublinové nápovědy"
 
-#: plugins/gtk+/gtk+.xml:1583
+#: plugins/gtk+/gtk+.xml:1591
 msgid "Secondary Icon Tooltip Text"
 msgstr "Text sekundární ikony bublinové nápovědy"
 
-#: plugins/gtk+/gtk+.xml:1585
+#: plugins/gtk+/gtk+.xml:1593
 msgid "Primary Icon Tooltip Markup"
 msgstr "Značka hlavní ikony bublinové nápovědy"
 
-#: plugins/gtk+/gtk+.xml:1587
+#: plugins/gtk+/gtk+.xml:1595
 msgid "Secondary Icon Tooltip Markup"
 msgstr "Značka sekundární ikony bublinové nápovědy"
 
-#: plugins/gtk+/gtk+.xml:1621 plugins/gtk+/gtk+.xml:3174
+#: plugins/gtk+/gtk+.xml:1629 plugins/gtk+/gtk+.xml:3213
 msgid "Activate"
 msgstr "Aktivace"
 
-#: plugins/gtk+/gtk+.xml:1625 plugins/gtk+/gtk+.xml:3178
+#: plugins/gtk+/gtk+.xml:1633 plugins/gtk+/gtk+.xml:3217
 msgid "Set the description of the Activate atk action"
 msgstr "Nastavit popis akce atk Aktivovat"
 
-#: plugins/gtk+/gtk+.xml:1630
+#: plugins/gtk+/gtk+.xml:1638
 msgid "Search Entry"
 msgstr "Vyhledávací pole"
 
-#: plugins/gtk+/gtk+.xml:1632
+#: plugins/gtk+/gtk+.xml:1640
 msgid "Text View"
 msgstr "Zobrazení textu"
 
-#: plugins/gtk+/gtk+.xml:1682
+#: plugins/gtk+/gtk+.xml:1690
 msgid "Search Bar"
 msgstr "Vyhledávací lišta"
 
-#: plugins/gtk+/gtk+.xml:1716
+#: plugins/gtk+/gtk+.xml:1724
 msgid "Reject"
 msgstr "Odmítnout"
 
-#: plugins/gtk+/gtk+.xml:1718
+#: plugins/gtk+/gtk+.xml:1726
 msgid "Accept"
 msgstr "Přijmout"
 
-#: plugins/gtk+/gtk+.xml:1720
+#: plugins/gtk+/gtk+.xml:1728
 msgid "Delete Event"
 msgstr "Smazat událost"
 
-#: plugins/gtk+/gtk+.xml:1722
+#: plugins/gtk+/gtk+.xml:1730
 msgid "OK"
 msgstr "Budiž"
 
-#: plugins/gtk+/gtk+.xml:1726 plugins/gtk+/gtk+.xml:3399
+#: plugins/gtk+/gtk+.xml:1734 plugins/gtk+/gtk+.xml:3446
 msgid "Close"
 msgstr "Zavřít"
 
-#: plugins/gtk+/gtk+.xml:1732
+#: plugins/gtk+/gtk+.xml:1740
 msgid "Apply"
 msgstr "Použít"
 
-#: plugins/gtk+/gtk+.xml:1734
+#: plugins/gtk+/gtk+.xml:1742
 msgid "Help"
 msgstr "Nápověda"
 
-#: plugins/gtk+/gtk+.xml:1750 plugins/gtk+/glade-button-editor.ui:351
+#: plugins/gtk+/gtk+.xml:1758 plugins/gtk+/glade-button-editor.ui:351
 msgid "Stock Button"
 msgstr "Standardní tlačítko"
 
-#: plugins/gtk+/gtk+.xml:1754
+#: plugins/gtk+/gtk+.xml:1762
 msgid "The stock item for this button"
 msgstr "Standardní položka pro toto tlačítko"
 
-#: plugins/gtk+/gtk+.xml:1763
+#: plugins/gtk+/gtk+.xml:1771
 msgid "Response ID"
 msgstr "ID odpovědi"
 
-#: plugins/gtk+/gtk+.xml:1767
+#: plugins/gtk+/gtk+.xml:1775
 msgid "The response ID of this button in a dialog"
 msgstr "ID odpovědi tohoto tlačítka v dialogovém okně"
 
-#: plugins/gtk+/gtk+.xml:1789 plugins/gtk+/gtk+.xml:2153
+#: plugins/gtk+/gtk+.xml:1797 plugins/gtk+/gtk+.xml:2161
 msgid "Press"
 msgstr "Zmáčknutí"
 
-#: plugins/gtk+/gtk+.xml:1793 plugins/gtk+/gtk+.xml:2157
+#: plugins/gtk+/gtk+.xml:1801 plugins/gtk+/gtk+.xml:2165
 msgid "Set the description of the Press atk action"
 msgstr "Nastavit popis pro akci atk Zmáčknutí"
 
-#: plugins/gtk+/gtk+.xml:1798
+#: plugins/gtk+/gtk+.xml:1806
 msgid "Release"
 msgstr "Uvolnění"
 
-#: plugins/gtk+/gtk+.xml:1802
+#: plugins/gtk+/gtk+.xml:1810
 msgid "Set the description of the Release atk action"
 msgstr "Nastavit popis pro akci atk Uvolnění"
 
-#: plugins/gtk+/gtk+.xml:1824
+#: plugins/gtk+/gtk+.xml:1832
 msgid "Check Button"
 msgstr "Zaškrtávací pole"
 
-#: plugins/gtk+/gtk+.xml:1853 plugins/gtk+/gtk+.xml:3213
+#: plugins/gtk+/gtk+.xml:1861 plugins/gtk+/gtk+.xml:3256
 msgid "Always"
 msgstr "Vždy"
 
-#: plugins/gtk+/gtk+.xml:1855
+#: plugins/gtk+/gtk+.xml:1863
 msgid "If Valid"
 msgstr "Když je platné"
 
-#: plugins/gtk+/gtk+.xml:1869
+#: plugins/gtk+/gtk+.xml:1877
 msgid "Switch"
 msgstr "Vypínač"
 
-#: plugins/gtk+/gtk+.xml:1898
+#: plugins/gtk+/gtk+.xml:1906
 #: plugins/gtk+/glade-file-chooser-button-editor.ui:69
 msgid "File Chooser Button"
 msgstr "Tlačítko pro výběr souborů"
 
-#: plugins/gtk+/gtk+.xml:1931
+#: plugins/gtk+/gtk+.xml:1939
 msgid "Select Folder"
 msgstr "Vybrat složku"
 
-#: plugins/gtk+/gtk+.xml:1933
+#: plugins/gtk+/gtk+.xml:1941
 msgid "Create Folder"
 msgstr "Vytvořit složku"
 
-#: plugins/gtk+/gtk+.xml:1946
+#: plugins/gtk+/gtk+.xml:1954
 msgid "Scale Button"
 msgstr "Tlačítko se stupnicí"
 
-#: plugins/gtk+/gtk+.xml:1953
+#: plugins/gtk+/gtk+.xml:1961
 msgid ""
 "The names of the icons to be used by the scale button. The first item in the "
 "array will be used in the button when the current value is the lowest value, "
@@ -5951,495 +5975,543 @@ msgstr ""
 "položka pro nevyšší hodnotu. Všechny další ikony se použijí pro všechny "
 "další hodnoty, přičemž budou rovnoměrně rozložené v celém rozsahu."
 
-#: plugins/gtk+/gtk+.xml:1970
+#: plugins/gtk+/gtk+.xml:1978
 msgid "Volume Button"
 msgstr "Tlačítko pro nastavení hlasitosti"
 
-#: plugins/gtk+/gtk+.xml:1977
+#: plugins/gtk+/gtk+.xml:1985
 msgid "File Chooser Widget"
 msgstr "Výběr souboru"
 
-#: plugins/gtk+/gtk+.xml:2011
+#: plugins/gtk+/gtk+.xml:2019
 msgid "Application Chooser Widget"
 msgstr "Widget pro výběr aplikace"
 
-#: plugins/gtk+/gtk+.xml:2030
+#: plugins/gtk+/gtk+.xml:2038
 msgid "Places Sidebar"
 msgstr "Postranní panel umístění"
 
-#: plugins/gtk+/gtk+.xml:2038
+#: plugins/gtk+/gtk+.xml:2046
 msgid "New Tab"
 msgstr "Nová karta"
 
-#: plugins/gtk+/gtk+.xml:2040
+#: plugins/gtk+/gtk+.xml:2048
 msgid "New Window"
 msgstr "Nové okno"
 
-#: plugins/gtk+/gtk+.xml:2050
+#: plugins/gtk+/gtk+.xml:2058
 msgid "Color Button"
 msgstr "Tlačítko pro výběr barvy"
 
-#: plugins/gtk+/gtk+.xml:2067
+#: plugins/gtk+/gtk+.xml:2075
 msgid "Font Button"
 msgstr "Tlačítko pro výběr písma"
 
-#: plugins/gtk+/gtk+.xml:2143 plugins/gtk+/gtk+.xml:3215
-#: plugins/gtk+/gtk+.xml:4026
+#: plugins/gtk+/gtk+.xml:2151 plugins/gtk+/gtk+.xml:3258
+#: plugins/gtk+/gtk+.xml:4073
 msgid "Automatic"
 msgstr "Automaticky"
 
-#: plugins/gtk+/gtk+.xml:2145
+#: plugins/gtk+/gtk+.xml:2153
 msgid "On"
 msgstr "Zapnuto"
 
-#: plugins/gtk+/gtk+.xml:2147
+#: plugins/gtk+/gtk+.xml:2155
 msgid "Off"
 msgstr "Vypnuto"
 
-#: plugins/gtk+/gtk+.xml:2163
+#: plugins/gtk+/gtk+.xml:2171
 msgid "Combo Box Text"
 msgstr "Textový rozbalovací seznam"
 
-#: plugins/gtk+/gtk+.xml:2190
+#: plugins/gtk+/gtk+.xml:2198
 msgid "Items"
 msgstr "Položky"
 
-#: plugins/gtk+/gtk+.xml:2195
+#: plugins/gtk+/gtk+.xml:2203
 msgid "The list of items to show in the combo box"
 msgstr "Seznam položek pro zobrazení v rozbalovacím seznamu"
 
-#: plugins/gtk+/gtk+.xml:2201
+#: plugins/gtk+/gtk+.xml:2209
 msgid "Application Chooser Button"
 msgstr "Tlačítko pro výběr aplikace"
 
-#: plugins/gtk+/gtk+.xml:2229
+#: plugins/gtk+/gtk+.xml:2237
 msgid "Progress Bar"
 msgstr "Ukazatel průběhu"
 
-#: plugins/gtk+/gtk+.xml:2254 plugins/gtk+/gtk+.xml:2816
+#: plugins/gtk+/gtk+.xml:2262 plugins/gtk+/gtk+.xml:2833
 msgid "Continuous"
 msgstr "Plynule"
 
-#: plugins/gtk+/gtk+.xml:2256
+#: plugins/gtk+/gtk+.xml:2264
 msgid "Discrete"
 msgstr "Po krocích"
 
-#: plugins/gtk+/gtk+.xml:2278
+#: plugins/gtk+/gtk+.xml:2286
 msgid "Resource Name"
 msgstr "Název prostředku"
 
-#: plugins/gtk+/gtk+.xml:2282 plugins/gtk+/gtk+.xml:5315
+#: plugins/gtk+/gtk+.xml:2290 plugins/gtk+/gtk+.xml:5362
 msgid "Icon Size"
 msgstr "Velikost ikony"
 
-#: plugins/gtk+/gtk+.xml:2305
+#: plugins/gtk+/gtk+.xml:2313
 msgid "Dialog Box"
 msgstr "Dialogové okno"
 
-#: plugins/gtk+/gtk+.xml:2338 plugins/gtk+/gtk+.xml:2388
+#: plugins/gtk+/gtk+.xml:2346 plugins/gtk+/gtk+.xml:2396
 msgid "Insert Row"
 msgstr "Vložit řádek"
 
-#: plugins/gtk+/gtk+.xml:2339 plugins/gtk+/gtk+.xml:2343
-#: plugins/gtk+/gtk+.xml:2389 plugins/gtk+/gtk+.xml:2393
+#: plugins/gtk+/gtk+.xml:2347 plugins/gtk+/gtk+.xml:2351
+#: plugins/gtk+/gtk+.xml:2397 plugins/gtk+/gtk+.xml:2401
 msgid "Before"
 msgstr "Před"
 
-#: plugins/gtk+/gtk+.xml:2342 plugins/gtk+/gtk+.xml:2392
+#: plugins/gtk+/gtk+.xml:2350 plugins/gtk+/gtk+.xml:2400
 msgid "Insert Column"
 msgstr "Vložit sloupec"
 
-#: plugins/gtk+/gtk+.xml:2346 plugins/gtk+/gtk+.xml:2396
+#: plugins/gtk+/gtk+.xml:2354 plugins/gtk+/gtk+.xml:2404
 msgid "Remove Row"
 msgstr "Odstranit řádek"
 
-#: plugins/gtk+/gtk+.xml:2347 plugins/gtk+/gtk+.xml:2397
+#: plugins/gtk+/gtk+.xml:2355 plugins/gtk+/gtk+.xml:2405
 msgid "Remove Column"
 msgstr "Odstranit sloupec"
 
-#: plugins/gtk+/gtk+.xml:2359 plugins/gtk+/gtk+.xml:2962
+#: plugins/gtk+/gtk+.xml:2367 plugins/gtk+/gtk+.xml:3001
 #: plugins/gtk+/glade-widget-editor.ui:752
 msgid "Expand"
 msgstr "Roztáhnout"
 
-#: plugins/gtk+/gtk+.xml:2361
+#: plugins/gtk+/gtk+.xml:2369
 msgid "Shrink"
 msgstr "Srazit"
 
-#: plugins/gtk+/gtk+.xml:2407 plugins/gtk+/glade-grid-editor.ui:131
+#: plugins/gtk+/gtk+.xml:2415 plugins/gtk+/glade-grid-editor.ui:131
 msgid "Rows"
 msgstr "Řádků"
 
-#: plugins/gtk+/gtk+.xml:2411
+#: plugins/gtk+/gtk+.xml:2419
 msgid "The number of rows for this grid"
 msgstr "Počet řádků pro tuto mřížku"
 
-#: plugins/gtk+/gtk+.xml:2413 plugins/gtk+/gtk+.xml:3867
-#: plugins/gtk+/gtk+.xml:3893 plugins/gtk+/glade-grid-editor.ui:149
+#: plugins/gtk+/gtk+.xml:2421 plugins/gtk+/gtk+.xml:3914
+#: plugins/gtk+/gtk+.xml:3940 plugins/gtk+/glade-grid-editor.ui:149
 msgid "Columns"
 msgstr "Sloupců"
 
-#: plugins/gtk+/gtk+.xml:2417
+#: plugins/gtk+/gtk+.xml:2425
 msgid "The number of columns for this grid"
 msgstr "Počet sloupců pro tuto mřížku"
 
-#: plugins/gtk+/gtk+.xml:2450
+#: plugins/gtk+/gtk+.xml:2458
 msgid "Horizontal Panes"
 msgstr "Vodorovné panely"
 
-#: plugins/gtk+/gtk+.xml:2455
+#: plugins/gtk+/gtk+.xml:2463
 msgid "Vertical Panes"
 msgstr "Svislé panely"
 
-#: plugins/gtk+/gtk+.xml:2461
+#: plugins/gtk+/gtk+.xml:2469
 msgid "Notebook"
 msgstr "Sešit"
 
-#: plugins/gtk+/gtk+.xml:2484 plugins/gtk+/gtk+.xml:2588
+#: plugins/gtk+/gtk+.xml:2492 plugins/gtk+/gtk+.xml:2596
 msgid "Insert Page Before"
 msgstr "Vložit stránku před"
 
-#: plugins/gtk+/gtk+.xml:2485 plugins/gtk+/gtk+.xml:2589
+#: plugins/gtk+/gtk+.xml:2493 plugins/gtk+/gtk+.xml:2597
 msgid "Insert Page After"
 msgstr "Vložit stránku za"
 
-#: plugins/gtk+/gtk+.xml:2486 plugins/gtk+/gtk+.xml:2590
+#: plugins/gtk+/gtk+.xml:2494 plugins/gtk+/gtk+.xml:2598
 msgid "Remove Page"
 msgstr "Odstranit stránku"
 
-#: plugins/gtk+/gtk+.xml:2492 plugins/gtk+/gtk+.xml:2605
+#: plugins/gtk+/gtk+.xml:2500 plugins/gtk+/gtk+.xml:2613
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
 "Nastavit aktuálně aktivní stránku, že se upravuje; tato vlastnost se neukládá"
 
-#: plugins/gtk+/gtk+.xml:2500 plugins/gtk+/gtk+.xml:2593
+#: plugins/gtk+/gtk+.xml:2508 plugins/gtk+/gtk+.xml:2601
 msgid "Number of pages"
 msgstr "Počet stránek"
 
-#: plugins/gtk+/gtk+.xml:2505
+#: plugins/gtk+/gtk+.xml:2513
 msgid "The number of pages in the notebook"
 msgstr "Počet stránek v sešitě"
 
-#: plugins/gtk+/gtk+.xml:2508
+#: plugins/gtk+/gtk+.xml:2516
 msgid "Start Action"
 msgstr "Počáteční akce"
 
-#: plugins/gtk+/gtk+.xml:2513
+#: plugins/gtk+/gtk+.xml:2521
 msgid "End Action"
 msgstr "Koncová akce"
 
-#: plugins/gtk+/gtk+.xml:2526
+#: plugins/gtk+/gtk+.xml:2534
 msgid "HeaderBar"
 msgstr "Hlavičková lišta"
 
-#: plugins/gtk+/gtk+.xml:2544
+#: plugins/gtk+/gtk+.xml:2552
 msgid "Reserve space for subtitle"
 msgstr "Rezervovat místo pro podnázev"
 
-#: plugins/gtk+/gtk+.xml:2545
+#: plugins/gtk+/gtk+.xml:2553
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr ""
 "Zachovat výšku hlavičkové lišty stejnou, jako má dynamicky měněný podnázev."
 
-#: plugins/gtk+/gtk+.xml:2552
+#: plugins/gtk+/gtk+.xml:2560
 msgid "Custom Title"
 msgstr "Vlastní název"
 
-#: plugins/gtk+/gtk+.xml:2562
+#: plugins/gtk+/gtk+.xml:2570
 msgid "The number of items in the header bar"
 msgstr "Počet položek v hlavičkové liště"
 
-#: plugins/gtk+/gtk+.xml:2572
+#: plugins/gtk+/gtk+.xml:2580
 msgid "Add Slot"
 msgstr "Přidat pozici"
 
-#: plugins/gtk+/gtk+.xml:2598
+#: plugins/gtk+/gtk+.xml:2606
 msgid "The number of pages in the stack"
 msgstr "Počet stránek v zásobníku"
 
-#: plugins/gtk+/gtk+.xml:2600
+#: plugins/gtk+/gtk+.xml:2608
 msgid "Edit page"
 msgstr "Upravit stránku"
 
-#: plugins/gtk+/gtk+.xml:2608
+#: plugins/gtk+/gtk+.xml:2616
 msgid "Visible child"
 msgstr "Viditelný potomek"
 
-#: plugins/gtk+/gtk+.xml:2615 plugins/gtk+/gtk+.xml:2670
+#: plugins/gtk+/gtk+.xml:2623 plugins/gtk+/gtk+.xml:2678
 msgid "Crossfade"
 msgstr "Prolnutí"
 
-#: plugins/gtk+/gtk+.xml:2616 plugins/gtk+/gtk+.xml:2672
+#: plugins/gtk+/gtk+.xml:2624 plugins/gtk+/gtk+.xml:2680
 msgid "Slide Right"
 msgstr "Odsunutí vpravo"
 
-#: plugins/gtk+/gtk+.xml:2617 plugins/gtk+/gtk+.xml:2674
+#: plugins/gtk+/gtk+.xml:2625 plugins/gtk+/gtk+.xml:2682
 msgid "Slide Left"
 msgstr "Odsunutí vlevo"
 
-#: plugins/gtk+/gtk+.xml:2618 plugins/gtk+/gtk+.xml:2676
+#: plugins/gtk+/gtk+.xml:2626 plugins/gtk+/gtk+.xml:2684
 msgid "Slide Up"
 msgstr "Odsunutí nahoru"
 
-#: plugins/gtk+/gtk+.xml:2619 plugins/gtk+/gtk+.xml:2678
+#: plugins/gtk+/gtk+.xml:2627 plugins/gtk+/gtk+.xml:2686
 msgid "Slide Down"
 msgstr "Odsunutí dolů"
 
-#: plugins/gtk+/gtk+.xml:2620
+#: plugins/gtk+/gtk+.xml:2628
 msgid "Slide Left-Right"
 msgstr "Odsunutí zleva doprava"
 
-#: plugins/gtk+/gtk+.xml:2621
+#: plugins/gtk+/gtk+.xml:2629
 msgid "Slide Up-Down"
 msgstr "Odsunutí shora dolů"
 
-#: plugins/gtk+/gtk+.xml:2622
+#: plugins/gtk+/gtk+.xml:2630
 msgid "Move Over Up"
 msgstr "Posun nahoru přes"
 
-#: plugins/gtk+/gtk+.xml:2623
+#: plugins/gtk+/gtk+.xml:2631
 msgid "Move Over Down"
 msgstr "Posun dolů přes"
 
-#: plugins/gtk+/gtk+.xml:2624
+#: plugins/gtk+/gtk+.xml:2632
 msgid "Move Over Left"
 msgstr "Posun vlevo přes"
 
-#: plugins/gtk+/gtk+.xml:2625
+#: plugins/gtk+/gtk+.xml:2633
 msgid "Move Over Right"
 msgstr "Posun vpravo přes"
 
-#: plugins/gtk+/gtk+.xml:2626
+#: plugins/gtk+/gtk+.xml:2634
 msgid "Move Over Up-Down"
 msgstr "Posun zhora dolů přes"
 
-#: plugins/gtk+/gtk+.xml:2627
+#: plugins/gtk+/gtk+.xml:2635
 msgid "Move Over Down-Up"
 msgstr "Posun zdola nahoru přes"
 
-#: plugins/gtk+/gtk+.xml:2628
+#: plugins/gtk+/gtk+.xml:2636
 msgid "Move Over Left-Right"
 msgstr "Posun zleva doprava přes"
 
-#: plugins/gtk+/gtk+.xml:2629
+#: plugins/gtk+/gtk+.xml:2637
 msgid "Move Over Right-Left"
 msgstr "Posun zprava doleva přes"
 
-#: plugins/gtk+/gtk+.xml:2630
+#: plugins/gtk+/gtk+.xml:2638
 msgid "Move Under Up"
 msgstr "Posun nahoru pod"
 
-#: plugins/gtk+/gtk+.xml:2631
+#: plugins/gtk+/gtk+.xml:2639
 msgid "Move Under Down"
 msgstr "Posun dolů pod"
 
-#: plugins/gtk+/gtk+.xml:2632
+#: plugins/gtk+/gtk+.xml:2640
 msgid "Move Under Left"
 msgstr "Posun vlevo pod"
 
-#: plugins/gtk+/gtk+.xml:2633
+#: plugins/gtk+/gtk+.xml:2641
 msgid "Move Under Right"
 msgstr "Posun vpravo pod"
 
-#: plugins/gtk+/gtk+.xml:2643
+#: plugins/gtk+/gtk+.xml:2651
 msgid "Stack Switcher"
 msgstr "Přepínač zásobníku"
 
-#: plugins/gtk+/gtk+.xml:2659
+#: plugins/gtk+/gtk+.xml:2667
 msgid "Stack Sidebar"
 msgstr "Postranní panel zásobníku"
 
-#: plugins/gtk+/gtk+.xml:2661
+#: plugins/gtk+/gtk+.xml:2669
 msgid "Revealer"
 msgstr "Zjevení"
 
-#: plugins/gtk+/gtk+.xml:2719
+#: plugins/gtk+/gtk+.xml:2730
 msgid "Add Row"
 msgstr "Přidat řádek"
 
-#: plugins/gtk+/gtk+.xml:2734 plugins/gtk+/gtk+.xml:4660
+#: plugins/gtk+/gtk+.xml:2745 plugins/gtk+/gtk+.xml:4707
 msgid "Single"
 msgstr "Jednoduchý"
 
-#: plugins/gtk+/gtk+.xml:2736
+#: plugins/gtk+/gtk+.xml:2747
 msgid "Browse"
 msgstr "Procházení"
 
-#: plugins/gtk+/gtk+.xml:2738
+#: plugins/gtk+/gtk+.xml:2749
 msgid "Multiple"
 msgstr "Vícenásobný"
 
-#: plugins/gtk+/gtk+.xml:2749
+#: plugins/gtk+/gtk+.xml:2752
+msgid "Placeholder"
+msgstr "Zástupný obsah"
+
+#: plugins/gtk+/gtk+.xml:2756
+msgid ""
+"Whether this listbox should have a placeholder widget that is shown in the "
+"list when it doesn't display any visible children"
+msgstr ""
+"Zda tento seznam má mít widget zástupného obsahu, který se v seznamu zobrazí, "
+"když není zobrazený žádný viditelný potomek."
+
+#: plugins/gtk+/gtk+.xml:2766
 msgid "The position of the row item in the listbox"
 msgstr "Pozice řádkové položky v seznamu"
 
-#: plugins/gtk+/gtk+.xml:2760
+#: plugins/gtk+/gtk+.xml:2777
 msgid "List Box Row"
 msgstr "Řádek seznamu"
 
-#: plugins/gtk+/gtk+.xml:2767
+#: plugins/gtk+/gtk+.xml:2784
 msgid "Flow Box"
 msgstr "Plovoucí box"
 
-#: plugins/gtk+/gtk+.xml:2781
+#: plugins/gtk+/gtk+.xml:2798
 msgid "Add Child"
 msgstr "Přidat potomka"
 
-#: plugins/gtk+/gtk+.xml:2799
+#: plugins/gtk+/gtk+.xml:2816
 msgid "The position of the child in the flowbox"
 msgstr "Pozice potomka v plovoucím boxu"
 
-#: plugins/gtk+/gtk+.xml:2805
+#: plugins/gtk+/gtk+.xml:2822
 msgid "Flow Box Child"
 msgstr "Potomek plovoucího boxu"
 
-#: plugins/gtk+/gtk+.xml:2807
+#: plugins/gtk+/gtk+.xml:2824
 msgid "Range"
 msgstr "Rozsah"
 
-#: plugins/gtk+/gtk+.xml:2818
+#: plugins/gtk+/gtk+.xml:2835
 msgid "Discontinuous"
 msgstr "Nesouvisle"
 
-#: plugins/gtk+/gtk+.xml:2820
+#: plugins/gtk+/gtk+.xml:2837
 msgid "Delayed"
 msgstr "Opožděná"
 
-#: plugins/gtk+/gtk+.xml:2833 plugins/gtk+/gtk+.xml:2923
+#: plugins/gtk+/gtk+.xml:2850 plugins/gtk+/gtk+.xml:2962
 msgid "The number of digits to round the value to when the value changes"
 msgstr "Počet číslic, na které se má hodnota zaokrouhlit, když je změněna"
 
-#: plugins/gtk+/gtk+.xml:2838
+#: plugins/gtk+/gtk+.xml:2855
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr "Zda zvýraznit oblast vedoucí odspodu nebo zleva ke knoflíku"
 
-#: plugins/gtk+/gtk+.xml:2851
+#: plugins/gtk+/gtk+.xml:2868
 msgid "Horizontal Scale"
 msgstr "Vodorovná stupnice"
 
-#: plugins/gtk+/gtk+.xml:2856
+#: plugins/gtk+/gtk+.xml:2873
 msgid "Vertical Scale"
 msgstr "Svislá stupnice"
 
+#: plugins/gtk+/gtk+.xml:2905
+msgid "Flip Horizontally"
+msgstr "Překlopit vodorovně"
+
+#: plugins/gtk+/gtk+.xml:2907
+msgid "Flip Vertically"
+msgstr "Překlopit svisle"
+
+#: plugins/gtk+/gtk+.xml:2909
+msgid "Slide Horizontally"
+msgstr "Posunout vodorovně"
+
+#: plugins/gtk+/gtk+.xml:2911
+msgid "Slide Vertically"
+msgstr "Posunout svisle"
+
+#: plugins/gtk+/gtk+.xml:2913
+msgid "Resize Horizontally"
+msgstr "Změnit velikost vodorovně"
+
+#: plugins/gtk+/gtk+.xml:2915
+msgid "Resize Vertically"
+msgstr "Změnit velikost svisle"
+
 #: plugins/gtk+/gtk+.xml:2917
+msgid "Flip Both Sides"
+msgstr "Překlopit obě strany"
+
+#: plugins/gtk+/gtk+.xml:2919
+msgid "Slide Both Sides"
+msgstr "Posunout obě strany"
+
+#: plugins/gtk+/gtk+.xml:2921
+msgid "Resize Both Sides"
+msgstr "Změnit velikost obou stran"
+
+#: plugins/gtk+/gtk+.xml:2956
 msgid "Scrollbar"
 msgstr "Posuvník"
 
-#: plugins/gtk+/gtk+.xml:2934
+#: plugins/gtk+/gtk+.xml:2973
 msgid "Horizontal Scrollbar"
 msgstr "Vodorovný posuvník"
 
-#: plugins/gtk+/gtk+.xml:2939
+#: plugins/gtk+/gtk+.xml:2978
 msgid "Vertical Scrollbar"
 msgstr "Svislý posuvník"
 
-#: plugins/gtk+/gtk+.xml:2945
+#: plugins/gtk+/gtk+.xml:2984
 msgid "Button Box"
 msgstr "Boxy na tlačítka"
 
-#: plugins/gtk+/gtk+.xml:2950
+#: plugins/gtk+/gtk+.xml:2989
 msgid "Default"
 msgstr "Výchozí"
 
-#: plugins/gtk+/gtk+.xml:2952
+#: plugins/gtk+/gtk+.xml:2991
 msgid "Spread"
 msgstr "Rozprostřít"
 
-#: plugins/gtk+/gtk+.xml:2954
+#: plugins/gtk+/gtk+.xml:2993
 msgid "Edge"
 msgstr "Kraje"
 
-#: plugins/gtk+/gtk+.xml:2968
+#: plugins/gtk+/gtk+.xml:3007
 msgid "Horizontal Button Box"
 msgstr "Vodorovné boxy na tlačítka"
 
-#: plugins/gtk+/gtk+.xml:2973
+#: plugins/gtk+/gtk+.xml:3012
 msgid "Vertical Button Box"
 msgstr "Svislé boxy na tlačítka"
 
-#: plugins/gtk+/gtk+.xml:2986
+#: plugins/gtk+/gtk+.xml:3025
 msgid "Horizontal Separator"
 msgstr "Vodorovný oddělovač"
 
-#: plugins/gtk+/gtk+.xml:2996
+#: plugins/gtk+/gtk+.xml:3035
 msgid "Vertical Separator"
 msgstr "Svislý oddělovač"
 
-#: plugins/gtk+/gtk+.xml:3019
+#: plugins/gtk+/gtk+.xml:3058
 msgid "Accel Label"
 msgstr "Popisek se zkratkou"
 
-#: plugins/gtk+/gtk+.xml:3027
+#: plugins/gtk+/gtk+.xml:3066
 msgid "Up"
 msgstr "Nahoru"
 
-#: plugins/gtk+/gtk+.xml:3029
+#: plugins/gtk+/gtk+.xml:3068
 msgid "Down"
 msgstr "Dolů"
 
-#: plugins/gtk+/gtk+.xml:3048
+#: plugins/gtk+/gtk+.xml:3087
 msgid "Menu Button"
 msgstr "Tlačítko s nabídkou"
 
-#: plugins/gtk+/gtk+.xml:3060
+#: plugins/gtk+/gtk+.xml:3099
 msgid "Lock Button"
 msgstr "Zamykací tlačítko"
 
-#: plugins/gtk+/gtk+.xml:3095
+#: plugins/gtk+/gtk+.xml:3134
 msgid "Layout"
 msgstr "Rozvržení"
 
-#: plugins/gtk+/gtk+.xml:3115 plugins/gtk+/gtk+.xml:4028
+#: plugins/gtk+/gtk+.xml:3154 plugins/gtk+/gtk+.xml:4075
 msgid "Fixed"
 msgstr "Napevno"
 
-#: plugins/gtk+/gtk+.xml:3124
+#: plugins/gtk+/gtk+.xml:3163
 msgid "OpenGL Area"
 msgstr "Oblast OpenGL"
 
-#: plugins/gtk+/gtk+.xml:3137
+#: plugins/gtk+/gtk+.xml:3176
 msgid "Info"
 msgstr "Informace"
 
-#: plugins/gtk+/gtk+.xml:3139
+#: plugins/gtk+/gtk+.xml:3178
 msgid "Warning"
 msgstr "Varování"
 
-#: plugins/gtk+/gtk+.xml:3141
+#: plugins/gtk+/gtk+.xml:3180
 msgid "Question"
 msgstr "Otázka"
 
-#: plugins/gtk+/gtk+.xml:3143 plugins/gtk+/gtk+.xml:4666
+#: plugins/gtk+/gtk+.xml:3182 plugins/gtk+/gtk+.xml:4713
 msgid "Error"
 msgstr "Chyba"
 
-#: plugins/gtk+/gtk+.xml:3217
+#: plugins/gtk+/gtk+.xml:3260
 msgid "Never"
 msgstr "Nikdy"
 
-#: plugins/gtk+/gtk+.xml:3219
+#: plugins/gtk+/gtk+.xml:3262
 msgid "External"
 msgstr "Externí"
 
-#: plugins/gtk+/gtk+.xml:3226
+#: plugins/gtk+/gtk+.xml:3269
 msgid "Top Left"
 msgstr "Vlevo nahoře"
 
-#: plugins/gtk+/gtk+.xml:3228
+#: plugins/gtk+/gtk+.xml:3271
 msgid "Bottom Left"
 msgstr "Vlevo dole"
 
-#: plugins/gtk+/gtk+.xml:3230
+#: plugins/gtk+/gtk+.xml:3273
 msgid "Top Right"
 msgstr "Vpravo nahoře"
 
-#: plugins/gtk+/gtk+.xml:3232
+#: plugins/gtk+/gtk+.xml:3275
 msgid "Bottom Right"
 msgstr "Vpravo dole"
 
-#: plugins/gtk+/gtk+.xml:3236
+#: plugins/gtk+/gtk+.xml:3279
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
@@ -6447,51 +6519,59 @@ msgstr ""
 "Když je zapnutý překrývající posuv, jsou posuvníky přidány v podobě "
 "tradičního widgetu jen pokud je přítomna myš"
 
-#: plugins/gtk+/gtk+.xml:3250
+#: plugins/gtk+/gtk+.xml:3293
 msgid "About Dialog"
 msgstr "Dialogové okno O aplikaci"
 
-#: plugins/gtk+/gtk+.xml:3278
+#: plugins/gtk+/gtk+.xml:3321
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3280
+#: plugins/gtk+/gtk+.xml:3323
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3282
+#: plugins/gtk+/gtk+.xml:3325
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
-#: plugins/gtk+/gtk+.xml:3284
+#: plugins/gtk+/gtk+.xml:3327
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3288
+#: plugins/gtk+/gtk+.xml:3331
 msgid "MIT X11"
 msgstr "MIT X11"
 
-#: plugins/gtk+/gtk+.xml:3290
+#: plugins/gtk+/gtk+.xml:3333
 msgid "Artistic"
 msgstr "Artistic"
 
-#: plugins/gtk+/gtk+.xml:3292
+#: plugins/gtk+/gtk+.xml:3335
 msgid "GPL 2.0 Only"
 msgstr "GPL 2.0 výhradně"
 
-#: plugins/gtk+/gtk+.xml:3294
+#: plugins/gtk+/gtk+.xml:3337
 msgid "GPL 3.0 Only"
 msgstr "GPL 3.0 výhradně"
 
-#: plugins/gtk+/gtk+.xml:3296
+#: plugins/gtk+/gtk+.xml:3339
 msgid "LGPL 2.1 Only"
 msgstr "LGPL 2.1 výhradně"
 
-#: plugins/gtk+/gtk+.xml:3298
+#: plugins/gtk+/gtk+.xml:3341
 msgid "LGPL 3.0 Only"
 msgstr "LGPL 3.0 výhradně"
 
-#: plugins/gtk+/gtk+.xml:3311
+#: plugins/gtk+/gtk+.xml:3343
+msgid "AGPL 3.0"
+msgstr "AGPL 3.0"
+
+#: plugins/gtk+/gtk+.xml:3345
+msgid "AGPL 3.0 Only"
+msgstr "AGPL 3.0 výhradně"
+
+#: plugins/gtk+/gtk+.xml:3358
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -6501,79 +6581,79 @@ msgstr ""
 "adresu, pokud chcete zobrazit překlad konkrétního překladatele, a nebo byste "
 "měli uvést seznam všech překladatelů a tento řetězec neoznačovat k překladu"
 
-#: plugins/gtk+/gtk+.xml:3320
+#: plugins/gtk+/gtk+.xml:3367
 msgid "Color Selection Dialog"
 msgstr "Dialogové okno Výběr barvy"
 
-#: plugins/gtk+/gtk+.xml:3333
+#: plugins/gtk+/gtk+.xml:3380
 msgid "File Chooser Dialog"
 msgstr "Dialogové okno Výběr souboru"
 
-#: plugins/gtk+/gtk+.xml:3355
+#: plugins/gtk+/gtk+.xml:3402
 msgid "Font Selection Dialog"
 msgstr "Dialogové okno Výběr písma"
 
-#: plugins/gtk+/gtk+.xml:3369
+#: plugins/gtk+/gtk+.xml:3416
 msgid "Application Chooser Dialog"
 msgstr "Dialogové okno Výběr aplikace"
 
-#: plugins/gtk+/gtk+.xml:3377
+#: plugins/gtk+/gtk+.xml:3424
 msgid "Message Dialog"
 msgstr "Dialogové okno se zprávou"
 
-#: plugins/gtk+/gtk+.xml:3397
+#: plugins/gtk+/gtk+.xml:3444
 msgid "Ok"
 msgstr "Budiž"
 
-#: plugins/gtk+/gtk+.xml:3403
+#: plugins/gtk+/gtk+.xml:3450
 msgid "Yes, No"
 msgstr "Ano, Ne"
 
-#: plugins/gtk+/gtk+.xml:3405
+#: plugins/gtk+/gtk+.xml:3452
 msgid "Ok, Cancel"
 msgstr "Budiž, Zrušit"
 
-#: plugins/gtk+/gtk+.xml:3411
+#: plugins/gtk+/gtk+.xml:3458
 msgid "Color Selection"
 msgstr "Výběr barvy"
 
-#: plugins/gtk+/gtk+.xml:3420
+#: plugins/gtk+/gtk+.xml:3467
 msgid "Color Chooser Widget"
 msgstr "Widget pro výběr barvy"
 
-#: plugins/gtk+/gtk+.xml:3433
+#: plugins/gtk+/gtk+.xml:3480
 msgid "Color Chooser Dialog"
 msgstr "Dialogové okno pro výběr barvy"
 
-#: plugins/gtk+/gtk+.xml:3435
+#: plugins/gtk+/gtk+.xml:3482
 msgid "Font Chooser Widget"
 msgstr "Widget pro výběr písma"
 
-#: plugins/gtk+/gtk+.xml:3455
+#: plugins/gtk+/gtk+.xml:3502
 msgid "Font Chooser Dialog"
 msgstr "Dialogové okno pro výběr písma"
 
-#: plugins/gtk+/gtk+.xml:3464
+#: plugins/gtk+/gtk+.xml:3511
 msgid "Font Selection"
 msgstr "Výběr písma"
 
-#: plugins/gtk+/gtk+.xml:3466
+#: plugins/gtk+/gtk+.xml:3513
 msgid "Assistant"
 msgstr "Dialogové okno Průvodce"
 
-#: plugins/gtk+/gtk+.xml:3481
+#: plugins/gtk+/gtk+.xml:3528
 msgid "Number of Pages"
 msgstr "Počet stránek"
 
-#: plugins/gtk+/gtk+.xml:3486
+#: plugins/gtk+/gtk+.xml:3533
 msgid "Number of pages in this assistant"
 msgstr "Počet stránek v tomto průvodci"
 
-#: plugins/gtk+/gtk+.xml:3493
+#: plugins/gtk+/gtk+.xml:3540
 msgid "Initially Complete"
 msgstr "Od počátku dokončeno"
 
-#: plugins/gtk+/gtk+.xml:3494
+#: plugins/gtk+/gtk+.xml:3541
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
@@ -6581,788 +6661,788 @@ msgstr ""
 "Zda tato stránka bude na počátku označena jako dokončená bez ohledu na "
 "uživatelský vstup."
 
-#: plugins/gtk+/gtk+.xml:3499
+#: plugins/gtk+/gtk+.xml:3546
 msgid "Content"
 msgstr "Obsah"
 
-#: plugins/gtk+/gtk+.xml:3501
+#: plugins/gtk+/gtk+.xml:3548
 msgid "Intro"
 msgstr "Úvod"
 
-#: plugins/gtk+/gtk+.xml:3503
+#: plugins/gtk+/gtk+.xml:3550
 msgid "Confirm"
 msgstr "Potvrzení"
 
-#: plugins/gtk+/gtk+.xml:3505
+#: plugins/gtk+/gtk+.xml:3552
 msgid "Summary"
 msgstr "Souhrn"
 
-#: plugins/gtk+/gtk+.xml:3516
+#: plugins/gtk+/gtk+.xml:3563
 msgid "The page position in the Assistant"
 msgstr "Pořadí stránky v průvodci"
 
-#: plugins/gtk+/gtk+.xml:3521
+#: plugins/gtk+/gtk+.xml:3568
 msgid "Popover"
 msgstr "Rozbalovací dialog"
 
-#: plugins/gtk+/gtk+.xml:3543
+#: plugins/gtk+/gtk+.xml:3590
 msgid "Popover Menu"
 msgstr "Rozbalovací nabídka"
 
-#: plugins/gtk+/gtk+.xml:3559
+#: plugins/gtk+/gtk+.xml:3606
 msgid "Number of submenus"
 msgstr "Počet podnabídek"
 
-#: plugins/gtk+/gtk+.xml:3564
+#: plugins/gtk+/gtk+.xml:3611
 msgid "The number of submenus in the popover menu"
 msgstr "Počet položek v rozbalovací nabídce"
 
-#: plugins/gtk+/gtk+.xml:3566
+#: plugins/gtk+/gtk+.xml:3613
 msgid "Edit menu"
 msgstr "Úpravit nabídku"
 
-#: plugins/gtk+/gtk+.xml:3571
+#: plugins/gtk+/gtk+.xml:3618
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
 "Nastavit aktuálně aktivní podnabídku, že se upravuje; tato vlastnost se "
 "neukládá"
 
-#: plugins/gtk+/gtk+.xml:3576
+#: plugins/gtk+/gtk+.xml:3623
 msgid "Model Button"
 msgstr "Tlačítko s modelem"
 
-#: plugins/gtk+/gtk+.xml:3610
+#: plugins/gtk+/gtk+.xml:3657
 msgid "Link Button"
 msgstr "Tlačítko s odkazem"
 
-#: plugins/gtk+/gtk+.xml:3619
+#: plugins/gtk+/gtk+.xml:3666
 msgid "Recent Chooser"
 msgstr "Výběr nedávných"
 
-#: plugins/gtk+/gtk+.xml:3651
+#: plugins/gtk+/gtk+.xml:3698
 msgid "Most Recently Used first"
 msgstr "Nejnovější jako první"
 
-#: plugins/gtk+/gtk+.xml:3653
+#: plugins/gtk+/gtk+.xml:3700
 msgid "Least Recently Used first"
 msgstr "Nejstarší jako první"
 
-#: plugins/gtk+/gtk+.xml:3661
+#: plugins/gtk+/gtk+.xml:3708
 msgid "Recent Chooser Dialog"
 msgstr "Dialogové okno Výběr nedávných"
 
-#: plugins/gtk+/gtk+.xml:3677
+#: plugins/gtk+/gtk+.xml:3724
 msgid "Size Group"
 msgstr "Seskupená velikost"
 
-#: plugins/gtk+/gtk+.xml:3682
+#: plugins/gtk+/gtk+.xml:3729
 msgid "Widgets"
 msgstr "Widgety"
 
-#: plugins/gtk+/gtk+.xml:3687
+#: plugins/gtk+/gtk+.xml:3734
 msgid "List of widgets in this group"
 msgstr "Seznam widgetů v této skupině"
 
-#: plugins/gtk+/gtk+.xml:3698
+#: plugins/gtk+/gtk+.xml:3745
 msgid "Both"
 msgstr "Obojí"
 
-#: plugins/gtk+/gtk+.xml:3705
+#: plugins/gtk+/gtk+.xml:3752
 msgid "Window Group"
 msgstr "Skupina oken"
 
-#: plugins/gtk+/gtk+.xml:3709
+#: plugins/gtk+/gtk+.xml:3756
 msgid "Adjustment"
 msgstr "Přizpůsobení"
 
-#: plugins/gtk+/gtk+.xml:3766
+#: plugins/gtk+/gtk+.xml:3813
 msgid "An accelerator key for this action"
 msgstr "Klávesová zkratka pro tuto akci"
 
-#: plugins/gtk+/gtk+.xml:3771
+#: plugins/gtk+/gtk+.xml:3818
 msgid "Toggle Action"
 msgstr "Akce přepínače"
 
-#: plugins/gtk+/gtk+.xml:3777
+#: plugins/gtk+/gtk+.xml:3824
 msgid "Radio Action"
 msgstr "Akce skupinového přepínače"
 
-#: plugins/gtk+/gtk+.xml:3785
+#: plugins/gtk+/gtk+.xml:3832
 msgid "Recent Action"
 msgstr "Nedávná akce"
 
-#: plugins/gtk+/gtk+.xml:3803
+#: plugins/gtk+/gtk+.xml:3850
 msgid "Action Group"
 msgstr "Skupina akcí"
 
-#: plugins/gtk+/gtk+.xml:3817
+#: plugins/gtk+/gtk+.xml:3864
 msgid "Entry Completion"
 msgstr "Dokončování zadání"
 
-#: plugins/gtk+/gtk+.xml:3837
+#: plugins/gtk+/gtk+.xml:3884
 msgid "Icon Factory"
 msgstr "Generátor ikon"
 
-#: plugins/gtk+/gtk+.xml:3847
+#: plugins/gtk+/gtk+.xml:3894
 msgid "Icon Sources"
 msgstr "Zdroje ikon"
 
-#: plugins/gtk+/gtk+.xml:3852
+#: plugins/gtk+/gtk+.xml:3899
 msgid "A list of sources for this icon factory"
 msgstr "Seznam zdrojů pro tento generátor ikon"
 
-#: plugins/gtk+/gtk+.xml:3858
+#: plugins/gtk+/gtk+.xml:3905
 msgid "List Store"
 msgstr "Úložiště seznamu"
 
-#: plugins/gtk+/gtk+.xml:3872 plugins/gtk+/gtk+.xml:3898
+#: plugins/gtk+/gtk+.xml:3919 plugins/gtk+/gtk+.xml:3945
 msgid "Enter a list of column types for this data store"
 msgstr "Zadejte seznam typů sloupců pro toto datové úložiště"
 
-#: plugins/gtk+/gtk+.xml:3874 plugins/gtk+/gtk+.xml:3900
+#: plugins/gtk+/gtk+.xml:3921 plugins/gtk+/gtk+.xml:3947
 msgid "Data"
 msgstr "Data"
 
-#: plugins/gtk+/gtk+.xml:3879 plugins/gtk+/gtk+.xml:3905
+#: plugins/gtk+/gtk+.xml:3926 plugins/gtk+/gtk+.xml:3952
 msgid "Enter a list of values to be applied on each row"
 msgstr "Zadejte seznam hodnot, které se mají použít na každý řádek"
 
-#: plugins/gtk+/gtk+.xml:3885
+#: plugins/gtk+/gtk+.xml:3932
 msgid "Tree Store"
 msgstr "Úložiště stromu"
 
-#: plugins/gtk+/gtk+.xml:3911
+#: plugins/gtk+/gtk+.xml:3958
 msgid "Tree Model Filter"
 msgstr "Filtr pro stromový model"
 
-#: plugins/gtk+/gtk+.xml:3913
+#: plugins/gtk+/gtk+.xml:3960
 msgid "Tree Model Sort"
 msgstr "Řazení pro stromový model"
 
-#: plugins/gtk+/gtk+.xml:3914
+#: plugins/gtk+/gtk+.xml:3961
 msgid "Tree Selection"
 msgstr "Výběr ve stromu"
 
-#: plugins/gtk+/gtk+.xml:3920
+#: plugins/gtk+/gtk+.xml:3967
 msgid "Tree View"
 msgstr "Stromové zobrazení"
 
-#: plugins/gtk+/gtk+.xml:3960
+#: plugins/gtk+/gtk+.xml:4007
 msgid "Horizontal and Vertical"
 msgstr "Vodorovně a svisle"
 
-#: plugins/gtk+/gtk+.xml:4015
+#: plugins/gtk+/gtk+.xml:4062
 msgid "Ascending"
 msgstr "Vzestupně"
 
-#: plugins/gtk+/gtk+.xml:4017
+#: plugins/gtk+/gtk+.xml:4064
 msgid "Descending"
 msgstr "Sestupně"
 
-#: plugins/gtk+/gtk+.xml:4024
+#: plugins/gtk+/gtk+.xml:4071
 msgid "Grow Only"
 msgstr "Pouze zvětšovat"
 
-#: plugins/gtk+/gtk+.xml:4042
+#: plugins/gtk+/gtk+.xml:4089
 msgid "Icon View"
 msgstr "Zobrazení ikon"
 
-#: plugins/gtk+/gtk+.xml:4126
+#: plugins/gtk+/gtk+.xml:4173
 msgid "Cell Background Color name column"
 msgstr "Sloupec názvu barvy pozadí buňky"
 
-#: plugins/gtk+/gtk+.xml:4131 plugins/gtk+/gtk+.xml:4146
-#: plugins/gtk+/gtk+.xml:4161 plugins/gtk+/gtk+.xml:4175
-#: plugins/gtk+/gtk+.xml:4189 plugins/gtk+/gtk+.xml:4203
-#: plugins/gtk+/gtk+.xml:4217 plugins/gtk+/gtk+.xml:4231
-#: plugins/gtk+/gtk+.xml:4245 plugins/gtk+/gtk+.xml:4259
-#: plugins/gtk+/gtk+.xml:4273 plugins/gtk+/gtk+.xml:4317
-#: plugins/gtk+/gtk+.xml:4331 plugins/gtk+/gtk+.xml:4345
-#: plugins/gtk+/gtk+.xml:4360 plugins/gtk+/gtk+.xml:4374
-#: plugins/gtk+/gtk+.xml:4388 plugins/gtk+/gtk+.xml:4402
-#: plugins/gtk+/gtk+.xml:4416 plugins/gtk+/gtk+.xml:4431
-#: plugins/gtk+/gtk+.xml:4446 plugins/gtk+/gtk+.xml:4461
-#: plugins/gtk+/gtk+.xml:4475 plugins/gtk+/gtk+.xml:4489
-#: plugins/gtk+/gtk+.xml:4503 plugins/gtk+/gtk+.xml:4517
-#: plugins/gtk+/gtk+.xml:4532 plugins/gtk+/gtk+.xml:4546
-#: plugins/gtk+/gtk+.xml:4560 plugins/gtk+/gtk+.xml:4596
-#: plugins/gtk+/gtk+.xml:4610 plugins/gtk+/gtk+.xml:4633
-#: plugins/gtk+/gtk+.xml:4647 plugins/gtk+/gtk+.xml:4674
-#: plugins/gtk+/gtk+.xml:4695 plugins/gtk+/gtk+.xml:4709
-#: plugins/gtk+/gtk+.xml:4723 plugins/gtk+/gtk+.xml:4737
-#: plugins/gtk+/gtk+.xml:4751 plugins/gtk+/gtk+.xml:4766
-#: plugins/gtk+/gtk+.xml:4781 plugins/gtk+/gtk+.xml:4796
-#: plugins/gtk+/gtk+.xml:4811 plugins/gtk+/gtk+.xml:4830
-#: plugins/gtk+/gtk+.xml:4851 plugins/gtk+/gtk+.xml:4918
-#: plugins/gtk+/gtk+.xml:4932 plugins/gtk+/gtk+.xml:4955
-#: plugins/gtk+/gtk+.xml:4969 plugins/gtk+/gtk+.xml:4983
-#: plugins/gtk+/gtk+.xml:5002 plugins/gtk+/gtk+.xml:5016
-#: plugins/gtk+/gtk+.xml:5030 plugins/gtk+/gtk+.xml:5049
-#: plugins/gtk+/gtk+.xml:5063 plugins/gtk+/gtk+.xml:5077
-#: plugins/gtk+/gtk+.xml:5091 plugins/gtk+/gtk+.xml:5106
-#: plugins/gtk+/gtk+.xml:5121 plugins/gtk+/gtk+.xml:5135
-#: plugins/gtk+/gtk+.xml:5149 plugins/gtk+/gtk+.xml:5169
-#: plugins/gtk+/gtk+.xml:5187 plugins/gtk+/gtk+.xml:5201
-#: plugins/gtk+/gtk+.xml:5215 plugins/gtk+/gtk+.xml:5230
-#: plugins/gtk+/gtk+.xml:5245 plugins/gtk+/gtk+.xml:5259
-#: plugins/gtk+/gtk+.xml:5273 plugins/gtk+/gtk+.xml:5292
-#: plugins/gtk+/gtk+.xml:5306 plugins/gtk+/gtk+.xml:5320
-#: plugins/gtk+/gtk+.xml:5339 plugins/gtk+/gtk+.xml:5353
-#: plugins/gtk+/gtk+.xml:5367 plugins/gtk+/gtk+.xml:5381
-#: plugins/gtk+/gtk+.xml:5395
+#: plugins/gtk+/gtk+.xml:4178 plugins/gtk+/gtk+.xml:4193
+#: plugins/gtk+/gtk+.xml:4208 plugins/gtk+/gtk+.xml:4222
+#: plugins/gtk+/gtk+.xml:4236 plugins/gtk+/gtk+.xml:4250
+#: plugins/gtk+/gtk+.xml:4264 plugins/gtk+/gtk+.xml:4278
+#: plugins/gtk+/gtk+.xml:4292 plugins/gtk+/gtk+.xml:4306
+#: plugins/gtk+/gtk+.xml:4320 plugins/gtk+/gtk+.xml:4364
+#: plugins/gtk+/gtk+.xml:4378 plugins/gtk+/gtk+.xml:4392
+#: plugins/gtk+/gtk+.xml:4407 plugins/gtk+/gtk+.xml:4421
+#: plugins/gtk+/gtk+.xml:4435 plugins/gtk+/gtk+.xml:4449
+#: plugins/gtk+/gtk+.xml:4463 plugins/gtk+/gtk+.xml:4478
+#: plugins/gtk+/gtk+.xml:4493 plugins/gtk+/gtk+.xml:4508
+#: plugins/gtk+/gtk+.xml:4522 plugins/gtk+/gtk+.xml:4536
+#: plugins/gtk+/gtk+.xml:4550 plugins/gtk+/gtk+.xml:4564
+#: plugins/gtk+/gtk+.xml:4579 plugins/gtk+/gtk+.xml:4593
+#: plugins/gtk+/gtk+.xml:4607 plugins/gtk+/gtk+.xml:4643
+#: plugins/gtk+/gtk+.xml:4657 plugins/gtk+/gtk+.xml:4680
+#: plugins/gtk+/gtk+.xml:4694 plugins/gtk+/gtk+.xml:4721
+#: plugins/gtk+/gtk+.xml:4742 plugins/gtk+/gtk+.xml:4756
+#: plugins/gtk+/gtk+.xml:4770 plugins/gtk+/gtk+.xml:4784
+#: plugins/gtk+/gtk+.xml:4798 plugins/gtk+/gtk+.xml:4813
+#: plugins/gtk+/gtk+.xml:4828 plugins/gtk+/gtk+.xml:4843
+#: plugins/gtk+/gtk+.xml:4858 plugins/gtk+/gtk+.xml:4877
+#: plugins/gtk+/gtk+.xml:4898 plugins/gtk+/gtk+.xml:4965
+#: plugins/gtk+/gtk+.xml:4979 plugins/gtk+/gtk+.xml:5002
+#: plugins/gtk+/gtk+.xml:5016 plugins/gtk+/gtk+.xml:5030
+#: plugins/gtk+/gtk+.xml:5049 plugins/gtk+/gtk+.xml:5063
+#: plugins/gtk+/gtk+.xml:5077 plugins/gtk+/gtk+.xml:5096
+#: plugins/gtk+/gtk+.xml:5110 plugins/gtk+/gtk+.xml:5124
+#: plugins/gtk+/gtk+.xml:5138 plugins/gtk+/gtk+.xml:5153
+#: plugins/gtk+/gtk+.xml:5168 plugins/gtk+/gtk+.xml:5182
+#: plugins/gtk+/gtk+.xml:5196 plugins/gtk+/gtk+.xml:5216
+#: plugins/gtk+/gtk+.xml:5234 plugins/gtk+/gtk+.xml:5248
+#: plugins/gtk+/gtk+.xml:5262 plugins/gtk+/gtk+.xml:5277
+#: plugins/gtk+/gtk+.xml:5292 plugins/gtk+/gtk+.xml:5306
+#: plugins/gtk+/gtk+.xml:5320 plugins/gtk+/gtk+.xml:5339
+#: plugins/gtk+/gtk+.xml:5353 plugins/gtk+/gtk+.xml:5367
+#: plugins/gtk+/gtk+.xml:5386 plugins/gtk+/gtk+.xml:5400
+#: plugins/gtk+/gtk+.xml:5414 plugins/gtk+/gtk+.xml:5428
+#: plugins/gtk+/gtk+.xml:5442
 msgid "The column in the model to load the value from"
 msgstr "Sloupec v modelu, ze kterého se má načíst hodnota"
 
-#: plugins/gtk+/gtk+.xml:4141
+#: plugins/gtk+/gtk+.xml:4188
 msgid "Cell Background Color column"
 msgstr "Sloupec barvy pozadí buňky"
 
-#: plugins/gtk+/gtk+.xml:4156
+#: plugins/gtk+/gtk+.xml:4203
 msgid "Cell Background RGBA column"
 msgstr "Sloupec RGBA pozadí buňky"
 
-#: plugins/gtk+/gtk+.xml:4170
+#: plugins/gtk+/gtk+.xml:4217
 msgid "Width column"
 msgstr "Sloupec šířky"
 
-#: plugins/gtk+/gtk+.xml:4184
+#: plugins/gtk+/gtk+.xml:4231
 msgid "Height column"
 msgstr "Sloupec výšky"
 
-#: plugins/gtk+/gtk+.xml:4197
+#: plugins/gtk+/gtk+.xml:4244
 msgid "Horizontal Padding"
 msgstr "Vodorovné odsazení"
 
-#: plugins/gtk+/gtk+.xml:4198
+#: plugins/gtk+/gtk+.xml:4245
 msgid "Horizontal Padding column"
 msgstr "Sloupec vodorovného odsazení"
 
-#: plugins/gtk+/gtk+.xml:4211
+#: plugins/gtk+/gtk+.xml:4258
 msgid "Vertical Padding"
 msgstr "Svislé odsazení"
 
-#: plugins/gtk+/gtk+.xml:4212
+#: plugins/gtk+/gtk+.xml:4259
 msgid "Vertical Padding column"
 msgstr "Sloupec svislého odsazení"
 
-#: plugins/gtk+/gtk+.xml:4225
+#: plugins/gtk+/gtk+.xml:4272
 msgid "Horizontal Alignment"
 msgstr "Vodorovné zarovnání"
 
-#: plugins/gtk+/gtk+.xml:4226
+#: plugins/gtk+/gtk+.xml:4273
 msgid "Horizontal Alignment column"
 msgstr "Sloupec vodorovného zarovnání"
 
-#: plugins/gtk+/gtk+.xml:4239
+#: plugins/gtk+/gtk+.xml:4286
 msgid "Vertical Alignment"
 msgstr "Svislé zarovnání"
 
-#: plugins/gtk+/gtk+.xml:4240
+#: plugins/gtk+/gtk+.xml:4287
 msgid "Vertical Alignment column"
 msgstr "Sloupec svislého zarovnání"
 
-#: plugins/gtk+/gtk+.xml:4254
+#: plugins/gtk+/gtk+.xml:4301
 msgid "Sensitive column"
 msgstr "Sloupec citlivosti"
 
-#: plugins/gtk+/gtk+.xml:4268
+#: plugins/gtk+/gtk+.xml:4315
 msgid "Visible column"
 msgstr "Sloupec viditelnosti"
 
-#: plugins/gtk+/gtk+.xml:4283
+#: plugins/gtk+/gtk+.xml:4330
 msgid "Text Renderer"
 msgstr "Vykreslování textu"
 
-#: plugins/gtk+/gtk+.xml:4312
+#: plugins/gtk+/gtk+.xml:4359
 msgid "Alignment column"
 msgstr "Sloupec zarovnání"
 
-#: plugins/gtk+/gtk+.xml:4326
+#: plugins/gtk+/gtk+.xml:4373
 msgid "Attributes column"
 msgstr "Sloupec atributů"
 
-#: plugins/gtk+/gtk+.xml:4340
+#: plugins/gtk+/gtk+.xml:4387
 msgid "Background Color Name column"
 msgstr "Sloupec názvu barvy pozadí"
 
-#: plugins/gtk+/gtk+.xml:4355
+#: plugins/gtk+/gtk+.xml:4402
 msgid "Background Color column"
 msgstr "Sloupec barvy pozadí"
 
-#: plugins/gtk+/gtk+.xml:4369
+#: plugins/gtk+/gtk+.xml:4416
 msgid "Editable column"
 msgstr "Sloupec upravitelnosti"
 
-#: plugins/gtk+/gtk+.xml:4383
+#: plugins/gtk+/gtk+.xml:4430
 msgid "Ellipsize column"
 msgstr "Sloupec vypuštění textu"
 
-#: plugins/gtk+/gtk+.xml:4397
+#: plugins/gtk+/gtk+.xml:4444
 msgid "Family column"
 msgstr "Sloupec rodiny písma"
 
-#: plugins/gtk+/gtk+.xml:4411
+#: plugins/gtk+/gtk+.xml:4458
 msgid "Font column"
 msgstr "Sloupec písma"
 
-#: plugins/gtk+/gtk+.xml:4426
+#: plugins/gtk+/gtk+.xml:4473
 msgid "Font Description column"
 msgstr "Sloupec popisu písma"
 
-#: plugins/gtk+/gtk+.xml:4441
+#: plugins/gtk+/gtk+.xml:4488
 msgid "Foreground Color Name column"
 msgstr "Sloupec názvu barvy popředí"
 
-#: plugins/gtk+/gtk+.xml:4456
+#: plugins/gtk+/gtk+.xml:4503
 msgid "Foreground Color column"
 msgstr "Sloupec barvy popředí"
 
-#: plugins/gtk+/gtk+.xml:4470
+#: plugins/gtk+/gtk+.xml:4517
 msgid "Language column"
 msgstr "Sloupec jazyka"
 
-#: plugins/gtk+/gtk+.xml:4484
+#: plugins/gtk+/gtk+.xml:4531
 msgid "Markup column"
 msgstr "Sloupec značky"
 
-#: plugins/gtk+/gtk+.xml:4498
+#: plugins/gtk+/gtk+.xml:4545
 msgid "Rise column"
 msgstr "Sloupec zdvihu"
 
-#: plugins/gtk+/gtk+.xml:4512
+#: plugins/gtk+/gtk+.xml:4559
 msgid "Scale column"
 msgstr "Sloupec stupnice"
 
-#: plugins/gtk+/gtk+.xml:4527
+#: plugins/gtk+/gtk+.xml:4574
 msgid "Single Paragraph Mode column"
 msgstr "Sloupec režimu jednoho odstavce"
 
-#: plugins/gtk+/gtk+.xml:4541
+#: plugins/gtk+/gtk+.xml:4588
 msgid "Size column"
 msgstr "Sloupec velikosti"
 
-#: plugins/gtk+/gtk+.xml:4555 plugins/gtk+/gtk+.xml:4825
+#: plugins/gtk+/gtk+.xml:4602 plugins/gtk+/gtk+.xml:4872
 msgid "Data column"
 msgstr "Sloupec dat"
 
-#: plugins/gtk+/gtk+.xml:4571
+#: plugins/gtk+/gtk+.xml:4618
 msgid "Ultra Condensed"
 msgstr "Ultra zúžené"
 
-#: plugins/gtk+/gtk+.xml:4573
+#: plugins/gtk+/gtk+.xml:4620
 msgid "Extra Condensed"
 msgstr "Extra zúžené"
 
-#: plugins/gtk+/gtk+.xml:4575
+#: plugins/gtk+/gtk+.xml:4622
 msgid "Condensed"
 msgstr "Zúžené"
 
-#: plugins/gtk+/gtk+.xml:4577
+#: plugins/gtk+/gtk+.xml:4624
 msgid "Semi Condensed"
 msgstr "Polo zúžené"
 
-#: plugins/gtk+/gtk+.xml:4581
+#: plugins/gtk+/gtk+.xml:4628
 msgid "Semi Expanded"
 msgstr "Polo rozšířené"
 
-#: plugins/gtk+/gtk+.xml:4583
+#: plugins/gtk+/gtk+.xml:4630
 msgid "Expanded"
 msgstr "Roztažené"
 
-#: plugins/gtk+/gtk+.xml:4585
+#: plugins/gtk+/gtk+.xml:4632
 msgid "Extra Expanded"
 msgstr "Extra roztažené"
 
-#: plugins/gtk+/gtk+.xml:4587
+#: plugins/gtk+/gtk+.xml:4634
 msgid "Ultra Expanded"
 msgstr "Ultra rozšířené"
 
-#: plugins/gtk+/gtk+.xml:4591
+#: plugins/gtk+/gtk+.xml:4638
 msgid "Stretch column"
 msgstr "Sloupec šířky písma"
 
-#: plugins/gtk+/gtk+.xml:4605
+#: plugins/gtk+/gtk+.xml:4652
 msgid "Strikethrough column"
 msgstr "Sloupec přeškrtnutí"
 
-#: plugins/gtk+/gtk+.xml:4623
+#: plugins/gtk+/gtk+.xml:4670
 msgid "Oblique"
 msgstr "Skloněné"
 
-#: plugins/gtk+/gtk+.xml:4625
+#: plugins/gtk+/gtk+.xml:4672
 msgid "Italic"
 msgstr "Kurzíva"
 
-#: plugins/gtk+/gtk+.xml:4628
+#: plugins/gtk+/gtk+.xml:4675
 msgid "Style column"
 msgstr "Sloupec stylu písma"
 
-#: plugins/gtk+/gtk+.xml:4642 plugins/gtk+/gtk+.xml:5210
+#: plugins/gtk+/gtk+.xml:4689 plugins/gtk+/gtk+.xml:5257
 msgid "Text column"
 msgstr "Sloupec textu"
 
-#: plugins/gtk+/gtk+.xml:4662
+#: plugins/gtk+/gtk+.xml:4709
 msgid "Double"
 msgstr "Dvojité"
 
-#: plugins/gtk+/gtk+.xml:4664
+#: plugins/gtk+/gtk+.xml:4711
 msgid "Low"
 msgstr "Dolní"
 
-#: plugins/gtk+/gtk+.xml:4669
+#: plugins/gtk+/gtk+.xml:4716
 msgid "Underline column"
 msgstr "Sloupec podtržení"
 
-#: plugins/gtk+/gtk+.xml:4687
+#: plugins/gtk+/gtk+.xml:4734
 msgid "Small Capitals"
 msgstr "Kapitálky"
 
-#: plugins/gtk+/gtk+.xml:4690
+#: plugins/gtk+/gtk+.xml:4737
 msgid "Variant column"
 msgstr "Sloupec varianty písma"
 
-#: plugins/gtk+/gtk+.xml:4704
+#: plugins/gtk+/gtk+.xml:4751
 msgid "Weight column"
 msgstr "Sloupec tloušťky písma"
 
-#: plugins/gtk+/gtk+.xml:4718
+#: plugins/gtk+/gtk+.xml:4765
 msgid "Width in Characters column"
 msgstr "Sloupec šířky ve znacích"
 
-#: plugins/gtk+/gtk+.xml:4732
+#: plugins/gtk+/gtk+.xml:4779
 msgid "Wrap Mode column"
 msgstr "Sloupec režimu zalamování"
 
-#: plugins/gtk+/gtk+.xml:4746
+#: plugins/gtk+/gtk+.xml:4793
 msgid "Wrap Width column"
 msgstr "Sloupec šířky zalamování"
 
-#: plugins/gtk+/gtk+.xml:4761
+#: plugins/gtk+/gtk+.xml:4808
 msgid "Background RGBA column"
 msgstr "Sloupec RGBA pozadí"
 
-#: plugins/gtk+/gtk+.xml:4776
+#: plugins/gtk+/gtk+.xml:4823
 msgid "Foreground RGBA column"
 msgstr "Sloupec RGBA popředí"
 
-#: plugins/gtk+/gtk+.xml:4791
+#: plugins/gtk+/gtk+.xml:4838
 msgid "Maximum width in characters"
 msgstr "Maximální šířka ve znacích"
 
-#: plugins/gtk+/gtk+.xml:4806
+#: plugins/gtk+/gtk+.xml:4853
 msgid "Placeholder text"
 msgstr "Zástupný text"
 
-#: plugins/gtk+/gtk+.xml:4822
+#: plugins/gtk+/gtk+.xml:4869
 msgid "Accelerator Renderer"
 msgstr "Vykreslování zkratky"
 
-#: plugins/gtk+/gtk+.xml:4841
+#: plugins/gtk+/gtk+.xml:4888
 msgid "Gtk"
 msgstr "Gtk"
 
-#: plugins/gtk+/gtk+.xml:4846
+#: plugins/gtk+/gtk+.xml:4893
 msgid "Accelerator Mode column"
 msgstr "Sloupec režimu zkratky"
 
-#: plugins/gtk+/gtk+.xml:4862
+#: plugins/gtk+/gtk+.xml:4909
 msgid "Shift Key"
 msgstr "Klávesa Shift"
 
-#: plugins/gtk+/gtk+.xml:4864
+#: plugins/gtk+/gtk+.xml:4911
 msgid "Lock Key"
 msgstr "Klávesa Lock"
 
-#: plugins/gtk+/gtk+.xml:4866
+#: plugins/gtk+/gtk+.xml:4913
 msgid "Control Key"
 msgstr "Klávesa Control"
 
-#: plugins/gtk+/gtk+.xml:4868
+#: plugins/gtk+/gtk+.xml:4915
 msgid "Alt Key"
 msgstr "Klávesa Alt"
 
-#: plugins/gtk+/gtk+.xml:4870
+#: plugins/gtk+/gtk+.xml:4917
 msgid "Fifth Key"
 msgstr "Pátá klávesa"
 
-#: plugins/gtk+/gtk+.xml:4872
+#: plugins/gtk+/gtk+.xml:4919
 msgid "Sixth Key"
 msgstr "Šestá klávesa"
 
-#: plugins/gtk+/gtk+.xml:4874
+#: plugins/gtk+/gtk+.xml:4921
 msgid "Seventh Key"
 msgstr "Sedmá klávesa"
 
-#: plugins/gtk+/gtk+.xml:4876
+#: plugins/gtk+/gtk+.xml:4923
 msgid "Eighth Key"
 msgstr "Osmá klávesa"
 
-#: plugins/gtk+/gtk+.xml:4878
+#: plugins/gtk+/gtk+.xml:4925
 msgid "First Mouse Button"
 msgstr "První tlačítko myši"
 
-#: plugins/gtk+/gtk+.xml:4880
+#: plugins/gtk+/gtk+.xml:4927
 msgid "Second Mouse Button"
 msgstr "Druhé tlačítko myši"
 
-#: plugins/gtk+/gtk+.xml:4882
+#: plugins/gtk+/gtk+.xml:4929
 msgid "Third Mouse Button"
 msgstr "Třetí tlačítko myši"
 
-#: plugins/gtk+/gtk+.xml:4884
+#: plugins/gtk+/gtk+.xml:4931
 msgid "Fourth Mouse Button"
 msgstr "Čtvrté tlačítko myši"
 
-#: plugins/gtk+/gtk+.xml:4886
+#: plugins/gtk+/gtk+.xml:4933
 msgid "Fifth Mouse Button"
 msgstr "Páté tlačítko myši"
 
-#: plugins/gtk+/gtk+.xml:4888
+#: plugins/gtk+/gtk+.xml:4935
 msgid "Super Modifier"
 msgstr "Přeřazovač Super"
 
-#: plugins/gtk+/gtk+.xml:4890
+#: plugins/gtk+/gtk+.xml:4937
 msgid "Hyper Modifier"
 msgstr "Přeřazovač Hyper"
 
-#: plugins/gtk+/gtk+.xml:4892
+#: plugins/gtk+/gtk+.xml:4939
 msgid "Meta Modifier"
 msgstr "Přeřazovač Meta"
 
-#: plugins/gtk+/gtk+.xml:4894
+#: plugins/gtk+/gtk+.xml:4941
 msgid "Release Modifier"
 msgstr "Přeřazovač uvolněním"
 
-#: plugins/gtk+/gtk+.xml:4896
+#: plugins/gtk+/gtk+.xml:4943
 msgid "All Modifiers"
 msgstr "Všechny přeřazovače"
 
-#: plugins/gtk+/gtk+.xml:4913
+#: plugins/gtk+/gtk+.xml:4960
 msgid "Accelerator Modifiers column"
 msgstr "Sloupec přeřazovačů zkratek"
 
-#: plugins/gtk+/gtk+.xml:4927
+#: plugins/gtk+/gtk+.xml:4974
 msgid "Keycode column"
 msgstr "Sloupec kódu klávesy"
 
-#: plugins/gtk+/gtk+.xml:4942
+#: plugins/gtk+/gtk+.xml:4989
 msgid "Combo Renderer"
 msgstr "Vykreslování kombinovaného seznamu"
 
-#: plugins/gtk+/gtk+.xml:4950
+#: plugins/gtk+/gtk+.xml:4997
 msgid "Has Entry column"
 msgstr "Sloupec existence záznamu"
 
-#: plugins/gtk+/gtk+.xml:4964
+#: plugins/gtk+/gtk+.xml:5011
 msgid "Model column"
 msgstr "Sloupec modelu"
 
-#: plugins/gtk+/gtk+.xml:4978
+#: plugins/gtk+/gtk+.xml:5025
 msgid "Text Column column"
 msgstr "Sloupec textového sloupce"
 
-#: plugins/gtk+/gtk+.xml:4994
+#: plugins/gtk+/gtk+.xml:5041
 msgid "Spin Renderer"
 msgstr "Vykreslování číselníku"
 
-#: plugins/gtk+/gtk+.xml:4997
+#: plugins/gtk+/gtk+.xml:5044
 msgid "Adjustment column"
 msgstr "Sloupec přizpůsobení"
 
-#: plugins/gtk+/gtk+.xml:5011
+#: plugins/gtk+/gtk+.xml:5058
 msgid "Climb Rate column"
 msgstr "Sloupec rychlosti změny číselníku"
 
-#: plugins/gtk+/gtk+.xml:5025
+#: plugins/gtk+/gtk+.xml:5072
 msgid "Digits column"
 msgstr "Sloupec číslic"
 
-#: plugins/gtk+/gtk+.xml:5040
+#: plugins/gtk+/gtk+.xml:5087
 msgid "Pixbuf Renderer"
 msgstr "Vykreslování pixbuf"
 
-#: plugins/gtk+/gtk+.xml:5044
+#: plugins/gtk+/gtk+.xml:5091
 msgid "Follow State column"
 msgstr "Sloupec následujícího stavu"
 
-#: plugins/gtk+/gtk+.xml:5058
+#: plugins/gtk+/gtk+.xml:5105
 msgid "Icon Name column"
 msgstr "Sloupec názvu ikony"
 
-#: plugins/gtk+/gtk+.xml:5072
+#: plugins/gtk+/gtk+.xml:5119
 msgid "Pixbuf column"
 msgstr "Sloupec pixbuf"
 
-#: plugins/gtk+/gtk+.xml:5086
+#: plugins/gtk+/gtk+.xml:5133
 msgid "GIcon column"
 msgstr "Sloupec ikony GIcon"
 
-#: plugins/gtk+/gtk+.xml:5101
+#: plugins/gtk+/gtk+.xml:5148
 msgid "Pixbuf Expander Closed column"
 msgstr "Sloupec uzavření rozšíření pixbuf"
 
-#: plugins/gtk+/gtk+.xml:5116
+#: plugins/gtk+/gtk+.xml:5163
 msgid "Pixbuf Expander Open column"
 msgstr "Sloupec otevření rozšíření pixbuf"
 
-#: plugins/gtk+/gtk+.xml:5130
+#: plugins/gtk+/gtk+.xml:5177
 msgid "Stock Detail column"
 msgstr "Sloupec podrobností o standardních"
 
-#: plugins/gtk+/gtk+.xml:5144
+#: plugins/gtk+/gtk+.xml:5191
 msgid "Stock column"
 msgstr "Sloupec standardní"
 
-#: plugins/gtk+/gtk+.xml:5164
+#: plugins/gtk+/gtk+.xml:5211
 msgid "Stock Size column"
 msgstr "Sloupec velikosti standardních"
 
-#: plugins/gtk+/gtk+.xml:5179
+#: plugins/gtk+/gtk+.xml:5226
 msgid "Progress Renderer"
 msgstr "Vykreslování průběhu"
 
-#: plugins/gtk+/gtk+.xml:5182
+#: plugins/gtk+/gtk+.xml:5229
 msgid "Orientation column"
 msgstr "Sloupec otočení"
 
-#: plugins/gtk+/gtk+.xml:5196 plugins/gtk+/gtk+.xml:5301
+#: plugins/gtk+/gtk+.xml:5243 plugins/gtk+/gtk+.xml:5348
 msgid "Pulse column"
 msgstr "Sloupec pulsu průběhu"
 
-#: plugins/gtk+/gtk+.xml:5225
+#: plugins/gtk+/gtk+.xml:5272
 msgid "Text Horizontal Alignment column"
 msgstr "Sloupec vodorovného zarovnání textu"
 
-#: plugins/gtk+/gtk+.xml:5240
+#: plugins/gtk+/gtk+.xml:5287
 msgid "Text Vertical Alignment column"
 msgstr "Sloupec svislého zarovnání textu"
 
-#: plugins/gtk+/gtk+.xml:5254
+#: plugins/gtk+/gtk+.xml:5301
 msgid "Value column"
 msgstr "Sloupec hodnoty"
 
-#: plugins/gtk+/gtk+.xml:5268
+#: plugins/gtk+/gtk+.xml:5315
 msgid "Inverted column"
 msgstr "Sloupec inverze"
 
-#: plugins/gtk+/gtk+.xml:5284
+#: plugins/gtk+/gtk+.xml:5331
 msgid "Spinner Renderer"
 msgstr "Vykreslování káči"
 
-#: plugins/gtk+/gtk+.xml:5287 plugins/gtk+/gtk+.xml:5348
+#: plugins/gtk+/gtk+.xml:5334 plugins/gtk+/gtk+.xml:5395
 msgid "Active column"
 msgstr "Sloupec aktivace"
 
-#: plugins/gtk+/gtk+.xml:5331
+#: plugins/gtk+/gtk+.xml:5378
 msgid "Toggle Renderer"
 msgstr "Vykreslování přepínače"
 
-#: plugins/gtk+/gtk+.xml:5334
+#: plugins/gtk+/gtk+.xml:5381
 msgid "Activatable column"
 msgstr "Sloupec aktivovatelnosti"
 
-#: plugins/gtk+/gtk+.xml:5362
+#: plugins/gtk+/gtk+.xml:5409
 msgid "Inconsistent column"
 msgstr "Sloupec nekonzistence"
 
-#: plugins/gtk+/gtk+.xml:5376
+#: plugins/gtk+/gtk+.xml:5423
 msgid "Indicator Size column"
 msgstr "Sloupec velikosti indikátoru"
 
-#: plugins/gtk+/gtk+.xml:5390
+#: plugins/gtk+/gtk+.xml:5437
 msgid "Radio column"
 msgstr "Sloupec skupinového přepínače"
 
-#: plugins/gtk+/gtk+.xml:5405
+#: plugins/gtk+/gtk+.xml:5452
 msgid "Status Icon"
 msgstr "Stavová ikona"
 
-#: plugins/gtk+/gtk+.xml:5416
+#: plugins/gtk+/gtk+.xml:5463
 msgid "Text Buffer"
 msgstr "Textová vyrovnávací paměť"
 
-#: plugins/gtk+/gtk+.xml:5429
+#: plugins/gtk+/gtk+.xml:5476
 msgid "Entry Buffer"
 msgstr "Vyrovnávací paměť vstupu"
 
-#: plugins/gtk+/gtk+.xml:5437
+#: plugins/gtk+/gtk+.xml:5484
 msgid "Text Tag"
 msgstr "Textová značka"
 
-#: plugins/gtk+/gtk+.xml:5490
+#: plugins/gtk+/gtk+.xml:5537
 msgid "Text Tag Table"
 msgstr "Tabulka textových značek"
 
-#: plugins/gtk+/gtk+.xml:5504
+#: plugins/gtk+/gtk+.xml:5551
 msgid "File Filter"
 msgstr "Filtr souborů"
 
-#: plugins/gtk+/gtk+.xml:5510 plugins/gtk+/gtk+.xml:5534
+#: plugins/gtk+/gtk+.xml:5557 plugins/gtk+/gtk+.xml:5581
 msgid "Mime Types"
 msgstr "Typy MIME"
 
-#: plugins/gtk+/gtk+.xml:5515 plugins/gtk+/gtk+.xml:5539
+#: plugins/gtk+/gtk+.xml:5562 plugins/gtk+/gtk+.xml:5586
 msgid "The list of mime types to add to the filter"
 msgstr "Seznam typů MIME pro přidání do filtru"
 
-#: plugins/gtk+/gtk+.xml:5517 plugins/gtk+/gtk+.xml:5541
+#: plugins/gtk+/gtk+.xml:5564 plugins/gtk+/gtk+.xml:5588
 msgid "Patterns"
 msgstr "Vzory"
 
-#: plugins/gtk+/gtk+.xml:5522 plugins/gtk+/gtk+.xml:5546
+#: plugins/gtk+/gtk+.xml:5569 plugins/gtk+/gtk+.xml:5593
 msgid "The list of file name patterns to add to the filter"
 msgstr "Seznam vzorů názvů soborů pro přidání do filtru"
 
-#: plugins/gtk+/gtk+.xml:5528
+#: plugins/gtk+/gtk+.xml:5575
 msgid "Recent Filter"
 msgstr "Filtr nedávných"
 
-#: plugins/gtk+/gtk+.xml:5553
+#: plugins/gtk+/gtk+.xml:5600
 msgid "The list of application names to add to the filter"
 msgstr "Seznam názvů aplikací pro přidání do filtru"
 
-#: plugins/gtk+/gtk+.xml:5559
+#: plugins/gtk+/gtk+.xml:5606
 msgid "Recent Manager"
 msgstr "Správa nedávných"
 
-#: plugins/gtk+/gtk+.xml:5561
+#: plugins/gtk+/gtk+.xml:5608
 msgid "Themed Icon"
 msgstr "Tématická ikona"
 
-#: plugins/gtk+/gtk+.xml:5562
+#: plugins/gtk+/gtk+.xml:5609
 msgid "File Icon"
 msgstr "Ikona souboru"
 
-#: plugins/gtk+/gtk+.xml:5564
+#: plugins/gtk+/gtk+.xml:5611
 msgid "Native File Chooser Dialog"
 msgstr "Nativní dialogové okno pro výběr souboru"
 
-#: plugins/gtk+/gtk+.xml:5568
+#: plugins/gtk+/gtk+.xml:5615
 msgid "Toplevels"
 msgstr "Nejvyšší úrovně"
 
-#: plugins/gtk+/gtk+.xml:5583
+#: plugins/gtk+/gtk+.xml:5630
 msgid "Containers"
 msgstr "Kontejnery"
 
-#: plugins/gtk+/gtk+.xml:5615
+#: plugins/gtk+/gtk+.xml:5662
 msgid "Control"
 msgstr "Ovládání"
 
-#: plugins/gtk+/gtk+.xml:5649
+#: plugins/gtk+/gtk+.xml:5696
 msgid "Display"
 msgstr "Zobrazení"
 
-#: plugins/gtk+/gtk+.xml:5670
+#: plugins/gtk+/gtk+.xml:5717
 msgid "Composite Widgets"
 msgstr "Složené widgety"
 
-#: plugins/gtk+/gtk+.xml:5681
+#: plugins/gtk+/gtk+.xml:5728
 msgid "Miscellaneous"
 msgstr "Různorodé"
 
-#: plugins/gtk+/gtk+.xml:5711
+#: plugins/gtk+/gtk+.xml:5758
 msgid "Deprecated"
 msgstr "Zavrženo"
 
@@ -7856,13 +7936,13 @@ msgstr "Atributy okna s posuvníky"
 msgid "Window Placement:"
 msgstr "Umístění v okně:"
 
-#: plugins/gtk+/glade-scrolled-window-editor.ui:232
-#: plugins/gtk+/glade-scrolled-window-editor.ui:257
+#: plugins/gtk+/glade-scrolled-window-editor.ui:340
+#: plugins/gtk+/glade-scrolled-window-editor.ui:364
 msgid "Scrollbar Policy:"
 msgstr "Pravidla posuvníků:"
 
-#: plugins/gtk+/glade-scrolled-window-editor.ui:281
-#: plugins/gtk+/glade-scrolled-window-editor.ui:295
+#: plugins/gtk+/glade-scrolled-window-editor.ui:388
+#: plugins/gtk+/glade-scrolled-window-editor.ui:401
 msgid "Adjustment:"
 msgstr "Přizpůsobení:"
 
