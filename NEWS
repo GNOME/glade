@@ -1,49 +1,77 @@
 ============
-Glade 3.37.0
+Glade 3.38.0
 ============
 
-	- Build: Remove autotools (Iñigo Martínez)
-	- Plugins: Added GJS plugin for JavaScript objects support (NEW gjs-1.0 dependency)
-	- Issue #433: Implement survey using new backend at surveys.gnome.org
-	- Bump GTK dependency and toolkit target to 3.24
-	- Webkit plugin: bump dependency to 2.28
-	- Build: use gtk-mac-integration only when creating bundle (Tom Schoonjans)
-	- Ignore locale when saving numeric values (Alberto Fanjul)
-	- Remove config for external builds (Alberto Fanjul)
-	- Associate application/x-gtk-builder with glade's .desktop file (Caolán McNamara)
-	- GladeProjectProperties: improve toolkit target version selection
-	- Python plugin: fix linking error
-	- Plugins: Added GJS plugin for JavaScript objects support
-	- Tests: add python and javascript test case
-	- gtk: Add GtkScrolledWindow propagate-natural-width property (Corentin Noël)
-	- GladeScrolledWindowEditor: Squeeze width/height properties in two columns
-	- Gtk plugin: add missing displayable values
-	- Webkit2gtk plugin: add missing displayable values and sandbox web view
+	- Load template files as new GTypes and add them to "User templates" widget group automatically without the need of a catalog
+	- Added JavaScript widget support
+	- Use version data from gir to improve deprecation/target tests
+	- Implement survey using new backend at surveys.gnome.org
+	- Keep survey state in config file
+	- Associate with application/x-gtk-builder (Caolán McNamara)
+	- Project properties dialog improvements. (Use headerbar, stack and stach switcher, add warnings textview)
+	- Improve toolkit target version selection in project properties dialog
+	- Improve treemodel char data type handling
+	- Remove autotools (Iñigo Martínez)
+	- New gjs-1.0 1.64 dependency
+	- Bump Gtk dependency to 3.24
+	- Bump webkit2gtk dependency to 2.28
+	- Fixed all compiler/gir warnings
+	- Issue #385: GtkCellRendererText causes deprecated warnings for ghost properties
+	- Issue #444: show-emoji-icon is missing "minimum version"/since constraint
+	- Issue #367: Glade removes double/triple slashes from URLs
+	- Issue #452: GtkComboBox cell renderers editor is too hard to discover
+	- Issue #363: Toplevel windows are leaked when closing a project
+	- Issue #462: Crash when creating a new GtkAssistant and pressing it
+	- Issue #463: Specify file on command line
+	- Issue #461: Glade resets number of rows and columns in GtkGrid
+	- Issue #460: 3.37.0: test suite fails because glade uses incorrectly asserts in test units
 	- Issue #412: Fix inconsistent "top-level", "top level", "toplevel" spelling in translatable strings
 	- Issue #281: GladeProperty: Do not replace - with _
 	- Issue #389: GladeProject: show message on invalid GtkBuilder file
 	- Issue #446: GladeGtkListBox: fix size request issue
 	- Issue #432: GladeStandarStock, GladeStandarStockImage: fix get_type() functions for introspection
-	- dtd: Make init-function an element, not an attribute (Adrien Plazas)
 	- Issue #447: GladeGtkWindow: Fix CSD support
 	- Issue #456: Utils: use g_param_spec_uchar() for uchar types
-	- Gtk plugin / GladeDataModel: Improve treemodel char data type handling
 	- Issue #459: Gtk catalog: add GtkRecentChooserMenu to Display group
-	- Fixed all compiler/gir warnings
+	- Issue #433: Implement survey using new backend at surveys.gnome.org
+	- Build: use gtk-mac-integration only when creating bundle (Tom Schoonjans)
+	- Ignore locale when saving numeric values (Alberto Fanjul)
+	- Remove config for external builds (Alberto Fanjul)
+	- Python plugin: fix linking error
+	- Tests: add python and javascript test case
+	- gtk: Add GtkScrolledWindow propagate-natural-width property (Corentin Noël)
+	- GladeScrolledWindowEditor: Squeeze width/height properties in two columns
+	- Gtk plugin: add missing displayable values
+	- Webkit2gtk plugin: add missing displayable values and sandbox web view
+	- dtd: Make init-function an element, not an attribute (Adrien Plazas)
 
 Added/updated translations
 
+	- ca, courtesy of Gil Forcada
+	- ca, courtesy of Miquel-Àngel Burgos i Fradeja
+	- cs, courtesy of Marek Černocký
+	- da, courtesy of Ask Hjorth Larsen
+	- da, courtesy of Last-Translator: scootergrisen
 	- de, courtesy of Tim Sabsch
+	- en_GB, courtesy of Bruce Cowan
 	- es, courtesy of Daniel Mustieles
-	- fr, courtesy of Charles Monzat
+	- eu, courtesy of Asier Sarasua Garmendia
+	- fr, courtesy of Thibault Martin
+	- gl, courtesy of Fran Dieguez
+	- hi, courtesy of Last-Translator:Sunny Sharma
+	- hu, courtesy of Balázs Úr
 	- id, courtesy of Kukuh Syafaat
 	- kk, courtesy of Baurzhan Muftakhidinov
+	- ko, courtesy of Changwoo Ryu
 	- lt, courtesy of Aurimas Černius
 	- pl, courtesy of Piotr Drąg
 	- pt_BR, courtesy of Rafael Fontenelle
 	- ro, courtesy of Florentina Mușat
+	- sl, courtesy of Matej Urbančič
+	- sv, courtesy of Anders Jonsson
 	- tr, courtesy of Emin Tufan Çetin
 	- uk, courtesy of Yuri Chornoivan
+	- zh_CN, courtesy of Mandy Wang
 
 ============
 Glade 3.36.0
