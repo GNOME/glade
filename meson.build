@@ -8,7 +8,7 @@
 # version will always know they are on a development release.
 project(
   'glade', 'c',
-  version: '3.38.0',
+  version: '3.39.0',
   license: 'GPL2',
   default_options: 'buildtype=debugoptimized',
   meson_version: '>= 0.49.0',
