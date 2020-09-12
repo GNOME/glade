@@ -49,12 +49,13 @@
   <project_group>GNOME</project_group>
   <translation type="gettext">glade</translation>
   <releases>
-    <release version="3.37.0" date="2020-07-13" type="development">
+    <release version="3.38.0" date="2020-09-12">
       <description>
-        <p>Glade 3.37.0 Development release!</p>
+        <p>Glade 3.38.0 release!</p>
         <ul>
           <li>Load template files as new GTypes and add them to "User templates" widget group automatically without the need of a catalog</li>
           <li>Added JavaScript widget support</li>
+          <li>Use version data from gir to improve deprecation/target tests</li>
           <li>Implement survey using new backend at surveys.gnome.org</li>
           <li>Keep survey state in config file</li>
           <li>Associate with application/x-gtk-builder (Caolán McNamara)</li>
@@ -69,6 +70,9 @@
         </ul>
       </description>
       <issues>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/385">Issue #385: GtkCellRendererText causes deprecated warnings for ghost properties</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/444">Issue #444: show-emoji-icon is missing "minimum version"/since constraint</issue>
+        <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/367">Issue #367: Glade removes double/triple slashes from URLs</issue>
         <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/452">Issue #452: GtkComboBox cell renderers editor is too hard to discover</issue>
         <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/363">Issue #363: Toplevel windows are leaked when closing a project</issue>
         <issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/462">Issue #462: Crash when creating a new GtkAssistant and pressing it</issue>

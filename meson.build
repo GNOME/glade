@@ -8,7 +8,7 @@
 # version will always know they are on a development release.
 project(
   'glade', 'c',
-  version: '3.37.0',
+  version: '3.38.0',
   license: 'GPL2',
   default_options: 'buildtype=debugoptimized',
   meson_version: '>= 0.49.0',
@@ -49,7 +49,7 @@ gladeui_libname = '@0@-@1@'.format(gladeui_name, gladeui_version)
 # Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
 
 gladeui_revision = 0
-gladeui_current = 12
+gladeui_current = 13
 gladeui_age = 0
 gladeui_current_minus_age = gladeui_current - gladeui_age
 gladeui_libversion = '@0@.@1@.@2@'.format(gladeui_current_minus_age, gladeui_age, gladeui_revision)
@@ -110,7 +110,7 @@ endif
 add_project_arguments(common_flags, language: 'c')
 
 # Check required libraries
-glib_dep = dependency('glib-2.0', version: '>= 2.53.2')
+glib_dep = dependency('glib-2.0', version: '>= 2.64.0')
 gmodule_dep = dependency('gmodule-2.0')
 gmodule_export_dep = dependency('gmodule-export-2.0')
 gtk_dep = dependency('gtk+-3.0', version: '>= 3.24.0')
