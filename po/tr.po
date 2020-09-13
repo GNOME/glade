@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-08-21 21:41+0000\n"
-"PO-Revision-Date: 2020-08-22 12:57+0300\n"
+"POT-Creation-Date: 2020-09-12 22:59+0000\n"
+"PO-Revision-Date: 2020-09-13 14:20+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -24,11 +24,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-POOTLE-MTIME: 1420929039.000000\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:43 src/glade.glade:202
+#: src/main.c:43 src/glade.glade:261
 msgid "Glade"
 msgstr "Glade"
 
@@ -198,7 +198,7 @@ msgstr "_Kaydetmeden Kapat"
 msgid "_Cancel"
 msgstr "_Vazgeç"
 
-#: src/glade-window.c:1041 src/glade.glade:597 gladeui/glade-utils.c:486
+#: src/glade-window.c:1041 src/glade.glade:685 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Kaydet"
 
@@ -407,60 +407,123 @@ msgstr ""
 "GTK+ ya da GNOME uygulamaları için kullanıcı arayüzü tasarımları oluştur ya "
 "da düzenle."
 
-#: src/glade.glade:47
+#. The last sentence in quotes is in spanish and does not need to be translated.
+#: src/glade.glade:59
+msgctxt ""
+"This is to honor a professor that passed away last year and appears in a "
+"popover when you click on the button that says \"RIP Guido\""
+msgid ""
+"Guido was one of my professors at Rosario\n"
+"National University of Argentina.\n"
+"\n"
+"He introduced me to C, Linux, free software...\n"
+"\n"
+"He always had extra time to explain one more thing\n"
+"and help you figure out things by yourself.\n"
+"\n"
+"Always made a joke in the right moment keeping\n"
+"things interesting and fun.\n"
+"\n"
+"Master of intentionally misconstrued sayings.\n"
+"\n"
+"Always carried a stack of books under his arm.\n"
+"\n"
+"Loved Guinness beer.\n"
+"\n"
+"All he ever wanted was make you think!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+msgstr ""
+"Guido, Arjantin Rosario Ulusal\n"
+"Üniversitesinden profesörümdü.\n"
+"\n"
+"Bana C'yi, Linux'u, özgür yazılımı ve diğerlerini tanıttı.\n"
+"\n"
+"Bir şey daha açıklamak için hep fazladan vakti\n"
+"vardı ve bir şeyleri çözmenize yardım ederdi.\n"
+"\n"
+"Hep doğru zamanda şaka yaparak işleri ilginç\n"
+"ve eğlenceli kılardı.\n"
+"\n"
+"Söylenenleri kasten yanlış anlamada ustaydı.\n"
+"\n"
+"Kolunun altında hep kitap yığını taşırdı.\n"
+"\n"
+"Guinness birayı severdi.\n"
+"\n"
+"Tek istediği düşünmenizi sağlamaktı!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+
+#: src/glade.glade:106
 msgid "Close Project"
 msgstr "Projeyi Kapat"
 
-#: src/glade.glade:72
+#: src/glade.glade:131
 msgid "Registration & User Survey"
 msgstr "Kayıt ve Kullanıcı Anketi"
 
-#: src/glade.glade:86
+#: src/glade.glade:145
 msgid "_Developer Reference"
 msgstr "_Geliştirici Referansı"
 
-#: src/glade.glade:100
+#: src/glade.glade:159
 msgid "Interactive Intro"
 msgstr "Etkileşimli Giriş"
 
-#: src/glade.glade:114
+#: src/glade.glade:173
 msgid "Preferences"
 msgstr "Tercihler"
 
-#: src/glade.glade:139
+#: src/glade.glade:198
 msgid "About Glade"
 msgstr "Glade Hakkında"
 
-#: src/glade.glade:504 src/glade-preferences.c:239
+#: src/glade.glade:297
+msgctxt "Button label in the bottom of main window that triggers a popover"
+msgid ""
+"<small>In memory of an extraordinary\n"
+"person and professor\n"
+"R.I.P Guido Macchi</small>"
+msgstr ""
+"<small>Olağanüstü kişi ve\n"
+"profesörün anısına\n"
+"Huzurla yat Guido Macchi</small>"
+
+#: src/glade.glade:592 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Aç"
 
-#: src/glade.glade:509
+#: src/glade.glade:597
 msgid "Open a project"
 msgstr "Proje aç"
 
-#: src/glade.glade:554
+#: src/glade.glade:642
 msgid "Create a new project"
 msgstr "Yeni proje oluştur"
 
-#: src/glade.glade:574
+#: src/glade.glade:662
 msgid "Edit project properties"
 msgstr "Proje özelliklerini düzenle"
 
-#: src/glade.glade:602
+#: src/glade.glade:690
 msgid "Save the current project"
 msgstr "Geçerli projeyi kaydet"
 
-#: src/glade.glade:618
+#: src/glade.glade:706
 msgid "Save the current project with a different name"
 msgstr "Geçerli projeyi farklı bir ad ile kaydet"
 
-#: src/glade.glade:647
+#: src/glade.glade:735
 msgid "Start/resume interactive UI introduction"
 msgstr "Etkileşimli kullanıcı arayüzü tanıtımını başlatın/devam ettirin"
 
-#: src/glade.glade:746
+#: src/glade.glade:834
 msgid ""
 "© 2018-2020 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
@@ -472,19 +535,20 @@ msgstr ""
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli ve diğerleri.\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:750
+#: src/glade.glade:838
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+ ve GNOME için bir kullanıcı arayüzü tasarımcısı."
 
-#: src/glade.glade:752
+#: src/glade.glade:840
 msgid "Visit Glade web site"
 msgstr "Glade web sitesini ziyaret et"
 
-#: src/glade.glade:764
+#: src/glade.glade:852
 msgid "translator-credits"
 msgstr ""
 "Barış Çiçek <baris@teamforce.name.tr>\n"
-"Muhammet Kara <muhammetk@gmail.com>"
+"Muhammet Kara <muhammetk@gmail.com>\n"
+"Emin Tufan Çetin <etcetin@gmail.com>"
 
 #: src/glade-preferences.c:234
 msgid "Select a catalog search path"
@@ -621,8 +685,7 @@ msgstr ""
 
 #: src/glade-registration.c:510
 msgid "Thank you for taking the time to complete the survey, we appreciate it!"
-msgstr ""
-"Anketi tamamlamaya vakit ayırdığınız için teşekkürler, minnettarız!"
+msgstr "Anketi tamamlamaya vakit ayırdığınız için teşekkürler, minnettarız!"
 
 #: src/glade-registration.c:771
 msgid "Completed and submitted!"
@@ -794,8 +857,8 @@ msgstr "Rust"
 #: src/glade-registration.glade:1312 src/glade-registration.glade:1344
 #: src/glade-registration.glade:1370 src/glade-registration.glade:1465
 #: src/glade-registration.glade:1956 src/glade-registration.glade:2158
-#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3196
-#: plugins/gtk+/gtk+.xml:4916
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
+#: plugins/gtk+/gtk+.xml:4624
 msgid "Other"
 msgstr "Diğer"
 
@@ -1067,7 +1130,7 @@ msgstr "Tiger"
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3339
+#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3149
 msgid "BSD"
 msgstr "BSD"
 
@@ -1221,12 +1284,12 @@ msgid "Have you ever encountered a bug?"
 msgstr "Hiç bir hatayla karşılaştınız mı?"
 
 #: src/glade-registration.glade:2233 src/glade-registration.glade:2305
-#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1746
+#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
 msgid "Yes"
 msgstr "Evet"
 
 #: src/glade-registration.glade:2250 src/glade-registration.glade:2322
-#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1748
+#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1640
 msgid "No"
 msgstr "Hayır"
 
@@ -1344,8 +1407,8 @@ msgstr "%2$s üzerinden %1$s altını sil"
 msgid "Reorder %s's children"
 msgstr "%s altlarını yeniden sırala"
 
-#: gladeui/glade-base-editor.c:1588 plugins/gtk+/gtk+.xml:280
-#: plugins/gtk+/gtk+.xml:1009 plugins/gtk+/gtk+.xml:1404
+#: gladeui/glade-base-editor.c:1588 plugins/gtk+/gtk+.xml:260
+#: plugins/gtk+/gtk+.xml:957 plugins/gtk+/gtk+.xml:1323
 #: plugins/gtk+/glade-about-dialog-editor.ui:316
 #: plugins/gtk+/glade-tool-button-editor.ui:86
 msgid "Label"
@@ -1357,7 +1420,7 @@ msgstr "Etiket"
 msgid "Type"
 msgstr "Tür"
 
-#: gladeui/glade-base-editor.c:1631 plugins/gtk+/gtk+.xml:618
+#: gladeui/glade-base-editor.c:1631 plugins/gtk+/gtk+.xml:584
 msgid "Container"
 msgstr "Taşıyıcı"
 
@@ -1397,7 +1460,7 @@ msgid "Authentication"
 msgstr "Kimlik Doğrulama"
 
 #. GTK_STOCK_DND
-#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:848
+#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:807
 msgid "Drag and Drop"
 msgstr "Taşı ve Bırak"
 
@@ -1474,7 +1537,7 @@ msgstr "Dizgi"
 msgid "An entry"
 msgstr "Bir giriş"
 
-#: gladeui/glade-catalog.c:678
+#: gladeui/glade-catalog.c:730
 msgid "User templates"
 msgstr "Kullanıcı şablonları"
 
@@ -1882,7 +1945,7 @@ msgid "Select a file from the project resource directory"
 msgstr "Proje kaynak dizininden dosya seç"
 
 #: gladeui/glade-editor-property.c:3136 gladeui/glade-widget-adaptor.c:1461
-#: gladeui/glade-widget.c:1348 plugins/gtk+/gtk+.xml:1519
+#: gladeui/glade-widget.c:1348 plugins/gtk+/gtk+.xml:1432
 msgid "Name"
 msgstr "Ad"
 
@@ -2085,9 +2148,9 @@ msgstr "Takaslı"
 
 #. translators: GConnectFlags value
 #: gladeui/glade-previewer.c:759 gladeui/glade-signal.c:197
-#: gladeui/glade-signal-editor.c:1406 plugins/gtk+/gtk+.xml:2359
-#: plugins/gtk+/gtk+.xml:2363 plugins/gtk+/gtk+.xml:2411
-#: plugins/gtk+/gtk+.xml:2415
+#: gladeui/glade-signal-editor.c:1406 plugins/gtk+/gtk+.xml:2204
+#: plugins/gtk+/gtk+.xml:2208 plugins/gtk+/gtk+.xml:2253
+#: plugins/gtk+/gtk+.xml:2257
 msgid "After"
 msgstr "Sonra"
 
@@ -2168,7 +2231,9 @@ msgstr "Standart girdiyi dinle"
 
 #: gladeui/glade-previewer-main.c:305
 msgid "make a slideshow of every toplevel widget by adding them in a GtkStack"
-msgstr "tüm üst düzey parçacıkların slayt gösterisini, onları GtkStackʼe ekleyerek yap"
+msgstr ""
+"tüm üst düzey parçacıkların slayt gösterisini, onları GtkStackʼe ekleyerek "
+"yap"
 
 #: gladeui/glade-previewer-main.c:306
 msgid "Print handlers signature on invocation"
@@ -2361,13 +2426,13 @@ msgstr ""
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3049
+#: gladeui/glade-project.c:3052
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Bu parça ilk defa %s %d.%d ile geliyor proje hedefleri %s %d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3053
+#: gladeui/glade-project.c:3056
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2376,31 +2441,30 @@ msgstr ""
 "[%s]\n"
 "\t'<b>%s</b>' nesne sınıfı %s %d.%d sürümünde tanıtıldı\n"
 
-#: gladeui/glade-project.c:3055
+#: gladeui/glade-project.c:3058
 msgid "This widget is deprecated"
 msgstr "Bu parçacık artık kullanılmıyor"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3058
+#: gladeui/glade-project.c:3061
 #, c-format
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' from %s %d.%d is deprecated\n"
 msgstr ""
 "[%1$s]\n"
-"\t%3$s %4$d.%5$d sürümünden '<b>%2$s</b>' nesne sınıfı artık "
-"kullanılmıyor\n"
+"\t%3$s %4$d.%5$d sürümünden '<b>%2$s</b>' nesne sınıfı artık kullanılmıyor\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3063
+#: gladeui/glade-project.c:3066
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Bu özellik %s %d.%d içinde ilk defa geçiyor ancak proje hedefleri %s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3067
+#: gladeui/glade-project.c:3070
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2412,7 +2476,7 @@ msgstr ""
 "sürümünde tanıtıldı\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3071
+#: gladeui/glade-project.c:3074
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2420,33 +2484,32 @@ msgid ""
 "%s %d.%d\n"
 msgstr ""
 "[%1$s]\n"
-"\t'<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' paketleme özelliği %4$s "
-"%5$d.%6$d sürümünde tanıtıldı\n"
+"\t'<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' paketleme özelliği %4$s %5$d."
+"%6$d sürümünde tanıtıldı\n"
 
-#: gladeui/glade-project.c:3074
+#: gladeui/glade-project.c:3077
 msgid "This property is deprecated"
 msgstr "Bu özellik artık kullanılmıyor"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3077
+#: gladeui/glade-project.c:3080
 #, c-format
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgstr ""
 "[%1$s]\n"
-"\t'<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' özelliği artık "
-"kullanılmıyor\n"
+"\t'<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' özelliği artık kullanılmıyor\n"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3081
+#: gladeui/glade-project.c:3084
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Bu sinyal %s %d.%d sürümü ile geliyor ama proje %s %d.%d hedefliyor"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3085
+#: gladeui/glade-project.c:3088
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2456,75 +2519,74 @@ msgstr ""
 "\t'<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' sinyali %4$s %5$d.%6$d "
 "sürümünde tanıtıldı\n"
 
-#: gladeui/glade-project.c:3088
+#: gladeui/glade-project.c:3091
 msgid "This signal is deprecated"
 msgstr "Bu sinyal artık kullanılmıyor"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3091
+#: gladeui/glade-project.c:3094
 #, c-format
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgstr ""
 "[%1$s]\n"
-"\t'<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' sinyali artık "
-"kullanılmıyor\n"
+"\t'<b>%3$s</b>' nesne sınıfının '<b>%2$s</b>' sinyali artık kullanılmıyor\n"
 
-#: gladeui/glade-project.c:3386
+#: gladeui/glade-project.c:3393
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: gladeui/glade-project.c:3402
+#: gladeui/glade-project.c:3409
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "\"%s\" projesinde hatalar var. Yine de kaydedilsin mi ?"
 
-#: gladeui/glade-project.c:3428
+#: gladeui/glade-project.c:3435
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr "%s nesnesi bir sınıf şablonu ama bu gtk+ %d.%d ile desteklenmiyor\n"
 
-#: gladeui/glade-project.c:3443
+#: gladeui/glade-project.c:3450
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "%s nesnesi tanınmayan %s türünde\n"
 
-#: gladeui/glade-project.c:4944
+#: gladeui/glade-project.c:4951
 #, c-format
 msgid "Unsaved %i"
 msgstr "Kaydedilmemiş %i"
 
-#: gladeui/glade-project.c:5251 gladeui/glade-project.c:5302
-#: gladeui/glade-project.c:5459
+#: gladeui/glade-project.c:5258 gladeui/glade-project.c:5309
+#: gladeui/glade-project.c:5466
 msgid "No widget selected."
 msgstr "Hiçbir parçacık seçilmemiş."
 
-#: gladeui/glade-project.c:5267
+#: gladeui/glade-project.c:5274
 msgid "Unable to copy unrecognized widget type."
 msgstr "Tanınmayan parçacık türü kopyalanamıyor."
 
-#: gladeui/glade-project.c:5299
+#: gladeui/glade-project.c:5306
 msgid "Unable to cut unrecognized widget type"
 msgstr "Tanınmayan parçacık türü kesilemiyor"
 
-#: gladeui/glade-project.c:5351
+#: gladeui/glade-project.c:5358
 msgid "Unable to paste to the selected parent"
 msgstr "Seçilen üste yapıştırılamadı"
 
-#: gladeui/glade-project.c:5362
+#: gladeui/glade-project.c:5369
 msgid "Unable to paste to multiple widgets"
 msgstr "Çoklu parçacığa yapıştırılamadı"
 
-#: gladeui/glade-project.c:5372
+#: gladeui/glade-project.c:5379
 msgid "No widget on the clipboard"
 msgstr "Panoda parçacık yok"
 
-#: gladeui/glade-project.c:5417
+#: gladeui/glade-project.c:5424
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Bu taşıyıcıya yalnızca tek parçacık aynı anda yapıştırılabilir"
 
-#: gladeui/glade-project.c:5429
+#: gladeui/glade-project.c:5436
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Hedef taşıyıcıda yetersiz miktarda alan tutucu"
 
@@ -2566,7 +2628,7 @@ msgstr "Bağlam"
 msgid "Context for translation"
 msgstr "Çeviriciler için bağlam"
 
-#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:414
+#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:394
 msgid "Comment"
 msgstr "Açıklama"
 
@@ -2781,19 +2843,19 @@ msgstr "Bağlantı gösterilemedi:"
 
 #. Reset the column
 #: gladeui/glade-utils.c:1717 plugins/gtk+/glade-attributes.c:829
-#: plugins/gtk+/gtk+.xml:871 plugins/gtk+/gtk+.xml:1257
-#: plugins/gtk+/gtk+.xml:1273 plugins/gtk+/gtk+.xml:1388
-#: plugins/gtk+/gtk+.xml:1531 plugins/gtk+/gtk+.xml:1678
-#: plugins/gtk+/gtk+.xml:1732 plugins/gtk+/gtk+.xml:2635
-#: plugins/gtk+/gtk+.xml:2689 plugins/gtk+/gtk+.xml:2755
-#: plugins/gtk+/gtk+.xml:3086 plugins/gtk+/gtk+.xml:3460
-#: plugins/gtk+/gtk+.xml:3599 plugins/gtk+/gtk+.xml:3716
-#: plugins/gtk+/gtk+.xml:3759 plugins/gtk+/gtk+.xml:4021
-#: plugins/gtk+/gtk+.xml:4725 plugins/gtk+/gtk+.xml:5552
+#: plugins/gtk+/gtk+.xml:830 plugins/gtk+/gtk+.xml:1188
+#: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1307
+#: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:1574
+#: plugins/gtk+/gtk+.xml:1624 plugins/gtk+/gtk+.xml:2468
+#: plugins/gtk+/gtk+.xml:2520 plugins/gtk+/gtk+.xml:2581
+#: plugins/gtk+/gtk+.xml:2905 plugins/gtk+/gtk+.xml:3261
+#: plugins/gtk+/gtk+.xml:3394 plugins/gtk+/gtk+.xml:3507
+#: plugins/gtk+/gtk+.xml:3550 plugins/gtk+/gtk+.xml:3802
+#: plugins/gtk+/gtk+.xml:4448 plugins/gtk+/gtk+.xml:5222
 msgid "None"
 msgstr "Hiçbiri"
 
-#: gladeui/glade-widget-action.c:182 plugins/gtk+/gtk+.xml:436
+#: gladeui/glade-widget-action.c:182 plugins/gtk+/gtk+.xml:416
 msgid "Definition"
 msgstr "Tanım"
 
@@ -2806,7 +2868,7 @@ msgid "Whether this action is sensitive"
 msgstr "Bu eylemin hassas olup olmadığı"
 
 #: gladeui/glade-widget-action.c:195 gladeui/glade-widget.c:1437
-#: plugins/gtk+/gtk+.xml:4334
+#: plugins/gtk+/gtk+.xml:4086
 msgid "Visible"
 msgstr "Görünür"
 
@@ -2849,7 +2911,7 @@ msgstr "Genel Ad"
 msgid "Used to generate names of new widgets"
 msgstr "Yeni parçacıklar için ad oluşturmak için kullanılır"
 
-#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2293
+#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2144
 #: plugins/gtk+/glade-window-editor.ui:262
 msgid "Icon Name"
 msgstr "Simge Adı"
@@ -2947,7 +3009,7 @@ msgstr "Bu parçacığın ait olduğu glade projesi"
 msgid "A list of GladeProperties"
 msgstr "GladeProperties listesi"
 
-#: gladeui/glade-widget.c:1389 plugins/gtk+/gtk+.xml:634
+#: gladeui/glade-widget.c:1389 plugins/gtk+/gtk+.xml:598
 msgid "Parent"
 msgstr "Üst"
 
@@ -3040,7 +3102,7 @@ msgstr "Bazı sinyallerin sürümleme problemi var: "
 msgid "Actions"
 msgstr "Eylemler"
 
-#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5621
+#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5293
 msgid "Applications"
 msgstr "Uygulamalar"
 
@@ -3550,7 +3612,7 @@ msgstr ""
 "Bu taşıyıcının alt parçacıklarının yeniden boyutlandırılmasını desteklemesi"
 
 #: plugins/gtk+/glade-gtk-action-group.c:184
-#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3798
+#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3589
 msgid "Action"
 msgstr "Eylem"
 
@@ -3596,11 +3658,11 @@ msgstr "Onay sayfası"
 msgid "Ordering children of %s"
 msgstr "%s altları sıralanıyor"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4059
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:3838
 msgid "Tree View Column"
 msgstr "Ağaç Görünümü Sütunu"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4172
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:3939
 msgid "Cell Renderer"
 msgstr "Hüçre Tarayıcısı"
 
@@ -3613,18 +3675,18 @@ msgid "Common Properties and Attributes"
 msgstr "Sütun Özellikleri ve Öznitelikleri"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:411
-#: plugins/gtk+/glade-gtk-tree-view.c:85 plugins/gtk+/gtk+.xml:344
+#: plugins/gtk+/glade-gtk-tree-view.c:85 plugins/gtk+/gtk+.xml:324
 #: plugins/gtk+/glade-entry-editor.ui:343
 msgid "Text"
 msgstr "Metin"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:412
-#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3828
+#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3616
 msgid "Accelerator"
 msgstr "Hızlandırıcı"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:413
-#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:846
+#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:805
 msgid "Combo"
 msgstr "Çoklu"
 
@@ -3639,13 +3701,13 @@ msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:416
-#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3574
+#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3369
 #: plugins/gtk+/glade-entry-editor.ui:471
 msgid "Progress"
 msgstr "İlerleme"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:418
-#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1402
+#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1321
 msgid "Spinner"
 msgstr "Döndürücü"
 
@@ -3894,16 +3956,16 @@ msgstr "Son Kullanılan Menüsü"
 msgid "Tool Item"
 msgstr "Araç Ögesi"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1230
+#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1164
 msgid "Tool Item Group"
 msgstr "Araç Ögesi Grubu"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2941
+#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2761
 msgid "Recent Chooser Menu"
 msgstr "Son Kullanılan Seçici Menüsü"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:292
-#: plugins/gtk+/gtk+.xml:990
+#: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:272
+#: plugins/gtk+/gtk+.xml:939
 msgid "Menu Item"
 msgstr "Menü Ögesi"
 
@@ -3943,20 +4005,20 @@ msgid "Text Tag Table Editor"
 msgstr "Metin Etiketi Tablo Düzenleyicisi"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:238
-#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1152
-#: plugins/gtk+/gtk+.xml:1714
+#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1093
+#: plugins/gtk+/gtk+.xml:1608
 msgid "Button"
 msgstr "Düğme"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:241
-#: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:288
-#: plugins/gtk+/gtk+.xml:826 plugins/gtk+/gtk+.xml:1146
+#: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:268
+#: plugins/gtk+/gtk+.xml:785 plugins/gtk+/gtk+.xml:1087
 msgid "Menu"
 msgstr "Menü"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:242
-#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3329
-#: plugins/gtk+/gtk+.xml:3576 plugins/gtk+/gtk+.xml:3722
+#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3139
+#: plugins/gtk+/gtk+.xml:3371 plugins/gtk+/gtk+.xml:3513
 #: plugins/gtk+/glade-widget-editor.ui:654
 msgid "Custom"
 msgstr "Özel"
@@ -3965,24 +4027,24 @@ msgstr "Özel"
 #: plugins/gtk+/glade-gtk-toolbar.c:260
 #: plugins/gtk+/glade-gtk-tool-palette.c:189
 #: plugins/gtk+/glade-gtk-tool-palette.c:197
-#: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:322
-#: plugins/gtk+/gtk+.xml:3030
+#: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:302
+#: plugins/gtk+/gtk+.xml:2847
 msgid "Separator"
 msgstr "Ayraç"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:248 plugins/gtk+/glade-gtk-toolbar.c:256
 #: plugins/gtk+/glade-gtk-tool-palette.c:193
-#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:822
-#: plugins/gtk+/gtk+.xml:1269 plugins/gtk+/gtk+.xml:2054
-#: plugins/gtk+/gtk+.xml:4646 plugins/gtk+/gtk+.xml:4688
-#: plugins/gtk+/gtk+.xml:4758
+#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:781
+#: plugins/gtk+/gtk+.xml:1200 plugins/gtk+/gtk+.xml:1912
+#: plugins/gtk+/gtk+.xml:4374 plugins/gtk+/gtk+.xml:4413
+#: plugins/gtk+/gtk+.xml:4480
 msgid "Normal"
 msgstr "Normal"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:249 plugins/gtk+/glade-gtk-toolbar.c:257
 #: plugins/gtk+/glade-gtk-tool-palette.c:194
-#: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:276
-#: plugins/gtk+/gtk+.xml:2280 plugins/gtk+/glade-image-editor.ui:44
+#: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:256
+#: plugins/gtk+/gtk+.xml:2131 plugins/gtk+/glade-image-editor.ui:44
 #: plugins/gtk+/glade-tool-button-editor.ui:215
 msgid "Image"
 msgstr "Resim"
@@ -4150,7 +4212,7 @@ msgstr "Bu '%s' kaynağı için bir durum belirtmek isteyip istemediğinizi atay
 msgid "Set the state for this source of '%s'"
 msgstr "Bu '%s' kaynağı için durum atayın"
 
-#: plugins/gtk+/glade-icon-sources.c:849 plugins/gtk+/gtk+.xml:2295
+#: plugins/gtk+/glade-icon-sources.c:849 plugins/gtk+/gtk+.xml:2146
 msgid "File Name"
 msgstr "Dosya Adı"
 
@@ -4370,7 +4432,7 @@ msgstr "Harmanla"
 msgid "Reverse"
 msgstr "Tersine çevir"
 
-#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2855
+#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2673
 msgid "Scale"
 msgstr "Ölçek"
 
@@ -4398,772 +4460,772 @@ msgstr "Yerleşim Numarası Yukarı"
 msgid "GTK+ Unix Print Toplevels"
 msgstr "GTK+ Unix Yazdırma Üstdüzeyleri"
 
-#: plugins/gtk+/gtk+.xml:38
+#: plugins/gtk+/gtk+.xml:37
 msgid "Preview snapshot"
 msgstr "Ön izleme Enstantanesi"
 
-#: plugins/gtk+/gtk+.xml:39
+#: plugins/gtk+/gtk+.xml:38
 msgid "Edit Separately"
 msgstr "Ayrı Düzenle"
 
-#: plugins/gtk+/gtk+.xml:40
+#: plugins/gtk+/gtk+.xml:39
 msgid "Remove Parent"
 msgstr "Üst Sil"
 
-#: plugins/gtk+/gtk+.xml:41
+#: plugins/gtk+/gtk+.xml:40
 msgid "Add Parent"
 msgstr "Üst Ekle"
 
-#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:2705
+#: plugins/gtk+/gtk+.xml:41 plugins/gtk+/gtk+.xml:2536
 #: plugins/gtk+/glade-misc-editor.ui:187
 #: plugins/gtk+/glade-widget-editor.ui:841
 msgid "Alignment"
 msgstr "Hizalama"
 
-#: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:358
-#: plugins/gtk+/gtk+.xml:3234
+#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:338
+#: plugins/gtk+/gtk+.xml:3046
 msgid "Viewport"
 msgstr "Görüş alanı"
 
-#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:3206
+#: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:3020
 msgid "Event Box"
 msgstr "Olay Kutusu"
 
-#: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:268
-#: plugins/gtk+/gtk+.xml:2707
+#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:248
+#: plugins/gtk+/gtk+.xml:2538
 msgid "Frame"
 msgstr "Çerçeve"
 
-#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:2724
+#: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:2554
 msgid "Aspect Frame"
 msgstr "En Boy Çerçevesi"
 
-#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3249
+#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:3061
 msgid "Scrolled Window"
 msgstr "Kaydırılan Pencere"
 
-#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:3208
+#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3022
 msgid "Expander"
 msgstr "Genişletici"
 
-#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:2391
+#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:2234
 msgid "Grid"
 msgstr "Izgara"
 
-#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:647
+#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:611
 msgid "Box"
 msgstr "Kutu"
 
-#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2448
+#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:2288
 msgid "Paned"
 msgstr "Panelli"
 
-#: plugins/gtk+/gtk+.xml:52 plugins/gtk+/gtk+.xml:2597
+#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2430
 msgid "Stack"
 msgstr "Yığın"
 
-#: plugins/gtk+/gtk+.xml:54
+#: plugins/gtk+/gtk+.xml:53
 msgid "Add to Size Group"
 msgstr "Boyut Grubuna Ekle"
 
-#: plugins/gtk+/gtk+.xml:55
+#: plugins/gtk+/gtk+.xml:54
 msgid "Clear properties"
 msgstr "Özellikleri temizle"
 
-#: plugins/gtk+/gtk+.xml:56
+#: plugins/gtk+/gtk+.xml:55
 msgid "Read documentation"
 msgstr "Belgelendirmeyi oku"
 
-#: plugins/gtk+/gtk+.xml:98
+#: plugins/gtk+/gtk+.xml:89
 msgid "Style Classes"
 msgstr "Biçem Sınıfları"
 
-#: plugins/gtk+/gtk+.xml:103
+#: plugins/gtk+/gtk+.xml:94
 msgid "A list of style class names to apply to this widget"
 msgstr "Bu parçacığa uygulanacak biçem sınıf adları listesi"
 
-#: plugins/gtk+/gtk+.xml:109 plugins/gtk+/gtk+.xml:1458
-#: plugins/gtk+/gtk+.xml:2382
+#: plugins/gtk+/gtk+.xml:99 plugins/gtk+/gtk+.xml:1375
+#: plugins/gtk+/gtk+.xml:2225
 msgid "Fill"
 msgstr "Doldur"
 
-#: plugins/gtk+/gtk+.xml:111 plugins/gtk+/gtk+.xml:705
-#: plugins/gtk+/gtk+.xml:1259 plugins/gtk+/gtk+.xml:3007
+#: plugins/gtk+/gtk+.xml:101 plugins/gtk+/gtk+.xml:666
+#: plugins/gtk+/gtk+.xml:1190 plugins/gtk+/gtk+.xml:2823
 msgid "Start"
 msgstr "Başlat"
 
-#: plugins/gtk+/gtk+.xml:113 plugins/gtk+/gtk+.xml:684
-#: plugins/gtk+/gtk+.xml:803 plugins/gtk+/gtk+.xml:873
-#: plugins/gtk+/gtk+.xml:1456 plugins/gtk+/gtk+.xml:3011
-#: plugins/gtk+/gtk+.xml:4374
+#: plugins/gtk+/gtk+.xml:103 plugins/gtk+/gtk+.xml:646
+#: plugins/gtk+/gtk+.xml:762 plugins/gtk+/gtk+.xml:832
+#: plugins/gtk+/gtk+.xml:1373 plugins/gtk+/gtk+.xml:2827
+#: plugins/gtk+/gtk+.xml:4125
 msgid "Center"
 msgstr "Orta"
 
-#: plugins/gtk+/gtk+.xml:115 plugins/gtk+/gtk+.xml:707
-#: plugins/gtk+/gtk+.xml:1263 plugins/gtk+/gtk+.xml:3009
+#: plugins/gtk+/gtk+.xml:105 plugins/gtk+/gtk+.xml:668
+#: plugins/gtk+/gtk+.xml:1194 plugins/gtk+/gtk+.xml:2825
 msgid "End"
 msgstr "Son"
 
-#: plugins/gtk+/gtk+.xml:117
+#: plugins/gtk+/gtk+.xml:107
 msgid "Baseline"
 msgstr "Taban çizgisi"
 
-#: plugins/gtk+/gtk+.xml:125
+#: plugins/gtk+/gtk+.xml:114
 msgid "Exposure"
 msgstr "Göster"
 
-#: plugins/gtk+/gtk+.xml:127
+#: plugins/gtk+/gtk+.xml:116
 msgid "Pointer Motion"
 msgstr "Belirteç Hareketi"
 
-#: plugins/gtk+/gtk+.xml:129
+#: plugins/gtk+/gtk+.xml:118
 msgid "Pointer Motion Hint"
 msgstr "Belirteç Hareket İpucu"
 
-#: plugins/gtk+/gtk+.xml:131
+#: plugins/gtk+/gtk+.xml:120
 msgid "Button Motion"
 msgstr "Düğme Hareketi"
 
-#: plugins/gtk+/gtk+.xml:133
+#: plugins/gtk+/gtk+.xml:122
 msgid "Button 1 Motion"
 msgstr "Düğme 1 Hareketi"
 
-#: plugins/gtk+/gtk+.xml:135
+#: plugins/gtk+/gtk+.xml:124
 msgid "Button 2 Motion"
 msgstr "Düğme 2 Hareketi"
 
-#: plugins/gtk+/gtk+.xml:137
+#: plugins/gtk+/gtk+.xml:126
 msgid "Button 3 Motion"
 msgstr "Düğme 3 Hareketi"
 
-#: plugins/gtk+/gtk+.xml:139
+#: plugins/gtk+/gtk+.xml:128
 msgid "Button Press"
 msgstr "Düğme Basılması"
 
-#: plugins/gtk+/gtk+.xml:141
+#: plugins/gtk+/gtk+.xml:130
 msgid "Button Release"
 msgstr "Düğme Basılıp Bırakılması"
 
-#: plugins/gtk+/gtk+.xml:143
+#: plugins/gtk+/gtk+.xml:132
 msgid "Key Press"
 msgstr "Tuş Basımı"
 
-#: plugins/gtk+/gtk+.xml:145
+#: plugins/gtk+/gtk+.xml:134
 msgid "Key Release"
 msgstr "Tuş Bırakımı"
 
-#: plugins/gtk+/gtk+.xml:147
+#: plugins/gtk+/gtk+.xml:136
 msgid "Enter Notify"
 msgstr "Uyarı Gir"
 
-#: plugins/gtk+/gtk+.xml:149
+#: plugins/gtk+/gtk+.xml:138
 msgid "Leave Notify"
 msgstr "Uyarı Bırak"
 
-#: plugins/gtk+/gtk+.xml:151
+#: plugins/gtk+/gtk+.xml:140
 msgid "Focus Change"
 msgstr "Odak Değişimi"
 
-#: plugins/gtk+/gtk+.xml:153
+#: plugins/gtk+/gtk+.xml:142
 msgid "Structure"
 msgstr "Yapı"
 
-#: plugins/gtk+/gtk+.xml:155
+#: plugins/gtk+/gtk+.xml:144
 msgid "Property Change"
 msgstr "Özellik Değişimi"
 
-#: plugins/gtk+/gtk+.xml:157
+#: plugins/gtk+/gtk+.xml:146
 msgid "Visibility Notify"
 msgstr "Görünürlük Uyarısı"
 
-#: plugins/gtk+/gtk+.xml:159
+#: plugins/gtk+/gtk+.xml:148
 msgid "Proximity In"
 msgstr "Yakınlık İçeri"
 
-#: plugins/gtk+/gtk+.xml:161
+#: plugins/gtk+/gtk+.xml:150
 msgid "Proximity Out"
 msgstr "Yakınlık Dışarı"
 
-#: plugins/gtk+/gtk+.xml:163
+#: plugins/gtk+/gtk+.xml:152
 msgid "Substructure"
 msgstr "Altyapı"
 
-#: plugins/gtk+/gtk+.xml:165
+#: plugins/gtk+/gtk+.xml:154
 msgid "Scroll"
 msgstr "Kaydırma"
 
-#: plugins/gtk+/gtk+.xml:167
+#: plugins/gtk+/gtk+.xml:156
 msgid "Touch"
 msgstr "Dokunma"
 
-#: plugins/gtk+/gtk+.xml:169
+#: plugins/gtk+/gtk+.xml:158
 msgid "Smooth scroll"
 msgstr "Yumuşak kaydırma"
 
-#: plugins/gtk+/gtk+.xml:171
+#: plugins/gtk+/gtk+.xml:160
 msgid "Touchpad Gesture"
 msgstr "Dokunmatik Yüzey Hareketleri"
 
-#: plugins/gtk+/gtk+.xml:173
+#: plugins/gtk+/gtk+.xml:162
 msgid "Tablet Pad"
 msgstr "Tablet Pedi"
 
-#: plugins/gtk+/gtk+.xml:175
+#: plugins/gtk+/gtk+.xml:164
 msgid "All Events"
 msgstr "Tüm Olaylar"
 
-#: plugins/gtk+/gtk+.xml:190
+#: plugins/gtk+/gtk+.xml:176
 msgid "Accelerators"
 msgstr "Hızlandırıcılar"
 
-#: plugins/gtk+/gtk+.xml:195
+#: plugins/gtk+/gtk+.xml:181
 msgid "A list of accelerator keys"
 msgstr "Hızlandırıcı tuşların listesi"
 
-#: plugins/gtk+/gtk+.xml:200
+#: plugins/gtk+/gtk+.xml:184
 msgid "Accessible Name"
 msgstr "Erişilebilirlik Adı"
 
-#: plugins/gtk+/gtk+.xml:204
+#: plugins/gtk+/gtk+.xml:188
 msgid "Object instance's name formatted for assistive technology access"
 msgstr "Nesne görünümüʼnün adı yardımcı teknoloji erişimi için biçimlendirildi"
 
-#: plugins/gtk+/gtk+.xml:208
+#: plugins/gtk+/gtk+.xml:190
 msgid "Accessible Description"
 msgstr "Erişebilirlik Tanımı"
 
-#: plugins/gtk+/gtk+.xml:212
+#: plugins/gtk+/gtk+.xml:194
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "Bir nesnenin tanımı, yardımcı teknoloji erişimi için biçimlenmiş"
 
-#: plugins/gtk+/gtk+.xml:216
+#: plugins/gtk+/gtk+.xml:196
 msgid "Role"
 msgstr "Rol"
 
-#: plugins/gtk+/gtk+.xml:221
+#: plugins/gtk+/gtk+.xml:201
 msgid "The accessible role of this object"
 msgstr "Bu nesnenin erişilebilir rolü"
 
-#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:1144
+#: plugins/gtk+/gtk+.xml:204 plugins/gtk+/gtk+.xml:1085
 msgid "Invalid"
 msgstr "Geçersiz"
 
-#: plugins/gtk+/gtk+.xml:226
+#: plugins/gtk+/gtk+.xml:206
 msgid "Accelerator Label"
 msgstr "Hızlandırıcı Etiketi"
 
-#: plugins/gtk+/gtk+.xml:228
+#: plugins/gtk+/gtk+.xml:208
 msgid "Alert"
 msgstr "Uyarı"
 
-#: plugins/gtk+/gtk+.xml:230
+#: plugins/gtk+/gtk+.xml:210
 msgid "Animation"
 msgstr "Canlandırma"
 
-#: plugins/gtk+/gtk+.xml:232 plugins/gtk+/gtk+.xml:3072
+#: plugins/gtk+/gtk+.xml:212 plugins/gtk+/gtk+.xml:2891
 msgid "Arrow"
 msgstr "Ok"
 
-#: plugins/gtk+/gtk+.xml:234 plugins/gtk+/gtk+.xml:2891
+#: plugins/gtk+/gtk+.xml:214 plugins/gtk+/gtk+.xml:2709
 msgid "Calendar"
 msgstr "Takvim"
 
-#: plugins/gtk+/gtk+.xml:236
+#: plugins/gtk+/gtk+.xml:216
 msgid "Canvas"
 msgstr "Tuval"
 
-#: plugins/gtk+/gtk+.xml:238
+#: plugins/gtk+/gtk+.xml:218
 msgid "Check Box"
 msgstr "Onay Kutusu"
 
-#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:1055
+#: plugins/gtk+/gtk+.xml:220 plugins/gtk+/gtk+.xml:998
 msgid "Check Menu Item"
 msgstr "Seçim Menü Ögesi"
 
-#: plugins/gtk+/gtk+.xml:242
+#: plugins/gtk+/gtk+.xml:222
 msgid "Color Chooser"
 msgstr "Renk Seçici"
 
-#: plugins/gtk+/gtk+.xml:244 plugins/gtk+/gtk+.xml:336
+#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:316
 msgid "Column Header"
 msgstr "Sütun Başlığı"
 
-#: plugins/gtk+/gtk+.xml:246 plugins/gtk+/gtk+.xml:2113
+#: plugins/gtk+/gtk+.xml:226 plugins/gtk+/gtk+.xml:1973
 msgid "Combo Box"
 msgstr "Çoklu Kutu"
 
-#: plugins/gtk+/gtk+.xml:248
+#: plugins/gtk+/gtk+.xml:228
 msgid "Date Editor"
 msgstr "Tarih Düzenleyici"
 
-#: plugins/gtk+/gtk+.xml:250
+#: plugins/gtk+/gtk+.xml:230
 msgid "Desktop Icon"
 msgstr "Masaüstü Simgesi"
 
-#: plugins/gtk+/gtk+.xml:252
+#: plugins/gtk+/gtk+.xml:232
 msgid "Desktop Frame"
 msgstr "Masaüstü Çerçevesi"
 
-#: plugins/gtk+/gtk+.xml:254
+#: plugins/gtk+/gtk+.xml:234
 msgid "Dial"
 msgstr "Çevir"
 
-#: plugins/gtk+/gtk+.xml:256 plugins/gtk+/gtk+.xml:824
-#: plugins/gtk+/gtk+.xml:1156
+#: plugins/gtk+/gtk+.xml:236 plugins/gtk+/gtk+.xml:783
+#: plugins/gtk+/gtk+.xml:1097
 msgid "Dialog"
 msgstr "Pencere"
 
-#: plugins/gtk+/gtk+.xml:258
+#: plugins/gtk+/gtk+.xml:238
 msgid "Directory Pane"
 msgstr "Dizin Paneli"
 
-#: plugins/gtk+/gtk+.xml:260 plugins/gtk+/gtk+.xml:3173
+#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:2987
 msgid "Drawing Area"
 msgstr "Çizim Alanı"
 
-#: plugins/gtk+/gtk+.xml:262
+#: plugins/gtk+/gtk+.xml:242
 msgid "File Chooser"
 msgstr "Dosya Seçici"
 
-#: plugins/gtk+/gtk+.xml:264
+#: plugins/gtk+/gtk+.xml:244
 msgid "Filler"
 msgstr "Doldurucu"
 
-#: plugins/gtk+/gtk+.xml:266
+#: plugins/gtk+/gtk+.xml:246
 msgid "Font Chooser"
 msgstr "Yazıtipi Seçici"
 
-#: plugins/gtk+/gtk+.xml:270
+#: plugins/gtk+/gtk+.xml:250
 msgid "Glass Pane"
 msgstr "Cam Panel"
 
-#: plugins/gtk+/gtk+.xml:272
+#: plugins/gtk+/gtk+.xml:252
 msgid "HTML Container"
 msgstr "HTML Kabı"
 
-#: plugins/gtk+/gtk+.xml:274 plugins/gtk+/glade-about-dialog-editor.ui:213
+#: plugins/gtk+/gtk+.xml:254 plugins/gtk+/glade-about-dialog-editor.ui:213
 msgid "Icon"
 msgstr "Simge"
 
-#: plugins/gtk+/gtk+.xml:278
+#: plugins/gtk+/gtk+.xml:258
 msgid "Internal Frame"
 msgstr "İç Çerçeve"
 
-#: plugins/gtk+/gtk+.xml:282
+#: plugins/gtk+/gtk+.xml:262
 msgid "Layered Pane"
 msgstr "Katmanlı Panel"
 
-#: plugins/gtk+/gtk+.xml:284
+#: plugins/gtk+/gtk+.xml:264
 msgid "List"
 msgstr "Liste"
 
-#: plugins/gtk+/gtk+.xml:286
+#: plugins/gtk+/gtk+.xml:266
 msgid "List Item"
 msgstr "Liste Ögesi"
 
-#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1072
+#: plugins/gtk+/gtk+.xml:270 plugins/gtk+/gtk+.xml:1015
 msgid "Menu Bar"
 msgstr "Menü Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:294
+#: plugins/gtk+/gtk+.xml:274
 msgid "Option Pane"
 msgstr "Seçenek Paneli"
 
-#: plugins/gtk+/gtk+.xml:296
+#: plugins/gtk+/gtk+.xml:276
 msgid "Page Tab"
 msgstr "Sayfa Sekmesi"
 
-#: plugins/gtk+/gtk+.xml:298
+#: plugins/gtk+/gtk+.xml:278
 msgid "Page Tab List"
 msgstr "Sayfa Sekmesi Listesi"
 
-#: plugins/gtk+/gtk+.xml:300
+#: plugins/gtk+/gtk+.xml:280
 msgid "Panel"
 msgstr "Panel"
 
-#: plugins/gtk+/gtk+.xml:302
+#: plugins/gtk+/gtk+.xml:282
 msgid "Password Text"
 msgstr "Parola Metni"
 
-#: plugins/gtk+/gtk+.xml:304 plugins/gtk+/gtk+.xml:840
-#: plugins/gtk+/gtk+.xml:2899
+#: plugins/gtk+/gtk+.xml:284 plugins/gtk+/gtk+.xml:799
+#: plugins/gtk+/gtk+.xml:2717
 msgid "Popup Menu"
 msgstr "Beliren Menü"
 
-#: plugins/gtk+/gtk+.xml:306
+#: plugins/gtk+/gtk+.xml:286
 msgid "Progress bar"
 msgstr "İlerleme Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:308
+#: plugins/gtk+/gtk+.xml:288
 msgid "Push Button"
 msgstr "İtme Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:1879
+#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1755
 msgid "Radio Button"
 msgstr "Radyo Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:1057
+#: plugins/gtk+/gtk+.xml:292 plugins/gtk+/gtk+.xml:1000
 msgid "Radio Menu Item"
 msgstr "Radyo Menü Ögesi"
 
-#: plugins/gtk+/gtk+.xml:314
+#: plugins/gtk+/gtk+.xml:294
 msgid "Root Pane"
 msgstr "Kök Paneli"
 
-#: plugins/gtk+/gtk+.xml:316 plugins/gtk+/gtk+.xml:338
+#: plugins/gtk+/gtk+.xml:296 plugins/gtk+/gtk+.xml:318
 msgid "Row Header"
 msgstr "Satır Başlığı"
 
-#: plugins/gtk+/gtk+.xml:318
+#: plugins/gtk+/gtk+.xml:298
 msgid "Scroll Bar"
 msgstr "Kaydırma Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:320
+#: plugins/gtk+/gtk+.xml:300
 msgid "Scroll pane"
 msgstr "Kaydırma Paneli"
 
-#: plugins/gtk+/gtk+.xml:324
+#: plugins/gtk+/gtk+.xml:304
 msgid "Slider"
 msgstr "Kaydırıcı"
 
-#: plugins/gtk+/gtk+.xml:326
+#: plugins/gtk+/gtk+.xml:306
 msgid "Split Pane"
 msgstr "Ayrık Panel"
 
-#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1849
+#: plugins/gtk+/gtk+.xml:308 plugins/gtk+/gtk+.xml:1727
 msgid "Spin Button"
 msgstr "Çevirme Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:330 plugins/gtk+/gtk+.xml:3058
+#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:2877
 msgid "Status Bar"
 msgstr "Durum Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:332 plugins/gtk+/gtk+.xml:2345
+#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:2191
 msgid "Table"
 msgstr "Tablo"
 
-#: plugins/gtk+/gtk+.xml:334
+#: plugins/gtk+/gtk+.xml:314
 msgid "Table Cell"
 msgstr "Tablo Hücresi"
 
-#: plugins/gtk+/gtk+.xml:340
+#: plugins/gtk+/gtk+.xml:320
 msgid "Tear Off Menu Item"
 msgstr "Menü Ögesini Ayır"
 
-#: plugins/gtk+/gtk+.xml:342 plugins/gtk+/gtk+.xml:1525
+#: plugins/gtk+/gtk+.xml:322 plugins/gtk+/gtk+.xml:1438
 msgid "Terminal"
 msgstr "Terminal"
 
-#: plugins/gtk+/gtk+.xml:346 plugins/gtk+/gtk+.xml:1833
+#: plugins/gtk+/gtk+.xml:326 plugins/gtk+/gtk+.xml:1711
 msgid "Toggle Button"
 msgstr "Seçim Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:348 plugins/gtk+/gtk+.xml:1099
+#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1042
 msgid "Tool Bar"
 msgstr "Araç Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:350
+#: plugins/gtk+/gtk+.xml:330
 msgid "Tool Tip"
 msgstr "İpucu"
 
-#: plugins/gtk+/gtk+.xml:352
+#: plugins/gtk+/gtk+.xml:332
 msgid "Tree"
 msgstr "Ağaç"
 
-#: plugins/gtk+/gtk+.xml:354
+#: plugins/gtk+/gtk+.xml:334
 msgid "Tree Table"
 msgstr "Ağaç Tablosu"
 
-#: plugins/gtk+/gtk+.xml:356 plugins/gtk+/gtk+.xml:3327
+#: plugins/gtk+/gtk+.xml:336 plugins/gtk+/gtk+.xml:3137
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: plugins/gtk+/gtk+.xml:360 plugins/gtk+/gtk+.xml:758
-#: plugins/gtk+/gtk+.xml:3601 plugins/webkit2gtk/webkit2gtk.xml:29
+#: plugins/gtk+/gtk+.xml:340 plugins/gtk+/gtk+.xml:718
+#: plugins/gtk+/gtk+.xml:3396 plugins/webkit2gtk/webkit2gtk.xml:29
 msgid "Window"
 msgstr "Pencere"
 
-#: plugins/gtk+/gtk+.xml:362
+#: plugins/gtk+/gtk+.xml:342
 msgid "Header"
 msgstr "Başlık"
 
-#: plugins/gtk+/gtk+.xml:364
+#: plugins/gtk+/gtk+.xml:344
 msgid "Footer"
 msgstr "Dipnot"
 
-#: plugins/gtk+/gtk+.xml:366
+#: plugins/gtk+/gtk+.xml:346
 msgid "Paragraph"
 msgstr "Paragraf"
 
-#: plugins/gtk+/gtk+.xml:368
+#: plugins/gtk+/gtk+.xml:348
 msgid "Ruler"
 msgstr "Cetvel"
 
-#: plugins/gtk+/gtk+.xml:370
+#: plugins/gtk+/gtk+.xml:350
 msgid "Application"
 msgstr "Uygulama"
 
-#: plugins/gtk+/gtk+.xml:372
+#: plugins/gtk+/gtk+.xml:352
 msgid "Autocomplete"
 msgstr "Kendiliğinden tamamlama"
 
-#: plugins/gtk+/gtk+.xml:374
+#: plugins/gtk+/gtk+.xml:354
 msgid "Editbar"
 msgstr "Düzenleme Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:376
+#: plugins/gtk+/gtk+.xml:356
 msgid "Embedded"
 msgstr "Gömülü"
 
-#: plugins/gtk+/gtk+.xml:378 plugins/gtk+/glade-entry-editor.ui:43
+#: plugins/gtk+/gtk+.xml:358 plugins/gtk+/glade-entry-editor.ui:43
 msgid "Entry"
 msgstr "Girdi"
 
-#: plugins/gtk+/gtk+.xml:380
+#: plugins/gtk+/gtk+.xml:360
 msgid "Chart"
 msgstr "Çizelge"
 
-#: plugins/gtk+/gtk+.xml:382
+#: plugins/gtk+/gtk+.xml:362
 msgid "Caption"
 msgstr "Manşet"
 
-#: plugins/gtk+/gtk+.xml:384
+#: plugins/gtk+/gtk+.xml:364
 msgid "Document Frame"
 msgstr "Belge Çerçevesi"
 
-#: plugins/gtk+/gtk+.xml:386
+#: plugins/gtk+/gtk+.xml:366
 msgid "Heading"
 msgstr "Başlık"
 
-#: plugins/gtk+/gtk+.xml:388
+#: plugins/gtk+/gtk+.xml:368
 msgid "Page"
 msgstr "Sayfa"
 
-#: plugins/gtk+/gtk+.xml:390
+#: plugins/gtk+/gtk+.xml:370
 msgid "Section"
 msgstr "Bölüm"
 
-#: plugins/gtk+/gtk+.xml:392
+#: plugins/gtk+/gtk+.xml:372
 msgid "Redundant Object"
 msgstr "Yedek Nesne"
 
-#: plugins/gtk+/gtk+.xml:394
+#: plugins/gtk+/gtk+.xml:374
 msgid "Form"
 msgstr "Form"
 
-#: plugins/gtk+/gtk+.xml:396
+#: plugins/gtk+/gtk+.xml:376
 msgid "Link"
 msgstr "Bağ"
 
-#: plugins/gtk+/gtk+.xml:398
+#: plugins/gtk+/gtk+.xml:378
 msgid "Input Method Window"
 msgstr "Giriş Yöntemi Penceresi"
 
-#: plugins/gtk+/gtk+.xml:400
+#: plugins/gtk+/gtk+.xml:380
 msgid "Table Row"
 msgstr "Tablo Satırı"
 
-#: plugins/gtk+/gtk+.xml:402
+#: plugins/gtk+/gtk+.xml:382
 msgid "Tree Item"
 msgstr "Ağaç Ögesi"
 
-#: plugins/gtk+/gtk+.xml:404
+#: plugins/gtk+/gtk+.xml:384
 msgid "Document Spreadsheet"
 msgstr "Belge Hesap Tablosu"
 
-#: plugins/gtk+/gtk+.xml:406
+#: plugins/gtk+/gtk+.xml:386
 msgid "Document Presentation"
 msgstr "Belge Sunumu"
 
-#: plugins/gtk+/gtk+.xml:408
+#: plugins/gtk+/gtk+.xml:388
 msgid "Document Text"
 msgstr "Belge Metni"
 
-#: plugins/gtk+/gtk+.xml:410
+#: plugins/gtk+/gtk+.xml:390
 msgid "Document Web"
 msgstr "Document Web"
 
-#: plugins/gtk+/gtk+.xml:412
+#: plugins/gtk+/gtk+.xml:392
 msgid "Document Email"
 msgstr "Belge E-postası"
 
-#: plugins/gtk+/gtk+.xml:416 plugins/gtk+/gtk+.xml:2726
+#: plugins/gtk+/gtk+.xml:396 plugins/gtk+/gtk+.xml:2556
 msgid "List Box"
 msgstr "Liste Kutusu"
 
-#: plugins/gtk+/gtk+.xml:418
+#: plugins/gtk+/gtk+.xml:398
 msgid "Grouping"
 msgstr "Gruplama"
 
-#: plugins/gtk+/gtk+.xml:420
+#: plugins/gtk+/gtk+.xml:400
 msgid "Image Map"
 msgstr "Görüntü Eşlem"
 
-#: plugins/gtk+/gtk+.xml:422 plugins/gtk+/gtk+.xml:844
+#: plugins/gtk+/gtk+.xml:402 plugins/gtk+/gtk+.xml:803
 msgid "Notification"
 msgstr "Uyarı"
 
-#: plugins/gtk+/gtk+.xml:424 plugins/gtk+/gtk+.xml:3177
+#: plugins/gtk+/gtk+.xml:404 plugins/gtk+/gtk+.xml:2991
 msgid "Info Bar"
 msgstr "Bilgi Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:426 plugins/gtk+/gtk+.xml:2261
+#: plugins/gtk+/gtk+.xml:406 plugins/gtk+/gtk+.xml:2112
 msgid "Level Bar"
 msgstr "Düzey Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:428
+#: plugins/gtk+/gtk+.xml:408
 msgid "Title Bar"
 msgstr "Başlık Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:430
+#: plugins/gtk+/gtk+.xml:410
 msgid "Block Quote"
 msgstr "Blok Alıntı"
 
-#: plugins/gtk+/gtk+.xml:432
+#: plugins/gtk+/gtk+.xml:412
 msgid "Audio"
 msgstr "Ses"
 
-#: plugins/gtk+/gtk+.xml:434
+#: plugins/gtk+/gtk+.xml:414
 msgid "Video"
 msgstr "Video"
 
-#: plugins/gtk+/gtk+.xml:438
+#: plugins/gtk+/gtk+.xml:418
 msgid "Article"
 msgstr "Makale"
 
-#: plugins/gtk+/gtk+.xml:440
+#: plugins/gtk+/gtk+.xml:420
 msgid "Landmark"
 msgstr "Sınır noktası"
 
-#: plugins/gtk+/gtk+.xml:442
+#: plugins/gtk+/gtk+.xml:422
 msgid "Log"
 msgstr "Günlük"
 
-#: plugins/gtk+/gtk+.xml:444
+#: plugins/gtk+/gtk+.xml:424
 msgid "Marquee"
 msgstr "Afiş"
 
-#: plugins/gtk+/gtk+.xml:446
+#: plugins/gtk+/gtk+.xml:426
 msgid "Math"
 msgstr "Matematik"
 
-#: plugins/gtk+/gtk+.xml:448
+#: plugins/gtk+/gtk+.xml:428
 msgid "Rating"
 msgstr "Derecelendirme"
 
-#: plugins/gtk+/gtk+.xml:450
+#: plugins/gtk+/gtk+.xml:430
 msgid "Time"
 msgstr "Zaman"
 
-#: plugins/gtk+/gtk+.xml:452
+#: plugins/gtk+/gtk+.xml:432
 msgid "Description List"
 msgstr "Tanımlama Listesi"
 
-#: plugins/gtk+/gtk+.xml:454
+#: plugins/gtk+/gtk+.xml:434
 msgid "Description Term"
 msgstr "Tanımlama Terimi"
 
-#: plugins/gtk+/gtk+.xml:456
+#: plugins/gtk+/gtk+.xml:436
 msgid "Description Value"
 msgstr "Tanımlama Değeri"
 
-#: plugins/gtk+/gtk+.xml:458
+#: plugins/gtk+/gtk+.xml:438
 msgid "Generic object"
 msgstr "Jenerik nesne"
 
-#: plugins/gtk+/gtk+.xml:460
+#: plugins/gtk+/gtk+.xml:440
 msgid "Mathematical fraction"
 msgstr "Matematiksel kesir"
 
-#: plugins/gtk+/gtk+.xml:462
+#: plugins/gtk+/gtk+.xml:442
 msgid "A radical expression (in math)"
 msgstr "Köklü ifade (matematik)"
 
-#: plugins/gtk+/gtk+.xml:464
+#: plugins/gtk+/gtk+.xml:444
 msgid "Subscript text"
 msgstr "Altsimge metni"
 
-#: plugins/gtk+/gtk+.xml:466
+#: plugins/gtk+/gtk+.xml:446
 msgid "Superscript text"
 msgstr "Üstsimge metni"
 
-#: plugins/gtk+/gtk+.xml:468
+#: plugins/gtk+/gtk+.xml:448
 msgid "Footnote text"
 msgstr "Dipnot metni"
 
-#: plugins/gtk+/gtk+.xml:470
+#: plugins/gtk+/gtk+.xml:450
 msgid "Content deletion"
 msgstr "İçerik silme"
 
-#: plugins/gtk+/gtk+.xml:472
+#: plugins/gtk+/gtk+.xml:452
 msgid "Content insertion"
 msgstr "İçerik ekleme"
 
-#: plugins/gtk+/gtk+.xml:474
+#: plugins/gtk+/gtk+.xml:454
 msgid "Marked content"
 msgstr "İmlenen içerik"
 
-#: plugins/gtk+/gtk+.xml:476
+#: plugins/gtk+/gtk+.xml:456
 msgid "Change suggestion"
 msgstr "Değişim önerisi"
 
-#: plugins/gtk+/gtk+.xml:478
+#: plugins/gtk+/gtk+.xml:458
 msgid "Last Defined"
 msgstr "Son Tanımlanma"
 
-#: plugins/gtk+/gtk+.xml:483
+#: plugins/gtk+/gtk+.xml:462
 msgid "Controlled By"
 msgstr "Denetleyen"
 
-#: plugins/gtk+/gtk+.xml:488
+#: plugins/gtk+/gtk+.xml:467
 msgid "Indicates an object controlled by one or more target objects"
 msgstr ""
 "Bir nesnenin bir ya da daha çok hedef nesne tarafından denetlendiğini "
 "belirtir"
 
-#: plugins/gtk+/gtk+.xml:491
+#: plugins/gtk+/gtk+.xml:469
 msgid "Controller For"
 msgstr "Denetlenme"
 
-#: plugins/gtk+/gtk+.xml:496
+#: plugins/gtk+/gtk+.xml:474
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr ""
 "Bir nesnenin bir ya da daha çok hedef nesne için denetlendiğini belirtir"
 
-#: plugins/gtk+/gtk+.xml:499
+#: plugins/gtk+/gtk+.xml:476
 msgid "Labeled By"
 msgstr "Etiketleyen"
 
-#: plugins/gtk+/gtk+.xml:504
+#: plugins/gtk+/gtk+.xml:481
 msgid "Indicates an object is labeled by one or more target objects"
 msgstr ""
 "Bir nesnenin bir ya da daha çok hedef nesne tarafından etiketlendiğini "
 "gösterir"
 
-#: plugins/gtk+/gtk+.xml:507
+#: plugins/gtk+/gtk+.xml:483
 msgid "Label For"
 msgstr "Etiketlenme"
 
-#: plugins/gtk+/gtk+.xml:512
+#: plugins/gtk+/gtk+.xml:488
 msgid "Indicates an object is a label for one or more target objects"
 msgstr ""
 "Bir nesnenin bir ya da daha çok hedef nesne için etiket olduğunu belirtir"
 
-#: plugins/gtk+/gtk+.xml:515
+#: plugins/gtk+/gtk+.xml:490
 msgid "Member Of"
 msgstr "Üyesi"
 
-#: plugins/gtk+/gtk+.xml:520
+#: plugins/gtk+/gtk+.xml:495
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr ""
 "Bir nesnenin bir ya da daha çok hedef nesne grubunun üyesi olduğunu belirtir"
 
-#: plugins/gtk+/gtk+.xml:523
+#: plugins/gtk+/gtk+.xml:497
 msgid "Node Child Of"
 msgstr "Düğüm Alt Düğüm"
 
-#: plugins/gtk+/gtk+.xml:528
+#: plugins/gtk+/gtk+.xml:502
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
@@ -5172,11 +5234,11 @@ msgstr ""
 "belirtmesi yüzünden gösterilen ağaç tablosu içinde bir hücre olduğunu "
 "belirtir"
 
-#: plugins/gtk+/gtk+.xml:533
+#: plugins/gtk+/gtk+.xml:506
 msgid "Flows To"
 msgstr "Takip Edilen"
 
-#: plugins/gtk+/gtk+.xml:538
+#: plugins/gtk+/gtk+.xml:511
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -5184,11 +5246,11 @@ msgstr ""
 "Sıralı bir şekilde nesnenin başka bir AtkObject tarafından mantıksal olarak "
 "takip edilen bir içeriği olduğunu belirtir, (örneğin text-flow)"
 
-#: plugins/gtk+/gtk+.xml:543
+#: plugins/gtk+/gtk+.xml:515
 msgid "Flows From"
 msgstr "Takip"
 
-#: plugins/gtk+/gtk+.xml:548
+#: plugins/gtk+/gtk+.xml:520
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -5196,11 +5258,11 @@ msgstr ""
 "Nesnenin başka bir AtkObjectʼden sıralı bir yolla (örneğin text-flow) "
 "mantıksal olarak takip eden bir içeriğe sahip olduğunu belirtir"
 
-#: plugins/gtk+/gtk+.xml:553
+#: plugins/gtk+/gtk+.xml:524
 msgid "Subwindow Of"
 msgstr "Altpencere"
 
-#: plugins/gtk+/gtk+.xml:558
+#: plugins/gtk+/gtk+.xml:529
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
@@ -5208,11 +5270,11 @@ msgstr ""
 "Bir bileşene alt pencerenin eklenmiş olduğunu, ancak başka bir yolla bu "
 "bileşene hiçbir UI hiyerarşisi içinde bağlı olmadığını belirtir"
 
-#: plugins/gtk+/gtk+.xml:563
+#: plugins/gtk+/gtk+.xml:533
 msgid "Embeds"
 msgstr "Gömülü"
 
-#: plugins/gtk+/gtk+.xml:568
+#: plugins/gtk+/gtk+.xml:538
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
@@ -5220,11 +5282,11 @@ msgstr ""
 "Nesnenin sanal olarak başka bir nesnenin içeriğine gömüldüğünü belirtir, "
 "örneğin bu nesnenin içeriği başkasının içeriğinin çevresinde akar"
 
-#: plugins/gtk+/gtk+.xml:573
+#: plugins/gtk+/gtk+.xml:542
 msgid "Embedded By"
 msgstr "Gömen"
 
-#: plugins/gtk+/gtk+.xml:578
+#: plugins/gtk+/gtk+.xml:547
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
@@ -5232,27 +5294,27 @@ msgstr ""
 "'Gömülü'nün tersi, bu nesneninin içeriğinin sanal olarak başka bir nesne "
 "içinde gömülü olduğunu belirtir"
 
-#: plugins/gtk+/gtk+.xml:583
+#: plugins/gtk+/gtk+.xml:551
 msgid "Popup For"
 msgstr "Açılan Pencere"
 
-#: plugins/gtk+/gtk+.xml:588
+#: plugins/gtk+/gtk+.xml:556
 msgid "Indicates that an object is a popup for another object"
 msgstr "Nesnenin başka bir nesne için açılan pencere olduğunu belirtir"
 
-#: plugins/gtk+/gtk+.xml:591
+#: plugins/gtk+/gtk+.xml:558
 msgid "Parent Window Of"
 msgstr "Üst Penceresi"
 
-#: plugins/gtk+/gtk+.xml:596
+#: plugins/gtk+/gtk+.xml:563
 msgid "Indicates that an object is a parent window of another object"
 msgstr "Nesnenin başka bir nesnenin üst penceresi olduğunu belirtir"
 
-#: plugins/gtk+/gtk+.xml:599
+#: plugins/gtk+/gtk+.xml:565
 msgid "Described By"
 msgstr "Tanımlayan"
 
-#: plugins/gtk+/gtk+.xml:604
+#: plugins/gtk+/gtk+.xml:570
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
@@ -5260,11 +5322,11 @@ msgstr ""
 "Bu nesne hakkında başka bir nesnenin 'Etiketleyen'den daha çok tanımlayıcı "
 "bilgi sağladığını belirtir"
 
-#: plugins/gtk+/gtk+.xml:607
+#: plugins/gtk+/gtk+.xml:572
 msgid "Description For"
 msgstr "Tanımlanan"
 
-#: plugins/gtk+/gtk+.xml:612
+#: plugins/gtk+/gtk+.xml:577
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
@@ -5272,376 +5334,376 @@ msgstr ""
 "Nesnenin başka bir nesne hakkında tanımlayıcı bilgi içerdiğini belirtir; "
 "'Etiketi'nden daha ayrıntılıdır"
 
-#: plugins/gtk+/gtk+.xml:636
+#: plugins/gtk+/gtk+.xml:600
 msgid "Queue"
 msgstr "Sıra"
 
-#: plugins/gtk+/gtk+.xml:638
+#: plugins/gtk+/gtk+.xml:602
 msgid "Immediate"
 msgstr "Ani"
 
-#: plugins/gtk+/gtk+.xml:645
+#: plugins/gtk+/gtk+.xml:609
 msgid "Bin"
 msgstr "Teneke"
 
-#: plugins/gtk+/gtk+.xml:663 plugins/gtk+/gtk+.xml:2746
-#: plugins/gtk+/gtk+.xml:2814
+#: plugins/gtk+/gtk+.xml:626 plugins/gtk+/gtk+.xml:2573
+#: plugins/gtk+/gtk+.xml:2635
 msgid "Insert Before"
 msgstr "Başına Ekle"
 
-#: plugins/gtk+/gtk+.xml:664 plugins/gtk+/gtk+.xml:2747
-#: plugins/gtk+/gtk+.xml:2815
+#: plugins/gtk+/gtk+.xml:627 plugins/gtk+/gtk+.xml:2574
+#: plugins/gtk+/gtk+.xml:2636
 msgid "Insert After"
 msgstr "Sonuna Ekle"
 
-#: plugins/gtk+/gtk+.xml:665 plugins/gtk+/gtk+.xml:2590
+#: plugins/gtk+/gtk+.xml:628 plugins/gtk+/gtk+.xml:2423
 msgid "Remove Slot"
 msgstr "Slot Sil"
 
-#: plugins/gtk+/gtk+.xml:672 plugins/gtk+/gtk+.xml:738
-#: plugins/gtk+/gtk+.xml:2578
+#: plugins/gtk+/gtk+.xml:634 plugins/gtk+/gtk+.xml:699
+#: plugins/gtk+/gtk+.xml:2411
 msgid "Number of items"
 msgstr "Öge sayısı"
 
-#: plugins/gtk+/gtk+.xml:677
+#: plugins/gtk+/gtk+.xml:639
 msgid "The number of items in the box"
 msgstr "Kutudaki ögelerin sayısı"
 
-#: plugins/gtk+/gtk+.xml:682 plugins/gtk+/gtk+.xml:1379
+#: plugins/gtk+/gtk+.xml:644 plugins/gtk+/gtk+.xml:1298
 msgid "Top"
 msgstr "Üst"
 
-#: plugins/gtk+/gtk+.xml:686 plugins/gtk+/gtk+.xml:1381
+#: plugins/gtk+/gtk+.xml:648 plugins/gtk+/gtk+.xml:1300
 msgid "Bottom"
 msgstr "Alt"
 
-#: plugins/gtk+/gtk+.xml:689 plugins/gtk+/gtk+.xml:745
+#: plugins/gtk+/gtk+.xml:651 plugins/gtk+/gtk+.xml:706
 msgid "Center Child"
 msgstr "Merkezi Alt Öge"
 
-#: plugins/gtk+/gtk+.xml:713
+#: plugins/gtk+/gtk+.xml:674
 msgid "Horizontal Box"
 msgstr "Yatay Kutu"
 
-#: plugins/gtk+/gtk+.xml:718
+#: plugins/gtk+/gtk+.xml:680
 msgid "Vertical Box"
 msgstr "Dikey Kutu"
 
-#: plugins/gtk+/gtk+.xml:724
+#: plugins/gtk+/gtk+.xml:686
 msgid "Action Bar"
 msgstr "Eylem Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:743
+#: plugins/gtk+/gtk+.xml:704
 msgid "The number of items in the action bar"
 msgstr "Eylem çubuğundaki ögelerin sayısı"
 
-#: plugins/gtk+/gtk+.xml:771
+#: plugins/gtk+/gtk+.xml:730
 msgid "Accel Groups"
 msgstr "Hızlandırıcı Grupları"
 
-#: plugins/gtk+/gtk+.xml:776
+#: plugins/gtk+/gtk+.xml:735
 msgid "A list of accel groups to be added to this window"
 msgstr "Bu pencereye eklenecek hızlandırıcı grubu listesi"
 
-#: plugins/gtk+/gtk+.xml:779
+#: plugins/gtk+/gtk+.xml:738
 msgid "CSD"
 msgstr "CSD"
 
-#: plugins/gtk+/gtk+.xml:795
+#: plugins/gtk+/gtk+.xml:754
 msgid "North West"
 msgstr "Kuzey Batı"
 
-#: plugins/gtk+/gtk+.xml:797
+#: plugins/gtk+/gtk+.xml:756
 msgid "North"
 msgstr "Kuzey"
 
-#: plugins/gtk+/gtk+.xml:799
+#: plugins/gtk+/gtk+.xml:758
 msgid "North East"
 msgstr "Kuzey Doğu"
 
-#: plugins/gtk+/gtk+.xml:801
+#: plugins/gtk+/gtk+.xml:760
 msgid "West"
 msgstr "Batı"
 
-#: plugins/gtk+/gtk+.xml:805
+#: plugins/gtk+/gtk+.xml:764
 msgid "East"
 msgstr "Doğu"
 
-#: plugins/gtk+/gtk+.xml:807
+#: plugins/gtk+/gtk+.xml:766
 msgid "South West"
 msgstr "Güney Batı"
 
-#: plugins/gtk+/gtk+.xml:809
+#: plugins/gtk+/gtk+.xml:768
 msgid "South"
 msgstr "Güney"
 
-#: plugins/gtk+/gtk+.xml:811
+#: plugins/gtk+/gtk+.xml:770
 msgid "South East"
 msgstr "Güney Doğu"
 
-#: plugins/gtk+/gtk+.xml:813
+#: plugins/gtk+/gtk+.xml:772
 msgid "Static"
 msgstr "Sabit"
 
-#: plugins/gtk+/gtk+.xml:828
+#: plugins/gtk+/gtk+.xml:787
 msgid "Toolbar"
 msgstr "Araç Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:830
+#: plugins/gtk+/gtk+.xml:789
 msgid "Splash Screen"
 msgstr "Açılış Ekranı"
 
-#: plugins/gtk+/gtk+.xml:832
+#: plugins/gtk+/gtk+.xml:791
 msgid "Utility"
 msgstr "Araç"
 
-#: plugins/gtk+/gtk+.xml:834
+#: plugins/gtk+/gtk+.xml:793
 msgid "Dock"
 msgstr "Sabit"
 
-#: plugins/gtk+/gtk+.xml:836
+#: plugins/gtk+/gtk+.xml:795
 msgid "Desktop"
 msgstr "Masaüstü"
 
-#: plugins/gtk+/gtk+.xml:838
+#: plugins/gtk+/gtk+.xml:797
 msgid "Drop Down Menu"
 msgstr "Açılır Menü"
 
-#: plugins/gtk+/gtk+.xml:842
+#: plugins/gtk+/gtk+.xml:801
 msgid "Tooltip"
 msgstr "Balon"
 
-#: plugins/gtk+/gtk+.xml:854
+#: plugins/gtk+/gtk+.xml:813
 msgid "Toplevel"
 msgstr "Üst düzey"
 
-#: plugins/gtk+/gtk+.xml:856
+#: plugins/gtk+/gtk+.xml:815
 msgid "Popup"
 msgstr "Belirene"
 
-#: plugins/gtk+/gtk+.xml:858
+#: plugins/gtk+/gtk+.xml:817
 msgid "Offscreen"
 msgstr "Ekran dışı"
 
-#: plugins/gtk+/gtk+.xml:875
+#: plugins/gtk+/gtk+.xml:834
 msgid "Mouse"
 msgstr "Fare"
 
-#: plugins/gtk+/gtk+.xml:877
+#: plugins/gtk+/gtk+.xml:836
 msgid "Always Center"
 msgstr "Her Zaman Ortala"
 
-#: plugins/gtk+/gtk+.xml:879
+#: plugins/gtk+/gtk+.xml:838
 msgid "Center on Parent"
 msgstr "Üst üzerinde Ortala"
 
-#: plugins/gtk+/gtk+.xml:907
+#: plugins/gtk+/gtk+.xml:862
 msgid "Offscreen Window"
 msgstr "Ekrandışı Pencere"
 
-#: plugins/gtk+/gtk+.xml:952
+#: plugins/gtk+/gtk+.xml:905
 msgid "Application Window"
 msgstr "Uygulama Penceresi"
 
-#: plugins/gtk+/gtk+.xml:955
+#: plugins/gtk+/gtk+.xml:907
 msgid "Overlay"
 msgstr "Kaplama"
 
-#: plugins/gtk+/gtk+.xml:964
+#: plugins/gtk+/gtk+.xml:916
 msgid "Menu Shell"
 msgstr "Menü Kabuğu"
 
-#: plugins/gtk+/gtk+.xml:979 plugins/gtk+/gtk+.xml:1162
-#: plugins/gtk+/gtk+.xml:1217 plugins/gtk+/gtk+.xml:2773
-#: plugins/gtk+/gtk+.xml:2823 plugins/gtk+/gtk+.xml:3579
+#: plugins/gtk+/gtk+.xml:929 plugins/gtk+/gtk+.xml:1102
+#: plugins/gtk+/gtk+.xml:1152 plugins/gtk+/gtk+.xml:2598
+#: plugins/gtk+/gtk+.xml:2642 plugins/gtk+/gtk+.xml:3374
 #: plugins/gtk+/glade-button-editor.ui:394
 msgid "Position"
 msgstr "Pozisyon"
 
-#: plugins/gtk+/gtk+.xml:984
+#: plugins/gtk+/gtk+.xml:934
 msgid "The position of the menu item in the menu shell"
 msgstr "Menü kabuğundaki menü ögesinin pozisyonu"
 
-#: plugins/gtk+/gtk+.xml:1003 plugins/gtk+/gtk+.xml:1076
-#: plugins/gtk+/gtk+.xml:1110 plugins/gtk+/gtk+.xml:1192
-#: plugins/gtk+/gtk+.xml:2128 plugins/gtk+/gtk+.xml:2904
-#: plugins/gtk+/gtk+.xml:3805 plugins/gtk+/gtk+.xml:3880
-#: plugins/gtk+/gtk+.xml:3896 plugins/gtk+/gtk+.xml:4001
-#: plugins/gtk+/gtk+.xml:4071 plugins/gtk+/gtk+.xml:4124
-#: plugins/gtk+/gtk+.xml:4182 plugins/gtk+/gtk+.xml:5572
+#: plugins/gtk+/gtk+.xml:951 plugins/gtk+/gtk+.xml:1019
+#: plugins/gtk+/gtk+.xml:1052 plugins/gtk+/gtk+.xml:1129
+#: plugins/gtk+/gtk+.xml:1987 plugins/gtk+/gtk+.xml:2722
+#: plugins/gtk+/gtk+.xml:3596 plugins/gtk+/gtk+.xml:3668
+#: plugins/gtk+/gtk+.xml:3683 plugins/gtk+/gtk+.xml:3784
+#: plugins/gtk+/gtk+.xml:3849 plugins/gtk+/gtk+.xml:3897
+#: plugins/gtk+/gtk+.xml:3948 plugins/gtk+/gtk+.xml:5246
 msgid "Edit…"
 msgstr "Düzenle…"
 
-#: plugins/gtk+/gtk+.xml:1010
+#: plugins/gtk+/gtk+.xml:958
 msgid "Use Underline"
 msgstr "Altçizgi Kullan"
 
-#: plugins/gtk+/gtk+.xml:1014 plugins/gtk+/gtk+.xml:1295
-#: plugins/gtk+/gtk+.xml:1790 plugins/gtk+/gtk+.xml:1897
-#: plugins/gtk+/gtk+.xml:2949
+#: plugins/gtk+/gtk+.xml:960 plugins/gtk+/gtk+.xml:1223
+#: plugins/gtk+/gtk+.xml:1676 plugins/gtk+/gtk+.xml:1770
+#: plugins/gtk+/gtk+.xml:2766
 msgid "Related Action"
 msgstr "İlgili Eylem"
 
-#: plugins/gtk+/gtk+.xml:1016 plugins/gtk+/gtk+.xml:1297
-#: plugins/gtk+/gtk+.xml:1792 plugins/gtk+/gtk+.xml:1904
-#: plugins/gtk+/gtk+.xml:2951
+#: plugins/gtk+/gtk+.xml:961 plugins/gtk+/gtk+.xml:1224
+#: plugins/gtk+/gtk+.xml:1677 plugins/gtk+/gtk+.xml:1776
+#: plugins/gtk+/gtk+.xml:2767
 msgid "Use Action Appearance"
 msgstr "Eylem Görünümünü Kullan"
 
-#: plugins/gtk+/gtk+.xml:1019 plugins/gtk+/gtk+.xml:1316
-#: plugins/gtk+/gtk+.xml:1795 plugins/gtk+/gtk+.xml:1907
+#: plugins/gtk+/gtk+.xml:963 plugins/gtk+/gtk+.xml:1240
+#: plugins/gtk+/gtk+.xml:1679 plugins/gtk+/gtk+.xml:1778
 msgid "Action Name"
 msgstr "Eylem Adı"
 
-#: plugins/gtk+/gtk+.xml:1020 plugins/gtk+/gtk+.xml:1317
-#: plugins/gtk+/gtk+.xml:1796 plugins/gtk+/gtk+.xml:1908
-#: plugins/gtk+/gtk+.xml:3142
+#: plugins/gtk+/gtk+.xml:964 plugins/gtk+/gtk+.xml:1241
+#: plugins/gtk+/gtk+.xml:1680 plugins/gtk+/gtk+.xml:1779
+#: plugins/gtk+/gtk+.xml:2957
 msgid "Action Target"
 msgstr "Eylem Hedefi"
 
-#: plugins/gtk+/gtk+.xml:1024 plugins/gtk+/gtk+.xml:1799
+#: plugins/gtk+/gtk+.xml:966 plugins/gtk+/gtk+.xml:1682
 msgid "Click"
 msgstr "Tıklama"
 
-#: plugins/gtk+/gtk+.xml:1028 plugins/gtk+/gtk+.xml:1803
+#: plugins/gtk+/gtk+.xml:970 plugins/gtk+/gtk+.xml:1686
 msgid "Set the description of the Click atk action"
 msgstr "Tıklama atk eyleminin tanımını ayala"
 
-#: plugins/gtk+/gtk+.xml:1034
+#: plugins/gtk+/gtk+.xml:976
 msgid "Image Menu Item"
 msgstr "Resim Menü Ögesi"
 
-#: plugins/gtk+/gtk+.xml:1041
+#: plugins/gtk+/gtk+.xml:983
 msgid "Stock Item"
 msgstr "Depo Ögesi"
 
-#: plugins/gtk+/gtk+.xml:1045
+#: plugins/gtk+/gtk+.xml:987
 msgid "The stock item for this menu item"
 msgstr "Bu menü ögesi için depo ögesi"
 
-#: plugins/gtk+/gtk+.xml:1051 plugins/gtk+/gtk+.xml:3774
+#: plugins/gtk+/gtk+.xml:993 plugins/gtk+/gtk+.xml:3565
 msgid "Accel Group"
 msgstr "Hızlandırıcı Grubu"
 
-#: plugins/gtk+/gtk+.xml:1065
+#: plugins/gtk+/gtk+.xml:1008
 msgid "Separator Menu Item"
 msgstr "Ayraç Menü Ögesi"
 
-#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:5554
+#: plugins/gtk+/gtk+.xml:1025 plugins/gtk+/gtk+.xml:5224
 msgid "Left to Right"
 msgstr "Soldan Sağa"
 
-#: plugins/gtk+/gtk+.xml:1084 plugins/gtk+/gtk+.xml:5556
+#: plugins/gtk+/gtk+.xml:1027 plugins/gtk+/gtk+.xml:5226
 msgid "Right to Left"
 msgstr "Sağdan Sola"
 
-#: plugins/gtk+/gtk+.xml:1086
+#: plugins/gtk+/gtk+.xml:1029
 msgid "Top to Bottom"
 msgstr "Üstten Aşağı"
 
-#: plugins/gtk+/gtk+.xml:1088
+#: plugins/gtk+/gtk+.xml:1031
 msgid "Bottom to Top"
 msgstr "Aşağıdan Yukarıya"
 
-#: plugins/gtk+/gtk+.xml:1117 plugins/gtk+/gtk+.xml:2631
-#: plugins/gtk+/gtk+.xml:3761 plugins/gtk+/gtk+.xml:4023
+#: plugins/gtk+/gtk+.xml:1059 plugins/gtk+/gtk+.xml:2464
+#: plugins/gtk+/gtk+.xml:3552 plugins/gtk+/gtk+.xml:3804
 #: plugins/gtk+/glade-misc-editor.ui:65 plugins/gtk+/glade-misc-editor.ui:127
 #: plugins/gtk+/glade-scrolled-window-editor.ui:156
 msgid "Horizontal"
 msgstr "Yatay"
 
-#: plugins/gtk+/gtk+.xml:1119 plugins/gtk+/gtk+.xml:2632
-#: plugins/gtk+/gtk+.xml:3763 plugins/gtk+/gtk+.xml:4025
+#: plugins/gtk+/gtk+.xml:1061 plugins/gtk+/gtk+.xml:2465
+#: plugins/gtk+/gtk+.xml:3554 plugins/gtk+/gtk+.xml:3806
 #: plugins/gtk+/glade-misc-editor.ui:82 plugins/gtk+/glade-misc-editor.ui:144
 #: plugins/gtk+/glade-scrolled-window-editor.ui:174
 msgid "Vertical"
 msgstr "Dikey"
 
-#: plugins/gtk+/gtk+.xml:1125
+#: plugins/gtk+/gtk+.xml:1067
 msgid "Icons only"
 msgstr "Yalnızca simge"
 
-#: plugins/gtk+/gtk+.xml:1127
+#: plugins/gtk+/gtk+.xml:1069
 msgid "Text only"
 msgstr "Yalnızca metin"
 
-#: plugins/gtk+/gtk+.xml:1129
+#: plugins/gtk+/gtk+.xml:1071
 msgid "Text below icons"
 msgstr "Metin simgelerin altında"
 
-#: plugins/gtk+/gtk+.xml:1131
+#: plugins/gtk+/gtk+.xml:1073
 msgid "Text beside icons"
 msgstr "Simge yanında metin"
 
-#: plugins/gtk+/gtk+.xml:1141 plugins/gtk+/gtk+.xml:2305
+#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:2155
 msgid "A symbolic icon size for the stock icon"
 msgstr "Depo simgesi için sembolik simge boyutu"
 
-#: plugins/gtk+/gtk+.xml:1148
+#: plugins/gtk+/gtk+.xml:1089
 msgid "Small Toolbar"
 msgstr "Küçük Araç Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:1150
+#: plugins/gtk+/gtk+.xml:1091
 msgid "Large Toolbar"
 msgstr "Büyük Araç Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:1154
+#: plugins/gtk+/gtk+.xml:1095
 msgid "Drag &amp; Drop"
 msgstr "Taşı ve Bırak"
 
-#: plugins/gtk+/gtk+.xml:1167
+#: plugins/gtk+/gtk+.xml:1107
 msgid "The position of the tool item in the toolbar"
 msgstr "Araç çubuğundaki araç ögesinin pozisyonu"
 
-#: plugins/gtk+/gtk+.xml:1181
+#: plugins/gtk+/gtk+.xml:1119
 msgid "Tool Palette"
 msgstr "Araç Paleti"
 
-#: plugins/gtk+/gtk+.xml:1203 plugins/gtk+/gtk+.xml:1692
-#: plugins/gtk+/gtk+.xml:3158 plugins/gtk+/gtk+.xml:3241
-#: plugins/gtk+/gtk+.xml:4043 plugins/gtk+/gtk+.xml:4156
+#: plugins/gtk+/gtk+.xml:1139 plugins/gtk+/gtk+.xml:1587
+#: plugins/gtk+/gtk+.xml:2972 plugins/gtk+/gtk+.xml:3053
+#: plugins/gtk+/gtk+.xml:3823 plugins/gtk+/gtk+.xml:3924
 msgid "Whether to start scrolling at less than minimum or natural width"
 msgstr "Asgari ya da doğal genişlikten daha azından kaydırmaya başlansın mı"
 
-#: plugins/gtk+/gtk+.xml:1206
+#: plugins/gtk+/gtk+.xml:1142
 msgid "Minimum"
 msgstr "Asgari"
 
-#: plugins/gtk+/gtk+.xml:1208
+#: plugins/gtk+/gtk+.xml:1144
 msgid "Natural"
 msgstr "Doğal"
 
-#: plugins/gtk+/gtk+.xml:1212 plugins/gtk+/gtk+.xml:1695
-#: plugins/gtk+/gtk+.xml:3161 plugins/gtk+/gtk+.xml:3244
-#: plugins/gtk+/gtk+.xml:4046 plugins/gtk+/gtk+.xml:4159
+#: plugins/gtk+/gtk+.xml:1148 plugins/gtk+/gtk+.xml:1590
+#: plugins/gtk+/gtk+.xml:2975 plugins/gtk+/gtk+.xml:3056
+#: plugins/gtk+/gtk+.xml:3826 plugins/gtk+/gtk+.xml:3927
 msgid "Whether to start scrolling at less than minimum or natural height"
 msgstr "Asgari ya da doğal yükseklikten daha azından kaydırmaya başlansın mı"
 
-#: plugins/gtk+/gtk+.xml:1222
+#: plugins/gtk+/gtk+.xml:1157
 msgid "The position of the tool item group in the palette"
 msgstr "Paletteki araç ögesi grubunun konumu"
 
-#: plugins/gtk+/gtk+.xml:1261
+#: plugins/gtk+/gtk+.xml:1192
 msgid "Middle"
 msgstr "Orta"
 
-#: plugins/gtk+/gtk+.xml:1271
+#: plugins/gtk+/gtk+.xml:1202
 msgid "Half"
 msgstr "Yarım"
 
-#: plugins/gtk+/gtk+.xml:1286
+#: plugins/gtk+/gtk+.xml:1216
 msgid "GtkToolItem"
 msgstr "GtkToolItem"
 
-#: plugins/gtk+/gtk+.xml:1303
+#: plugins/gtk+/gtk+.xml:1228
 msgid "Separator Tool Item"
 msgstr "Ayraç Araç Ögesi"
 
-#: plugins/gtk+/gtk+.xml:1305 plugins/gtk+/glade-tool-button-editor.ui:66
+#: plugins/gtk+/gtk+.xml:1230 plugins/gtk+/glade-tool-button-editor.ui:66
 msgid "Tool Button"
 msgstr "Araç Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1334
+#: plugins/gtk+/gtk+.xml:1256
 msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
@@ -5649,344 +5711,344 @@ msgstr ""
 "Ögede gösterilecek standart simge (GTK+ stoğundan ya da bir simge "
 "üreticisinden öge seçin)"
 
-#: plugins/gtk+/gtk+.xml:1343
+#: plugins/gtk+/gtk+.xml:1265
 msgid "Toggle Tool Button"
 msgstr "Çevirme Araç Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1349
+#: plugins/gtk+/gtk+.xml:1271
 msgid "Radio Tool Button"
 msgstr "Radyo Araç Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1356
+#: plugins/gtk+/gtk+.xml:1277
 msgid "Menu Tool Button"
 msgstr "Menü Araç Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1370
+#: plugins/gtk+/gtk+.xml:1289
 msgid "Handle Box"
 msgstr "Tutaç Kutusu"
 
-#: plugins/gtk+/gtk+.xml:1375 plugins/gtk+/gtk+.xml:1452
-#: plugins/gtk+/gtk+.xml:3082 plugins/gtk+/gtk+.xml:4372
+#: plugins/gtk+/gtk+.xml:1294 plugins/gtk+/gtk+.xml:1369
+#: plugins/gtk+/gtk+.xml:2901 plugins/gtk+/gtk+.xml:4123
 msgid "Left"
 msgstr "Sol"
 
-#: plugins/gtk+/gtk+.xml:1377 plugins/gtk+/gtk+.xml:1454
-#: plugins/gtk+/gtk+.xml:3084 plugins/gtk+/gtk+.xml:4376
+#: plugins/gtk+/gtk+.xml:1296 plugins/gtk+/gtk+.xml:1371
+#: plugins/gtk+/gtk+.xml:2903 plugins/gtk+/gtk+.xml:4127
 msgid "Right"
 msgstr "Sağ"
 
-#: plugins/gtk+/gtk+.xml:1390
+#: plugins/gtk+/gtk+.xml:1309
 msgid "In"
 msgstr "İçerde"
 
-#: plugins/gtk+/gtk+.xml:1392
+#: plugins/gtk+/gtk+.xml:1311
 msgid "Out"
 msgstr "Dışarı"
 
-#: plugins/gtk+/gtk+.xml:1394
+#: plugins/gtk+/gtk+.xml:1313
 msgid "Etched In"
 msgstr "İçe Girmiş"
 
-#: plugins/gtk+/gtk+.xml:1396
+#: plugins/gtk+/gtk+.xml:1315
 msgid "Etched Out"
 msgstr "Dışa Çıkmış"
 
-#: plugins/gtk+/gtk+.xml:1427
+#: plugins/gtk+/gtk+.xml:1345
 msgid "Attributes"
 msgstr "Öznitelikler"
 
-#: plugins/gtk+/gtk+.xml:1432
+#: plugins/gtk+/gtk+.xml:1350
 msgid "The pango attributes for this label"
 msgstr "Bu etiket için pango öznitelikleri"
 
-#: plugins/gtk+/gtk+.xml:1464 plugins/gtk+/gtk+.xml:1682
+#: plugins/gtk+/gtk+.xml:1381 plugins/gtk+/gtk+.xml:1578
 msgid "Word"
 msgstr "Sözcük"
 
-#: plugins/gtk+/gtk+.xml:1466 plugins/gtk+/gtk+.xml:1680
+#: plugins/gtk+/gtk+.xml:1383 plugins/gtk+/gtk+.xml:1576
 msgid "Character"
 msgstr "Karakter"
 
-#: plugins/gtk+/gtk+.xml:1468 plugins/gtk+/gtk+.xml:1684
+#: plugins/gtk+/gtk+.xml:1385 plugins/gtk+/gtk+.xml:1580
 msgid "Word Character"
 msgstr "Sözcük Karakteri"
 
-#: plugins/gtk+/gtk+.xml:1488
+#: plugins/gtk+/gtk+.xml:1402
 msgid "Text Entry"
 msgstr "Metin Girişi"
 
-#: plugins/gtk+/gtk+.xml:1505
+#: plugins/gtk+/gtk+.xml:1418
 msgid "Free Form"
 msgstr "Serbest Biçem"
 
-#: plugins/gtk+/gtk+.xml:1507
+#: plugins/gtk+/gtk+.xml:1420
 msgid "Alpha"
 msgstr "Alfa"
 
-#: plugins/gtk+/gtk+.xml:1509 plugins/gtk+/gtk+.xml:3782
+#: plugins/gtk+/gtk+.xml:1422 plugins/gtk+/gtk+.xml:3573
 msgid "Digits"
 msgstr "Rakamlar"
 
-#: plugins/gtk+/gtk+.xml:1511
+#: plugins/gtk+/gtk+.xml:1424
 msgid "Number"
 msgstr "Sayı"
 
-#: plugins/gtk+/gtk+.xml:1513
+#: plugins/gtk+/gtk+.xml:1426
 msgid "Phone"
 msgstr "Telefon"
 
-#: plugins/gtk+/gtk+.xml:1515 plugins/gtk+/glade-about-dialog-editor.ui:287
+#: plugins/gtk+/gtk+.xml:1428 plugins/gtk+/glade-about-dialog-editor.ui:287
 #: plugins/webkit2gtk/webkit2gtk.xml:18
 msgid "URL"
 msgstr "URL"
 
-#: plugins/gtk+/gtk+.xml:1517
+#: plugins/gtk+/gtk+.xml:1430
 msgid "Email"
 msgstr "E-posta"
 
-#: plugins/gtk+/gtk+.xml:1521
+#: plugins/gtk+/gtk+.xml:1434
 msgid "Password"
 msgstr "Parola"
 
-#: plugins/gtk+/gtk+.xml:1523
+#: plugins/gtk+/gtk+.xml:1436
 msgid "Pin Code"
 msgstr "Pin Kodu"
 
-#: plugins/gtk+/gtk+.xml:1533
+#: plugins/gtk+/gtk+.xml:1446
 msgid "Spellcheck"
 msgstr "Yazım Denetimi"
 
-#: plugins/gtk+/gtk+.xml:1535
+#: plugins/gtk+/gtk+.xml:1448
 msgid "No Spellcheck"
 msgstr "Yazım Denetimi Yok"
 
-#: plugins/gtk+/gtk+.xml:1537
+#: plugins/gtk+/gtk+.xml:1450
 msgid "Word Completion"
 msgstr "Sözcük Tamamlama"
 
-#: plugins/gtk+/gtk+.xml:1539
+#: plugins/gtk+/gtk+.xml:1452
 msgid "Lowercase"
 msgstr "Küçük harf"
 
-#: plugins/gtk+/gtk+.xml:1541
+#: plugins/gtk+/gtk+.xml:1454
 msgid "Uppercase Chars"
 msgstr "Büyük Harfler"
 
-#: plugins/gtk+/gtk+.xml:1543
+#: plugins/gtk+/gtk+.xml:1456
 msgid "Uppercase Words"
 msgstr "Büyük Harfli Sözcükler"
 
-#: plugins/gtk+/gtk+.xml:1545
+#: plugins/gtk+/gtk+.xml:1458
 msgid "Uppercase Sentences"
 msgstr "Büyük Harfli Cümleler"
 
-#: plugins/gtk+/gtk+.xml:1547
+#: plugins/gtk+/gtk+.xml:1460
 msgid "Inhibit On-screen Keyboard"
 msgstr "Ekran Klavyesini Engelle"
 
-#: plugins/gtk+/gtk+.xml:1549
+#: plugins/gtk+/gtk+.xml:1462
 msgid "Vertical Writing"
 msgstr "Dikey Yazım"
 
-#: plugins/gtk+/gtk+.xml:1551
+#: plugins/gtk+/gtk+.xml:1464
 msgid "Emoji Support"
 msgstr "Emoji Desteği"
 
-#: plugins/gtk+/gtk+.xml:1553
+#: plugins/gtk+/gtk+.xml:1466
 msgid "No Emoji Support"
 msgstr "Emoji Desteği Yok"
 
-#: plugins/gtk+/gtk+.xml:1575
+#: plugins/gtk+/gtk+.xml:1486
 msgid "Primary Stock Icon"
 msgstr "Birincil Depo Simgesi"
 
-#: plugins/gtk+/gtk+.xml:1577
+#: plugins/gtk+/gtk+.xml:1487
 msgid "Secondary Stock Icon"
 msgstr "İkincil Depo Simgesi"
 
-#: plugins/gtk+/gtk+.xml:1578
+#: plugins/gtk+/gtk+.xml:1488
 msgid "Primary Icon Pixbuf"
 msgstr "Birincil Simge Pixbufʼı"
 
-#: plugins/gtk+/gtk+.xml:1579
+#: plugins/gtk+/gtk+.xml:1489
 msgid "Secondary Icon Pixbuf"
 msgstr "İkincil Simge Pixbufʼı"
 
-#: plugins/gtk+/gtk+.xml:1581
+#: plugins/gtk+/gtk+.xml:1490
 msgid "Primary Icon Name"
 msgstr "Birincil Simge Adı"
 
-#: plugins/gtk+/gtk+.xml:1583
+#: plugins/gtk+/gtk+.xml:1491
 msgid "Secondary Icon Name"
 msgstr "İkincil Simge Adı"
 
-#: plugins/gtk+/gtk+.xml:1585
+#: plugins/gtk+/gtk+.xml:1492
 msgid "Primary Icon Activatable"
 msgstr "Birincil Simge Etkinleştirilebilir"
 
-#: plugins/gtk+/gtk+.xml:1587
+#: plugins/gtk+/gtk+.xml:1493
 msgid "Secondary Icon Activatable"
 msgstr "İkincil Simge Etkinleştirilebilir"
 
-#: plugins/gtk+/gtk+.xml:1589
+#: plugins/gtk+/gtk+.xml:1494
 msgid "Primary Icon Sensitive"
 msgstr "Birincil Simge Duyarlı"
 
-#: plugins/gtk+/gtk+.xml:1591
+#: plugins/gtk+/gtk+.xml:1495
 msgid "Secondary Icon Sensitive"
 msgstr "İkincil Simge Duyarlı"
 
-#: plugins/gtk+/gtk+.xml:1592
+#: plugins/gtk+/gtk+.xml:1496
 msgid "Progress Fraction"
 msgstr "İlerleme Parçası"
 
-#: plugins/gtk+/gtk+.xml:1593
+#: plugins/gtk+/gtk+.xml:1497
 msgid "Progress Pulse Step"
 msgstr "İlerleme Darbe Adımı"
 
-#: plugins/gtk+/gtk+.xml:1599
+#: plugins/gtk+/gtk+.xml:1501
 msgid "Primary Icon Tooltip Text"
 msgstr "Birincil Simge Balonu Metni"
 
-#: plugins/gtk+/gtk+.xml:1601
+#: plugins/gtk+/gtk+.xml:1502
 msgid "Secondary Icon Tooltip Text"
 msgstr "İkincil Simge Balonu Metni"
 
-#: plugins/gtk+/gtk+.xml:1603
+#: plugins/gtk+/gtk+.xml:1503
 msgid "Primary Icon Tooltip Markup"
 msgstr "Birincil Simge Balonu Makyajı"
 
-#: plugins/gtk+/gtk+.xml:1605
+#: plugins/gtk+/gtk+.xml:1504
 msgid "Secondary Icon Tooltip Markup"
 msgstr "İkincil Simge Balonu Makyajı"
 
-#: plugins/gtk+/gtk+.xml:1639 plugins/gtk+/gtk+.xml:3225
+#: plugins/gtk+/gtk+.xml:1536 plugins/gtk+/gtk+.xml:3036
 msgid "Activate"
 msgstr "Aktifleştirme"
 
-#: plugins/gtk+/gtk+.xml:1643 plugins/gtk+/gtk+.xml:3229
+#: plugins/gtk+/gtk+.xml:1540 plugins/gtk+/gtk+.xml:3040
 msgid "Set the description of the Activate atk action"
 msgstr "Aktifleştirme atk eyleminin tanımını ayala"
 
-#: plugins/gtk+/gtk+.xml:1648
+#: plugins/gtk+/gtk+.xml:1546
 msgid "Search Entry"
 msgstr "Arama Girdisi"
 
-#: plugins/gtk+/gtk+.xml:1650
+#: plugins/gtk+/gtk+.xml:1548
 msgid "Text View"
 msgstr "Metin Görünümü"
 
-#: plugins/gtk+/gtk+.xml:1700
+#: plugins/gtk+/gtk+.xml:1595
 msgid "Search Bar"
 msgstr "Arama Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:1734
+#: plugins/gtk+/gtk+.xml:1626
 msgid "Reject"
 msgstr "Reddet"
 
-#: plugins/gtk+/gtk+.xml:1736
+#: plugins/gtk+/gtk+.xml:1628
 msgid "Accept"
 msgstr "Kabul Et"
 
-#: plugins/gtk+/gtk+.xml:1738
+#: plugins/gtk+/gtk+.xml:1630
 msgid "Delete Event"
 msgstr "Olayı Sil"
 
-#: plugins/gtk+/gtk+.xml:1740
+#: plugins/gtk+/gtk+.xml:1632
 msgid "OK"
 msgstr "Tamam"
 
-#: plugins/gtk+/gtk+.xml:1742 plugins/gtk+/gtk+.xml:3466
+#: plugins/gtk+/gtk+.xml:1634 plugins/gtk+/gtk+.xml:3267
 msgid "Cancel"
 msgstr "İptal"
 
-#: plugins/gtk+/gtk+.xml:1744 plugins/gtk+/gtk+.xml:3464
+#: plugins/gtk+/gtk+.xml:1636 plugins/gtk+/gtk+.xml:3265
 msgid "Close"
 msgstr "Kapat"
 
-#: plugins/gtk+/gtk+.xml:1750
+#: plugins/gtk+/gtk+.xml:1642
 msgid "Apply"
 msgstr "Uygula"
 
-#: plugins/gtk+/gtk+.xml:1752
+#: plugins/gtk+/gtk+.xml:1644
 msgid "Help"
 msgstr "Yardım"
 
-#: plugins/gtk+/gtk+.xml:1768 plugins/gtk+/glade-button-editor.ui:351
+#: plugins/gtk+/gtk+.xml:1657 plugins/gtk+/glade-button-editor.ui:351
 msgid "Stock Button"
 msgstr "Depo Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1772
+#: plugins/gtk+/gtk+.xml:1661
 msgid "The stock item for this button"
 msgstr "Bu düğme için depo ögesi"
 
-#: plugins/gtk+/gtk+.xml:1781
+#: plugins/gtk+/gtk+.xml:1669
 msgid "Response ID"
 msgstr "Yanıt IDʼsi"
 
-#: plugins/gtk+/gtk+.xml:1785
+#: plugins/gtk+/gtk+.xml:1673
 msgid "The response ID of this button in a dialog"
 msgstr "Bir pencerede bu düğmenin yanıt IDʼsi"
 
-#: plugins/gtk+/gtk+.xml:1807 plugins/gtk+/gtk+.xml:2171
+#: plugins/gtk+/gtk+.xml:1689 plugins/gtk+/gtk+.xml:2027
 msgid "Press"
 msgstr "Basma"
 
-#: plugins/gtk+/gtk+.xml:1811 plugins/gtk+/gtk+.xml:2175
+#: plugins/gtk+/gtk+.xml:1693 plugins/gtk+/gtk+.xml:2031
 msgid "Set the description of the Press atk action"
 msgstr "Basma atk eyleminin tanımını ayala"
 
-#: plugins/gtk+/gtk+.xml:1816
+#: plugins/gtk+/gtk+.xml:1696
 msgid "Release"
 msgstr "Bırakma"
 
-#: plugins/gtk+/gtk+.xml:1820
+#: plugins/gtk+/gtk+.xml:1700
 msgid "Set the description of the Release atk action"
 msgstr "Bırakma atk eyleminin tanımını ayala"
 
-#: plugins/gtk+/gtk+.xml:1842
+#: plugins/gtk+/gtk+.xml:1720
 msgid "Check Button"
 msgstr "Seçim Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1871 plugins/gtk+/gtk+.xml:3268
+#: plugins/gtk+/gtk+.xml:1747 plugins/gtk+/gtk+.xml:3080
 #: plugins/webkit2gtk/webkit2gtk.xml:49
 msgid "Always"
 msgstr "Her zaman"
 
-#: plugins/gtk+/gtk+.xml:1873
+#: plugins/gtk+/gtk+.xml:1749
 msgid "If Valid"
 msgstr "Eğer Geçerliyse"
 
-#: plugins/gtk+/gtk+.xml:1887
+#: plugins/gtk+/gtk+.xml:1763
 msgid "Switch"
 msgstr "Anahtar"
 
-#: plugins/gtk+/gtk+.xml:1916
+#: plugins/gtk+/gtk+.xml:1786
 #: plugins/gtk+/glade-file-chooser-button-editor.ui:69
 msgid "File Chooser Button"
 msgstr "Dosya Seçici Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1945
+#: plugins/gtk+/gtk+.xml:1811
 msgid "Save"
 msgstr "Kaydet"
 
-#: plugins/gtk+/gtk+.xml:1947
+#: plugins/gtk+/gtk+.xml:1813
 msgid "Open"
 msgstr "Aç"
 
-#: plugins/gtk+/gtk+.xml:1949
+#: plugins/gtk+/gtk+.xml:1815
 msgid "Select Folder"
 msgstr "Klasör Seç"
 
-#: plugins/gtk+/gtk+.xml:1951
+#: plugins/gtk+/gtk+.xml:1817
 msgid "Create Folder"
 msgstr "Klasör Oluştur"
 
-#: plugins/gtk+/gtk+.xml:1964
+#: plugins/gtk+/gtk+.xml:1830
 msgid "Scale Button"
 msgstr "Ölçek Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1971
+#: plugins/gtk+/gtk+.xml:1837
 msgid ""
 "The names of the icons to be used by the scale button. The first item in the "
 "array will be used in the button when the current value is the lowest value, "
@@ -5998,329 +6060,329 @@ msgstr ""
 "değerindeyken kullanılacak. Takip eden diğer tüm simgeler tüm diğer değerler "
 "arasında değer aralığına göre eşit olarak dağıtılarak kullanılacak"
 
-#: plugins/gtk+/gtk+.xml:1988
+#: plugins/gtk+/gtk+.xml:1852
 msgid "Volume Button"
 msgstr "Ses Düzeyi Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:1995
+#: plugins/gtk+/gtk+.xml:1858
 msgid "File Chooser Widget"
 msgstr "Dosya Seçici Parçacığı"
 
-#: plugins/gtk+/gtk+.xml:2029
+#: plugins/gtk+/gtk+.xml:1888
 msgid "Application Chooser Widget"
 msgstr "Uygulama Seçici Parçacığı"
 
-#: plugins/gtk+/gtk+.xml:2048
+#: plugins/gtk+/gtk+.xml:1906
 msgid "Places Sidebar"
 msgstr "Yerler Kenar Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:2056
+#: plugins/gtk+/gtk+.xml:1914
 msgid "New Tab"
 msgstr "Yeni Sekme"
 
-#: plugins/gtk+/gtk+.xml:2058
+#: plugins/gtk+/gtk+.xml:1916
 msgid "New Window"
 msgstr "Yeni Pencere"
 
-#: plugins/gtk+/gtk+.xml:2068
+#: plugins/gtk+/gtk+.xml:1932
 msgid "Color Button"
 msgstr "Renk Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:2085
+#: plugins/gtk+/gtk+.xml:1949
 msgid "Font Button"
 msgstr "Yazıtipi Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:2161 plugins/gtk+/gtk+.xml:3270
-#: plugins/gtk+/gtk+.xml:4093
+#: plugins/gtk+/gtk+.xml:2018 plugins/gtk+/gtk+.xml:3082
+#: plugins/gtk+/gtk+.xml:3869
 msgid "Automatic"
 msgstr "Kendiliğinden"
 
-#: plugins/gtk+/gtk+.xml:2163
+#: plugins/gtk+/gtk+.xml:2020
 msgid "On"
 msgstr "Açık"
 
-#: plugins/gtk+/gtk+.xml:2165
+#: plugins/gtk+/gtk+.xml:2022
 msgid "Off"
 msgstr "Kapalı"
 
-#: plugins/gtk+/gtk+.xml:2181
+#: plugins/gtk+/gtk+.xml:2036
 msgid "Combo Box Text"
 msgstr "Çoklu Seçim Kutusu Metni"
 
-#: plugins/gtk+/gtk+.xml:2208
+#: plugins/gtk+/gtk+.xml:2061
 msgid "Items"
 msgstr "Ögeler"
 
-#: plugins/gtk+/gtk+.xml:2213
+#: plugins/gtk+/gtk+.xml:2066
 msgid "The list of items to show in the combo box"
 msgstr "Çoklu seçim kutusu içinde gösterilecek ögelerin listesi"
 
-#: plugins/gtk+/gtk+.xml:2219
+#: plugins/gtk+/gtk+.xml:2071
 msgid "Application Chooser Button"
 msgstr "Uygulama Seçici Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:2247
+#: plugins/gtk+/gtk+.xml:2098
 msgid "Progress Bar"
 msgstr "İlerleme Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:2272 plugins/gtk+/gtk+.xml:2845
+#: plugins/gtk+/gtk+.xml:2123 plugins/gtk+/gtk+.xml:2663
 msgid "Continuous"
 msgstr "Sürekli"
 
-#: plugins/gtk+/gtk+.xml:2274
+#: plugins/gtk+/gtk+.xml:2125
 msgid "Discrete"
 msgstr "Sınırlı"
 
-#: plugins/gtk+/gtk+.xml:2296
+#: plugins/gtk+/gtk+.xml:2147
 msgid "Resource Name"
 msgstr "Kaynak Adı"
 
-#: plugins/gtk+/gtk+.xml:2300 plugins/gtk+/gtk+.xml:5388
+#: plugins/gtk+/gtk+.xml:2150 plugins/gtk+/gtk+.xml:5066
 msgid "Icon Size"
 msgstr "Simge Boyutu"
 
-#: plugins/gtk+/gtk+.xml:2323
+#: plugins/gtk+/gtk+.xml:2172
 msgid "Dialog Box"
 msgstr "Pencere Kutusu"
 
-#: plugins/gtk+/gtk+.xml:2357 plugins/gtk+/gtk+.xml:2409
+#: plugins/gtk+/gtk+.xml:2202 plugins/gtk+/gtk+.xml:2251
 msgid "Insert Row"
 msgstr "Sütun Ekle"
 
-#: plugins/gtk+/gtk+.xml:2358 plugins/gtk+/gtk+.xml:2362
-#: plugins/gtk+/gtk+.xml:2410 plugins/gtk+/gtk+.xml:2414
+#: plugins/gtk+/gtk+.xml:2203 plugins/gtk+/gtk+.xml:2207
+#: plugins/gtk+/gtk+.xml:2252 plugins/gtk+/gtk+.xml:2256
 msgid "Before"
 msgstr "Önce"
 
-#: plugins/gtk+/gtk+.xml:2361 plugins/gtk+/gtk+.xml:2413
+#: plugins/gtk+/gtk+.xml:2206 plugins/gtk+/gtk+.xml:2255
 msgid "Insert Column"
 msgstr "Sütun Ekle"
 
-#: plugins/gtk+/gtk+.xml:2365 plugins/gtk+/gtk+.xml:2417
+#: plugins/gtk+/gtk+.xml:2210 plugins/gtk+/gtk+.xml:2259
 msgid "Remove Row"
 msgstr "Satır Sil"
 
-#: plugins/gtk+/gtk+.xml:2366 plugins/gtk+/gtk+.xml:2418
+#: plugins/gtk+/gtk+.xml:2211 plugins/gtk+/gtk+.xml:2260
 msgid "Remove Column"
 msgstr "Sütun Sil"
 
-#: plugins/gtk+/gtk+.xml:2378 plugins/gtk+/gtk+.xml:3013
+#: plugins/gtk+/gtk+.xml:2221 plugins/gtk+/gtk+.xml:2829
 #: plugins/gtk+/glade-widget-editor.ui:752
 msgid "Expand"
 msgstr "Genişlet"
 
-#: plugins/gtk+/gtk+.xml:2380
+#: plugins/gtk+/gtk+.xml:2223
 msgid "Shrink"
 msgstr "Daralt"
 
-#: plugins/gtk+/gtk+.xml:2428 plugins/gtk+/glade-grid-editor.ui:131
+#: plugins/gtk+/gtk+.xml:2269 plugins/gtk+/glade-grid-editor.ui:131
 msgid "Rows"
 msgstr "Satırlar"
 
-#: plugins/gtk+/gtk+.xml:2432
+#: plugins/gtk+/gtk+.xml:2273
 msgid "The number of rows for this grid"
 msgstr "Bu ızgaradaki satır sayısı"
 
-#: plugins/gtk+/gtk+.xml:2434 plugins/gtk+/gtk+.xml:3934
-#: plugins/gtk+/gtk+.xml:3960 plugins/gtk+/glade-grid-editor.ui:149
+#: plugins/gtk+/gtk+.xml:2275 plugins/gtk+/gtk+.xml:3719
+#: plugins/gtk+/gtk+.xml:3744 plugins/gtk+/glade-grid-editor.ui:149
 msgid "Columns"
 msgstr "Sütunlar"
 
-#: plugins/gtk+/gtk+.xml:2438
+#: plugins/gtk+/gtk+.xml:2279
 msgid "The number of columns for this grid"
 msgstr "Bu ızgaradaki sütun sayısı"
 
-#: plugins/gtk+/gtk+.xml:2471
+#: plugins/gtk+/gtk+.xml:2310
 msgid "Horizontal Panes"
 msgstr "Yatay Paneller"
 
-#: plugins/gtk+/gtk+.xml:2476
+#: plugins/gtk+/gtk+.xml:2316
 msgid "Vertical Panes"
 msgstr "Dikey Paneller"
 
-#: plugins/gtk+/gtk+.xml:2482
+#: plugins/gtk+/gtk+.xml:2322
 msgid "Notebook"
 msgstr "Not Defteri"
 
-#: plugins/gtk+/gtk+.xml:2505 plugins/gtk+/gtk+.xml:2609
+#: plugins/gtk+/gtk+.xml:2343 plugins/gtk+/gtk+.xml:2442
 msgid "Insert Page Before"
 msgstr "Sayfa Önüne Ekle"
 
-#: plugins/gtk+/gtk+.xml:2506 plugins/gtk+/gtk+.xml:2610
+#: plugins/gtk+/gtk+.xml:2344 plugins/gtk+/gtk+.xml:2443
 msgid "Insert Page After"
 msgstr "Sayfa Sonrasına Ekle"
 
-#: plugins/gtk+/gtk+.xml:2507 plugins/gtk+/gtk+.xml:2611
+#: plugins/gtk+/gtk+.xml:2345 plugins/gtk+/gtk+.xml:2444
 msgid "Remove Page"
 msgstr "Sayfa Sil"
 
-#: plugins/gtk+/gtk+.xml:2513 plugins/gtk+/gtk+.xml:2626
+#: plugins/gtk+/gtk+.xml:2350 plugins/gtk+/gtk+.xml:2459
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
 "Geçerli etkin sayfayı düzenlemek için ayarlayın, bu özellik kaydedilmeyecek"
 
-#: plugins/gtk+/gtk+.xml:2521 plugins/gtk+/gtk+.xml:2614
+#: plugins/gtk+/gtk+.xml:2357 plugins/gtk+/gtk+.xml:2447
 msgid "Number of pages"
 msgstr "Sayfa sayısı"
 
-#: plugins/gtk+/gtk+.xml:2526
+#: plugins/gtk+/gtk+.xml:2362
 msgid "The number of pages in the notebook"
 msgstr "Bu not defterindeki sayfaların sayısı"
 
-#: plugins/gtk+/gtk+.xml:2529
+#: plugins/gtk+/gtk+.xml:2364
 msgid "Start Action"
 msgstr "Başlama Eylemi"
 
-#: plugins/gtk+/gtk+.xml:2534
+#: plugins/gtk+/gtk+.xml:2369
 msgid "End Action"
 msgstr "Bitiş Eylemi"
 
-#: plugins/gtk+/gtk+.xml:2547
+#: plugins/gtk+/gtk+.xml:2380
 msgid "HeaderBar"
 msgstr "BaşlıkÇubuğu"
 
-#: plugins/gtk+/gtk+.xml:2565
+#: plugins/gtk+/gtk+.xml:2398
 msgid "Reserve space for subtitle"
 msgstr "Altyazı için yedek alan"
 
-#: plugins/gtk+/gtk+.xml:2566
+#: plugins/gtk+/gtk+.xml:2399
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr ""
 "Altyazı devingen olarak değiştikçe başlık çubuğunun yüksekliğini aynı tut."
 
-#: plugins/gtk+/gtk+.xml:2573
+#: plugins/gtk+/gtk+.xml:2406
 msgid "Custom Title"
 msgstr "Özel Başlık"
 
-#: plugins/gtk+/gtk+.xml:2583
+#: plugins/gtk+/gtk+.xml:2416
 msgid "The number of items in the header bar"
 msgstr "Başlık çubuğundaki ögelerin sayısı"
 
-#: plugins/gtk+/gtk+.xml:2593
+#: plugins/gtk+/gtk+.xml:2426
 msgid "Add Slot"
 msgstr "Yuva Ekle"
 
-#: plugins/gtk+/gtk+.xml:2619
+#: plugins/gtk+/gtk+.xml:2452
 msgid "The number of pages in the stack"
 msgstr "Yığındaki sayfa sayısı"
 
-#: plugins/gtk+/gtk+.xml:2621
+#: plugins/gtk+/gtk+.xml:2454
 msgid "Edit page"
 msgstr "Sayfayı düzenle"
 
-#: plugins/gtk+/gtk+.xml:2629
+#: plugins/gtk+/gtk+.xml:2462
 msgid "Visible child"
 msgstr "Görünür alt çocuk"
 
-#: plugins/gtk+/gtk+.xml:2636 plugins/gtk+/gtk+.xml:2691
+#: plugins/gtk+/gtk+.xml:2469 plugins/gtk+/gtk+.xml:2522
 msgid "Crossfade"
 msgstr "Yumuşak geçiş"
 
-#: plugins/gtk+/gtk+.xml:2637 plugins/gtk+/gtk+.xml:2693
+#: plugins/gtk+/gtk+.xml:2470 plugins/gtk+/gtk+.xml:2524
 msgid "Slide Right"
 msgstr "Sağa Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2638 plugins/gtk+/gtk+.xml:2695
+#: plugins/gtk+/gtk+.xml:2471 plugins/gtk+/gtk+.xml:2526
 msgid "Slide Left"
 msgstr "Sola Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2639 plugins/gtk+/gtk+.xml:2697
+#: plugins/gtk+/gtk+.xml:2472 plugins/gtk+/gtk+.xml:2528
 msgid "Slide Up"
 msgstr "Yukarı Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2640 plugins/gtk+/gtk+.xml:2699
+#: plugins/gtk+/gtk+.xml:2473 plugins/gtk+/gtk+.xml:2530
 msgid "Slide Down"
 msgstr "Aşağı Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2641
+#: plugins/gtk+/gtk+.xml:2474
 msgid "Slide Left-Right"
 msgstr "Sola-Sağa Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2642
+#: plugins/gtk+/gtk+.xml:2475
 msgid "Slide Up-Down"
 msgstr "Yukarı-Aşağı Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2643
+#: plugins/gtk+/gtk+.xml:2476
 msgid "Move Over Up"
 msgstr "Üste Taşı"
 
-#: plugins/gtk+/gtk+.xml:2644
+#: plugins/gtk+/gtk+.xml:2477
 msgid "Move Over Down"
 msgstr "Aşağı Taşı"
 
-#: plugins/gtk+/gtk+.xml:2645
+#: plugins/gtk+/gtk+.xml:2478
 msgid "Move Over Left"
 msgstr "Sola Taşı"
 
-#: plugins/gtk+/gtk+.xml:2646
+#: plugins/gtk+/gtk+.xml:2479
 msgid "Move Over Right"
 msgstr "Sağa Taşı"
 
-#: plugins/gtk+/gtk+.xml:2647
+#: plugins/gtk+/gtk+.xml:2480
 msgid "Move Over Up-Down"
 msgstr "Yukarı-Aşağı Taşı"
 
-#: plugins/gtk+/gtk+.xml:2648
+#: plugins/gtk+/gtk+.xml:2481
 msgid "Move Over Down-Up"
 msgstr "Aşağı-Yukarı Taşı"
 
-#: plugins/gtk+/gtk+.xml:2649
+#: plugins/gtk+/gtk+.xml:2482
 msgid "Move Over Left-Right"
 msgstr "Sol-Sağ Taşı"
 
-#: plugins/gtk+/gtk+.xml:2650
+#: plugins/gtk+/gtk+.xml:2483
 msgid "Move Over Right-Left"
 msgstr "Sağ-Sol Taşı"
 
-#: plugins/gtk+/gtk+.xml:2651
+#: plugins/gtk+/gtk+.xml:2484
 msgid "Move Under Up"
 msgstr "Aşağı Yukarı Taşı"
 
-#: plugins/gtk+/gtk+.xml:2652
+#: plugins/gtk+/gtk+.xml:2485
 msgid "Move Under Down"
 msgstr "Aşağı Taşı"
 
-#: plugins/gtk+/gtk+.xml:2653
+#: plugins/gtk+/gtk+.xml:2486
 msgid "Move Under Left"
 msgstr "Sol Aşağı Taşı"
 
-#: plugins/gtk+/gtk+.xml:2654
+#: plugins/gtk+/gtk+.xml:2487
 msgid "Move Under Right"
 msgstr "Sağ Aşağı Taşı"
 
-#: plugins/gtk+/gtk+.xml:2664
+#: plugins/gtk+/gtk+.xml:2497
 msgid "Stack Switcher"
 msgstr "Yığın Değiştirici"
 
-#: plugins/gtk+/gtk+.xml:2680
+#: plugins/gtk+/gtk+.xml:2511
 msgid "Stack Sidebar"
 msgstr "Yığın Kenar Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:2682
+#: plugins/gtk+/gtk+.xml:2513
 msgid "Revealer"
 msgstr "Gösterici"
 
-#: plugins/gtk+/gtk+.xml:2742
+#: plugins/gtk+/gtk+.xml:2570
 msgid "Add Row"
 msgstr "Satır Ekle"
 
-#: plugins/gtk+/gtk+.xml:2757 plugins/gtk+/gtk+.xml:4727
+#: plugins/gtk+/gtk+.xml:2583 plugins/gtk+/gtk+.xml:4450
 msgid "Single"
 msgstr "Tek"
 
-#: plugins/gtk+/gtk+.xml:2759
+#: plugins/gtk+/gtk+.xml:2585
 msgid "Browse"
 msgstr "Göz at"
 
-#: plugins/gtk+/gtk+.xml:2761
+#: plugins/gtk+/gtk+.xml:2587
 msgid "Multiple"
 msgstr "Çoklu"
 
-#: plugins/gtk+/gtk+.xml:2764
+#: plugins/gtk+/gtk+.xml:2590
 msgid "Placeholder"
 msgstr "Yer tutucu"
 
-#: plugins/gtk+/gtk+.xml:2768
+#: plugins/gtk+/gtk+.xml:2594
 msgid ""
 "Whether this listbox should have a placeholder widget that is shown in the "
 "list when it doesn't display any visible children"
@@ -6328,216 +6390,216 @@ msgstr ""
 "Bu liste kutusunun, herhangi bir görünür alt nesne sergilemezken listede "
 "görünen alan tutucu parçacığının olup olmaması"
 
-#: plugins/gtk+/gtk+.xml:2778
+#: plugins/gtk+/gtk+.xml:2603
 msgid "The position of the row item in the listbox"
 msgstr "Satır ögesinin liste kutusundaki konumu"
 
-#: plugins/gtk+/gtk+.xml:2789
+#: plugins/gtk+/gtk+.xml:2613
 msgid "List Box Row"
 msgstr "Liste Kutusu Satırı"
 
-#: plugins/gtk+/gtk+.xml:2796
+#: plugins/gtk+/gtk+.xml:2620
 msgid "Flow Box"
 msgstr "Akış Kutusu"
 
-#: plugins/gtk+/gtk+.xml:2810
+#: plugins/gtk+/gtk+.xml:2632
 msgid "Add Child"
 msgstr "Alt Öge Ekle"
 
-#: plugins/gtk+/gtk+.xml:2828
+#: plugins/gtk+/gtk+.xml:2647
 msgid "The position of the child in the flowbox"
 msgstr "Alt ögenin akış kutusundaki konumu"
 
-#: plugins/gtk+/gtk+.xml:2834
+#: plugins/gtk+/gtk+.xml:2652
 msgid "Flow Box Child"
 msgstr "Akış Kutusu Alt Ögesi"
 
-#: plugins/gtk+/gtk+.xml:2836
+#: plugins/gtk+/gtk+.xml:2654
 msgid "Range"
 msgstr "Aralık"
 
-#: plugins/gtk+/gtk+.xml:2847
+#: plugins/gtk+/gtk+.xml:2665
 msgid "Discontinuous"
 msgstr "Kesintili"
 
-#: plugins/gtk+/gtk+.xml:2849
+#: plugins/gtk+/gtk+.xml:2667
 msgid "Delayed"
 msgstr "Ertelenmiş"
 
-#: plugins/gtk+/gtk+.xml:2862 plugins/gtk+/gtk+.xml:2974
+#: plugins/gtk+/gtk+.xml:2680 plugins/gtk+/gtk+.xml:2789
 msgid "The number of digits to round the value to when the value changes"
 msgstr "Değerin değer değiştiğinde yuvarlanacağı basamak sayısı"
 
-#: plugins/gtk+/gtk+.xml:2867
+#: plugins/gtk+/gtk+.xml:2685
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr ""
 "Boşluk alanından tokmağa doğru olan alan aşağıdan mı soldan mı vurgulansın"
 
-#: plugins/gtk+/gtk+.xml:2880
+#: plugins/gtk+/gtk+.xml:2697
 msgid "Horizontal Scale"
 msgstr "Yatay Ölçek"
 
-#: plugins/gtk+/gtk+.xml:2885
+#: plugins/gtk+/gtk+.xml:2703
 msgid "Vertical Scale"
 msgstr "Dikey Ölçek"
 
-#: plugins/gtk+/gtk+.xml:2917
+#: plugins/gtk+/gtk+.xml:2735
 msgid "Flip Horizontally"
 msgstr "Yatay Döndür"
 
-#: plugins/gtk+/gtk+.xml:2919
+#: plugins/gtk+/gtk+.xml:2737
 msgid "Flip Vertically"
 msgstr "Dikey Döndür"
 
-#: plugins/gtk+/gtk+.xml:2921
+#: plugins/gtk+/gtk+.xml:2739
 msgid "Slide Horizontally"
 msgstr "Yatay Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2923
+#: plugins/gtk+/gtk+.xml:2741
 msgid "Slide Vertically"
 msgstr "Dikey Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2925
+#: plugins/gtk+/gtk+.xml:2743
 msgid "Resize Horizontally"
 msgstr "Yatay Yeniden Boyutlandır"
 
-#: plugins/gtk+/gtk+.xml:2927
+#: plugins/gtk+/gtk+.xml:2745
 msgid "Resize Vertically"
 msgstr "Dikey Yeniden Boyutlandır"
 
-#: plugins/gtk+/gtk+.xml:2929
+#: plugins/gtk+/gtk+.xml:2747
 msgid "Flip Both Sides"
 msgstr "İki Tarafı Döndür"
 
-#: plugins/gtk+/gtk+.xml:2931
+#: plugins/gtk+/gtk+.xml:2749
 msgid "Slide Both Sides"
 msgstr "İki Tarafı Kaydır"
 
-#: plugins/gtk+/gtk+.xml:2933
+#: plugins/gtk+/gtk+.xml:2751
 msgid "Resize Both Sides"
 msgstr "İki Tarafı Yeniden Boyutlandır"
 
-#: plugins/gtk+/gtk+.xml:2968
+#: plugins/gtk+/gtk+.xml:2783
 msgid "Scrollbar"
 msgstr "Kaydırma Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:2985
+#: plugins/gtk+/gtk+.xml:2800
 msgid "Horizontal Scrollbar"
 msgstr "Yatay Kaydırma Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:2990
+#: plugins/gtk+/gtk+.xml:2806
 msgid "Vertical Scrollbar"
 msgstr "Dikey Kaydırma Çubuğu"
 
-#: plugins/gtk+/gtk+.xml:2996
+#: plugins/gtk+/gtk+.xml:2812
 msgid "Button Box"
 msgstr "Düğme Kutusu"
 
-#: plugins/gtk+/gtk+.xml:3001
+#: plugins/gtk+/gtk+.xml:2817
 msgid "Default"
 msgstr "Öntanımlı"
 
-#: plugins/gtk+/gtk+.xml:3003
+#: plugins/gtk+/gtk+.xml:2819
 msgid "Spread"
 msgstr "Yay"
 
-#: plugins/gtk+/gtk+.xml:3005
+#: plugins/gtk+/gtk+.xml:2821
 msgid "Edge"
 msgstr "Kenar"
 
-#: plugins/gtk+/gtk+.xml:3019
+#: plugins/gtk+/gtk+.xml:2835
 msgid "Horizontal Button Box"
 msgstr "Yatay Düğme Kutusu"
 
-#: plugins/gtk+/gtk+.xml:3024
+#: plugins/gtk+/gtk+.xml:2841
 msgid "Vertical Button Box"
 msgstr "Dikey Düğme Kutusu"
 
-#: plugins/gtk+/gtk+.xml:3037
+#: plugins/gtk+/gtk+.xml:2855
 msgid "Horizontal Separator"
 msgstr "Yatay Ayraç"
 
-#: plugins/gtk+/gtk+.xml:3047
+#: plugins/gtk+/gtk+.xml:2866
 msgid "Vertical Separator"
 msgstr "Dikey Ayıraç"
 
-#: plugins/gtk+/gtk+.xml:3070
+#: plugins/gtk+/gtk+.xml:2889
 msgid "Accel Label"
 msgstr "Hızlandırıcı Etiketi"
 
-#: plugins/gtk+/gtk+.xml:3078
+#: plugins/gtk+/gtk+.xml:2897
 msgid "Up"
 msgstr "Yukarı"
 
-#: plugins/gtk+/gtk+.xml:3080
+#: plugins/gtk+/gtk+.xml:2899
 msgid "Down"
 msgstr "Aşağı"
 
-#: plugins/gtk+/gtk+.xml:3099
+#: plugins/gtk+/gtk+.xml:2917
 msgid "Menu Button"
 msgstr "Menü Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:3111
+#: plugins/gtk+/gtk+.xml:2929
 msgid "Lock Button"
 msgstr "Kilit Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:3146
+#: plugins/gtk+/gtk+.xml:2961
 msgid "Layout"
 msgstr "Düzen"
 
-#: plugins/gtk+/gtk+.xml:3166 plugins/gtk+/gtk+.xml:4095
+#: plugins/gtk+/gtk+.xml:2980 plugins/gtk+/gtk+.xml:3871
 msgid "Fixed"
 msgstr "Sabit"
 
-#: plugins/gtk+/gtk+.xml:3175
+#: plugins/gtk+/gtk+.xml:2989
 msgid "OpenGL Area"
 msgstr "OpenGL Alanı"
 
-#: plugins/gtk+/gtk+.xml:3188
+#: plugins/gtk+/gtk+.xml:3002
 msgid "Info"
 msgstr "Bilgi"
 
-#: plugins/gtk+/gtk+.xml:3190
+#: plugins/gtk+/gtk+.xml:3004
 msgid "Warning"
 msgstr "Uyarı"
 
-#: plugins/gtk+/gtk+.xml:3192
+#: plugins/gtk+/gtk+.xml:3006
 msgid "Question"
 msgstr "Soru"
 
-#: plugins/gtk+/gtk+.xml:3194 plugins/gtk+/gtk+.xml:4733
-#: plugins/gtk+/gtk+.xml:4735 plugins/gtk+/gtk+.xml:4737
-#: plugins/gtk+/gtk+.xml:4739
+#: plugins/gtk+/gtk+.xml:3008 plugins/gtk+/gtk+.xml:4456
+#: plugins/gtk+/gtk+.xml:4458 plugins/gtk+/gtk+.xml:4460
+#: plugins/gtk+/gtk+.xml:4462
 msgid "Error"
 msgstr "Hata"
 
-#: plugins/gtk+/gtk+.xml:3272 plugins/webkit2gtk/webkit2gtk.xml:51
+#: plugins/gtk+/gtk+.xml:3084 plugins/webkit2gtk/webkit2gtk.xml:51
 msgid "Never"
 msgstr "Asla"
 
-#: plugins/gtk+/gtk+.xml:3274
+#: plugins/gtk+/gtk+.xml:3086
 msgid "External"
 msgstr "Harici"
 
-#: plugins/gtk+/gtk+.xml:3281
+#: plugins/gtk+/gtk+.xml:3093
 msgid "Top Left"
 msgstr "Üst Sol"
 
-#: plugins/gtk+/gtk+.xml:3283
+#: plugins/gtk+/gtk+.xml:3095
 msgid "Bottom Left"
 msgstr "Sol Alt"
 
-#: plugins/gtk+/gtk+.xml:3285
+#: plugins/gtk+/gtk+.xml:3097
 msgid "Top Right"
 msgstr "Üst Sağ"
 
-#: plugins/gtk+/gtk+.xml:3287
+#: plugins/gtk+/gtk+.xml:3099
 msgid "Bottom Right"
 msgstr "Sağ Alt"
 
-#: plugins/gtk+/gtk+.xml:3291
+#: plugins/gtk+/gtk+.xml:3103
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
@@ -6545,71 +6607,71 @@ msgstr ""
 "Kaplama ile kaydırma etkinse, kaydırma çubukları yalnızca fare varsa "
 "geleneksel parçacıklar olarak eklenir"
 
-#: plugins/gtk+/gtk+.xml:3305
+#: plugins/gtk+/gtk+.xml:3117
 msgid "About Dialog"
 msgstr "Hakkında Penceresi"
 
-#: plugins/gtk+/gtk+.xml:3331
+#: plugins/gtk+/gtk+.xml:3141
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3333
+#: plugins/gtk+/gtk+.xml:3143
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3335
+#: plugins/gtk+/gtk+.xml:3145
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
-#: plugins/gtk+/gtk+.xml:3337
+#: plugins/gtk+/gtk+.xml:3147
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3341
+#: plugins/gtk+/gtk+.xml:3151
 msgid "MIT X11"
 msgstr "MIT X11"
 
-#: plugins/gtk+/gtk+.xml:3343
+#: plugins/gtk+/gtk+.xml:3153
 msgid "Artistic"
 msgstr "Sanatsal"
 
-#: plugins/gtk+/gtk+.xml:3345
+#: plugins/gtk+/gtk+.xml:3155
 msgid "GPL 2.0 Only"
 msgstr "Yalnızca GPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3347
+#: plugins/gtk+/gtk+.xml:3157
 msgid "GPL 3.0 Only"
 msgstr "Yalnızca GPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3349
+#: plugins/gtk+/gtk+.xml:3159
 msgid "LGPL 2.1 Only"
 msgstr "Yalnızca LGPL 2.1"
 
-#: plugins/gtk+/gtk+.xml:3351
+#: plugins/gtk+/gtk+.xml:3161
 msgid "LGPL 3.0 Only"
 msgstr "Yalnızca LGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3353
+#: plugins/gtk+/gtk+.xml:3163
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3355
+#: plugins/gtk+/gtk+.xml:3165
 msgid "AGPL 3.0 Only"
 msgstr "Yalnızca AGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3357
+#: plugins/gtk+/gtk+.xml:3167
 msgid "BSD 3"
 msgstr "BSD 3"
 
-#: plugins/gtk+/gtk+.xml:3359
+#: plugins/gtk+/gtk+.xml:3169
 msgid "Apache 2.0"
 msgstr "Apache 2.0"
 
-#: plugins/gtk+/gtk+.xml:3361
+#: plugins/gtk+/gtk+.xml:3171
 msgid "MPL 2.0"
 msgstr "MPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3375
+#: plugins/gtk+/gtk+.xml:3182
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -6619,79 +6681,79 @@ msgstr ""
 "işaretleyebilirsiniz ve bir ad/adres atayabilirisniz aksi taktirde tüm "
 "çevirenleri listeleyin ve bu dizginin çevirilebilir işaretini kaldırın"
 
-#: plugins/gtk+/gtk+.xml:3384
+#: plugins/gtk+/gtk+.xml:3190
 msgid "Color Selection Dialog"
 msgstr "Renk Seçim Penceresi"
 
-#: plugins/gtk+/gtk+.xml:3397
+#: plugins/gtk+/gtk+.xml:3203
 msgid "File Chooser Dialog"
 msgstr "Dosya Seçici Penceresi"
 
-#: plugins/gtk+/gtk+.xml:3419
+#: plugins/gtk+/gtk+.xml:3223
 msgid "Font Selection Dialog"
 msgstr "Yazıtipi Seçim Penceresi"
 
-#: plugins/gtk+/gtk+.xml:3433
+#: plugins/gtk+/gtk+.xml:3236
 msgid "Application Chooser Dialog"
 msgstr "Uygulama Seçici Penceresi"
 
-#: plugins/gtk+/gtk+.xml:3441
+#: plugins/gtk+/gtk+.xml:3244
 msgid "Message Dialog"
 msgstr "İleti Penceresi"
 
-#: plugins/gtk+/gtk+.xml:3462
+#: plugins/gtk+/gtk+.xml:3263
 msgid "Ok"
 msgstr "Tamam"
 
-#: plugins/gtk+/gtk+.xml:3468
+#: plugins/gtk+/gtk+.xml:3269
 msgid "Yes, No"
 msgstr "Evet, Hayır"
 
-#: plugins/gtk+/gtk+.xml:3470
+#: plugins/gtk+/gtk+.xml:3271
 msgid "Ok, Cancel"
 msgstr "Tamam, İptal"
 
-#: plugins/gtk+/gtk+.xml:3476
+#: plugins/gtk+/gtk+.xml:3277
 msgid "Color Selection"
 msgstr "Renk Seçimi"
 
-#: plugins/gtk+/gtk+.xml:3485
+#: plugins/gtk+/gtk+.xml:3285
 msgid "Color Chooser Widget"
 msgstr "Renk Seçici Parçacık"
 
-#: plugins/gtk+/gtk+.xml:3498
+#: plugins/gtk+/gtk+.xml:3296
 msgid "Color Chooser Dialog"
 msgstr "Renk Seçici Pencere"
 
-#: plugins/gtk+/gtk+.xml:3500
+#: plugins/gtk+/gtk+.xml:3298
 msgid "Font Chooser Widget"
 msgstr "Yazı Tipi Seçme Parçacığı"
 
-#: plugins/gtk+/gtk+.xml:3520
+#: plugins/gtk+/gtk+.xml:3315
 msgid "Font Chooser Dialog"
 msgstr "Yazı Tipi Seçme Penceresi"
 
-#: plugins/gtk+/gtk+.xml:3529
+#: plugins/gtk+/gtk+.xml:3324
 msgid "Font Selection"
 msgstr "Yazıtipi Seçimi"
 
-#: plugins/gtk+/gtk+.xml:3531
+#: plugins/gtk+/gtk+.xml:3326
 msgid "Assistant"
 msgstr "Yardımcı"
 
-#: plugins/gtk+/gtk+.xml:3548
+#: plugins/gtk+/gtk+.xml:3343
 msgid "Number of Pages"
 msgstr "Sayfa Sayısı"
 
-#: plugins/gtk+/gtk+.xml:3553
+#: plugins/gtk+/gtk+.xml:3348
 msgid "Number of pages in this assistant"
 msgstr "Bu yardımcıdaki sayfaların sayısı"
 
-#: plugins/gtk+/gtk+.xml:3560
+#: plugins/gtk+/gtk+.xml:3355
 msgid "Initially Complete"
 msgstr "Başlangıçta Tamam"
 
-#: plugins/gtk+/gtk+.xml:3561
+#: plugins/gtk+/gtk+.xml:3356
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
@@ -6699,788 +6761,788 @@ msgstr ""
 "Bu sayfanın kullanıcı girişinden bağımsız olarak başlangıçta doğrudan "
 "tamamlanmış olarak işaretlenip işaretlenmeyeceği."
 
-#: plugins/gtk+/gtk+.xml:3566
+#: plugins/gtk+/gtk+.xml:3361
 msgid "Content"
 msgstr "İçerik"
 
-#: plugins/gtk+/gtk+.xml:3568
+#: plugins/gtk+/gtk+.xml:3363
 msgid "Intro"
 msgstr "Giriş"
 
-#: plugins/gtk+/gtk+.xml:3570
+#: plugins/gtk+/gtk+.xml:3365
 msgid "Confirm"
 msgstr "Onayla"
 
-#: plugins/gtk+/gtk+.xml:3572
+#: plugins/gtk+/gtk+.xml:3367
 msgid "Summary"
 msgstr "Özet"
 
-#: plugins/gtk+/gtk+.xml:3583
+#: plugins/gtk+/gtk+.xml:3378
 msgid "The page position in the Assistant"
 msgstr "Asistandaki sayfa pozisyonu"
 
-#: plugins/gtk+/gtk+.xml:3588
+#: plugins/gtk+/gtk+.xml:3383
 msgid "Popover"
 msgstr "Açılan Kutucuk"
 
-#: plugins/gtk+/gtk+.xml:3610
+#: plugins/gtk+/gtk+.xml:3405
 msgid "Popover Menu"
 msgstr "Açılan Kutucuk Menüsü"
 
-#: plugins/gtk+/gtk+.xml:3626
+#: plugins/gtk+/gtk+.xml:3420
 msgid "Number of submenus"
 msgstr "Alt menülerin sayısı"
 
-#: plugins/gtk+/gtk+.xml:3631
+#: plugins/gtk+/gtk+.xml:3425
 msgid "The number of submenus in the popover menu"
 msgstr "Açılan kutucuk menüsündeki alt menülerin sayısı"
 
-#: plugins/gtk+/gtk+.xml:3633
+#: plugins/gtk+/gtk+.xml:3427
 msgid "Edit menu"
 msgstr "Menüyü düzenle"
 
-#: plugins/gtk+/gtk+.xml:3638
+#: plugins/gtk+/gtk+.xml:3432
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
 "Geçerli etkin alt menüyü düzenlemek için ayarlayın, bu özellik "
 "kaydedilmeyecek"
 
-#: plugins/gtk+/gtk+.xml:3643
+#: plugins/gtk+/gtk+.xml:3437
 msgid "Model Button"
 msgstr "Model Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:3677
+#: plugins/gtk+/gtk+.xml:3471
 msgid "Link Button"
 msgstr "Bağ Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:3686
+#: plugins/gtk+/gtk+.xml:3480
 msgid "Recent Chooser"
 msgstr "Son Kullanılan Seçici"
 
-#: plugins/gtk+/gtk+.xml:3718
+#: plugins/gtk+/gtk+.xml:3509
 msgid "Most Recently Used first"
 msgstr "En Yakında Kullanılan ilk"
 
-#: plugins/gtk+/gtk+.xml:3720
+#: plugins/gtk+/gtk+.xml:3511
 msgid "Least Recently Used first"
 msgstr "En Az Kullanılan başta"
 
-#: plugins/gtk+/gtk+.xml:3728
+#: plugins/gtk+/gtk+.xml:3519
 msgid "Recent Chooser Dialog"
 msgstr "Son Kullanılan Seçici Penceresi"
 
-#: plugins/gtk+/gtk+.xml:3744
+#: plugins/gtk+/gtk+.xml:3535
 msgid "Size Group"
 msgstr "Boyut Grubu"
 
-#: plugins/gtk+/gtk+.xml:3749
+#: plugins/gtk+/gtk+.xml:3540
 msgid "Widgets"
 msgstr "Parçacıklar"
 
-#: plugins/gtk+/gtk+.xml:3754
+#: plugins/gtk+/gtk+.xml:3545
 msgid "List of widgets in this group"
 msgstr "Bu gruptaki parçacıkların listesi"
 
-#: plugins/gtk+/gtk+.xml:3765
+#: plugins/gtk+/gtk+.xml:3556
 msgid "Both"
 msgstr "Her ikisi"
 
-#: plugins/gtk+/gtk+.xml:3772
+#: plugins/gtk+/gtk+.xml:3563
 msgid "Window Group"
 msgstr "Pencere Grubu"
 
-#: plugins/gtk+/gtk+.xml:3776
+#: plugins/gtk+/gtk+.xml:3567
 msgid "Adjustment"
 msgstr "Düzeltme"
 
-#: plugins/gtk+/gtk+.xml:3833
+#: plugins/gtk+/gtk+.xml:3621
 msgid "An accelerator key for this action"
 msgstr "Bu eylem için bir hızlandırıcı tuş"
 
-#: plugins/gtk+/gtk+.xml:3838
+#: plugins/gtk+/gtk+.xml:3626
 msgid "Toggle Action"
 msgstr "Seçim Eylemi"
 
-#: plugins/gtk+/gtk+.xml:3844
+#: plugins/gtk+/gtk+.xml:3633
 msgid "Radio Action"
 msgstr "Radyo Eylemi"
 
-#: plugins/gtk+/gtk+.xml:3852
+#: plugins/gtk+/gtk+.xml:3641
 msgid "Recent Action"
 msgstr "Son Kullanılan Eylem"
 
-#: plugins/gtk+/gtk+.xml:3870
+#: plugins/gtk+/gtk+.xml:3658
 msgid "Action Group"
 msgstr "Eylem Grubu"
 
-#: plugins/gtk+/gtk+.xml:3884
+#: plugins/gtk+/gtk+.xml:3672
 msgid "Entry Completion"
 msgstr "Giriş Tamamlama"
 
-#: plugins/gtk+/gtk+.xml:3904
+#: plugins/gtk+/gtk+.xml:3690
 msgid "Icon Factory"
 msgstr "Simge Üretici"
 
-#: plugins/gtk+/gtk+.xml:3914
+#: plugins/gtk+/gtk+.xml:3700
 msgid "Icon Sources"
 msgstr "Simge Kaynakları"
 
-#: plugins/gtk+/gtk+.xml:3919
+#: plugins/gtk+/gtk+.xml:3705
 msgid "A list of sources for this icon factory"
 msgstr "Bu simge üreticisi için kaynakların bir listesi"
 
-#: plugins/gtk+/gtk+.xml:3925
+#: plugins/gtk+/gtk+.xml:3710
 msgid "List Store"
 msgstr "Liste Saklayıcı"
 
-#: plugins/gtk+/gtk+.xml:3939 plugins/gtk+/gtk+.xml:3965
+#: plugins/gtk+/gtk+.xml:3724 plugins/gtk+/gtk+.xml:3749
 msgid "Enter a list of column types for this data store"
 msgstr "Bu veri saklayıcı için sütun türlerinin bir listesini girin"
 
-#: plugins/gtk+/gtk+.xml:3941 plugins/gtk+/gtk+.xml:3967
+#: plugins/gtk+/gtk+.xml:3726 plugins/gtk+/gtk+.xml:3751
 msgid "Data"
 msgstr "Veri"
 
-#: plugins/gtk+/gtk+.xml:3946 plugins/gtk+/gtk+.xml:3972
+#: plugins/gtk+/gtk+.xml:3731 plugins/gtk+/gtk+.xml:3756
 msgid "Enter a list of values to be applied on each row"
 msgstr "Her satır için uygulanacak değerlerin bir listesini girin"
 
-#: plugins/gtk+/gtk+.xml:3952
+#: plugins/gtk+/gtk+.xml:3736
 msgid "Tree Store"
 msgstr "Ağaç Saklaması"
 
-#: plugins/gtk+/gtk+.xml:3978
+#: plugins/gtk+/gtk+.xml:3761
 msgid "Tree Model Filter"
 msgstr "Ağaç Modeli Filtresi"
 
-#: plugins/gtk+/gtk+.xml:3980
+#: plugins/gtk+/gtk+.xml:3763
 msgid "Tree Model Sort"
 msgstr "Ağaç Modeli Sıralaması"
 
-#: plugins/gtk+/gtk+.xml:3981
+#: plugins/gtk+/gtk+.xml:3765
 msgid "Tree Selection"
 msgstr "Ağaç Seçimi"
 
-#: plugins/gtk+/gtk+.xml:3987
+#: plugins/gtk+/gtk+.xml:3771
 msgid "Tree View"
 msgstr "Ağaç Görünümü"
 
-#: plugins/gtk+/gtk+.xml:4027
+#: plugins/gtk+/gtk+.xml:3808
 msgid "Horizontal and Vertical"
 msgstr "Yatay ve Dikey"
 
-#: plugins/gtk+/gtk+.xml:4082
+#: plugins/gtk+/gtk+.xml:3858
 msgid "Ascending"
 msgstr "Artan"
 
-#: plugins/gtk+/gtk+.xml:4084
+#: plugins/gtk+/gtk+.xml:3860
 msgid "Descending"
 msgstr "Azalan"
 
-#: plugins/gtk+/gtk+.xml:4091
+#: plugins/gtk+/gtk+.xml:3867
 msgid "Grow Only"
 msgstr "Yalnızca Büyü"
 
-#: plugins/gtk+/gtk+.xml:4109
+#: plugins/gtk+/gtk+.xml:3884
 msgid "Icon View"
 msgstr "Simge Görünümü"
 
-#: plugins/gtk+/gtk+.xml:4193
+#: plugins/gtk+/gtk+.xml:3957
 msgid "Cell Background Color name column"
 msgstr "Hücre Arkaplan Rengi adı sütunu"
 
-#: plugins/gtk+/gtk+.xml:4198 plugins/gtk+/gtk+.xml:4213
-#: plugins/gtk+/gtk+.xml:4228 plugins/gtk+/gtk+.xml:4242
-#: plugins/gtk+/gtk+.xml:4256 plugins/gtk+/gtk+.xml:4270
-#: plugins/gtk+/gtk+.xml:4284 plugins/gtk+/gtk+.xml:4298
-#: plugins/gtk+/gtk+.xml:4312 plugins/gtk+/gtk+.xml:4326
-#: plugins/gtk+/gtk+.xml:4340 plugins/gtk+/gtk+.xml:4384
-#: plugins/gtk+/gtk+.xml:4398 plugins/gtk+/gtk+.xml:4412
-#: plugins/gtk+/gtk+.xml:4427 plugins/gtk+/gtk+.xml:4441
-#: plugins/gtk+/gtk+.xml:4455 plugins/gtk+/gtk+.xml:4469
-#: plugins/gtk+/gtk+.xml:4483 plugins/gtk+/gtk+.xml:4498
-#: plugins/gtk+/gtk+.xml:4513 plugins/gtk+/gtk+.xml:4528
-#: plugins/gtk+/gtk+.xml:4542 plugins/gtk+/gtk+.xml:4556
-#: plugins/gtk+/gtk+.xml:4570 plugins/gtk+/gtk+.xml:4584
-#: plugins/gtk+/gtk+.xml:4599 plugins/gtk+/gtk+.xml:4613
-#: plugins/gtk+/gtk+.xml:4627 plugins/gtk+/gtk+.xml:4663
-#: plugins/gtk+/gtk+.xml:4677 plugins/gtk+/gtk+.xml:4700
-#: plugins/gtk+/gtk+.xml:4714 plugins/gtk+/gtk+.xml:4747
-#: plugins/gtk+/gtk+.xml:4768 plugins/gtk+/gtk+.xml:4782
-#: plugins/gtk+/gtk+.xml:4796 plugins/gtk+/gtk+.xml:4810
-#: plugins/gtk+/gtk+.xml:4824 plugins/gtk+/gtk+.xml:4839
-#: plugins/gtk+/gtk+.xml:4854 plugins/gtk+/gtk+.xml:4869
-#: plugins/gtk+/gtk+.xml:4884 plugins/gtk+/gtk+.xml:4903
-#: plugins/gtk+/gtk+.xml:4924 plugins/gtk+/gtk+.xml:4991
-#: plugins/gtk+/gtk+.xml:5005 plugins/gtk+/gtk+.xml:5028
-#: plugins/gtk+/gtk+.xml:5042 plugins/gtk+/gtk+.xml:5056
-#: plugins/gtk+/gtk+.xml:5075 plugins/gtk+/gtk+.xml:5089
-#: plugins/gtk+/gtk+.xml:5103 plugins/gtk+/gtk+.xml:5122
-#: plugins/gtk+/gtk+.xml:5136 plugins/gtk+/gtk+.xml:5150
-#: plugins/gtk+/gtk+.xml:5164 plugins/gtk+/gtk+.xml:5179
-#: plugins/gtk+/gtk+.xml:5194 plugins/gtk+/gtk+.xml:5208
-#: plugins/gtk+/gtk+.xml:5222 plugins/gtk+/gtk+.xml:5242
-#: plugins/gtk+/gtk+.xml:5260 plugins/gtk+/gtk+.xml:5274
-#: plugins/gtk+/gtk+.xml:5288 plugins/gtk+/gtk+.xml:5303
-#: plugins/gtk+/gtk+.xml:5318 plugins/gtk+/gtk+.xml:5332
-#: plugins/gtk+/gtk+.xml:5346 plugins/gtk+/gtk+.xml:5365
-#: plugins/gtk+/gtk+.xml:5379 plugins/gtk+/gtk+.xml:5393
-#: plugins/gtk+/gtk+.xml:5412 plugins/gtk+/gtk+.xml:5426
-#: plugins/gtk+/gtk+.xml:5440 plugins/gtk+/gtk+.xml:5454
-#: plugins/gtk+/gtk+.xml:5468
+#: plugins/gtk+/gtk+.xml:3962 plugins/gtk+/gtk+.xml:3975
+#: plugins/gtk+/gtk+.xml:3988 plugins/gtk+/gtk+.xml:4001
+#: plugins/gtk+/gtk+.xml:4014 plugins/gtk+/gtk+.xml:4027
+#: plugins/gtk+/gtk+.xml:4040 plugins/gtk+/gtk+.xml:4053
+#: plugins/gtk+/gtk+.xml:4066 plugins/gtk+/gtk+.xml:4079
+#: plugins/gtk+/gtk+.xml:4092 plugins/gtk+/gtk+.xml:4135
+#: plugins/gtk+/gtk+.xml:4148 plugins/gtk+/gtk+.xml:4161
+#: plugins/gtk+/gtk+.xml:4174 plugins/gtk+/gtk+.xml:4187
+#: plugins/gtk+/gtk+.xml:4200 plugins/gtk+/gtk+.xml:4213
+#: plugins/gtk+/gtk+.xml:4226 plugins/gtk+/gtk+.xml:4239
+#: plugins/gtk+/gtk+.xml:4252 plugins/gtk+/gtk+.xml:4265
+#: plugins/gtk+/gtk+.xml:4278 plugins/gtk+/gtk+.xml:4291
+#: plugins/gtk+/gtk+.xml:4304 plugins/gtk+/gtk+.xml:4317
+#: plugins/gtk+/gtk+.xml:4330 plugins/gtk+/gtk+.xml:4343
+#: plugins/gtk+/gtk+.xml:4356 plugins/gtk+/gtk+.xml:4390
+#: plugins/gtk+/gtk+.xml:4403 plugins/gtk+/gtk+.xml:4425
+#: plugins/gtk+/gtk+.xml:4438 plugins/gtk+/gtk+.xml:4470
+#: plugins/gtk+/gtk+.xml:4490 plugins/gtk+/gtk+.xml:4503
+#: plugins/gtk+/gtk+.xml:4516 plugins/gtk+/gtk+.xml:4529
+#: plugins/gtk+/gtk+.xml:4542 plugins/gtk+/gtk+.xml:4555
+#: plugins/gtk+/gtk+.xml:4568 plugins/gtk+/gtk+.xml:4581
+#: plugins/gtk+/gtk+.xml:4594 plugins/gtk+/gtk+.xml:4612
+#: plugins/gtk+/gtk+.xml:4632 plugins/gtk+/gtk+.xml:4698
+#: plugins/gtk+/gtk+.xml:4711 plugins/gtk+/gtk+.xml:4732
+#: plugins/gtk+/gtk+.xml:4745 plugins/gtk+/gtk+.xml:4758
+#: plugins/gtk+/gtk+.xml:4776 plugins/gtk+/gtk+.xml:4789
+#: plugins/gtk+/gtk+.xml:4802 plugins/gtk+/gtk+.xml:4820
+#: plugins/gtk+/gtk+.xml:4833 plugins/gtk+/gtk+.xml:4846
+#: plugins/gtk+/gtk+.xml:4859 plugins/gtk+/gtk+.xml:4872
+#: plugins/gtk+/gtk+.xml:4885 plugins/gtk+/gtk+.xml:4898
+#: plugins/gtk+/gtk+.xml:4911 plugins/gtk+/gtk+.xml:4930
+#: plugins/gtk+/gtk+.xml:4949 plugins/gtk+/gtk+.xml:4962
+#: plugins/gtk+/gtk+.xml:4975 plugins/gtk+/gtk+.xml:4988
+#: plugins/gtk+/gtk+.xml:5001 plugins/gtk+/gtk+.xml:5014
+#: plugins/gtk+/gtk+.xml:5027 plugins/gtk+/gtk+.xml:5045
+#: plugins/gtk+/gtk+.xml:5058 plugins/gtk+/gtk+.xml:5071
+#: plugins/gtk+/gtk+.xml:5089 plugins/gtk+/gtk+.xml:5102
+#: plugins/gtk+/gtk+.xml:5115 plugins/gtk+/gtk+.xml:5128
+#: plugins/gtk+/gtk+.xml:5141
 msgid "The column in the model to load the value from"
 msgstr "Değerin yükleneceği model içindeki sütun"
 
-#: plugins/gtk+/gtk+.xml:4208
+#: plugins/gtk+/gtk+.xml:3970
 msgid "Cell Background Color column"
 msgstr "Hücre Arkaplan Rengi sütunu"
 
-#: plugins/gtk+/gtk+.xml:4223
+#: plugins/gtk+/gtk+.xml:3983
 msgid "Cell Background RGBA column"
 msgstr "Hücre Arkaplan RGBA sütunu"
 
-#: plugins/gtk+/gtk+.xml:4237
+#: plugins/gtk+/gtk+.xml:3996
 msgid "Width column"
 msgstr "Genişlik sütunu"
 
-#: plugins/gtk+/gtk+.xml:4251
+#: plugins/gtk+/gtk+.xml:4009
 msgid "Height column"
 msgstr "Yükseklik sütunu"
 
-#: plugins/gtk+/gtk+.xml:4264
+#: plugins/gtk+/gtk+.xml:4021
 msgid "Horizontal Padding"
 msgstr "Yatay Doldurma"
 
-#: plugins/gtk+/gtk+.xml:4265
+#: plugins/gtk+/gtk+.xml:4022
 msgid "Horizontal Padding column"
 msgstr "Yatay Doldurma sütunu"
 
-#: plugins/gtk+/gtk+.xml:4278
+#: plugins/gtk+/gtk+.xml:4034
 msgid "Vertical Padding"
 msgstr "Dikey Doldurma"
 
-#: plugins/gtk+/gtk+.xml:4279
+#: plugins/gtk+/gtk+.xml:4035
 msgid "Vertical Padding column"
 msgstr "Dikey Doldurma sütunu"
 
-#: plugins/gtk+/gtk+.xml:4292
+#: plugins/gtk+/gtk+.xml:4047
 msgid "Horizontal Alignment"
 msgstr "Yatay Hizalama"
 
-#: plugins/gtk+/gtk+.xml:4293
+#: plugins/gtk+/gtk+.xml:4048
 msgid "Horizontal Alignment column"
 msgstr "Yatay Hizalama sütunu"
 
-#: plugins/gtk+/gtk+.xml:4306
+#: plugins/gtk+/gtk+.xml:4060
 msgid "Vertical Alignment"
 msgstr "Dikey Hizalama"
 
-#: plugins/gtk+/gtk+.xml:4307
+#: plugins/gtk+/gtk+.xml:4061
 msgid "Vertical Alignment column"
 msgstr "Dikey Hizalama sütunu"
 
-#: plugins/gtk+/gtk+.xml:4321
+#: plugins/gtk+/gtk+.xml:4074
 msgid "Sensitive column"
 msgstr "Duyarlı sütunu"
 
-#: plugins/gtk+/gtk+.xml:4335
+#: plugins/gtk+/gtk+.xml:4087
 msgid "Visible column"
 msgstr "Görünür sütunu"
 
-#: plugins/gtk+/gtk+.xml:4350
+#: plugins/gtk+/gtk+.xml:4102
 msgid "Text Renderer"
 msgstr "Metin Tarayıcı"
 
-#: plugins/gtk+/gtk+.xml:4379
+#: plugins/gtk+/gtk+.xml:4130
 msgid "Alignment column"
 msgstr "Hizalama sütunu"
 
-#: plugins/gtk+/gtk+.xml:4393
+#: plugins/gtk+/gtk+.xml:4143
 msgid "Attributes column"
 msgstr "Öznitelikler sütunu"
 
-#: plugins/gtk+/gtk+.xml:4407
+#: plugins/gtk+/gtk+.xml:4156
 msgid "Background Color Name column"
 msgstr "Arkaplan Rengi Adı sütunu"
 
-#: plugins/gtk+/gtk+.xml:4422
+#: plugins/gtk+/gtk+.xml:4169
 msgid "Background Color column"
 msgstr "Arkaplan Rengi sütunu"
 
-#: plugins/gtk+/gtk+.xml:4436
+#: plugins/gtk+/gtk+.xml:4182
 msgid "Editable column"
 msgstr "Düzenlenebilir sütunu"
 
-#: plugins/gtk+/gtk+.xml:4450
+#: plugins/gtk+/gtk+.xml:4195
 msgid "Ellipsize column"
 msgstr "Sütunu elipsleştir"
 
-#: plugins/gtk+/gtk+.xml:4464
+#: plugins/gtk+/gtk+.xml:4208
 msgid "Family column"
 msgstr "Aile sütunu"
 
-#: plugins/gtk+/gtk+.xml:4478
+#: plugins/gtk+/gtk+.xml:4221
 msgid "Font column"
 msgstr "Yazıtipi sütunu"
 
-#: plugins/gtk+/gtk+.xml:4493
+#: plugins/gtk+/gtk+.xml:4234
 msgid "Font Description column"
 msgstr "Yazıtipi Tanımı sütunu"
 
-#: plugins/gtk+/gtk+.xml:4508
+#: plugins/gtk+/gtk+.xml:4247
 msgid "Foreground Color Name column"
 msgstr "Önalan Rengi Adı sütunu"
 
-#: plugins/gtk+/gtk+.xml:4523
+#: plugins/gtk+/gtk+.xml:4260
 msgid "Foreground Color column"
 msgstr "Önalan Rengi sütunu"
 
-#: plugins/gtk+/gtk+.xml:4537
+#: plugins/gtk+/gtk+.xml:4273
 msgid "Language column"
 msgstr "Dil sütunu"
 
-#: plugins/gtk+/gtk+.xml:4551
+#: plugins/gtk+/gtk+.xml:4286
 msgid "Markup column"
 msgstr "Makyaj sütunu"
 
-#: plugins/gtk+/gtk+.xml:4565
+#: plugins/gtk+/gtk+.xml:4299
 msgid "Rise column"
 msgstr "Artış sütunu"
 
-#: plugins/gtk+/gtk+.xml:4579
+#: plugins/gtk+/gtk+.xml:4312
 msgid "Scale column"
 msgstr "Ölçek sütunu"
 
-#: plugins/gtk+/gtk+.xml:4594
+#: plugins/gtk+/gtk+.xml:4325
 msgid "Single Paragraph Mode column"
 msgstr "Tek Paragraf Kipi sütunu"
 
-#: plugins/gtk+/gtk+.xml:4608
+#: plugins/gtk+/gtk+.xml:4338
 msgid "Size column"
 msgstr "Boyut sütunu"
 
-#: plugins/gtk+/gtk+.xml:4622 plugins/gtk+/gtk+.xml:4898
+#: plugins/gtk+/gtk+.xml:4351 plugins/gtk+/gtk+.xml:4607
 msgid "Data column"
 msgstr "Veri sütunu"
 
-#: plugins/gtk+/gtk+.xml:4638
+#: plugins/gtk+/gtk+.xml:4366
 msgid "Ultra Condensed"
 msgstr "Çok Sıkışık"
 
-#: plugins/gtk+/gtk+.xml:4640
+#: plugins/gtk+/gtk+.xml:4368
 msgid "Extra Condensed"
 msgstr "Çok Sıkışık"
 
-#: plugins/gtk+/gtk+.xml:4642
+#: plugins/gtk+/gtk+.xml:4370
 msgid "Condensed"
 msgstr "Sıkışık"
 
-#: plugins/gtk+/gtk+.xml:4644
+#: plugins/gtk+/gtk+.xml:4372
 msgid "Semi Condensed"
 msgstr "Yarı Sıkışık"
 
-#: plugins/gtk+/gtk+.xml:4648
+#: plugins/gtk+/gtk+.xml:4376
 msgid "Semi Expanded"
 msgstr "Yarı Geniş"
 
-#: plugins/gtk+/gtk+.xml:4650
+#: plugins/gtk+/gtk+.xml:4378
 msgid "Expanded"
 msgstr "Geniş"
 
-#: plugins/gtk+/gtk+.xml:4652
+#: plugins/gtk+/gtk+.xml:4380
 msgid "Extra Expanded"
 msgstr "Çok Geniş"
 
-#: plugins/gtk+/gtk+.xml:4654
+#: plugins/gtk+/gtk+.xml:4382
 msgid "Ultra Expanded"
 msgstr "Çok Geniş"
 
-#: plugins/gtk+/gtk+.xml:4658
+#: plugins/gtk+/gtk+.xml:4385
 msgid "Stretch column"
 msgstr "Esneme sütunu"
 
-#: plugins/gtk+/gtk+.xml:4672
+#: plugins/gtk+/gtk+.xml:4398
 msgid "Strikethrough column"
 msgstr "Üzeri Çizgili sütunu"
 
-#: plugins/gtk+/gtk+.xml:4690
+#: plugins/gtk+/gtk+.xml:4415
 msgid "Oblique"
 msgstr "Dik"
 
-#: plugins/gtk+/gtk+.xml:4692
+#: plugins/gtk+/gtk+.xml:4417
 msgid "Italic"
 msgstr "Eğik"
 
-#: plugins/gtk+/gtk+.xml:4695
+#: plugins/gtk+/gtk+.xml:4420
 msgid "Style column"
 msgstr "Biçem sütunu"
 
-#: plugins/gtk+/gtk+.xml:4709 plugins/gtk+/gtk+.xml:5283
+#: plugins/gtk+/gtk+.xml:4433 plugins/gtk+/gtk+.xml:4970
 msgid "Text column"
 msgstr "Metin sütunu"
 
-#: plugins/gtk+/gtk+.xml:4729
+#: plugins/gtk+/gtk+.xml:4452
 msgid "Double"
 msgstr "Double"
 
-#: plugins/gtk+/gtk+.xml:4731
+#: plugins/gtk+/gtk+.xml:4454
 msgid "Low"
 msgstr "Düşük"
 
-#: plugins/gtk+/gtk+.xml:4742
+#: plugins/gtk+/gtk+.xml:4465
 msgid "Underline column"
 msgstr "Altçizgi sütunu"
 
-#: plugins/gtk+/gtk+.xml:4760
+#: plugins/gtk+/gtk+.xml:4482
 msgid "Small Capitals"
 msgstr "Küçük İlk Harfler"
 
-#: plugins/gtk+/gtk+.xml:4763
+#: plugins/gtk+/gtk+.xml:4485
 msgid "Variant column"
 msgstr "Türev sütunu"
 
-#: plugins/gtk+/gtk+.xml:4777
+#: plugins/gtk+/gtk+.xml:4498
 msgid "Weight column"
 msgstr "Etki sütunu"
 
-#: plugins/gtk+/gtk+.xml:4791
+#: plugins/gtk+/gtk+.xml:4511
 msgid "Width in Characters column"
 msgstr "Karakter Olarak Genişlik sütunu"
 
-#: plugins/gtk+/gtk+.xml:4805
+#: plugins/gtk+/gtk+.xml:4524
 msgid "Wrap Mode column"
 msgstr "Bölme Kipi sütunu"
 
-#: plugins/gtk+/gtk+.xml:4819
+#: plugins/gtk+/gtk+.xml:4537
 msgid "Wrap Width column"
 msgstr "Bölme Genişliği sütunu"
 
-#: plugins/gtk+/gtk+.xml:4834
+#: plugins/gtk+/gtk+.xml:4550
 msgid "Background RGBA column"
 msgstr "Arkaplan RGBA sütunu"
 
-#: plugins/gtk+/gtk+.xml:4849
+#: plugins/gtk+/gtk+.xml:4563
 msgid "Foreground RGBA column"
 msgstr "Önalan RGBA sütunu"
 
-#: plugins/gtk+/gtk+.xml:4864
+#: plugins/gtk+/gtk+.xml:4576
 msgid "Maximum width in characters"
 msgstr "Karakter olarak azami genişlik"
 
-#: plugins/gtk+/gtk+.xml:4879
+#: plugins/gtk+/gtk+.xml:4589
 msgid "Placeholder text"
 msgstr "Yer tutucu metin"
 
-#: plugins/gtk+/gtk+.xml:4895
+#: plugins/gtk+/gtk+.xml:4604
 msgid "Accelerator Renderer"
 msgstr "Hızlandırıcı Tarayıcı"
 
-#: plugins/gtk+/gtk+.xml:4914
+#: plugins/gtk+/gtk+.xml:4622
 msgid "Gtk"
 msgstr "Gtk"
 
-#: plugins/gtk+/gtk+.xml:4919
+#: plugins/gtk+/gtk+.xml:4627
 msgid "Accelerator Mode column"
 msgstr "Hızlandırıcı Kip sütunu"
 
-#: plugins/gtk+/gtk+.xml:4935
+#: plugins/gtk+/gtk+.xml:4642
 msgid "Shift Key"
 msgstr "Shift Tuşu"
 
-#: plugins/gtk+/gtk+.xml:4937
+#: plugins/gtk+/gtk+.xml:4644
 msgid "Lock Key"
 msgstr "Kilitleme Tuşu"
 
-#: plugins/gtk+/gtk+.xml:4939
+#: plugins/gtk+/gtk+.xml:4646
 msgid "Control Key"
 msgstr "Kontrol Tuşu"
 
-#: plugins/gtk+/gtk+.xml:4941
+#: plugins/gtk+/gtk+.xml:4648
 msgid "Alt Key"
 msgstr "Alt Tuşu"
 
-#: plugins/gtk+/gtk+.xml:4943
+#: plugins/gtk+/gtk+.xml:4650
 msgid "Fifth Key"
 msgstr "Beşinci Tuş"
 
-#: plugins/gtk+/gtk+.xml:4945
+#: plugins/gtk+/gtk+.xml:4652
 msgid "Sixth Key"
 msgstr "Altıncı Tuş"
 
-#: plugins/gtk+/gtk+.xml:4947
+#: plugins/gtk+/gtk+.xml:4654
 msgid "Seventh Key"
 msgstr "Yedinci Tuş"
 
-#: plugins/gtk+/gtk+.xml:4949
+#: plugins/gtk+/gtk+.xml:4656
 msgid "Eighth Key"
 msgstr "Sekizinci Tuş"
 
-#: plugins/gtk+/gtk+.xml:4951
+#: plugins/gtk+/gtk+.xml:4658
 msgid "First Mouse Button"
 msgstr "Birinci Fare Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:4953
+#: plugins/gtk+/gtk+.xml:4660
 msgid "Second Mouse Button"
 msgstr "İkinci Fare Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:4955
+#: plugins/gtk+/gtk+.xml:4662
 msgid "Third Mouse Button"
 msgstr "Üçüncü Fare Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:4957
+#: plugins/gtk+/gtk+.xml:4664
 msgid "Fourth Mouse Button"
 msgstr "Dördüncü Fare Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:4959
+#: plugins/gtk+/gtk+.xml:4666
 msgid "Fifth Mouse Button"
 msgstr "Beşinci Fare Düğmesi"
 
-#: plugins/gtk+/gtk+.xml:4961
+#: plugins/gtk+/gtk+.xml:4668
 msgid "Super Modifier"
 msgstr "Süper Değiştirici"
 
-#: plugins/gtk+/gtk+.xml:4963
+#: plugins/gtk+/gtk+.xml:4670
 msgid "Hyper Modifier"
 msgstr "Hiper Değiştirici"
 
-#: plugins/gtk+/gtk+.xml:4965
+#: plugins/gtk+/gtk+.xml:4672
 msgid "Meta Modifier"
 msgstr "Meta Değiştirici"
 
-#: plugins/gtk+/gtk+.xml:4967
+#: plugins/gtk+/gtk+.xml:4674
 msgid "Release Modifier"
 msgstr "Bırakma Değiştirici"
 
-#: plugins/gtk+/gtk+.xml:4969
+#: plugins/gtk+/gtk+.xml:4676
 msgid "All Modifiers"
 msgstr "Tüm Değiştiriciler"
 
-#: plugins/gtk+/gtk+.xml:4986
+#: plugins/gtk+/gtk+.xml:4693
 msgid "Accelerator Modifiers column"
 msgstr "Hızlandırıcı Değiştirici sütunu"
 
-#: plugins/gtk+/gtk+.xml:5000
+#: plugins/gtk+/gtk+.xml:4706
 msgid "Keycode column"
 msgstr "Tuş Kodu sütunu"
 
-#: plugins/gtk+/gtk+.xml:5015
+#: plugins/gtk+/gtk+.xml:4721
 msgid "Combo Renderer"
 msgstr "Çoklu Tarayıcı"
 
-#: plugins/gtk+/gtk+.xml:5023
+#: plugins/gtk+/gtk+.xml:4727
 msgid "Has Entry column"
 msgstr "Giriş Var sütunu"
 
-#: plugins/gtk+/gtk+.xml:5037
+#: plugins/gtk+/gtk+.xml:4740
 msgid "Model column"
 msgstr "Model sütunu"
 
-#: plugins/gtk+/gtk+.xml:5051
+#: plugins/gtk+/gtk+.xml:4753
 msgid "Text Column column"
 msgstr "Metin Sütunu sütunu"
 
-#: plugins/gtk+/gtk+.xml:5067
+#: plugins/gtk+/gtk+.xml:4768
 msgid "Spin Renderer"
 msgstr "Çevirici Tarayıcı"
 
-#: plugins/gtk+/gtk+.xml:5070
+#: plugins/gtk+/gtk+.xml:4771
 msgid "Adjustment column"
 msgstr "Düzeltme sütunu"
 
-#: plugins/gtk+/gtk+.xml:5084
+#: plugins/gtk+/gtk+.xml:4784
 msgid "Climb Rate column"
 msgstr "Tırmanma Hızı sütunu"
 
-#: plugins/gtk+/gtk+.xml:5098
+#: plugins/gtk+/gtk+.xml:4797
 msgid "Digits column"
 msgstr "Basamaklar sütunu"
 
-#: plugins/gtk+/gtk+.xml:5113
+#: plugins/gtk+/gtk+.xml:4812
 msgid "Pixbuf Renderer"
 msgstr "Pixbuf Tarayıcı"
 
-#: plugins/gtk+/gtk+.xml:5117
+#: plugins/gtk+/gtk+.xml:4815
 msgid "Follow State column"
 msgstr "Durum Takibi sütunu"
 
-#: plugins/gtk+/gtk+.xml:5131
+#: plugins/gtk+/gtk+.xml:4828
 msgid "Icon Name column"
 msgstr "Simge Adı sütunu"
 
-#: plugins/gtk+/gtk+.xml:5145
+#: plugins/gtk+/gtk+.xml:4841
 msgid "Pixbuf column"
 msgstr "Pixbuf sütunu"
 
-#: plugins/gtk+/gtk+.xml:5159
+#: plugins/gtk+/gtk+.xml:4854
 msgid "GIcon column"
 msgstr "GIcon kolonu"
 
-#: plugins/gtk+/gtk+.xml:5174
+#: plugins/gtk+/gtk+.xml:4867
 msgid "Pixbuf Expander Closed column"
 msgstr "Pixbuf Genişletici Kapalı sütunu"
 
-#: plugins/gtk+/gtk+.xml:5189
+#: plugins/gtk+/gtk+.xml:4880
 msgid "Pixbuf Expander Open column"
 msgstr "Pixbuf Genişletici Açık sütunu"
 
-#: plugins/gtk+/gtk+.xml:5203
+#: plugins/gtk+/gtk+.xml:4893
 msgid "Stock Detail column"
 msgstr "Depo Ayrıntısı sütunu"
 
-#: plugins/gtk+/gtk+.xml:5217
+#: plugins/gtk+/gtk+.xml:4906
 msgid "Stock column"
 msgstr "Depo sütunu"
 
-#: plugins/gtk+/gtk+.xml:5237
+#: plugins/gtk+/gtk+.xml:4925
 msgid "Stock Size column"
 msgstr "Depo Boyutu sütunu"
 
-#: plugins/gtk+/gtk+.xml:5252
+#: plugins/gtk+/gtk+.xml:4941
 msgid "Progress Renderer"
 msgstr "İlerleme Tarayıcı"
 
-#: plugins/gtk+/gtk+.xml:5255
+#: plugins/gtk+/gtk+.xml:4944
 msgid "Orientation column"
 msgstr "Yönetim sütunu"
 
-#: plugins/gtk+/gtk+.xml:5269 plugins/gtk+/gtk+.xml:5374
+#: plugins/gtk+/gtk+.xml:4957 plugins/gtk+/gtk+.xml:5053
 msgid "Pulse column"
 msgstr "Darbe sütunu"
 
-#: plugins/gtk+/gtk+.xml:5298
+#: plugins/gtk+/gtk+.xml:4983
 msgid "Text Horizontal Alignment column"
 msgstr "Metin Yatay Hizalama sütunu"
 
-#: plugins/gtk+/gtk+.xml:5313
+#: plugins/gtk+/gtk+.xml:4996
 msgid "Text Vertical Alignment column"
 msgstr "Metin Dikey Hizalama sütunu"
 
-#: plugins/gtk+/gtk+.xml:5327
+#: plugins/gtk+/gtk+.xml:5009
 msgid "Value column"
 msgstr "Değer sütunu"
 
-#: plugins/gtk+/gtk+.xml:5341
+#: plugins/gtk+/gtk+.xml:5022
 msgid "Inverted column"
 msgstr "Ters çevrilmiş sütun"
 
-#: plugins/gtk+/gtk+.xml:5357
+#: plugins/gtk+/gtk+.xml:5037
 msgid "Spinner Renderer"
 msgstr "Çevirici Gerçekleyici"
 
-#: plugins/gtk+/gtk+.xml:5360 plugins/gtk+/gtk+.xml:5421
+#: plugins/gtk+/gtk+.xml:5040 plugins/gtk+/gtk+.xml:5097
 msgid "Active column"
 msgstr "Etkin sütunu"
 
-#: plugins/gtk+/gtk+.xml:5404
+#: plugins/gtk+/gtk+.xml:5081
 msgid "Toggle Renderer"
 msgstr "Seçim Tarayıcı"
 
-#: plugins/gtk+/gtk+.xml:5407
+#: plugins/gtk+/gtk+.xml:5084
 msgid "Activatable column"
 msgstr "Etkinleşebilir sütun"
 
-#: plugins/gtk+/gtk+.xml:5435
+#: plugins/gtk+/gtk+.xml:5110
 msgid "Inconsistent column"
 msgstr "Belirsiz sütunu"
 
-#: plugins/gtk+/gtk+.xml:5449
+#: plugins/gtk+/gtk+.xml:5123
 msgid "Indicator Size column"
 msgstr "Belirteç Boyutu sütunu"
 
-#: plugins/gtk+/gtk+.xml:5463
+#: plugins/gtk+/gtk+.xml:5136
 msgid "Radio column"
 msgstr "Radyo sütunu"
 
-#: plugins/gtk+/gtk+.xml:5478
+#: plugins/gtk+/gtk+.xml:5151
 msgid "Status Icon"
 msgstr "Durum Simgesi"
 
-#: plugins/gtk+/gtk+.xml:5489
+#: plugins/gtk+/gtk+.xml:5163
 msgid "Text Buffer"
 msgstr "Metin Tamponu"
 
-#: plugins/gtk+/gtk+.xml:5502
+#: plugins/gtk+/gtk+.xml:5174
 msgid "Entry Buffer"
 msgstr "Giriş Tamponu"
 
-#: plugins/gtk+/gtk+.xml:5510
+#: plugins/gtk+/gtk+.xml:5182
 msgid "Text Tag"
 msgstr "Metin Etiketi"
 
-#: plugins/gtk+/gtk+.xml:5563
+#: plugins/gtk+/gtk+.xml:5238
 msgid "Text Tag Table"
 msgstr "Metin Etiket Tablosu"
 
-#: plugins/gtk+/gtk+.xml:5577
+#: plugins/gtk+/gtk+.xml:5250
 msgid "File Filter"
 msgstr "Dosya Filtresi"
 
-#: plugins/gtk+/gtk+.xml:5583 plugins/gtk+/gtk+.xml:5607
+#: plugins/gtk+/gtk+.xml:5256 plugins/gtk+/gtk+.xml:5279
 msgid "Mime Types"
 msgstr "Mime Türleri"
 
-#: plugins/gtk+/gtk+.xml:5588 plugins/gtk+/gtk+.xml:5612
+#: plugins/gtk+/gtk+.xml:5261 plugins/gtk+/gtk+.xml:5284
 msgid "The list of mime types to add to the filter"
 msgstr "Filtreye eklenecek mime türlerinin listesi"
 
-#: plugins/gtk+/gtk+.xml:5590 plugins/gtk+/gtk+.xml:5614
+#: plugins/gtk+/gtk+.xml:5263 plugins/gtk+/gtk+.xml:5286
 msgid "Patterns"
 msgstr "Desenler"
 
-#: plugins/gtk+/gtk+.xml:5595 plugins/gtk+/gtk+.xml:5619
+#: plugins/gtk+/gtk+.xml:5268 plugins/gtk+/gtk+.xml:5291
 msgid "The list of file name patterns to add to the filter"
 msgstr "Filtreye eklenecek dosya adı desenlerinin listesi"
 
-#: plugins/gtk+/gtk+.xml:5601
+#: plugins/gtk+/gtk+.xml:5273
 msgid "Recent Filter"
 msgstr "Son Kullanılan Filtresi"
 
-#: plugins/gtk+/gtk+.xml:5626
+#: plugins/gtk+/gtk+.xml:5298
 msgid "The list of application names to add to the filter"
 msgstr "Filtreye eklenecek uygulama adlarının listesi"
 
-#: plugins/gtk+/gtk+.xml:5632
+#: plugins/gtk+/gtk+.xml:5303
 msgid "Recent Manager"
 msgstr "Son Kullanılan Yöneticisi"
 
-#: plugins/gtk+/gtk+.xml:5634
+#: plugins/gtk+/gtk+.xml:5305
 msgid "Themed Icon"
 msgstr "Temalı Simge"
 
-#: plugins/gtk+/gtk+.xml:5635
+#: plugins/gtk+/gtk+.xml:5307
 msgid "File Icon"
 msgstr "Dosya Simgesi"
 
-#: plugins/gtk+/gtk+.xml:5637
+#: plugins/gtk+/gtk+.xml:5309
 msgid "Native File Chooser Dialog"
 msgstr "Yerel Dosya Seçici Penceresi"
 
-#: plugins/gtk+/gtk+.xml:5641
+#: plugins/gtk+/gtk+.xml:5312
 msgid "Toplevels"
 msgstr "Üst düzeyler"
 
-#: plugins/gtk+/gtk+.xml:5656
+#: plugins/gtk+/gtk+.xml:5327
 msgid "Containers"
 msgstr "Taşıyıcılar"
 
-#: plugins/gtk+/gtk+.xml:5688
+#: plugins/gtk+/gtk+.xml:5359
 msgid "Control"
 msgstr "Denetim"
 
-#: plugins/gtk+/gtk+.xml:5722
+#: plugins/gtk+/gtk+.xml:5386
 msgid "Display"
 msgstr "Ekran"
 
-#: plugins/gtk+/gtk+.xml:5744
+#: plugins/gtk+/gtk+.xml:5405
 msgid "Composite Widgets"
 msgstr "Kompozit Parçacıklar"
 
-#: plugins/gtk+/gtk+.xml:5755
+#: plugins/gtk+/gtk+.xml:5415
 msgid "Miscellaneous"
 msgstr "Çeşitli"
 
-#: plugins/gtk+/gtk+.xml:5785
+#: plugins/gtk+/gtk+.xml:5440
 msgid "Deprecated"
 msgstr "Artık Kullanılmayan"
 
