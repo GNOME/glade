@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 3.20\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-08-24 22:52+0000\n"
-"PO-Revision-Date: 2020-08-29 09:56-0400\n"
+"POT-Creation-Date: 2020-09-12 22:59+0000\n"
+"PO-Revision-Date: 2020-09-13 20:11-0400\n"
 "Last-Translator: Mandy Wang <wangmychn@gmail.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:43 src/glade.glade:202
+#: src/main.c:43 src/glade.glade:261
 msgid "Glade"
 msgstr "Glade"
 
@@ -191,7 +191,7 @@ msgstr "关闭而不保存(_W)"
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: src/glade-window.c:1041 src/glade.glade:597 gladeui/glade-utils.c:486
+#: src/glade-window.c:1041 src/glade.glade:685 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "保存(S)"
 
@@ -386,60 +386,123 @@ msgstr "未找到 gmodule 支持。Glade 正常工作需要 dmodule 支持"
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr "为 GTK+ 或 GNOME 应用程序创建或编辑用户界面设计。"
 
-#: src/glade.glade:47
+#. The last sentence in quotes is in spanish and does not need to be translated.
+#: src/glade.glade:59
+msgctxt ""
+"This is to honor a professor that passed away last year and appears in a "
+"popover when you click on the button that says \"RIP Guido\""
+msgid ""
+"Guido was one of my professors at Rosario\n"
+"National University of Argentina.\n"
+"\n"
+"He introduced me to C, Linux, free software...\n"
+"\n"
+"He always had extra time to explain one more thing\n"
+"and help you figure out things by yourself.\n"
+"\n"
+"Always made a joke in the right moment keeping\n"
+"things interesting and fun.\n"
+"\n"
+"Master of intentionally misconstrued sayings.\n"
+"\n"
+"Always carried a stack of books under his arm.\n"
+"\n"
+"Loved Guinness beer.\n"
+"\n"
+"All he ever wanted was make you think!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+msgstr ""
+"Guido 是我在阿根廷国立罗萨里奥大学\n"
+"的教授之一。\n"
+"\n"
+"他向我介绍了 C、Linux、自由软件……\n"
+"\n"
+"他总是能够抽出额外的时间解释问题\n"
+"并帮助你独立解决问题。\n"
+"\n"
+"总是在正确的时刻开玩笑，\n"
+"让一切变得有趣起来。\n"
+"\n"
+"故意误解谚语的大师。\n"
+"\n"
+"总是在他的胳膊下拿着一叠书。\n"
+"\n"
+"喜欢吉尼斯啤酒。\n"
+"\n"
+"他所追求的大概就是让你不断思考罢！\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"Juan Pablo"
+
+#: src/glade.glade:106
 msgid "Close Project"
 msgstr "关闭项目"
 
-#: src/glade.glade:72
+#: src/glade.glade:131
 msgid "Registration & User Survey"
 msgstr "注册和用户调查"
 
-#: src/glade.glade:86
+#: src/glade.glade:145
 msgid "_Developer Reference"
 msgstr "开发者参考(_D)"
 
-#: src/glade.glade:100
+#: src/glade.glade:159
 msgid "Interactive Intro"
 msgstr "交互式简介"
 
-#: src/glade.glade:114
+#: src/glade.glade:173
 msgid "Preferences"
 msgstr "首选项"
 
-#: src/glade.glade:139
+#: src/glade.glade:198
 msgid "About Glade"
 msgstr "关于 Glade"
 
-#: src/glade.glade:504 src/glade-preferences.c:239
+#: src/glade.glade:297
+msgctxt "Button label in the bottom of main window that triggers a popover"
+msgid ""
+"<small>In memory of an extraordinary\n"
+"person and professor\n"
+"R.I.P Guido Macchi</small>"
+msgstr ""
+"<small>纪念一位非凡的\n"
+"人物和教授\n"
+"R.I.P Guido Macchi</small>"
+
+#: src/glade.glade:592 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/glade.glade:509
+#: src/glade.glade:597
 msgid "Open a project"
 msgstr "打开一个项目"
 
-#: src/glade.glade:554
+#: src/glade.glade:642
 msgid "Create a new project"
 msgstr "创建一个新项目"
 
-#: src/glade.glade:574
+#: src/glade.glade:662
 msgid "Edit project properties"
 msgstr "修改项目属性"
 
-#: src/glade.glade:602
+#: src/glade.glade:690
 msgid "Save the current project"
 msgstr "保存当前项目"
 
-#: src/glade.glade:618
+#: src/glade.glade:706
 msgid "Save the current project with a different name"
 msgstr "以不同名称保存当前项目"
 
-#: src/glade.glade:647
+#: src/glade.glade:735
 msgid "Start/resume interactive UI introduction"
 msgstr "开始/继续交互式 UI 简介"
 
-#: src/glade.glade:746
+#: src/glade.glade:834
 msgid ""
 "© 2018-2020 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
@@ -451,15 +514,15 @@ msgstr ""
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:750
+#: src/glade.glade:838
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+ 和 GNOME 的用户界面设计器。"
 
-#: src/glade.glade:752
+#: src/glade.glade:840
 msgid "Visit Glade web site"
 msgstr "访问 Glade 网站"
 
-#: src/glade.glade:764
+#: src/glade.glade:852
 msgid "translator-credits"
 msgstr ""
 "Funda Wang <fundawang@linux.net.cn>, 2005\n"
@@ -765,8 +828,8 @@ msgstr "Rust"
 #: src/glade-registration.glade:1312 src/glade-registration.glade:1344
 #: src/glade-registration.glade:1370 src/glade-registration.glade:1465
 #: src/glade-registration.glade:1956 src/glade-registration.glade:2158
-#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3196
-#: plugins/gtk+/gtk+.xml:4916
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
+#: plugins/gtk+/gtk+.xml:4624
 msgid "Other"
 msgstr "其他"
 
@@ -1038,7 +1101,7 @@ msgstr "Tiger"
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3339
+#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3149
 msgid "BSD"
 msgstr "BSD"
 
@@ -1190,12 +1253,12 @@ msgid "Have you ever encountered a bug?"
 msgstr "您有没有遇到过软件故障？"
 
 #: src/glade-registration.glade:2233 src/glade-registration.glade:2305
-#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1746
+#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
 msgid "Yes"
 msgstr "有"
 
 #: src/glade-registration.glade:2250 src/glade-registration.glade:2322
-#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1748
+#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1640
 msgid "No"
 msgstr "没有"
 
@@ -1310,8 +1373,8 @@ msgstr "从 %2$s 删除 %1$s 子结点"
 msgid "Reorder %s's children"
 msgstr "重新安排 %s 的子结点"
 
-#: gladeui/glade-base-editor.c:1588 plugins/gtk+/gtk+.xml:280
-#: plugins/gtk+/gtk+.xml:1009 plugins/gtk+/gtk+.xml:1404
+#: gladeui/glade-base-editor.c:1588 plugins/gtk+/gtk+.xml:260
+#: plugins/gtk+/gtk+.xml:957 plugins/gtk+/gtk+.xml:1323
 #: plugins/gtk+/glade-about-dialog-editor.ui:316
 #: plugins/gtk+/glade-tool-button-editor.ui:86
 msgid "Label"
@@ -1323,7 +1386,7 @@ msgstr "标签"
 msgid "Type"
 msgstr "类型"
 
-#: gladeui/glade-base-editor.c:1631 plugins/gtk+/gtk+.xml:618
+#: gladeui/glade-base-editor.c:1631 plugins/gtk+/gtk+.xml:584
 msgid "Container"
 msgstr "容器"
 
@@ -1363,7 +1426,7 @@ msgid "Authentication"
 msgstr "验证"
 
 #. GTK_STOCK_DND
-#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:848
+#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:807
 msgid "Drag and Drop"
 msgstr "拖放"
 
@@ -1848,7 +1911,7 @@ msgid "Select a file from the project resource directory"
 msgstr "从项目资源文件夹中选择一个文件"
 
 #: gladeui/glade-editor-property.c:3136 gladeui/glade-widget-adaptor.c:1461
-#: gladeui/glade-widget.c:1348 plugins/gtk+/gtk+.xml:1519
+#: gladeui/glade-widget.c:1348 plugins/gtk+/gtk+.xml:1432
 msgid "Name"
 msgstr "名称"
 
@@ -2051,9 +2114,9 @@ msgstr "交换"
 
 #. translators: GConnectFlags value
 #: gladeui/glade-previewer.c:759 gladeui/glade-signal.c:197
-#: gladeui/glade-signal-editor.c:1406 plugins/gtk+/gtk+.xml:2359
-#: plugins/gtk+/gtk+.xml:2363 plugins/gtk+/gtk+.xml:2411
-#: plugins/gtk+/gtk+.xml:2415
+#: gladeui/glade-signal-editor.c:1406 plugins/gtk+/gtk+.xml:2204
+#: plugins/gtk+/gtk+.xml:2208 plugins/gtk+/gtk+.xml:2253
+#: plugins/gtk+/gtk+.xml:2257
 msgid "After"
 msgstr "之后"
 
@@ -2324,13 +2387,13 @@ msgstr ""
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3049
+#: gladeui/glade-project.c:3052
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "这个组件在 %s %d.%d 中被引入，而项目目标是 %s %d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3053
+#: gladeui/glade-project.c:3056
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2339,12 +2402,12 @@ msgstr ""
 "[%s] \n"
 "\t对象类“<b>%s</b>”在 %s %d.%d 中被引入\n"
 
-#: gladeui/glade-project.c:3055
+#: gladeui/glade-project.c:3058
 msgid "This widget is deprecated"
 msgstr "该组件已被废弃"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3058
+#: gladeui/glade-project.c:3061
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2355,13 +2418,13 @@ msgstr ""
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3063
+#: gladeui/glade-project.c:3066
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "该属性在 %s %d.%d 中被引入，而项目目标为 %s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3067
+#: gladeui/glade-project.c:3070
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2372,7 +2435,7 @@ msgstr ""
 "\t属性“<b>%s</b>”于对象类“<b>%s</b>”在 %s %d.%d 中被引入\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3071
+#: gladeui/glade-project.c:3074
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2382,12 +2445,12 @@ msgstr ""
 "[%s] \n"
 "\t包装属性“<b>%s</b>”于对象类“<b>%s</b>”在 %s %d.%d 中被引入\n"
 
-#: gladeui/glade-project.c:3074
+#: gladeui/glade-project.c:3077
 msgid "This property is deprecated"
 msgstr "该属性已弃用"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3077
+#: gladeui/glade-project.c:3080
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2398,13 +2461,13 @@ msgstr ""
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3081
+#: gladeui/glade-project.c:3084
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "信号在 %s %d.%d 被引入，而项目目标为 %s %d.%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: gladeui/glade-project.c:3085
+#: gladeui/glade-project.c:3088
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2413,12 +2476,12 @@ msgstr ""
 "[%s] \n"
 "\t信号“<b>%s</b>”于对象类“<b>%s</b>”在 %s %d.%d 被引入\n"
 
-#: gladeui/glade-project.c:3088
+#: gladeui/glade-project.c:3091
 msgid "This signal is deprecated"
 msgstr "该信号已弃用"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: gladeui/glade-project.c:3091
+#: gladeui/glade-project.c:3094
 #, c-format
 msgid ""
 "[%s]\n"
@@ -2427,60 +2490,60 @@ msgstr ""
 "[%1$s] \n"
 "\t对象类“<b>%3$s</b>”的信号“<b>%2$s</b>”已被弃用\n"
 
-#: gladeui/glade-project.c:3386
+#: gladeui/glade-project.c:3393
 msgid "Details"
 msgstr "细节"
 
-#: gladeui/glade-project.c:3402
+#: gladeui/glade-project.c:3409
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "项目“%s”有错误。仍然保存？"
 
-#: gladeui/glade-project.c:3428
+#: gladeui/glade-project.c:3435
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr "对象 %s 是一个类模板，但 gtk+ %d.%d 并不支持\n"
 
-#: gladeui/glade-project.c:3443
+#: gladeui/glade-project.c:3450
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "对象 %s 为无法识别的类型 %s\n"
 
-#: gladeui/glade-project.c:4944
+#: gladeui/glade-project.c:4951
 #, c-format
 msgid "Unsaved %i"
 msgstr "未保存的 %i"
 
-#: gladeui/glade-project.c:5251 gladeui/glade-project.c:5302
-#: gladeui/glade-project.c:5459
+#: gladeui/glade-project.c:5258 gladeui/glade-project.c:5309
+#: gladeui/glade-project.c:5466
 msgid "No widget selected."
 msgstr "未选择组件。"
 
-#: gladeui/glade-project.c:5267
+#: gladeui/glade-project.c:5274
 msgid "Unable to copy unrecognized widget type."
 msgstr "无法复制不识别的组件类。"
 
-#: gladeui/glade-project.c:5299
+#: gladeui/glade-project.c:5306
 msgid "Unable to cut unrecognized widget type"
 msgstr "无法剪切不识别的组件类"
 
-#: gladeui/glade-project.c:5351
+#: gladeui/glade-project.c:5358
 msgid "Unable to paste to the selected parent"
 msgstr "无法粘贴到上一级"
 
-#: gladeui/glade-project.c:5362
+#: gladeui/glade-project.c:5369
 msgid "Unable to paste to multiple widgets"
 msgstr "无法粘贴到多个组件"
 
-#: gladeui/glade-project.c:5372
+#: gladeui/glade-project.c:5379
 msgid "No widget on the clipboard"
 msgstr "剪贴板上没有组件"
 
-#: gladeui/glade-project.c:5417
+#: gladeui/glade-project.c:5424
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "在该容器中每次只能粘贴一个组件"
 
-#: gladeui/glade-project.c:5429
+#: gladeui/glade-project.c:5436
 msgid "Insufficient amount of placeholders in target container"
 msgstr "目标容器中没有足够的放置位置"
 
@@ -2521,7 +2584,7 @@ msgstr "上下文"
 msgid "Context for translation"
 msgstr "翻译的上下文"
 
-#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:414
+#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:394
 msgid "Comment"
 msgstr "注释"
 
@@ -2733,19 +2796,19 @@ msgstr "无法显示链接："
 
 #. Reset the column
 #: gladeui/glade-utils.c:1717 plugins/gtk+/glade-attributes.c:829
-#: plugins/gtk+/gtk+.xml:871 plugins/gtk+/gtk+.xml:1257
-#: plugins/gtk+/gtk+.xml:1273 plugins/gtk+/gtk+.xml:1388
-#: plugins/gtk+/gtk+.xml:1531 plugins/gtk+/gtk+.xml:1678
-#: plugins/gtk+/gtk+.xml:1732 plugins/gtk+/gtk+.xml:2635
-#: plugins/gtk+/gtk+.xml:2689 plugins/gtk+/gtk+.xml:2755
-#: plugins/gtk+/gtk+.xml:3086 plugins/gtk+/gtk+.xml:3460
-#: plugins/gtk+/gtk+.xml:3599 plugins/gtk+/gtk+.xml:3716
-#: plugins/gtk+/gtk+.xml:3759 plugins/gtk+/gtk+.xml:4021
-#: plugins/gtk+/gtk+.xml:4725 plugins/gtk+/gtk+.xml:5552
+#: plugins/gtk+/gtk+.xml:830 plugins/gtk+/gtk+.xml:1188
+#: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1307
+#: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:1574
+#: plugins/gtk+/gtk+.xml:1624 plugins/gtk+/gtk+.xml:2468
+#: plugins/gtk+/gtk+.xml:2520 plugins/gtk+/gtk+.xml:2581
+#: plugins/gtk+/gtk+.xml:2905 plugins/gtk+/gtk+.xml:3261
+#: plugins/gtk+/gtk+.xml:3394 plugins/gtk+/gtk+.xml:3507
+#: plugins/gtk+/gtk+.xml:3550 plugins/gtk+/gtk+.xml:3802
+#: plugins/gtk+/gtk+.xml:4448 plugins/gtk+/gtk+.xml:5222
 msgid "None"
 msgstr "无"
 
-#: gladeui/glade-widget-action.c:182 plugins/gtk+/gtk+.xml:436
+#: gladeui/glade-widget-action.c:182 plugins/gtk+/gtk+.xml:416
 msgid "Definition"
 msgstr "定义"
 
@@ -2758,7 +2821,7 @@ msgid "Whether this action is sensitive"
 msgstr "此动作是否敏感"
 
 #: gladeui/glade-widget-action.c:195 gladeui/glade-widget.c:1437
-#: plugins/gtk+/gtk+.xml:4334
+#: plugins/gtk+/gtk+.xml:4086
 msgid "Visible"
 msgstr "可视的"
 
@@ -2800,7 +2863,7 @@ msgstr "常规名称"
 msgid "Used to generate names of new widgets"
 msgstr "用于生成新组件的名称"
 
-#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2293
+#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2144
 #: plugins/gtk+/glade-window-editor.ui:262
 msgid "Icon Name"
 msgstr "图标名称"
@@ -2896,7 +2959,7 @@ msgstr "组件从属的 glade 项目"
 msgid "A list of GladeProperties"
 msgstr "一组 GladeProperties 列表"
 
-#: gladeui/glade-widget.c:1389 plugins/gtk+/gtk+.xml:634
+#: gladeui/glade-widget.c:1389 plugins/gtk+/gtk+.xml:598
 msgid "Parent"
 msgstr "上一级"
 
@@ -2989,7 +3052,7 @@ msgstr "一些信号存在信号问题："
 msgid "Actions"
 msgstr "动作"
 
-#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5621
+#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5293
 msgid "Applications"
 msgstr "应用程序"
 
@@ -3496,7 +3559,7 @@ msgid "Whether this container supports resizes of child widgets"
 msgstr "容器是否支持子组件改变大小"
 
 #: plugins/gtk+/glade-gtk-action-group.c:184
-#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3798
+#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3589
 msgid "Action"
 msgstr "动作"
 
@@ -3542,11 +3605,11 @@ msgstr "确认页"
 msgid "Ordering children of %s"
 msgstr "次序 %s 的子结点"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4059
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:3838
 msgid "Tree View Column"
 msgstr "树视图栏"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4172
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:3939
 msgid "Cell Renderer"
 msgstr "单元格渲染"
 
@@ -3559,18 +3622,18 @@ msgid "Common Properties and Attributes"
 msgstr "通用属性和特性"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:411
-#: plugins/gtk+/glade-gtk-tree-view.c:85 plugins/gtk+/gtk+.xml:344
+#: plugins/gtk+/glade-gtk-tree-view.c:85 plugins/gtk+/gtk+.xml:324
 #: plugins/gtk+/glade-entry-editor.ui:343
 msgid "Text"
 msgstr "文本"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:412
-#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3828
+#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3616
 msgid "Accelerator"
 msgstr "快捷键"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:413
-#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:846
+#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:805
 msgid "Combo"
 msgstr "组合"
 
@@ -3585,13 +3648,13 @@ msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:416
-#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3574
+#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3369
 #: plugins/gtk+/glade-entry-editor.ui:471
 msgid "Progress"
 msgstr "进度"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:418
-#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1402
+#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1321
 msgid "Spinner"
 msgstr "微调"
 
@@ -3833,16 +3896,16 @@ msgstr "最近菜单"
 msgid "Tool Item"
 msgstr "工具条目"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1230
+#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1164
 msgid "Tool Item Group"
 msgstr "工具条目组"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2941
+#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2761
 msgid "Recent Chooser Menu"
 msgstr "最近选择的菜单"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:292
-#: plugins/gtk+/gtk+.xml:990
+#: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:272
+#: plugins/gtk+/gtk+.xml:939
 msgid "Menu Item"
 msgstr "菜单栏目"
 
@@ -3882,20 +3945,20 @@ msgid "Text Tag Table Editor"
 msgstr "文本标签表编辑器"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:238
-#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1152
-#: plugins/gtk+/gtk+.xml:1714
+#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1093
+#: plugins/gtk+/gtk+.xml:1608
 msgid "Button"
 msgstr "按钮"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:241
-#: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:288
-#: plugins/gtk+/gtk+.xml:826 plugins/gtk+/gtk+.xml:1146
+#: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:268
+#: plugins/gtk+/gtk+.xml:785 plugins/gtk+/gtk+.xml:1087
 msgid "Menu"
 msgstr "菜单"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:242
-#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3329
-#: plugins/gtk+/gtk+.xml:3576 plugins/gtk+/gtk+.xml:3722
+#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3139
+#: plugins/gtk+/gtk+.xml:3371 plugins/gtk+/gtk+.xml:3513
 #: plugins/gtk+/glade-widget-editor.ui:654
 msgid "Custom"
 msgstr "定制"
@@ -3904,24 +3967,24 @@ msgstr "定制"
 #: plugins/gtk+/glade-gtk-toolbar.c:260
 #: plugins/gtk+/glade-gtk-tool-palette.c:189
 #: plugins/gtk+/glade-gtk-tool-palette.c:197
-#: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:322
-#: plugins/gtk+/gtk+.xml:3030
+#: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:302
+#: plugins/gtk+/gtk+.xml:2847
 msgid "Separator"
 msgstr "分割条"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:248 plugins/gtk+/glade-gtk-toolbar.c:256
 #: plugins/gtk+/glade-gtk-tool-palette.c:193
-#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:822
-#: plugins/gtk+/gtk+.xml:1269 plugins/gtk+/gtk+.xml:2054
-#: plugins/gtk+/gtk+.xml:4646 plugins/gtk+/gtk+.xml:4688
-#: plugins/gtk+/gtk+.xml:4758
+#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:781
+#: plugins/gtk+/gtk+.xml:1200 plugins/gtk+/gtk+.xml:1912
+#: plugins/gtk+/gtk+.xml:4374 plugins/gtk+/gtk+.xml:4413
+#: plugins/gtk+/gtk+.xml:4480
 msgid "Normal"
 msgstr "普通的"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:249 plugins/gtk+/glade-gtk-toolbar.c:257
 #: plugins/gtk+/glade-gtk-tool-palette.c:194
-#: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:276
-#: plugins/gtk+/gtk+.xml:2280 plugins/gtk+/glade-image-editor.ui:44
+#: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:256
+#: plugins/gtk+/gtk+.xml:2131 plugins/gtk+/glade-image-editor.ui:44
 #: plugins/gtk+/glade-tool-button-editor.ui:215
 msgid "Image"
 msgstr "图像"
@@ -4085,7 +4148,7 @@ msgstr "设置您是否想为“%s”的这个源指定一个状态"
 msgid "Set the state for this source of '%s'"
 msgstr "为“%s”的这个源设置状态"
 
-#: plugins/gtk+/glade-icon-sources.c:849 plugins/gtk+/gtk+.xml:2295
+#: plugins/gtk+/glade-icon-sources.c:849 plugins/gtk+/gtk+.xml:2146
 msgid "File Name"
 msgstr "文件的名称"
 
@@ -4303,7 +4366,7 @@ msgstr "校对"
 msgid "Reverse"
 msgstr "反向"
 
-#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2855
+#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2673
 msgid "Scale"
 msgstr "比例"
 
@@ -4331,765 +4394,765 @@ msgstr "列举布局"
 msgid "GTK+ Unix Print Toplevels"
 msgstr "GTK+ Unix 打印顶层"
 
-#: plugins/gtk+/gtk+.xml:38
+#: plugins/gtk+/gtk+.xml:37
 msgid "Preview snapshot"
 msgstr "快照预览"
 
-#: plugins/gtk+/gtk+.xml:39
+#: plugins/gtk+/gtk+.xml:38
 msgid "Edit Separately"
 msgstr "分别编辑"
 
-#: plugins/gtk+/gtk+.xml:40
+#: plugins/gtk+/gtk+.xml:39
 msgid "Remove Parent"
 msgstr "移除上一级"
 
-#: plugins/gtk+/gtk+.xml:41
+#: plugins/gtk+/gtk+.xml:40
 msgid "Add Parent"
 msgstr "添加上一级"
 
-#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:2705
+#: plugins/gtk+/gtk+.xml:41 plugins/gtk+/gtk+.xml:2536
 #: plugins/gtk+/glade-misc-editor.ui:187
 #: plugins/gtk+/glade-widget-editor.ui:841
 msgid "Alignment"
 msgstr "对齐"
 
-#: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:358
-#: plugins/gtk+/gtk+.xml:3234
+#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:338
+#: plugins/gtk+/gtk+.xml:3046
 msgid "Viewport"
 msgstr "观察窗"
 
-#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:3206
+#: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:3020
 msgid "Event Box"
 msgstr "事件框"
 
-#: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:268
-#: plugins/gtk+/gtk+.xml:2707
+#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:248
+#: plugins/gtk+/gtk+.xml:2538
 msgid "Frame"
 msgstr "框架"
 
-#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:2724
+#: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:2554
 msgid "Aspect Frame"
 msgstr "外观框架"
 
-#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3249
+#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:3061
 msgid "Scrolled Window"
 msgstr "可滚动的窗口"
 
-#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:3208
+#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3022
 msgid "Expander"
 msgstr "展开器"
 
-#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:2391
+#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:2234
 msgid "Grid"
 msgstr "网格"
 
-#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:647
+#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:611
 msgid "Box"
 msgstr "框"
 
-#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2448
+#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:2288
 msgid "Paned"
 msgstr "镶嵌"
 
-#: plugins/gtk+/gtk+.xml:52 plugins/gtk+/gtk+.xml:2597
+#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2430
 msgid "Stack"
 msgstr "堆栈"
 
-#: plugins/gtk+/gtk+.xml:54
+#: plugins/gtk+/gtk+.xml:53
 msgid "Add to Size Group"
 msgstr "添加一个尺寸组"
 
-#: plugins/gtk+/gtk+.xml:55
+#: plugins/gtk+/gtk+.xml:54
 msgid "Clear properties"
 msgstr "清除属性"
 
-#: plugins/gtk+/gtk+.xml:56
+#: plugins/gtk+/gtk+.xml:55
 msgid "Read documentation"
 msgstr "阅读文档"
 
-#: plugins/gtk+/gtk+.xml:98
+#: plugins/gtk+/gtk+.xml:89
 msgid "Style Classes"
 msgstr "样式类"
 
-#: plugins/gtk+/gtk+.xml:103
+#: plugins/gtk+/gtk+.xml:94
 msgid "A list of style class names to apply to this widget"
 msgstr "要应用于该组件的样式类名列表"
 
-#: plugins/gtk+/gtk+.xml:109 plugins/gtk+/gtk+.xml:1458
-#: plugins/gtk+/gtk+.xml:2382
+#: plugins/gtk+/gtk+.xml:99 plugins/gtk+/gtk+.xml:1375
+#: plugins/gtk+/gtk+.xml:2225
 msgid "Fill"
 msgstr "填充"
 
-#: plugins/gtk+/gtk+.xml:111 plugins/gtk+/gtk+.xml:705
-#: plugins/gtk+/gtk+.xml:1259 plugins/gtk+/gtk+.xml:3007
+#: plugins/gtk+/gtk+.xml:101 plugins/gtk+/gtk+.xml:666
+#: plugins/gtk+/gtk+.xml:1190 plugins/gtk+/gtk+.xml:2823
 msgid "Start"
 msgstr "开始"
 
-#: plugins/gtk+/gtk+.xml:113 plugins/gtk+/gtk+.xml:684
-#: plugins/gtk+/gtk+.xml:803 plugins/gtk+/gtk+.xml:873
-#: plugins/gtk+/gtk+.xml:1456 plugins/gtk+/gtk+.xml:3011
-#: plugins/gtk+/gtk+.xml:4374
+#: plugins/gtk+/gtk+.xml:103 plugins/gtk+/gtk+.xml:646
+#: plugins/gtk+/gtk+.xml:762 plugins/gtk+/gtk+.xml:832
+#: plugins/gtk+/gtk+.xml:1373 plugins/gtk+/gtk+.xml:2827
+#: plugins/gtk+/gtk+.xml:4125
 msgid "Center"
 msgstr "中心"
 
-#: plugins/gtk+/gtk+.xml:115 plugins/gtk+/gtk+.xml:707
-#: plugins/gtk+/gtk+.xml:1263 plugins/gtk+/gtk+.xml:3009
+#: plugins/gtk+/gtk+.xml:105 plugins/gtk+/gtk+.xml:668
+#: plugins/gtk+/gtk+.xml:1194 plugins/gtk+/gtk+.xml:2825
 msgid "End"
 msgstr "结束"
 
-#: plugins/gtk+/gtk+.xml:117
+#: plugins/gtk+/gtk+.xml:107
 msgid "Baseline"
 msgstr "基准线"
 
-#: plugins/gtk+/gtk+.xml:125
+#: plugins/gtk+/gtk+.xml:114
 msgid "Exposure"
 msgstr "暴露"
 
-#: plugins/gtk+/gtk+.xml:127
+#: plugins/gtk+/gtk+.xml:116
 msgid "Pointer Motion"
 msgstr "指针移动"
 
-#: plugins/gtk+/gtk+.xml:129
+#: plugins/gtk+/gtk+.xml:118
 msgid "Pointer Motion Hint"
 msgstr "指针移动提示"
 
-#: plugins/gtk+/gtk+.xml:131
+#: plugins/gtk+/gtk+.xml:120
 msgid "Button Motion"
 msgstr "按钮移动"
 
-#: plugins/gtk+/gtk+.xml:133
+#: plugins/gtk+/gtk+.xml:122
 msgid "Button 1 Motion"
 msgstr "按钮1移动"
 
-#: plugins/gtk+/gtk+.xml:135
+#: plugins/gtk+/gtk+.xml:124
 msgid "Button 2 Motion"
 msgstr "按钮2移动"
 
-#: plugins/gtk+/gtk+.xml:137
+#: plugins/gtk+/gtk+.xml:126
 msgid "Button 3 Motion"
 msgstr "按钮3移动"
 
-#: plugins/gtk+/gtk+.xml:139
+#: plugins/gtk+/gtk+.xml:128
 msgid "Button Press"
 msgstr "按钮按下"
 
-#: plugins/gtk+/gtk+.xml:141
+#: plugins/gtk+/gtk+.xml:130
 msgid "Button Release"
 msgstr "按钮释放"
 
-#: plugins/gtk+/gtk+.xml:143
+#: plugins/gtk+/gtk+.xml:132
 msgid "Key Press"
 msgstr "键按下"
 
-#: plugins/gtk+/gtk+.xml:145
+#: plugins/gtk+/gtk+.xml:134
 msgid "Key Release"
 msgstr "键释放"
 
-#: plugins/gtk+/gtk+.xml:147
+#: plugins/gtk+/gtk+.xml:136
 msgid "Enter Notify"
 msgstr "输入通知"
 
-#: plugins/gtk+/gtk+.xml:149
+#: plugins/gtk+/gtk+.xml:138
 msgid "Leave Notify"
 msgstr "留下通知"
 
-#: plugins/gtk+/gtk+.xml:151
+#: plugins/gtk+/gtk+.xml:140
 msgid "Focus Change"
 msgstr "焦点改变"
 
-#: plugins/gtk+/gtk+.xml:153
+#: plugins/gtk+/gtk+.xml:142
 msgid "Structure"
 msgstr "结构"
 
-#: plugins/gtk+/gtk+.xml:155
+#: plugins/gtk+/gtk+.xml:144
 msgid "Property Change"
 msgstr "属性改变"
 
-#: plugins/gtk+/gtk+.xml:157
+#: plugins/gtk+/gtk+.xml:146
 msgid "Visibility Notify"
 msgstr "可见性通知"
 
-#: plugins/gtk+/gtk+.xml:159
+#: plugins/gtk+/gtk+.xml:148
 msgid "Proximity In"
 msgstr "邻近转入"
 
-#: plugins/gtk+/gtk+.xml:161
+#: plugins/gtk+/gtk+.xml:150
 msgid "Proximity Out"
 msgstr "邻近转出"
 
-#: plugins/gtk+/gtk+.xml:163
+#: plugins/gtk+/gtk+.xml:152
 msgid "Substructure"
 msgstr "子结构"
 
-#: plugins/gtk+/gtk+.xml:165
+#: plugins/gtk+/gtk+.xml:154
 msgid "Scroll"
 msgstr "滚动"
 
-#: plugins/gtk+/gtk+.xml:167
+#: plugins/gtk+/gtk+.xml:156
 msgid "Touch"
 msgstr "触摸"
 
-#: plugins/gtk+/gtk+.xml:169
+#: plugins/gtk+/gtk+.xml:158
 msgid "Smooth scroll"
 msgstr "平滑滚动"
 
-#: plugins/gtk+/gtk+.xml:171
+#: plugins/gtk+/gtk+.xml:160
 msgid "Touchpad Gesture"
 msgstr "触控板手势"
 
-#: plugins/gtk+/gtk+.xml:173
+#: plugins/gtk+/gtk+.xml:162
 msgid "Tablet Pad"
 msgstr "平板电脑"
 
-#: plugins/gtk+/gtk+.xml:175
+#: plugins/gtk+/gtk+.xml:164
 msgid "All Events"
 msgstr "全部事件"
 
-#: plugins/gtk+/gtk+.xml:190
+#: plugins/gtk+/gtk+.xml:176
 msgid "Accelerators"
 msgstr "快捷键"
 
-#: plugins/gtk+/gtk+.xml:195
+#: plugins/gtk+/gtk+.xml:181
 msgid "A list of accelerator keys"
 msgstr "快捷键列表"
 
-#: plugins/gtk+/gtk+.xml:200
+#: plugins/gtk+/gtk+.xml:184
 msgid "Accessible Name"
 msgstr "辅助名称"
 
-#: plugins/gtk+/gtk+.xml:204
+#: plugins/gtk+/gtk+.xml:188
 msgid "Object instance's name formatted for assistive technology access"
 msgstr "对象实例名称被格式化，为辅助技术存取"
 
-#: plugins/gtk+/gtk+.xml:208
+#: plugins/gtk+/gtk+.xml:190
 msgid "Accessible Description"
 msgstr "辅助描述"
 
-#: plugins/gtk+/gtk+.xml:212
+#: plugins/gtk+/gtk+.xml:194
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "对象的说明，为辅助技术存取已格式化"
 
-#: plugins/gtk+/gtk+.xml:216
+#: plugins/gtk+/gtk+.xml:196
 msgid "Role"
 msgstr "角色"
 
-#: plugins/gtk+/gtk+.xml:221
+#: plugins/gtk+/gtk+.xml:201
 msgid "The accessible role of this object"
 msgstr "该对象的辅助功能角色"
 
-#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:1144
+#: plugins/gtk+/gtk+.xml:204 plugins/gtk+/gtk+.xml:1085
 msgid "Invalid"
 msgstr "不合法"
 
-#: plugins/gtk+/gtk+.xml:226
+#: plugins/gtk+/gtk+.xml:206
 msgid "Accelerator Label"
 msgstr "加速器标签"
 
-#: plugins/gtk+/gtk+.xml:228
+#: plugins/gtk+/gtk+.xml:208
 msgid "Alert"
 msgstr "警告"
 
-#: plugins/gtk+/gtk+.xml:230
+#: plugins/gtk+/gtk+.xml:210
 msgid "Animation"
 msgstr "动画"
 
-#: plugins/gtk+/gtk+.xml:232 plugins/gtk+/gtk+.xml:3072
+#: plugins/gtk+/gtk+.xml:212 plugins/gtk+/gtk+.xml:2891
 msgid "Arrow"
 msgstr "箭头"
 
-#: plugins/gtk+/gtk+.xml:234 plugins/gtk+/gtk+.xml:2891
+#: plugins/gtk+/gtk+.xml:214 plugins/gtk+/gtk+.xml:2709
 msgid "Calendar"
 msgstr "日历"
 
-#: plugins/gtk+/gtk+.xml:236
+#: plugins/gtk+/gtk+.xml:216
 msgid "Canvas"
 msgstr "画布"
 
-#: plugins/gtk+/gtk+.xml:238
+#: plugins/gtk+/gtk+.xml:218
 msgid "Check Box"
 msgstr "复选框"
 
-#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:1055
+#: plugins/gtk+/gtk+.xml:220 plugins/gtk+/gtk+.xml:998
 msgid "Check Menu Item"
 msgstr "复选菜单栏目"
 
-#: plugins/gtk+/gtk+.xml:242
+#: plugins/gtk+/gtk+.xml:222
 msgid "Color Chooser"
 msgstr "颜色拾取器"
 
-#: plugins/gtk+/gtk+.xml:244 plugins/gtk+/gtk+.xml:336
+#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:316
 msgid "Column Header"
 msgstr "列标头"
 
-#: plugins/gtk+/gtk+.xml:246 plugins/gtk+/gtk+.xml:2113
+#: plugins/gtk+/gtk+.xml:226 plugins/gtk+/gtk+.xml:1973
 msgid "Combo Box"
 msgstr "组合框"
 
-#: plugins/gtk+/gtk+.xml:248
+#: plugins/gtk+/gtk+.xml:228
 msgid "Date Editor"
 msgstr "日期编辑器"
 
-#: plugins/gtk+/gtk+.xml:250
+#: plugins/gtk+/gtk+.xml:230
 msgid "Desktop Icon"
 msgstr "桌面图标"
 
-#: plugins/gtk+/gtk+.xml:252
+#: plugins/gtk+/gtk+.xml:232
 msgid "Desktop Frame"
 msgstr "桌面框架"
 
-#: plugins/gtk+/gtk+.xml:254
+#: plugins/gtk+/gtk+.xml:234
 msgid "Dial"
 msgstr "拨号"
 
-#: plugins/gtk+/gtk+.xml:256 plugins/gtk+/gtk+.xml:824
-#: plugins/gtk+/gtk+.xml:1156
+#: plugins/gtk+/gtk+.xml:236 plugins/gtk+/gtk+.xml:783
+#: plugins/gtk+/gtk+.xml:1097
 msgid "Dialog"
 msgstr "对话框"
 
-#: plugins/gtk+/gtk+.xml:258
+#: plugins/gtk+/gtk+.xml:238
 msgid "Directory Pane"
 msgstr "目录面板"
 
-#: plugins/gtk+/gtk+.xml:260 plugins/gtk+/gtk+.xml:3173
+#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:2987
 msgid "Drawing Area"
 msgstr "绘图区域"
 
-#: plugins/gtk+/gtk+.xml:262
+#: plugins/gtk+/gtk+.xml:242
 msgid "File Chooser"
 msgstr "文件选择器"
 
-#: plugins/gtk+/gtk+.xml:264
+#: plugins/gtk+/gtk+.xml:244
 msgid "Filler"
 msgstr "填充器"
 
-#: plugins/gtk+/gtk+.xml:266
+#: plugins/gtk+/gtk+.xml:246
 msgid "Font Chooser"
 msgstr "字体选择器"
 
-#: plugins/gtk+/gtk+.xml:270
+#: plugins/gtk+/gtk+.xml:250
 msgid "Glass Pane"
 msgstr "类面板"
 
-#: plugins/gtk+/gtk+.xml:272
+#: plugins/gtk+/gtk+.xml:252
 msgid "HTML Container"
 msgstr "HTML 容器"
 
-#: plugins/gtk+/gtk+.xml:274 plugins/gtk+/glade-about-dialog-editor.ui:213
+#: plugins/gtk+/gtk+.xml:254 plugins/gtk+/glade-about-dialog-editor.ui:213
 msgid "Icon"
 msgstr "图标"
 
-#: plugins/gtk+/gtk+.xml:278
+#: plugins/gtk+/gtk+.xml:258
 msgid "Internal Frame"
 msgstr "内部框架"
 
-#: plugins/gtk+/gtk+.xml:282
+#: plugins/gtk+/gtk+.xml:262
 msgid "Layered Pane"
 msgstr "层叠面板"
 
-#: plugins/gtk+/gtk+.xml:284
+#: plugins/gtk+/gtk+.xml:264
 msgid "List"
 msgstr "列表"
 
-#: plugins/gtk+/gtk+.xml:286
+#: plugins/gtk+/gtk+.xml:266
 msgid "List Item"
 msgstr "列表条目"
 
-#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1072
+#: plugins/gtk+/gtk+.xml:270 plugins/gtk+/gtk+.xml:1015
 msgid "Menu Bar"
 msgstr "菜单栏"
 
-#: plugins/gtk+/gtk+.xml:294
+#: plugins/gtk+/gtk+.xml:274
 msgid "Option Pane"
 msgstr "选项面板"
 
-#: plugins/gtk+/gtk+.xml:296
+#: plugins/gtk+/gtk+.xml:276
 msgid "Page Tab"
 msgstr "页面标签"
 
-#: plugins/gtk+/gtk+.xml:298
+#: plugins/gtk+/gtk+.xml:278
 msgid "Page Tab List"
 msgstr "页面标签列表"
 
-#: plugins/gtk+/gtk+.xml:300
+#: plugins/gtk+/gtk+.xml:280
 msgid "Panel"
 msgstr "面板"
 
-#: plugins/gtk+/gtk+.xml:302
+#: plugins/gtk+/gtk+.xml:282
 msgid "Password Text"
 msgstr "密码文本"
 
-#: plugins/gtk+/gtk+.xml:304 plugins/gtk+/gtk+.xml:840
-#: plugins/gtk+/gtk+.xml:2899
+#: plugins/gtk+/gtk+.xml:284 plugins/gtk+/gtk+.xml:799
+#: plugins/gtk+/gtk+.xml:2717
 msgid "Popup Menu"
 msgstr "弹出式菜单"
 
-#: plugins/gtk+/gtk+.xml:306
+#: plugins/gtk+/gtk+.xml:286
 msgid "Progress bar"
 msgstr "进度条"
 
-#: plugins/gtk+/gtk+.xml:308
+#: plugins/gtk+/gtk+.xml:288
 msgid "Push Button"
 msgstr "下压按钮"
 
-#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:1879
+#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1755
 msgid "Radio Button"
 msgstr "单选按钮"
 
-#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:1057
+#: plugins/gtk+/gtk+.xml:292 plugins/gtk+/gtk+.xml:1000
 msgid "Radio Menu Item"
 msgstr "单选菜单栏目"
 
-#: plugins/gtk+/gtk+.xml:314
+#: plugins/gtk+/gtk+.xml:294
 msgid "Root Pane"
 msgstr "根面板"
 
-#: plugins/gtk+/gtk+.xml:316 plugins/gtk+/gtk+.xml:338
+#: plugins/gtk+/gtk+.xml:296 plugins/gtk+/gtk+.xml:318
 msgid "Row Header"
 msgstr "行标头"
 
-#: plugins/gtk+/gtk+.xml:318
+#: plugins/gtk+/gtk+.xml:298
 msgid "Scroll Bar"
 msgstr "滚动条"
 
-#: plugins/gtk+/gtk+.xml:320
+#: plugins/gtk+/gtk+.xml:300
 msgid "Scroll pane"
 msgstr "滚动面板"
 
-#: plugins/gtk+/gtk+.xml:324
+#: plugins/gtk+/gtk+.xml:304
 msgid "Slider"
 msgstr "滑动条"
 
-#: plugins/gtk+/gtk+.xml:326
+#: plugins/gtk+/gtk+.xml:306
 msgid "Split Pane"
 msgstr "分割面板"
 
-#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1849
+#: plugins/gtk+/gtk+.xml:308 plugins/gtk+/gtk+.xml:1727
 msgid "Spin Button"
 msgstr "微调按钮"
 
-#: plugins/gtk+/gtk+.xml:330 plugins/gtk+/gtk+.xml:3058
+#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:2877
 msgid "Status Bar"
 msgstr "状态栏"
 
-#: plugins/gtk+/gtk+.xml:332 plugins/gtk+/gtk+.xml:2345
+#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:2191
 msgid "Table"
 msgstr "表"
 
-#: plugins/gtk+/gtk+.xml:334
+#: plugins/gtk+/gtk+.xml:314
 msgid "Table Cell"
 msgstr "表单元格"
 
-#: plugins/gtk+/gtk+.xml:340
+#: plugins/gtk+/gtk+.xml:320
 msgid "Tear Off Menu Item"
 msgstr "可分离菜单条目"
 
-#: plugins/gtk+/gtk+.xml:342 plugins/gtk+/gtk+.xml:1525
+#: plugins/gtk+/gtk+.xml:322 plugins/gtk+/gtk+.xml:1438
 msgid "Terminal"
 msgstr "终端"
 
-#: plugins/gtk+/gtk+.xml:346 plugins/gtk+/gtk+.xml:1833
+#: plugins/gtk+/gtk+.xml:326 plugins/gtk+/gtk+.xml:1711
 msgid "Toggle Button"
 msgstr "开关按钮"
 
-#: plugins/gtk+/gtk+.xml:348 plugins/gtk+/gtk+.xml:1099
+#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1042
 msgid "Tool Bar"
 msgstr "工具栏"
 
-#: plugins/gtk+/gtk+.xml:350
+#: plugins/gtk+/gtk+.xml:330
 msgid "Tool Tip"
 msgstr "工具提示"
 
-#: plugins/gtk+/gtk+.xml:352
+#: plugins/gtk+/gtk+.xml:332
 msgid "Tree"
 msgstr "树"
 
-#: plugins/gtk+/gtk+.xml:354
+#: plugins/gtk+/gtk+.xml:334
 msgid "Tree Table"
 msgstr "树表格"
 
-#: plugins/gtk+/gtk+.xml:356 plugins/gtk+/gtk+.xml:3327
+#: plugins/gtk+/gtk+.xml:336 plugins/gtk+/gtk+.xml:3137
 msgid "Unknown"
 msgstr "未知的"
 
-#: plugins/gtk+/gtk+.xml:360 plugins/gtk+/gtk+.xml:758
-#: plugins/gtk+/gtk+.xml:3601 plugins/webkit2gtk/webkit2gtk.xml:29
+#: plugins/gtk+/gtk+.xml:340 plugins/gtk+/gtk+.xml:718
+#: plugins/gtk+/gtk+.xml:3396 plugins/webkit2gtk/webkit2gtk.xml:29
 msgid "Window"
 msgstr "窗口"
 
-#: plugins/gtk+/gtk+.xml:362
+#: plugins/gtk+/gtk+.xml:342
 msgid "Header"
 msgstr "页眉"
 
-#: plugins/gtk+/gtk+.xml:364
+#: plugins/gtk+/gtk+.xml:344
 msgid "Footer"
 msgstr "页脚"
 
-#: plugins/gtk+/gtk+.xml:366
+#: plugins/gtk+/gtk+.xml:346
 msgid "Paragraph"
 msgstr "段落"
 
-#: plugins/gtk+/gtk+.xml:368
+#: plugins/gtk+/gtk+.xml:348
 msgid "Ruler"
 msgstr "标尺"
 
-#: plugins/gtk+/gtk+.xml:370
+#: plugins/gtk+/gtk+.xml:350
 msgid "Application"
 msgstr "应用程序"
 
-#: plugins/gtk+/gtk+.xml:372
+#: plugins/gtk+/gtk+.xml:352
 msgid "Autocomplete"
 msgstr "自动完成"
 
-#: plugins/gtk+/gtk+.xml:374
+#: plugins/gtk+/gtk+.xml:354
 msgid "Editbar"
 msgstr "编辑栏"
 
-#: plugins/gtk+/gtk+.xml:376
+#: plugins/gtk+/gtk+.xml:356
 msgid "Embedded"
 msgstr "嵌入的"
 
-#: plugins/gtk+/gtk+.xml:378 plugins/gtk+/glade-entry-editor.ui:43
+#: plugins/gtk+/gtk+.xml:358 plugins/gtk+/glade-entry-editor.ui:43
 msgid "Entry"
 msgstr "输入条"
 
-#: plugins/gtk+/gtk+.xml:380
+#: plugins/gtk+/gtk+.xml:360
 msgid "Chart"
 msgstr "图表"
 
-#: plugins/gtk+/gtk+.xml:382
+#: plugins/gtk+/gtk+.xml:362
 msgid "Caption"
 msgstr "标题"
 
-#: plugins/gtk+/gtk+.xml:384
+#: plugins/gtk+/gtk+.xml:364
 msgid "Document Frame"
 msgstr "文档框架"
 
-#: plugins/gtk+/gtk+.xml:386
+#: plugins/gtk+/gtk+.xml:366
 msgid "Heading"
 msgstr "标头"
 
-#: plugins/gtk+/gtk+.xml:388
+#: plugins/gtk+/gtk+.xml:368
 msgid "Page"
 msgstr "页面"
 
-#: plugins/gtk+/gtk+.xml:390
+#: plugins/gtk+/gtk+.xml:370
 msgid "Section"
 msgstr "区"
 
-#: plugins/gtk+/gtk+.xml:392
+#: plugins/gtk+/gtk+.xml:372
 msgid "Redundant Object"
 msgstr "冗余对象"
 
-#: plugins/gtk+/gtk+.xml:394
+#: plugins/gtk+/gtk+.xml:374
 msgid "Form"
 msgstr "表单"
 
-#: plugins/gtk+/gtk+.xml:396
+#: plugins/gtk+/gtk+.xml:376
 msgid "Link"
 msgstr "链接"
 
-#: plugins/gtk+/gtk+.xml:398
+#: plugins/gtk+/gtk+.xml:378
 msgid "Input Method Window"
 msgstr "输入法窗口"
 
-#: plugins/gtk+/gtk+.xml:400
+#: plugins/gtk+/gtk+.xml:380
 msgid "Table Row"
 msgstr "表行"
 
-#: plugins/gtk+/gtk+.xml:402
+#: plugins/gtk+/gtk+.xml:382
 msgid "Tree Item"
 msgstr "树条目"
 
-#: plugins/gtk+/gtk+.xml:404
+#: plugins/gtk+/gtk+.xml:384
 msgid "Document Spreadsheet"
 msgstr "电子表格文档"
 
-#: plugins/gtk+/gtk+.xml:406
+#: plugins/gtk+/gtk+.xml:386
 msgid "Document Presentation"
 msgstr "幻灯片文档"
 
-#: plugins/gtk+/gtk+.xml:408
+#: plugins/gtk+/gtk+.xml:388
 msgid "Document Text"
 msgstr "文本文档"
 
-#: plugins/gtk+/gtk+.xml:410
+#: plugins/gtk+/gtk+.xml:390
 msgid "Document Web"
 msgstr "网络文档"
 
-#: plugins/gtk+/gtk+.xml:412
+#: plugins/gtk+/gtk+.xml:392
 msgid "Document Email"
 msgstr "邮件文档"
 
-#: plugins/gtk+/gtk+.xml:416 plugins/gtk+/gtk+.xml:2726
+#: plugins/gtk+/gtk+.xml:396 plugins/gtk+/gtk+.xml:2556
 msgid "List Box"
 msgstr "列表框"
 
-#: plugins/gtk+/gtk+.xml:418
+#: plugins/gtk+/gtk+.xml:398
 msgid "Grouping"
 msgstr "分组"
 
-#: plugins/gtk+/gtk+.xml:420
+#: plugins/gtk+/gtk+.xml:400
 msgid "Image Map"
 msgstr "图像映射"
 
-#: plugins/gtk+/gtk+.xml:422 plugins/gtk+/gtk+.xml:844
+#: plugins/gtk+/gtk+.xml:402 plugins/gtk+/gtk+.xml:803
 msgid "Notification"
 msgstr "通知"
 
-#: plugins/gtk+/gtk+.xml:424 plugins/gtk+/gtk+.xml:3177
+#: plugins/gtk+/gtk+.xml:404 plugins/gtk+/gtk+.xml:2991
 msgid "Info Bar"
 msgstr "信息栏"
 
-#: plugins/gtk+/gtk+.xml:426 plugins/gtk+/gtk+.xml:2261
+#: plugins/gtk+/gtk+.xml:406 plugins/gtk+/gtk+.xml:2112
 msgid "Level Bar"
 msgstr "水平条"
 
-#: plugins/gtk+/gtk+.xml:428
+#: plugins/gtk+/gtk+.xml:408
 msgid "Title Bar"
 msgstr "标题栏"
 
-#: plugins/gtk+/gtk+.xml:430
+#: plugins/gtk+/gtk+.xml:410
 msgid "Block Quote"
 msgstr "块引用"
 
-#: plugins/gtk+/gtk+.xml:432
+#: plugins/gtk+/gtk+.xml:412
 msgid "Audio"
 msgstr "音频"
 
-#: plugins/gtk+/gtk+.xml:434
+#: plugins/gtk+/gtk+.xml:414
 msgid "Video"
 msgstr "视频"
 
-#: plugins/gtk+/gtk+.xml:438
+#: plugins/gtk+/gtk+.xml:418
 msgid "Article"
 msgstr "文章"
 
-#: plugins/gtk+/gtk+.xml:440
+#: plugins/gtk+/gtk+.xml:420
 msgid "Landmark"
 msgstr "界标"
 
-#: plugins/gtk+/gtk+.xml:442
+#: plugins/gtk+/gtk+.xml:422
 msgid "Log"
 msgstr "日志"
 
-#: plugins/gtk+/gtk+.xml:444
+#: plugins/gtk+/gtk+.xml:424
 msgid "Marquee"
 msgstr "跑马灯"
 
-#: plugins/gtk+/gtk+.xml:446
+#: plugins/gtk+/gtk+.xml:426
 msgid "Math"
 msgstr "数学"
 
-#: plugins/gtk+/gtk+.xml:448
+#: plugins/gtk+/gtk+.xml:428
 msgid "Rating"
 msgstr "评分"
 
-#: plugins/gtk+/gtk+.xml:450
+#: plugins/gtk+/gtk+.xml:430
 msgid "Time"
 msgstr "时间"
 
-#: plugins/gtk+/gtk+.xml:452
+#: plugins/gtk+/gtk+.xml:432
 msgid "Description List"
 msgstr "描述列表"
 
-#: plugins/gtk+/gtk+.xml:454
+#: plugins/gtk+/gtk+.xml:434
 msgid "Description Term"
 msgstr "描述条件"
 
-#: plugins/gtk+/gtk+.xml:456
+#: plugins/gtk+/gtk+.xml:436
 msgid "Description Value"
 msgstr "描述值"
 
-#: plugins/gtk+/gtk+.xml:458
+#: plugins/gtk+/gtk+.xml:438
 msgid "Generic object"
 msgstr "通用对象"
 
-#: plugins/gtk+/gtk+.xml:460
+#: plugins/gtk+/gtk+.xml:440
 msgid "Mathematical fraction"
 msgstr "数学分数"
 
-#: plugins/gtk+/gtk+.xml:462
+#: plugins/gtk+/gtk+.xml:442
 msgid "A radical expression (in math)"
 msgstr "根式（数学）"
 
-#: plugins/gtk+/gtk+.xml:464
+#: plugins/gtk+/gtk+.xml:444
 msgid "Subscript text"
 msgstr "下标文本"
 
-#: plugins/gtk+/gtk+.xml:466
+#: plugins/gtk+/gtk+.xml:446
 msgid "Superscript text"
 msgstr "上标文本"
 
-#: plugins/gtk+/gtk+.xml:468
+#: plugins/gtk+/gtk+.xml:448
 msgid "Footnote text"
 msgstr "脚注文本"
 
-#: plugins/gtk+/gtk+.xml:470
+#: plugins/gtk+/gtk+.xml:450
 msgid "Content deletion"
 msgstr "删除内容"
 
-#: plugins/gtk+/gtk+.xml:472
+#: plugins/gtk+/gtk+.xml:452
 msgid "Content insertion"
 msgstr "插入内容"
 
-#: plugins/gtk+/gtk+.xml:474
+#: plugins/gtk+/gtk+.xml:454
 msgid "Marked content"
 msgstr "已标记内容"
 
-#: plugins/gtk+/gtk+.xml:476
+#: plugins/gtk+/gtk+.xml:456
 msgid "Change suggestion"
 msgstr "更改建议"
 
-#: plugins/gtk+/gtk+.xml:478
+#: plugins/gtk+/gtk+.xml:458
 msgid "Last Defined"
 msgstr "上次定义的"
 
-#: plugins/gtk+/gtk+.xml:483
+#: plugins/gtk+/gtk+.xml:462
 msgid "Controlled By"
 msgstr "控制者"
 
-#: plugins/gtk+/gtk+.xml:488
+#: plugins/gtk+/gtk+.xml:467
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "指示一个对象被一个或多个目标对象控制"
 
-#: plugins/gtk+/gtk+.xml:491
+#: plugins/gtk+/gtk+.xml:469
 msgid "Controller For"
 msgstr "控制器对象"
 
-#: plugins/gtk+/gtk+.xml:496
+#: plugins/gtk+/gtk+.xml:474
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "指示一个对象控制一个或多个目标对象"
 
-#: plugins/gtk+/gtk+.xml:499
+#: plugins/gtk+/gtk+.xml:476
 msgid "Labeled By"
 msgstr "加标签者"
 
-#: plugins/gtk+/gtk+.xml:504
+#: plugins/gtk+/gtk+.xml:481
 msgid "Indicates an object is labeled by one or more target objects"
 msgstr "指示一个对象由一个或多个目标对象所标注"
 
-#: plugins/gtk+/gtk+.xml:507
+#: plugins/gtk+/gtk+.xml:483
 msgid "Label For"
 msgstr "加标签对象"
 
-#: plugins/gtk+/gtk+.xml:512
+#: plugins/gtk+/gtk+.xml:488
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "指示一个对象是一个或多个目标对象的标签"
 
-#: plugins/gtk+/gtk+.xml:515
+#: plugins/gtk+/gtk+.xml:490
 msgid "Member Of"
 msgstr "成员从属于"
 
-#: plugins/gtk+/gtk+.xml:520
+#: plugins/gtk+/gtk+.xml:495
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr "指示一个对象是一个或多个目标对象组的成员"
 
-#: plugins/gtk+/gtk+.xml:523
+#: plugins/gtk+/gtk+.xml:497
 msgid "Node Child Of"
 msgstr "子结点从属于"
 
-#: plugins/gtk+/gtk+.xml:528
+#: plugins/gtk+/gtk+.xml:502
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
@@ -5097,805 +5160,805 @@ msgstr ""
 "指示一个对象是树列表中的一个单元，树列表被显示是因为在同一列中一个单元被展开"
 "并确定这个单元"
 
-#: plugins/gtk+/gtk+.xml:533
+#: plugins/gtk+/gtk+.xml:506
 msgid "Flows To"
 msgstr "流向"
 
-#: plugins/gtk+/gtk+.xml:538
+#: plugins/gtk+/gtk+.xml:511
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr "指示对象有逻辑上按顺序方式流向另一个 AtkObject 的内容，(例如：文本流)"
 
-#: plugins/gtk+/gtk+.xml:543
+#: plugins/gtk+/gtk+.xml:515
 msgid "Flows From"
 msgstr "流自"
 
-#: plugins/gtk+/gtk+.xml:548
+#: plugins/gtk+/gtk+.xml:520
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr "指示对象存在逻辑上依顺序方式流自另一个AtkObject的内容(例如：文本流)"
 
-#: plugins/gtk+/gtk+.xml:553
+#: plugins/gtk+/gtk+.xml:524
 msgid "Subwindow Of"
 msgstr "子窗口从属于"
 
-#: plugins/gtk+/gtk+.xml:558
+#: plugins/gtk+/gtk+.xml:529
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
 msgstr "指示一个子窗口属于一个组件，但是除此之外不存在用户界面层次到组件的连接"
 
-#: plugins/gtk+/gtk+.xml:563
+#: plugins/gtk+/gtk+.xml:533
 msgid "Embeds"
 msgstr "内嵌"
 
-#: plugins/gtk+/gtk+.xml:568
+#: plugins/gtk+/gtk+.xml:538
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr "指示对象直观地嵌入了另一个对象的内容，例如：对象的内容围绕另一个流动"
 
-#: plugins/gtk+/gtk+.xml:573
+#: plugins/gtk+/gtk+.xml:542
 msgid "Embedded By"
 msgstr "嵌入者"
 
-#: plugins/gtk+/gtk+.xml:578
+#: plugins/gtk+/gtk+.xml:547
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
 msgstr "内嵌的反方向，指示对象的内容直观地嵌入于另一个对象"
 
-#: plugins/gtk+/gtk+.xml:583
+#: plugins/gtk+/gtk+.xml:551
 msgid "Popup For"
 msgstr "弹出目标"
 
-#: plugins/gtk+/gtk+.xml:588
+#: plugins/gtk+/gtk+.xml:556
 msgid "Indicates that an object is a popup for another object"
 msgstr "指示一个对象是另一个对象的弹出项"
 
-#: plugins/gtk+/gtk+.xml:591
+#: plugins/gtk+/gtk+.xml:558
 msgid "Parent Window Of"
 msgstr "子窗口"
 
-#: plugins/gtk+/gtk+.xml:596
+#: plugins/gtk+/gtk+.xml:563
 msgid "Indicates that an object is a parent window of another object"
 msgstr "指示一个对象是另一个对象的父窗口"
 
-#: plugins/gtk+/gtk+.xml:599
+#: plugins/gtk+/gtk+.xml:565
 msgid "Described By"
 msgstr "描述者"
 
-#: plugins/gtk+/gtk+.xml:604
+#: plugins/gtk+/gtk+.xml:570
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
 msgstr "指示另一个对象提供此对象的描述性信息，比“被标签号，由”的信息量多"
 
-#: plugins/gtk+/gtk+.xml:607
+#: plugins/gtk+/gtk+.xml:572
 msgid "Description For"
 msgstr "说明目标"
 
-#: plugins/gtk+/gtk+.xml:612
+#: plugins/gtk+/gtk+.xml:577
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
 msgstr "指示对象提供另一个对象的描述性信息，比“被标签号，由”的信息量多"
 
-#: plugins/gtk+/gtk+.xml:636
+#: plugins/gtk+/gtk+.xml:600
 msgid "Queue"
 msgstr "队列"
 
-#: plugins/gtk+/gtk+.xml:638
+#: plugins/gtk+/gtk+.xml:602
 msgid "Immediate"
 msgstr "立刻的"
 
-#: plugins/gtk+/gtk+.xml:645
+#: plugins/gtk+/gtk+.xml:609
 msgid "Bin"
 msgstr "单一容器（Bin）"
 
-#: plugins/gtk+/gtk+.xml:663 plugins/gtk+/gtk+.xml:2746
-#: plugins/gtk+/gtk+.xml:2814
+#: plugins/gtk+/gtk+.xml:626 plugins/gtk+/gtk+.xml:2573
+#: plugins/gtk+/gtk+.xml:2635
 msgid "Insert Before"
 msgstr "插入，位于后面内容之前"
 
-#: plugins/gtk+/gtk+.xml:664 plugins/gtk+/gtk+.xml:2747
-#: plugins/gtk+/gtk+.xml:2815
+#: plugins/gtk+/gtk+.xml:627 plugins/gtk+/gtk+.xml:2574
+#: plugins/gtk+/gtk+.xml:2636
 msgid "Insert After"
 msgstr "插入，位于后面内容之后"
 
-#: plugins/gtk+/gtk+.xml:665 plugins/gtk+/gtk+.xml:2590
+#: plugins/gtk+/gtk+.xml:628 plugins/gtk+/gtk+.xml:2423
 msgid "Remove Slot"
 msgstr "狭缝"
 
-#: plugins/gtk+/gtk+.xml:672 plugins/gtk+/gtk+.xml:738
-#: plugins/gtk+/gtk+.xml:2578
+#: plugins/gtk+/gtk+.xml:634 plugins/gtk+/gtk+.xml:699
+#: plugins/gtk+/gtk+.xml:2411
 msgid "Number of items"
 msgstr "条目数"
 
-#: plugins/gtk+/gtk+.xml:677
+#: plugins/gtk+/gtk+.xml:639
 msgid "The number of items in the box"
 msgstr "框中的条目数"
 
-#: plugins/gtk+/gtk+.xml:682 plugins/gtk+/gtk+.xml:1379
+#: plugins/gtk+/gtk+.xml:644 plugins/gtk+/gtk+.xml:1298
 msgid "Top"
 msgstr "顶"
 
-#: plugins/gtk+/gtk+.xml:686 plugins/gtk+/gtk+.xml:1381
+#: plugins/gtk+/gtk+.xml:648 plugins/gtk+/gtk+.xml:1300
 msgid "Bottom"
 msgstr "底"
 
-#: plugins/gtk+/gtk+.xml:689 plugins/gtk+/gtk+.xml:745
+#: plugins/gtk+/gtk+.xml:651 plugins/gtk+/gtk+.xml:706
 msgid "Center Child"
 msgstr "中心子项"
 
-#: plugins/gtk+/gtk+.xml:713
+#: plugins/gtk+/gtk+.xml:674
 msgid "Horizontal Box"
 msgstr "水平框"
 
-#: plugins/gtk+/gtk+.xml:718
+#: plugins/gtk+/gtk+.xml:680
 msgid "Vertical Box"
 msgstr "垂直框"
 
-#: plugins/gtk+/gtk+.xml:724
+#: plugins/gtk+/gtk+.xml:686
 msgid "Action Bar"
 msgstr "动作栏"
 
-#: plugins/gtk+/gtk+.xml:743
+#: plugins/gtk+/gtk+.xml:704
 msgid "The number of items in the action bar"
 msgstr "动作栏中的项目数"
 
-#: plugins/gtk+/gtk+.xml:771
+#: plugins/gtk+/gtk+.xml:730
 msgid "Accel Groups"
 msgstr "快捷键组"
 
-#: plugins/gtk+/gtk+.xml:776
+#: plugins/gtk+/gtk+.xml:735
 msgid "A list of accel groups to be added to this window"
 msgstr "添加到该窗口的加速组列表"
 
-#: plugins/gtk+/gtk+.xml:779
+#: plugins/gtk+/gtk+.xml:738
 msgid "CSD"
 msgstr "CSD"
 
-#: plugins/gtk+/gtk+.xml:795
+#: plugins/gtk+/gtk+.xml:754
 msgid "North West"
 msgstr "西北"
 
-#: plugins/gtk+/gtk+.xml:797
+#: plugins/gtk+/gtk+.xml:756
 msgid "North"
 msgstr "北"
 
-#: plugins/gtk+/gtk+.xml:799
+#: plugins/gtk+/gtk+.xml:758
 msgid "North East"
 msgstr "东北"
 
-#: plugins/gtk+/gtk+.xml:801
+#: plugins/gtk+/gtk+.xml:760
 msgid "West"
 msgstr "西方"
 
-#: plugins/gtk+/gtk+.xml:805
+#: plugins/gtk+/gtk+.xml:764
 msgid "East"
 msgstr "东"
 
-#: plugins/gtk+/gtk+.xml:807
+#: plugins/gtk+/gtk+.xml:766
 msgid "South West"
 msgstr "西南"
 
-#: plugins/gtk+/gtk+.xml:809
+#: plugins/gtk+/gtk+.xml:768
 msgid "South"
 msgstr "南"
 
-#: plugins/gtk+/gtk+.xml:811
+#: plugins/gtk+/gtk+.xml:770
 msgid "South East"
 msgstr "东南"
 
-#: plugins/gtk+/gtk+.xml:813
+#: plugins/gtk+/gtk+.xml:772
 msgid "Static"
 msgstr "静态的"
 
-#: plugins/gtk+/gtk+.xml:828
+#: plugins/gtk+/gtk+.xml:787
 msgid "Toolbar"
 msgstr "工具栏"
 
-#: plugins/gtk+/gtk+.xml:830
+#: plugins/gtk+/gtk+.xml:789
 msgid "Splash Screen"
 msgstr "启动画面"
 
-#: plugins/gtk+/gtk+.xml:832
+#: plugins/gtk+/gtk+.xml:791
 msgid "Utility"
 msgstr "实用"
 
-#: plugins/gtk+/gtk+.xml:834
+#: plugins/gtk+/gtk+.xml:793
 msgid "Dock"
 msgstr "停靠"
 
-#: plugins/gtk+/gtk+.xml:836
+#: plugins/gtk+/gtk+.xml:795
 msgid "Desktop"
 msgstr "桌面"
 
-#: plugins/gtk+/gtk+.xml:838
+#: plugins/gtk+/gtk+.xml:797
 msgid "Drop Down Menu"
 msgstr "下拉式菜单"
 
-#: plugins/gtk+/gtk+.xml:842
+#: plugins/gtk+/gtk+.xml:801
 msgid "Tooltip"
 msgstr "工具提示"
 
-#: plugins/gtk+/gtk+.xml:854
+#: plugins/gtk+/gtk+.xml:813
 msgid "Toplevel"
 msgstr "顶层"
 
-#: plugins/gtk+/gtk+.xml:856
+#: plugins/gtk+/gtk+.xml:815
 msgid "Popup"
 msgstr "弹出"
 
-#: plugins/gtk+/gtk+.xml:858
+#: plugins/gtk+/gtk+.xml:817
 msgid "Offscreen"
 msgstr "离屏"
 
-#: plugins/gtk+/gtk+.xml:875
+#: plugins/gtk+/gtk+.xml:834
 msgid "Mouse"
 msgstr "鼠标"
 
-#: plugins/gtk+/gtk+.xml:877
+#: plugins/gtk+/gtk+.xml:836
 msgid "Always Center"
 msgstr "总是在中心"
 
-#: plugins/gtk+/gtk+.xml:879
+#: plugins/gtk+/gtk+.xml:838
 msgid "Center on Parent"
 msgstr "在上一级的中心"
 
-#: plugins/gtk+/gtk+.xml:907
+#: plugins/gtk+/gtk+.xml:862
 msgid "Offscreen Window"
 msgstr "离屏窗口"
 
-#: plugins/gtk+/gtk+.xml:952
+#: plugins/gtk+/gtk+.xml:905
 msgid "Application Window"
 msgstr "程序窗口"
 
-#: plugins/gtk+/gtk+.xml:955
+#: plugins/gtk+/gtk+.xml:907
 msgid "Overlay"
 msgstr "覆盖"
 
-#: plugins/gtk+/gtk+.xml:964
+#: plugins/gtk+/gtk+.xml:916
 msgid "Menu Shell"
 msgstr "菜单外壳"
 
-#: plugins/gtk+/gtk+.xml:979 plugins/gtk+/gtk+.xml:1162
-#: plugins/gtk+/gtk+.xml:1217 plugins/gtk+/gtk+.xml:2773
-#: plugins/gtk+/gtk+.xml:2823 plugins/gtk+/gtk+.xml:3579
+#: plugins/gtk+/gtk+.xml:929 plugins/gtk+/gtk+.xml:1102
+#: plugins/gtk+/gtk+.xml:1152 plugins/gtk+/gtk+.xml:2598
+#: plugins/gtk+/gtk+.xml:2642 plugins/gtk+/gtk+.xml:3374
 #: plugins/gtk+/glade-button-editor.ui:394
 msgid "Position"
 msgstr "位置"
 
-#: plugins/gtk+/gtk+.xml:984
+#: plugins/gtk+/gtk+.xml:934
 msgid "The position of the menu item in the menu shell"
 msgstr "菜单中菜单栏目的位置"
 
-#: plugins/gtk+/gtk+.xml:1003 plugins/gtk+/gtk+.xml:1076
-#: plugins/gtk+/gtk+.xml:1110 plugins/gtk+/gtk+.xml:1192
-#: plugins/gtk+/gtk+.xml:2128 plugins/gtk+/gtk+.xml:2904
-#: plugins/gtk+/gtk+.xml:3805 plugins/gtk+/gtk+.xml:3880
-#: plugins/gtk+/gtk+.xml:3896 plugins/gtk+/gtk+.xml:4001
-#: plugins/gtk+/gtk+.xml:4071 plugins/gtk+/gtk+.xml:4124
-#: plugins/gtk+/gtk+.xml:4182 plugins/gtk+/gtk+.xml:5572
+#: plugins/gtk+/gtk+.xml:951 plugins/gtk+/gtk+.xml:1019
+#: plugins/gtk+/gtk+.xml:1052 plugins/gtk+/gtk+.xml:1129
+#: plugins/gtk+/gtk+.xml:1987 plugins/gtk+/gtk+.xml:2722
+#: plugins/gtk+/gtk+.xml:3596 plugins/gtk+/gtk+.xml:3668
+#: plugins/gtk+/gtk+.xml:3683 plugins/gtk+/gtk+.xml:3784
+#: plugins/gtk+/gtk+.xml:3849 plugins/gtk+/gtk+.xml:3897
+#: plugins/gtk+/gtk+.xml:3948 plugins/gtk+/gtk+.xml:5246
 msgid "Edit…"
 msgstr "编辑…"
 
-#: plugins/gtk+/gtk+.xml:1010
+#: plugins/gtk+/gtk+.xml:958
 msgid "Use Underline"
 msgstr "使用下划线"
 
-#: plugins/gtk+/gtk+.xml:1014 plugins/gtk+/gtk+.xml:1295
-#: plugins/gtk+/gtk+.xml:1790 plugins/gtk+/gtk+.xml:1897
-#: plugins/gtk+/gtk+.xml:2949
+#: plugins/gtk+/gtk+.xml:960 plugins/gtk+/gtk+.xml:1223
+#: plugins/gtk+/gtk+.xml:1676 plugins/gtk+/gtk+.xml:1770
+#: plugins/gtk+/gtk+.xml:2766
 msgid "Related Action"
 msgstr "相关动作"
 
-#: plugins/gtk+/gtk+.xml:1016 plugins/gtk+/gtk+.xml:1297
-#: plugins/gtk+/gtk+.xml:1792 plugins/gtk+/gtk+.xml:1904
-#: plugins/gtk+/gtk+.xml:2951
+#: plugins/gtk+/gtk+.xml:961 plugins/gtk+/gtk+.xml:1224
+#: plugins/gtk+/gtk+.xml:1677 plugins/gtk+/gtk+.xml:1776
+#: plugins/gtk+/gtk+.xml:2767
 msgid "Use Action Appearance"
 msgstr "使用动作外观"
 
-#: plugins/gtk+/gtk+.xml:1019 plugins/gtk+/gtk+.xml:1316
-#: plugins/gtk+/gtk+.xml:1795 plugins/gtk+/gtk+.xml:1907
+#: plugins/gtk+/gtk+.xml:963 plugins/gtk+/gtk+.xml:1240
+#: plugins/gtk+/gtk+.xml:1679 plugins/gtk+/gtk+.xml:1778
 msgid "Action Name"
 msgstr "动作名称"
 
-#: plugins/gtk+/gtk+.xml:1020 plugins/gtk+/gtk+.xml:1317
-#: plugins/gtk+/gtk+.xml:1796 plugins/gtk+/gtk+.xml:1908
-#: plugins/gtk+/gtk+.xml:3142
+#: plugins/gtk+/gtk+.xml:964 plugins/gtk+/gtk+.xml:1241
+#: plugins/gtk+/gtk+.xml:1680 plugins/gtk+/gtk+.xml:1779
+#: plugins/gtk+/gtk+.xml:2957
 msgid "Action Target"
 msgstr "操作目标"
 
-#: plugins/gtk+/gtk+.xml:1024 plugins/gtk+/gtk+.xml:1799
+#: plugins/gtk+/gtk+.xml:966 plugins/gtk+/gtk+.xml:1682
 msgid "Click"
 msgstr "单击"
 
-#: plugins/gtk+/gtk+.xml:1028 plugins/gtk+/gtk+.xml:1803
+#: plugins/gtk+/gtk+.xml:970 plugins/gtk+/gtk+.xml:1686
 msgid "Set the description of the Click atk action"
 msgstr "设置单击 atk 动作的描述"
 
-#: plugins/gtk+/gtk+.xml:1034
+#: plugins/gtk+/gtk+.xml:976
 msgid "Image Menu Item"
 msgstr "图像菜单栏目"
 
-#: plugins/gtk+/gtk+.xml:1041
+#: plugins/gtk+/gtk+.xml:983
 msgid "Stock Item"
 msgstr "库存条目"
 
-#: plugins/gtk+/gtk+.xml:1045
+#: plugins/gtk+/gtk+.xml:987
 msgid "The stock item for this menu item"
 msgstr "该菜单项的库存条目"
 
-#: plugins/gtk+/gtk+.xml:1051 plugins/gtk+/gtk+.xml:3774
+#: plugins/gtk+/gtk+.xml:993 plugins/gtk+/gtk+.xml:3565
 msgid "Accel Group"
 msgstr "快捷键组"
 
-#: plugins/gtk+/gtk+.xml:1065
+#: plugins/gtk+/gtk+.xml:1008
 msgid "Separator Menu Item"
 msgstr "分割菜单栏目"
 
-#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:5554
+#: plugins/gtk+/gtk+.xml:1025 plugins/gtk+/gtk+.xml:5224
 msgid "Left to Right"
 msgstr "自左至右"
 
-#: plugins/gtk+/gtk+.xml:1084 plugins/gtk+/gtk+.xml:5556
+#: plugins/gtk+/gtk+.xml:1027 plugins/gtk+/gtk+.xml:5226
 msgid "Right to Left"
 msgstr "自右到左"
 
-#: plugins/gtk+/gtk+.xml:1086
+#: plugins/gtk+/gtk+.xml:1029
 msgid "Top to Bottom"
 msgstr "自顶到底"
 
-#: plugins/gtk+/gtk+.xml:1088
+#: plugins/gtk+/gtk+.xml:1031
 msgid "Bottom to Top"
 msgstr "自底至顶"
 
-#: plugins/gtk+/gtk+.xml:1117 plugins/gtk+/gtk+.xml:2631
-#: plugins/gtk+/gtk+.xml:3761 plugins/gtk+/gtk+.xml:4023
+#: plugins/gtk+/gtk+.xml:1059 plugins/gtk+/gtk+.xml:2464
+#: plugins/gtk+/gtk+.xml:3552 plugins/gtk+/gtk+.xml:3804
 #: plugins/gtk+/glade-misc-editor.ui:65 plugins/gtk+/glade-misc-editor.ui:127
 #: plugins/gtk+/glade-scrolled-window-editor.ui:156
 msgid "Horizontal"
 msgstr "横向"
 
-#: plugins/gtk+/gtk+.xml:1119 plugins/gtk+/gtk+.xml:2632
-#: plugins/gtk+/gtk+.xml:3763 plugins/gtk+/gtk+.xml:4025
+#: plugins/gtk+/gtk+.xml:1061 plugins/gtk+/gtk+.xml:2465
+#: plugins/gtk+/gtk+.xml:3554 plugins/gtk+/gtk+.xml:3806
 #: plugins/gtk+/glade-misc-editor.ui:82 plugins/gtk+/glade-misc-editor.ui:144
 #: plugins/gtk+/glade-scrolled-window-editor.ui:174
 msgid "Vertical"
 msgstr "垂直"
 
-#: plugins/gtk+/gtk+.xml:1125
+#: plugins/gtk+/gtk+.xml:1067
 msgid "Icons only"
 msgstr "只有图标"
 
-#: plugins/gtk+/gtk+.xml:1127
+#: plugins/gtk+/gtk+.xml:1069
 msgid "Text only"
 msgstr "只有文字"
 
-#: plugins/gtk+/gtk+.xml:1129
+#: plugins/gtk+/gtk+.xml:1071
 msgid "Text below icons"
 msgstr "文字在图标下方"
 
-#: plugins/gtk+/gtk+.xml:1131
+#: plugins/gtk+/gtk+.xml:1073
 msgid "Text beside icons"
 msgstr "文字在图标旁边"
 
-#: plugins/gtk+/gtk+.xml:1141 plugins/gtk+/gtk+.xml:2305
+#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:2155
 msgid "A symbolic icon size for the stock icon"
 msgstr "库存图标的符号图标大小"
 
-#: plugins/gtk+/gtk+.xml:1148
+#: plugins/gtk+/gtk+.xml:1089
 msgid "Small Toolbar"
 msgstr "小工具栏"
 
-#: plugins/gtk+/gtk+.xml:1150
+#: plugins/gtk+/gtk+.xml:1091
 msgid "Large Toolbar"
 msgstr "大工具栏"
 
-#: plugins/gtk+/gtk+.xml:1154
+#: plugins/gtk+/gtk+.xml:1095
 msgid "Drag &amp; Drop"
 msgstr "拖拽 &amp; 放下"
 
-#: plugins/gtk+/gtk+.xml:1167
+#: plugins/gtk+/gtk+.xml:1107
 msgid "The position of the tool item in the toolbar"
 msgstr "工具栏中工具条目的位置"
 
-#: plugins/gtk+/gtk+.xml:1181
+#: plugins/gtk+/gtk+.xml:1119
 msgid "Tool Palette"
 msgstr "工具调色板"
 
-#: plugins/gtk+/gtk+.xml:1203 plugins/gtk+/gtk+.xml:1692
-#: plugins/gtk+/gtk+.xml:3158 plugins/gtk+/gtk+.xml:3241
-#: plugins/gtk+/gtk+.xml:4043 plugins/gtk+/gtk+.xml:4156
+#: plugins/gtk+/gtk+.xml:1139 plugins/gtk+/gtk+.xml:1587
+#: plugins/gtk+/gtk+.xml:2972 plugins/gtk+/gtk+.xml:3053
+#: plugins/gtk+/gtk+.xml:3823 plugins/gtk+/gtk+.xml:3924
 msgid "Whether to start scrolling at less than minimum or natural width"
 msgstr "是否以小于最小的或自然的宽度开始滚动"
 
-#: plugins/gtk+/gtk+.xml:1206
+#: plugins/gtk+/gtk+.xml:1142
 msgid "Minimum"
 msgstr "最小的"
 
-#: plugins/gtk+/gtk+.xml:1208
+#: plugins/gtk+/gtk+.xml:1144
 msgid "Natural"
 msgstr "自然的"
 
-#: plugins/gtk+/gtk+.xml:1212 plugins/gtk+/gtk+.xml:1695
-#: plugins/gtk+/gtk+.xml:3161 plugins/gtk+/gtk+.xml:3244
-#: plugins/gtk+/gtk+.xml:4046 plugins/gtk+/gtk+.xml:4159
+#: plugins/gtk+/gtk+.xml:1148 plugins/gtk+/gtk+.xml:1590
+#: plugins/gtk+/gtk+.xml:2975 plugins/gtk+/gtk+.xml:3056
+#: plugins/gtk+/gtk+.xml:3826 plugins/gtk+/gtk+.xml:3927
 msgid "Whether to start scrolling at less than minimum or natural height"
 msgstr "是否以小于最小的或自然的高度开始滚动"
 
-#: plugins/gtk+/gtk+.xml:1222
+#: plugins/gtk+/gtk+.xml:1157
 msgid "The position of the tool item group in the palette"
 msgstr "工具条目组在调色板中的位置"
 
-#: plugins/gtk+/gtk+.xml:1261
+#: plugins/gtk+/gtk+.xml:1192
 msgid "Middle"
 msgstr "中间"
 
-#: plugins/gtk+/gtk+.xml:1271
+#: plugins/gtk+/gtk+.xml:1202
 msgid "Half"
 msgstr "二分之一"
 
-#: plugins/gtk+/gtk+.xml:1286
+#: plugins/gtk+/gtk+.xml:1216
 msgid "GtkToolItem"
 msgstr "Gtk 工具条目"
 
-#: plugins/gtk+/gtk+.xml:1303
+#: plugins/gtk+/gtk+.xml:1228
 msgid "Separator Tool Item"
 msgstr "分割工具条目"
 
-#: plugins/gtk+/gtk+.xml:1305 plugins/gtk+/glade-tool-button-editor.ui:66
+#: plugins/gtk+/gtk+.xml:1230 plugins/gtk+/glade-tool-button-editor.ui:66
 msgid "Tool Button"
 msgstr "工具按钮"
 
-#: plugins/gtk+/gtk+.xml:1334
+#: plugins/gtk+/gtk+.xml:1256
 msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr "显示于条目上的库存图标(从 GTK+ 库中或者从图标工厂中选择一项)"
 
-#: plugins/gtk+/gtk+.xml:1343
+#: plugins/gtk+/gtk+.xml:1265
 msgid "Toggle Tool Button"
 msgstr "开关工具按钮"
 
-#: plugins/gtk+/gtk+.xml:1349
+#: plugins/gtk+/gtk+.xml:1271
 msgid "Radio Tool Button"
 msgstr "单选工具按钮"
 
-#: plugins/gtk+/gtk+.xml:1356
+#: plugins/gtk+/gtk+.xml:1277
 msgid "Menu Tool Button"
 msgstr "菜单工具按钮"
 
-#: plugins/gtk+/gtk+.xml:1370
+#: plugins/gtk+/gtk+.xml:1289
 msgid "Handle Box"
 msgstr "工具框"
 
-#: plugins/gtk+/gtk+.xml:1375 plugins/gtk+/gtk+.xml:1452
-#: plugins/gtk+/gtk+.xml:3082 plugins/gtk+/gtk+.xml:4372
+#: plugins/gtk+/gtk+.xml:1294 plugins/gtk+/gtk+.xml:1369
+#: plugins/gtk+/gtk+.xml:2901 plugins/gtk+/gtk+.xml:4123
 msgid "Left"
 msgstr "左"
 
-#: plugins/gtk+/gtk+.xml:1377 plugins/gtk+/gtk+.xml:1454
-#: plugins/gtk+/gtk+.xml:3084 plugins/gtk+/gtk+.xml:4376
+#: plugins/gtk+/gtk+.xml:1296 plugins/gtk+/gtk+.xml:1371
+#: plugins/gtk+/gtk+.xml:2903 plugins/gtk+/gtk+.xml:4127
 msgid "Right"
 msgstr "右"
 
-#: plugins/gtk+/gtk+.xml:1390
+#: plugins/gtk+/gtk+.xml:1309
 msgid "In"
 msgstr "内侧"
 
-#: plugins/gtk+/gtk+.xml:1392
+#: plugins/gtk+/gtk+.xml:1311
 msgid "Out"
 msgstr "突出"
 
-#: plugins/gtk+/gtk+.xml:1394
+#: plugins/gtk+/gtk+.xml:1313
 msgid "Etched In"
 msgstr "向内蚀刻"
 
-#: plugins/gtk+/gtk+.xml:1396
+#: plugins/gtk+/gtk+.xml:1315
 msgid "Etched Out"
 msgstr "向外蚀刻"
 
-#: plugins/gtk+/gtk+.xml:1427
+#: plugins/gtk+/gtk+.xml:1345
 msgid "Attributes"
 msgstr "特性"
 
-#: plugins/gtk+/gtk+.xml:1432
+#: plugins/gtk+/gtk+.xml:1350
 msgid "The pango attributes for this label"
 msgstr "该标签的 pango 特性"
 
-#: plugins/gtk+/gtk+.xml:1464 plugins/gtk+/gtk+.xml:1682
+#: plugins/gtk+/gtk+.xml:1381 plugins/gtk+/gtk+.xml:1578
 msgid "Word"
 msgstr "单词"
 
-#: plugins/gtk+/gtk+.xml:1466 plugins/gtk+/gtk+.xml:1680
+#: plugins/gtk+/gtk+.xml:1383 plugins/gtk+/gtk+.xml:1576
 msgid "Character"
 msgstr "字符"
 
-#: plugins/gtk+/gtk+.xml:1468 plugins/gtk+/gtk+.xml:1684
+#: plugins/gtk+/gtk+.xml:1385 plugins/gtk+/gtk+.xml:1580
 msgid "Word Character"
 msgstr "单词字母"
 
-#: plugins/gtk+/gtk+.xml:1488
+#: plugins/gtk+/gtk+.xml:1402
 msgid "Text Entry"
 msgstr "文本条目"
 
-#: plugins/gtk+/gtk+.xml:1505
+#: plugins/gtk+/gtk+.xml:1418
 msgid "Free Form"
 msgstr "自由格式"
 
-#: plugins/gtk+/gtk+.xml:1507
+#: plugins/gtk+/gtk+.xml:1420
 msgid "Alpha"
 msgstr "Alpha"
 
-#: plugins/gtk+/gtk+.xml:1509 plugins/gtk+/gtk+.xml:3782
+#: plugins/gtk+/gtk+.xml:1422 plugins/gtk+/gtk+.xml:3573
 msgid "Digits"
 msgstr "数位"
 
-#: plugins/gtk+/gtk+.xml:1511
+#: plugins/gtk+/gtk+.xml:1424
 msgid "Number"
 msgstr "数字"
 
-#: plugins/gtk+/gtk+.xml:1513
+#: plugins/gtk+/gtk+.xml:1426
 msgid "Phone"
 msgstr "电话"
 
-#: plugins/gtk+/gtk+.xml:1515 plugins/gtk+/glade-about-dialog-editor.ui:287
+#: plugins/gtk+/gtk+.xml:1428 plugins/gtk+/glade-about-dialog-editor.ui:287
 #: plugins/webkit2gtk/webkit2gtk.xml:18
 msgid "URL"
 msgstr "URL"
 
-#: plugins/gtk+/gtk+.xml:1517
+#: plugins/gtk+/gtk+.xml:1430
 msgid "Email"
 msgstr "邮件"
 
-#: plugins/gtk+/gtk+.xml:1521
+#: plugins/gtk+/gtk+.xml:1434
 msgid "Password"
 msgstr "密码"
 
-#: plugins/gtk+/gtk+.xml:1523
+#: plugins/gtk+/gtk+.xml:1436
 msgid "Pin Code"
 msgstr "PIN 码"
 
-#: plugins/gtk+/gtk+.xml:1533
+#: plugins/gtk+/gtk+.xml:1446
 msgid "Spellcheck"
 msgstr "拼写检查"
 
-#: plugins/gtk+/gtk+.xml:1535
+#: plugins/gtk+/gtk+.xml:1448
 msgid "No Spellcheck"
 msgstr "无拼写检查"
 
-#: plugins/gtk+/gtk+.xml:1537
+#: plugins/gtk+/gtk+.xml:1450
 msgid "Word Completion"
 msgstr "单词补全"
 
-#: plugins/gtk+/gtk+.xml:1539
+#: plugins/gtk+/gtk+.xml:1452
 msgid "Lowercase"
 msgstr "小写"
 
-#: plugins/gtk+/gtk+.xml:1541
+#: plugins/gtk+/gtk+.xml:1454
 msgid "Uppercase Chars"
 msgstr "大写字符"
 
-#: plugins/gtk+/gtk+.xml:1543
+#: plugins/gtk+/gtk+.xml:1456
 msgid "Uppercase Words"
 msgstr "大写单词"
 
-#: plugins/gtk+/gtk+.xml:1545
+#: plugins/gtk+/gtk+.xml:1458
 msgid "Uppercase Sentences"
 msgstr "大写句子"
 
-#: plugins/gtk+/gtk+.xml:1547
+#: plugins/gtk+/gtk+.xml:1460
 msgid "Inhibit On-screen Keyboard"
 msgstr "抑制屏幕键盘"
 
-#: plugins/gtk+/gtk+.xml:1549
+#: plugins/gtk+/gtk+.xml:1462
 msgid "Vertical Writing"
 msgstr "垂直书写"
 
-#: plugins/gtk+/gtk+.xml:1551
+#: plugins/gtk+/gtk+.xml:1464
 msgid "Emoji Support"
 msgstr "表情符号支持"
 
-#: plugins/gtk+/gtk+.xml:1553
+#: plugins/gtk+/gtk+.xml:1466
 msgid "No Emoji Support"
 msgstr "无表情符号支持"
 
-#: plugins/gtk+/gtk+.xml:1575
+#: plugins/gtk+/gtk+.xml:1486
 msgid "Primary Stock Icon"
 msgstr "主库存图标"
 
-#: plugins/gtk+/gtk+.xml:1577
+#: plugins/gtk+/gtk+.xml:1487
 msgid "Secondary Stock Icon"
 msgstr "副库存图标"
 
-#: plugins/gtk+/gtk+.xml:1578
+#: plugins/gtk+/gtk+.xml:1488
 msgid "Primary Icon Pixbuf"
 msgstr "主图标 Pixbuf"
 
-#: plugins/gtk+/gtk+.xml:1579
+#: plugins/gtk+/gtk+.xml:1489
 msgid "Secondary Icon Pixbuf"
 msgstr "第二图标 Pixbuf"
 
-#: plugins/gtk+/gtk+.xml:1581
+#: plugins/gtk+/gtk+.xml:1490
 msgid "Primary Icon Name"
 msgstr "主图标名称"
 
-#: plugins/gtk+/gtk+.xml:1583
+#: plugins/gtk+/gtk+.xml:1491
 msgid "Secondary Icon Name"
 msgstr "第二图标名称"
 
-#: plugins/gtk+/gtk+.xml:1585
+#: plugins/gtk+/gtk+.xml:1492
 msgid "Primary Icon Activatable"
 msgstr "主图标可激活"
 
-#: plugins/gtk+/gtk+.xml:1587
+#: plugins/gtk+/gtk+.xml:1493
 msgid "Secondary Icon Activatable"
 msgstr "第二图标可激活"
 
-#: plugins/gtk+/gtk+.xml:1589
+#: plugins/gtk+/gtk+.xml:1494
 msgid "Primary Icon Sensitive"
 msgstr "主图标敏感"
 
-#: plugins/gtk+/gtk+.xml:1591
+#: plugins/gtk+/gtk+.xml:1495
 msgid "Secondary Icon Sensitive"
 msgstr "第二图标敏感"
 
-#: plugins/gtk+/gtk+.xml:1592
+#: plugins/gtk+/gtk+.xml:1496
 msgid "Progress Fraction"
 msgstr "进度部分"
 
-#: plugins/gtk+/gtk+.xml:1593
+#: plugins/gtk+/gtk+.xml:1497
 msgid "Progress Pulse Step"
 msgstr "进度条步进量"
 
-#: plugins/gtk+/gtk+.xml:1599
+#: plugins/gtk+/gtk+.xml:1501
 msgid "Primary Icon Tooltip Text"
 msgstr "主图标工具提示文本"
 
-#: plugins/gtk+/gtk+.xml:1601
+#: plugins/gtk+/gtk+.xml:1502
 msgid "Secondary Icon Tooltip Text"
 msgstr "第二图标工具提示文本"
 
-#: plugins/gtk+/gtk+.xml:1603
+#: plugins/gtk+/gtk+.xml:1503
 msgid "Primary Icon Tooltip Markup"
 msgstr "主图标工具提示标记"
 
-#: plugins/gtk+/gtk+.xml:1605
+#: plugins/gtk+/gtk+.xml:1504
 msgid "Secondary Icon Tooltip Markup"
 msgstr "第二图标工具提示标记"
 
-#: plugins/gtk+/gtk+.xml:1639 plugins/gtk+/gtk+.xml:3225
+#: plugins/gtk+/gtk+.xml:1536 plugins/gtk+/gtk+.xml:3036
 msgid "Activate"
 msgstr "激活"
 
-#: plugins/gtk+/gtk+.xml:1643 plugins/gtk+/gtk+.xml:3229
+#: plugins/gtk+/gtk+.xml:1540 plugins/gtk+/gtk+.xml:3040
 msgid "Set the description of the Activate atk action"
 msgstr "设置激活 atk 动作的描述"
 
-#: plugins/gtk+/gtk+.xml:1648
+#: plugins/gtk+/gtk+.xml:1546
 msgid "Search Entry"
 msgstr "搜索输入条"
 
-#: plugins/gtk+/gtk+.xml:1650
+#: plugins/gtk+/gtk+.xml:1548
 msgid "Text View"
 msgstr "文本视图"
 
-#: plugins/gtk+/gtk+.xml:1700
+#: plugins/gtk+/gtk+.xml:1595
 msgid "Search Bar"
 msgstr "搜索栏"
 
-#: plugins/gtk+/gtk+.xml:1734
+#: plugins/gtk+/gtk+.xml:1626
 msgid "Reject"
 msgstr "拒绝"
 
-#: plugins/gtk+/gtk+.xml:1736
+#: plugins/gtk+/gtk+.xml:1628
 msgid "Accept"
 msgstr "接受"
 
-#: plugins/gtk+/gtk+.xml:1738
+#: plugins/gtk+/gtk+.xml:1630
 msgid "Delete Event"
 msgstr "删除事件"
 
-#: plugins/gtk+/gtk+.xml:1740
+#: plugins/gtk+/gtk+.xml:1632
 msgid "OK"
 msgstr "确定"
 
-#: plugins/gtk+/gtk+.xml:1742 plugins/gtk+/gtk+.xml:3466
+#: plugins/gtk+/gtk+.xml:1634 plugins/gtk+/gtk+.xml:3267
 msgid "Cancel"
 msgstr "取消"
 
-#: plugins/gtk+/gtk+.xml:1744 plugins/gtk+/gtk+.xml:3464
+#: plugins/gtk+/gtk+.xml:1636 plugins/gtk+/gtk+.xml:3265
 msgid "Close"
 msgstr "关闭"
 
-#: plugins/gtk+/gtk+.xml:1750
+#: plugins/gtk+/gtk+.xml:1642
 msgid "Apply"
 msgstr "应用"
 
-#: plugins/gtk+/gtk+.xml:1752
+#: plugins/gtk+/gtk+.xml:1644
 msgid "Help"
 msgstr "帮助"
 
-#: plugins/gtk+/gtk+.xml:1768 plugins/gtk+/glade-button-editor.ui:351
+#: plugins/gtk+/gtk+.xml:1657 plugins/gtk+/glade-button-editor.ui:351
 msgid "Stock Button"
 msgstr "库存按钮"
 
-#: plugins/gtk+/gtk+.xml:1772
+#: plugins/gtk+/gtk+.xml:1661
 msgid "The stock item for this button"
 msgstr "库存的按钮条目"
 
-#: plugins/gtk+/gtk+.xml:1781
+#: plugins/gtk+/gtk+.xml:1669
 msgid "Response ID"
 msgstr "响应 ID"
 
-#: plugins/gtk+/gtk+.xml:1785
+#: plugins/gtk+/gtk+.xml:1673
 msgid "The response ID of this button in a dialog"
 msgstr "对话框中该按钮的响应ID"
 
-#: plugins/gtk+/gtk+.xml:1807 plugins/gtk+/gtk+.xml:2171
+#: plugins/gtk+/gtk+.xml:1689 plugins/gtk+/gtk+.xml:2027
 msgid "Press"
 msgstr "按下"
 
-#: plugins/gtk+/gtk+.xml:1811 plugins/gtk+/gtk+.xml:2175
+#: plugins/gtk+/gtk+.xml:1693 plugins/gtk+/gtk+.xml:2031
 msgid "Set the description of the Press atk action"
 msgstr "设置按下 atk 动作的描述"
 
-#: plugins/gtk+/gtk+.xml:1816
+#: plugins/gtk+/gtk+.xml:1696
 msgid "Release"
 msgstr "释放"
 
-#: plugins/gtk+/gtk+.xml:1820
+#: plugins/gtk+/gtk+.xml:1700
 msgid "Set the description of the Release atk action"
 msgstr "设置释放 atk 动作的描述"
 
-#: plugins/gtk+/gtk+.xml:1842
+#: plugins/gtk+/gtk+.xml:1720
 msgid "Check Button"
 msgstr "复选按钮"
 
-#: plugins/gtk+/gtk+.xml:1871 plugins/gtk+/gtk+.xml:3268
+#: plugins/gtk+/gtk+.xml:1747 plugins/gtk+/gtk+.xml:3080
 #: plugins/webkit2gtk/webkit2gtk.xml:49
 msgid "Always"
 msgstr "总是"
 
-#: plugins/gtk+/gtk+.xml:1873
+#: plugins/gtk+/gtk+.xml:1749
 msgid "If Valid"
 msgstr "如果合法"
 
-#: plugins/gtk+/gtk+.xml:1887
+#: plugins/gtk+/gtk+.xml:1763
 msgid "Switch"
 msgstr "切换"
 
-#: plugins/gtk+/gtk+.xml:1916
+#: plugins/gtk+/gtk+.xml:1786
 #: plugins/gtk+/glade-file-chooser-button-editor.ui:69
 msgid "File Chooser Button"
 msgstr "文件选择按钮"
 
-#: plugins/gtk+/gtk+.xml:1945
+#: plugins/gtk+/gtk+.xml:1811
 msgid "Save"
 msgstr "保存"
 
-#: plugins/gtk+/gtk+.xml:1947
+#: plugins/gtk+/gtk+.xml:1813
 msgid "Open"
 msgstr "打开"
 
-#: plugins/gtk+/gtk+.xml:1949
+#: plugins/gtk+/gtk+.xml:1815
 msgid "Select Folder"
 msgstr "选择目录"
 
-#: plugins/gtk+/gtk+.xml:1951
+#: plugins/gtk+/gtk+.xml:1817
 msgid "Create Folder"
 msgstr "创建目录"
 
-#: plugins/gtk+/gtk+.xml:1964
+#: plugins/gtk+/gtk+.xml:1830
 msgid "Scale Button"
 msgstr "比例按钮"
 
-#: plugins/gtk+/gtk+.xml:1971
+#: plugins/gtk+/gtk+.xml:1837
 msgid ""
 "The names of the icons to be used by the scale button. The first item in the "
 "array will be used in the button when the current value is the lowest value, "
@@ -5905,612 +5968,612 @@ msgstr ""
 "缩放按钮所用的图标名。数组的第一项将在当前值为最小值时用于按钮中，第二个条目"
 "则是最大值时。所有随后的图标都将被用在其他值，在值范围内均匀分布"
 
-#: plugins/gtk+/gtk+.xml:1988
+#: plugins/gtk+/gtk+.xml:1852
 msgid "Volume Button"
 msgstr "音量按钮"
 
-#: plugins/gtk+/gtk+.xml:1995
+#: plugins/gtk+/gtk+.xml:1858
 msgid "File Chooser Widget"
 msgstr "文件选择组件"
 
-#: plugins/gtk+/gtk+.xml:2029
+#: plugins/gtk+/gtk+.xml:1888
 msgid "Application Chooser Widget"
 msgstr "应用程序选择组件"
 
-#: plugins/gtk+/gtk+.xml:2048
+#: plugins/gtk+/gtk+.xml:1906
 msgid "Places Sidebar"
 msgstr "位置侧边栏"
 
-#: plugins/gtk+/gtk+.xml:2056
+#: plugins/gtk+/gtk+.xml:1914
 msgid "New Tab"
 msgstr "新标签页"
 
-#: plugins/gtk+/gtk+.xml:2058
+#: plugins/gtk+/gtk+.xml:1916
 msgid "New Window"
 msgstr "新窗口"
 
-#: plugins/gtk+/gtk+.xml:2068
+#: plugins/gtk+/gtk+.xml:1932
 msgid "Color Button"
 msgstr "颜色按钮"
 
-#: plugins/gtk+/gtk+.xml:2085
+#: plugins/gtk+/gtk+.xml:1949
 msgid "Font Button"
 msgstr "字体按钮"
 
-#: plugins/gtk+/gtk+.xml:2161 plugins/gtk+/gtk+.xml:3270
-#: plugins/gtk+/gtk+.xml:4093
+#: plugins/gtk+/gtk+.xml:2018 plugins/gtk+/gtk+.xml:3082
+#: plugins/gtk+/gtk+.xml:3869
 msgid "Automatic"
 msgstr "自动"
 
-#: plugins/gtk+/gtk+.xml:2163
+#: plugins/gtk+/gtk+.xml:2020
 msgid "On"
 msgstr "打开"
 
-#: plugins/gtk+/gtk+.xml:2165
+#: plugins/gtk+/gtk+.xml:2022
 msgid "Off"
 msgstr "关闭"
 
-#: plugins/gtk+/gtk+.xml:2181
+#: plugins/gtk+/gtk+.xml:2036
 msgid "Combo Box Text"
 msgstr "组合框的文本"
 
-#: plugins/gtk+/gtk+.xml:2208
+#: plugins/gtk+/gtk+.xml:2061
 msgid "Items"
 msgstr "条目"
 
-#: plugins/gtk+/gtk+.xml:2213
+#: plugins/gtk+/gtk+.xml:2066
 msgid "The list of items to show in the combo box"
 msgstr "在组合框中显示条目数"
 
-#: plugins/gtk+/gtk+.xml:2219
+#: plugins/gtk+/gtk+.xml:2071
 msgid "Application Chooser Button"
 msgstr "应用程序选择按钮"
 
-#: plugins/gtk+/gtk+.xml:2247
+#: plugins/gtk+/gtk+.xml:2098
 msgid "Progress Bar"
 msgstr "进度条"
 
-#: plugins/gtk+/gtk+.xml:2272 plugins/gtk+/gtk+.xml:2845
+#: plugins/gtk+/gtk+.xml:2123 plugins/gtk+/gtk+.xml:2663
 msgid "Continuous"
 msgstr "连续的"
 
-#: plugins/gtk+/gtk+.xml:2274
+#: plugins/gtk+/gtk+.xml:2125
 msgid "Discrete"
 msgstr "离散"
 
-#: plugins/gtk+/gtk+.xml:2296
+#: plugins/gtk+/gtk+.xml:2147
 msgid "Resource Name"
 msgstr "源名称"
 
-#: plugins/gtk+/gtk+.xml:2300 plugins/gtk+/gtk+.xml:5388
+#: plugins/gtk+/gtk+.xml:2150 plugins/gtk+/gtk+.xml:5066
 msgid "Icon Size"
 msgstr "图标大小"
 
-#: plugins/gtk+/gtk+.xml:2323
+#: plugins/gtk+/gtk+.xml:2172
 msgid "Dialog Box"
 msgstr "对话框"
 
-#: plugins/gtk+/gtk+.xml:2357 plugins/gtk+/gtk+.xml:2409
+#: plugins/gtk+/gtk+.xml:2202 plugins/gtk+/gtk+.xml:2251
 msgid "Insert Row"
 msgstr "插入行"
 
-#: plugins/gtk+/gtk+.xml:2358 plugins/gtk+/gtk+.xml:2362
-#: plugins/gtk+/gtk+.xml:2410 plugins/gtk+/gtk+.xml:2414
+#: plugins/gtk+/gtk+.xml:2203 plugins/gtk+/gtk+.xml:2207
+#: plugins/gtk+/gtk+.xml:2252 plugins/gtk+/gtk+.xml:2256
 msgid "Before"
 msgstr "前"
 
-#: plugins/gtk+/gtk+.xml:2361 plugins/gtk+/gtk+.xml:2413
+#: plugins/gtk+/gtk+.xml:2206 plugins/gtk+/gtk+.xml:2255
 msgid "Insert Column"
 msgstr "插入列"
 
-#: plugins/gtk+/gtk+.xml:2365 plugins/gtk+/gtk+.xml:2417
+#: plugins/gtk+/gtk+.xml:2210 plugins/gtk+/gtk+.xml:2259
 msgid "Remove Row"
 msgstr "移除行"
 
-#: plugins/gtk+/gtk+.xml:2366 plugins/gtk+/gtk+.xml:2418
+#: plugins/gtk+/gtk+.xml:2211 plugins/gtk+/gtk+.xml:2260
 msgid "Remove Column"
 msgstr "移除列"
 
-#: plugins/gtk+/gtk+.xml:2378 plugins/gtk+/gtk+.xml:3013
+#: plugins/gtk+/gtk+.xml:2221 plugins/gtk+/gtk+.xml:2829
 #: plugins/gtk+/glade-widget-editor.ui:752
 msgid "Expand"
 msgstr "展开"
 
-#: plugins/gtk+/gtk+.xml:2380
+#: plugins/gtk+/gtk+.xml:2223
 msgid "Shrink"
 msgstr "收缩"
 
-#: plugins/gtk+/gtk+.xml:2428 plugins/gtk+/glade-grid-editor.ui:131
+#: plugins/gtk+/gtk+.xml:2269 plugins/gtk+/glade-grid-editor.ui:131
 msgid "Rows"
 msgstr "行"
 
-#: plugins/gtk+/gtk+.xml:2432
+#: plugins/gtk+/gtk+.xml:2273
 msgid "The number of rows for this grid"
 msgstr "网格的行数"
 
-#: plugins/gtk+/gtk+.xml:2434 plugins/gtk+/gtk+.xml:3934
-#: plugins/gtk+/gtk+.xml:3960 plugins/gtk+/glade-grid-editor.ui:149
+#: plugins/gtk+/gtk+.xml:2275 plugins/gtk+/gtk+.xml:3719
+#: plugins/gtk+/gtk+.xml:3744 plugins/gtk+/glade-grid-editor.ui:149
 msgid "Columns"
 msgstr "栏"
 
-#: plugins/gtk+/gtk+.xml:2438
+#: plugins/gtk+/gtk+.xml:2279
 msgid "The number of columns for this grid"
 msgstr "网格的列数"
 
-#: plugins/gtk+/gtk+.xml:2471
+#: plugins/gtk+/gtk+.xml:2310
 msgid "Horizontal Panes"
 msgstr "水平面板"
 
-#: plugins/gtk+/gtk+.xml:2476
+#: plugins/gtk+/gtk+.xml:2316
 msgid "Vertical Panes"
 msgstr "垂直面板"
 
-#: plugins/gtk+/gtk+.xml:2482
+#: plugins/gtk+/gtk+.xml:2322
 msgid "Notebook"
 msgstr "笔记本"
 
-#: plugins/gtk+/gtk+.xml:2505 plugins/gtk+/gtk+.xml:2609
+#: plugins/gtk+/gtk+.xml:2343 plugins/gtk+/gtk+.xml:2442
 msgid "Insert Page Before"
 msgstr "插入页，位于后面内容之前"
 
-#: plugins/gtk+/gtk+.xml:2506 plugins/gtk+/gtk+.xml:2610
+#: plugins/gtk+/gtk+.xml:2344 plugins/gtk+/gtk+.xml:2443
 msgid "Insert Page After"
 msgstr "插入页，位于后面内容之后"
 
-#: plugins/gtk+/gtk+.xml:2507 plugins/gtk+/gtk+.xml:2611
+#: plugins/gtk+/gtk+.xml:2345 plugins/gtk+/gtk+.xml:2444
 msgid "Remove Page"
 msgstr "移除页"
 
-#: plugins/gtk+/gtk+.xml:2513 plugins/gtk+/gtk+.xml:2626
+#: plugins/gtk+/gtk+.xml:2350 plugins/gtk+/gtk+.xml:2459
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr "设定要编辑的当前活动页面，该属性将不会保存"
 
-#: plugins/gtk+/gtk+.xml:2521 plugins/gtk+/gtk+.xml:2614
+#: plugins/gtk+/gtk+.xml:2357 plugins/gtk+/gtk+.xml:2447
 msgid "Number of pages"
 msgstr "页数"
 
-#: plugins/gtk+/gtk+.xml:2526
+#: plugins/gtk+/gtk+.xml:2362
 msgid "The number of pages in the notebook"
 msgstr "笔记本中的页数"
 
-#: plugins/gtk+/gtk+.xml:2529
+#: plugins/gtk+/gtk+.xml:2364
 msgid "Start Action"
 msgstr "开始动作"
 
-#: plugins/gtk+/gtk+.xml:2534
+#: plugins/gtk+/gtk+.xml:2369
 msgid "End Action"
 msgstr "结束动作"
 
-#: plugins/gtk+/gtk+.xml:2547
+#: plugins/gtk+/gtk+.xml:2380
 msgid "HeaderBar"
 msgstr "顶栏"
 
-#: plugins/gtk+/gtk+.xml:2565
+#: plugins/gtk+/gtk+.xml:2398
 msgid "Reserve space for subtitle"
 msgstr "给副标题预留空间"
 
-#: plugins/gtk+/gtk+.xml:2566
+#: plugins/gtk+/gtk+.xml:2399
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr "动态保持副标题与顶栏的高度一致。"
 
-#: plugins/gtk+/gtk+.xml:2573
+#: plugins/gtk+/gtk+.xml:2406
 msgid "Custom Title"
 msgstr "自定义标题"
 
-#: plugins/gtk+/gtk+.xml:2583
+#: plugins/gtk+/gtk+.xml:2416
 msgid "The number of items in the header bar"
 msgstr "顶栏中的项目数"
 
-#: plugins/gtk+/gtk+.xml:2593
+#: plugins/gtk+/gtk+.xml:2426
 msgid "Add Slot"
 msgstr "增加插槽"
 
-#: plugins/gtk+/gtk+.xml:2619
+#: plugins/gtk+/gtk+.xml:2452
 msgid "The number of pages in the stack"
 msgstr "堆栈中的页数"
 
-#: plugins/gtk+/gtk+.xml:2621
+#: plugins/gtk+/gtk+.xml:2454
 msgid "Edit page"
 msgstr "编辑页面"
 
-#: plugins/gtk+/gtk+.xml:2629
+#: plugins/gtk+/gtk+.xml:2462
 msgid "Visible child"
 msgstr "可视子控件"
 
-#: plugins/gtk+/gtk+.xml:2636 plugins/gtk+/gtk+.xml:2691
+#: plugins/gtk+/gtk+.xml:2469 plugins/gtk+/gtk+.xml:2522
 msgid "Crossfade"
 msgstr "淡入淡出"
 
-#: plugins/gtk+/gtk+.xml:2637 plugins/gtk+/gtk+.xml:2693
+#: plugins/gtk+/gtk+.xml:2470 plugins/gtk+/gtk+.xml:2524
 msgid "Slide Right"
 msgstr "右滑"
 
-#: plugins/gtk+/gtk+.xml:2638 plugins/gtk+/gtk+.xml:2695
+#: plugins/gtk+/gtk+.xml:2471 plugins/gtk+/gtk+.xml:2526
 msgid "Slide Left"
 msgstr "左滑"
 
-#: plugins/gtk+/gtk+.xml:2639 plugins/gtk+/gtk+.xml:2697
+#: plugins/gtk+/gtk+.xml:2472 plugins/gtk+/gtk+.xml:2528
 msgid "Slide Up"
 msgstr "上滑"
 
-#: plugins/gtk+/gtk+.xml:2640 plugins/gtk+/gtk+.xml:2699
+#: plugins/gtk+/gtk+.xml:2473 plugins/gtk+/gtk+.xml:2530
 msgid "Slide Down"
 msgstr "下滑"
 
-#: plugins/gtk+/gtk+.xml:2641
+#: plugins/gtk+/gtk+.xml:2474
 msgid "Slide Left-Right"
 msgstr "由左向右滑"
 
-#: plugins/gtk+/gtk+.xml:2642
+#: plugins/gtk+/gtk+.xml:2475
 msgid "Slide Up-Down"
 msgstr "由上向下滑"
 
-#: plugins/gtk+/gtk+.xml:2643
+#: plugins/gtk+/gtk+.xml:2476
 msgid "Move Over Up"
 msgstr "向上遮盖"
 
-#: plugins/gtk+/gtk+.xml:2644
+#: plugins/gtk+/gtk+.xml:2477
 msgid "Move Over Down"
 msgstr "向下遮盖"
 
-#: plugins/gtk+/gtk+.xml:2645
+#: plugins/gtk+/gtk+.xml:2478
 msgid "Move Over Left"
 msgstr "向左遮盖"
 
-#: plugins/gtk+/gtk+.xml:2646
+#: plugins/gtk+/gtk+.xml:2479
 msgid "Move Over Right"
 msgstr "向右遮盖"
 
-#: plugins/gtk+/gtk+.xml:2647
+#: plugins/gtk+/gtk+.xml:2480
 msgid "Move Over Up-Down"
 msgstr "由上向下遮盖"
 
-#: plugins/gtk+/gtk+.xml:2648
+#: plugins/gtk+/gtk+.xml:2481
 msgid "Move Over Down-Up"
 msgstr "由下向上遮盖"
 
-#: plugins/gtk+/gtk+.xml:2649
+#: plugins/gtk+/gtk+.xml:2482
 msgid "Move Over Left-Right"
 msgstr "由左向右遮盖"
 
-#: plugins/gtk+/gtk+.xml:2650
+#: plugins/gtk+/gtk+.xml:2483
 msgid "Move Over Right-Left"
 msgstr "由右向左遮盖"
 
-#: plugins/gtk+/gtk+.xml:2651
+#: plugins/gtk+/gtk+.xml:2484
 msgid "Move Under Up"
 msgstr "向上显露"
 
-#: plugins/gtk+/gtk+.xml:2652
+#: plugins/gtk+/gtk+.xml:2485
 msgid "Move Under Down"
 msgstr "向下显露"
 
-#: plugins/gtk+/gtk+.xml:2653
+#: plugins/gtk+/gtk+.xml:2486
 msgid "Move Under Left"
 msgstr "向左显露"
 
-#: plugins/gtk+/gtk+.xml:2654
+#: plugins/gtk+/gtk+.xml:2487
 msgid "Move Under Right"
 msgstr "向右显露"
 
-#: plugins/gtk+/gtk+.xml:2664
+#: plugins/gtk+/gtk+.xml:2497
 msgid "Stack Switcher"
 msgstr "堆栈切换器"
 
-#: plugins/gtk+/gtk+.xml:2680
+#: plugins/gtk+/gtk+.xml:2511
 msgid "Stack Sidebar"
 msgstr "堆栈侧边栏"
 
-#: plugins/gtk+/gtk+.xml:2682
+#: plugins/gtk+/gtk+.xml:2513
 msgid "Revealer"
 msgstr "反向"
 
-#: plugins/gtk+/gtk+.xml:2742
+#: plugins/gtk+/gtk+.xml:2570
 msgid "Add Row"
 msgstr "增加行"
 
-#: plugins/gtk+/gtk+.xml:2757 plugins/gtk+/gtk+.xml:4727
+#: plugins/gtk+/gtk+.xml:2583 plugins/gtk+/gtk+.xml:4450
 msgid "Single"
 msgstr "单一的"
 
-#: plugins/gtk+/gtk+.xml:2759
+#: plugins/gtk+/gtk+.xml:2585
 msgid "Browse"
 msgstr "浏览"
 
-#: plugins/gtk+/gtk+.xml:2761
+#: plugins/gtk+/gtk+.xml:2587
 msgid "Multiple"
 msgstr "多选"
 
-#: plugins/gtk+/gtk+.xml:2764
+#: plugins/gtk+/gtk+.xml:2590
 msgid "Placeholder"
 msgstr "占位符"
 
-#: plugins/gtk+/gtk+.xml:2768
+#: plugins/gtk+/gtk+.xml:2594
 msgid ""
 "Whether this listbox should have a placeholder widget that is shown in the "
 "list when it doesn't display any visible children"
 msgstr ""
 "当列表框不显示任何可见子控件时，该列表框是否应具有显示在列表中的占位符控件"
 
-#: plugins/gtk+/gtk+.xml:2778
+#: plugins/gtk+/gtk+.xml:2603
 msgid "The position of the row item in the listbox"
 msgstr "列表框中行条目的位置"
 
-#: plugins/gtk+/gtk+.xml:2789
+#: plugins/gtk+/gtk+.xml:2613
 msgid "List Box Row"
 msgstr "列表框行"
 
-#: plugins/gtk+/gtk+.xml:2796
+#: plugins/gtk+/gtk+.xml:2620
 msgid "Flow Box"
 msgstr "流动框"
 
-#: plugins/gtk+/gtk+.xml:2810
+#: plugins/gtk+/gtk+.xml:2632
 msgid "Add Child"
 msgstr "添加子项"
 
-#: plugins/gtk+/gtk+.xml:2828
+#: plugins/gtk+/gtk+.xml:2647
 msgid "The position of the child in the flowbox"
 msgstr "流动框中子控件的位置"
 
-#: plugins/gtk+/gtk+.xml:2834
+#: plugins/gtk+/gtk+.xml:2652
 msgid "Flow Box Child"
 msgstr "子流动框"
 
-#: plugins/gtk+/gtk+.xml:2836
+#: plugins/gtk+/gtk+.xml:2654
 msgid "Range"
 msgstr "范围"
 
-#: plugins/gtk+/gtk+.xml:2847
+#: plugins/gtk+/gtk+.xml:2665
 msgid "Discontinuous"
 msgstr "间断"
 
-#: plugins/gtk+/gtk+.xml:2849
+#: plugins/gtk+/gtk+.xml:2667
 msgid "Delayed"
 msgstr "延迟"
 
-#: plugins/gtk+/gtk+.xml:2862 plugins/gtk+/gtk+.xml:2974
+#: plugins/gtk+/gtk+.xml:2680 plugins/gtk+/gtk+.xml:2789
 msgid "The number of digits to round the value to when the value changes"
 msgstr "当值变化时，取整的位数"
 
-#: plugins/gtk+/gtk+.xml:2867
+#: plugins/gtk+/gtk+.xml:2685
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr "是否高亮从底或左向上直到旋钮的整个区域"
 
-#: plugins/gtk+/gtk+.xml:2880
+#: plugins/gtk+/gtk+.xml:2697
 msgid "Horizontal Scale"
 msgstr "水平比例"
 
-#: plugins/gtk+/gtk+.xml:2885
+#: plugins/gtk+/gtk+.xml:2703
 msgid "Vertical Scale"
 msgstr "垂直比例"
 
-#: plugins/gtk+/gtk+.xml:2917
+#: plugins/gtk+/gtk+.xml:2735
 msgid "Flip Horizontally"
 msgstr "水平翻转"
 
-#: plugins/gtk+/gtk+.xml:2919
+#: plugins/gtk+/gtk+.xml:2737
 msgid "Flip Vertically"
 msgstr "垂直翻转"
 
-#: plugins/gtk+/gtk+.xml:2921
+#: plugins/gtk+/gtk+.xml:2739
 msgid "Slide Horizontally"
 msgstr "水平滑动"
 
-#: plugins/gtk+/gtk+.xml:2923
+#: plugins/gtk+/gtk+.xml:2741
 msgid "Slide Vertically"
 msgstr "垂直滑动"
 
-#: plugins/gtk+/gtk+.xml:2925
+#: plugins/gtk+/gtk+.xml:2743
 msgid "Resize Horizontally"
 msgstr "调整水平方向大小"
 
-#: plugins/gtk+/gtk+.xml:2927
+#: plugins/gtk+/gtk+.xml:2745
 msgid "Resize Vertically"
 msgstr "调整垂直方向大小"
 
-#: plugins/gtk+/gtk+.xml:2929
+#: plugins/gtk+/gtk+.xml:2747
 msgid "Flip Both Sides"
 msgstr "翻转两侧"
 
-#: plugins/gtk+/gtk+.xml:2931
+#: plugins/gtk+/gtk+.xml:2749
 msgid "Slide Both Sides"
 msgstr "滑动两侧"
 
-#: plugins/gtk+/gtk+.xml:2933
+#: plugins/gtk+/gtk+.xml:2751
 msgid "Resize Both Sides"
 msgstr "调整两侧大小"
 
-#: plugins/gtk+/gtk+.xml:2968
+#: plugins/gtk+/gtk+.xml:2783
 msgid "Scrollbar"
 msgstr "滚动条"
 
-#: plugins/gtk+/gtk+.xml:2985
+#: plugins/gtk+/gtk+.xml:2800
 msgid "Horizontal Scrollbar"
 msgstr "水平滚动条"
 
-#: plugins/gtk+/gtk+.xml:2990
+#: plugins/gtk+/gtk+.xml:2806
 msgid "Vertical Scrollbar"
 msgstr "垂直滚动条"
 
-#: plugins/gtk+/gtk+.xml:2996
+#: plugins/gtk+/gtk+.xml:2812
 msgid "Button Box"
 msgstr "按钮框"
 
-#: plugins/gtk+/gtk+.xml:3001
+#: plugins/gtk+/gtk+.xml:2817
 msgid "Default"
 msgstr "默认"
 
-#: plugins/gtk+/gtk+.xml:3003
+#: plugins/gtk+/gtk+.xml:2819
 msgid "Spread"
 msgstr "展开"
 
-#: plugins/gtk+/gtk+.xml:3005
+#: plugins/gtk+/gtk+.xml:2821
 msgid "Edge"
 msgstr "边"
 
-#: plugins/gtk+/gtk+.xml:3019
+#: plugins/gtk+/gtk+.xml:2835
 msgid "Horizontal Button Box"
 msgstr "水平按钮框"
 
-#: plugins/gtk+/gtk+.xml:3024
+#: plugins/gtk+/gtk+.xml:2841
 msgid "Vertical Button Box"
 msgstr "垂直按钮框"
 
-#: plugins/gtk+/gtk+.xml:3037
+#: plugins/gtk+/gtk+.xml:2855
 msgid "Horizontal Separator"
 msgstr "水平分割条"
 
-#: plugins/gtk+/gtk+.xml:3047
+#: plugins/gtk+/gtk+.xml:2866
 msgid "Vertical Separator"
 msgstr "垂直分割条"
 
-#: plugins/gtk+/gtk+.xml:3070
+#: plugins/gtk+/gtk+.xml:2889
 msgid "Accel Label"
 msgstr "快捷键标签"
 
-#: plugins/gtk+/gtk+.xml:3078
+#: plugins/gtk+/gtk+.xml:2897
 msgid "Up"
 msgstr "上"
 
-#: plugins/gtk+/gtk+.xml:3080
+#: plugins/gtk+/gtk+.xml:2899
 msgid "Down"
 msgstr "下"
 
-#: plugins/gtk+/gtk+.xml:3099
+#: plugins/gtk+/gtk+.xml:2917
 msgid "Menu Button"
 msgstr "菜单按钮"
 
-#: plugins/gtk+/gtk+.xml:3111
+#: plugins/gtk+/gtk+.xml:2929
 msgid "Lock Button"
 msgstr "锁定按钮"
 
-#: plugins/gtk+/gtk+.xml:3146
+#: plugins/gtk+/gtk+.xml:2961
 msgid "Layout"
 msgstr "布局"
 
-#: plugins/gtk+/gtk+.xml:3166 plugins/gtk+/gtk+.xml:4095
+#: plugins/gtk+/gtk+.xml:2980 plugins/gtk+/gtk+.xml:3871
 msgid "Fixed"
 msgstr "固定的"
 
-#: plugins/gtk+/gtk+.xml:3175
+#: plugins/gtk+/gtk+.xml:2989
 msgid "OpenGL Area"
 msgstr "OpenGL 区域"
 
-#: plugins/gtk+/gtk+.xml:3188
+#: plugins/gtk+/gtk+.xml:3002
 msgid "Info"
 msgstr "信息"
 
-#: plugins/gtk+/gtk+.xml:3190
+#: plugins/gtk+/gtk+.xml:3004
 msgid "Warning"
 msgstr "警告"
 
-#: plugins/gtk+/gtk+.xml:3192
+#: plugins/gtk+/gtk+.xml:3006
 msgid "Question"
 msgstr "问题"
 
-#: plugins/gtk+/gtk+.xml:3194 plugins/gtk+/gtk+.xml:4733
-#: plugins/gtk+/gtk+.xml:4735 plugins/gtk+/gtk+.xml:4737
-#: plugins/gtk+/gtk+.xml:4739
+#: plugins/gtk+/gtk+.xml:3008 plugins/gtk+/gtk+.xml:4456
+#: plugins/gtk+/gtk+.xml:4458 plugins/gtk+/gtk+.xml:4460
+#: plugins/gtk+/gtk+.xml:4462
 msgid "Error"
 msgstr "错误"
 
-#: plugins/gtk+/gtk+.xml:3272 plugins/webkit2gtk/webkit2gtk.xml:51
+#: plugins/gtk+/gtk+.xml:3084 plugins/webkit2gtk/webkit2gtk.xml:51
 msgid "Never"
 msgstr "从不"
 
-#: plugins/gtk+/gtk+.xml:3274
+#: plugins/gtk+/gtk+.xml:3086
 msgid "External"
 msgstr "外部"
 
-#: plugins/gtk+/gtk+.xml:3281
+#: plugins/gtk+/gtk+.xml:3093
 msgid "Top Left"
 msgstr "左上"
 
-#: plugins/gtk+/gtk+.xml:3283
+#: plugins/gtk+/gtk+.xml:3095
 msgid "Bottom Left"
 msgstr "左下"
 
-#: plugins/gtk+/gtk+.xml:3285
+#: plugins/gtk+/gtk+.xml:3097
 msgid "Top Right"
 msgstr "右上"
 
-#: plugins/gtk+/gtk+.xml:3287
+#: plugins/gtk+/gtk+.xml:3099
 msgid "Bottom Right"
 msgstr "右下"
 
-#: plugins/gtk+/gtk+.xml:3291
+#: plugins/gtk+/gtk+.xml:3103
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
 msgstr "如果启用了覆盖滚动，滚动条仅在鼠标存在时作为传统控件被添加"
 
-#: plugins/gtk+/gtk+.xml:3305
+#: plugins/gtk+/gtk+.xml:3117
 msgid "About Dialog"
 msgstr "关于对话框"
 
-#: plugins/gtk+/gtk+.xml:3331
+#: plugins/gtk+/gtk+.xml:3141
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3333
+#: plugins/gtk+/gtk+.xml:3143
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3335
+#: plugins/gtk+/gtk+.xml:3145
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
-#: plugins/gtk+/gtk+.xml:3337
+#: plugins/gtk+/gtk+.xml:3147
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3341
+#: plugins/gtk+/gtk+.xml:3151
 msgid "MIT X11"
 msgstr "MIY X11"
 
-#: plugins/gtk+/gtk+.xml:3343
+#: plugins/gtk+/gtk+.xml:3153
 msgid "Artistic"
 msgstr "艺术"
 
-#: plugins/gtk+/gtk+.xml:3345
+#: plugins/gtk+/gtk+.xml:3155
 msgid "GPL 2.0 Only"
 msgstr "仅 GPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3347
+#: plugins/gtk+/gtk+.xml:3157
 msgid "GPL 3.0 Only"
 msgstr "仅 GPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3349
+#: plugins/gtk+/gtk+.xml:3159
 msgid "LGPL 2.1 Only"
 msgstr "仅 LGPL 2.1"
 
-#: plugins/gtk+/gtk+.xml:3351
+#: plugins/gtk+/gtk+.xml:3161
 msgid "LGPL 3.0 Only"
 msgstr "仅 LGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3353
+#: plugins/gtk+/gtk+.xml:3163
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3355
+#: plugins/gtk+/gtk+.xml:3165
 msgid "AGPL 3.0 Only"
 msgstr "仅 AGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3357
+#: plugins/gtk+/gtk+.xml:3167
 msgid "BSD 3"
 msgstr "BSD 3"
 
-#: plugins/gtk+/gtk+.xml:3359
+#: plugins/gtk+/gtk+.xml:3169
 msgid "Apache 2.0"
 msgstr "Apache 2.0"
 
-#: plugins/gtk+/gtk+.xml:3361
+#: plugins/gtk+/gtk+.xml:3171
 msgid "MPL 2.0"
 msgstr "MPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3375
+#: plugins/gtk+/gtk+.xml:3182
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -6519,864 +6582,864 @@ msgstr ""
 "您可标记为可翻译的，如果您想显示翻译的一个具体的翻译者，请设置一个名称/地址，"
 "否则您不需要列出全部翻译者，取消这个翻译字符串标记"
 
-#: plugins/gtk+/gtk+.xml:3384
+#: plugins/gtk+/gtk+.xml:3190
 msgid "Color Selection Dialog"
 msgstr "颜色选择对话框"
 
-#: plugins/gtk+/gtk+.xml:3397
+#: plugins/gtk+/gtk+.xml:3203
 msgid "File Chooser Dialog"
 msgstr "文件选择对话框"
 
-#: plugins/gtk+/gtk+.xml:3419
+#: plugins/gtk+/gtk+.xml:3223
 msgid "Font Selection Dialog"
 msgstr "字体选择对话框"
 
-#: plugins/gtk+/gtk+.xml:3433
+#: plugins/gtk+/gtk+.xml:3236
 msgid "Application Chooser Dialog"
 msgstr "应用程序选择对话"
 
-#: plugins/gtk+/gtk+.xml:3441
+#: plugins/gtk+/gtk+.xml:3244
 msgid "Message Dialog"
 msgstr "消息对话框"
 
-#: plugins/gtk+/gtk+.xml:3462
+#: plugins/gtk+/gtk+.xml:3263
 msgid "Ok"
 msgstr "确定"
 
-#: plugins/gtk+/gtk+.xml:3468
+#: plugins/gtk+/gtk+.xml:3269
 msgid "Yes, No"
 msgstr "是、否"
 
-#: plugins/gtk+/gtk+.xml:3470
+#: plugins/gtk+/gtk+.xml:3271
 msgid "Ok, Cancel"
 msgstr "确定，取消"
 
-#: plugins/gtk+/gtk+.xml:3476
+#: plugins/gtk+/gtk+.xml:3277
 msgid "Color Selection"
 msgstr "颜色选择器"
 
-#: plugins/gtk+/gtk+.xml:3485
+#: plugins/gtk+/gtk+.xml:3285
 msgid "Color Chooser Widget"
 msgstr "颜色选择器组件"
 
-#: plugins/gtk+/gtk+.xml:3498
+#: plugins/gtk+/gtk+.xml:3296
 msgid "Color Chooser Dialog"
 msgstr "颜色选择器对话框"
 
-#: plugins/gtk+/gtk+.xml:3500
+#: plugins/gtk+/gtk+.xml:3298
 msgid "Font Chooser Widget"
 msgstr "字体选择器组件"
 
-#: plugins/gtk+/gtk+.xml:3520
+#: plugins/gtk+/gtk+.xml:3315
 msgid "Font Chooser Dialog"
 msgstr "字体选择器对话框"
 
-#: plugins/gtk+/gtk+.xml:3529
+#: plugins/gtk+/gtk+.xml:3324
 msgid "Font Selection"
 msgstr "字体选择"
 
-#: plugins/gtk+/gtk+.xml:3531
+#: plugins/gtk+/gtk+.xml:3326
 msgid "Assistant"
 msgstr "助手"
 
-#: plugins/gtk+/gtk+.xml:3548
+#: plugins/gtk+/gtk+.xml:3343
 msgid "Number of Pages"
 msgstr "页数"
 
-#: plugins/gtk+/gtk+.xml:3553
+#: plugins/gtk+/gtk+.xml:3348
 msgid "Number of pages in this assistant"
 msgstr "该助手中的页数"
 
-#: plugins/gtk+/gtk+.xml:3560
+#: plugins/gtk+/gtk+.xml:3355
 msgid "Initially Complete"
 msgstr "初始补全"
 
-#: plugins/gtk+/gtk+.xml:3561
+#: plugins/gtk+/gtk+.xml:3356
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
 msgstr "该页是否应忽略用户输入而被标记为已完成。"
 
-#: plugins/gtk+/gtk+.xml:3566
+#: plugins/gtk+/gtk+.xml:3361
 msgid "Content"
 msgstr "内容"
 
-#: plugins/gtk+/gtk+.xml:3568
+#: plugins/gtk+/gtk+.xml:3363
 msgid "Intro"
 msgstr "介绍"
 
-#: plugins/gtk+/gtk+.xml:3570
+#: plugins/gtk+/gtk+.xml:3365
 msgid "Confirm"
 msgstr "确定"
 
-#: plugins/gtk+/gtk+.xml:3572
+#: plugins/gtk+/gtk+.xml:3367
 msgid "Summary"
 msgstr "摘要"
 
-#: plugins/gtk+/gtk+.xml:3583
+#: plugins/gtk+/gtk+.xml:3378
 msgid "The page position in the Assistant"
 msgstr "助手的页面位置"
 
-#: plugins/gtk+/gtk+.xml:3588
+#: plugins/gtk+/gtk+.xml:3383
 msgid "Popover"
 msgstr "弹出框"
 
-#: plugins/gtk+/gtk+.xml:3610
+#: plugins/gtk+/gtk+.xml:3405
 msgid "Popover Menu"
 msgstr "弹出框菜单"
 
-#: plugins/gtk+/gtk+.xml:3626
+#: plugins/gtk+/gtk+.xml:3420
 msgid "Number of submenus"
 msgstr "子菜单数"
 
-#: plugins/gtk+/gtk+.xml:3631
+#: plugins/gtk+/gtk+.xml:3425
 msgid "The number of submenus in the popover menu"
 msgstr "弹出框菜单中的子菜单数"
 
-#: plugins/gtk+/gtk+.xml:3633
+#: plugins/gtk+/gtk+.xml:3427
 msgid "Edit menu"
 msgstr "编辑菜单"
 
-#: plugins/gtk+/gtk+.xml:3638
+#: plugins/gtk+/gtk+.xml:3432
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr "设定要编辑的当前活动子菜单，该属性将不会保存"
 
-#: plugins/gtk+/gtk+.xml:3643
+#: plugins/gtk+/gtk+.xml:3437
 msgid "Model Button"
 msgstr "模型按钮"
 
-#: plugins/gtk+/gtk+.xml:3677
+#: plugins/gtk+/gtk+.xml:3471
 msgid "Link Button"
 msgstr "链接按钮"
 
-#: plugins/gtk+/gtk+.xml:3686
+#: plugins/gtk+/gtk+.xml:3480
 msgid "Recent Chooser"
 msgstr "最近选择器"
 
-#: plugins/gtk+/gtk+.xml:3718
+#: plugins/gtk+/gtk+.xml:3509
 msgid "Most Recently Used first"
 msgstr "最近使用最多的第一个"
 
-#: plugins/gtk+/gtk+.xml:3720
+#: plugins/gtk+/gtk+.xml:3511
 msgid "Least Recently Used first"
 msgstr "最近使用最少的第一个"
 
-#: plugins/gtk+/gtk+.xml:3728
+#: plugins/gtk+/gtk+.xml:3519
 msgid "Recent Chooser Dialog"
 msgstr "最近选择对话框"
 
-#: plugins/gtk+/gtk+.xml:3744
+#: plugins/gtk+/gtk+.xml:3535
 msgid "Size Group"
 msgstr "尺寸组"
 
-#: plugins/gtk+/gtk+.xml:3749
+#: plugins/gtk+/gtk+.xml:3540
 msgid "Widgets"
 msgstr "组件"
 
-#: plugins/gtk+/gtk+.xml:3754
+#: plugins/gtk+/gtk+.xml:3545
 msgid "List of widgets in this group"
 msgstr "该组中组件列表"
 
-#: plugins/gtk+/gtk+.xml:3765
+#: plugins/gtk+/gtk+.xml:3556
 msgid "Both"
 msgstr "都"
 
-#: plugins/gtk+/gtk+.xml:3772
+#: plugins/gtk+/gtk+.xml:3563
 msgid "Window Group"
 msgstr "窗口组"
 
-#: plugins/gtk+/gtk+.xml:3776
+#: plugins/gtk+/gtk+.xml:3567
 msgid "Adjustment"
 msgstr "调整"
 
-#: plugins/gtk+/gtk+.xml:3833
+#: plugins/gtk+/gtk+.xml:3621
 msgid "An accelerator key for this action"
 msgstr "为这个动作设置一个快捷键"
 
-#: plugins/gtk+/gtk+.xml:3838
+#: plugins/gtk+/gtk+.xml:3626
 msgid "Toggle Action"
 msgstr "开关动作"
 
-#: plugins/gtk+/gtk+.xml:3844
+#: plugins/gtk+/gtk+.xml:3633
 msgid "Radio Action"
 msgstr "单选动作"
 
-#: plugins/gtk+/gtk+.xml:3852
+#: plugins/gtk+/gtk+.xml:3641
 msgid "Recent Action"
 msgstr "最近的动作"
 
-#: plugins/gtk+/gtk+.xml:3870
+#: plugins/gtk+/gtk+.xml:3658
 msgid "Action Group"
 msgstr "动作组"
 
-#: plugins/gtk+/gtk+.xml:3884
+#: plugins/gtk+/gtk+.xml:3672
 msgid "Entry Completion"
 msgstr "输入补全"
 
-#: plugins/gtk+/gtk+.xml:3904
+#: plugins/gtk+/gtk+.xml:3690
 msgid "Icon Factory"
 msgstr "图标工厂"
 
-#: plugins/gtk+/gtk+.xml:3914
+#: plugins/gtk+/gtk+.xml:3700
 msgid "Icon Sources"
 msgstr "图标源"
 
-#: plugins/gtk+/gtk+.xml:3919
+#: plugins/gtk+/gtk+.xml:3705
 msgid "A list of sources for this icon factory"
 msgstr "这个图标工厂的源列表"
 
-#: plugins/gtk+/gtk+.xml:3925
+#: plugins/gtk+/gtk+.xml:3710
 msgid "List Store"
 msgstr "列表库"
 
-#: plugins/gtk+/gtk+.xml:3939 plugins/gtk+/gtk+.xml:3965
+#: plugins/gtk+/gtk+.xml:3724 plugins/gtk+/gtk+.xml:3749
 msgid "Enter a list of column types for this data store"
 msgstr "为这个数据库输入栏一列栏类型"
 
-#: plugins/gtk+/gtk+.xml:3941 plugins/gtk+/gtk+.xml:3967
+#: plugins/gtk+/gtk+.xml:3726 plugins/gtk+/gtk+.xml:3751
 msgid "Data"
 msgstr "数据"
 
-#: plugins/gtk+/gtk+.xml:3946 plugins/gtk+/gtk+.xml:3972
+#: plugins/gtk+/gtk+.xml:3731 plugins/gtk+/gtk+.xml:3756
 msgid "Enter a list of values to be applied on each row"
 msgstr "输入将应用到每行一列数值"
 
-#: plugins/gtk+/gtk+.xml:3952
+#: plugins/gtk+/gtk+.xml:3736
 msgid "Tree Store"
 msgstr "树库"
 
-#: plugins/gtk+/gtk+.xml:3978
+#: plugins/gtk+/gtk+.xml:3761
 msgid "Tree Model Filter"
 msgstr "树模型过滤器"
 
-#: plugins/gtk+/gtk+.xml:3980
+#: plugins/gtk+/gtk+.xml:3763
 msgid "Tree Model Sort"
 msgstr "树模型排序"
 
-#: plugins/gtk+/gtk+.xml:3981
+#: plugins/gtk+/gtk+.xml:3765
 msgid "Tree Selection"
 msgstr "树选择"
 
-#: plugins/gtk+/gtk+.xml:3987
+#: plugins/gtk+/gtk+.xml:3771
 msgid "Tree View"
 msgstr "树视图"
 
-#: plugins/gtk+/gtk+.xml:4027
+#: plugins/gtk+/gtk+.xml:3808
 msgid "Horizontal and Vertical"
 msgstr "水平与竖直"
 
-#: plugins/gtk+/gtk+.xml:4082
+#: plugins/gtk+/gtk+.xml:3858
 msgid "Ascending"
 msgstr "上升"
 
-#: plugins/gtk+/gtk+.xml:4084
+#: plugins/gtk+/gtk+.xml:3860
 msgid "Descending"
 msgstr "下降的"
 
-#: plugins/gtk+/gtk+.xml:4091
+#: plugins/gtk+/gtk+.xml:3867
 msgid "Grow Only"
 msgstr "仅增长"
 
-#: plugins/gtk+/gtk+.xml:4109
+#: plugins/gtk+/gtk+.xml:3884
 msgid "Icon View"
 msgstr "图标视图"
 
-#: plugins/gtk+/gtk+.xml:4193
+#: plugins/gtk+/gtk+.xml:3957
 msgid "Cell Background Color name column"
 msgstr "单元格背景色名称栏"
 
-#: plugins/gtk+/gtk+.xml:4198 plugins/gtk+/gtk+.xml:4213
-#: plugins/gtk+/gtk+.xml:4228 plugins/gtk+/gtk+.xml:4242
-#: plugins/gtk+/gtk+.xml:4256 plugins/gtk+/gtk+.xml:4270
-#: plugins/gtk+/gtk+.xml:4284 plugins/gtk+/gtk+.xml:4298
-#: plugins/gtk+/gtk+.xml:4312 plugins/gtk+/gtk+.xml:4326
-#: plugins/gtk+/gtk+.xml:4340 plugins/gtk+/gtk+.xml:4384
-#: plugins/gtk+/gtk+.xml:4398 plugins/gtk+/gtk+.xml:4412
-#: plugins/gtk+/gtk+.xml:4427 plugins/gtk+/gtk+.xml:4441
-#: plugins/gtk+/gtk+.xml:4455 plugins/gtk+/gtk+.xml:4469
-#: plugins/gtk+/gtk+.xml:4483 plugins/gtk+/gtk+.xml:4498
-#: plugins/gtk+/gtk+.xml:4513 plugins/gtk+/gtk+.xml:4528
-#: plugins/gtk+/gtk+.xml:4542 plugins/gtk+/gtk+.xml:4556
-#: plugins/gtk+/gtk+.xml:4570 plugins/gtk+/gtk+.xml:4584
-#: plugins/gtk+/gtk+.xml:4599 plugins/gtk+/gtk+.xml:4613
-#: plugins/gtk+/gtk+.xml:4627 plugins/gtk+/gtk+.xml:4663
-#: plugins/gtk+/gtk+.xml:4677 plugins/gtk+/gtk+.xml:4700
-#: plugins/gtk+/gtk+.xml:4714 plugins/gtk+/gtk+.xml:4747
-#: plugins/gtk+/gtk+.xml:4768 plugins/gtk+/gtk+.xml:4782
-#: plugins/gtk+/gtk+.xml:4796 plugins/gtk+/gtk+.xml:4810
-#: plugins/gtk+/gtk+.xml:4824 plugins/gtk+/gtk+.xml:4839
-#: plugins/gtk+/gtk+.xml:4854 plugins/gtk+/gtk+.xml:4869
-#: plugins/gtk+/gtk+.xml:4884 plugins/gtk+/gtk+.xml:4903
-#: plugins/gtk+/gtk+.xml:4924 plugins/gtk+/gtk+.xml:4991
-#: plugins/gtk+/gtk+.xml:5005 plugins/gtk+/gtk+.xml:5028
-#: plugins/gtk+/gtk+.xml:5042 plugins/gtk+/gtk+.xml:5056
-#: plugins/gtk+/gtk+.xml:5075 plugins/gtk+/gtk+.xml:5089
-#: plugins/gtk+/gtk+.xml:5103 plugins/gtk+/gtk+.xml:5122
-#: plugins/gtk+/gtk+.xml:5136 plugins/gtk+/gtk+.xml:5150
-#: plugins/gtk+/gtk+.xml:5164 plugins/gtk+/gtk+.xml:5179
-#: plugins/gtk+/gtk+.xml:5194 plugins/gtk+/gtk+.xml:5208
-#: plugins/gtk+/gtk+.xml:5222 plugins/gtk+/gtk+.xml:5242
-#: plugins/gtk+/gtk+.xml:5260 plugins/gtk+/gtk+.xml:5274
-#: plugins/gtk+/gtk+.xml:5288 plugins/gtk+/gtk+.xml:5303
-#: plugins/gtk+/gtk+.xml:5318 plugins/gtk+/gtk+.xml:5332
-#: plugins/gtk+/gtk+.xml:5346 plugins/gtk+/gtk+.xml:5365
-#: plugins/gtk+/gtk+.xml:5379 plugins/gtk+/gtk+.xml:5393
-#: plugins/gtk+/gtk+.xml:5412 plugins/gtk+/gtk+.xml:5426
-#: plugins/gtk+/gtk+.xml:5440 plugins/gtk+/gtk+.xml:5454
-#: plugins/gtk+/gtk+.xml:5468
+#: plugins/gtk+/gtk+.xml:3962 plugins/gtk+/gtk+.xml:3975
+#: plugins/gtk+/gtk+.xml:3988 plugins/gtk+/gtk+.xml:4001
+#: plugins/gtk+/gtk+.xml:4014 plugins/gtk+/gtk+.xml:4027
+#: plugins/gtk+/gtk+.xml:4040 plugins/gtk+/gtk+.xml:4053
+#: plugins/gtk+/gtk+.xml:4066 plugins/gtk+/gtk+.xml:4079
+#: plugins/gtk+/gtk+.xml:4092 plugins/gtk+/gtk+.xml:4135
+#: plugins/gtk+/gtk+.xml:4148 plugins/gtk+/gtk+.xml:4161
+#: plugins/gtk+/gtk+.xml:4174 plugins/gtk+/gtk+.xml:4187
+#: plugins/gtk+/gtk+.xml:4200 plugins/gtk+/gtk+.xml:4213
+#: plugins/gtk+/gtk+.xml:4226 plugins/gtk+/gtk+.xml:4239
+#: plugins/gtk+/gtk+.xml:4252 plugins/gtk+/gtk+.xml:4265
+#: plugins/gtk+/gtk+.xml:4278 plugins/gtk+/gtk+.xml:4291
+#: plugins/gtk+/gtk+.xml:4304 plugins/gtk+/gtk+.xml:4317
+#: plugins/gtk+/gtk+.xml:4330 plugins/gtk+/gtk+.xml:4343
+#: plugins/gtk+/gtk+.xml:4356 plugins/gtk+/gtk+.xml:4390
+#: plugins/gtk+/gtk+.xml:4403 plugins/gtk+/gtk+.xml:4425
+#: plugins/gtk+/gtk+.xml:4438 plugins/gtk+/gtk+.xml:4470
+#: plugins/gtk+/gtk+.xml:4490 plugins/gtk+/gtk+.xml:4503
+#: plugins/gtk+/gtk+.xml:4516 plugins/gtk+/gtk+.xml:4529
+#: plugins/gtk+/gtk+.xml:4542 plugins/gtk+/gtk+.xml:4555
+#: plugins/gtk+/gtk+.xml:4568 plugins/gtk+/gtk+.xml:4581
+#: plugins/gtk+/gtk+.xml:4594 plugins/gtk+/gtk+.xml:4612
+#: plugins/gtk+/gtk+.xml:4632 plugins/gtk+/gtk+.xml:4698
+#: plugins/gtk+/gtk+.xml:4711 plugins/gtk+/gtk+.xml:4732
+#: plugins/gtk+/gtk+.xml:4745 plugins/gtk+/gtk+.xml:4758
+#: plugins/gtk+/gtk+.xml:4776 plugins/gtk+/gtk+.xml:4789
+#: plugins/gtk+/gtk+.xml:4802 plugins/gtk+/gtk+.xml:4820
+#: plugins/gtk+/gtk+.xml:4833 plugins/gtk+/gtk+.xml:4846
+#: plugins/gtk+/gtk+.xml:4859 plugins/gtk+/gtk+.xml:4872
+#: plugins/gtk+/gtk+.xml:4885 plugins/gtk+/gtk+.xml:4898
+#: plugins/gtk+/gtk+.xml:4911 plugins/gtk+/gtk+.xml:4930
+#: plugins/gtk+/gtk+.xml:4949 plugins/gtk+/gtk+.xml:4962
+#: plugins/gtk+/gtk+.xml:4975 plugins/gtk+/gtk+.xml:4988
+#: plugins/gtk+/gtk+.xml:5001 plugins/gtk+/gtk+.xml:5014
+#: plugins/gtk+/gtk+.xml:5027 plugins/gtk+/gtk+.xml:5045
+#: plugins/gtk+/gtk+.xml:5058 plugins/gtk+/gtk+.xml:5071
+#: plugins/gtk+/gtk+.xml:5089 plugins/gtk+/gtk+.xml:5102
+#: plugins/gtk+/gtk+.xml:5115 plugins/gtk+/gtk+.xml:5128
+#: plugins/gtk+/gtk+.xml:5141
 msgid "The column in the model to load the value from"
 msgstr "模型中加载值的栏"
 
-#: plugins/gtk+/gtk+.xml:4208
+#: plugins/gtk+/gtk+.xml:3970
 msgid "Cell Background Color column"
 msgstr "单元格背景色栏"
 
-#: plugins/gtk+/gtk+.xml:4223
+#: plugins/gtk+/gtk+.xml:3983
 msgid "Cell Background RGBA column"
 msgstr "RGBA 的单元格背景栏"
 
-#: plugins/gtk+/gtk+.xml:4237
+#: plugins/gtk+/gtk+.xml:3996
 msgid "Width column"
 msgstr "宽度栏"
 
-#: plugins/gtk+/gtk+.xml:4251
+#: plugins/gtk+/gtk+.xml:4009
 msgid "Height column"
 msgstr "高度栏"
 
-#: plugins/gtk+/gtk+.xml:4264
+#: plugins/gtk+/gtk+.xml:4021
 msgid "Horizontal Padding"
 msgstr "水平填充"
 
-#: plugins/gtk+/gtk+.xml:4265
+#: plugins/gtk+/gtk+.xml:4022
 msgid "Horizontal Padding column"
 msgstr "水平填充栏"
 
-#: plugins/gtk+/gtk+.xml:4278
+#: plugins/gtk+/gtk+.xml:4034
 msgid "Vertical Padding"
 msgstr "垂直填充"
 
-#: plugins/gtk+/gtk+.xml:4279
+#: plugins/gtk+/gtk+.xml:4035
 msgid "Vertical Padding column"
 msgstr "垂直填充栏"
 
-#: plugins/gtk+/gtk+.xml:4292
+#: plugins/gtk+/gtk+.xml:4047
 msgid "Horizontal Alignment"
 msgstr "水平对齐"
 
-#: plugins/gtk+/gtk+.xml:4293
+#: plugins/gtk+/gtk+.xml:4048
 msgid "Horizontal Alignment column"
 msgstr "水平对齐栏"
 
-#: plugins/gtk+/gtk+.xml:4306
+#: plugins/gtk+/gtk+.xml:4060
 msgid "Vertical Alignment"
 msgstr "垂直对齐"
 
-#: plugins/gtk+/gtk+.xml:4307
+#: plugins/gtk+/gtk+.xml:4061
 msgid "Vertical Alignment column"
 msgstr "垂直对齐栏"
 
-#: plugins/gtk+/gtk+.xml:4321
+#: plugins/gtk+/gtk+.xml:4074
 msgid "Sensitive column"
 msgstr "敏感栏"
 
-#: plugins/gtk+/gtk+.xml:4335
+#: plugins/gtk+/gtk+.xml:4087
 msgid "Visible column"
 msgstr "可视栏"
 
-#: plugins/gtk+/gtk+.xml:4350
+#: plugins/gtk+/gtk+.xml:4102
 msgid "Text Renderer"
 msgstr "文本渲染"
 
-#: plugins/gtk+/gtk+.xml:4379
+#: plugins/gtk+/gtk+.xml:4130
 msgid "Alignment column"
 msgstr "对齐栏"
 
-#: plugins/gtk+/gtk+.xml:4393
+#: plugins/gtk+/gtk+.xml:4143
 msgid "Attributes column"
 msgstr "特性栏"
 
-#: plugins/gtk+/gtk+.xml:4407
+#: plugins/gtk+/gtk+.xml:4156
 msgid "Background Color Name column"
 msgstr "背景色名称栏"
 
-#: plugins/gtk+/gtk+.xml:4422
+#: plugins/gtk+/gtk+.xml:4169
 msgid "Background Color column"
 msgstr "背景色栏"
 
-#: plugins/gtk+/gtk+.xml:4436
+#: plugins/gtk+/gtk+.xml:4182
 msgid "Editable column"
 msgstr "可编辑栏"
 
-#: plugins/gtk+/gtk+.xml:4450
+#: plugins/gtk+/gtk+.xml:4195
 msgid "Ellipsize column"
 msgstr "Ellipsize 栏"
 
-#: plugins/gtk+/gtk+.xml:4464
+#: plugins/gtk+/gtk+.xml:4208
 msgid "Family column"
 msgstr "家族栏"
 
-#: plugins/gtk+/gtk+.xml:4478
+#: plugins/gtk+/gtk+.xml:4221
 msgid "Font column"
 msgstr "字体栏"
 
-#: plugins/gtk+/gtk+.xml:4493
+#: plugins/gtk+/gtk+.xml:4234
 msgid "Font Description column"
 msgstr "字体名称栏"
 
-#: plugins/gtk+/gtk+.xml:4508
+#: plugins/gtk+/gtk+.xml:4247
 msgid "Foreground Color Name column"
 msgstr "前景色名称栏"
 
-#: plugins/gtk+/gtk+.xml:4523
+#: plugins/gtk+/gtk+.xml:4260
 msgid "Foreground Color column"
 msgstr "前景色栏"
 
-#: plugins/gtk+/gtk+.xml:4537
+#: plugins/gtk+/gtk+.xml:4273
 msgid "Language column"
 msgstr "语言栏"
 
-#: plugins/gtk+/gtk+.xml:4551
+#: plugins/gtk+/gtk+.xml:4286
 msgid "Markup column"
 msgstr "标记栏"
 
-#: plugins/gtk+/gtk+.xml:4565
+#: plugins/gtk+/gtk+.xml:4299
 msgid "Rise column"
 msgstr "提升栏"
 
-#: plugins/gtk+/gtk+.xml:4579
+#: plugins/gtk+/gtk+.xml:4312
 msgid "Scale column"
 msgstr "比例栏"
 
-#: plugins/gtk+/gtk+.xml:4594
+#: plugins/gtk+/gtk+.xml:4325
 msgid "Single Paragraph Mode column"
 msgstr "单段模式栏"
 
-#: plugins/gtk+/gtk+.xml:4608
+#: plugins/gtk+/gtk+.xml:4338
 msgid "Size column"
 msgstr "尺寸栏"
 
-#: plugins/gtk+/gtk+.xml:4622 plugins/gtk+/gtk+.xml:4898
+#: plugins/gtk+/gtk+.xml:4351 plugins/gtk+/gtk+.xml:4607
 msgid "Data column"
 msgstr "数据栏"
 
-#: plugins/gtk+/gtk+.xml:4638
+#: plugins/gtk+/gtk+.xml:4366
 msgid "Ultra Condensed"
 msgstr "超压缩"
 
-#: plugins/gtk+/gtk+.xml:4640
+#: plugins/gtk+/gtk+.xml:4368
 msgid "Extra Condensed"
 msgstr "额外浓缩"
 
-#: plugins/gtk+/gtk+.xml:4642
+#: plugins/gtk+/gtk+.xml:4370
 msgid "Condensed"
 msgstr "压缩的"
 
-#: plugins/gtk+/gtk+.xml:4644
+#: plugins/gtk+/gtk+.xml:4372
 msgid "Semi Condensed"
 msgstr "半压缩"
 
-#: plugins/gtk+/gtk+.xml:4648
+#: plugins/gtk+/gtk+.xml:4376
 msgid "Semi Expanded"
 msgstr "半展开"
 
-#: plugins/gtk+/gtk+.xml:4650
+#: plugins/gtk+/gtk+.xml:4378
 msgid "Expanded"
 msgstr "展开"
 
-#: plugins/gtk+/gtk+.xml:4652
+#: plugins/gtk+/gtk+.xml:4380
 msgid "Extra Expanded"
 msgstr "额外展开"
 
-#: plugins/gtk+/gtk+.xml:4654
+#: plugins/gtk+/gtk+.xml:4382
 msgid "Ultra Expanded"
 msgstr "超展开"
 
-#: plugins/gtk+/gtk+.xml:4658
+#: plugins/gtk+/gtk+.xml:4385
 msgid "Stretch column"
 msgstr "拉伸栏"
 
-#: plugins/gtk+/gtk+.xml:4672
+#: plugins/gtk+/gtk+.xml:4398
 msgid "Strikethrough column"
 msgstr "删除线栏"
 
-#: plugins/gtk+/gtk+.xml:4690
+#: plugins/gtk+/gtk+.xml:4415
 msgid "Oblique"
 msgstr "斜体"
 
-#: plugins/gtk+/gtk+.xml:4692
+#: plugins/gtk+/gtk+.xml:4417
 msgid "Italic"
 msgstr "斜体"
 
-#: plugins/gtk+/gtk+.xml:4695
+#: plugins/gtk+/gtk+.xml:4420
 msgid "Style column"
 msgstr "样式栏"
 
-#: plugins/gtk+/gtk+.xml:4709 plugins/gtk+/gtk+.xml:5283
+#: plugins/gtk+/gtk+.xml:4433 plugins/gtk+/gtk+.xml:4970
 msgid "Text column"
 msgstr "文本栏"
 
-#: plugins/gtk+/gtk+.xml:4729
+#: plugins/gtk+/gtk+.xml:4452
 msgid "Double"
 msgstr "双倍"
 
-#: plugins/gtk+/gtk+.xml:4731
+#: plugins/gtk+/gtk+.xml:4454
 msgid "Low"
 msgstr "低"
 
-#: plugins/gtk+/gtk+.xml:4742
+#: plugins/gtk+/gtk+.xml:4465
 msgid "Underline column"
 msgstr "下划线栏"
 
-#: plugins/gtk+/gtk+.xml:4760
+#: plugins/gtk+/gtk+.xml:4482
 msgid "Small Capitals"
 msgstr "小型大写字母"
 
-#: plugins/gtk+/gtk+.xml:4763
+#: plugins/gtk+/gtk+.xml:4485
 msgid "Variant column"
 msgstr "变量栏"
 
-#: plugins/gtk+/gtk+.xml:4777
+#: plugins/gtk+/gtk+.xml:4498
 msgid "Weight column"
 msgstr "重量栏"
 
-#: plugins/gtk+/gtk+.xml:4791
+#: plugins/gtk+/gtk+.xml:4511
 msgid "Width in Characters column"
 msgstr "以字符为单位的宽度栏"
 
-#: plugins/gtk+/gtk+.xml:4805
+#: plugins/gtk+/gtk+.xml:4524
 msgid "Wrap Mode column"
 msgstr "自动换行模式栏"
 
-#: plugins/gtk+/gtk+.xml:4819
+#: plugins/gtk+/gtk+.xml:4537
 msgid "Wrap Width column"
 msgstr "自动换行宽度栏"
 
-#: plugins/gtk+/gtk+.xml:4834
+#: plugins/gtk+/gtk+.xml:4550
 msgid "Background RGBA column"
 msgstr "RGBA 背景栏"
 
-#: plugins/gtk+/gtk+.xml:4849
+#: plugins/gtk+/gtk+.xml:4563
 msgid "Foreground RGBA column"
 msgstr "RGBA 前景栏"
 
-#: plugins/gtk+/gtk+.xml:4864
+#: plugins/gtk+/gtk+.xml:4576
 msgid "Maximum width in characters"
 msgstr "最大宽度的字符"
 
-#: plugins/gtk+/gtk+.xml:4879
+#: plugins/gtk+/gtk+.xml:4589
 msgid "Placeholder text"
 msgstr "占位符文本"
 
-#: plugins/gtk+/gtk+.xml:4895
+#: plugins/gtk+/gtk+.xml:4604
 msgid "Accelerator Renderer"
 msgstr "快捷键渲染"
 
-#: plugins/gtk+/gtk+.xml:4914
+#: plugins/gtk+/gtk+.xml:4622
 msgid "Gtk"
 msgstr "Gtk"
 
-#: plugins/gtk+/gtk+.xml:4919
+#: plugins/gtk+/gtk+.xml:4627
 msgid "Accelerator Mode column"
 msgstr "快捷键模式栏"
 
-#: plugins/gtk+/gtk+.xml:4935
+#: plugins/gtk+/gtk+.xml:4642
 msgid "Shift Key"
 msgstr "Shift 键"
 
-#: plugins/gtk+/gtk+.xml:4937
+#: plugins/gtk+/gtk+.xml:4644
 msgid "Lock Key"
 msgstr "锁定键"
 
-#: plugins/gtk+/gtk+.xml:4939
+#: plugins/gtk+/gtk+.xml:4646
 msgid "Control Key"
 msgstr "Control 键"
 
-#: plugins/gtk+/gtk+.xml:4941
+#: plugins/gtk+/gtk+.xml:4648
 msgid "Alt Key"
 msgstr "Alt 键"
 
-#: plugins/gtk+/gtk+.xml:4943
+#: plugins/gtk+/gtk+.xml:4650
 msgid "Fifth Key"
 msgstr "第五键"
 
-#: plugins/gtk+/gtk+.xml:4945
+#: plugins/gtk+/gtk+.xml:4652
 msgid "Sixth Key"
 msgstr "第六键"
 
-#: plugins/gtk+/gtk+.xml:4947
+#: plugins/gtk+/gtk+.xml:4654
 msgid "Seventh Key"
 msgstr "第七键"
 
-#: plugins/gtk+/gtk+.xml:4949
+#: plugins/gtk+/gtk+.xml:4656
 msgid "Eighth Key"
 msgstr "第八键"
 
-#: plugins/gtk+/gtk+.xml:4951
+#: plugins/gtk+/gtk+.xml:4658
 msgid "First Mouse Button"
 msgstr "第一鼠标键"
 
-#: plugins/gtk+/gtk+.xml:4953
+#: plugins/gtk+/gtk+.xml:4660
 msgid "Second Mouse Button"
 msgstr "第二鼠标键"
 
-#: plugins/gtk+/gtk+.xml:4955
+#: plugins/gtk+/gtk+.xml:4662
 msgid "Third Mouse Button"
 msgstr "第三鼠标键"
 
-#: plugins/gtk+/gtk+.xml:4957
+#: plugins/gtk+/gtk+.xml:4664
 msgid "Fourth Mouse Button"
 msgstr "第四鼠标键"
 
-#: plugins/gtk+/gtk+.xml:4959
+#: plugins/gtk+/gtk+.xml:4666
 msgid "Fifth Mouse Button"
 msgstr "第五鼠标键"
 
-#: plugins/gtk+/gtk+.xml:4961
+#: plugins/gtk+/gtk+.xml:4668
 msgid "Super Modifier"
 msgstr "Super 修饰键"
 
-#: plugins/gtk+/gtk+.xml:4963
+#: plugins/gtk+/gtk+.xml:4670
 msgid "Hyper Modifier"
 msgstr "Hyper 修饰"
 
-#: plugins/gtk+/gtk+.xml:4965
+#: plugins/gtk+/gtk+.xml:4672
 msgid "Meta Modifier"
 msgstr "元修饰"
 
-#: plugins/gtk+/gtk+.xml:4967
+#: plugins/gtk+/gtk+.xml:4674
 msgid "Release Modifier"
 msgstr "释放修饰"
 
-#: plugins/gtk+/gtk+.xml:4969
+#: plugins/gtk+/gtk+.xml:4676
 msgid "All Modifiers"
 msgstr "全部修饰"
 
-#: plugins/gtk+/gtk+.xml:4986
+#: plugins/gtk+/gtk+.xml:4693
 msgid "Accelerator Modifiers column"
 msgstr "快捷键修饰栏"
 
-#: plugins/gtk+/gtk+.xml:5000
+#: plugins/gtk+/gtk+.xml:4706
 msgid "Keycode column"
 msgstr "键码栏"
 
-#: plugins/gtk+/gtk+.xml:5015
+#: plugins/gtk+/gtk+.xml:4721
 msgid "Combo Renderer"
 msgstr "组合渲染器"
 
-#: plugins/gtk+/gtk+.xml:5023
+#: plugins/gtk+/gtk+.xml:4727
 msgid "Has Entry column"
 msgstr "有输入栏"
 
-#: plugins/gtk+/gtk+.xml:5037
+#: plugins/gtk+/gtk+.xml:4740
 msgid "Model column"
 msgstr "模型列"
 
-#: plugins/gtk+/gtk+.xml:5051
+#: plugins/gtk+/gtk+.xml:4753
 msgid "Text Column column"
 msgstr "文本栏"
 
-#: plugins/gtk+/gtk+.xml:5067
+#: plugins/gtk+/gtk+.xml:4768
 msgid "Spin Renderer"
 msgstr "微调渲染"
 
-#: plugins/gtk+/gtk+.xml:5070
+#: plugins/gtk+/gtk+.xml:4771
 msgid "Adjustment column"
 msgstr "调整栏"
 
-#: plugins/gtk+/gtk+.xml:5084
+#: plugins/gtk+/gtk+.xml:4784
 msgid "Climb Rate column"
 msgstr "爬升率栏"
 
-#: plugins/gtk+/gtk+.xml:5098
+#: plugins/gtk+/gtk+.xml:4797
 msgid "Digits column"
 msgstr "数字栏"
 
-#: plugins/gtk+/gtk+.xml:5113
+#: plugins/gtk+/gtk+.xml:4812
 msgid "Pixbuf Renderer"
 msgstr "Pixbuf 渲染"
 
-#: plugins/gtk+/gtk+.xml:5117
+#: plugins/gtk+/gtk+.xml:4815
 msgid "Follow State column"
 msgstr "跟随状态栏"
 
-#: plugins/gtk+/gtk+.xml:5131
+#: plugins/gtk+/gtk+.xml:4828
 msgid "Icon Name column"
 msgstr "图标名称栏"
 
-#: plugins/gtk+/gtk+.xml:5145
+#: plugins/gtk+/gtk+.xml:4841
 msgid "Pixbuf column"
 msgstr "Pixbuf 栏"
 
-#: plugins/gtk+/gtk+.xml:5159
+#: plugins/gtk+/gtk+.xml:4854
 msgid "GIcon column"
 msgstr "GIcon 栏"
 
-#: plugins/gtk+/gtk+.xml:5174
+#: plugins/gtk+/gtk+.xml:4867
 msgid "Pixbuf Expander Closed column"
 msgstr "Pixbuf 展开器关闭栏"
 
-#: plugins/gtk+/gtk+.xml:5189
+#: plugins/gtk+/gtk+.xml:4880
 msgid "Pixbuf Expander Open column"
 msgstr "Pixbuf 展开器打开栏"
 
-#: plugins/gtk+/gtk+.xml:5203
+#: plugins/gtk+/gtk+.xml:4893
 msgid "Stock Detail column"
 msgstr "库存细节栏"
 
-#: plugins/gtk+/gtk+.xml:5217
+#: plugins/gtk+/gtk+.xml:4906
 msgid "Stock column"
 msgstr "库存栏"
 
-#: plugins/gtk+/gtk+.xml:5237
+#: plugins/gtk+/gtk+.xml:4925
 msgid "Stock Size column"
 msgstr "库存大小栏"
 
-#: plugins/gtk+/gtk+.xml:5252
+#: plugins/gtk+/gtk+.xml:4941
 msgid "Progress Renderer"
 msgstr "进度渲染"
 
-#: plugins/gtk+/gtk+.xml:5255
+#: plugins/gtk+/gtk+.xml:4944
 msgid "Orientation column"
 msgstr "方向栏"
 
-#: plugins/gtk+/gtk+.xml:5269 plugins/gtk+/gtk+.xml:5374
+#: plugins/gtk+/gtk+.xml:4957 plugins/gtk+/gtk+.xml:5053
 msgid "Pulse column"
 msgstr "步进栏"
 
-#: plugins/gtk+/gtk+.xml:5298
+#: plugins/gtk+/gtk+.xml:4983
 msgid "Text Horizontal Alignment column"
 msgstr "文本水平对齐栏"
 
-#: plugins/gtk+/gtk+.xml:5313
+#: plugins/gtk+/gtk+.xml:4996
 msgid "Text Vertical Alignment column"
 msgstr "文本垂直对齐栏"
 
-#: plugins/gtk+/gtk+.xml:5327
+#: plugins/gtk+/gtk+.xml:5009
 msgid "Value column"
 msgstr "值栏"
 
-#: plugins/gtk+/gtk+.xml:5341
+#: plugins/gtk+/gtk+.xml:5022
 msgid "Inverted column"
 msgstr "倒置栏"
 
-#: plugins/gtk+/gtk+.xml:5357
+#: plugins/gtk+/gtk+.xml:5037
 msgid "Spinner Renderer"
 msgstr "微调渲染器"
 
-#: plugins/gtk+/gtk+.xml:5360 plugins/gtk+/gtk+.xml:5421
+#: plugins/gtk+/gtk+.xml:5040 plugins/gtk+/gtk+.xml:5097
 msgid "Active column"
 msgstr "激活栏"
 
-#: plugins/gtk+/gtk+.xml:5404
+#: plugins/gtk+/gtk+.xml:5081
 msgid "Toggle Renderer"
 msgstr "开关渲染"
 
-#: plugins/gtk+/gtk+.xml:5407
+#: plugins/gtk+/gtk+.xml:5084
 msgid "Activatable column"
 msgstr "可激活栏"
 
-#: plugins/gtk+/gtk+.xml:5435
+#: plugins/gtk+/gtk+.xml:5110
 msgid "Inconsistent column"
 msgstr "不一致列"
 
-#: plugins/gtk+/gtk+.xml:5449
+#: plugins/gtk+/gtk+.xml:5123
 msgid "Indicator Size column"
 msgstr "指示器尺寸栏"
 
-#: plugins/gtk+/gtk+.xml:5463
+#: plugins/gtk+/gtk+.xml:5136
 msgid "Radio column"
 msgstr "单选栏"
 
-#: plugins/gtk+/gtk+.xml:5478
+#: plugins/gtk+/gtk+.xml:5151
 msgid "Status Icon"
 msgstr "状态图标"
 
-#: plugins/gtk+/gtk+.xml:5489
+#: plugins/gtk+/gtk+.xml:5163
 msgid "Text Buffer"
 msgstr "文本缓冲区"
 
-#: plugins/gtk+/gtk+.xml:5502
+#: plugins/gtk+/gtk+.xml:5174
 msgid "Entry Buffer"
 msgstr "输入缓冲区"
 
-#: plugins/gtk+/gtk+.xml:5510
+#: plugins/gtk+/gtk+.xml:5182
 msgid "Text Tag"
 msgstr "文本标签"
 
-#: plugins/gtk+/gtk+.xml:5563
+#: plugins/gtk+/gtk+.xml:5238
 msgid "Text Tag Table"
 msgstr "文本标签表"
 
-#: plugins/gtk+/gtk+.xml:5577
+#: plugins/gtk+/gtk+.xml:5250
 msgid "File Filter"
 msgstr "文件过滤器"
 
-#: plugins/gtk+/gtk+.xml:5583 plugins/gtk+/gtk+.xml:5607
+#: plugins/gtk+/gtk+.xml:5256 plugins/gtk+/gtk+.xml:5279
 msgid "Mime Types"
 msgstr "MIME 类型"
 
-#: plugins/gtk+/gtk+.xml:5588 plugins/gtk+/gtk+.xml:5612
+#: plugins/gtk+/gtk+.xml:5261 plugins/gtk+/gtk+.xml:5284
 msgid "The list of mime types to add to the filter"
 msgstr "添加到过滤器的 MIME 类型列表"
 
-#: plugins/gtk+/gtk+.xml:5590 plugins/gtk+/gtk+.xml:5614
+#: plugins/gtk+/gtk+.xml:5263 plugins/gtk+/gtk+.xml:5286
 msgid "Patterns"
 msgstr "模式"
 
-#: plugins/gtk+/gtk+.xml:5595 plugins/gtk+/gtk+.xml:5619
+#: plugins/gtk+/gtk+.xml:5268 plugins/gtk+/gtk+.xml:5291
 msgid "The list of file name patterns to add to the filter"
 msgstr "添加到过滤器的文件名模式列表"
 
-#: plugins/gtk+/gtk+.xml:5601
+#: plugins/gtk+/gtk+.xml:5273
 msgid "Recent Filter"
 msgstr "最近的过滤器"
 
-#: plugins/gtk+/gtk+.xml:5626
+#: plugins/gtk+/gtk+.xml:5298
 msgid "The list of application names to add to the filter"
 msgstr "添加到过滤器的应用程序名列表"
 
-#: plugins/gtk+/gtk+.xml:5632
+#: plugins/gtk+/gtk+.xml:5303
 msgid "Recent Manager"
 msgstr "最近的管理员"
 
-#: plugins/gtk+/gtk+.xml:5634
+#: plugins/gtk+/gtk+.xml:5305
 msgid "Themed Icon"
 msgstr "主题化的图标"
 
-#: plugins/gtk+/gtk+.xml:5635
+#: plugins/gtk+/gtk+.xml:5307
 msgid "File Icon"
 msgstr "文件图标"
 
-#: plugins/gtk+/gtk+.xml:5637
+#: plugins/gtk+/gtk+.xml:5309
 msgid "Native File Chooser Dialog"
 msgstr "原生文件选择器对话框"
 
-#: plugins/gtk+/gtk+.xml:5641
+#: plugins/gtk+/gtk+.xml:5312
 msgid "Toplevels"
 msgstr "顶层"
 
-#: plugins/gtk+/gtk+.xml:5656
+#: plugins/gtk+/gtk+.xml:5327
 msgid "Containers"
 msgstr "容器"
 
-#: plugins/gtk+/gtk+.xml:5688
+#: plugins/gtk+/gtk+.xml:5359
 msgid "Control"
 msgstr "控制"
 
-#: plugins/gtk+/gtk+.xml:5722
+#: plugins/gtk+/gtk+.xml:5386
 msgid "Display"
 msgstr "显示"
 
-#: plugins/gtk+/gtk+.xml:5744
+#: plugins/gtk+/gtk+.xml:5405
 msgid "Composite Widgets"
 msgstr "组合组件"
 
-#: plugins/gtk+/gtk+.xml:5755
+#: plugins/gtk+/gtk+.xml:5415
 msgid "Miscellaneous"
 msgstr "杂项"
 
-#: plugins/gtk+/gtk+.xml:5785
+#: plugins/gtk+/gtk+.xml:5440
 msgid "Deprecated"
 msgstr "已弃用"
 
