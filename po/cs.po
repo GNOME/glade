@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade glade-3.38\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-09-04 05:02+0000\n"
-"PO-Revision-Date: 2020-09-09 09:01+0200\n"
+"POT-Creation-Date: 2020-09-14 12:29+0000\n"
+"PO-Revision-Date: 2020-09-15 07:27+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.7\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:43 src/glade.glade:202
+#: src/main.c:43 src/glade.glade:261
 msgid "Glade"
 msgstr "Glade"
 
@@ -193,7 +193,7 @@ msgstr "Za_vřít bez uložení"
 msgid "_Cancel"
 msgstr "_Zrušit"
 
-#: src/glade-window.c:1041 src/glade.glade:597 gladeui/glade-utils.c:486
+#: src/glade-window.c:1041 src/glade.glade:685 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Uložit"
 
@@ -397,60 +397,122 @@ msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
 "Vytváření nebo úpravy uživatelského rozhraní aplikací pro GTK+ nebo GNOME."
 
-#: src/glade.glade:47
+#. The last sentence in quotes is in spanish and does not need to be translated.
+#: src/glade.glade:59
+msgctxt ""
+"This is to honor a professor that passed away last year and appears in a "
+"popover when you click on the button that says \"RIP Guido\""
+msgid ""
+"Guido was one of my professors at Rosario\n"
+"National University of Argentina.\n"
+"\n"
+"He introduced me to C, Linux, free software...\n"
+"\n"
+"He always had extra time to explain one more thing\n"
+"and help you figure out things by yourself.\n"
+"\n"
+"Always made a joke in the right moment keeping\n"
+"things interesting and fun.\n"
+"\n"
+"Master of intentionally misconstrued sayings.\n"
+"\n"
+"Always carried a stack of books under his arm.\n"
+"\n"
+"Loved Guinness beer.\n"
+"\n"
+"All he ever wanted was make you think!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+msgstr ""
+"Guido byl jedním z mých profesoré na Rosarijské\n"
+"národní univerzitě v Argentině.\n"
+"\n"
+"Přivedl mě k C, Linuxu, svobodnému softwaru…\n"
+"\n"
+"Vždy si udělal čas, aby vám vysvětlil jednu věc\n"
+"a pomohl vám tím přijít na řadu dalších věcí.\n"
+"\n"
+"Pokaždé dokázal ve správný okamžit odlehčít situaci\n"
+"vtipem a udělat ji tak zajímavější a zábavnější.\n"
+"\n"
+"Byl mistrem záměrně nesprávně vyložených výroků.\n"
+"\n"
+"Neustále měl pod paží hromadu knih.\n"
+"\n"
+"Miloval pivo Guinness.\n"
+"\n"
+"Jediné, co kdy chtěl, aby vás přiměl přemýšlet.\n"
+"\n"
+"Alégrate! Mañana sera peor.\n"
+"\n"
+"\tJuan Pablo"
+
+#: src/glade.glade:106
 msgid "Close Project"
 msgstr "Zavřít projekt"
 
-#: src/glade.glade:72
+#: src/glade.glade:131
 msgid "Registration & User Survey"
 msgstr "Registrace a dotazník"
 
-#: src/glade.glade:86
+#: src/glade.glade:145
 msgid "_Developer Reference"
 msgstr "Příručka pro _vývojáře"
 
-#: src/glade.glade:100
+#: src/glade.glade:159
 msgid "Interactive Intro"
 msgstr "Interaktivní úvod"
 
-#: src/glade.glade:114
+#: src/glade.glade:173
 msgid "Preferences"
 msgstr "Předvolby"
 
-#: src/glade.glade:139
+#: src/glade.glade:198
 msgid "About Glade"
 msgstr "O aplikaci Glade"
 
-#: src/glade.glade:504 src/glade-preferences.c:239
+#: src/glade.glade:297
+msgctxt "Button label in the bottom of main window that triggers a popover"
+msgid ""
+"<small>In memory of an extraordinary\n"
+"person and professor\n"
+"R.I.P Guido Macchi</small>"
+msgstr ""
+"<small>Na památku mimořádného člověka\n"
+"a profesora R.I.P Guida Macchiho</small>"
+
+#: src/glade.glade:592 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Otevřít"
 
-#: src/glade.glade:509
+#: src/glade.glade:597
 msgid "Open a project"
 msgstr "Otevřít projekt"
 
-#: src/glade.glade:554
+#: src/glade.glade:642
 msgid "Create a new project"
 msgstr "Vytvořit nový projekt"
 
-#: src/glade.glade:574
+#: src/glade.glade:662
 msgid "Edit project properties"
 msgstr "Upravit vlastnosti projektu"
 
-#: src/glade.glade:602
+#: src/glade.glade:690
 msgid "Save the current project"
 msgstr "Uložit současný projekt"
 
-#: src/glade.glade:618
+#: src/glade.glade:706
 msgid "Save the current project with a different name"
 msgstr "Uložit současný projekt pod jiným názvem"
 
-#: src/glade.glade:647
+#: src/glade.glade:735
 msgid "Start/resume interactive UI introduction"
 msgstr "Spustit/pokračovat v interaktivním úvodu do uživatelského rozhraní"
 
-#: src/glade.glade:746
+#: src/glade.glade:834
 msgid ""
 "© 2018-2020 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
@@ -462,15 +524,15 @@ msgstr ""
 "© 2001 – 2006 Joaquin Cuenca Abela, Paolo Borelli a kol.\n"
 "© 2001 – 2006 Ximian, Inc."
 
-#: src/glade.glade:750
+#: src/glade.glade:838
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Návrhář uživatelského rozhraní pro GTK+ a GNOME."
 
-#: src/glade.glade:752
+#: src/glade.glade:840
 msgid "Visit Glade web site"
 msgstr "Navštivte WWW stránku projektu Glade"
 
-#: src/glade.glade:764
+#: src/glade.glade:852
 msgid "translator-credits"
 msgstr ""
 "Lucas Lommer <llommer@svn.gnome.org>\n"
@@ -8166,128 +8228,3 @@ msgstr "Na vyžádání"
 #: plugins/webkit2gtk/webkit2gtk.xml:58
 msgid "WebKit2GTK+ Widgets"
 msgstr "Widgety WebKit2GTK+"
-
-msgid ""
-"Copyright © 2001-2006 Ximian, Inc.\n"
-"Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al."
-msgstr ""
-"Copyright © 2001 – 2006 Ximian, Inc.\n"
-"Copyright © 2001 – 2006 Joaquin Cuenca Abela, Paolo Borelli a kolektiv.\n"
-"Copyright © 2001 – 2018 Tristan Van Berkom, Juan Pablo Ugarte a kolektiv."
-
-msgid ""
-"Glade is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as \n"
-"published by the Free Software Foundation; either version 2 of the \n"
-"License, or (at your option) any later version.\n"
-"\n"
-"Glade is distributed in the hope that it will be useful\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the \n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License \n"
-"along with Glade; if not, write to the Free Software \n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
-"MA 02110-1301, USA."
-msgstr ""
-"Glade je svobodný software. Můžete jej dále šířit a/nebo upravovat za "
-"podmínek licence GNU General Public License v podobě, v jaké ji vydala Free "
-"Software Foundation, a to buď ve verzi 2 této licence nebo (dle vaší volby) "
-"v libovolné novější verzi.\n"
-"\n"
-"Glade je šířen ve víře, že bude užitečný, ale BEZ JAKÝCHKOLIV ZÁRUK, a to i "
-"bez předpokládané záruky na PRODEJNOST nebo VHODNOST PRO KONKRÉTNÍ ÚČEL. "
-"Více podrobností najdete přímo v licenci GNU General Public License.\n"
-"\n"
-"Spolu s Glade byste měli obdržet kopii licence GNU General Public License. "
-"Pokud se tak nestalo, napište na Free Software Foundation, Inc., 51 Franklin "
-"Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-msgid ""
-"Thank you for taking Glade Users survey, we appreciate it!\n"
-"\n"
-"To validate this email address open the folowing link\n"
-"\n"
-"https://people.gnome.org/~jpu/glade/registration.php?email="
-"$email&validation_token=$new_validation_token\n"
-"\n"
-"In case you want to change or update the survey, your current update token "
-"is:\n"
-"$new_token\n"
-"\n"
-"Cheers\n"
-"\n"
-"\tThe Glade team\n"
-msgstr ""
-"Děkujeme, že jste si udělali čas na vyplnění dotazníku ke Glade, vážíme si "
-"toho!\n"
-"\n"
-"Pro ověření této e-mailové adresy otevřete prosím následující odkaz\n"
-"\n"
-"https://people.gnome.org/~jpu/glade/registration.php?email="
-"$email&validation_token=$new_validation_token\n"
-"\n"
-"V případě, že budete chtít změnit nebo aktualizovat údaje v dotazníku, váš "
-"současný tiket je:\n"
-"$new_token\n"
-"\n"
-"S pozdravem\n"
-"\n"
-"\tTým Glade\n"
-
-msgid ""
-"Thank you for updating your Glade Users survey data, we appreciate it!\n"
-"\n"
-"In case you want to change something again, your current update token is:\n"
-"$new_token\n"
-"\n"
-"Cheers\n"
-"\n"
-"\tThe Glade team\n"
-msgstr ""
-"Děkujeme, že jste si udělali čas na aktualizaci dotazníku ke Glade, vážíme "
-"si toho!\n"
-"\n"
-"V případě, že budete chtít opět něco změnit, váš současný tiket je:\n"
-"$new_token\n"
-"\n"
-"S pozdravem\n"
-"\n"
-"\tTým Glade\n"
-
-msgid "Sorry, automatic subscription to Glade Users mailing list failed"
-msgstr ""
-"Bohužel, ale automatické přihlášení k poštovní konferenci uživatelů Glade "
-"selhalo"
-
-msgid "Open Glade Users Website"
-msgstr "Otevřít web uživatelů Glade"
-
-msgid "Name and Email fields are required"
-msgstr "Pole se jménem a e-mailem jsou povinná"
-
-msgid ""
-"Oops! Email address is already in use!\n"
-"To update information you need to provide the token that was sent to your "
-"inbox."
-msgstr ""
-"Problém! E-mailová adresa již byla použita!\n"
-"Abyste mohli údaje aktualizovat, musíte zadat tiket, který jste obdrželi e-"
-"mailem."
-
-msgid "Oops! Error saving user information: %s"
-msgstr "Problém! Chyba při ukládání údajů o uživateli: %s"
-
-msgid "Oops! Error saving survey data: %s"
-msgstr "Problém! Chyba při ukládání dotazníkových dat: %s"
-
-msgid "Oops! Error accessing DB: %s"
-msgstr "Problém! Chyba při přístupu k DB: %s"
-
-msgid "Update Info"
-msgstr "Informace o aktualizaci"
-
-msgid "<Insert update token, if you want to update previously sent data>"
-msgstr "<jestli chcete změnit dříve zaslaná data, vložte aktualizační tiket>"
