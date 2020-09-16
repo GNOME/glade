@@ -932,6 +932,18 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
           if ((gnew_parent =
                glade_command_create (adaptor, gparent, NULL, project)) != NULL)
             {
+              /* We might need to add a viewport */
+              if (new_type == GTK_TYPE_SCROLLED_WINDOW &&
+                  !GTK_IS_SCROLLABLE (object))
+                {
+                  GladeWidgetAdaptor *viewport =
+                    glade_widget_adaptor_get_by_type (GTK_TYPE_VIEWPORT);
+                  gnew_parent = glade_command_create (viewport,
+                                                      gnew_parent,
+                                                      NULL,
+                                                      project);
+                }
+
               /* Now we created the new parent, if gwidget had a parentless widget reference...
                * set that reference to the new parent instead */
               if (property)
