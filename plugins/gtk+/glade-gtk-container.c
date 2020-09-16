@@ -50,6 +50,7 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
                                 gboolean            user_feedback)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+  GtkWidget *bin_child;
 
   if (GTK_IS_WINDOW (child))
     {
@@ -82,12 +83,17 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
       return FALSE;
     }
   else if (GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (adaptor) &&
-           glade_util_count_placeholders (gwidget) == 0)
+           /* Special case GtkBin since Windows can hace a placeholder in the titlebar */
+           ((GTK_IS_BIN (container) &&
+             (bin_child = gtk_bin_get_child (GTK_BIN (container))) &&
+              !GLADE_IS_PLACEHOLDER(bin_child)) ||
+            glade_util_count_placeholders (gwidget) == 0))
     {
       if (user_feedback)
         glade_util_ui_message (glade_app_get_window (),
                                GLADE_UI_INFO, NULL,
-                               _("Widgets of type %s need placeholders to add children."),
+                               _("Widgets of type %s need placeholders to add children.\n"
+                                 "Increase its size or add a container if it only supports one child."),
                                glade_widget_adaptor_get_title (adaptor));
 
       return FALSE;
