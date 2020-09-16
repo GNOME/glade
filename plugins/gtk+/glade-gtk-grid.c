@@ -151,7 +151,7 @@ glade_gtk_grid_refresh_placeholders (GtkGrid *grid,
 }
 
 static void
-glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
+glade_gtk_grid_refresh_size (GObject *container)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
   gint initial_rows = 0, initial_columns = 0;
@@ -191,6 +191,12 @@ glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
 
   /* Refresh placeholders only once after the project is finished parsing */
   glade_gtk_grid_refresh_placeholders (GTK_GRID (container), TRUE);
+}
+
+static void
+glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
+{
+  glade_gtk_grid_refresh_size (container);
 }
 
 void
@@ -289,7 +295,7 @@ glade_gtk_grid_add_child (GladeWidgetAdaptor *adaptor,
 
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
-  glade_gtk_grid_refresh_placeholders (GTK_GRID (object), FALSE);
+  glade_gtk_grid_refresh_size (object);
 }
 
 void
