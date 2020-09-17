@@ -1,3 +1,5 @@
+vcs_tag(input: 'version.h.in', output: 'version.h')
+
 sources = files(
   'glade-http.c',
   'glade-intro.c',

@@ -26,6 +26,7 @@
 
 #include <config.h>
 
+#include "version.h"
 #include "glade-window.h"
 #include "glade-resources.h"
 #include "glade-preferences.h"
@@ -1456,8 +1457,6 @@ on_about_action_activate (GSimpleAction *action,
   GladeWindow *window = data;
   GladeWindowPrivate *priv = window->priv;
 
-  gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (priv->about_dialog), PACKAGE_VERSION);
-
   gtk_window_present (priv->about_dialog);
 }
 
@@ -2105,6 +2104,11 @@ glade_window_init (GladeWindow *window)
   /* Add Gdk backend as a class */
   ctx = gtk_widget_get_style_context (GTK_WIDGET (window));
   gtk_style_context_add_class (ctx, glade_window_get_gdk_backend ());
+
+  /* Check if this is a development version */
+  if (GLADE_MINOR_VERSION % 2)
+    gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (priv->about_dialog),
+                                  VCS_VERSION);
 }
 
 static void
