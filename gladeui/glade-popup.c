@@ -66,12 +66,41 @@ typedef struct {
 static void
 glade_popup_widget_add_cb (GtkMenuItem *item, RootAddData *data)
 {
+  gboolean use_group = FALSE;
+  GObject *parent;
+
   g_return_if_fail (data->adaptor != NULL);
 
-  if (glade_command_create (data->adaptor, data->parent,
-                            data->placeholder, data->project))
+  parent = glade_widget_get_object (data->parent);
 
+  if ((GTK_IS_BOX (parent) || GTK_IS_GRID (parent)) &&
+      glade_util_count_placeholders (data->parent) == 0)
+    {
+      GladeProperty *prop;
+      gint value;
+
+      glade_command_push_group (_("Create %s"),
+                                glade_widget_adaptor_get_name (data->adaptor));
+
+      if (GTK_IS_BOX (parent))
+        prop = glade_widget_get_property (data->parent, "size");
+      else
+        prop = glade_widget_get_property (data->parent, "n-columns");
+
+      glade_property_get (prop, &value);
+      glade_command_set_property (prop, ++value);
+
+      use_group = TRUE;
+    }
+
+  if (glade_command_create (data->adaptor,
+                            data->parent,
+                            data->placeholder,
+                            data->project))
     glade_project_set_add_item (data->project, NULL);
+
+  if (use_group)
+    glade_command_pop_group();
 }
 
 static void
