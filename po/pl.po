@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-09-04 05:02+0000\n"
-"PO-Revision-Date: 2020-05-17 10:50+0200\n"
+"POT-Creation-Date: 2020-09-12 22:59+0000\n"
+"PO-Revision-Date: 2020-09-19 12:55+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -24,7 +24,7 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:43 src/glade.glade:202
+#: src/main.c:43 src/glade.glade:261
 msgid "Glade"
 msgstr "Glade"
 
@@ -197,7 +197,7 @@ msgstr "Zamknij _bez zapisywania"
 msgid "_Cancel"
 msgstr "_Anuluj"
 
-#: src/glade-window.c:1041 src/glade.glade:597 gladeui/glade-utils.c:486
+#: src/glade-window.c:1041 src/glade.glade:685 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Zapisz"
 
@@ -404,60 +404,123 @@ msgstr ""
 "Tworzenie lub modyfikowanie projektów interfejsów użytkownika dla programów "
 "GTK i GNOME."
 
-#: src/glade.glade:47
+#. The last sentence in quotes is in spanish and does not need to be translated.
+#: src/glade.glade:59
+msgctxt ""
+"This is to honor a professor that passed away last year and appears in a "
+"popover when you click on the button that says \"RIP Guido\""
+msgid ""
+"Guido was one of my professors at Rosario\n"
+"National University of Argentina.\n"
+"\n"
+"He introduced me to C, Linux, free software...\n"
+"\n"
+"He always had extra time to explain one more thing\n"
+"and help you figure out things by yourself.\n"
+"\n"
+"Always made a joke in the right moment keeping\n"
+"things interesting and fun.\n"
+"\n"
+"Master of intentionally misconstrued sayings.\n"
+"\n"
+"Always carried a stack of books under his arm.\n"
+"\n"
+"Loved Guinness beer.\n"
+"\n"
+"All he ever wanted was make you think!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+msgstr ""
+"Guido był moim profesorem na Universidad\n"
+"Nacional de Rosario w Argentynie.\n"
+"\n"
+"Wprowadził mnie w świat C, Linuksa, wolnego oprogramowania…\n"
+"\n"
+"Zawsze miał czas, żeby wyjaśnić jeszcze jedną rzecz\n"
+"i pomóc rozgryźć problem samodzielnie.\n"
+"\n"
+"Zawsze wiedział, kiedy rzucić żartem, żeby\n"
+"zainteresować i rozbawić.\n"
+"\n"
+"Mistrz celowego przekręcania powiedzeń.\n"
+"\n"
+"Zawsze miał pod ręką stosik książek.\n"
+"\n"
+"Kochał dobrego guinnessa.\n"
+"\n"
+"Jedyne, czego chciał, to skłonić nas do myślenia.\n"
+"\n"
+"„Alégrate! Mañana sera peor.”\n"
+"\n"
+"\tJuan Pablo"
+
+#: src/glade.glade:106
 msgid "Close Project"
 msgstr "Zamknij projekt"
 
-#: src/glade.glade:72
+#: src/glade.glade:131
 msgid "Registration & User Survey"
 msgstr "Rejestracja i ankieta użytkownika"
 
-#: src/glade.glade:86
+#: src/glade.glade:145
 msgid "_Developer Reference"
 msgstr "_Podręcznik programistyczny"
 
-#: src/glade.glade:100
+#: src/glade.glade:159
 msgid "Interactive Intro"
 msgstr "Interaktywne wprowadzenie"
 
-#: src/glade.glade:114
+#: src/glade.glade:173
 msgid "Preferences"
 msgstr "Preferencje"
 
-#: src/glade.glade:139
+#: src/glade.glade:198
 msgid "About Glade"
 msgstr "O programie"
 
-#: src/glade.glade:504 src/glade-preferences.c:239
+#: src/glade.glade:297
+msgctxt "Button label in the bottom of main window that triggers a popover"
+msgid ""
+"<small>In memory of an extraordinary\n"
+"person and professor\n"
+"R.I.P Guido Macchi</small>"
+msgstr ""
+"<small>Ku pamięci wyjątkowego\n"
+"człowieka i profesora\n"
+"R.I.P. Guido Macchi</small>"
+
+#: src/glade.glade:592 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Otwórz"
 
-#: src/glade.glade:509
+#: src/glade.glade:597
 msgid "Open a project"
 msgstr "Otwiera projekt"
 
-#: src/glade.glade:554
+#: src/glade.glade:642
 msgid "Create a new project"
 msgstr "Tworzy nowy projekt"
 
-#: src/glade.glade:574
+#: src/glade.glade:662
 msgid "Edit project properties"
 msgstr "Modyfikuje preferencje projektu"
 
-#: src/glade.glade:602
+#: src/glade.glade:690
 msgid "Save the current project"
 msgstr "Zapisuje bieżący projekt"
 
-#: src/glade.glade:618
+#: src/glade.glade:706
 msgid "Save the current project with a different name"
 msgstr "Zapisuje bieżący projekt pod inną nazwą"
 
-#: src/glade.glade:647
+#: src/glade.glade:735
 msgid "Start/resume interactive UI introduction"
 msgstr "Rozpoczyna/wznawia interaktywne wprowadzenie do interfejsu użytkownika"
 
-#: src/glade.glade:746
+#: src/glade.glade:834
 msgid ""
 "© 2018-2020 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
@@ -469,16 +532,16 @@ msgstr ""
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli i inni\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:750
+#: src/glade.glade:838
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr ""
 "Projektowanie interfejsów użytkownika dla biblioteki GTK i środowiska GNOME."
 
-#: src/glade.glade:752
+#: src/glade.glade:840
 msgid "Visit Glade web site"
 msgstr "Witryna programu Glade"
 
-#: src/glade.glade:764
+#: src/glade.glade:852
 msgid "translator-credits"
 msgstr ""
 "Zbigniew Chyla <chyla@alice.ci.pwr.wroc.pl>, 2002\n"
