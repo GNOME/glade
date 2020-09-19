@@ -306,12 +306,12 @@ glade_gtk_grid_add_child (GladeWidgetAdaptor *adaptor,
               {
                 gtk_container_remove (GTK_CONTAINER (grid), child_widget);
                 gtk_grid_attach (grid, GTK_WIDGET (child), x, y, 1, 1);
-                break;
+                return;
               }
           }
     }
-  else
-    gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+
+  gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
   glade_gtk_grid_refresh_placeholders (GTK_GRID (object), FALSE);
 }
