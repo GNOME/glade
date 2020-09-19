@@ -63,35 +63,50 @@ typedef struct {
   GladePlaceholder   *placeholder;
 } RootAddData;
 
+static gboolean
+special_case_box_and_grid_size (GladeWidget *parent, gint children)
+{
+  gint placeholders = glade_util_count_placeholders (parent);
+  GObject *gparent = glade_widget_get_object (parent);
+
+  if ((GTK_IS_BOX (gparent) || GTK_IS_GRID (gparent)) && placeholders < children)
+    {
+      glade_command_push_group (_("Create %s"), G_OBJECT_TYPE_NAME (gparent));
+
+      children -= placeholders;
+
+      if (GTK_IS_BOX (gparent))
+        {
+          GladeProperty *prop = glade_widget_get_property (parent, "size");
+          gint size;
+
+          glade_property_get (prop, &size);
+          glade_command_set_property (prop, size + children);
+        }
+      else
+        {
+          GladeProperty *row = glade_widget_get_property (parent, "n-rows");
+          gint ncol, nrow;
+
+          glade_widget_property_get (parent, "n-columns", &ncol);
+          glade_property_get (row, &nrow);
+          glade_command_set_property (row, nrow + (children / ncol) + ((children % ncol) ? 1 : 0));
+        }
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 glade_popup_widget_add_cb (GtkMenuItem *item, RootAddData *data)
 {
-  gboolean use_group = FALSE;
-  GObject *parent;
+  gboolean modified;
 
   g_return_if_fail (data->adaptor != NULL);
 
-  parent = glade_widget_get_object (data->parent);
-
-  if ((GTK_IS_BOX (parent) || GTK_IS_GRID (parent)) &&
-      glade_util_count_placeholders (data->parent) == 0)
-    {
-      GladeProperty *prop;
-      gint value;
-
-      glade_command_push_group (_("Create %s"),
-                                glade_widget_adaptor_get_name (data->adaptor));
-
-      if (GTK_IS_BOX (parent))
-        prop = glade_widget_get_property (data->parent, "size");
-      else
-        prop = glade_widget_get_property (data->parent, "n-columns");
-
-      glade_property_get (prop, &value);
-      glade_command_set_property (prop, ++value);
-
-      use_group = TRUE;
-    }
+  modified = special_case_box_and_grid_size (data->parent, 1);
 
   if (glade_command_create (data->adaptor,
                             data->parent,
@@ -99,7 +114,7 @@ glade_popup_widget_add_cb (GtkMenuItem *item, RootAddData *data)
                             data->project))
     glade_project_set_add_item (data->project, NULL);
 
-  if (use_group)
+  if (modified)
     glade_command_pop_group();
 }
 
@@ -139,12 +154,19 @@ static void
 glade_popup_paste_cb (GtkMenuItem *item, gpointer data)
 {
   GladeWidget  *widget = NULL;
+  gboolean modified = FALSE;
   GladeProject *project;
 
   if (GLADE_IS_WIDGET (data))
     {
+      GladeClipboard *clipboard = glade_app_get_clipboard ();
+      gint clipboard_size;
+
       widget  = GLADE_WIDGET (data);
       project = glade_widget_get_project (widget);
+
+      clipboard_size = g_list_length (glade_clipboard_widgets (clipboard));
+      modified = special_case_box_and_grid_size (widget, clipboard_size);
     }
   else if (GLADE_IS_PROJECT (data))
     project = GLADE_PROJECT (data);
@@ -158,6 +180,9 @@ glade_popup_paste_cb (GtkMenuItem *item, gpointer data)
     glade_project_selection_clear (project, FALSE);
 
   glade_project_command_paste (project, NULL);
+
+  if (modified)
+    glade_command_pop_group();
 }
 
 static void
