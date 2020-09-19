@@ -287,7 +287,31 @@ glade_gtk_grid_add_child (GladeWidgetAdaptor *adaptor,
   g_return_if_fail (GTK_IS_GRID (object));
   g_return_if_fail (GTK_IS_WIDGET (child));
 
-  gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+  if (!glade_widget_superuser () && !GLADE_IS_PLACEHOLDER (child))
+    {
+      GladeWidget *widget = glade_widget_get_from_gobject (object);
+      GtkGrid *grid = GTK_GRID (object);
+      gint n_columns, n_rows;
+      gint x, y;
+
+      glade_widget_property_get (widget, "n-columns", &n_columns);
+      glade_widget_property_get (widget, "n-rows", &n_rows);
+
+      for (x = 0; x < n_columns; x++)
+        for (y = 0; y < n_rows; y++)
+          {
+            GtkWidget *child_widget = gtk_grid_get_child_at (grid, x, y);
+
+            if (GLADE_IS_PLACEHOLDER (child_widget))
+              {
+                gtk_container_remove (GTK_CONTAINER (grid), child_widget);
+                gtk_grid_attach (grid, GTK_WIDGET (child), x, y, 1, 1);
+                break;
+              }
+          }
+    }
+  else
+    gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
   glade_gtk_grid_refresh_placeholders (GTK_GRID (object), FALSE);
 }
