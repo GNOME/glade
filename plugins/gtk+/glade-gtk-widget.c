@@ -932,13 +932,16 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
           if ((gnew_parent =
                glade_command_create (adaptor, gparent, NULL, project)) != NULL)
             {
+              GladeWidget *real_parent = NULL;
+
               /* We might need to add a viewport */
               if (new_type == GTK_TYPE_SCROLLED_WINDOW &&
                   !GTK_IS_SCROLLABLE (object))
                 {
                   GladeWidgetAdaptor *viewport =
                     glade_widget_adaptor_get_by_type (GTK_TYPE_VIEWPORT);
-                  gnew_parent = glade_command_create (viewport,
+
+                  real_parent = glade_command_create (viewport,
                                                       gnew_parent,
                                                       NULL,
                                                       project);
@@ -971,7 +974,11 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
                   (glade_widget_get_project (gparent), prop_cmds);
 
               /* Add "this" widget to the new parent */
-              glade_command_add (&this_widget, gnew_parent, NULL, project, FALSE);
+              glade_command_add (&this_widget,
+                                 real_parent ? real_parent : gnew_parent,
+                                 NULL,
+                                 project,
+                                 FALSE);
 
               glade_command_pop_group ();
             }
