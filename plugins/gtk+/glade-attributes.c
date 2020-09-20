@@ -33,6 +33,11 @@
 
 #define GLADE_RESPONSE_CLEAR 42
 
+typedef struct {
+  GladeEditorProperty *eprop;
+  GtkWidget *tree_view;
+} GladeEditorPropertyData;
+
 static GList *
 glade_attr_list_copy (GList *attrs)
 {
@@ -129,6 +134,11 @@ enum
   NUM_COLUMNS
 };
 
+typedef enum
+{
+  ROW_RESET_MODE = 0,
+  ROW_APPEND_MODE
+} RowSetMode;
 
 typedef enum
 {
@@ -201,14 +211,17 @@ get_enum_model_for_combo (PangoAttrType type)
 }
 
 static gboolean
-append_empty_row (GtkListStore *store, PangoAttrType type)
+set_empty_row_internal (GtkTreeModel *model, PangoAttrType type, GtkTreeIter *current_iter)
 {
   const gchar *name = NULL;
   guint spin_digits = 0;
   GtkAdjustment *adjustment = NULL;
-  GtkListStore *model = get_enum_model_for_combo (type);
   GtkTreeIter iter;
   AttrEditType edit_type = EDIT_INVALID;
+  GtkListStore *store = GTK_LIST_STORE (model);
+  RowSetMode mode;
+
+  mode = (current_iter ? ROW_RESET_MODE : ROW_APPEND_MODE);
 
   switch (type)
     {
@@ -313,29 +326,54 @@ append_empty_row (GtkListStore *store, PangoAttrType type)
 
   if (name)
     {
-      gtk_list_store_append (store, &iter);
+      if (mode == ROW_RESET_MODE)
+        iter = *current_iter;
+
+      if (mode == ROW_APPEND_MODE)
+        {
+          gtk_list_store_append (store, &iter);
+          gtk_list_store_set (store, &iter,
+                              COLUMN_TOGGLE_ACTIVE, FALSE,
+                              COLUMN_SPIN_ACTIVE, FALSE,
+                              COLUMN_COMBO_ACTIVE, FALSE,
+                              COLUMN_BUTTON_ACTIVE, FALSE, -1);
+          gtk_list_store_set (store, &iter,
+                              COLUMN_NAME, name,
+                              COLUMN_TYPE, type,
+                              COLUMN_EDIT_TYPE, edit_type,
+                              ACTIVATE_COLUMN_FROM_TYPE (edit_type), TRUE, -1);
+        }
 
       gtk_list_store_set (store, &iter,
-                          COLUMN_TOGGLE_ACTIVE, FALSE,
-                          COLUMN_SPIN_ACTIVE, FALSE,
-                          COLUMN_COMBO_ACTIVE, FALSE,
-                          COLUMN_BUTTON_ACTIVE, FALSE, -1);
-
-      gtk_list_store_set (store, &iter,
-                          COLUMN_NAME, name,
-                          COLUMN_TYPE, type,
-                          COLUMN_EDIT_TYPE, edit_type,
                           COLUMN_NAME_WEIGHT, PANGO_WEIGHT_NORMAL,
                           COLUMN_TEXT, _("<Enter Value>"),
                           COLUMN_TEXT_STYLE, PANGO_STYLE_ITALIC,
                           COLUMN_TEXT_FG, "Grey",
-                          COLUMN_COMBO_MODEL, model,
+                          COLUMN_COMBO_MODEL, get_enum_model_for_combo (type),
+                          COLUMN_TOGGLE_DOWN, FALSE,
                           COLUMN_SPIN_DIGITS, spin_digits,
-                          COLUMN_SPIN_ADJUSTMENT, adjustment,
-                          ACTIVATE_COLUMN_FROM_TYPE (edit_type), TRUE, -1);
+                          COLUMN_SPIN_ADJUSTMENT, adjustment, -1);
+
       return TRUE;
     }
   return FALSE;
+}
+
+static gboolean
+append_empty_row (GtkTreeModel *model, PangoAttrType type)
+{
+  return set_empty_row_internal (model, type, NULL);
+}
+
+static gboolean
+clear_modified_row (GtkTreeModel *model, GtkTreeIter *iter)
+{
+  PangoAttrType type;
+
+  gtk_tree_model_get (model, iter,
+                      COLUMN_TYPE, &type, -1);
+
+  return set_empty_row_internal (model, type, iter);
 }
 
 static gboolean
@@ -827,7 +865,7 @@ value_combo_spin_edited (GtkCellRendererText *cell,
   gtk_tree_model_get (eprop_attrs->model, &iter, COLUMN_TYPE, &type, -1);
 
   /* Reset the column */
-  if (new_text && (*new_text == '\0' || strcmp (new_text, _("None")) == 0))
+  if (new_text && (*new_text == '0' || strcmp (new_text, _("None")) == 0))
     {
       gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
                           COLUMN_TEXT, _("<Enter Value>"),
@@ -889,6 +927,8 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
   view_widget = gtk_tree_view_new_with_model (eprop_attrs->model);
   gtk_tree_view_set_show_expanders (GTK_TREE_VIEW (view_widget), FALSE);
   gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view_widget), FALSE);
+  gtk_tree_selection_set_mode (gtk_tree_view_get_selection (GTK_TREE_VIEW (view_widget)),
+                               GTK_SELECTION_MULTIPLE);
 
   /********************* attribute name column *********************/
   renderer = gtk_cell_renderer_text_new ();
@@ -980,7 +1020,7 @@ static void
 glade_eprop_attrs_populate_view (GladeEditorProperty *eprop, GtkTreeView *view)
 {
   GList *attributes, *list;
-  GtkListStore *model = (GtkListStore *) gtk_tree_view_get_model (view);
+  GtkTreeModel *model = gtk_tree_view_get_model (view);
   GtkTreeIter *iter;
   GladeAttribute *gattr;
   GladeProperty *property;
@@ -1014,7 +1054,7 @@ glade_eprop_attrs_populate_view (GladeEditorProperty *eprop, GtkTreeView *view)
     {
       gattr = list->data;
 
-      if ((iter = get_row_by_type (GTK_TREE_MODEL (model), gattr->type)))
+      if ((iter = get_row_by_type (model, gattr->type)))
         {
           text = glade_gtk_string_from_attr (gattr);
 
@@ -1035,25 +1075,129 @@ glade_eprop_attrs_populate_view (GladeEditorProperty *eprop, GtkTreeView *view)
         }
 
     }
+}
 
+static void
+clear_selected_rows (GladeEditorPropertyData *data)
+{
+  GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (data->eprop);
+  GtkTreeSelection *selection;
+  GList *selected_rows, *l;
+  GtkTreeIter iter;
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (data->tree_view));
+  selected_rows = gtk_tree_selection_get_selected_rows (selection, NULL);
+
+  if (!selected_rows)
+    return;
+
+  for (l = selected_rows; l; l = l->next)
+    {
+      GtkTreePath *path = l->data;
+
+      if (gtk_tree_model_get_iter (eprop_attrs->model, &iter, path))
+        {
+           if (!is_empty_row (eprop_attrs->model, &iter))
+             clear_modified_row (eprop_attrs->model, &iter);
+        }
+    }
+
+  g_list_free_full (selected_rows, (GDestroyNotify) gtk_tree_path_free);
+}
+
+static void
+selection_changed_cb (GtkTreeSelection *selection, GtkDialog *dialog)
+{
+  gint count;
+  GList *children, *l;
+
+  children =
+      gtk_container_get_children (GTK_CONTAINER
+                                  (gtk_dialog_get_action_area
+                                   (dialog)));
+
+  count = gtk_tree_selection_count_selected_rows (selection);
+  for (l = children; l; l = l->next)
+    {
+      gint response_id;
+
+      response_id =
+          gtk_dialog_get_response_for_widget (dialog, GTK_WIDGET (l->data));
+
+      if (response_id == GLADE_RESPONSE_CLEAR)
+        {
+          gtk_dialog_set_response_sensitive (dialog,
+                                             response_id, (count > 0));
+          break;
+        }
+    }
+  g_list_free (children);
+}
+
+static void
+glade_eprop_attrs_dialog_response_cb (GtkWidget *dialog,
+                                      gint response_id,
+                                      GladeEditorPropertyData *data)
+{
+  GladeEditorProperty *eprop = data->eprop;
+  GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
+
+  gboolean done = TRUE;
+  gboolean save = FALSE;
+  GList *old_attributes;
+  GladeProperty *property;
+
+  property = glade_editor_property_get_property (eprop);
+
+  /* Keep a copy for commit time... */
+  old_attributes = g_value_dup_boxed (glade_property_inline_value (property));
+
+  switch (response_id) {
+  case GTK_RESPONSE_OK:
+    save = TRUE;
+    break;
+
+  case GLADE_RESPONSE_CLEAR:
+    done = FALSE;
+    save = TRUE;
+    clear_selected_rows (data);
+    break;
+
+  case GTK_RESPONSE_CANCEL:
+  case GTK_RESPONSE_DELETE_EVENT:
+    break;
+
+  default:
+    g_assert_not_reached ();
+    break;
+  }
+
+  if (save) {
+    /* Update from old attributes so that there a property change
+     * sitting on the undo stack.
+     */
+    glade_property_set (property, old_attributes);
+    sync_object (eprop_attrs, TRUE);
+  }
+
+  /* Clean up ...
+   */
+  if (done) {
+    gtk_widget_destroy (dialog);
+    g_clear_object (&eprop_attrs->model);
+    glade_attr_list_free (old_attributes);
+    g_free (data);
+  }
 }
 
 static void
 glade_eprop_attrs_show_dialog (GtkWidget *dialog_button,
                                GladeEditorProperty *eprop)
 {
-  GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
   GtkWidget *dialog, *parent, *vbox, *sw, *tree_view;
-  GladeProperty *property;
-  GList *old_attributes;
-  gint res;
+  GladeEditorPropertyData *data;
 
-  property = glade_editor_property_get_property (eprop);
   parent   = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
-
-
-  /* Keep a copy for commit time... */
-  old_attributes = g_value_dup_boxed (glade_property_inline_value (property));
 
   dialog = gtk_dialog_new_with_buttons (_("Setup Text Attributes"),
                                         GTK_WINDOW (parent),
@@ -1062,6 +1206,9 @@ glade_eprop_attrs_show_dialog (GtkWidget *dialog_button,
                                         _("C_lear"), GLADE_RESPONSE_CLEAR,
                                         _("_Cancel"), GTK_RESPONSE_CANCEL,
                                         _("_OK"), GTK_RESPONSE_OK, NULL);
+
+ gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+                                    GLADE_RESPONSE_CLEAR, FALSE);
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
@@ -1083,38 +1230,21 @@ glade_eprop_attrs_show_dialog (GtkWidget *dialog_button,
   tree_view = glade_eprop_attrs_view (eprop);
   glade_eprop_attrs_populate_view (eprop, GTK_TREE_VIEW (tree_view));
 
+  g_signal_connect (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view)),
+                    "changed",
+                    G_CALLBACK (selection_changed_cb), dialog);
   gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
 
   gtk_widget_show (tree_view);
   gtk_container_add (GTK_CONTAINER (sw), tree_view);
 
-  /* Run the dialog */
-  res = gtk_dialog_run (GTK_DIALOG (dialog));
-  if (res == GTK_RESPONSE_OK)
-    {
-      /* Update from old attributes so that there a property change 
-       * sitting on the undo stack.
-       */
-      glade_property_set (property, old_attributes);
-      sync_object (eprop_attrs, TRUE);
-    }
-  else if (res == GLADE_RESPONSE_CLEAR)
-    {
-      GValue value = { 0, };
-      g_value_init (&value, GLADE_TYPE_ATTR_GLIST);
-      g_value_set_boxed (&value, NULL);
-      glade_editor_property_commit (eprop, &value);
-      g_value_unset (&value);
-    }
+  data = g_new0 (GladeEditorPropertyData, 1);
+  data->eprop = eprop;
+  data->tree_view = tree_view;
 
-  /* Clean up ...
-   */
-  gtk_widget_destroy (dialog);
+  g_signal_connect (dialog, "response", G_CALLBACK (glade_eprop_attrs_dialog_response_cb), data);
 
-  g_object_unref (G_OBJECT (eprop_attrs->model));
-  eprop_attrs->model = NULL;
-
-  glade_attr_list_free (old_attributes);
+  gtk_widget_show (GTK_WIDGET (dialog));
 }
 
 
