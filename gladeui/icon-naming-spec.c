@@ -23,7 +23,7 @@
 /* 
  * Icon Naming Specification: http://standards.freedesktop.org/icon-naming-spec
  *
-*/
+ */
 
 #include <glib/gi18n-lib.h>
 

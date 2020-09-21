@@ -18,6 +18,7 @@
  * Authors:
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
+
 #ifndef __GLADE_BASE_EDITOR_H__
 #define __GLADE_BASE_EDITOR_H__
 

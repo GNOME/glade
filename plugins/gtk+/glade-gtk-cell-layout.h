@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef _GLADE_GTK_CELL_LAYOUT_H_
 #define _GLADE_GTK_CELL_LAYOUT_H_
 

@@ -20,7 +20,6 @@
  *   Tristan Van Berkom <tvb@gnome.org>
  */
 
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif

@@ -18,6 +18,7 @@
  * Authors:
  *   Matthias Clasen <mclasen@redhat.com>
  */
+
 #ifndef _GLADE_MODEL_BUTTON_EDITOR_H_
 #define _GLADE_MODEL_BUTTON_EDITOR_H_
 

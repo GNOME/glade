@@ -18,6 +18,7 @@
  * Authors:
  *   Matthias Clasen <mclasen@redhat.com>
  */
+
 #ifndef _GLADE_HEADER_BAR_EDITOR_H_
 #define _GLADE_HEADER_BAR_EDITOR_H_
 

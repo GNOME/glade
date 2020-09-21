@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2006-2016 Juan Pablo Ugarte.
  *

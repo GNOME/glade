@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef _GLADE_VIEWPORT_EDITOR_H_
 #define _GLADE_VIEWPORT_EDITOR_H_
 

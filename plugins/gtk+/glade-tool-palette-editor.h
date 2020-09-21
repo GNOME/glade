@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef _GLADE_TOOL_PALETTE_EDITOR_H_
 #define _GLADE_TOOL_PALETTE_EDITOR_H_
 

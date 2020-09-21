@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef _GLADE_MODEL_DATA_TREE_H_
 #define _STV_CAP_H_
 

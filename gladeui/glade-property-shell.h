@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef __GLADE_PROPERTY_SHELL_H__
 #define __GLADE_PROPERTY_SHELL_H__
 

@@ -19,6 +19,7 @@
  *   Joaquín Cuenca Abela <e98cuenc@yahoo.com>
  *   Archit Baweja <bighead@users.sourceforge.net>
  */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif

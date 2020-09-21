@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef _GLADE_FONT_CHOOSER_WIDGET_EDITOR_H_
 #define _GLADE_FONT_CHOOSER_WIDGET_EDITOR_H_
 

@@ -18,6 +18,7 @@
  * Authors:
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
+
 #ifndef _GLADE_COLUMN_TYPES_H_
 #define _STV_CAP_H_
 

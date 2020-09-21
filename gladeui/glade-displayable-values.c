@@ -1,5 +1,5 @@
 /*
- * glade-name-context.c
+ * glade-displayable-values.c
  *
  * Copyright (C) 2008 Tristan Van Berkom.
  *
@@ -21,6 +21,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif

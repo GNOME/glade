@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef _GLADE_RECENT_CHOOSER_DIALOG_EDITOR_H_
 #define _GLADE_RECENT_CHOOSER_DIALOG_EDITOR_H_
 

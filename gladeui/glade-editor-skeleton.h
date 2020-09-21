@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef __GLADE_EDITOR_SKELETON_H__
 #define __GLADE_EDITOR_SKELETON_H__
 

@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef _GLADE_ICON_SOURCES_H_
 #define _STV_CAP_H_
 

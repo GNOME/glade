@@ -19,6 +19,7 @@
  *   Shane Butler <shane_b@users.sourceforge.net>
  *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
  */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif

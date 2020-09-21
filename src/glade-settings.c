@@ -18,6 +18,7 @@
  * Authors:
  *   Corentin Noël <corentin.noel@collabora.com>
  */
+
 #include <gladeui/glade-catalog.h>
 #include <gladeui/glade-utils.h>
 #include <gladeui/gladeui-enum-types.h>

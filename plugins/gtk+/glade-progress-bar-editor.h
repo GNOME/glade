@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #ifndef _GLADE_PROGRESS_BAR_EDITOR_H_
 #define _GLADE_PROGRESS_BAR_EDITOR_H_
 

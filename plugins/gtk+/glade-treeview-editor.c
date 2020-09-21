@@ -18,6 +18,7 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
+
 #include <config.h>
 #include <gladeui/glade.h>
 #include <glib/gi18n-lib.h>
