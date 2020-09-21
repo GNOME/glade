@@ -1758,6 +1758,42 @@ glade_command_add_remove_collapse (GladeCommand *this_cmd,
   g_return_if_reached ();
 }
 
+static void
+adjust_container_size (GladeWidget *parent, gint children)
+{
+  gint placeholders;
+  GObject *gparent;
+
+  if (!parent)
+    return;
+
+  placeholders = glade_util_count_placeholders (parent);
+  gparent = glade_widget_get_object (parent);
+
+  if ((GTK_IS_BOX (gparent) || GTK_IS_GRID (gparent)) && placeholders < children)
+    {
+      children -= placeholders;
+
+      if (GTK_IS_BOX (gparent))
+        {
+          GladeProperty *prop = glade_widget_get_property (parent, "size");
+          gint size;
+
+          glade_property_get (prop, &size);
+          glade_command_set_property (prop, size + children);
+        }
+      else
+        {
+          GladeProperty *row = glade_widget_get_property (parent, "n-rows");
+          gint ncol, nrow;
+
+          glade_widget_property_get (parent, "n-columns", &ncol);
+          glade_property_get (row, &nrow);
+          glade_command_set_property (row, nrow + (children / ncol) + ((children % ncol) ? 1 : 0));
+        }
+    }
+}
+
 /******************************************************************************
  * 
  * The following are command aliases.  Their implementations are the actual 
@@ -1807,6 +1843,7 @@ glade_command_create (GladeWidgetAdaptor *adaptor,
 
   widgets.data = widget;
   glade_command_push_group (_("Create %s"), glade_widget_get_display_name (widget));
+  adjust_container_size (parent, 1);
   glade_command_add (&widgets, parent, placeholder, project, FALSE);
   glade_command_pop_group ();
 
@@ -1946,6 +1983,7 @@ glade_command_paste (GList *widgets,
   GList *list, *copied_widgets = NULL;
   GladeWidget *copied_widget = NULL;
   gboolean exact;
+  gint len;
 
   g_return_if_fail (widgets != NULL);
 
@@ -1959,10 +1997,9 @@ glade_command_paste (GList *widgets,
       copied_widgets = g_list_prepend (copied_widgets, copied_widget);
     }
 
-  glade_command_push_group (_("Paste %s"),
-                            g_list_length (widgets) == 1 ? 
-                            glade_widget_get_display_name (copied_widget) : _("multiple"));
-
+  len = g_list_length (widgets);
+  glade_command_push_group (_("Paste %s"), len == 1 ? glade_widget_get_display_name (copied_widget) : _("multiple"));
+  adjust_container_size (parent, len);
   glade_command_add (copied_widgets, parent, placeholder, project, TRUE);
   glade_command_pop_group ();
 

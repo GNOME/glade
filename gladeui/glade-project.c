@@ -5408,36 +5408,6 @@ glade_project_command_paste (GladeProject     *project,
         }
     }
 
-  g_assert (widget);
-
-  /* A GladeWidget that doesnt use placeholders can only paste one
-   * at a time
-   *
-   * XXX: Not sure if this has to be true.
-   */
-  if (GTK_IS_WIDGET (glade_widget_get_object (widget)) &&
-      parent && !GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
-      g_list_length (glade_clipboard_widgets (clipboard)) != 1)
-    {
-      glade_util_ui_message (glade_app_get_window (),
-                             GLADE_UI_INFO, NULL,
-                             _("Only one widget can be pasted at a "
-                               "time to this container"));
-      return;
-    }
-
-  /* Check that enough placeholders are available */
-  if (parent &&
-      GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
-      glade_util_count_placeholders (parent) < placeholder_relations)
-    {
-      glade_util_ui_message (glade_app_get_window (),
-                             GLADE_UI_INFO, NULL,
-                             _("Insufficient amount of placeholders in "
-                               "target container"));
-      return;
-    }
-
   glade_command_paste (glade_clipboard_widgets (clipboard), parent, placeholder, project);
 }
 

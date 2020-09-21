@@ -83,6 +83,9 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
 
       return FALSE;
     }
+  else if (GTK_IS_BOX (container) || GTK_IS_GRID (container))
+    /* GtkBox and GtkGrid size is adjusted automaticaly in GladeCommand */
+    return TRUE;
   else if (GLADE_WIDGET_ADAPTOR_USE_PLACEHOLDERS (adaptor) &&
            /* Special case GtkBin since Windows can hace a placeholder in the titlebar */
            ((GTK_IS_BIN (container) &&
