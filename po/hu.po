@@ -9,19 +9,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-09-04 05:02+0000\n"
-"PO-Revision-Date: 2020-09-07 01:03+0200\n"
-"Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
+"POT-Creation-Date: 2020-09-19 10:55+0000\n"
+"PO-Revision-Date: 2020-09-19 18:01+0200\n"
+"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Poedit 2.4.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:43 src/glade.glade:202
+#: src/main.c:43 src/glade.glade:261
 msgid "Glade"
 msgstr "Glade"
 
@@ -188,7 +188,7 @@ msgstr "Bezárás mentés _nélkül"
 msgid "_Cancel"
 msgstr "Mé_gse"
 
-#: src/glade-window.c:1041 src/glade.glade:597 gladeui/glade-utils.c:486
+#: src/glade-window.c:1041 src/glade.glade:685 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "M_entés"
 
@@ -397,60 +397,123 @@ msgstr ""
 "GTK+ és GNOME alkalmazások felhasználóifelület-terveinek létrehozása vagy "
 "szerkesztése"
 
-#: src/glade.glade:47
+#. The last sentence in quotes is in spanish and does not need to be translated.
+#: src/glade.glade:59
+msgctxt ""
+"This is to honor a professor that passed away last year and appears in a "
+"popover when you click on the button that says \"RIP Guido\""
+msgid ""
+"Guido was one of my professors at Rosario\n"
+"National University of Argentina.\n"
+"\n"
+"He introduced me to C, Linux, free software...\n"
+"\n"
+"He always had extra time to explain one more thing\n"
+"and help you figure out things by yourself.\n"
+"\n"
+"Always made a joke in the right moment keeping\n"
+"things interesting and fun.\n"
+"\n"
+"Master of intentionally misconstrued sayings.\n"
+"\n"
+"Always carried a stack of books under his arm.\n"
+"\n"
+"Loved Guinness beer.\n"
+"\n"
+"All he ever wanted was make you think!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+msgstr ""
+"Guido volt az egyik professzorom a Rosario\n"
+"Argentin Nemzeti Egyetemen.\n"
+"\n"
+"Ő vezetett be a C-be, Linuxba és a szabad szoftverekbe…\n"
+"\n"
+"Mindig rászánta az időt, hogy elmagyarázzon még egy dolgot,\n"
+"és segítsen, hogy magamtól rájöjjek a dolgokra.\n"
+"\n"
+"Mindig jókor sütött el egy viccet, így érdekesen és\n"
+"szórakoztatón tartva a dolgokat.\n"
+"\n"
+"A szándékosan téves mondások mestere.\n"
+"\n"
+"Mindig egy rakás könyv volt a keze alatt.\n"
+"\n"
+"Imádta a Guinness sört.\n"
+"\n"
+"Mindig csak azt akarta, hogy gondolkozz el!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+
+#: src/glade.glade:106
 msgid "Close Project"
 msgstr "Projekt bezárása"
 
-#: src/glade.glade:72
+#: src/glade.glade:131
 msgid "Registration & User Survey"
 msgstr "Regisztráció és felhasználói felmérés"
 
-#: src/glade.glade:86
+#: src/glade.glade:145
 msgid "_Developer Reference"
 msgstr "_Fejlesztői referencia"
 
-#: src/glade.glade:100
+#: src/glade.glade:159
 msgid "Interactive Intro"
 msgstr "Interaktív bevezető"
 
-#: src/glade.glade:114
+#: src/glade.glade:173
 msgid "Preferences"
 msgstr "Beállítások"
 
-#: src/glade.glade:139
+#: src/glade.glade:198
 msgid "About Glade"
 msgstr "A Glade névjegye"
 
-#: src/glade.glade:504 src/glade-preferences.c:239
+#: src/glade.glade:297
+msgctxt "Button label in the bottom of main window that triggers a popover"
+msgid ""
+"<small>In memory of an extraordinary\n"
+"person and professor\n"
+"R.I.P Guido Macchi</small>"
+msgstr ""
+"<small>Egy különleges ember\n"
+"és professzor emlékére,\n"
+"nyugodjon békében: Guido Macchi</small>"
+
+#: src/glade.glade:592 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Megnyitás"
 
-#: src/glade.glade:509
+#: src/glade.glade:597
 msgid "Open a project"
 msgstr "Projekt megnyitása"
 
-#: src/glade.glade:554
+#: src/glade.glade:642
 msgid "Create a new project"
 msgstr "Új projekt létrehozása"
 
-#: src/glade.glade:574
+#: src/glade.glade:662
 msgid "Edit project properties"
 msgstr "Projekt tulajdonságainak szerkesztése"
 
-#: src/glade.glade:602
+#: src/glade.glade:690
 msgid "Save the current project"
 msgstr "A jelenlegi projekt mentése"
 
-#: src/glade.glade:618
+#: src/glade.glade:706
 msgid "Save the current project with a different name"
 msgstr "A jelenlegi projekt mentése más néven"
 
-#: src/glade.glade:647
+#: src/glade.glade:735
 msgid "Start/resume interactive UI introduction"
 msgstr "Interaktív felületbemutató indítása/folytatása"
 
-#: src/glade.glade:746
+#: src/glade.glade:834
 msgid ""
 "© 2018-2020 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
@@ -462,15 +525,15 @@ msgstr ""
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:750
+#: src/glade.glade:838
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Felhasználóifelület-tervező GTK+ és GNOME alkalmazásokhoz."
 
-#: src/glade.glade:752
+#: src/glade.glade:840
 msgid "Visit Glade web site"
 msgstr "Keresse fel a Glade weboldalát"
 
-#: src/glade.glade:764
+#: src/glade.glade:852
 msgid "translator-credits"
 msgstr ""
 "Kelemen Gábor <kelemeng at gnome dot hu>\n"
@@ -573,17 +636,14 @@ msgid "column"
 msgstr "oszlop"
 
 #: src/glade-preferences.glade:331
-#| msgid "Add a new catalog search path"
 msgid "Add a new search path"
 msgstr "Új keresési útvonal hozzáadása"
 
 #: src/glade-preferences.glade:356
-#| msgid "Remove the selected catalog search path"
 msgid "Remove the selected search path"
 msgstr "A kiválasztott keresési útvonal eltávolítása"
 
 #: src/glade-preferences.glade:387
-#| msgid "Extra catalog paths"
 msgid "Extra Catalog & Templates paths"
 msgstr "További katalógus- és sablonútvonalak"
 
@@ -632,12 +692,10 @@ msgid "_Close"
 msgstr "_Bezárás"
 
 #: src/glade-registration.glade:77
-#| msgid "Submit"
 msgid "_Submit"
 msgstr "_Elküldés"
 
 #: src/glade-registration.glade:82
-#| msgid "Information will be sent to https://people.gnome.org/~jpu"
 msgid "Information will be sent to https://survey.gnome.org"
 msgstr "Az információk a https://survey.gnome.org oldalra lesznek elküldve"
 
@@ -841,12 +899,10 @@ msgid "Arch Linux"
 msgstr "Arch Linux"
 
 #: src/glade-registration.glade:1252
-#| msgid "Arch Linux"
 msgid "Ataraxia Linux"
 msgstr "Ataraxia Linux"
 
 #: src/glade-registration.glade:1253
-#| msgid "Center"
 msgid "CentOS"
 msgstr "CentOS"
 
@@ -855,7 +911,6 @@ msgid "Chrome OS"
 msgstr "Chrome OS"
 
 #: src/glade-registration.glade:1255
-#| msgid "Arch Linux"
 msgid "Clear Linux"
 msgstr "Clear Linux"
 
@@ -880,7 +935,6 @@ msgid "Gentoo"
 msgstr "Gentoo"
 
 #: src/glade-registration.glade:1261
-#| msgid "Ubuntu"
 msgid "Kubuntu"
 msgstr "Kubuntu"
 
@@ -941,7 +995,6 @@ msgid "Ubuntu"
 msgstr "Ubuntu"
 
 #: src/glade-registration.glade:1276
-#| msgid "Arch Linux"
 msgid "Void Linux"
 msgstr "Void Linux"
 
@@ -982,7 +1035,6 @@ msgid "version"
 msgstr "verzió"
 
 #: src/glade-registration.glade:1335
-#| msgid "0"
 msgid "10"
 msgstr "10"
 
@@ -1019,7 +1071,6 @@ msgid "2000"
 msgstr "2000"
 
 #: src/glade-registration.glade:1358
-#| msgid "Catalog"
 msgid "Catalina"
 msgstr "Catalina"
 
@@ -1036,7 +1087,6 @@ msgid "Sierra"
 msgstr "Sierra"
 
 #: src/glade-registration.glade:1362
-#| msgid "Small Capitals"
 msgid "El Capitan"
 msgstr "El Capitan"
 
@@ -1480,7 +1530,6 @@ msgid "An entry"
 msgstr "Egy bejegyzés"
 
 #: gladeui/glade-catalog.c:730
-#| msgid "Unsetting template"
 msgid "User templates"
 msgstr "Felhasználói sablonok"
 
@@ -2390,7 +2439,6 @@ msgstr ""
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3056
 #, c-format
-#| msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' was introduced in %s %d.%d\n"
@@ -2405,7 +2453,6 @@ msgstr "Ez a felületi elem elavult"
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3061
 #, c-format
-#| msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' from %s %d.%d is deprecated\n"
@@ -2425,9 +2472,6 @@ msgstr ""
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3070
 #, c-format
-#| msgid ""
-#| "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
-#| "%s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
@@ -2440,9 +2484,6 @@ msgstr ""
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3074
 #, c-format
-#| msgid ""
-#| "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was "
-#| "introduced in %s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tPacking property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
@@ -2459,8 +2500,6 @@ msgstr "Ez a tulajdonság elavult"
 #. translators: refers to a property '%s' of widget '[%s]'
 #: gladeui/glade-project.c:3080
 #, c-format
-#| msgid ""
-#| "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
@@ -2481,9 +2520,6 @@ msgstr ""
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3088
 #, c-format
-#| msgid ""
-#| "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
-#| "%d.%d\n"
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d.%d\n"
@@ -2499,7 +2535,6 @@ msgstr "Ez a szignál elavult"
 #. translators: refers to a signal '%s' of widget '[%s]'
 #: gladeui/glade-project.c:3094
 #, c-format
-#| msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
@@ -2518,8 +2553,6 @@ msgstr "A projektben („%s”) hibák vannak. Mindenképp menti?"
 
 #: gladeui/glade-project.c:3435
 #, c-format
-#| msgid ""
-#| "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr ""
 "Az objektum (%s) egy osztálysablon, de ezt a GTK+ %d.%d nem támogatja\n"
@@ -3043,7 +3076,6 @@ msgid "A warning string about version mismatches"
 msgstr "A verzióeltérésekre figyelmeztető üzenet"
 
 #: gladeui/glade-widget.c:1438
-#| msgid "Wether the widget is visible or not"
 msgid "Whether the widget is visible or not"
 msgstr "A felületi elem látható-e vagy nem"
 
@@ -3193,12 +3225,10 @@ msgid "Toolkit version required:"
 msgstr "Szükséges eszközkészlet-verzió:"
 
 #: gladeui/glade-project-properties.ui:444
-#| msgid "The project this properties dialog was created for"
 msgid "Verify objects, properties and signals deprecations"
 msgstr "Objektumok, tulajdonságok és szignálok elavultságainak ellenőrzése"
 
 #: gladeui/glade-project-properties.ui:481
-#| msgid "Warning"
 msgid "Warnings:"
 msgstr "Figyelmeztetések:"
 
@@ -5141,12 +5171,10 @@ msgid "Footnote text"
 msgstr "Lábjegyzetszöveg"
 
 #: plugins/gtk+/gtk+.xml:450
-#| msgid "Font Selection"
 msgid "Content deletion"
 msgstr "Tartalomtörlés"
 
 #: plugins/gtk+/gtk+.xml:452
-#| msgid "Context for translation"
 msgid "Content insertion"
 msgstr "Tartalombeszúrás"
 
@@ -5456,7 +5484,6 @@ msgid "Tooltip"
 msgstr "Buboréksúgó"
 
 #: plugins/gtk+/gtk+.xml:813
-#| msgid "Toplevels"
 msgid "Toplevel"
 msgstr "Felsőszintű"
 
@@ -6646,12 +6673,10 @@ msgid "BSD 3"
 msgstr "BSD 3"
 
 #: plugins/gtk+/gtk+.xml:3169
-#| msgid "Apache 2"
 msgid "Apache 2.0"
 msgstr "Apache 2.0"
 
 #: plugins/gtk+/gtk+.xml:3171
-#| msgid "GPL 2.0"
 msgid "MPL 2.0"
 msgstr "MPL 2.0"
 
@@ -8034,7 +8059,6 @@ msgstr "Igazítás:"
 #: plugins/gtk+/glade-scrolled-window-editor.ui:332
 #: plugins/gtk+/glade-scrolled-window-editor.ui:370
 #: plugins/gtk+/glade-scrolled-window-editor.ui:409
-#| msgid "Right:"
 msgid "Height: "
 msgstr "Magasság: "
 
@@ -8205,7 +8229,6 @@ msgid "The URL to load in Glade (this property will not be saved)"
 msgstr "A Glade-ben betöltendő URL (ez a tulajdonság nem lesz mentve)"
 
 #: plugins/webkit2gtk/webkit2gtk.xml:32
-#| msgid "Table"
 msgid "Tab"
 msgstr "Lap"
 
