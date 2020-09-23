@@ -1192,7 +1192,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
 
 	g_object_class_install_property
 		(object_class, 	PROP_SUPPORT_WARNING,
-		 g_param_spec_string ("support warning", _("Support Warning"),
+		 g_param_spec_string ("support-warning", _("Support Warning"),
 				      _("A warning string about version mismatches"),
 				      NULL, G_PARAM_READABLE));
 
