@@ -129,7 +129,7 @@ typedef struct
   GtkWidget *css_filechooser;
   GtkWidget *css_checkbutton;
   
-  GHashTable *target_radios;
+  GHashTable *target_combos;
 
   /* License */
   GtkComboBox    *license_comboboxtext;
@@ -169,7 +169,7 @@ glade_project_properties_init (GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
-  priv->target_radios = g_hash_table_new_full (g_str_hash, g_str_equal,
+  priv->target_combos = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                g_free, NULL);
 
   gtk_widget_init_template (GTK_WIDGET (properties));
@@ -262,7 +262,7 @@ glade_project_properties_finalize (GObject *object)
   GladeProjectProperties        *properties = GLADE_PROJECT_PROPERTIES (object);
   GladeProjectPropertiesPrivate *priv = GLADE_PROJECT_PROPERTIES_PRIVATE(properties);
 
-  g_hash_table_destroy (priv->target_radios);
+  g_hash_table_destroy (priv->target_combos);
 
   G_OBJECT_CLASS (glade_project_properties_parent_class)->finalize (object);
 }
@@ -289,7 +289,7 @@ combobox_populate_from_catalog (GladeProjectProperties *properties,
                                      version->major,
                                      version->minor);
 
-      gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT(combobox), position, name);
+      gtk_combo_box_text_insert (GTK_COMBO_BOX_TEXT(combobox), position, name, name);
       if (major == version->major && minor == version->minor)
         gtk_combo_box_set_active (GTK_COMBO_BOX(combobox), position);
 
@@ -299,7 +299,7 @@ combobox_populate_from_catalog (GladeProjectProperties *properties,
                          (gchar *) glade_catalog_get_name (catalog));
     }
 
-  g_hash_table_insert (priv->target_radios,
+  g_hash_table_insert (priv->target_combos,
                        g_strdup (glade_catalog_get_name (catalog)),
                        combobox);
 }
@@ -1107,19 +1107,19 @@ project_targets_changed (GladeProject           *project,
       GladeCatalog *catalog = list->data;
       GtkComboBox *combobox;
       gint minor, major;
+      const gchar *name;
 
       /* Skip if theres only one option */
       if (g_list_length (glade_catalog_get_targets (catalog)) <= 1)
         continue;
 
       /* Fetch the version for this project */
-      glade_project_get_target_version (priv->project,
-                                        glade_catalog_get_name (catalog),
-                                        &major, &minor);
+      name = glade_catalog_get_name (catalog);
+      glade_project_get_target_version (priv->project, name, &major, &minor);
 
       /* Fetch the radios for this catalog  */
-      if (priv->target_radios &&
-          (combobox = g_hash_table_lookup (priv->target_radios, glade_catalog_get_name (catalog))) != NULL)
+      if (priv->target_combos &&
+          (combobox = g_hash_table_lookup (priv->target_combos, name)) != NULL)
         {
           g_autofree gchar *id = NULL;
           id = g_strdup_printf ("%d.%d", major, minor);
