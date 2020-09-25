@@ -34,9 +34,9 @@ git format-patch HEAD^
 
 Coding Style
 ~~~~~~~~~~~~
-Code in Glade should follow the GNOME Programming Guidelines
-(http://developer.gnome.org/doc/guides/programming-guidelines/),
-basically this means being consistent with the sorrounding code.
+Code in Glade should follow the GNU style of GNOME Programming Guidelines
+(https://developer.gnome.org/programming-guidelines/stable/c-coding-style.html.en),
+basically this means being consistent with the surrounding code.
 The only exception is that we prefer having braces always on a new line
 e.g.:
 
