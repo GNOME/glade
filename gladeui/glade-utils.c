@@ -1165,15 +1165,15 @@ glade_util_search_devhelp (const gchar *book,
 GtkWidget *
 glade_util_get_placeholder_from_pointer (GtkContainer *container)
 {
-  GdkDeviceManager *manager;
   GdkDisplay *display;
   GdkDevice *device;
   GdkWindow *window;
+  GdkSeat *seat;
 
   if (((display = gtk_widget_get_display (GTK_WIDGET (container))) || 
        (display = gdk_display_get_default ())) &&
-      (manager = gdk_display_get_device_manager (display)) &&
-      (device = gdk_device_manager_get_client_pointer (manager)) &&
+      (seat = gdk_display_get_default_seat (display)) &&
+      (device = gdk_seat_get_pointer (seat)) &&
       (window = gdk_device_get_window_at_position (device, NULL, NULL)))
     {
       gpointer widget;
@@ -2069,10 +2069,14 @@ glade_utils_get_pointer (GtkWidget *widget,
 
   if (!device)
     {
-      GdkEvent *event = gtk_get_current_event ();
+      GdkDisplay *dsp;
+      GdkSeat *seat;
 
-      device = gdk_event_get_device (event);
-      gdk_event_free (event);
+      if (((dsp = gtk_widget_get_display (widget)) ||
+           (dsp = gdk_display_get_default ())) &&
+          (seat = gdk_display_get_default_seat (dsp)) &&
+          (device = gdk_seat_get_pointer (seat)))
+        window = gdk_device_get_window_at_position (device, NULL, NULL);
     }
 
   g_return_if_fail (GDK_IS_DEVICE (device));
