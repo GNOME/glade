@@ -503,15 +503,10 @@ glade_dtostr (double number, gdouble epsilon)
  * Returns: A newly allocated string representation of @value
  */
 gchar *
-glade_property_def_make_string_from_gvalue (GladePropertyDef *
-                                              property_def,
-                                              const GValue * value)
+glade_property_def_make_string_from_gvalue (GladePropertyDef *property_def,
+                                            const GValue     *value)
 {
-  gchar *string = NULL, **strv;
-  GObject *object;
-  GdkColor *color;
-  GdkRGBA *rgba;
-  GList *objects;
+  gchar *string = NULL;
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (GLADE_PROPERTY_IS_PARAM_SPEC_VALUE_ARRAY (property_def->pspec))
@@ -551,20 +546,26 @@ glade_property_def_make_string_from_gvalue (GladePropertyDef *
     {
       if (property_def->pspec->value_type == GDK_TYPE_COLOR)
         {
-          color = g_value_get_boxed (value);
+          GdkColor *color = g_value_get_boxed (value);
           if (color)
             string = g_strdup_printf ("#%04x%04x%04x",
                                       color->red, color->green, color->blue);
         }
       else if (property_def->pspec->value_type == GDK_TYPE_RGBA)
         {
-          rgba = g_value_get_boxed (value);
+          GdkRGBA *rgba = g_value_get_boxed (value);
           if (rgba)
             string = gdk_rgba_to_string (rgba);
         }
+      else if (property_def->pspec->value_type == PANGO_TYPE_COLOR)
+        {
+          PangoColor *color = g_value_get_boxed (value);
+          if (color)
+            string = pango_color_to_string (color);
+        }
       else if (property_def->pspec->value_type == G_TYPE_STRV)
         {
-          strv = g_value_get_boxed (value);
+          gchar **strv = g_value_get_boxed (value);
           if (strv)
             string = g_strjoinv ("\n", strv);
         }
@@ -614,13 +615,13 @@ glade_property_def_make_string_from_gvalue (GladePropertyDef *
     }
   else if (G_IS_PARAM_SPEC_OBJECT (property_def->pspec))
     {
-      object = g_value_get_object (value);
+      GObject *object = g_value_get_object (value);
       string =
           glade_property_def_make_string_from_object (property_def, object);
     }
   else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_def->pspec))
     {
-      objects = g_value_get_boxed (value);
+      GList *objects = g_value_get_boxed (value);
       string =
           glade_property_def_make_string_from_objects (property_def,
                                                          objects);
@@ -841,13 +842,11 @@ glade_property_def_make_objects_from_string (GladePropertyDef *
  */
 GValue *
 glade_property_def_make_gvalue_from_string (GladePropertyDef *property_def,
-                                              const gchar        *string,
-                                              GladeProject       *project)
+                                            const gchar      *string,
+                                            GladeProject     *project)
 {
   GValue *value = g_new0 (GValue, 1);
   gchar **strv;
-  GdkColor color = { 0, };
-  GdkRGBA rgba = { 0, };
 
   g_value_init (value, property_def->pspec->value_type);
 
@@ -894,6 +893,7 @@ glade_property_def_make_gvalue_from_string (GladePropertyDef *property_def,
     {
       if (property_def->pspec->value_type == GDK_TYPE_COLOR)
         {
+          GdkColor color;
           if (gdk_color_parse (string, &color))
             g_value_set_boxed (value, &color);
           else
@@ -901,10 +901,19 @@ glade_property_def_make_gvalue_from_string (GladePropertyDef *property_def,
         }
       else if (property_def->pspec->value_type == GDK_TYPE_RGBA)
         {
+          GdkRGBA rgba;
           if (gdk_rgba_parse (&rgba, string))
             g_value_set_boxed (value, &rgba);
           else
             g_warning ("could not parse rgba colour name `%s'", string);
+        }
+      else if (property_def->pspec->value_type == PANGO_TYPE_COLOR)
+        {
+          PangoColor color;
+          if (pango_color_parse (&color, string))
+            g_value_set_boxed (value, &color);
+          else
+            g_warning ("could not parse pango color name `%s'", string);
         }
       else if (property_def->pspec->value_type == G_TYPE_STRV)
         {
