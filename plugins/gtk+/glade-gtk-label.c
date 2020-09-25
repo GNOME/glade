@@ -68,7 +68,7 @@ glade_gtk_label_set_attributes (GObject *object, const GValue *value)
   PangoLanguage *language;
   PangoFontDescription *font_desc;
   PangoAttrList *attrs = NULL;
-  GdkColor *color;
+  PangoColor *color;
   GList *list;
 
   for (list = g_value_get_boxed (value); list; list = list->next)
