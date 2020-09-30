@@ -705,7 +705,18 @@ widget_parent_changed (GtkWidget          *widget,
   parent = glade_widget_get_parent (gwidget);
 
   if (parent && !glade_widget_get_internal (parent))
-    glade_widget_set_action_sensitive (gwidget, "remove_parent", TRUE);
+    {
+      GladeWidget *grand_parent;
+      gboolean can_add = TRUE;
+
+      /* We can not use glade_widget_adaptor_add_verify() here because it takes into account placeholders spaces */
+      if ((grand_parent = glade_widget_get_parent (parent)) &&
+          GTK_IS_SCROLLED_WINDOW (glade_widget_get_object (grand_parent)) &&
+          !GTK_IS_SCROLLABLE (widget))
+        can_add = FALSE;
+
+      glade_widget_set_action_sensitive (gwidget, "remove_parent", can_add);
+    }
   else
     glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
 }
