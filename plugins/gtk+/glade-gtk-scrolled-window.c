@@ -66,10 +66,15 @@ glade_gtk_scrolled_window_add_child_verify (GladeWidgetAdaptor *adaptor,
                                             GtkWidget          *child,
                                             gboolean            user_feedback)
 {
-  GladeWidget *gcontainer = glade_widget_get_from_gobject (container);
-  GladeWidget *gchild = glade_widget_get_from_gobject (child);
+  if (user_feedback)
+    {
+      GladeWidget *gcontainer = glade_widget_get_from_gobject (container);
+      GladeWidget *gchild = glade_widget_get_from_gobject (child);
 
-  return !glade_util_check_and_warn_scrollable (gcontainer,
-                                                glade_widget_get_adaptor (gchild),
-                                                glade_app_get_window ());
+      return !glade_util_check_and_warn_scrollable (gcontainer,
+                                                    glade_widget_get_adaptor (gchild),
+                                                    glade_app_get_window ());
+    }
+  else
+    return GTK_IS_SCROLLED_WINDOW (container) && GTK_IS_SCROLLABLE (child);
 }
