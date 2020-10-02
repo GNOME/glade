@@ -413,7 +413,7 @@ glade_gtk_notebook_post_create (GladeWidgetAdaptor *adaptor,
   g_signal_connect (G_OBJECT (notebook), "switch-page",
                     G_CALLBACK (glade_gtk_notebook_switch_page), NULL);
 
-  if (glade_project_is_loading (project))
+  if (project && glade_project_is_loading (project))
     g_signal_connect_object (project, "parse-finished",
                              G_CALLBACK (glade_gtk_notebook_parse_finished),
                              notebook,

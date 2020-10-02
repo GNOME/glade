@@ -58,7 +58,7 @@ glade_gtk_action_bar_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (gwidget);
 
-  if (glade_project_is_loading (project))
+  if (project && glade_project_is_loading (project))
     g_signal_connect_object (project, "parse-finished",
                              G_CALLBACK (glade_gtk_action_bar_parse_finished),
                              container,
