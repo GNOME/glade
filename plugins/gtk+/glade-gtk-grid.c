@@ -199,6 +199,7 @@ glade_gtk_grid_post_create (GladeWidgetAdaptor *adaptor,
                             GladeCreateReason   reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+  GladeProject *project = glade_widget_get_project (gwidget);
 
   g_signal_connect (G_OBJECT (gwidget), "configure-child",
                     G_CALLBACK (glade_gtk_grid_configure_child), container);
@@ -209,10 +210,11 @@ glade_gtk_grid_post_create (GladeWidgetAdaptor *adaptor,
   g_signal_connect (G_OBJECT (gwidget), "configure-end",
                     G_CALLBACK (glade_gtk_grid_configure_end), container);
 
-  if (reason == GLADE_CREATE_LOAD)
-    g_signal_connect (glade_widget_get_project (gwidget), "parse-finished",
-                      G_CALLBACK (glade_gtk_grid_parse_finished),
-                      container);
+  if (glade_project_is_loading (project))
+    g_signal_connect_object (project, "parse-finished",
+                             G_CALLBACK (glade_gtk_grid_parse_finished),
+                             container,
+                             0);
 }
 
 void

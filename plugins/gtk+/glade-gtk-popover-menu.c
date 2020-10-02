@@ -167,10 +167,11 @@ glade_gtk_popover_menu_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *parent = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (parent);
 
-  if (reason == GLADE_CREATE_LOAD)
-    g_signal_connect (project, "parse-finished",
-                      G_CALLBACK (glade_gtk_popover_menu_parse_finished),
-                      container);
+  if (glade_project_is_loading (project))
+    g_signal_connect_object (project, "parse-finished",
+                             G_CALLBACK (glade_gtk_popover_menu_parse_finished),
+                             container,
+                             0);
 
   g_signal_connect (G_OBJECT (parent), "notify::project",
                     G_CALLBACK (glade_gtk_popover_menu_project_changed), NULL);

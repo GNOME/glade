@@ -170,25 +170,27 @@ glade_listbox_get_placeholder (GtkListBox *list_box) {
 }
 
 static void
-glade_gtk_listbox_parse_finished (GladeProject *project, GladeWidget *gbox)
+glade_gtk_listbox_parse_finished (GladeProject *project, GObject *box)
 {
-  GObject *box = glade_widget_get_object (gbox);
-  glade_widget_property_set (gbox, "use-placeholder", glade_listbox_get_placeholder (GTK_LIST_BOX (box)) != NULL);
+  GladeWidget *gbox = glade_widget_get_from_gobject (box);
+  glade_widget_property_set (gbox, "use-placeholder",
+                             glade_listbox_get_placeholder (GTK_LIST_BOX (box)) != NULL);
 }
 
 void
 glade_gtk_listbox_post_create (GladeWidgetAdaptor *adaptor,
-                                GObject            *container,
-                                GladeCreateReason   reason)
+                               GObject            *container,
+                               GladeCreateReason   reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (gwidget);
 
-  if (reason == GLADE_CREATE_LOAD)
+  if (glade_project_is_loading (project))
     {
       g_signal_connect_object (project, "parse-finished",
                                G_CALLBACK (glade_gtk_listbox_parse_finished),
-                               gwidget, 0);
+                               container,
+                               0);
     }
 }
 

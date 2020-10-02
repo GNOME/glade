@@ -157,9 +157,9 @@ glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 static void
-glade_gtk_tool_button_parse_finished (GladeProject *project,
-                                      GladeWidget  *widget)
+glade_gtk_tool_button_parse_finished (GladeProject *project, GObject *object)
 {
+  GladeWidget  *widget = glade_widget_get_from_gobject (object);
   gchar *stock_str = NULL, *icon_name = NULL;
   gint stock_id = 0;
   GtkWidget *label_widget = NULL, *image_widget = NULL;
@@ -207,7 +207,8 @@ glade_gtk_tool_button_read_widget (GladeWidgetAdaptor *adaptor,
   GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_TOOL_ITEM)->read_widget (adaptor, widget, node);
 
   /* Run this after the load so that icon-widget is resolved. */
-  g_signal_connect (glade_widget_get_project (widget),
-                    "parse-finished",
-                    G_CALLBACK (glade_gtk_tool_button_parse_finished), widget);
+  g_signal_connect_object (glade_widget_get_project (widget), "parse-finished",
+                           G_CALLBACK (glade_gtk_tool_button_parse_finished),
+                           glade_widget_get_object (widget),
+                           0);
 }

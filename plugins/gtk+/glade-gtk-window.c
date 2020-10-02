@@ -84,9 +84,10 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 
   if (reason == GLADE_CREATE_LOAD)
     {
-      g_signal_connect (project, "parse-finished",
-                        G_CALLBACK (glade_gtk_window_parse_finished),
-                        object);
+      g_signal_connect_object (project, "parse-finished",
+                               G_CALLBACK (glade_gtk_window_parse_finished),
+                               object,
+                               0);
     }
   else if (reason == GLADE_CREATE_USER &&
            gtk_bin_get_child (GTK_BIN (object)) == NULL)
