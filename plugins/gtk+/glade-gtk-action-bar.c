@@ -44,27 +44,26 @@ glade_gtk_action_bar_create_editable (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-glade_gtk_action_bar_parse_finished (GladeProject * project,
-                                     GObject * object)
+glade_gtk_action_bar_parse_finished (GladeProject *project, GObject *object)
 {
-  GladeWidget *gbox;
-
-  gbox = glade_widget_get_from_gobject (object);
-  glade_widget_property_set (gbox, "use-center-child", gtk_action_bar_get_center_widget (GTK_ACTION_BAR (object)) != NULL);
+  GladeWidget *gbox = glade_widget_get_from_gobject (object);
+  glade_widget_property_set (gbox, "use-center-child",
+                             gtk_action_bar_get_center_widget (GTK_ACTION_BAR (object)) != NULL);
 }
 
 void
-glade_gtk_action_bar_post_create (GladeWidgetAdaptor * adaptor,
-                                  GObject * container,
-                                  GladeCreateReason reason)
+glade_gtk_action_bar_post_create (GladeWidgetAdaptor *adaptor,
+                                  GObject            *container,
+                                  GladeCreateReason   reason)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (gwidget);
 
-  if (reason == GLADE_CREATE_LOAD)
-    g_signal_connect (project, "parse-finished",
-                      G_CALLBACK (glade_gtk_action_bar_parse_finished),
-                      container);
+  if (glade_project_is_loading (project))
+    g_signal_connect_object (project, "parse-finished",
+                             G_CALLBACK (glade_gtk_action_bar_parse_finished),
+                             container,
+                             0);
 }
 
 static gint

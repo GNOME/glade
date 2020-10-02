@@ -269,9 +269,9 @@ glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
 }
 
 static void
-glade_gtk_cell_renderer_parse_finished (GladeProject *project,
-                                        GladeWidget  *widget)
+glade_gtk_cell_renderer_parse_finished (GladeProject *project, GObject *object)
 {
+  GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property;
   GList *l;
   static gint attr_len = 0, use_attr_len = 0;
@@ -321,9 +321,10 @@ glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
   /* First chain up and read in all the properties... */
   GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
-  g_signal_connect (glade_widget_get_project (widget), "parse-finished",
-                    G_CALLBACK (glade_gtk_cell_renderer_parse_finished),
-                    widget);
+  g_signal_connect_object (glade_widget_get_project (widget), "parse-finished",
+                           G_CALLBACK (glade_gtk_cell_renderer_parse_finished),
+                           glade_widget_get_object (widget),
+                           0);
 }
 
 static gboolean

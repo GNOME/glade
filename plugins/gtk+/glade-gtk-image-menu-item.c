@@ -139,9 +139,9 @@ glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 static void
-glade_gtk_image_menu_item_parse_finished (GladeProject *project,
-                                          GladeWidget  *widget)
+glade_gtk_image_menu_item_parse_finished (GladeProject *project, GObject *object)
 {
+  GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeWidget *gimage;
   GtkWidget *image = NULL;
   glade_widget_property_get (widget, "image", &image);
@@ -181,11 +181,11 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
   property = glade_widget_get_property (widget, "use-stock");
   glade_property_sync (property);
 
-
   /* Run this after the load so that image is resolved. */
-  g_signal_connect (G_OBJECT (glade_widget_get_project (widget)), "parse-finished",
-                    G_CALLBACK (glade_gtk_image_menu_item_parse_finished),
-                    widget);
+  g_signal_connect_object (glade_widget_get_project (widget), "parse-finished",
+                           G_CALLBACK (glade_gtk_image_menu_item_parse_finished),
+                           glade_widget_get_object (widget),
+                           0);
 }
 
 

@@ -70,9 +70,7 @@ static void
 glade_gtk_header_bar_parse_finished (GladeProject *project,
                                      GObject      *object)
 {
-  GladeWidget *gbox;
-
-  gbox = glade_widget_get_from_gobject (object);
+  GladeWidget *gbox = glade_widget_get_from_gobject (object);
   glade_widget_property_set (gbox, "size", glade_gtk_header_bar_get_num_children (object));
   glade_widget_property_set (gbox, "use-custom-title", gtk_header_bar_get_custom_title (GTK_HEADER_BAR (object)) != NULL);
 }
@@ -85,11 +83,12 @@ glade_gtk_header_bar_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *parent = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (parent);
 
-  if (reason == GLADE_CREATE_LOAD)
+  if (glade_project_is_loading (project))
     {
-      g_signal_connect (project, "parse-finished",
-                        G_CALLBACK (glade_gtk_header_bar_parse_finished),
-                        container);
+      g_signal_connect_object (project, "parse-finished",
+                               G_CALLBACK (glade_gtk_header_bar_parse_finished),
+                               container,
+                               0);
     }
   else if (reason == GLADE_CREATE_USER)
     {
