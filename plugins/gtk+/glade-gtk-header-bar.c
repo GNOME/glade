@@ -83,7 +83,7 @@ glade_gtk_header_bar_post_create (GladeWidgetAdaptor *adaptor,
   GladeWidget *parent = glade_widget_get_from_gobject (container);
   GladeProject *project = glade_widget_get_project (parent);
 
-  if (glade_project_is_loading (project))
+  if (project && glade_project_is_loading (project))
     {
       g_signal_connect_object (project, "parse-finished",
                                G_CALLBACK (glade_gtk_header_bar_parse_finished),

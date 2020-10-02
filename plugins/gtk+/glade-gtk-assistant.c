@@ -201,7 +201,7 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
   /* Chain Up first */
   GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_WINDOW)->post_create (adaptor, object, reason);
 
-  if (glade_project_is_loading (project))
+  if (project && glade_project_is_loading (project))
     {
       g_signal_connect_object (project, "parse-finished",
                                G_CALLBACK (glade_gtk_assistant_parse_finished),

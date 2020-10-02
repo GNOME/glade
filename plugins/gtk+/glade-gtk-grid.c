@@ -210,7 +210,7 @@ glade_gtk_grid_post_create (GladeWidgetAdaptor *adaptor,
   g_signal_connect (G_OBJECT (gwidget), "configure-end",
                     G_CALLBACK (glade_gtk_grid_configure_end), container);
 
-  if (glade_project_is_loading (project))
+  if (project && glade_project_is_loading (project))
     g_signal_connect_object (project, "parse-finished",
                              G_CALLBACK (glade_gtk_grid_parse_finished),
                              container,
