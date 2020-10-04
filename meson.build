@@ -8,7 +8,7 @@
 # version will always know they are on a development release.
 project(
   'glade', 'c',
-  version: '3.38.0',
+  version: '3.38.1',
   license: 'GPL2',
   default_options: 'buildtype=debugoptimized',
   meson_version: '>= 0.49.0',
@@ -48,7 +48,7 @@ gladeui_libname = '@0@-@1@'.format(gladeui_name, gladeui_version)
 # If any interfaces have been removed since the last public release, then set gladeui_age to 0.
 # Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
 
-gladeui_revision = 0
+gladeui_revision = 1
 gladeui_current = 13
 gladeui_age = 0
 gladeui_current_minus_age = gladeui_current - gladeui_age
