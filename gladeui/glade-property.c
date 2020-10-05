@@ -639,9 +639,19 @@ glade_property_init (GladeProperty *property)
   property->priv->precision = 2;
   property->priv->enabled = TRUE;
   property->priv->sensitive = TRUE;
-  property->priv->i18n_translatable = TRUE;
+  property->priv->i18n_translatable = FALSE;
   property->priv->i18n_comment = NULL;
   property->priv->sync_tolerance = 1;
+}
+
+static void
+glade_property_constructed (GObject *object)
+{
+  GladeProperty *property = GLADE_PROPERTY (object);
+  GParamSpec *pspec = glade_property_def_get_pspec (property->priv->def);
+
+  /* Only string properties are translatable */
+  glade_property_i18n_set_translatable (property, G_IS_PARAM_SPEC_STRING (pspec));
 }
 
 static void
@@ -652,6 +662,7 @@ glade_property_class_init (GladePropertyClass * prop_class)
   /* GObjectClass */
   object_class->set_property = glade_property_set_real_property;
   object_class->get_property = glade_property_get_real_property;
+  object_class->constructed = glade_property_constructed;
   object_class->finalize = glade_property_finalize;
 
   /* Class methods */
@@ -701,7 +712,7 @@ glade_property_class_init (GladePropertyClass * prop_class)
     g_param_spec_boolean ("i18n-translatable",
                           _("Translatable"),
                           _("Whether this property is translatable"),
-                          TRUE,
+                          FALSE,
                           G_PARAM_READWRITE);
 
   properties[PROP_STATE] =
@@ -773,8 +784,9 @@ glade_property_new (GladePropertyDef *def,
 
   g_return_val_if_fail (GLADE_IS_PROPERTY_DEF (def), NULL);
 
-  property = (GladeProperty *) g_object_new (GLADE_TYPE_PROPERTY, NULL);
-  property->priv->def = def;
+  property = (GladeProperty *) g_object_new (GLADE_TYPE_PROPERTY,
+                                             "class", def,
+                                             NULL);
   property->priv->widget = widget;
   property->priv->value = value;
 
