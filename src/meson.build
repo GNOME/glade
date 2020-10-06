@@ -37,13 +37,13 @@ ldflags = []
 if glade_system == 'windows'
   rc = configure_file(
     input: 'glade.rc.in',
-    output: '@BASELINE@',
+    output: 'glade.rc',
     configuration: rc_conf,
   )
 
   sources += windows.compile_resources(rc)
 
-  test_ldflags = ['-export-dynamic']
+  test_ldflags = ['-Wl,--export-all-symbols']
   if not glade_unstable
     test_ldflags += ['-mwindows']
   endif

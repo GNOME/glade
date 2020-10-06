@@ -1,6 +1,6 @@
 #include <winver.h>                      
 
-GLADE_ICON		ICON		"../data/icons/glade.ico"
+GLADE_ICON		ICON		"@SOURCE_ROOT@/data/icons/glade.ico"
 
 VS_VERSION_INFO VERSIONINFO
   FILEVERSION     @GLADE_MAJOR_VERSION@,@GLADE_MINOR_VERSION@,@GLADE_MICRO_VERSION@,0
@@ -12,10 +12,10 @@ VS_VERSION_INFO VERSIONINFO
     BEGIN
       BLOCK "040904B0"
       BEGIN
-        VALUE "CompanyName", "GNOME Foundation"
+        VALUE "CompanyName", "The GNOME Foundation"
         VALUE "FileDescription", "Glade Interface Designer @GLADE_MAJOR_VERSION@.@GLADE_MINOR_VERSION@.@GLADE_MICRO_VERSION@"
         VALUE "FileVersion", "@GLADE_MAJOR_VERSION@.@GLADE_MINOR_VERSION@.@GLADE_MICRO_VERSION@.0"
-        VALUE "LegalCopyright", "Copyright © 2012 The GNOME Foundation"
+        VALUE "LegalCopyright", "Copyright 2012 The GNOME Foundation"
         VALUE "OriginalFilename", "glade.exe"
         VALUE "ProductName", "Glade Interface Designer"
         VALUE "ProductVersion", "@GLADE_MAJOR_VERSION@.@GLADE_MINOR_VERSION@.@GLADE_MICRO_VERSION@.0"

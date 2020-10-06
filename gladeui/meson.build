@@ -184,8 +184,8 @@ endif
 
 if glade_system == 'windows'
   rc = configure_file(
-    input: 'glade.rc.in',
-    output: '@BASELINE@',
+    input: 'gladeui.rc.in',
+    output: 'gladeui.rc',
     configuration: rc_conf,
   )
 
@@ -193,8 +193,8 @@ if glade_system == 'windows'
 
   ldflags += cc.get_supported_link_arguments([
     # gmodule-export-2.0 on windows does not include -export-dynamic flag
-    '-export-dynamic',
-    '-no-undefined',
+    '-Wl,--export-all-symbols',
+    '-Wl,--no-undefined',
   ])
 endif
 
@@ -264,7 +264,7 @@ ldflags = []
 if glade_system == 'windows'
   rc = configure_file(
     input: 'glade-previewer.rc.in',
-    output: '@BASELINE@',
+    output: 'glade-previewer.rc',
     configuration: rc_conf,
   )
 
