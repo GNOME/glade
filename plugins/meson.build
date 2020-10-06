@@ -1,6 +1,9 @@
 ldflags = []
 if glade_system == 'windows'
-  ldflags += cc.get_supported_link_arguments('-no-undefined')
+  ldflags += cc.get_supported_link_arguments(
+    '-Wl,--export-all-symbols',
+    '-Wl,--no-undefined',
+  )
 endif
 
 plugins_kwargs = {

@@ -178,10 +178,10 @@ build_package_paths (void)
 # endif
 
   if (!pixmaps_dir)
-    pixmaps_dir = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
+    pixmaps_dir = g_build_filename (prefix, "share", PACKAGE_NAME, "pixmaps", NULL);
 
-  catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
-  modules_dir = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
+  catalogs_dir = g_build_filename (prefix, "share", PACKAGE_NAME, "catalogs", NULL);
+  modules_dir = g_build_filename (prefix, "lib", PACKAGE_NAME, "modules", NULL);
   locale_dir = g_build_filename (prefix, "share", "locale", NULL);
   bin_dir = g_build_filename (prefix, "bin", NULL);
   lib_dir = g_build_filename (prefix, "lib", NULL);

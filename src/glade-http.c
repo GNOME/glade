@@ -22,6 +22,7 @@
 #include <glade-http.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 struct _GladeHTTPPrivate
 {

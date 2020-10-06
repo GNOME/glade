@@ -65,6 +65,8 @@ glade_unstable = glade_minor_version.is_odd()
 gnome = import('gnome')
 i18n = import('i18n')
 pkg = import('pkgconfig')
+
+# NOTE: On windows we only target MSYS2/mingw
 windows = import('windows')
 
 source_root = meson.current_source_dir()
@@ -181,6 +183,7 @@ if glade_system == 'windows'
   rc_conf.set('GLADE_MINOR_VERSION', glade_minor_version)
   rc_conf.set('GLADE_MICRO_VERSION', glade_micro_version)
   rc_conf.set('GLADE_CURRENT_MINUS_AGE', gladeui_current_minus_age)
+  rc_conf.set('SOURCE_ROOT', source_root)
 endif
 
 subdir('po')

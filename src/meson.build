@@ -1,4 +1,16 @@
-vcs_tag(input: 'version.h.in', output: 'version.h')
+fs = import('fs')
+
+if fs.exists('../.git')
+  vcs_tag(input: 'version.h.in', output: 'version.h')
+else
+  config = configuration_data()
+  config.set ('VCS_TAG', glade_version)
+  configure_file(
+    input: 'version.h.in',
+    output: 'version.h',
+    configuration: config
+  )
+endif
 
 sources = files(
   'glade-http.c',
@@ -39,13 +51,13 @@ ldflags = []
 if glade_system == 'windows'
   rc = configure_file(
     input: 'glade.rc.in',
-    output: '@BASELINE@',
+    output: 'glade.rc',
     configuration: rc_conf,
   )
 
   sources += windows.compile_resources(rc)
 
-  test_ldflags = ['-export-dynamic']
+  test_ldflags = ['-Wl,--export-all-symbols']
   if not glade_unstable
     test_ldflags += ['-mwindows']
   endif
