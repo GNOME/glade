@@ -36,6 +36,20 @@ enhance UI editing and workaround exceptions.
     </para>
 
     <para>
+Keep in mind you need to take extra steps to ensure GtkBuilder can pick up your
+new object types at runtime. Ussualy all you need is to link your executable
+with your widget library assuming it has properly named get_type() functions.
+
+<![CDATA[GtkWindow -> gtk_window_get_type
+GtkHBox -> gtk_hbox_get_type
+GtkUIManager -> gtk_ui_manager_get_type
+GWeatherLocation -> gweather_location_get_type]]>
+
+If not you can always register your widgets with the type system with g_type_ensure ()
+
+    </para>
+
+    <para>
 The catalog file starts by specifying the name of the catalog and the plugin
 library to use, the following examples assume you have a namespace "Foo" and
 are integrating an object "Frobnicator":
