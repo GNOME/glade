@@ -10638,6 +10638,7 @@ glade_gtk_cell_renderer_sync_attributes (GObject *object)
 	GtkCellLayout *layout;
 	GtkCellRenderer *cell;
 	GladeWidget *widget = glade_widget_get_from_gobject (object);
+        GladeWidget *parent;
 	GladeWidget *gmodel;
 	GladeProperty *property;
 	gchar *attr_prop_name;
@@ -10650,13 +10651,15 @@ glade_gtk_cell_renderer_sync_attributes (GObject *object)
 
 	/* Apply attributes to renderer when bound to a model in runtime */
 	widget = glade_widget_get_from_gobject (object);
-		
-	if (widget->parent == NULL) return FALSE;
+
+	parent = glade_widget_get_parent (widget);
+	if (parent == NULL)
+		return FALSE;
 
 	/* When creating widgets, sometimes the parent is set before parenting happens,
 	 * here we have to be careful for that..
 	 */
-	layout = GTK_CELL_LAYOUT (widget->parent->object);
+	layout = GTK_CELL_LAYOUT (parent->object);
 	cell = GTK_CELL_RENDERER (object);
 
 	if (!glade_gtk_cell_layout_has_renderer (layout, cell))
