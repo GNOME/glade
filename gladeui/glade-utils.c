@@ -190,6 +190,13 @@ _glade_util_dialog_set_hig (GtkDialog *dialog)
   gtk_box_set_spacing (GTK_BOX (action_area), 6);
 }
 
+static void
+glade_util_ui_message_foreach (GtkWidget *widget, gpointer data)
+{
+  if (GTK_IS_LABEL (widget))
+    gtk_label_set_selectable (GTK_LABEL (widget), TRUE);
+}
+
 /**
  * glade_util_ui_message:
  * @parent: a #GtkWindow cast as a #GtkWidget
@@ -270,7 +277,11 @@ glade_util_ui_message (GtkWidget *parent,
   dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
                                    GTK_DIALOG_DESTROY_WITH_PARENT,
                                    message_type, buttons_type, NULL);
-  
+
+  /* Make labels selectable */
+  gtk_container_forall (GTK_CONTAINER (gtk_message_dialog_get_message_area (GTK_MESSAGE_DIALOG (dialog))),
+                        glade_util_ui_message_foreach, NULL);
+
   gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog), string);
 
   if (widget)
