@@ -1280,6 +1280,8 @@ glade_util_get_file_mtime (const gchar *filename, GError **error)
   struct stat info;
   gint retval;
 
+  g_return_val_if_fail (filename, 0);
+
   retval = g_stat (filename, &info);
 
   if (retval != 0)
