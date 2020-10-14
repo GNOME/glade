@@ -204,9 +204,7 @@ glade_editor_property_commit_common (GladeEditorProperty *eprop,
   if (glade_property_def_get_construct_only (priv->property_def))
     {
       gboolean focus_set = FALSE;
-      gtk_container_foreach (GTK_CONTAINER (priv->input),
-                             deepest_child_grab_focus,
-                             &focus_set);
+      deepest_child_grab_focus (priv->input, &focus_set);
     }
 }
 
@@ -2951,7 +2949,7 @@ glade_eprop_object_populate_view_real (GtkTreeStore *model,
 
           widget_name = glade_widget_get_display_name (widget);
           if (parentless)
-            good_type = good_type && !GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor);
+            good_type = good_type && GLADE_WIDGET_ADAPTOR_IS_TOPLEVEL (adaptor);
 
           if (good_type || has_decendant)
             {
