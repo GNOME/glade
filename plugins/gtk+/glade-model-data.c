@@ -294,6 +294,12 @@ clear_view (GladeEditorProperty *eprop)
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkTreeViewColumn *column;
 
+  //eprop_data->adding_row = 0;
+  //eprop_data->want_focus = 0;
+  //eprop_data->setting_focus = 0;
+  eprop_data->editing_row = -1;
+  eprop_data->editing_column = -1;
+
   /* Clear columns ... */
   while ((column = gtk_tree_view_get_column (eprop_data->view, 0)) != NULL)
     gtk_tree_view_remove_column (eprop_data->view, column);
@@ -303,8 +309,8 @@ clear_view (GladeEditorProperty *eprop)
 
 }
 
-static gboolean
-update_data_tree_idle (GladeEditorProperty *eprop)
+static void
+update_data_tree (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GladeProperty       *property = glade_editor_property_get_property (eprop);
@@ -323,37 +329,32 @@ update_data_tree_idle (GladeEditorProperty *eprop)
   g_value_unset (&value);
 
   eprop_data->pending_data_tree = NULL;
-  return FALSE;
 }
 
-static gboolean
-update_and_focus_data_tree_idle (GladeEditorProperty *eprop)
+static void
+update_and_focus_data_tree (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GladeProperty       *property = glade_editor_property_get_property (eprop);
 
   eprop_data->want_focus = TRUE;
 
-  update_data_tree_idle (eprop);
-
   /* XXX Have to load it regardless if it changed, this is a slow and redundant way... */
   glade_editor_property_load (eprop, property);
 
-  eprop_data->want_focus = FALSE;
+  update_data_tree (eprop);
 
-  return FALSE;
+  eprop_data->want_focus = FALSE;
 }
 
-static gboolean
-focus_data_tree_idle (GladeEditorProperty *eprop)
+static void
+focus_data_tree (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
 
   eprop_data->want_focus = TRUE;
   eprop_data_focus_editing_cell (eprop_data);
   eprop_data->want_focus = FALSE;
-
-  return FALSE;
 }
 
 static void
@@ -421,7 +422,7 @@ glade_eprop_model_data_delete_selected (GladeEditorProperty *eprop)
     glade_model_data_tree_free (eprop_data->pending_data_tree);
 
   eprop_data->pending_data_tree = data_tree;
-  g_idle_add ((GSourceFunc) update_data_tree_idle, eprop);
+  update_data_tree (eprop);
 }
 
 static void
@@ -458,8 +459,8 @@ eprop_treeview_key_press (GtkWidget           *treeview,
   return FALSE;
 }
 
-static gboolean
-data_changed_idle (GladeEditorProperty *eprop)
+static void
+data_changed (GladeEditorProperty *eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GladeProperty *property = glade_editor_property_get_property (eprop);
@@ -495,9 +496,7 @@ data_changed_idle (GladeEditorProperty *eprop)
   if (eprop_data->pending_data_tree)
     glade_model_data_tree_free (eprop_data->pending_data_tree);
   eprop_data->pending_data_tree = new_tree;
-  update_data_tree_idle (eprop);
-
-  return FALSE;
+  update_data_tree (eprop);
 }
 
 static void
@@ -508,7 +507,7 @@ eprop_treeview_row_deleted (GtkTreeModel        *tree_model,
   if (glade_editor_property_loading (eprop))
     return;
 
-  g_idle_add ((GSourceFunc) data_changed_idle, eprop);
+  data_changed (eprop);
 }
 
 
@@ -626,7 +625,7 @@ value_toggled (GtkCellRendererToggle *cell, gchar *path, GladeEditorProperty *ep
     glade_model_data_tree_free (eprop_data->pending_data_tree);
 
   eprop_data->pending_data_tree = data_tree;
-  g_idle_add ((GSourceFunc) update_and_focus_data_tree_idle, eprop);
+  update_and_focus_data_tree (eprop);
 }
 
 static void
@@ -677,7 +676,7 @@ value_i18n_activate (GladeCellRendererIcon *cell,
         glade_model_data_tree_free (eprop_data->pending_data_tree);
 
       eprop_data->pending_data_tree = data_tree;
-      g_idle_add ((GSourceFunc) update_and_focus_data_tree_idle, eprop);
+      update_and_focus_data_tree (eprop);
     }
   else
     glade_model_data_tree_free (data_tree);
@@ -760,7 +759,7 @@ value_text_edited (GtkCellRendererText *cell,
     glade_model_data_tree_free (eprop_data->pending_data_tree);
 
   eprop_data->pending_data_tree = data_tree;
-  g_idle_add ((GSourceFunc) update_and_focus_data_tree_idle, eprop);
+  update_and_focus_data_tree (eprop);
 }
 
 
@@ -821,7 +820,7 @@ data_editing_canceled (GtkCellRenderer *renderer, GladeEditorProperty *eprop)
   if (eprop_data->setting_focus)
     return;
 
-  g_idle_add ((GSourceFunc) focus_data_tree_idle, eprop);
+  focus_data_tree (eprop);
 }
 
 static gint
