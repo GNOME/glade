@@ -195,7 +195,7 @@ glade_registration_show_message (GladeRegistration *registration,
 
   if (format)
     {
-      g_autofree gchar *string;
+      g_autofree gchar *string = NULL;
       va_list args;
 
       va_start (args, format);
@@ -545,7 +545,7 @@ glade_registration_save_state_foreach (GtkWidget *widget, gpointer data)
         {
           GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget));
           GtkTextIter start, end;
-          g_autofree gchar *text;
+          g_autofree gchar *text = NULL;
 
           gtk_text_buffer_get_bounds (buffer, &start, &end);
           text = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);

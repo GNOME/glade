@@ -769,7 +769,7 @@ glade_catalog_load_all (void)
   /* First load catalogs from user specified directories ... */
   if ((search_path = g_getenv (GLADE_ENV_CATALOG_PATH)) != NULL)
     {
-      g_auto(GStrv) split;
+      g_auto(GStrv) split = NULL;
 
       if ((split = g_strsplit (search_path, ":", 0)) != NULL)
         {

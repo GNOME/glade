@@ -158,7 +158,7 @@ on_read_line_ready (GObject *source, GAsyncResult *res, gpointer data)
 {
   GladeHTTPPrivate *priv = GLADE_HTTP (data)->priv;
   g_autoptr (GError) error = NULL;
-  g_autofree gchar *line;
+  g_autofree gchar *line = NULL;
   gsize length;
 
   glade_http_emit_status (data, GLADE_HTTP_RECEIVING, NULL);
