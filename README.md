@@ -49,6 +49,7 @@ Requirements
 
 Optional dependencies:
 
+* glib-networking plugins for TLS support (Needed for survey)
 * libwebkit2gtk-4.0 - For Webkit plugin
 * python-gi - For Python plugin
 * libgjs - For JavaScript plugin
@@ -59,7 +60,7 @@ Download sources from git and build using meson/ninja
 	sudo apt install gcc meson libgtk-3-dev libxml2-dev libgirepository1.0-dev xsltproc 
 	
 	# Optional dependencies
-	sudo apt install libgjs-dev libwebkit2gtk-4.0-dev python-gi-dev
+	sudo apt install libgjs-dev libwebkit2gtk-4.0-dev python-gi-dev glib-networking
 
 	# Clone the source repository or download tarball
 	git clone https://gitlab.gnome.org/GNOME/glade.git

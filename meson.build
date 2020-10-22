@@ -113,6 +113,7 @@ add_project_arguments(common_flags, language: 'c')
 
 # Check required libraries
 glib_dep = dependency('glib-2.0', version: '>= 2.64.0')
+gio_dep = dependency('gio-2.0', version: '>= 2.64.0')
 gmodule_dep = dependency('gmodule-2.0')
 gmodule_export_dep = dependency('gmodule-export-2.0')
 gtk_dep = dependency('gtk+-3.0', version: '>= 3.24.0')
@@ -214,6 +215,17 @@ meson.add_install_script(
   glade_datadir,
 )
 
+tls_backend_support_src = '''
+#include <stdio.h>
+#include <gio/gio.h>
+int main(int argc, char **argv)
+{
+  printf ("%s\n", g_tls_backend_supports_tls (g_tls_backend_get_default ()) ? "true" : "false");
+  return 0;
+}
+'''
+tls_backend_support = cc.run(tls_backend_support_src, dependencies: gio_dep).stdout()
+
 output = '\nConfiguration:\n\n'
 output += '\tCompiler:                ' + cc.get_id() + '\n'
 output += '\tSource code location:    ' + source_root + '\n'
@@ -225,5 +237,6 @@ output += '\tGladeui Catalog:         ' + enable_gladeui.to_string() + '\n'
 output += '\tWebKit2GTK+ Catalog:     ' + have_webkit2gtk.to_string() + '\n'
 output += '\tIntrospection Data:      ' + enable_introspection.to_string() + '\n\n'
 output += '\tBuild Reference Manual:  ' + enable_gtk_doc.to_string() + '\n'
-output += '\tBuild Manual Pages:      ' + enable_man.to_string()
+output += '\tBuild Manual Pages:      ' + enable_man.to_string() + '\n'
+output += '\tTLS backend support:     ' + tls_backend_support
 message(output)

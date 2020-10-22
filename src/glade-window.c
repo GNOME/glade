@@ -2497,6 +2497,13 @@ glade_window_registration_notify_user (GladeWindow *window)
   g_return_if_fail (GLADE_IS_WINDOW (window));
   priv = window->priv;
 
+  if (!g_tls_backend_supports_tls (g_tls_backend_get_default ()))
+    {
+      g_message ("No TLS support in GIO, Registration & User Survey disabled. (missing glib-networking package)");
+      actions_set_enabled (window, "registration", FALSE);
+      return;
+    }
+
   g_object_get (priv->registration,
                 "completed", &completed,
                 "skip-reminder", &skip_reminder,
