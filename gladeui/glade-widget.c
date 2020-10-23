@@ -2552,6 +2552,9 @@ glade_widget_rebuild (GladeWidget *gwidget)
 
   g_object_ref (gwidget);
 
+  /* Extract and keep the child hierarchies aside... */
+  children = glade_widget_extract_children (gwidget);
+
   /* Here we take care removing the widget from the project and
    * the selection before rebuilding the instance.
    */
@@ -2565,9 +2568,6 @@ glade_widget_rebuild (GladeWidget *gwidget)
 
       glade_project_remove_object (project, gwidget->priv->object);
     }
-
-  /* Extract and keep the child hierarchies aside... */
-  children = glade_widget_extract_children (gwidget);
 
   /* parentless_widget and object properties that refer to this widget 
    * should be unset before transferring */
