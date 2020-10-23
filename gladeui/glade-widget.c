@@ -1805,9 +1805,6 @@ glade_widget_extract_children (GladeWidget *gwidget)
 
           extract_list = g_list_prepend (extract_list, extract);
 
-          /* Internal GladeWidget are no longer needed */
-          glade_widget_set_object (gchild, NULL);
-          glade_widget_set_parent (gchild, NULL);
         }
       else if (gchild || GLADE_IS_PLACEHOLDER (child))
         {
