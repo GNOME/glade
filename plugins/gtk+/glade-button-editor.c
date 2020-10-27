@@ -373,6 +373,7 @@ label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   glade_property_get_default (property, &value);
   glade_command_set_property_value (property, &value);
   g_value_unset (&value);
+  glade_property_i18n_set_translatable (property, TRUE);
 
   glade_command_pop_group ();
 
