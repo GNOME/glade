@@ -11,7 +11,7 @@ project(
   version: '3.38.1',
   license: 'GPL2',
   default_options: 'buildtype=debugoptimized',
-  meson_version: '>= 0.49.0',
+  meson_version: '>= 0.53.0',
 )
 
 glade_name = meson.project_name()
@@ -153,7 +153,7 @@ pygobject_version = '3.8.0'
 pygobject_dep = dependency('pygobject-3.0', version: '>= ' + pygobject_version, required: get_option('python'))
 have_python = pygobject_dep.found()
 if have_python
-  python_dep = dependency('python-3.8-embed', version: '>= 3.8')
+  python_dep = import('python').find_installation().dependency(embed: true)
 
   version_array = pygobject_version.split('.')
   config_h.set('PYGOBJECT_REQUIRED_MAJOR', version_array[0].to_int())
