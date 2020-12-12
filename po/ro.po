@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-08-07 23:08+0000\n"
-"PO-Revision-Date: 2020-08-14 15:13+0300\n"
+"POT-Creation-Date: 2020-09-12 22:59+0000\n"
+"PO-Revision-Date: 2020-12-12 21:32+0200\n"
 "Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
 "Language-Team: Gnome Romanian Translation Team\n"
 "Language: ro\n"
@@ -20,12 +20,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && n"
 "%100<=19) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:43 src/glade.glade:202
+#: src/main.c:43 src/glade.glade:261
 msgid "Glade"
 msgstr "Glade"
 
@@ -188,18 +188,17 @@ msgstr "Modificările vor fi pierdute dacă nu le salvați."
 msgid "Close _without Saving"
 msgstr "Închide _fără a salva"
 
-#: src/glade-window.c:1040 src/glade-window.c:1725
-#: src/glade-preferences.glade:422 gladeui/glade-editor.c:795
-#: gladeui/glade-editor.c:1151 gladeui/glade-editor-property.c:1776
-#: gladeui/glade-editor-property.c:2084 gladeui/glade-editor-property.c:2281
-#: gladeui/glade-editor-property.c:3217 gladeui/glade-editor-property.c:3325
-#: gladeui/glade-editor-property.c:3336 gladeui/glade-editor-property.c:3647
-#: gladeui/glade-utils.c:483 plugins/gtk+/glade-accels.c:522
-#: plugins/gtk+/glade-attributes.c:1062
+#: src/glade-window.c:1040 src/glade-window.c:1725 src/glade-preferences.c:237
+#: gladeui/glade-editor.c:794 gladeui/glade-editor.c:1153
+#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
+#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3217
+#: gladeui/glade-editor-property.c:3325 gladeui/glade-editor-property.c:3336
+#: gladeui/glade-editor-property.c:3647 gladeui/glade-utils.c:483
+#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1062
 msgid "_Cancel"
 msgstr "_Anulează"
 
-#: src/glade-window.c:1041 src/glade.glade:597 gladeui/glade-utils.c:486
+#: src/glade-window.c:1041 src/glade.glade:685 gladeui/glade-utils.c:486
 msgid "_Save"
 msgstr "_Salvează"
 
@@ -408,60 +407,123 @@ msgstr ""
 "Creeați sau editați design-uri de interfețe pentru utilizatori pentru "
 "aplicații GTK sau GNOME."
 
-#: src/glade.glade:47
+#. The last sentence in quotes is in spanish and does not need to be translated.
+#: src/glade.glade:59
+msgctxt ""
+"This is to honor a professor that passed away last year and appears in a "
+"popover when you click on the button that says \"RIP Guido\""
+msgid ""
+"Guido was one of my professors at Rosario\n"
+"National University of Argentina.\n"
+"\n"
+"He introduced me to C, Linux, free software...\n"
+"\n"
+"He always had extra time to explain one more thing\n"
+"and help you figure out things by yourself.\n"
+"\n"
+"Always made a joke in the right moment keeping\n"
+"things interesting and fun.\n"
+"\n"
+"Master of intentionally misconstrued sayings.\n"
+"\n"
+"Always carried a stack of books under his arm.\n"
+"\n"
+"Loved Guinness beer.\n"
+"\n"
+"All he ever wanted was make you think!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+msgstr ""
+"Guido a fost unul dintre profesorii mei la Universitatea\n"
+"Națională Rosario din Argentina.\n"
+"\n"
+"Acesta mi-a făcut cunoștință cu C, Linux, programe libere...\n"
+"\n"
+"A avut întotdeauna timp suplimentar pentru a explica încă un lucru\n"
+"și pentru a te ajuta să îți dai seama de lucruri singur.\n"
+"\n"
+"Întotdeauna a făcut o glumă la momentul potrivit păstrând\n"
+"lucrurile interesante și distractive.\n"
+"\n"
+"Stăpân al spuselor intenționat greșit.\n"
+"\n"
+"A purtat întotdeauna un teanc de cărți sub braț.\n"
+"\n"
+"A iubit berea Guinness.\n"
+"\n"
+"Tot ce a dorit vreodată a fost să te facă să gândești!\n"
+"\n"
+"\"Alégrate! Mañana sera peor.\"\n"
+"\n"
+"\tJuan Pablo"
+
+#: src/glade.glade:106
 msgid "Close Project"
 msgstr "Închide proiectul"
 
-#: src/glade.glade:72
+#: src/glade.glade:131
 msgid "Registration & User Survey"
 msgstr "Înregistrare și sondaj utilizatori"
 
-#: src/glade.glade:86
+#: src/glade.glade:145
 msgid "_Developer Reference"
 msgstr "Referințe pentru _dezvoltatori"
 
-#: src/glade.glade:100
+#: src/glade.glade:159
 msgid "Interactive Intro"
 msgstr "Introducere interactivă"
 
-#: src/glade.glade:114
+#: src/glade.glade:173
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: src/glade.glade:139
+#: src/glade.glade:198
 msgid "About Glade"
 msgstr "Despre Glade"
 
-#: src/glade.glade:504 src/glade-preferences.glade:436
+#: src/glade.glade:297
+msgctxt "Button label in the bottom of main window that triggers a popover"
+msgid ""
+"<small>In memory of an extraordinary\n"
+"person and professor\n"
+"R.I.P Guido Macchi</small>"
+msgstr ""
+"<small>În memoria unei persoane\n"
+"și profesor extraordinar\n"
+"R.I.P Guido Macchi</small>"
+
+#: src/glade.glade:592 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
 msgid "_Open"
 msgstr "_Deschide"
 
-#: src/glade.glade:509
+#: src/glade.glade:597
 msgid "Open a project"
 msgstr "Deschide un proiect"
 
-#: src/glade.glade:554
+#: src/glade.glade:642
 msgid "Create a new project"
 msgstr "Creează un proiect nou"
 
-#: src/glade.glade:574
+#: src/glade.glade:662
 msgid "Edit project properties"
 msgstr "Editează proprietățile proiectului"
 
-#: src/glade.glade:602
+#: src/glade.glade:690
 msgid "Save the current project"
 msgstr "Salvează proiectul curent"
 
-#: src/glade.glade:618
+#: src/glade.glade:706
 msgid "Save the current project with a different name"
 msgstr "Salvează proiectul curent cu un alt nume"
 
-#: src/glade.glade:647
+#: src/glade.glade:735
 msgid "Start/resume interactive UI introduction"
 msgstr "Pornește/Reia introducerea UI interactivă"
 
-#: src/glade.glade:746
+#: src/glade.glade:834
 msgid ""
 "© 2018-2020 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
@@ -473,21 +535,25 @@ msgstr ""
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:750
+#: src/glade.glade:838
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Un designer de interfețe pentru utilizatori pentru GTK+ și GNOME."
 
-#: src/glade.glade:752
+#: src/glade.glade:840
 msgid "Visit Glade web site"
 msgstr "Vizitați situl web Glade"
 
-#: src/glade.glade:764
+#: src/glade.glade:852
 msgid "translator-credits"
 msgstr ""
 "Lucian Adrian Grijincu <lucian.grijincu@gmail.com>,\n"
 "Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2018-2019\n"
 "Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>, "
 "2019-2020"
+
+#: src/glade-preferences.c:234
+msgid "Select a catalog search path"
+msgstr "Selectează o cale de căutare de catalog"
 
 #: src/glade-preferences.glade:45
 msgid "Glade Preferences"
@@ -568,25 +634,31 @@ msgstr ""
 msgid "Show warnings when saving"
 msgstr "Arată avertismente la salvare"
 
-#: src/glade-preferences.glade:297
+#: src/glade-preferences.glade:285
+msgid ""
+"List of directories where to load widget catalogs and custom templates "
+"from.\n"
+"Needs to restart."
+msgstr ""
+"Lista directoarelor din care să se încarce cataloagele și șabloanele "
+"personalizate ale widget-ului.\n"
+"Are nevoie de o repornire."
+
+#: src/glade-preferences.glade:299
 msgid "column"
 msgstr "coloană"
 
-#: src/glade-preferences.glade:328
-msgid "Add a new catalog search path"
-msgstr "Adaugă o nouă cale de căutare de catalog"
+#: src/glade-preferences.glade:331
+msgid "Add a new search path"
+msgstr "Adaugă o cale nouă de căutare"
 
-#: src/glade-preferences.glade:353
-msgid "Remove the selected catalog search path"
-msgstr "Elimină calea de căutare de catalog selectată"
+#: src/glade-preferences.glade:356
+msgid "Remove the selected search path"
+msgstr "Elimină calea de căutare selectată"
 
-#: src/glade-preferences.glade:384
-msgid "Extra catalog paths"
-msgstr "Căi de catalog extra"
-
-#: src/glade-preferences.glade:403
-msgid "Select a catalog search path"
-msgstr "Selectează o cale de căutare de catalog"
+#: src/glade-preferences.glade:387
+msgid "Extra Catalog & Templates paths"
+msgstr "Căi extra de catalog și șabloane"
 
 #: src/glade-registration.c:282
 #, c-format
@@ -790,8 +862,8 @@ msgstr "Rust"
 #: src/glade-registration.glade:1312 src/glade-registration.glade:1344
 #: src/glade-registration.glade:1370 src/glade-registration.glade:1465
 #: src/glade-registration.glade:1956 src/glade-registration.glade:2158
-#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3196
-#: plugins/gtk+/gtk+.xml:4910
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
+#: plugins/gtk+/gtk+.xml:4624
 msgid "Other"
 msgstr "Altul"
 
@@ -1063,7 +1135,7 @@ msgstr "Tiger"
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3339
+#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3149
 msgid "BSD"
 msgstr "BSD"
 
@@ -1217,12 +1289,12 @@ msgid "Have you ever encountered a bug?"
 msgstr "Ați întâlnit vreodată un defect?"
 
 #: src/glade-registration.glade:2233 src/glade-registration.glade:2305
-#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1746
+#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
 msgid "Yes"
 msgstr "Da"
 
 #: src/glade-registration.glade:2250 src/glade-registration.glade:2322
-#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1748
+#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1640
 msgid "No"
 msgstr "Nu"
 
@@ -1313,70 +1385,70 @@ msgstr ""
 "Nu s-a putut deschide %s pentru a scrie datele private (%s).\n"
 "Datele private nu vor fi salvate în această sesiune"
 
-#: gladeui/glade-base-editor.c:587
+#: gladeui/glade-base-editor.c:592
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "Se stabilește tipul obiectului %s la %s"
 
-#: gladeui/glade-base-editor.c:750
+#: gladeui/glade-base-editor.c:755
 #, c-format
 msgid "Add a %s to %s"
 msgstr "Adaugă un %s la %s"
 
-#: gladeui/glade-base-editor.c:843 gladeui/glade-command.c:1225
+#: gladeui/glade-base-editor.c:848 gladeui/glade-command.c:1225
 #, c-format
 msgid "Add %s"
 msgstr "Adaugă %s"
 
-#: gladeui/glade-base-editor.c:875
+#: gladeui/glade-base-editor.c:880
 #, c-format
 msgid "Add child %s"
 msgstr "Adaugă un copil %s"
 
-#: gladeui/glade-base-editor.c:967
+#: gladeui/glade-base-editor.c:972
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "Șterge copilul %s din %s"
 
-#: gladeui/glade-base-editor.c:1096
+#: gladeui/glade-base-editor.c:1101
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Reordonează copii lui %s"
 
-#: gladeui/glade-base-editor.c:1583 plugins/gtk+/gtk+.xml:280
-#: plugins/gtk+/gtk+.xml:1009 plugins/gtk+/gtk+.xml:1404
+#: gladeui/glade-base-editor.c:1588 plugins/gtk+/gtk+.xml:260
+#: plugins/gtk+/gtk+.xml:957 plugins/gtk+/gtk+.xml:1323
 #: plugins/gtk+/glade-about-dialog-editor.ui:316
 #: plugins/gtk+/glade-tool-button-editor.ui:86
 msgid "Label"
 msgstr "Etichetă"
 
-#: gladeui/glade-base-editor.c:1598 gladeui/glade-widget-adaptor.c:1468
+#: gladeui/glade-base-editor.c:1603 gladeui/glade-widget-adaptor.c:1468
 #: plugins/gtk+/glade-eprop-enum-int.c:70
 #: plugins/gtk+/glade-eprop-enum-int.c:71
 msgid "Type"
 msgstr "Tip"
 
-#: gladeui/glade-base-editor.c:1626 plugins/gtk+/gtk+.xml:618
+#: gladeui/glade-base-editor.c:1631 plugins/gtk+/gtk+.xml:584
 msgid "Container"
 msgstr "Container"
 
-#: gladeui/glade-base-editor.c:1627
+#: gladeui/glade-base-editor.c:1632
 msgid "The container object this editor is currently editing"
 msgstr "Obiectul container pe care acest editor îl editează în acest moment"
 
 #. Name
 #. translators: The unique identifier of an object in the project
-#: gladeui/glade-base-editor.c:1914 gladeui/glade-editor-table.c:315
+#: gladeui/glade-base-editor.c:1919 gladeui/glade-editor-table.c:315
 #: gladeui/glade-editor-table.c:599
 msgid "ID:"
 msgstr "ID:"
 
 #. Type
-#: gladeui/glade-base-editor.c:1934 plugins/gtk+/glade-window-editor.ui:553
+#: gladeui/glade-base-editor.c:1939 plugins/gtk+/glade-window-editor.ui:553
 msgid "Type:"
 msgstr "Tip:"
 
-#: gladeui/glade-base-editor.c:2152
+#: gladeui/glade-base-editor.c:2157
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1396,7 +1468,7 @@ msgid "Authentication"
 msgstr "Autentificare"
 
 #. GTK_STOCK_DND
-#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:848
+#: gladeui/glade-builtins.c:73 plugins/gtk+/gtk+.xml:807
 msgid "Drag and Drop"
 msgstr "Tragere și plasare"
 
@@ -1475,6 +1547,10 @@ msgstr "Șir"
 msgid "An entry"
 msgstr "O intrare"
 
+#: gladeui/glade-catalog.c:730
+msgid "User templates"
+msgstr "Șabloanele utilizatorului"
+
 #: gladeui/glade-command.c:427 gladeui/glade-command.c:485
 #, c-format
 msgid "Enabling property %s on widget %s"
@@ -1505,9 +1581,9 @@ msgstr "Se stabilește %s din %s la %s"
 msgid "Renaming %s to %s"
 msgstr "Se redenumește %s la %s"
 
-#: gladeui/glade-command.c:1226 gladeui/glade-command.c:1839
-#: gladeui/glade-command.c:1865 gladeui/glade-command.c:1968
-#: gladeui/glade-command.c:2010
+#: gladeui/glade-command.c:1226 gladeui/glade-command.c:1836
+#: gladeui/glade-command.c:1862 gladeui/glade-command.c:1965
+#: gladeui/glade-command.c:2007
 msgid "multiple"
 msgstr "multiple"
 
@@ -1529,96 +1605,96 @@ msgstr "Elimină %s"
 msgid "Remove multiple"
 msgstr "Eliminare multiplă"
 
-#: gladeui/glade-command.c:1811
+#: gladeui/glade-command.c:1808
 #, c-format
 msgid "Create %s"
 msgstr "Creează %s"
 
-#: gladeui/glade-command.c:1837
+#: gladeui/glade-command.c:1834
 #, c-format
 msgid "Delete %s"
 msgstr "Șterge %s"
 
-#: gladeui/glade-command.c:1863
+#: gladeui/glade-command.c:1860
 #, c-format
 msgid "Cut %s"
 msgstr "Taie %s"
 
-#: gladeui/glade-command.c:1966
+#: gladeui/glade-command.c:1963
 #, c-format
 msgid "Paste %s"
 msgstr "Lipește %s"
 
-#: gladeui/glade-command.c:2008
+#: gladeui/glade-command.c:2005
 #, c-format
 msgid "Drag %s and Drop to %s"
 msgstr "Trage %s și mută la %s"
 
-#: gladeui/glade-command.c:2011
+#: gladeui/glade-command.c:2008
 msgid "root"
 msgstr "rădăcină"
 
-#: gladeui/glade-command.c:2129
+#: gladeui/glade-command.c:2126
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Adaugă gestionarul semnalului %s"
 
-#: gladeui/glade-command.c:2130
+#: gladeui/glade-command.c:2127
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Elimină gestionarul semnalului %s"
 
-#: gladeui/glade-command.c:2131
+#: gladeui/glade-command.c:2128
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Modifică gestionarul semnalului %s"
 
-#: gladeui/glade-command.c:2346
+#: gladeui/glade-command.c:2343
 #, c-format
 msgid "Setting i18n metadata"
 msgstr "Se stabilesc metadatele i18n"
 
-#: gladeui/glade-command.c:2463
+#: gladeui/glade-command.c:2460
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr "Se blochează %s de către widget-ul %s"
 
-#: gladeui/glade-command.c:2508
+#: gladeui/glade-command.c:2505
 #, c-format
 msgid "Unlocking %s"
 msgstr "Se deblochează %s"
 
-#: gladeui/glade-command.c:2630 gladeui/glade-command.c:2677
+#: gladeui/glade-command.c:2627 gladeui/glade-command.c:2674
 #, c-format
 msgid "Setting target version of '%s' to %d.%d"
 msgstr "Setarea versiunii țintă a lui %s la %d.%d"
 
-#: gladeui/glade-command.c:2833
+#: gladeui/glade-command.c:2830
 #, c-format
 msgid "Setting project's %s property"
 msgstr "Se stabilește proprietatea %s a proiectului"
 
-#: gladeui/glade-command.c:2940
+#: gladeui/glade-command.c:2937
 #, c-format
 msgid "Setting resource path to '%s'"
 msgstr "Se stabilește calea pentru resurse la „%s”"
 
-#: gladeui/glade-command.c:2971
+#: gladeui/glade-command.c:2968
 #, c-format
 msgid "Setting translation domain to '%s'"
 msgstr "Se stabilește domeniul de traducere la ”%s”"
 
-#: gladeui/glade-command.c:3006
+#: gladeui/glade-command.c:3003
 #, c-format
 msgid "Unsetting widget '%s' as template"
 msgstr "Se destabilește widget-ul „%s\" ca șablon"
 
-#: gladeui/glade-command.c:3009
+#: gladeui/glade-command.c:3006
 #, c-format
 msgid "Setting widget '%s' as template"
 msgstr "Se stabilește widget-ul „%s\" ca șablon"
 
-#: gladeui/glade-command.c:3012
+#: gladeui/glade-command.c:3009
 msgid "Unsetting template"
 msgstr "Destabilirea șablonului"
 
@@ -1645,59 +1721,59 @@ msgstr "Vizualizare design"
 msgid "The GladeDesignView that contains this layout"
 msgstr "GladeDesignView ce conține acest aspect"
 
-#: gladeui/glade-editor.c:240
+#: gladeui/glade-editor.c:239
 msgid "Show info"
 msgstr "Arată informații"
 
-#: gladeui/glade-editor.c:241
+#: gladeui/glade-editor.c:240
 msgid "Whether to show an informational button for the loaded widget"
 msgstr ""
 "Specifică dacă să se arate un buton informațional pentru widget-ul încărcat"
 
-#: gladeui/glade-editor.c:248 plugins/gtk+/gtk+.xml:11
+#: gladeui/glade-editor.c:247 plugins/gtk+/gtk+.xml:11
 msgid "Widget"
 msgstr "Widget"
 
-#: gladeui/glade-editor.c:249
+#: gladeui/glade-editor.c:248
 msgid "The currently loaded widget in this editor"
 msgstr "Widget-ul încărcat curent în acest editor"
 
-#: gladeui/glade-editor.c:255
+#: gladeui/glade-editor.c:254
 msgid "Show Class Field"
 msgstr "Arată câmpul de clasă"
 
-#: gladeui/glade-editor.c:256
+#: gladeui/glade-editor.c:255
 msgid "Whether to show the class field at the top"
 msgstr "Dacă să se afișeze câmpul de clasă în partea de sus"
 
-#: gladeui/glade-editor.c:262
+#: gladeui/glade-editor.c:261
 msgid "Class Field"
 msgstr "Câmpul de clasă"
 
-#: gladeui/glade-editor.c:263
+#: gladeui/glade-editor.c:262
 msgid "The class field string"
 msgstr "Șirul de câmp de clasă"
 
-#: gladeui/glade-editor.c:269
+#: gladeui/glade-editor.c:268
 msgid "Show Border"
 msgstr "Arată bordura"
 
-#: gladeui/glade-editor.c:270
+#: gladeui/glade-editor.c:269
 msgid "Whether the border should be shown"
 msgstr "Dacă bordura ar trebui arătată"
 
-#: gladeui/glade-editor.c:276
+#: gladeui/glade-editor.c:275
 msgid "Signal Editor"
 msgstr "Editor de semnale"
 
-#: gladeui/glade-editor.c:277
+#: gladeui/glade-editor.c:276
 msgid "The signal editor used to edit signals"
 msgstr "Editorul de semnale folosit pentru a edita semnalele"
 
 #. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
 #. * example: Window Properties - GtkWindow [window1]
 #.
-#: gladeui/glade-editor.c:337
+#: gladeui/glade-editor.c:336
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "Proprietăți %s - %s [%s]"
@@ -1705,12 +1781,12 @@ msgstr "Proprietăți %s - %s [%s]"
 #. translators: %s(Class Title) Properties - %s (ClassName)
 #. * example: Window Properties - GtkWindow
 #.
-#: gladeui/glade-editor.c:347
+#: gladeui/glade-editor.c:346
 #, c-format
 msgid "%s Properties - %s"
 msgstr "%s Proprietăți - %s"
 
-#: gladeui/glade-editor.c:361 gladeui/glade-widget.c:1389
+#: gladeui/glade-editor.c:360 gladeui/glade-widget.c:1384
 #: gladeui/glade-project-properties.ui:497
 #: plugins/gtk+/glade-gtk-action-group.c:188
 #: plugins/gtk+/glade-gtk-cell-layout.c:365
@@ -1722,77 +1798,77 @@ msgstr "%s Proprietăți - %s"
 msgid "Properties"
 msgstr "Proprietăți"
 
-#: gladeui/glade-editor.c:791
+#: gladeui/glade-editor.c:790
 #, c-format
 msgid "Create a %s"
 msgstr "Creează un %s"
 
-#: gladeui/glade-editor.c:799
+#: gladeui/glade-editor.c:798
 msgid "Crea_te"
 msgstr "Creea_ză"
 
-#: gladeui/glade-editor.c:907
+#: gladeui/glade-editor.c:906
 msgid "Reset"
 msgstr "Restabilește"
 
-#: gladeui/glade-editor.c:918 gladeui/glade-property-label.c:119
+#: gladeui/glade-editor.c:917 gladeui/glade-property-label.c:119
 msgid "Property"
 msgstr "Proprietate"
 
-#: gladeui/glade-editor.c:949
+#: gladeui/glade-editor.c:948
 msgid "General"
 msgstr "Generale"
 
-#: gladeui/glade-editor.c:957
+#: gladeui/glade-editor.c:956
 msgid "Common"
 msgstr "Comune"
 
-#: gladeui/glade-editor.c:965 gladeui/glade-editor.ui:296
+#: gladeui/glade-editor.c:964 gladeui/glade-editor.ui:296
 msgid "Accessibility"
 msgstr "Accesibilitate"
 
-#: gladeui/glade-editor.c:998
+#: gladeui/glade-editor.c:997
 msgid "(default)"
 msgstr "(implicit)"
 
-#: gladeui/glade-editor.c:1013
+#: gladeui/glade-editor.c:1012
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 "Alegeți proprietățile pe care doriți să le restabiliți la valorile lor "
 "implicite"
 
-#: gladeui/glade-editor.c:1147
+#: gladeui/glade-editor.c:1149
 msgid "Reset Widget Properties"
 msgstr "Restabilește proprietățile widget-ului"
 
-#: gladeui/glade-editor.c:1152 gladeui/glade-editor-property.c:1777
+#: gladeui/glade-editor.c:1154 gladeui/glade-editor-property.c:1777
 #: gladeui/glade-editor-property.c:2085 gladeui/glade-editor-property.c:3219
 #: gladeui/glade-editor-property.c:3328 gladeui/glade-editor-property.c:3338
-#: gladeui/glade-editor-property.c:3648 plugins/gtk+/glade-accels.c:523
+#: gladeui/glade-editor-property.c:3648 plugins/gtk+/glade-accels.c:524
 #: plugins/gtk+/glade-attributes.c:1063
 msgid "_OK"
 msgstr "_OK"
 
 #. Checklist
-#: gladeui/glade-editor.c:1164
+#: gladeui/glade-editor.c:1166
 msgid "_Properties:"
 msgstr "_Proprietăți:"
 
-#: gladeui/glade-editor.c:1193
+#: gladeui/glade-editor.c:1195
 msgid "_Select All"
 msgstr "_Selectează tot"
 
-#: gladeui/glade-editor.c:1201
+#: gladeui/glade-editor.c:1203
 msgid "_Unselect All"
 msgstr "_Deselectează tot"
 
 #. Description
-#: gladeui/glade-editor.c:1211
+#: gladeui/glade-editor.c:1213
 msgid "Property _Description:"
 msgstr "_Descriere proprietate:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: gladeui/glade-editor.c:1309
+#: gladeui/glade-editor.c:1311
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - Proprietăți %s"
@@ -1883,7 +1959,7 @@ msgid "Select a file from the project resource directory"
 msgstr "Alegeți un fișier din dosarul de resurse al proiectului"
 
 #: gladeui/glade-editor-property.c:3136 gladeui/glade-widget-adaptor.c:1461
-#: gladeui/glade-widget.c:1353 plugins/gtk+/gtk+.xml:1519
+#: gladeui/glade-widget.c:1348 plugins/gtk+/gtk+.xml:1432
 msgid "Name"
 msgstr "Nume"
 
@@ -1913,7 +1989,7 @@ msgstr "Alegeți un %s din acest proiect"
 
 #: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
 #: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3646
-#: plugins/gtk+/glade-accels.c:521 plugins/gtk+/glade-attributes.c:1061
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1061
 msgid "C_lear"
 msgstr "C_urăță"
 
@@ -1953,7 +2029,7 @@ msgstr "Nume clasă:"
 msgid "The object's unique identifier"
 msgstr "Identificatorul unic al obiectului"
 
-#: gladeui/glade-editor-table.c:608 gladeui/glade-widget.c:1447
+#: gladeui/glade-editor-table.c:608 gladeui/glade-widget.c:1442
 msgid "Composite"
 msgstr "Compus"
 
@@ -1962,7 +2038,7 @@ msgid "Whether this widget is a composite template"
 msgstr "Dacă acest widget este un șablon compus sau nu"
 
 #: gladeui/glade-inspector.c:191 gladeui/glade-project-properties.c:193
-#: gladeui/glade-widget.c:1382
+#: gladeui/glade-widget.c:1377
 msgid "Project"
 msgstr "Proiect"
 
@@ -2086,9 +2162,9 @@ msgstr "Interschimbat"
 
 #. translators: GConnectFlags value
 #: gladeui/glade-previewer.c:759 gladeui/glade-signal.c:197
-#: gladeui/glade-signal-editor.c:1406 plugins/gtk+/gtk+.xml:2359
-#: plugins/gtk+/gtk+.xml:2363 plugins/gtk+/gtk+.xml:2411
-#: plugins/gtk+/gtk+.xml:2415
+#: gladeui/glade-signal-editor.c:1406 plugins/gtk+/gtk+.xml:2204
+#: plugins/gtk+/gtk+.xml:2208 plugins/gtk+/gtk+.xml:2253
+#: plugins/gtk+/gtk+.xml:2257
 msgid "After"
 msgstr "După"
 
@@ -2198,113 +2274,113 @@ msgstr ""
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "Fie --listen fie --filename trebuiesc specificate.\n"
 
-#: gladeui/glade-project.c:1018
+#: gladeui/glade-project.c:1015
 msgid "Whether project has been modified since it was last saved"
 msgstr "Specifică dacă proiectul a fost modificat de la ultima salvare"
 
-#: gladeui/glade-project.c:1024
+#: gladeui/glade-project.c:1021
 msgid "Has Selection"
 msgstr "Are selecție"
 
-#: gladeui/glade-project.c:1025
+#: gladeui/glade-project.c:1022
 msgid "Whether project has a selection"
 msgstr "Specifică dacă proiectul are o selecție"
 
-#: gladeui/glade-project.c:1031
+#: gladeui/glade-project.c:1028
 msgid "Path"
 msgstr "Cale"
 
-#: gladeui/glade-project.c:1032
+#: gladeui/glade-project.c:1029
 msgid "The filesystem path of the project"
 msgstr "Calea proiectului în sistemul de fișiere"
 
-#: gladeui/glade-project.c:1038
+#: gladeui/glade-project.c:1035
 msgid "Read Only"
 msgstr "Doar citire"
 
-#: gladeui/glade-project.c:1039
+#: gladeui/glade-project.c:1036
 msgid "Whether project is read-only"
 msgstr "Specifică dacă proiectul poate fi doar citit"
 
-#: gladeui/glade-project.c:1045
+#: gladeui/glade-project.c:1042
 msgid "Add Item"
 msgstr "Adaugă element"
 
-#: gladeui/glade-project.c:1046
+#: gladeui/glade-project.c:1043
 msgid "The current item to add to the project"
 msgstr "Elementul curent de adăugat la proiect"
 
-#: gladeui/glade-project.c:1052
+#: gladeui/glade-project.c:1049
 msgid "Pointer Mode"
 msgstr "Mod indicator"
 
-#: gladeui/glade-project.c:1053
+#: gladeui/glade-project.c:1050
 msgid "The currently effective GladePointerMode"
 msgstr "GladePointerMode efectiv curent"
 
-#: gladeui/glade-project.c:1060
+#: gladeui/glade-project.c:1057
 msgid "Translation Domain"
 msgstr "Domeniul traducerii"
 
-#: gladeui/glade-project.c:1061
+#: gladeui/glade-project.c:1058
 msgid "The project translation domain"
 msgstr "Domeniul de traducere al proiectului"
 
-#: gladeui/glade-project.c:1067 gladeui/glade-widget.c:1405
+#: gladeui/glade-project.c:1064 gladeui/glade-widget.c:1400
 msgid "Template"
 msgstr "Șablon"
 
-#: gladeui/glade-project.c:1068
+#: gladeui/glade-project.c:1065
 msgid "The project's template widget, if any"
 msgstr "Widgetul șablon al proiectului, dacă există"
 
-#: gladeui/glade-project.c:1074
+#: gladeui/glade-project.c:1071
 msgid "Resource Path"
 msgstr "Cale resursă"
 
-#: gladeui/glade-project.c:1075
+#: gladeui/glade-project.c:1072
 msgid "Path to load images and resources in Glade's runtime"
 msgstr ""
 "Calea de unde să se încarce imaginile și resursele în executabilul Glade"
 
-#: gladeui/glade-project.c:1081 gladeui/glade-project-properties.ui:700
+#: gladeui/glade-project.c:1078 gladeui/glade-project-properties.ui:700
 msgid "License"
 msgstr "Licență"
 
-#: gladeui/glade-project.c:1082
+#: gladeui/glade-project.c:1079
 msgid "License for this project, it will be added as a document level comment."
 msgstr "Licența acestui proiect, va fi adăugată ca un comentariu în document."
 
-#: gladeui/glade-project.c:1088
+#: gladeui/glade-project.c:1085
 msgid "CSS Provider Path"
 msgstr "Calea furnizorului de CSS"
 
-#: gladeui/glade-project.c:1089
+#: gladeui/glade-project.c:1086
 msgid "Path to use as the custom CSS provider for this project."
 msgstr "Cale de utilizat ca furnizor personalizat de CSS pentru acest proiect."
 
-#: gladeui/glade-project.c:1186
+#: gladeui/glade-project.c:1183
 #, c-format
 msgid "(internal %s)"
 msgstr "(%s intern)"
 
-#: gladeui/glade-project.c:1191
+#: gladeui/glade-project.c:1188
 #, c-format
 msgid "(%s child)"
 msgstr "(copil %s)"
 
-#: gladeui/glade-project.c:1193
+#: gladeui/glade-project.c:1190
 #, c-format
 msgid "(template)"
 msgstr "(șablon)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: gladeui/glade-project.c:1201
+#: gladeui/glade-project.c:1198
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%s din %s)"
 
-#: gladeui/glade-project.c:1562
+#: gladeui/glade-project.c:1559
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -2314,17 +2390,17 @@ msgstr ""
 "Următoarele cataloage necesare nu sunt disponibile: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: gladeui/glade-project.c:1930
+#: gladeui/glade-project.c:1927
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s ținte Gtk+ %d.%d"
 
-#: gladeui/glade-project.c:1973
+#: gladeui/glade-project.c:1970
 #, c-format
 msgid ", %s"
 msgstr ", %s"
 
-#: gladeui/glade-project.c:1981
+#: gladeui/glade-project.c:1978
 #, c-format
 msgid ""
 "Especially because there is %d object that can not be built with type: %s"
@@ -2338,7 +2414,7 @@ msgstr[2] ""
 "În special pentru că există %d de obiecte care nu pot fi construite cu "
 "tipul: %s"
 
-#: gladeui/glade-project.c:1999
+#: gladeui/glade-project.c:1996
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -2350,7 +2426,7 @@ msgstr ""
 "Asigurați-vă că rulați acest proiect cu Glade 3.8 fără widgeturi învechite.\n"
 "%s"
 
-#: gladeui/glade-project.c:2060
+#: gladeui/glade-project.c:2057
 #, c-format
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
@@ -2481,63 +2557,63 @@ msgstr ""
 "[%s]\n"
 "\tSemnalul „<b>%s</b>” al clasei de obiecte „<b>%s</b>” este învechit\n"
 
-#: gladeui/glade-project.c:3389
+#: gladeui/glade-project.c:3393
 msgid "Details"
 msgstr "Detalii"
 
-#: gladeui/glade-project.c:3405
+#: gladeui/glade-project.c:3409
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "Proiectul „%s” are erori. Salvați oricum?"
 
-#: gladeui/glade-project.c:3431
+#: gladeui/glade-project.c:3435
 #, c-format
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr ""
 "Obiectul %s este un șablon de clasă dar acesta nu este suportat în gtk+ %d."
 "%d\n"
 
-#: gladeui/glade-project.c:3446
+#: gladeui/glade-project.c:3450
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Obiectul %s are un tip nerecunoscut %s\n"
 
-#: gladeui/glade-project.c:4947
+#: gladeui/glade-project.c:4951
 #, c-format
 msgid "Unsaved %i"
 msgstr "Nesalvat %i"
 
-#: gladeui/glade-project.c:5254 gladeui/glade-project.c:5305
-#: gladeui/glade-project.c:5462
+#: gladeui/glade-project.c:5258 gladeui/glade-project.c:5309
+#: gladeui/glade-project.c:5466
 msgid "No widget selected."
 msgstr "Niciun widget selectat."
 
-#: gladeui/glade-project.c:5270
+#: gladeui/glade-project.c:5274
 msgid "Unable to copy unrecognized widget type."
 msgstr "Nu s-a putut copia tipul de widget nerecunoscut."
 
-#: gladeui/glade-project.c:5302
+#: gladeui/glade-project.c:5306
 msgid "Unable to cut unrecognized widget type"
 msgstr "Nu se poate tăia tipul nerecunoscut de widget"
 
-#: gladeui/glade-project.c:5354
+#: gladeui/glade-project.c:5358
 msgid "Unable to paste to the selected parent"
 msgstr "Nu s-a putut lipi în părintele selectat"
 
-#: gladeui/glade-project.c:5365
+#: gladeui/glade-project.c:5369
 msgid "Unable to paste to multiple widgets"
 msgstr "Nu se poate lipi în widget-uri multiple"
 
-#: gladeui/glade-project.c:5375
+#: gladeui/glade-project.c:5379
 msgid "No widget on the clipboard"
 msgstr "Nu sunt widget-uri în clipboard"
 
-#: gladeui/glade-project.c:5420
+#: gladeui/glade-project.c:5424
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 "Doar un singur widget poate fi lipit la un moment dat în acest container"
 
-#: gladeui/glade-project.c:5432
+#: gladeui/glade-project.c:5436
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Substituenți insuficienți în containerul țintă"
 
@@ -2563,7 +2639,7 @@ msgstr "Activat"
 msgid "If the property is optional, this is its enabled state"
 msgstr "Dacă proprietatea este opțională, aceasta este starea sa activă"
 
-#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:191
+#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:188
 msgid "Sensitive"
 msgstr "Senzitiv"
 
@@ -2580,7 +2656,7 @@ msgstr "Context"
 msgid "Context for translation"
 msgstr "Context pentru traducere"
 
-#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:414
+#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:394
 msgid "Comment"
 msgstr "Comentariu"
 
@@ -2705,7 +2781,7 @@ msgstr "Datele utilizatorului"
 msgid "The user data for this signal"
 msgstr "Datele utilizatorului pentru acest semnal"
 
-#: gladeui/glade-signal.c:191 gladeui/glade-widget.c:1437
+#: gladeui/glade-signal.c:191 gladeui/glade-widget.c:1432
 msgid "Support Warning"
 msgstr "Avertisment de suport"
 
@@ -2726,7 +2802,7 @@ msgstr ""
 msgid "Select an object to pass to the handler"
 msgstr "Alegeți un obiect de trimis gestionarului"
 
-#: gladeui/glade-signal-editor.c:1314 plugins/gtk+/glade-accels.c:448
+#: gladeui/glade-signal-editor.c:1314 plugins/gtk+/glade-accels.c:449
 msgid "Signal"
 msgstr "Semnal"
 
@@ -2754,7 +2830,7 @@ msgstr "<Tastați aici>"
 msgid "<Click here>"
 msgstr "<Clic aici>"
 
-#: gladeui/glade-utils.c:136 gladeui/glade-utils.c:168
+#: gladeui/glade-utils.c:137 gladeui/glade-utils.c:168
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "Nu s-a putut găsi simbolul „%s”"
@@ -2789,42 +2865,42 @@ msgstr "Fișiere GtkBuilder"
 msgid "All Glade Files"
 msgstr "Toate fișierele Glade"
 
-#: gladeui/glade-utils.c:1227
+#: gladeui/glade-utils.c:1241
 msgid "Could not show link:"
 msgstr "Legătura nu poate fi afișată:"
 
 #. Reset the column
-#: gladeui/glade-utils.c:1703 plugins/gtk+/glade-attributes.c:829
-#: plugins/gtk+/gtk+.xml:871 plugins/gtk+/gtk+.xml:1257
-#: plugins/gtk+/gtk+.xml:1273 plugins/gtk+/gtk+.xml:1388
-#: plugins/gtk+/gtk+.xml:1531 plugins/gtk+/gtk+.xml:1678
-#: plugins/gtk+/gtk+.xml:1732 plugins/gtk+/gtk+.xml:2635
-#: plugins/gtk+/gtk+.xml:2689 plugins/gtk+/gtk+.xml:2755
-#: plugins/gtk+/gtk+.xml:3086 plugins/gtk+/gtk+.xml:3460
-#: plugins/gtk+/gtk+.xml:3599 plugins/gtk+/gtk+.xml:3716
-#: plugins/gtk+/gtk+.xml:3759 plugins/gtk+/gtk+.xml:4021
-#: plugins/gtk+/gtk+.xml:4725 plugins/gtk+/gtk+.xml:5546
+#: gladeui/glade-utils.c:1717 plugins/gtk+/glade-attributes.c:829
+#: plugins/gtk+/gtk+.xml:830 plugins/gtk+/gtk+.xml:1188
+#: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1307
+#: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:1574
+#: plugins/gtk+/gtk+.xml:1624 plugins/gtk+/gtk+.xml:2468
+#: plugins/gtk+/gtk+.xml:2520 plugins/gtk+/gtk+.xml:2581
+#: plugins/gtk+/gtk+.xml:2905 plugins/gtk+/gtk+.xml:3261
+#: plugins/gtk+/gtk+.xml:3394 plugins/gtk+/gtk+.xml:3507
+#: plugins/gtk+/gtk+.xml:3550 plugins/gtk+/gtk+.xml:3802
+#: plugins/gtk+/gtk+.xml:4448 plugins/gtk+/gtk+.xml:5222
 msgid "None"
 msgstr "Niciuna"
 
-#: gladeui/glade-widget-action.c:185 plugins/gtk+/gtk+.xml:436
+#: gladeui/glade-widget-action.c:182 plugins/gtk+/gtk+.xml:416
 msgid "Definition"
 msgstr "Definiție"
 
-#: gladeui/glade-widget-action.c:186
+#: gladeui/glade-widget-action.c:183
 msgid "GladeWidgetActionDef structure pointer"
 msgstr "Pointer la o structură GladeWidgetActionDef"
 
-#: gladeui/glade-widget-action.c:192
+#: gladeui/glade-widget-action.c:189
 msgid "Whether this action is sensitive"
 msgstr "Specifică dacă acțiunea este senzitivă"
 
-#: gladeui/glade-widget-action.c:198 gladeui/glade-widget.c:1442
-#: plugins/gtk+/gtk+.xml:4334
+#: gladeui/glade-widget-action.c:195 gladeui/glade-widget.c:1437
+#: plugins/gtk+/gtk+.xml:4086
 msgid "Visible"
 msgstr "Vizibil"
 
-#: gladeui/glade-widget-action.c:199
+#: gladeui/glade-widget-action.c:196
 msgid "Whether this action is visible"
 msgstr "Specifică dacă acțiunea este vizibilă"
 
@@ -2863,7 +2939,7 @@ msgstr "Nume generic"
 msgid "Used to generate names of new widgets"
 msgstr "Utilizat pentru a genera nume pentru widget-uri noi"
 
-#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2293
+#: gladeui/glade-widget-adaptor.c:1489 plugins/gtk+/gtk+.xml:2144
 #: plugins/gtk+/glade-window-editor.ui:262
 msgid "Icon Name"
 msgstr "Nume iconiță"
@@ -2917,139 +2993,139 @@ msgstr "Interogare"
 msgid "Whether the adaptor should query the use or not"
 msgstr "Dacă adaptorul ar trebui să interogheze utilizarea sau nu"
 
-#: gladeui/glade-widget.c:1354
+#: gladeui/glade-widget.c:1349
 msgid "The name of the widget"
 msgstr "Numele widget-ului"
 
-#: gladeui/glade-widget.c:1358
+#: gladeui/glade-widget.c:1353
 msgid "Internal name"
 msgstr "Nume intern"
 
-#: gladeui/glade-widget.c:1359
+#: gladeui/glade-widget.c:1354
 msgid "The internal name of the widget"
 msgstr "Numele intern al widget-ului"
 
-#: gladeui/glade-widget.c:1363
+#: gladeui/glade-widget.c:1358
 msgid "Anarchist"
 msgstr "Anarhist"
 
-#: gladeui/glade-widget.c:1364
+#: gladeui/glade-widget.c:1359
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
 "Specifică dacă acest copil compus este un copil moștenitor sau un copil "
 "anarhist"
 
-#: gladeui/glade-widget.c:1370
+#: gladeui/glade-widget.c:1365
 msgid "Object"
 msgstr "Obiect"
 
-#: gladeui/glade-widget.c:1371
+#: gladeui/glade-widget.c:1366
 msgid "The object associated"
 msgstr "Obiectul asociat"
 
-#: gladeui/glade-widget.c:1376
+#: gladeui/glade-widget.c:1371
 msgid "Adaptor"
 msgstr "Adaptor"
 
-#: gladeui/glade-widget.c:1377
+#: gladeui/glade-widget.c:1372
 msgid "The class adaptor for the associated widget"
 msgstr "Adaptorul de clasă pentru widget-ul asociat"
 
-#: gladeui/glade-widget.c:1383
+#: gladeui/glade-widget.c:1378
 msgid "The glade project that this widget belongs to"
 msgstr "Proiectul glade căruia îi aparține acest widget"
 
-#: gladeui/glade-widget.c:1390
+#: gladeui/glade-widget.c:1385
 msgid "A list of GladeProperties"
 msgstr "O listă de GladeProperties"
 
-#: gladeui/glade-widget.c:1394 plugins/gtk+/gtk+.xml:634
+#: gladeui/glade-widget.c:1389 plugins/gtk+/gtk+.xml:598
 msgid "Parent"
 msgstr "Părinte"
 
-#: gladeui/glade-widget.c:1395
+#: gladeui/glade-widget.c:1390
 msgid "A pointer to the parenting GladeWidget"
 msgstr "Pointer la GladeWidget-ul părinte"
 
-#: gladeui/glade-widget.c:1400
+#: gladeui/glade-widget.c:1395
 msgid "Internal Name"
 msgstr "Nume intern"
 
-#: gladeui/glade-widget.c:1401
+#: gladeui/glade-widget.c:1396
 msgid "A generic name prefix for internal widgets"
 msgstr "Un prefix de nume generic pentru widget-uri interne"
 
-#: gladeui/glade-widget.c:1406
+#: gladeui/glade-widget.c:1401
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Un șablon GladeWidget pe care se va baza noul widget"
 
-#: gladeui/glade-widget.c:1411
+#: gladeui/glade-widget.c:1406
 msgid "Exact Template"
 msgstr "Extrage un șablon"
 
-#: gladeui/glade-widget.c:1413
+#: gladeui/glade-widget.c:1408
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr "Specifică dacă se creează o copie identică utilizând doar un șablon"
 
-#: gladeui/glade-widget.c:1417
+#: gladeui/glade-widget.c:1412
 msgid "Reason"
 msgstr "Motiv"
 
-#: gladeui/glade-widget.c:1418
+#: gladeui/glade-widget.c:1413
 msgid "A GladeCreateReason for this creation"
 msgstr "O GladeCreateReason pentru această creație"
 
-#: gladeui/glade-widget.c:1425
+#: gladeui/glade-widget.c:1420
 msgid "Toplevel Width"
 msgstr "Lățimea nivelului de top"
 
-#: gladeui/glade-widget.c:1426
+#: gladeui/glade-widget.c:1421
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "Lățimea nivelului de top din GladeDesignLayout"
 
-#: gladeui/glade-widget.c:1431
+#: gladeui/glade-widget.c:1426
 msgid "Toplevel Height"
 msgstr "Înălțimea nivelului de top"
 
-#: gladeui/glade-widget.c:1432
+#: gladeui/glade-widget.c:1427
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "Înălțimea nivelului de top din GladeDesignLayout"
 
-#: gladeui/glade-widget.c:1438
+#: gladeui/glade-widget.c:1433
 msgid "A warning string about version mismatches"
 msgstr "Un avertisment despre versiuni nepotrivite"
 
-#: gladeui/glade-widget.c:1443
+#: gladeui/glade-widget.c:1438
 msgid "Whether the widget is visible or not"
 msgstr "Dacă widget-ul este vizibil sau nu"
 
-#: gladeui/glade-widget.c:1448
+#: gladeui/glade-widget.c:1443
 msgid "Whether this widget is the template for a composite widget"
 msgstr "Dacă acest widget este șablonul pentru un widget compozit"
 
-#: gladeui/glade-widget.c:4882
+#: gladeui/glade-widget.c:4874
 msgid "Template classes are only usable in GTK+ 3.10 and later."
 msgstr "Clasele șablon sunt utilizabile în GTK+ 3.10 și mai recent."
 
-#: gladeui/glade-widget.c:4890
+#: gladeui/glade-widget.c:4882
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "Obiectul are un tip nerecunoscut %s"
 
-#: gladeui/glade-widget.c:4956
+#: gladeui/glade-widget.c:4948
 msgid "Property has versioning problems: "
 msgstr "Proprietatea are probleme de versionare: "
 
-#: gladeui/glade-widget.c:4958
+#: gladeui/glade-widget.c:4950
 msgid "Some properties have versioning problems: "
 msgstr "Unele proprietăți au probleme de versionare: "
 
-#: gladeui/glade-widget.c:4978
+#: gladeui/glade-widget.c:4970
 msgid "Signal has versioning problems: "
 msgstr "Semnalul are probleme de versionare: "
 
-#: gladeui/glade-widget.c:4980
+#: gladeui/glade-widget.c:4972
 msgid "Some signals have versioning problems: "
 msgstr "Unele semnale au probleme de versionare: "
 
@@ -3057,7 +3133,7 @@ msgstr "Unele semnale au probleme de versionare: "
 msgid "Actions"
 msgstr "Acțiuni"
 
-#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5615
+#: gladeui/icon-naming-spec.c:40 plugins/gtk+/gtk+.xml:5293
 msgid "Applications"
 msgstr "Aplicații"
 
@@ -3253,15 +3329,15 @@ msgstr "Se configurează %s să utilizeze fișierul logo"
 msgid "Setting %s to use a logo icon"
 msgstr "Se configurează %s să utilizeze o iconiță logo"
 
-#: plugins/gtk+/glade-accels.c:320 plugins/gtk+/glade-accels.c:392
+#: plugins/gtk+/glade-accels.c:321 plugins/gtk+/glade-accels.c:393
 msgid "<choose a key>"
 msgstr "<alegeți o tastă>"
 
-#: plugins/gtk+/glade-accels.c:464
+#: plugins/gtk+/glade-accels.c:465
 msgid "Accelerator Key"
 msgstr "Tastă accelerator"
 
-#: plugins/gtk+/glade-accels.c:517
+#: plugins/gtk+/glade-accels.c:518
 msgid "Choose accelerator keys..."
 msgstr "Alegeți tastele acceleratoare..."
 
@@ -3412,49 +3488,49 @@ msgstr "Se configurează %s să utilizeze un buton din stoc"
 msgid "Setting %s to use a label and image"
 msgstr "Se configurează %s să utilizeze o etichetă și o imagine"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:191
+#: plugins/gtk+/glade-cell-renderer-editor.c:190
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
 msgstr "Se configurează %s să utilizeze proprietatea %s ca un atribut"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:212
+#: plugins/gtk+/glade-cell-renderer-editor.c:211
 #, c-format
 msgid "Setting %s to use the %s property directly"
 msgstr "Se configurează %s să utilizeze proprietatea %s direct"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:356
+#: plugins/gtk+/glade-cell-renderer-editor.c:355
 #, c-format
 msgid "Retrieve %s from model (type %s)"
 msgstr "Obține %s din model (tipul %s)"
 
 #. translators: the adjective not the verb
-#: plugins/gtk+/glade-cell-renderer-editor.c:510
+#: plugins/gtk+/glade-cell-renderer-editor.c:509
 msgid "unset"
 msgstr "nestabilit"
 
-#: plugins/gtk+/glade-cell-renderer-editor.c:533
+#: plugins/gtk+/glade-cell-renderer-editor.c:532
 msgid "no model"
 msgstr "niciun model"
 
-#: plugins/gtk+/glade-column-types.c:347 plugins/gtk+/glade-column-types.c:399
-#: plugins/gtk+/glade-column-types.c:472 plugins/gtk+/glade-column-types.c:693
+#: plugins/gtk+/glade-column-types.c:346 plugins/gtk+/glade-column-types.c:398
+#: plugins/gtk+/glade-column-types.c:471 plugins/gtk+/glade-column-types.c:692
 #, c-format
 msgid "Setting columns on %s"
 msgstr "Se stabilesc coloanele din %s"
 
-#: plugins/gtk+/glade-column-types.c:500
+#: plugins/gtk+/glade-column-types.c:499
 msgid "< define a new column >"
 msgstr "< definește o coloană nouă >"
 
-#: plugins/gtk+/glade-column-types.c:823
+#: plugins/gtk+/glade-column-types.c:822
 msgid "Add and remove columns:"
 msgstr "Adaugă și elimină coloane:"
 
-#: plugins/gtk+/glade-column-types.c:875
+#: plugins/gtk+/glade-column-types.c:874
 msgid "Column type"
 msgstr "Tip coloană"
 
-#: plugins/gtk+/glade-column-types.c:897
+#: plugins/gtk+/glade-column-types.c:896
 msgid "Column name"
 msgstr "Nume coloană"
 
@@ -3521,7 +3597,7 @@ msgstr ""
 msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr "Se stabilește iconița secundară %s pentru a nu folosi marcarea indiciu"
 
-#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1027
+#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1026
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Se plasează %s în %s"
@@ -3568,7 +3644,7 @@ msgstr ""
 "Specifică dacă acest container suportă redimensionarea widget-urilor copii"
 
 #: plugins/gtk+/glade-gtk-action-group.c:184
-#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3798
+#: plugins/gtk+/glade-gtk-action-group.c:219 plugins/gtk+/gtk+.xml:3589
 msgid "Action"
 msgstr "Acțiune"
 
@@ -3614,11 +3690,11 @@ msgstr "Pagină de confirmare"
 msgid "Ordering children of %s"
 msgstr "Se ordonează copii lui %s"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4059
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:3838
 msgid "Tree View Column"
 msgstr "Coloană vizualizare arborescentă"
 
-#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:4172
+#: plugins/gtk+/glade-gtk-cell-layout.c:360 plugins/gtk+/gtk+.xml:3939
 msgid "Cell Renderer"
 msgstr "Randor celulă"
 
@@ -3631,18 +3707,18 @@ msgid "Common Properties and Attributes"
 msgstr "Proprietăți și atribute comune"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:411
-#: plugins/gtk+/glade-gtk-tree-view.c:85 plugins/gtk+/gtk+.xml:344
+#: plugins/gtk+/glade-gtk-tree-view.c:85 plugins/gtk+/gtk+.xml:324
 #: plugins/gtk+/glade-entry-editor.ui:343
 msgid "Text"
 msgstr "Text"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:412
-#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3828
+#: plugins/gtk+/glade-gtk-tree-view.c:86 plugins/gtk+/gtk+.xml:3616
 msgid "Accelerator"
 msgstr "Accelerator"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:413
-#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:846
+#: plugins/gtk+/glade-gtk-tree-view.c:87 plugins/gtk+/gtk+.xml:805
 msgid "Combo"
 msgstr "Listă de selecție"
 
@@ -3657,13 +3733,13 @@ msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:416
-#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3574
+#: plugins/gtk+/glade-gtk-tree-view.c:90 plugins/gtk+/gtk+.xml:3369
 #: plugins/gtk+/glade-entry-editor.ui:471
 msgid "Progress"
 msgstr "Progres"
 
 #: plugins/gtk+/glade-gtk-cell-layout.c:418
-#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1402
+#: plugins/gtk+/glade-gtk-tree-view.c:92 plugins/gtk+/gtk+.xml:1321
 msgid "Spinner"
 msgstr "Spinner"
 
@@ -3919,16 +3995,16 @@ msgstr "Meniul Recente"
 msgid "Tool Item"
 msgstr "Element unealtă"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1230
+#: plugins/gtk+/glade-gtk-menu-shell.c:549 plugins/gtk+/gtk+.xml:1164
 msgid "Tool Item Group"
 msgstr "Grup de elemente unealtă"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2941
+#: plugins/gtk+/glade-gtk-menu-shell.c:569 plugins/gtk+/gtk+.xml:2761
 msgid "Recent Chooser Menu"
 msgstr "Meniul Alese recent"
 
-#: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:292
-#: plugins/gtk+/gtk+.xml:990
+#: plugins/gtk+/glade-gtk-menu-shell.c:607 plugins/gtk+/gtk+.xml:272
+#: plugins/gtk+/gtk+.xml:939
 msgid "Menu Item"
 msgstr "Element meniu"
 
@@ -3968,20 +4044,20 @@ msgid "Text Tag Table Editor"
 msgstr "Editor de tabele de etichete text"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:238
-#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1152
-#: plugins/gtk+/gtk+.xml:1714
+#: plugins/gtk+/glade-gtk-tool-palette.c:184 plugins/gtk+/gtk+.xml:1093
+#: plugins/gtk+/gtk+.xml:1608
 msgid "Button"
 msgstr "Buton"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:241
-#: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:288
-#: plugins/gtk+/gtk+.xml:826 plugins/gtk+/gtk+.xml:1146
+#: plugins/gtk+/glade-gtk-tool-palette.c:187 plugins/gtk+/gtk+.xml:268
+#: plugins/gtk+/gtk+.xml:785 plugins/gtk+/gtk+.xml:1087
 msgid "Menu"
 msgstr "Meniu"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:242
-#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3329
-#: plugins/gtk+/gtk+.xml:3576 plugins/gtk+/gtk+.xml:3722
+#: plugins/gtk+/glade-gtk-tool-palette.c:188 plugins/gtk+/gtk+.xml:3139
+#: plugins/gtk+/gtk+.xml:3371 plugins/gtk+/gtk+.xml:3513
 #: plugins/gtk+/glade-widget-editor.ui:654
 msgid "Custom"
 msgstr "Personalizat"
@@ -3990,24 +4066,24 @@ msgstr "Personalizat"
 #: plugins/gtk+/glade-gtk-toolbar.c:260
 #: plugins/gtk+/glade-gtk-tool-palette.c:189
 #: plugins/gtk+/glade-gtk-tool-palette.c:197
-#: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:322
-#: plugins/gtk+/gtk+.xml:3030
+#: plugins/gtk+/glade-gtk-tool-palette.c:206 plugins/gtk+/gtk+.xml:302
+#: plugins/gtk+/gtk+.xml:2847
 msgid "Separator"
 msgstr "Separator"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:248 plugins/gtk+/glade-gtk-toolbar.c:256
 #: plugins/gtk+/glade-gtk-tool-palette.c:193
-#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:822
-#: plugins/gtk+/gtk+.xml:1269 plugins/gtk+/gtk+.xml:2054
-#: plugins/gtk+/gtk+.xml:4646 plugins/gtk+/gtk+.xml:4688
-#: plugins/gtk+/gtk+.xml:4752
+#: plugins/gtk+/glade-gtk-tool-palette.c:202 plugins/gtk+/gtk+.xml:781
+#: plugins/gtk+/gtk+.xml:1200 plugins/gtk+/gtk+.xml:1912
+#: plugins/gtk+/gtk+.xml:4374 plugins/gtk+/gtk+.xml:4413
+#: plugins/gtk+/gtk+.xml:4480
 msgid "Normal"
 msgstr "Normal"
 
 #: plugins/gtk+/glade-gtk-toolbar.c:249 plugins/gtk+/glade-gtk-toolbar.c:257
 #: plugins/gtk+/glade-gtk-tool-palette.c:194
-#: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:276
-#: plugins/gtk+/gtk+.xml:2280 plugins/gtk+/glade-image-editor.ui:44
+#: plugins/gtk+/glade-gtk-tool-palette.c:203 plugins/gtk+/gtk+.xml:256
+#: plugins/gtk+/gtk+.xml:2131 plugins/gtk+/glade-image-editor.ui:44
 #: plugins/gtk+/glade-tool-button-editor.ui:215
 msgid "Image"
 msgstr "Imagine"
@@ -4075,22 +4151,22 @@ msgstr "Se elimină părintele lui %s"
 msgid "Adding parent %s for %s"
 msgstr "Se adaugă părintele %s lui %s"
 
-#: plugins/gtk+/glade-gtk-widget.c:1038 plugins/gtk+/glade-gtk-widget.c:1102
+#: plugins/gtk+/glade-gtk-widget.c:1037 plugins/gtk+/glade-gtk-widget.c:1101
 msgid "(unnamed)"
 msgstr "(nedenumit)"
 
-#: plugins/gtk+/glade-gtk-widget.c:1050
+#: plugins/gtk+/glade-gtk-widget.c:1049
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Se adaugă %s la Grupul de dimensiuni %s"
 
-#: plugins/gtk+/glade-gtk-widget.c:1054
+#: plugins/gtk+/glade-gtk-widget.c:1053
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Se adaugă %s la un nou Grup de dimensiuni"
 
 #. Add trailing new... item
-#: plugins/gtk+/glade-gtk-widget.c:1122
+#: plugins/gtk+/glade-gtk-widget.c:1121
 msgid "New Size Group"
 msgstr "Nou Grup de dimensiuni"
 
@@ -4133,7 +4209,7 @@ msgstr ""
 "Întâi adăugați un nume din stoc în intrarea de mai jos, apoi adăugați și "
 "definiți sursele pentru acea iconiță în vizualizarea arborescentă."
 
-#: plugins/gtk+/glade-icon-sources.c:759
+#: plugins/gtk+/glade-icon-sources.c:758
 #, c-format
 msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
@@ -4143,7 +4219,7 @@ msgstr ""
 "sursă a „%s” (Glade le va încărca doar în timpul rulării din dosarul "
 "proiectului)."
 
-#: plugins/gtk+/glade-icon-sources.c:767
+#: plugins/gtk+/glade-icon-sources.c:766
 #, c-format
 msgid ""
 "Set whether you want to specify a text direction for this source of '%s'"
@@ -4151,35 +4227,35 @@ msgstr ""
 "Stabilește dacă vreți să specificați o direcție a textului pentru această "
 "sursă a „%s”"
 
-#: plugins/gtk+/glade-icon-sources.c:774
+#: plugins/gtk+/glade-icon-sources.c:773
 #, c-format
 msgid "Set the text direction for this source of '%s'"
 msgstr "Stabilește direcția textului pentru această sursă a „%s”"
 
-#: plugins/gtk+/glade-icon-sources.c:780
+#: plugins/gtk+/glade-icon-sources.c:779
 #, c-format
 msgid "Set whether you want to specify an icon size for this source of '%s'"
 msgstr ""
 "Stabilește dacă vreți să specificați o dimensiune a iconiței pentru această "
 "sursă a „%s”"
 
-#: plugins/gtk+/glade-icon-sources.c:787
+#: plugins/gtk+/glade-icon-sources.c:786
 #, c-format
 msgid "Set the icon size for this source of '%s'"
 msgstr "Stabilește dimensiunea iconiței pentru această sursă a „%s”"
 
-#: plugins/gtk+/glade-icon-sources.c:793
+#: plugins/gtk+/glade-icon-sources.c:792
 #, c-format
 msgid "Set whether you want to specify a state for this source of '%s'"
 msgstr ""
 "Stabilește dacă vreți să specificați o stare pentru această sursă a „%s”"
 
-#: plugins/gtk+/glade-icon-sources.c:800
+#: plugins/gtk+/glade-icon-sources.c:799
 #, c-format
 msgid "Set the state for this source of '%s'"
 msgstr "Stabilește starea pentru această sursă a „%s”"
 
-#: plugins/gtk+/glade-icon-sources.c:850 plugins/gtk+/gtk+.xml:2295
+#: plugins/gtk+/glade-icon-sources.c:849 plugins/gtk+/gtk+.xml:2146
 msgid "File Name"
 msgstr "Nume fișier"
 
@@ -4307,11 +4383,11 @@ msgstr ""
 "pentru a adăuga noi rânduri, și tasta Delete pentru a elimina rândul "
 "selectat)"
 
-#: plugins/gtk+/glade-string-list.c:333 plugins/gtk+/glade-string-list.c:378
+#: plugins/gtk+/glade-string-list.c:332 plugins/gtk+/glade-string-list.c:377
 msgid "<Type Here>"
 msgstr "<Tastați aici>"
 
-#: plugins/gtk+/glade-string-list.c:596
+#: plugins/gtk+/glade-string-list.c:595
 msgid "<Enter ID>"
 msgstr "<Introduceți ID-ul>"
 
@@ -4399,7 +4475,7 @@ msgstr "Asamblat"
 msgid "Reverse"
 msgstr "Invers"
 
-#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2855
+#: plugins/gtk+/gtkunixprint.xml:20 plugins/gtk+/gtk+.xml:2673
 msgid "Scale"
 msgstr "Scară"
 
@@ -4427,766 +4503,766 @@ msgstr "Aspect pagini per filă multiple"
 msgid "GTK+ Unix Print Toplevels"
 msgstr "Niveluri de top de tipărire GTK+ Unix"
 
-#: plugins/gtk+/gtk+.xml:38
+#: plugins/gtk+/gtk+.xml:37
 msgid "Preview snapshot"
 msgstr "Previzualizează instantaneu"
 
-#: plugins/gtk+/gtk+.xml:39
+#: plugins/gtk+/gtk+.xml:38
 msgid "Edit Separately"
 msgstr "Editează separat"
 
-#: plugins/gtk+/gtk+.xml:40
+#: plugins/gtk+/gtk+.xml:39
 msgid "Remove Parent"
 msgstr "Elimină părintele"
 
-#: plugins/gtk+/gtk+.xml:41
+#: plugins/gtk+/gtk+.xml:40
 msgid "Add Parent"
 msgstr "Adaugă părinte"
 
-#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:2705
+#: plugins/gtk+/gtk+.xml:41 plugins/gtk+/gtk+.xml:2536
 #: plugins/gtk+/glade-misc-editor.ui:187
 #: plugins/gtk+/glade-widget-editor.ui:841
 msgid "Alignment"
 msgstr "Aliniere"
 
-#: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:358
-#: plugins/gtk+/gtk+.xml:3234
+#: plugins/gtk+/gtk+.xml:42 plugins/gtk+/gtk+.xml:338
+#: plugins/gtk+/gtk+.xml:3046
 msgid "Viewport"
 msgstr "Vizor"
 
-#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:3206
+#: plugins/gtk+/gtk+.xml:43 plugins/gtk+/gtk+.xml:3020
 msgid "Event Box"
 msgstr "Căsuță eveniment"
 
-#: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:268
-#: plugins/gtk+/gtk+.xml:2707
+#: plugins/gtk+/gtk+.xml:44 plugins/gtk+/gtk+.xml:248
+#: plugins/gtk+/gtk+.xml:2538
 msgid "Frame"
 msgstr "Cadru"
 
-#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:2724
+#: plugins/gtk+/gtk+.xml:45 plugins/gtk+/gtk+.xml:2554
 msgid "Aspect Frame"
 msgstr "Cadru aspect"
 
-#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3249
+#: plugins/gtk+/gtk+.xml:46 plugins/gtk+/gtk+.xml:3061
 msgid "Scrolled Window"
 msgstr "Fereastră derulată"
 
-#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:3208
+#: plugins/gtk+/gtk+.xml:47 plugins/gtk+/gtk+.xml:3022
 msgid "Expander"
 msgstr "Extinzător"
 
-#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:2391
+#: plugins/gtk+/gtk+.xml:48 plugins/gtk+/gtk+.xml:2234
 msgid "Grid"
 msgstr "Grilă"
 
-#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:647
+#: plugins/gtk+/gtk+.xml:49 plugins/gtk+/gtk+.xml:611
 msgid "Box"
 msgstr "Căsuță"
 
-#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2448
+#: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:2288
 msgid "Paned"
 msgstr "În fereastra panoului"
 
-#: plugins/gtk+/gtk+.xml:52 plugins/gtk+/gtk+.xml:2597
+#: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2430
 msgid "Stack"
 msgstr "Stivă"
 
-#: plugins/gtk+/gtk+.xml:54
+#: plugins/gtk+/gtk+.xml:53
 msgid "Add to Size Group"
 msgstr "Adaugă la Grupul de dimensiuni"
 
-#: plugins/gtk+/gtk+.xml:55
+#: plugins/gtk+/gtk+.xml:54
 msgid "Clear properties"
 msgstr "Proprietăți curățare"
 
-#: plugins/gtk+/gtk+.xml:56
+#: plugins/gtk+/gtk+.xml:55
 msgid "Read documentation"
 msgstr "Citește documentația"
 
-#: plugins/gtk+/gtk+.xml:98
+#: plugins/gtk+/gtk+.xml:89
 msgid "Style Classes"
 msgstr "Clase de stil"
 
-#: plugins/gtk+/gtk+.xml:103
+#: plugins/gtk+/gtk+.xml:94
 msgid "A list of style class names to apply to this widget"
 msgstr "O listă de nume de clase de stil de aplicat acestui widget"
 
-#: plugins/gtk+/gtk+.xml:109 plugins/gtk+/gtk+.xml:1458
-#: plugins/gtk+/gtk+.xml:2382
+#: plugins/gtk+/gtk+.xml:99 plugins/gtk+/gtk+.xml:1375
+#: plugins/gtk+/gtk+.xml:2225
 msgid "Fill"
 msgstr "Umplere"
 
-#: plugins/gtk+/gtk+.xml:111 plugins/gtk+/gtk+.xml:705
-#: plugins/gtk+/gtk+.xml:1259 plugins/gtk+/gtk+.xml:3007
+#: plugins/gtk+/gtk+.xml:101 plugins/gtk+/gtk+.xml:666
+#: plugins/gtk+/gtk+.xml:1190 plugins/gtk+/gtk+.xml:2823
 msgid "Start"
 msgstr "Start"
 
-#: plugins/gtk+/gtk+.xml:113 plugins/gtk+/gtk+.xml:684
-#: plugins/gtk+/gtk+.xml:803 plugins/gtk+/gtk+.xml:873
-#: plugins/gtk+/gtk+.xml:1456 plugins/gtk+/gtk+.xml:3011
-#: plugins/gtk+/gtk+.xml:4374
+#: plugins/gtk+/gtk+.xml:103 plugins/gtk+/gtk+.xml:646
+#: plugins/gtk+/gtk+.xml:762 plugins/gtk+/gtk+.xml:832
+#: plugins/gtk+/gtk+.xml:1373 plugins/gtk+/gtk+.xml:2827
+#: plugins/gtk+/gtk+.xml:4125
 msgid "Center"
 msgstr "Centrează"
 
-#: plugins/gtk+/gtk+.xml:115 plugins/gtk+/gtk+.xml:707
-#: plugins/gtk+/gtk+.xml:1263 plugins/gtk+/gtk+.xml:3009
+#: plugins/gtk+/gtk+.xml:105 plugins/gtk+/gtk+.xml:668
+#: plugins/gtk+/gtk+.xml:1194 plugins/gtk+/gtk+.xml:2825
 msgid "End"
 msgstr "End"
 
-#: plugins/gtk+/gtk+.xml:117
+#: plugins/gtk+/gtk+.xml:107
 msgid "Baseline"
 msgstr "Linia de bază"
 
-#: plugins/gtk+/gtk+.xml:125
+#: plugins/gtk+/gtk+.xml:114
 msgid "Exposure"
 msgstr "Expunere"
 
-#: plugins/gtk+/gtk+.xml:127
+#: plugins/gtk+/gtk+.xml:116
 msgid "Pointer Motion"
 msgstr "Mișcare indicator"
 
-#: plugins/gtk+/gtk+.xml:129
+#: plugins/gtk+/gtk+.xml:118
 msgid "Pointer Motion Hint"
 msgstr "Indiciu de mișcare indicator"
 
-#: plugins/gtk+/gtk+.xml:131
+#: plugins/gtk+/gtk+.xml:120
 msgid "Button Motion"
 msgstr "Mișcare buton"
 
-#: plugins/gtk+/gtk+.xml:133
+#: plugins/gtk+/gtk+.xml:122
 msgid "Button 1 Motion"
 msgstr "Mișcare buton 1"
 
-#: plugins/gtk+/gtk+.xml:135
+#: plugins/gtk+/gtk+.xml:124
 msgid "Button 2 Motion"
 msgstr "Mișcare buton 2"
 
-#: plugins/gtk+/gtk+.xml:137
+#: plugins/gtk+/gtk+.xml:126
 msgid "Button 3 Motion"
 msgstr "Mișcare buton 3"
 
-#: plugins/gtk+/gtk+.xml:139
+#: plugins/gtk+/gtk+.xml:128
 msgid "Button Press"
 msgstr "Apăsare buton"
 
-#: plugins/gtk+/gtk+.xml:141
+#: plugins/gtk+/gtk+.xml:130
 msgid "Button Release"
 msgstr "Eliberare buton"
 
-#: plugins/gtk+/gtk+.xml:143
+#: plugins/gtk+/gtk+.xml:132
 msgid "Key Press"
 msgstr "Apăsare tastă"
 
-#: plugins/gtk+/gtk+.xml:145
+#: plugins/gtk+/gtk+.xml:134
 msgid "Key Release"
 msgstr "Eliberare tastă"
 
-#: plugins/gtk+/gtk+.xml:147
+#: plugins/gtk+/gtk+.xml:136
 msgid "Enter Notify"
 msgstr "Anunță intrarea"
 
-#: plugins/gtk+/gtk+.xml:149
+#: plugins/gtk+/gtk+.xml:138
 msgid "Leave Notify"
 msgstr "Anunță ieșirea"
 
-#: plugins/gtk+/gtk+.xml:151
+#: plugins/gtk+/gtk+.xml:140
 msgid "Focus Change"
 msgstr "Schimbare focalizare"
 
-#: plugins/gtk+/gtk+.xml:153
+#: plugins/gtk+/gtk+.xml:142
 msgid "Structure"
 msgstr "Structură"
 
-#: plugins/gtk+/gtk+.xml:155
+#: plugins/gtk+/gtk+.xml:144
 msgid "Property Change"
 msgstr "Schimbare proprietate"
 
-#: plugins/gtk+/gtk+.xml:157
+#: plugins/gtk+/gtk+.xml:146
 msgid "Visibility Notify"
 msgstr "Notificare vizibilitate"
 
-#: plugins/gtk+/gtk+.xml:159
+#: plugins/gtk+/gtk+.xml:148
 msgid "Proximity In"
 msgstr "Proximitate interioară"
 
-#: plugins/gtk+/gtk+.xml:161
+#: plugins/gtk+/gtk+.xml:150
 msgid "Proximity Out"
 msgstr "Proximitate exterioară"
 
-#: plugins/gtk+/gtk+.xml:163
+#: plugins/gtk+/gtk+.xml:152
 msgid "Substructure"
 msgstr "Substructură"
 
-#: plugins/gtk+/gtk+.xml:165
+#: plugins/gtk+/gtk+.xml:154
 msgid "Scroll"
 msgstr "Derulare"
 
-#: plugins/gtk+/gtk+.xml:167
+#: plugins/gtk+/gtk+.xml:156
 msgid "Touch"
 msgstr "Atingere"
 
-#: plugins/gtk+/gtk+.xml:169
+#: plugins/gtk+/gtk+.xml:158
 msgid "Smooth scroll"
 msgstr "Derulare fină"
 
-#: plugins/gtk+/gtk+.xml:171
+#: plugins/gtk+/gtk+.xml:160
 msgid "Touchpad Gesture"
 msgstr "Gestură Touchpad"
 
-#: plugins/gtk+/gtk+.xml:173
+#: plugins/gtk+/gtk+.xml:162
 msgid "Tablet Pad"
 msgstr "Tabletă"
 
-#: plugins/gtk+/gtk+.xml:175
+#: plugins/gtk+/gtk+.xml:164
 msgid "All Events"
 msgstr "Toate evenimentele"
 
-#: plugins/gtk+/gtk+.xml:190
+#: plugins/gtk+/gtk+.xml:176
 msgid "Accelerators"
 msgstr "Acceleratori"
 
-#: plugins/gtk+/gtk+.xml:195
+#: plugins/gtk+/gtk+.xml:181
 msgid "A list of accelerator keys"
 msgstr "O listă de taste acceleratori"
 
-#: plugins/gtk+/gtk+.xml:200
+#: plugins/gtk+/gtk+.xml:184
 msgid "Accessible Name"
 msgstr "Nume accesibil"
 
-#: plugins/gtk+/gtk+.xml:204
+#: plugins/gtk+/gtk+.xml:188
 msgid "Object instance's name formatted for assistive technology access"
 msgstr "Numele instanței obiectului formatat pentru accesul asistat"
 
-#: plugins/gtk+/gtk+.xml:208
+#: plugins/gtk+/gtk+.xml:190
 msgid "Accessible Description"
 msgstr "Descriere accesibilă"
 
-#: plugins/gtk+/gtk+.xml:212
+#: plugins/gtk+/gtk+.xml:194
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "Descrierea unui obiect, formatată pentru accesul asistat"
 
-#: plugins/gtk+/gtk+.xml:216
+#: plugins/gtk+/gtk+.xml:196
 msgid "Role"
 msgstr "Rol"
 
-#: plugins/gtk+/gtk+.xml:221
+#: plugins/gtk+/gtk+.xml:201
 msgid "The accessible role of this object"
 msgstr "Rolul accesibil acestui obiect"
 
-#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:1144
+#: plugins/gtk+/gtk+.xml:204 plugins/gtk+/gtk+.xml:1085
 msgid "Invalid"
 msgstr "Nevalid"
 
-#: plugins/gtk+/gtk+.xml:226
+#: plugins/gtk+/gtk+.xml:206
 msgid "Accelerator Label"
 msgstr "Etichetă accelerator"
 
-#: plugins/gtk+/gtk+.xml:228
+#: plugins/gtk+/gtk+.xml:208
 msgid "Alert"
 msgstr "Alertă"
 
-#: plugins/gtk+/gtk+.xml:230
+#: plugins/gtk+/gtk+.xml:210
 msgid "Animation"
 msgstr "Animație"
 
-#: plugins/gtk+/gtk+.xml:232 plugins/gtk+/gtk+.xml:3072
+#: plugins/gtk+/gtk+.xml:212 plugins/gtk+/gtk+.xml:2891
 msgid "Arrow"
 msgstr "Săgeată"
 
-#: plugins/gtk+/gtk+.xml:234 plugins/gtk+/gtk+.xml:2891
+#: plugins/gtk+/gtk+.xml:214 plugins/gtk+/gtk+.xml:2709
 msgid "Calendar"
 msgstr "Calendar"
 
-#: plugins/gtk+/gtk+.xml:236
+#: plugins/gtk+/gtk+.xml:216
 msgid "Canvas"
 msgstr "Canava"
 
-#: plugins/gtk+/gtk+.xml:238
+#: plugins/gtk+/gtk+.xml:218
 msgid "Check Box"
 msgstr "Căsuță de bifare"
 
-#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:1055
+#: plugins/gtk+/gtk+.xml:220 plugins/gtk+/gtk+.xml:998
 msgid "Check Menu Item"
 msgstr "Element meniu de bifare"
 
-#: plugins/gtk+/gtk+.xml:242
+#: plugins/gtk+/gtk+.xml:222
 msgid "Color Chooser"
 msgstr "Selector de culoare"
 
-#: plugins/gtk+/gtk+.xml:244 plugins/gtk+/gtk+.xml:336
+#: plugins/gtk+/gtk+.xml:224 plugins/gtk+/gtk+.xml:316
 msgid "Column Header"
 msgstr "Antetul coloanei"
 
-#: plugins/gtk+/gtk+.xml:246 plugins/gtk+/gtk+.xml:2113
+#: plugins/gtk+/gtk+.xml:226 plugins/gtk+/gtk+.xml:1973
 msgid "Combo Box"
 msgstr "Listă de selecție"
 
-#: plugins/gtk+/gtk+.xml:248
+#: plugins/gtk+/gtk+.xml:228
 msgid "Date Editor"
 msgstr "Editor de dată"
 
-#: plugins/gtk+/gtk+.xml:250
+#: plugins/gtk+/gtk+.xml:230
 msgid "Desktop Icon"
 msgstr "Iconiță Desktop"
 
-#: plugins/gtk+/gtk+.xml:252
+#: plugins/gtk+/gtk+.xml:232
 msgid "Desktop Frame"
 msgstr "Cadru Desktop"
 
-#: plugins/gtk+/gtk+.xml:254
+#: plugins/gtk+/gtk+.xml:234
 msgid "Dial"
 msgstr "Apelează"
 
-#: plugins/gtk+/gtk+.xml:256 plugins/gtk+/gtk+.xml:824
-#: plugins/gtk+/gtk+.xml:1156
+#: plugins/gtk+/gtk+.xml:236 plugins/gtk+/gtk+.xml:783
+#: plugins/gtk+/gtk+.xml:1097
 msgid "Dialog"
 msgstr "Dialog"
 
-#: plugins/gtk+/gtk+.xml:258
+#: plugins/gtk+/gtk+.xml:238
 msgid "Directory Pane"
 msgstr "Panou director"
 
-#: plugins/gtk+/gtk+.xml:260 plugins/gtk+/gtk+.xml:3173
+#: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:2987
 msgid "Drawing Area"
 msgstr "Zonă de desenat"
 
-#: plugins/gtk+/gtk+.xml:262
+#: plugins/gtk+/gtk+.xml:242
 msgid "File Chooser"
 msgstr "Alegere fișiere"
 
-#: plugins/gtk+/gtk+.xml:264
+#: plugins/gtk+/gtk+.xml:244
 msgid "Filler"
 msgstr "Filtru"
 
-#: plugins/gtk+/gtk+.xml:266
+#: plugins/gtk+/gtk+.xml:246
 msgid "Font Chooser"
 msgstr "Selector de fonturi"
 
-#: plugins/gtk+/gtk+.xml:270
+#: plugins/gtk+/gtk+.xml:250
 msgid "Glass Pane"
 msgstr "Panou de sticlă"
 
-#: plugins/gtk+/gtk+.xml:272
+#: plugins/gtk+/gtk+.xml:252
 msgid "HTML Container"
 msgstr "Container HTML"
 
-#: plugins/gtk+/gtk+.xml:274 plugins/gtk+/glade-about-dialog-editor.ui:213
+#: plugins/gtk+/gtk+.xml:254 plugins/gtk+/glade-about-dialog-editor.ui:213
 msgid "Icon"
 msgstr "Iconiță"
 
-#: plugins/gtk+/gtk+.xml:278
+#: plugins/gtk+/gtk+.xml:258
 msgid "Internal Frame"
 msgstr "Fereastră internă"
 
-#: plugins/gtk+/gtk+.xml:282
+#: plugins/gtk+/gtk+.xml:262
 msgid "Layered Pane"
 msgstr "Panou stratificat"
 
-#: plugins/gtk+/gtk+.xml:284
+#: plugins/gtk+/gtk+.xml:264
 msgid "List"
 msgstr "Listă"
 
-#: plugins/gtk+/gtk+.xml:286
+#: plugins/gtk+/gtk+.xml:266
 msgid "List Item"
 msgstr "Element de listă"
 
-#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1072
+#: plugins/gtk+/gtk+.xml:270 plugins/gtk+/gtk+.xml:1015
 msgid "Menu Bar"
 msgstr "Bară de meniu"
 
-#: plugins/gtk+/gtk+.xml:294
+#: plugins/gtk+/gtk+.xml:274
 msgid "Option Pane"
 msgstr "Panou de opțiuni"
 
-#: plugins/gtk+/gtk+.xml:296
+#: plugins/gtk+/gtk+.xml:276
 msgid "Page Tab"
 msgstr "Tab de pagină"
 
-#: plugins/gtk+/gtk+.xml:298
+#: plugins/gtk+/gtk+.xml:278
 msgid "Page Tab List"
 msgstr "Lista de taburi ale paginilor"
 
-#: plugins/gtk+/gtk+.xml:300
+#: plugins/gtk+/gtk+.xml:280
 msgid "Panel"
 msgstr "Panou"
 
-#: plugins/gtk+/gtk+.xml:302
+#: plugins/gtk+/gtk+.xml:282
 msgid "Password Text"
 msgstr "Text parolă"
 
-#: plugins/gtk+/gtk+.xml:304 plugins/gtk+/gtk+.xml:840
-#: plugins/gtk+/gtk+.xml:2899
+#: plugins/gtk+/gtk+.xml:284 plugins/gtk+/gtk+.xml:799
+#: plugins/gtk+/gtk+.xml:2717
 msgid "Popup Menu"
 msgstr "Meniu contextual"
 
-#: plugins/gtk+/gtk+.xml:306
+#: plugins/gtk+/gtk+.xml:286
 msgid "Progress bar"
 msgstr "Bară de progres"
 
-#: plugins/gtk+/gtk+.xml:308
+#: plugins/gtk+/gtk+.xml:288
 msgid "Push Button"
 msgstr "Buton de apăsat"
 
-#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:1879
+#: plugins/gtk+/gtk+.xml:290 plugins/gtk+/gtk+.xml:1755
 msgid "Radio Button"
 msgstr "Buton radio"
 
-#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:1057
+#: plugins/gtk+/gtk+.xml:292 plugins/gtk+/gtk+.xml:1000
 msgid "Radio Menu Item"
 msgstr "Element meniu radio"
 
-#: plugins/gtk+/gtk+.xml:314
+#: plugins/gtk+/gtk+.xml:294
 msgid "Root Pane"
 msgstr "Panou rădăcină"
 
-#: plugins/gtk+/gtk+.xml:316 plugins/gtk+/gtk+.xml:338
+#: plugins/gtk+/gtk+.xml:296 plugins/gtk+/gtk+.xml:318
 msgid "Row Header"
 msgstr "Antetul rândului"
 
-#: plugins/gtk+/gtk+.xml:318
+#: plugins/gtk+/gtk+.xml:298
 msgid "Scroll Bar"
 msgstr "Bară de derulare"
 
-#: plugins/gtk+/gtk+.xml:320
+#: plugins/gtk+/gtk+.xml:300
 msgid "Scroll pane"
 msgstr "Antet de derulare"
 
-#: plugins/gtk+/gtk+.xml:324
+#: plugins/gtk+/gtk+.xml:304
 msgid "Slider"
 msgstr "Glisor"
 
-#: plugins/gtk+/gtk+.xml:326
+#: plugins/gtk+/gtk+.xml:306
 msgid "Split Pane"
 msgstr "Panou împărțit"
 
-#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1849
+#: plugins/gtk+/gtk+.xml:308 plugins/gtk+/gtk+.xml:1727
 msgid "Spin Button"
 msgstr "Buton spin"
 
-#: plugins/gtk+/gtk+.xml:330 plugins/gtk+/gtk+.xml:3058
+#: plugins/gtk+/gtk+.xml:310 plugins/gtk+/gtk+.xml:2877
 msgid "Status Bar"
 msgstr "Bara de stare"
 
-#: plugins/gtk+/gtk+.xml:332 plugins/gtk+/gtk+.xml:2345
+#: plugins/gtk+/gtk+.xml:312 plugins/gtk+/gtk+.xml:2191
 msgid "Table"
 msgstr "Tabel"
 
-#: plugins/gtk+/gtk+.xml:334
+#: plugins/gtk+/gtk+.xml:314
 msgid "Table Cell"
 msgstr "Celulă tabel"
 
-#: plugins/gtk+/gtk+.xml:340
+#: plugins/gtk+/gtk+.xml:320
 msgid "Tear Off Menu Item"
 msgstr "Element de meniu detașabil"
 
-#: plugins/gtk+/gtk+.xml:342 plugins/gtk+/gtk+.xml:1525
+#: plugins/gtk+/gtk+.xml:322 plugins/gtk+/gtk+.xml:1438
 msgid "Terminal"
 msgstr "Terminal"
 
-#: plugins/gtk+/gtk+.xml:346 plugins/gtk+/gtk+.xml:1833
+#: plugins/gtk+/gtk+.xml:326 plugins/gtk+/gtk+.xml:1711
 msgid "Toggle Button"
 msgstr "Buton comutare"
 
-#: plugins/gtk+/gtk+.xml:348 plugins/gtk+/gtk+.xml:1099
+#: plugins/gtk+/gtk+.xml:328 plugins/gtk+/gtk+.xml:1042
 msgid "Tool Bar"
 msgstr "Bară de unelte"
 
-#: plugins/gtk+/gtk+.xml:350
+#: plugins/gtk+/gtk+.xml:330
 msgid "Tool Tip"
 msgstr "Indiciu"
 
-#: plugins/gtk+/gtk+.xml:352
+#: plugins/gtk+/gtk+.xml:332
 msgid "Tree"
 msgstr "Arbore"
 
-#: plugins/gtk+/gtk+.xml:354
+#: plugins/gtk+/gtk+.xml:334
 msgid "Tree Table"
 msgstr "Tabel arborescent"
 
-#: plugins/gtk+/gtk+.xml:356 plugins/gtk+/gtk+.xml:3327
+#: plugins/gtk+/gtk+.xml:336 plugins/gtk+/gtk+.xml:3137
 msgid "Unknown"
 msgstr "Necunoscut"
 
-#: plugins/gtk+/gtk+.xml:360 plugins/gtk+/gtk+.xml:758
-#: plugins/gtk+/gtk+.xml:3601 plugins/webkit2gtk/webkit2gtk.xml:29
+#: plugins/gtk+/gtk+.xml:340 plugins/gtk+/gtk+.xml:718
+#: plugins/gtk+/gtk+.xml:3396 plugins/webkit2gtk/webkit2gtk.xml:29
 msgid "Window"
 msgstr "Fereastră"
 
-#: plugins/gtk+/gtk+.xml:362
+#: plugins/gtk+/gtk+.xml:342
 msgid "Header"
 msgstr "Antet"
 
-#: plugins/gtk+/gtk+.xml:364
+#: plugins/gtk+/gtk+.xml:344
 msgid "Footer"
 msgstr "Subsol"
 
-#: plugins/gtk+/gtk+.xml:366
+#: plugins/gtk+/gtk+.xml:346
 msgid "Paragraph"
 msgstr "Paragraf"
 
-#: plugins/gtk+/gtk+.xml:368
+#: plugins/gtk+/gtk+.xml:348
 msgid "Ruler"
 msgstr "Riglă"
 
-#: plugins/gtk+/gtk+.xml:370
+#: plugins/gtk+/gtk+.xml:350
 msgid "Application"
 msgstr "Aplicație"
 
-#: plugins/gtk+/gtk+.xml:372
+#: plugins/gtk+/gtk+.xml:352
 msgid "Autocomplete"
 msgstr "Autocompletare"
 
-#: plugins/gtk+/gtk+.xml:374
+#: plugins/gtk+/gtk+.xml:354
 msgid "Editbar"
 msgstr "Editare"
 
-#: plugins/gtk+/gtk+.xml:376
+#: plugins/gtk+/gtk+.xml:356
 msgid "Embedded"
 msgstr "Încorporat"
 
-#: plugins/gtk+/gtk+.xml:378 plugins/gtk+/glade-entry-editor.ui:43
+#: plugins/gtk+/gtk+.xml:358 plugins/gtk+/glade-entry-editor.ui:43
 msgid "Entry"
 msgstr "Intrare"
 
-#: plugins/gtk+/gtk+.xml:380
+#: plugins/gtk+/gtk+.xml:360
 msgid "Chart"
 msgstr "Diagramă"
 
-#: plugins/gtk+/gtk+.xml:382
+#: plugins/gtk+/gtk+.xml:362
 msgid "Caption"
 msgstr "Legendă"
 
-#: plugins/gtk+/gtk+.xml:384
+#: plugins/gtk+/gtk+.xml:364
 msgid "Document Frame"
 msgstr "Cadru de document"
 
-#: plugins/gtk+/gtk+.xml:386
+#: plugins/gtk+/gtk+.xml:366
 msgid "Heading"
 msgstr "Rubrică"
 
-#: plugins/gtk+/gtk+.xml:388
+#: plugins/gtk+/gtk+.xml:368
 msgid "Page"
 msgstr "Pagină"
 
-#: plugins/gtk+/gtk+.xml:390
+#: plugins/gtk+/gtk+.xml:370
 msgid "Section"
 msgstr "Secțiune"
 
-#: plugins/gtk+/gtk+.xml:392
+#: plugins/gtk+/gtk+.xml:372
 msgid "Redundant Object"
 msgstr "Obiect redundant"
 
-#: plugins/gtk+/gtk+.xml:394
+#: plugins/gtk+/gtk+.xml:374
 msgid "Form"
 msgstr "Formă"
 
-#: plugins/gtk+/gtk+.xml:396
+#: plugins/gtk+/gtk+.xml:376
 msgid "Link"
 msgstr "Legătură"
 
-#: plugins/gtk+/gtk+.xml:398
+#: plugins/gtk+/gtk+.xml:378
 msgid "Input Method Window"
 msgstr "Fereastra metodelor de intrare"
 
-#: plugins/gtk+/gtk+.xml:400
+#: plugins/gtk+/gtk+.xml:380
 msgid "Table Row"
 msgstr "Rând tabel"
 
-#: plugins/gtk+/gtk+.xml:402
+#: plugins/gtk+/gtk+.xml:382
 msgid "Tree Item"
 msgstr "Element din arbore"
 
-#: plugins/gtk+/gtk+.xml:404
+#: plugins/gtk+/gtk+.xml:384
 msgid "Document Spreadsheet"
 msgstr "Document foaie de calcul"
 
-#: plugins/gtk+/gtk+.xml:406
+#: plugins/gtk+/gtk+.xml:386
 msgid "Document Presentation"
 msgstr "Prezentare document"
 
-#: plugins/gtk+/gtk+.xml:408
+#: plugins/gtk+/gtk+.xml:388
 msgid "Document Text"
 msgstr "Document text"
 
-#: plugins/gtk+/gtk+.xml:410
+#: plugins/gtk+/gtk+.xml:390
 msgid "Document Web"
 msgstr "Document web"
 
-#: plugins/gtk+/gtk+.xml:412
+#: plugins/gtk+/gtk+.xml:392
 msgid "Document Email"
 msgstr "Document email"
 
-#: plugins/gtk+/gtk+.xml:416 plugins/gtk+/gtk+.xml:2726
+#: plugins/gtk+/gtk+.xml:396 plugins/gtk+/gtk+.xml:2556
 msgid "List Box"
 msgstr "Căsuță listă"
 
-#: plugins/gtk+/gtk+.xml:418
+#: plugins/gtk+/gtk+.xml:398
 msgid "Grouping"
 msgstr "Grupare"
 
-#: plugins/gtk+/gtk+.xml:420
+#: plugins/gtk+/gtk+.xml:400
 msgid "Image Map"
 msgstr "Hartă iImagine"
 
-#: plugins/gtk+/gtk+.xml:422 plugins/gtk+/gtk+.xml:844
+#: plugins/gtk+/gtk+.xml:402 plugins/gtk+/gtk+.xml:803
 msgid "Notification"
 msgstr "Notificare"
 
-#: plugins/gtk+/gtk+.xml:424 plugins/gtk+/gtk+.xml:3177
+#: plugins/gtk+/gtk+.xml:404 plugins/gtk+/gtk+.xml:2991
 msgid "Info Bar"
 msgstr "Bară de informații"
 
-#: plugins/gtk+/gtk+.xml:426 plugins/gtk+/gtk+.xml:2261
+#: plugins/gtk+/gtk+.xml:406 plugins/gtk+/gtk+.xml:2112
 msgid "Level Bar"
 msgstr "Bara de nivel"
 
-#: plugins/gtk+/gtk+.xml:428
+#: plugins/gtk+/gtk+.xml:408
 msgid "Title Bar"
 msgstr "Bară de titlu"
 
-#: plugins/gtk+/gtk+.xml:430
+#: plugins/gtk+/gtk+.xml:410
 msgid "Block Quote"
 msgstr "Citat bloc"
 
-#: plugins/gtk+/gtk+.xml:432
+#: plugins/gtk+/gtk+.xml:412
 msgid "Audio"
 msgstr "Audio"
 
-#: plugins/gtk+/gtk+.xml:434
+#: plugins/gtk+/gtk+.xml:414
 msgid "Video"
 msgstr "Video"
 
-#: plugins/gtk+/gtk+.xml:438
+#: plugins/gtk+/gtk+.xml:418
 msgid "Article"
 msgstr "Articol"
 
-#: plugins/gtk+/gtk+.xml:440
+#: plugins/gtk+/gtk+.xml:420
 msgid "Landmark"
 msgstr "Punct de referință"
 
-#: plugins/gtk+/gtk+.xml:442
+#: plugins/gtk+/gtk+.xml:422
 msgid "Log"
 msgstr "Jurnal"
 
-#: plugins/gtk+/gtk+.xml:444
+#: plugins/gtk+/gtk+.xml:424
 msgid "Marquee"
 msgstr "Marchiză"
 
-#: plugins/gtk+/gtk+.xml:446
+#: plugins/gtk+/gtk+.xml:426
 msgid "Math"
 msgstr "Matematică"
 
-#: plugins/gtk+/gtk+.xml:448
+#: plugins/gtk+/gtk+.xml:428
 msgid "Rating"
 msgstr "Evaluare"
 
-#: plugins/gtk+/gtk+.xml:450
+#: plugins/gtk+/gtk+.xml:430
 msgid "Time"
 msgstr "Timp"
 
-#: plugins/gtk+/gtk+.xml:452
+#: plugins/gtk+/gtk+.xml:432
 msgid "Description List"
 msgstr "Listă de descriere"
 
-#: plugins/gtk+/gtk+.xml:454
+#: plugins/gtk+/gtk+.xml:434
 msgid "Description Term"
 msgstr "Termen de descriere"
 
-#: plugins/gtk+/gtk+.xml:456
+#: plugins/gtk+/gtk+.xml:436
 msgid "Description Value"
 msgstr "Valoare de descriere"
 
-#: plugins/gtk+/gtk+.xml:458
+#: plugins/gtk+/gtk+.xml:438
 msgid "Generic object"
 msgstr "Obiect generic"
 
-#: plugins/gtk+/gtk+.xml:460
+#: plugins/gtk+/gtk+.xml:440
 msgid "Mathematical fraction"
 msgstr "Fracție matematică"
 
-#: plugins/gtk+/gtk+.xml:462
+#: plugins/gtk+/gtk+.xml:442
 msgid "A radical expression (in math)"
 msgstr "O expresie radical (în matematică)"
 
-#: plugins/gtk+/gtk+.xml:464
+#: plugins/gtk+/gtk+.xml:444
 msgid "Subscript text"
 msgstr "Text indice"
 
-#: plugins/gtk+/gtk+.xml:466
+#: plugins/gtk+/gtk+.xml:446
 msgid "Superscript text"
 msgstr "Text exponent"
 
-#: plugins/gtk+/gtk+.xml:468
+#: plugins/gtk+/gtk+.xml:448
 msgid "Footnote text"
 msgstr "Text adnotare"
 
-#: plugins/gtk+/gtk+.xml:470
+#: plugins/gtk+/gtk+.xml:450
 msgid "Content deletion"
 msgstr "Ștergere de conținut"
 
-#: plugins/gtk+/gtk+.xml:472
+#: plugins/gtk+/gtk+.xml:452
 msgid "Content insertion"
 msgstr "Inserare de conținut"
 
-#: plugins/gtk+/gtk+.xml:474
+#: plugins/gtk+/gtk+.xml:454
 msgid "Marked content"
 msgstr "Conținut marcat"
 
-#: plugins/gtk+/gtk+.xml:476
+#: plugins/gtk+/gtk+.xml:456
 msgid "Change suggestion"
 msgstr "Modifică sugestia"
 
-#: plugins/gtk+/gtk+.xml:478
+#: plugins/gtk+/gtk+.xml:458
 msgid "Last Defined"
 msgstr "Definit ultima dată"
 
-#: plugins/gtk+/gtk+.xml:483
+#: plugins/gtk+/gtk+.xml:462
 msgid "Controlled By"
 msgstr "Controlat de"
 
-#: plugins/gtk+/gtk+.xml:488
+#: plugins/gtk+/gtk+.xml:467
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "Indică un obiect controlat de unul sau mai multe obiecte țintă"
 
-#: plugins/gtk+/gtk+.xml:491
+#: plugins/gtk+/gtk+.xml:469
 msgid "Controller For"
 msgstr "Controler pentru"
 
-#: plugins/gtk+/gtk+.xml:496
+#: plugins/gtk+/gtk+.xml:474
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Indică un obiect controler pentru unul sau mai multe obiecte țintă"
 
-#: plugins/gtk+/gtk+.xml:499
+#: plugins/gtk+/gtk+.xml:476
 msgid "Labeled By"
 msgstr "Etichetat de"
 
-#: plugins/gtk+/gtk+.xml:504
+#: plugins/gtk+/gtk+.xml:481
 msgid "Indicates an object is labeled by one or more target objects"
 msgstr "Indică un obiect etichetat de unul sau mai multe obiecte țintă"
 
-#: plugins/gtk+/gtk+.xml:507
+#: plugins/gtk+/gtk+.xml:483
 msgid "Label For"
 msgstr "Etichetă pentru"
 
-#: plugins/gtk+/gtk+.xml:512
+#: plugins/gtk+/gtk+.xml:488
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "Indică un obiect etichetă pentru unul sau mai multe obiecte țintă"
 
-#: plugins/gtk+/gtk+.xml:515
+#: plugins/gtk+/gtk+.xml:490
 msgid "Member Of"
 msgstr "Membru al"
 
-#: plugins/gtk+/gtk+.xml:520
+#: plugins/gtk+/gtk+.xml:495
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr ""
 "Indică un obiect membru al unui grup de unul sau mai multe obiecte țintă"
 
-#: plugins/gtk+/gtk+.xml:523
+#: plugins/gtk+/gtk+.xml:497
 msgid "Node Child Of"
 msgstr "Nod copil al"
 
-#: plugins/gtk+/gtk+.xml:528
+#: plugins/gtk+/gtk+.xml:502
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
@@ -5195,11 +5271,11 @@ msgstr ""
 "afișat deoarece o celulă din aceeași coloană este expandată și identifică "
 "acea celulă"
 
-#: plugins/gtk+/gtk+.xml:533
+#: plugins/gtk+/gtk+.xml:506
 msgid "Flows To"
 msgstr "Curge în"
 
-#: plugins/gtk+/gtk+.xml:538
+#: plugins/gtk+/gtk+.xml:511
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -5207,11 +5283,11 @@ msgstr ""
 "Indică faptul că obiectul are conținut care curge logic în alt AtkObject "
 "într-o manieră secvențială (de ex. text-flow)"
 
-#: plugins/gtk+/gtk+.xml:543
+#: plugins/gtk+/gtk+.xml:515
 msgid "Flows From"
 msgstr "Curge din"
 
-#: plugins/gtk+/gtk+.xml:548
+#: plugins/gtk+/gtk+.xml:520
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -5219,11 +5295,11 @@ msgstr ""
 "Indică faptul că obiectul are conținut care curge logic din alt AtkObject "
 "într-o manieră secvențială (de ex. text-flow)"
 
-#: plugins/gtk+/gtk+.xml:553
+#: plugins/gtk+/gtk+.xml:524
 msgid "Subwindow Of"
 msgstr "Subfereastră a"
 
-#: plugins/gtk+/gtk+.xml:558
+#: plugins/gtk+/gtk+.xml:529
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
@@ -5231,11 +5307,11 @@ msgstr ""
 "Indică o subfereastră atașată la o componentă, dar care nu are nicio altă "
 "conexiune în ierarhia interfeței cu utilizatorul cu acea componentă"
 
-#: plugins/gtk+/gtk+.xml:563
+#: plugins/gtk+/gtk+.xml:533
 msgid "Embeds"
 msgstr "Încorporează"
 
-#: plugins/gtk+/gtk+.xml:568
+#: plugins/gtk+/gtk+.xml:538
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
@@ -5243,11 +5319,11 @@ msgstr ""
 "Indică faptul că obiectul încorporează vizual conținutul altui obiect, adică "
 "conținutul obiectului curge în jurul conținutului altuia"
 
-#: plugins/gtk+/gtk+.xml:573
+#: plugins/gtk+/gtk+.xml:542
 msgid "Embedded By"
 msgstr "Încorporat de"
 
-#: plugins/gtk+/gtk+.xml:578
+#: plugins/gtk+/gtk+.xml:547
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
@@ -5255,27 +5331,27 @@ msgstr ""
 "Inversul lui „Incorporează”, indică faptul că conținutul acestui obiect este "
 "vizual incorporat în alt obiect"
 
-#: plugins/gtk+/gtk+.xml:583
+#: plugins/gtk+/gtk+.xml:551
 msgid "Popup For"
 msgstr "Popup pentru"
 
-#: plugins/gtk+/gtk+.xml:588
+#: plugins/gtk+/gtk+.xml:556
 msgid "Indicates that an object is a popup for another object"
 msgstr "Indică faptul că un obiect este pop-up pentru alt obiect"
 
-#: plugins/gtk+/gtk+.xml:591
+#: plugins/gtk+/gtk+.xml:558
 msgid "Parent Window Of"
 msgstr "Fereastra părinte a"
 
-#: plugins/gtk+/gtk+.xml:596
+#: plugins/gtk+/gtk+.xml:563
 msgid "Indicates that an object is a parent window of another object"
 msgstr "Indică faptul că un obiect este fereastră părinte pentru alt obiect"
 
-#: plugins/gtk+/gtk+.xml:599
+#: plugins/gtk+/gtk+.xml:565
 msgid "Described By"
 msgstr "Descris de"
 
-#: plugins/gtk+/gtk+.xml:604
+#: plugins/gtk+/gtk+.xml:570
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
@@ -5283,11 +5359,11 @@ msgstr ""
 "Indică faptul că un obiect oferă informații descriptive despre acest obiect; "
 "mai detaliat decât „Etichetat de”"
 
-#: plugins/gtk+/gtk+.xml:607
+#: plugins/gtk+/gtk+.xml:572
 msgid "Description For"
 msgstr "Descriere pentru"
 
-#: plugins/gtk+/gtk+.xml:612
+#: plugins/gtk+/gtk+.xml:577
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
@@ -5295,378 +5371,378 @@ msgstr ""
 "Indică faptul că un obiect oferă informații descriptive despre alt obiect; "
 "mai detaliat decât „Etichetată pentru”"
 
-#: plugins/gtk+/gtk+.xml:636
+#: plugins/gtk+/gtk+.xml:600
 msgid "Queue"
 msgstr "Coadă"
 
-#: plugins/gtk+/gtk+.xml:638
+#: plugins/gtk+/gtk+.xml:602
 msgid "Immediate"
 msgstr "Instantaneu"
 
-#: plugins/gtk+/gtk+.xml:645
+#: plugins/gtk+/gtk+.xml:609
 msgid "Bin"
 msgstr "Binar"
 
-#: plugins/gtk+/gtk+.xml:663 plugins/gtk+/gtk+.xml:2746
-#: plugins/gtk+/gtk+.xml:2814
+#: plugins/gtk+/gtk+.xml:626 plugins/gtk+/gtk+.xml:2573
+#: plugins/gtk+/gtk+.xml:2635
 msgid "Insert Before"
 msgstr "Inserează înainte"
 
-#: plugins/gtk+/gtk+.xml:664 plugins/gtk+/gtk+.xml:2747
-#: plugins/gtk+/gtk+.xml:2815
+#: plugins/gtk+/gtk+.xml:627 plugins/gtk+/gtk+.xml:2574
+#: plugins/gtk+/gtk+.xml:2636
 msgid "Insert After"
 msgstr "Inserează după"
 
-#: plugins/gtk+/gtk+.xml:665 plugins/gtk+/gtk+.xml:2590
+#: plugins/gtk+/gtk+.xml:628 plugins/gtk+/gtk+.xml:2423
 msgid "Remove Slot"
 msgstr "Elimină slotul"
 
-#: plugins/gtk+/gtk+.xml:672 plugins/gtk+/gtk+.xml:738
-#: plugins/gtk+/gtk+.xml:2578
+#: plugins/gtk+/gtk+.xml:634 plugins/gtk+/gtk+.xml:699
+#: plugins/gtk+/gtk+.xml:2411
 msgid "Number of items"
 msgstr "Număr de elemente"
 
-#: plugins/gtk+/gtk+.xml:677
+#: plugins/gtk+/gtk+.xml:639
 msgid "The number of items in the box"
 msgstr "Numărul elementelor din această căsuță"
 
-#: plugins/gtk+/gtk+.xml:682 plugins/gtk+/gtk+.xml:1379
+#: plugins/gtk+/gtk+.xml:644 plugins/gtk+/gtk+.xml:1298
 msgid "Top"
 msgstr "Sus"
 
-#: plugins/gtk+/gtk+.xml:686 plugins/gtk+/gtk+.xml:1381
+#: plugins/gtk+/gtk+.xml:648 plugins/gtk+/gtk+.xml:1300
 msgid "Bottom"
 msgstr "Jos"
 
-#: plugins/gtk+/gtk+.xml:689 plugins/gtk+/gtk+.xml:745
+#: plugins/gtk+/gtk+.xml:651 plugins/gtk+/gtk+.xml:706
 msgid "Center Child"
 msgstr "Centrează copil"
 
-#: plugins/gtk+/gtk+.xml:713
+#: plugins/gtk+/gtk+.xml:674
 msgid "Horizontal Box"
 msgstr "Căsuță orizontală"
 
-#: plugins/gtk+/gtk+.xml:718
+#: plugins/gtk+/gtk+.xml:680
 msgid "Vertical Box"
 msgstr "Căsuță verticală"
 
-#: plugins/gtk+/gtk+.xml:724
+#: plugins/gtk+/gtk+.xml:686
 msgid "Action Bar"
 msgstr "Bară de acțiuni"
 
-#: plugins/gtk+/gtk+.xml:743
+#: plugins/gtk+/gtk+.xml:704
 msgid "The number of items in the action bar"
 msgstr "Numărul elementelor din bara de acțiuni"
 
-#: plugins/gtk+/gtk+.xml:771
+#: plugins/gtk+/gtk+.xml:730
 msgid "Accel Groups"
 msgstr "Grupuri de acceleratori"
 
-#: plugins/gtk+/gtk+.xml:776
+#: plugins/gtk+/gtk+.xml:735
 msgid "A list of accel groups to be added to this window"
 msgstr "O listă de grupuri de acceleratori de adăugat acestei ferestre"
 
-#: plugins/gtk+/gtk+.xml:779
+#: plugins/gtk+/gtk+.xml:738
 msgid "CSD"
 msgstr "CSD"
 
-#: plugins/gtk+/gtk+.xml:795
+#: plugins/gtk+/gtk+.xml:754
 msgid "North West"
 msgstr "Nord-Vest"
 
-#: plugins/gtk+/gtk+.xml:797
+#: plugins/gtk+/gtk+.xml:756
 msgid "North"
 msgstr "Nord"
 
-#: plugins/gtk+/gtk+.xml:799
+#: plugins/gtk+/gtk+.xml:758
 msgid "North East"
 msgstr "Nord-Est"
 
-#: plugins/gtk+/gtk+.xml:801
+#: plugins/gtk+/gtk+.xml:760
 msgid "West"
 msgstr "Vest"
 
-#: plugins/gtk+/gtk+.xml:805
+#: plugins/gtk+/gtk+.xml:764
 msgid "East"
 msgstr "Est"
 
-#: plugins/gtk+/gtk+.xml:807
+#: plugins/gtk+/gtk+.xml:766
 msgid "South West"
 msgstr "Sud-Vest"
 
-#: plugins/gtk+/gtk+.xml:809
+#: plugins/gtk+/gtk+.xml:768
 msgid "South"
 msgstr "Sud"
 
-#: plugins/gtk+/gtk+.xml:811
+#: plugins/gtk+/gtk+.xml:770
 msgid "South East"
 msgstr "Sud-Est"
 
-#: plugins/gtk+/gtk+.xml:813
+#: plugins/gtk+/gtk+.xml:772
 msgid "Static"
 msgstr "Static"
 
-#: plugins/gtk+/gtk+.xml:828
+#: plugins/gtk+/gtk+.xml:787
 msgid "Toolbar"
 msgstr "Bară de unelte"
 
-#: plugins/gtk+/gtk+.xml:830
+#: plugins/gtk+/gtk+.xml:789
 msgid "Splash Screen"
 msgstr "Ecran de pornire"
 
-#: plugins/gtk+/gtk+.xml:832
+#: plugins/gtk+/gtk+.xml:791
 msgid "Utility"
 msgstr "Utilitate"
 
-#: plugins/gtk+/gtk+.xml:834
+#: plugins/gtk+/gtk+.xml:793
 msgid "Dock"
 msgstr "Doc"
 
-#: plugins/gtk+/gtk+.xml:836
+#: plugins/gtk+/gtk+.xml:795
 msgid "Desktop"
 msgstr "Desktop"
 
-#: plugins/gtk+/gtk+.xml:838
+#: plugins/gtk+/gtk+.xml:797
 msgid "Drop Down Menu"
 msgstr "Meniu derulant"
 
-#: plugins/gtk+/gtk+.xml:842
+#: plugins/gtk+/gtk+.xml:801
 msgid "Tooltip"
 msgstr "Indiciu"
 
-#: plugins/gtk+/gtk+.xml:854
+#: plugins/gtk+/gtk+.xml:813
 msgid "Toplevel"
 msgstr "Nivelul de top"
 
-#: plugins/gtk+/gtk+.xml:856
+#: plugins/gtk+/gtk+.xml:815
 msgid "Popup"
 msgstr "Popup"
 
-#: plugins/gtk+/gtk+.xml:858
+#: plugins/gtk+/gtk+.xml:817
 msgid "Offscreen"
 msgstr "În afara ecranului"
 
-#: plugins/gtk+/gtk+.xml:875
+#: plugins/gtk+/gtk+.xml:834
 msgid "Mouse"
 msgstr "Maus"
 
-#: plugins/gtk+/gtk+.xml:877
+#: plugins/gtk+/gtk+.xml:836
 msgid "Always Center"
 msgstr "Întotdeauna centrat"
 
-#: plugins/gtk+/gtk+.xml:879
+#: plugins/gtk+/gtk+.xml:838
 msgid "Center on Parent"
 msgstr "Centrează în părinte"
 
-#: plugins/gtk+/gtk+.xml:907
+#: plugins/gtk+/gtk+.xml:862
 msgid "Offscreen Window"
 msgstr "Fereastră în afara ecranului"
 
-#: plugins/gtk+/gtk+.xml:952
+#: plugins/gtk+/gtk+.xml:905
 msgid "Application Window"
 msgstr "Fereastră aplicație"
 
-#: plugins/gtk+/gtk+.xml:955
+#: plugins/gtk+/gtk+.xml:907
 msgid "Overlay"
 msgstr "Acoperire"
 
-#: plugins/gtk+/gtk+.xml:964
+#: plugins/gtk+/gtk+.xml:916
 msgid "Menu Shell"
 msgstr "Conținutul meniului"
 
-#: plugins/gtk+/gtk+.xml:979 plugins/gtk+/gtk+.xml:1162
-#: plugins/gtk+/gtk+.xml:1217 plugins/gtk+/gtk+.xml:2773
-#: plugins/gtk+/gtk+.xml:2823 plugins/gtk+/gtk+.xml:3579
+#: plugins/gtk+/gtk+.xml:929 plugins/gtk+/gtk+.xml:1102
+#: plugins/gtk+/gtk+.xml:1152 plugins/gtk+/gtk+.xml:2598
+#: plugins/gtk+/gtk+.xml:2642 plugins/gtk+/gtk+.xml:3374
 #: plugins/gtk+/glade-button-editor.ui:394
 msgid "Position"
 msgstr "Poziție"
 
-#: plugins/gtk+/gtk+.xml:984
+#: plugins/gtk+/gtk+.xml:934
 msgid "The position of the menu item in the menu shell"
 msgstr "Poziția elementului de meniu în cadrul meniului"
 
-#: plugins/gtk+/gtk+.xml:1003 plugins/gtk+/gtk+.xml:1076
-#: plugins/gtk+/gtk+.xml:1110 plugins/gtk+/gtk+.xml:1192
-#: plugins/gtk+/gtk+.xml:2128 plugins/gtk+/gtk+.xml:2904
-#: plugins/gtk+/gtk+.xml:3805 plugins/gtk+/gtk+.xml:3880
-#: plugins/gtk+/gtk+.xml:3896 plugins/gtk+/gtk+.xml:4001
-#: plugins/gtk+/gtk+.xml:4071 plugins/gtk+/gtk+.xml:4124
-#: plugins/gtk+/gtk+.xml:4182 plugins/gtk+/gtk+.xml:5566
+#: plugins/gtk+/gtk+.xml:951 plugins/gtk+/gtk+.xml:1019
+#: plugins/gtk+/gtk+.xml:1052 plugins/gtk+/gtk+.xml:1129
+#: plugins/gtk+/gtk+.xml:1987 plugins/gtk+/gtk+.xml:2722
+#: plugins/gtk+/gtk+.xml:3596 plugins/gtk+/gtk+.xml:3668
+#: plugins/gtk+/gtk+.xml:3683 plugins/gtk+/gtk+.xml:3784
+#: plugins/gtk+/gtk+.xml:3849 plugins/gtk+/gtk+.xml:3897
+#: plugins/gtk+/gtk+.xml:3948 plugins/gtk+/gtk+.xml:5246
 msgid "Edit…"
 msgstr "Editare…"
 
-#: plugins/gtk+/gtk+.xml:1010
+#: plugins/gtk+/gtk+.xml:958
 msgid "Use Underline"
 msgstr "Utilizează subliniere"
 
-#: plugins/gtk+/gtk+.xml:1014 plugins/gtk+/gtk+.xml:1295
-#: plugins/gtk+/gtk+.xml:1790 plugins/gtk+/gtk+.xml:1897
-#: plugins/gtk+/gtk+.xml:2949
+#: plugins/gtk+/gtk+.xml:960 plugins/gtk+/gtk+.xml:1223
+#: plugins/gtk+/gtk+.xml:1676 plugins/gtk+/gtk+.xml:1770
+#: plugins/gtk+/gtk+.xml:2766
 msgid "Related Action"
 msgstr "Acțiune înrudită"
 
-#: plugins/gtk+/gtk+.xml:1016 plugins/gtk+/gtk+.xml:1297
-#: plugins/gtk+/gtk+.xml:1792 plugins/gtk+/gtk+.xml:1904
-#: plugins/gtk+/gtk+.xml:2951
+#: plugins/gtk+/gtk+.xml:961 plugins/gtk+/gtk+.xml:1224
+#: plugins/gtk+/gtk+.xml:1677 plugins/gtk+/gtk+.xml:1776
+#: plugins/gtk+/gtk+.xml:2767
 msgid "Use Action Appearance"
 msgstr "Utilizează ilustrarea acțiunii"
 
-#: plugins/gtk+/gtk+.xml:1019 plugins/gtk+/gtk+.xml:1316
-#: plugins/gtk+/gtk+.xml:1795 plugins/gtk+/gtk+.xml:1907
+#: plugins/gtk+/gtk+.xml:963 plugins/gtk+/gtk+.xml:1240
+#: plugins/gtk+/gtk+.xml:1679 plugins/gtk+/gtk+.xml:1778
 msgid "Action Name"
 msgstr "Nume acțiune"
 
-#: plugins/gtk+/gtk+.xml:1020 plugins/gtk+/gtk+.xml:1317
-#: plugins/gtk+/gtk+.xml:1796 plugins/gtk+/gtk+.xml:1908
-#: plugins/gtk+/gtk+.xml:3142
+#: plugins/gtk+/gtk+.xml:964 plugins/gtk+/gtk+.xml:1241
+#: plugins/gtk+/gtk+.xml:1680 plugins/gtk+/gtk+.xml:1779
+#: plugins/gtk+/gtk+.xml:2957
 msgid "Action Target"
 msgstr "Țintă acțiune"
 
-#: plugins/gtk+/gtk+.xml:1024 plugins/gtk+/gtk+.xml:1799
+#: plugins/gtk+/gtk+.xml:966 plugins/gtk+/gtk+.xml:1682
 msgid "Click"
 msgstr "Clic"
 
-#: plugins/gtk+/gtk+.xml:1028 plugins/gtk+/gtk+.xml:1803
+#: plugins/gtk+/gtk+.xml:970 plugins/gtk+/gtk+.xml:1686
 msgid "Set the description of the Click atk action"
 msgstr "Stabilește descrierea acțiunii atk „Clic”"
 
-#: plugins/gtk+/gtk+.xml:1034
+#: plugins/gtk+/gtk+.xml:976
 msgid "Image Menu Item"
 msgstr "Element de meniu de tip imagine"
 
-#: plugins/gtk+/gtk+.xml:1041
+#: plugins/gtk+/gtk+.xml:983
 msgid "Stock Item"
 msgstr "Element din stoc"
 
-#: plugins/gtk+/gtk+.xml:1045
+#: plugins/gtk+/gtk+.xml:987
 msgid "The stock item for this menu item"
 msgstr "Elementul din stoc pentru acest element de meniu"
 
-#: plugins/gtk+/gtk+.xml:1051 plugins/gtk+/gtk+.xml:3774
+#: plugins/gtk+/gtk+.xml:993 plugins/gtk+/gtk+.xml:3565
 msgid "Accel Group"
 msgstr "Grup de acceleratori"
 
-#: plugins/gtk+/gtk+.xml:1065
+#: plugins/gtk+/gtk+.xml:1008
 msgid "Separator Menu Item"
 msgstr "Element de meniu separator"
 
-#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:5548
+#: plugins/gtk+/gtk+.xml:1025 plugins/gtk+/gtk+.xml:5224
 msgid "Left to Right"
 msgstr "Stânga la dreapta"
 
-#: plugins/gtk+/gtk+.xml:1084 plugins/gtk+/gtk+.xml:5550
+#: plugins/gtk+/gtk+.xml:1027 plugins/gtk+/gtk+.xml:5226
 msgid "Right to Left"
 msgstr "Dreapta la stânga"
 
-#: plugins/gtk+/gtk+.xml:1086
+#: plugins/gtk+/gtk+.xml:1029
 msgid "Top to Bottom"
 msgstr "De sus în jos"
 
-#: plugins/gtk+/gtk+.xml:1088
+#: plugins/gtk+/gtk+.xml:1031
 msgid "Bottom to Top"
 msgstr "De jos în sus"
 
-#: plugins/gtk+/gtk+.xml:1117 plugins/gtk+/gtk+.xml:2631
-#: plugins/gtk+/gtk+.xml:3761 plugins/gtk+/gtk+.xml:4023
+#: plugins/gtk+/gtk+.xml:1059 plugins/gtk+/gtk+.xml:2464
+#: plugins/gtk+/gtk+.xml:3552 plugins/gtk+/gtk+.xml:3804
 #: plugins/gtk+/glade-misc-editor.ui:65 plugins/gtk+/glade-misc-editor.ui:127
 #: plugins/gtk+/glade-scrolled-window-editor.ui:156
 msgid "Horizontal"
 msgstr "Orizontal"
 
-#: plugins/gtk+/gtk+.xml:1119 plugins/gtk+/gtk+.xml:2632
-#: plugins/gtk+/gtk+.xml:3763 plugins/gtk+/gtk+.xml:4025
+#: plugins/gtk+/gtk+.xml:1061 plugins/gtk+/gtk+.xml:2465
+#: plugins/gtk+/gtk+.xml:3554 plugins/gtk+/gtk+.xml:3806
 #: plugins/gtk+/glade-misc-editor.ui:82 plugins/gtk+/glade-misc-editor.ui:144
 #: plugins/gtk+/glade-scrolled-window-editor.ui:174
 msgid "Vertical"
 msgstr "Vertical"
 
-#: plugins/gtk+/gtk+.xml:1125
+#: plugins/gtk+/gtk+.xml:1067
 msgid "Icons only"
 msgstr "Doar iconițe"
 
-#: plugins/gtk+/gtk+.xml:1127
+#: plugins/gtk+/gtk+.xml:1069
 msgid "Text only"
 msgstr "Doar text"
 
-#: plugins/gtk+/gtk+.xml:1129
+#: plugins/gtk+/gtk+.xml:1071
 msgid "Text below icons"
 msgstr "Text sub iconițe"
 
-#: plugins/gtk+/gtk+.xml:1131
+#: plugins/gtk+/gtk+.xml:1073
 msgid "Text beside icons"
 msgstr "Text lângă iconițe"
 
-#: plugins/gtk+/gtk+.xml:1141 plugins/gtk+/gtk+.xml:2305
+#: plugins/gtk+/gtk+.xml:1082 plugins/gtk+/gtk+.xml:2155
 msgid "A symbolic icon size for the stock icon"
 msgstr "O dimensiune simbolică pentru iconița din stoc"
 
-#: plugins/gtk+/gtk+.xml:1148
+#: plugins/gtk+/gtk+.xml:1089
 msgid "Small Toolbar"
 msgstr "Bară de unelte mică"
 
-#: plugins/gtk+/gtk+.xml:1150
+#: plugins/gtk+/gtk+.xml:1091
 msgid "Large Toolbar"
 msgstr "Bară de unelte mare"
 
-#: plugins/gtk+/gtk+.xml:1154
+#: plugins/gtk+/gtk+.xml:1095
 msgid "Drag &amp; Drop"
 msgstr "Trage și plasează"
 
-#: plugins/gtk+/gtk+.xml:1167
+#: plugins/gtk+/gtk+.xml:1107
 msgid "The position of the tool item in the toolbar"
 msgstr "Poziția uneltei în bara de unelte"
 
-#: plugins/gtk+/gtk+.xml:1181
+#: plugins/gtk+/gtk+.xml:1119
 msgid "Tool Palette"
 msgstr "Paletă de unelte"
 
-#: plugins/gtk+/gtk+.xml:1203 plugins/gtk+/gtk+.xml:1692
-#: plugins/gtk+/gtk+.xml:3158 plugins/gtk+/gtk+.xml:3241
-#: plugins/gtk+/gtk+.xml:4043 plugins/gtk+/gtk+.xml:4156
+#: plugins/gtk+/gtk+.xml:1139 plugins/gtk+/gtk+.xml:1587
+#: plugins/gtk+/gtk+.xml:2972 plugins/gtk+/gtk+.xml:3053
+#: plugins/gtk+/gtk+.xml:3823 plugins/gtk+/gtk+.xml:3924
 msgid "Whether to start scrolling at less than minimum or natural width"
 msgstr ""
 "Dacă să se înceapă derularea la mai puțin decât lățimea minimă sau naturală"
 
-#: plugins/gtk+/gtk+.xml:1206
+#: plugins/gtk+/gtk+.xml:1142
 msgid "Minimum"
 msgstr "Minimum"
 
-#: plugins/gtk+/gtk+.xml:1208
+#: plugins/gtk+/gtk+.xml:1144
 msgid "Natural"
 msgstr "Natural"
 
-#: plugins/gtk+/gtk+.xml:1212 plugins/gtk+/gtk+.xml:1695
-#: plugins/gtk+/gtk+.xml:3161 plugins/gtk+/gtk+.xml:3244
-#: plugins/gtk+/gtk+.xml:4046 plugins/gtk+/gtk+.xml:4159
+#: plugins/gtk+/gtk+.xml:1148 plugins/gtk+/gtk+.xml:1590
+#: plugins/gtk+/gtk+.xml:2975 plugins/gtk+/gtk+.xml:3056
+#: plugins/gtk+/gtk+.xml:3826 plugins/gtk+/gtk+.xml:3927
 msgid "Whether to start scrolling at less than minimum or natural height"
 msgstr ""
 "Dacă să se înceapă derularea la mai puțin decât înălțimea minimă sau naturală"
 
-#: plugins/gtk+/gtk+.xml:1222
+#: plugins/gtk+/gtk+.xml:1157
 msgid "The position of the tool item group in the palette"
 msgstr "Poziția grupului de instrumente în paletă"
 
-#: plugins/gtk+/gtk+.xml:1261
+#: plugins/gtk+/gtk+.xml:1192
 msgid "Middle"
 msgstr "Mijloc"
 
-#: plugins/gtk+/gtk+.xml:1271
+#: plugins/gtk+/gtk+.xml:1202
 msgid "Half"
 msgstr "Jumătate"
 
-#: plugins/gtk+/gtk+.xml:1286
+#: plugins/gtk+/gtk+.xml:1216
 msgid "GtkToolItem"
 msgstr "GtkToolItem"
 
-#: plugins/gtk+/gtk+.xml:1303
+#: plugins/gtk+/gtk+.xml:1228
 msgid "Separator Tool Item"
 msgstr "Separatorul elementului din meniu"
 
-#: plugins/gtk+/gtk+.xml:1305 plugins/gtk+/glade-tool-button-editor.ui:66
+#: plugins/gtk+/gtk+.xml:1230 plugins/gtk+/glade-tool-button-editor.ui:66
 msgid "Tool Button"
 msgstr "Buton-unealtă"
 
-#: plugins/gtk+/gtk+.xml:1334
+#: plugins/gtk+/gtk+.xml:1256
 msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
@@ -5674,344 +5750,344 @@ msgstr ""
 "Iconița din stoc afișat pe element (alegeți un element din stocul GTK+ sau "
 "dintr-o fabrică de iconițe)"
 
-#: plugins/gtk+/gtk+.xml:1343
+#: plugins/gtk+/gtk+.xml:1265
 msgid "Toggle Tool Button"
 msgstr "Comută la buton-unealtă"
 
-#: plugins/gtk+/gtk+.xml:1349
+#: plugins/gtk+/gtk+.xml:1271
 msgid "Radio Tool Button"
 msgstr "Buton-unealtă de tip radio"
 
-#: plugins/gtk+/gtk+.xml:1356
+#: plugins/gtk+/gtk+.xml:1277
 msgid "Menu Tool Button"
 msgstr "Buton-meniu în bara de unelte"
 
-#: plugins/gtk+/gtk+.xml:1370
+#: plugins/gtk+/gtk+.xml:1289
 msgid "Handle Box"
 msgstr "Căsuța rutinei de tratare"
 
-#: plugins/gtk+/gtk+.xml:1375 plugins/gtk+/gtk+.xml:1452
-#: plugins/gtk+/gtk+.xml:3082 plugins/gtk+/gtk+.xml:4372
+#: plugins/gtk+/gtk+.xml:1294 plugins/gtk+/gtk+.xml:1369
+#: plugins/gtk+/gtk+.xml:2901 plugins/gtk+/gtk+.xml:4123
 msgid "Left"
 msgstr "Stânga"
 
-#: plugins/gtk+/gtk+.xml:1377 plugins/gtk+/gtk+.xml:1454
-#: plugins/gtk+/gtk+.xml:3084 plugins/gtk+/gtk+.xml:4376
+#: plugins/gtk+/gtk+.xml:1296 plugins/gtk+/gtk+.xml:1371
+#: plugins/gtk+/gtk+.xml:2903 plugins/gtk+/gtk+.xml:4127
 msgid "Right"
 msgstr "Dreapta"
 
-#: plugins/gtk+/gtk+.xml:1390
+#: plugins/gtk+/gtk+.xml:1309
 msgid "In"
 msgstr "Mărește"
 
-#: plugins/gtk+/gtk+.xml:1392
+#: plugins/gtk+/gtk+.xml:1311
 msgid "Out"
 msgstr "Micșorează"
 
-#: plugins/gtk+/gtk+.xml:1394
+#: plugins/gtk+/gtk+.xml:1313
 msgid "Etched In"
 msgstr "Gravat înăuntru"
 
-#: plugins/gtk+/gtk+.xml:1396
+#: plugins/gtk+/gtk+.xml:1315
 msgid "Etched Out"
 msgstr "Gravat în afară"
 
-#: plugins/gtk+/gtk+.xml:1427
+#: plugins/gtk+/gtk+.xml:1345
 msgid "Attributes"
 msgstr "Atribute"
 
-#: plugins/gtk+/gtk+.xml:1432
+#: plugins/gtk+/gtk+.xml:1350
 msgid "The pango attributes for this label"
 msgstr "Atributele pango ale acestei etichete"
 
-#: plugins/gtk+/gtk+.xml:1464 plugins/gtk+/gtk+.xml:1682
+#: plugins/gtk+/gtk+.xml:1381 plugins/gtk+/gtk+.xml:1578
 msgid "Word"
 msgstr "Cuvânt"
 
-#: plugins/gtk+/gtk+.xml:1466 plugins/gtk+/gtk+.xml:1680
+#: plugins/gtk+/gtk+.xml:1383 plugins/gtk+/gtk+.xml:1576
 msgid "Character"
 msgstr "Caracter"
 
-#: plugins/gtk+/gtk+.xml:1468 plugins/gtk+/gtk+.xml:1684
+#: plugins/gtk+/gtk+.xml:1385 plugins/gtk+/gtk+.xml:1580
 msgid "Word Character"
 msgstr "Caracter cuvânt"
 
-#: plugins/gtk+/gtk+.xml:1488
+#: plugins/gtk+/gtk+.xml:1402
 msgid "Text Entry"
 msgstr "Introducere text"
 
-#: plugins/gtk+/gtk+.xml:1505
+#: plugins/gtk+/gtk+.xml:1418
 msgid "Free Form"
 msgstr "Formă liberă"
 
-#: plugins/gtk+/gtk+.xml:1507
+#: plugins/gtk+/gtk+.xml:1420
 msgid "Alpha"
 msgstr "Alfa"
 
-#: plugins/gtk+/gtk+.xml:1509 plugins/gtk+/gtk+.xml:3782
+#: plugins/gtk+/gtk+.xml:1422 plugins/gtk+/gtk+.xml:3573
 msgid "Digits"
 msgstr "Cifre"
 
-#: plugins/gtk+/gtk+.xml:1511
+#: plugins/gtk+/gtk+.xml:1424
 msgid "Number"
 msgstr "Număr"
 
-#: plugins/gtk+/gtk+.xml:1513
+#: plugins/gtk+/gtk+.xml:1426
 msgid "Phone"
 msgstr "Telefon"
 
-#: plugins/gtk+/gtk+.xml:1515 plugins/gtk+/glade-about-dialog-editor.ui:287
+#: plugins/gtk+/gtk+.xml:1428 plugins/gtk+/glade-about-dialog-editor.ui:287
 #: plugins/webkit2gtk/webkit2gtk.xml:18
 msgid "URL"
 msgstr "URL"
 
-#: plugins/gtk+/gtk+.xml:1517
+#: plugins/gtk+/gtk+.xml:1430
 msgid "Email"
 msgstr "Email"
 
-#: plugins/gtk+/gtk+.xml:1521
+#: plugins/gtk+/gtk+.xml:1434
 msgid "Password"
 msgstr "Parolă"
 
-#: plugins/gtk+/gtk+.xml:1523
+#: plugins/gtk+/gtk+.xml:1436
 msgid "Pin Code"
 msgstr "Cod pin"
 
-#: plugins/gtk+/gtk+.xml:1533
+#: plugins/gtk+/gtk+.xml:1446
 msgid "Spellcheck"
 msgstr "Corectare ortografică"
 
-#: plugins/gtk+/gtk+.xml:1535
+#: plugins/gtk+/gtk+.xml:1448
 msgid "No Spellcheck"
 msgstr "Fără corectare ortografică"
 
-#: plugins/gtk+/gtk+.xml:1537
+#: plugins/gtk+/gtk+.xml:1450
 msgid "Word Completion"
 msgstr "Completarea cuvintelor"
 
-#: plugins/gtk+/gtk+.xml:1539
+#: plugins/gtk+/gtk+.xml:1452
 msgid "Lowercase"
 msgstr "Minuscule"
 
-#: plugins/gtk+/gtk+.xml:1541
+#: plugins/gtk+/gtk+.xml:1454
 msgid "Uppercase Chars"
 msgstr "Caractere majuscule"
 
-#: plugins/gtk+/gtk+.xml:1543
+#: plugins/gtk+/gtk+.xml:1456
 msgid "Uppercase Words"
 msgstr "Cuvinte majuscule"
 
-#: plugins/gtk+/gtk+.xml:1545
+#: plugins/gtk+/gtk+.xml:1458
 msgid "Uppercase Sentences"
 msgstr "Propoziții majuscule"
 
-#: plugins/gtk+/gtk+.xml:1547
+#: plugins/gtk+/gtk+.xml:1460
 msgid "Inhibit On-screen Keyboard"
 msgstr "Inhibează tastatura pe-ecran"
 
-#: plugins/gtk+/gtk+.xml:1549
+#: plugins/gtk+/gtk+.xml:1462
 msgid "Vertical Writing"
 msgstr "Scriere verticală"
 
-#: plugins/gtk+/gtk+.xml:1551
+#: plugins/gtk+/gtk+.xml:1464
 msgid "Emoji Support"
 msgstr "Suport emoji"
 
-#: plugins/gtk+/gtk+.xml:1553
+#: plugins/gtk+/gtk+.xml:1466
 msgid "No Emoji Support"
 msgstr "Fără suport de emoji"
 
-#: plugins/gtk+/gtk+.xml:1575
+#: plugins/gtk+/gtk+.xml:1486
 msgid "Primary Stock Icon"
 msgstr "Iconiță primară din stoc"
 
-#: plugins/gtk+/gtk+.xml:1577
+#: plugins/gtk+/gtk+.xml:1487
 msgid "Secondary Stock Icon"
 msgstr "Iconiță secundară din stoc"
 
-#: plugins/gtk+/gtk+.xml:1578
+#: plugins/gtk+/gtk+.xml:1488
 msgid "Primary Icon Pixbuf"
 msgstr "Pixbuf iconiță primară"
 
-#: plugins/gtk+/gtk+.xml:1579
+#: plugins/gtk+/gtk+.xml:1489
 msgid "Secondary Icon Pixbuf"
 msgstr "Pixbuf iconiță secundară"
 
-#: plugins/gtk+/gtk+.xml:1581
+#: plugins/gtk+/gtk+.xml:1490
 msgid "Primary Icon Name"
 msgstr "Nume iconiță primară"
 
-#: plugins/gtk+/gtk+.xml:1583
+#: plugins/gtk+/gtk+.xml:1491
 msgid "Secondary Icon Name"
 msgstr "Nume iconiță secundară"
 
-#: plugins/gtk+/gtk+.xml:1585
+#: plugins/gtk+/gtk+.xml:1492
 msgid "Primary Icon Activatable"
 msgstr "Iconiță primară activabilă"
 
-#: plugins/gtk+/gtk+.xml:1587
+#: plugins/gtk+/gtk+.xml:1493
 msgid "Secondary Icon Activatable"
 msgstr "Iconiță secundară activabilă"
 
-#: plugins/gtk+/gtk+.xml:1589
+#: plugins/gtk+/gtk+.xml:1494
 msgid "Primary Icon Sensitive"
 msgstr "Iconiță primară senzitivă"
 
-#: plugins/gtk+/gtk+.xml:1591
+#: plugins/gtk+/gtk+.xml:1495
 msgid "Secondary Icon Sensitive"
 msgstr "Iconiță secundară senzitivă"
 
-#: plugins/gtk+/gtk+.xml:1592
+#: plugins/gtk+/gtk+.xml:1496
 msgid "Progress Fraction"
 msgstr "Porțiune progres"
 
-#: plugins/gtk+/gtk+.xml:1593
+#: plugins/gtk+/gtk+.xml:1497
 msgid "Progress Pulse Step"
 msgstr "Pas puls progres"
 
-#: plugins/gtk+/gtk+.xml:1599
+#: plugins/gtk+/gtk+.xml:1501
 msgid "Primary Icon Tooltip Text"
 msgstr "Text indiciu iconiță primară"
 
-#: plugins/gtk+/gtk+.xml:1601
+#: plugins/gtk+/gtk+.xml:1502
 msgid "Secondary Icon Tooltip Text"
 msgstr "Text indiciu iconiță secundară"
 
-#: plugins/gtk+/gtk+.xml:1603
+#: plugins/gtk+/gtk+.xml:1503
 msgid "Primary Icon Tooltip Markup"
 msgstr "Evidențiere indiciu iconiță primară"
 
-#: plugins/gtk+/gtk+.xml:1605
+#: plugins/gtk+/gtk+.xml:1504
 msgid "Secondary Icon Tooltip Markup"
 msgstr "Evidențiere indiciu iconiță secundară"
 
-#: plugins/gtk+/gtk+.xml:1639 plugins/gtk+/gtk+.xml:3225
+#: plugins/gtk+/gtk+.xml:1536 plugins/gtk+/gtk+.xml:3036
 msgid "Activate"
 msgstr "Activează"
 
-#: plugins/gtk+/gtk+.xml:1643 plugins/gtk+/gtk+.xml:3229
+#: plugins/gtk+/gtk+.xml:1540 plugins/gtk+/gtk+.xml:3040
 msgid "Set the description of the Activate atk action"
 msgstr "Stabilește descrierea acțiunii atk „Activare”"
 
-#: plugins/gtk+/gtk+.xml:1648
+#: plugins/gtk+/gtk+.xml:1546
 msgid "Search Entry"
 msgstr "Termen de căutare"
 
-#: plugins/gtk+/gtk+.xml:1650
+#: plugins/gtk+/gtk+.xml:1548
 msgid "Text View"
 msgstr "Vizualizare text"
 
-#: plugins/gtk+/gtk+.xml:1700
+#: plugins/gtk+/gtk+.xml:1595
 msgid "Search Bar"
 msgstr "Bara de căutare"
 
-#: plugins/gtk+/gtk+.xml:1734
+#: plugins/gtk+/gtk+.xml:1626
 msgid "Reject"
 msgstr "Respinge"
 
-#: plugins/gtk+/gtk+.xml:1736
+#: plugins/gtk+/gtk+.xml:1628
 msgid "Accept"
 msgstr "Acceptă"
 
-#: plugins/gtk+/gtk+.xml:1738
+#: plugins/gtk+/gtk+.xml:1630
 msgid "Delete Event"
 msgstr "Șterge eveniment"
 
-#: plugins/gtk+/gtk+.xml:1740
+#: plugins/gtk+/gtk+.xml:1632
 msgid "OK"
 msgstr "OK"
 
-#: plugins/gtk+/gtk+.xml:1742 plugins/gtk+/gtk+.xml:3466
+#: plugins/gtk+/gtk+.xml:1634 plugins/gtk+/gtk+.xml:3267
 msgid "Cancel"
 msgstr "Anulează"
 
-#: plugins/gtk+/gtk+.xml:1744 plugins/gtk+/gtk+.xml:3464
+#: plugins/gtk+/gtk+.xml:1636 plugins/gtk+/gtk+.xml:3265
 msgid "Close"
 msgstr "Închide"
 
-#: plugins/gtk+/gtk+.xml:1750
+#: plugins/gtk+/gtk+.xml:1642
 msgid "Apply"
 msgstr "Aplică"
 
-#: plugins/gtk+/gtk+.xml:1752
+#: plugins/gtk+/gtk+.xml:1644
 msgid "Help"
 msgstr "Ajutor"
 
-#: plugins/gtk+/gtk+.xml:1768 plugins/gtk+/glade-button-editor.ui:351
+#: plugins/gtk+/gtk+.xml:1657 plugins/gtk+/glade-button-editor.ui:351
 msgid "Stock Button"
 msgstr "Buton din stoc"
 
-#: plugins/gtk+/gtk+.xml:1772
+#: plugins/gtk+/gtk+.xml:1661
 msgid "The stock item for this button"
 msgstr "Elementul din stoc pentru acest buton"
 
-#: plugins/gtk+/gtk+.xml:1781
+#: plugins/gtk+/gtk+.xml:1669
 msgid "Response ID"
 msgstr "Identificator răspuns"
 
-#: plugins/gtk+/gtk+.xml:1785
+#: plugins/gtk+/gtk+.xml:1673
 msgid "The response ID of this button in a dialog"
 msgstr "Identificatorul de răspuns al acestui buton într-un dialog"
 
-#: plugins/gtk+/gtk+.xml:1807 plugins/gtk+/gtk+.xml:2171
+#: plugins/gtk+/gtk+.xml:1689 plugins/gtk+/gtk+.xml:2027
 msgid "Press"
 msgstr "Apăsare"
 
-#: plugins/gtk+/gtk+.xml:1811 plugins/gtk+/gtk+.xml:2175
+#: plugins/gtk+/gtk+.xml:1693 plugins/gtk+/gtk+.xml:2031
 msgid "Set the description of the Press atk action"
 msgstr "Stabilește descrierea acțiunii atk „Apăsare”"
 
-#: plugins/gtk+/gtk+.xml:1816
+#: plugins/gtk+/gtk+.xml:1696
 msgid "Release"
 msgstr "Eliberare"
 
-#: plugins/gtk+/gtk+.xml:1820
+#: plugins/gtk+/gtk+.xml:1700
 msgid "Set the description of the Release atk action"
 msgstr "Stabilește descrierea acțiunii atk „Eliberare”"
 
-#: plugins/gtk+/gtk+.xml:1842
+#: plugins/gtk+/gtk+.xml:1720
 msgid "Check Button"
 msgstr "Buton bifare"
 
-#: plugins/gtk+/gtk+.xml:1871 plugins/gtk+/gtk+.xml:3268
-#: plugins/webkit2gtk/webkit2gtk.xml:48
+#: plugins/gtk+/gtk+.xml:1747 plugins/gtk+/gtk+.xml:3080
+#: plugins/webkit2gtk/webkit2gtk.xml:49
 msgid "Always"
 msgstr "Întotdeauna"
 
-#: plugins/gtk+/gtk+.xml:1873
+#: plugins/gtk+/gtk+.xml:1749
 msgid "If Valid"
 msgstr "Dacă este valid"
 
-#: plugins/gtk+/gtk+.xml:1887
+#: plugins/gtk+/gtk+.xml:1763
 msgid "Switch"
 msgstr "Comută"
 
-#: plugins/gtk+/gtk+.xml:1916
+#: plugins/gtk+/gtk+.xml:1786
 #: plugins/gtk+/glade-file-chooser-button-editor.ui:69
 msgid "File Chooser Button"
 msgstr "Buton alegere fișiere"
 
-#: plugins/gtk+/gtk+.xml:1945
+#: plugins/gtk+/gtk+.xml:1811
 msgid "Save"
 msgstr "Salvează"
 
-#: plugins/gtk+/gtk+.xml:1947
+#: plugins/gtk+/gtk+.xml:1813
 msgid "Open"
 msgstr "Deschide"
 
-#: plugins/gtk+/gtk+.xml:1949
+#: plugins/gtk+/gtk+.xml:1815
 msgid "Select Folder"
 msgstr "Alegere dosar"
 
-#: plugins/gtk+/gtk+.xml:1951
+#: plugins/gtk+/gtk+.xml:1817
 msgid "Create Folder"
 msgstr "Creează un dosar"
 
-#: plugins/gtk+/gtk+.xml:1964
+#: plugins/gtk+/gtk+.xml:1830
 msgid "Scale Button"
 msgstr "Buton scalare"
 
-#: plugins/gtk+/gtk+.xml:1971
+#: plugins/gtk+/gtk+.xml:1837
 msgid ""
 "The names of the icons to be used by the scale button. The first item in the "
 "array will be used in the button when the current value is the lowest value, "
@@ -6023,330 +6099,330 @@ msgstr ""
 "element pentru cea mai mare. Toate iconițele ce urmează vor fi folosite "
 "pentru orice alte valori, împărțite în mod egal pe intervalul de valori"
 
-#: plugins/gtk+/gtk+.xml:1988
+#: plugins/gtk+/gtk+.xml:1852
 msgid "Volume Button"
 msgstr "Buton volum"
 
-#: plugins/gtk+/gtk+.xml:1995
+#: plugins/gtk+/gtk+.xml:1858
 msgid "File Chooser Widget"
 msgstr "Widget alegere fișiere"
 
-#: plugins/gtk+/gtk+.xml:2029
+#: plugins/gtk+/gtk+.xml:1888
 msgid "Application Chooser Widget"
 msgstr "Widget de ales aplicații"
 
-#: plugins/gtk+/gtk+.xml:2048
+#: plugins/gtk+/gtk+.xml:1906
 msgid "Places Sidebar"
 msgstr "Bară laterală pentru locuri"
 
-#: plugins/gtk+/gtk+.xml:2056
+#: plugins/gtk+/gtk+.xml:1914
 msgid "New Tab"
 msgstr "Tab nou"
 
-#: plugins/gtk+/gtk+.xml:2058
+#: plugins/gtk+/gtk+.xml:1916
 msgid "New Window"
 msgstr "Fereastră nouă"
 
-#: plugins/gtk+/gtk+.xml:2068
+#: plugins/gtk+/gtk+.xml:1932
 msgid "Color Button"
 msgstr "Buton culoare"
 
-#: plugins/gtk+/gtk+.xml:2085
+#: plugins/gtk+/gtk+.xml:1949
 msgid "Font Button"
 msgstr "Buton font"
 
-#: plugins/gtk+/gtk+.xml:2161 plugins/gtk+/gtk+.xml:3270
-#: plugins/gtk+/gtk+.xml:4093
+#: plugins/gtk+/gtk+.xml:2018 plugins/gtk+/gtk+.xml:3082
+#: plugins/gtk+/gtk+.xml:3869
 msgid "Automatic"
 msgstr "Automat"
 
-#: plugins/gtk+/gtk+.xml:2163
+#: plugins/gtk+/gtk+.xml:2020
 msgid "On"
 msgstr "Pornit"
 
-#: plugins/gtk+/gtk+.xml:2165
+#: plugins/gtk+/gtk+.xml:2022
 msgid "Off"
 msgstr "Oprit"
 
-#: plugins/gtk+/gtk+.xml:2181
+#: plugins/gtk+/gtk+.xml:2036
 msgid "Combo Box Text"
 msgstr "Text listă de selecție"
 
-#: plugins/gtk+/gtk+.xml:2208
+#: plugins/gtk+/gtk+.xml:2061
 msgid "Items"
 msgstr "Elemente"
 
-#: plugins/gtk+/gtk+.xml:2213
+#: plugins/gtk+/gtk+.xml:2066
 msgid "The list of items to show in the combo box"
 msgstr "Lista de elemente de afișat în meniul derulant"
 
-#: plugins/gtk+/gtk+.xml:2219
+#: plugins/gtk+/gtk+.xml:2071
 msgid "Application Chooser Button"
 msgstr "Buton de ales aplicații"
 
-#: plugins/gtk+/gtk+.xml:2247
+#: plugins/gtk+/gtk+.xml:2098
 msgid "Progress Bar"
 msgstr "Bară de progres"
 
-#: plugins/gtk+/gtk+.xml:2272 plugins/gtk+/gtk+.xml:2845
+#: plugins/gtk+/gtk+.xml:2123 plugins/gtk+/gtk+.xml:2663
 msgid "Continuous"
 msgstr "Continuu"
 
-#: plugins/gtk+/gtk+.xml:2274
+#: plugins/gtk+/gtk+.xml:2125
 msgid "Discrete"
 msgstr "Discret"
 
-#: plugins/gtk+/gtk+.xml:2296
+#: plugins/gtk+/gtk+.xml:2147
 msgid "Resource Name"
 msgstr "Nume de resursă"
 
-#: plugins/gtk+/gtk+.xml:2300 plugins/gtk+/gtk+.xml:5382
+#: plugins/gtk+/gtk+.xml:2150 plugins/gtk+/gtk+.xml:5066
 msgid "Icon Size"
 msgstr "Mărime iconiță"
 
-#: plugins/gtk+/gtk+.xml:2323
+#: plugins/gtk+/gtk+.xml:2172
 msgid "Dialog Box"
 msgstr "Fereastră de dialog"
 
-#: plugins/gtk+/gtk+.xml:2357 plugins/gtk+/gtk+.xml:2409
+#: plugins/gtk+/gtk+.xml:2202 plugins/gtk+/gtk+.xml:2251
 msgid "Insert Row"
 msgstr "Inserează rând"
 
-#: plugins/gtk+/gtk+.xml:2358 plugins/gtk+/gtk+.xml:2362
-#: plugins/gtk+/gtk+.xml:2410 plugins/gtk+/gtk+.xml:2414
+#: plugins/gtk+/gtk+.xml:2203 plugins/gtk+/gtk+.xml:2207
+#: plugins/gtk+/gtk+.xml:2252 plugins/gtk+/gtk+.xml:2256
 msgid "Before"
 msgstr "Înainte"
 
-#: plugins/gtk+/gtk+.xml:2361 plugins/gtk+/gtk+.xml:2413
+#: plugins/gtk+/gtk+.xml:2206 plugins/gtk+/gtk+.xml:2255
 msgid "Insert Column"
 msgstr "Coloană inserare"
 
-#: plugins/gtk+/gtk+.xml:2365 plugins/gtk+/gtk+.xml:2417
+#: plugins/gtk+/gtk+.xml:2210 plugins/gtk+/gtk+.xml:2259
 msgid "Remove Row"
 msgstr "Elimină rândul"
 
-#: plugins/gtk+/gtk+.xml:2366 plugins/gtk+/gtk+.xml:2418
+#: plugins/gtk+/gtk+.xml:2211 plugins/gtk+/gtk+.xml:2260
 msgid "Remove Column"
 msgstr "Elimină coloana"
 
-#: plugins/gtk+/gtk+.xml:2378 plugins/gtk+/gtk+.xml:3013
+#: plugins/gtk+/gtk+.xml:2221 plugins/gtk+/gtk+.xml:2829
 #: plugins/gtk+/glade-widget-editor.ui:752
 msgid "Expand"
 msgstr "Extinde"
 
-#: plugins/gtk+/gtk+.xml:2380
+#: plugins/gtk+/gtk+.xml:2223
 msgid "Shrink"
 msgstr "Micșorează"
 
-#: plugins/gtk+/gtk+.xml:2428 plugins/gtk+/glade-grid-editor.ui:131
+#: plugins/gtk+/gtk+.xml:2269 plugins/gtk+/glade-grid-editor.ui:131
 msgid "Rows"
 msgstr "Rânduri"
 
-#: plugins/gtk+/gtk+.xml:2432
+#: plugins/gtk+/gtk+.xml:2273
 msgid "The number of rows for this grid"
 msgstr "Numărul rândurilor pentru această grilă"
 
-#: plugins/gtk+/gtk+.xml:2434 plugins/gtk+/gtk+.xml:3934
-#: plugins/gtk+/gtk+.xml:3960 plugins/gtk+/glade-grid-editor.ui:149
+#: plugins/gtk+/gtk+.xml:2275 plugins/gtk+/gtk+.xml:3719
+#: plugins/gtk+/gtk+.xml:3744 plugins/gtk+/glade-grid-editor.ui:149
 msgid "Columns"
 msgstr "Coloane"
 
-#: plugins/gtk+/gtk+.xml:2438
+#: plugins/gtk+/gtk+.xml:2279
 msgid "The number of columns for this grid"
 msgstr "Numărul coloanelor pentru această grilă"
 
-#: plugins/gtk+/gtk+.xml:2471
+#: plugins/gtk+/gtk+.xml:2310
 msgid "Horizontal Panes"
 msgstr "Panouri orizontale"
 
-#: plugins/gtk+/gtk+.xml:2476
+#: plugins/gtk+/gtk+.xml:2316
 msgid "Vertical Panes"
 msgstr "Panouri verticale"
 
-#: plugins/gtk+/gtk+.xml:2482
+#: plugins/gtk+/gtk+.xml:2322
 msgid "Notebook"
 msgstr "Carnețel"
 
-#: plugins/gtk+/gtk+.xml:2505 plugins/gtk+/gtk+.xml:2609
+#: plugins/gtk+/gtk+.xml:2343 plugins/gtk+/gtk+.xml:2442
 msgid "Insert Page Before"
 msgstr "Inserează pagină înainte"
 
-#: plugins/gtk+/gtk+.xml:2506 plugins/gtk+/gtk+.xml:2610
+#: plugins/gtk+/gtk+.xml:2344 plugins/gtk+/gtk+.xml:2443
 msgid "Insert Page After"
 msgstr "Inserează pagină după"
 
-#: plugins/gtk+/gtk+.xml:2507 plugins/gtk+/gtk+.xml:2611
+#: plugins/gtk+/gtk+.xml:2345 plugins/gtk+/gtk+.xml:2444
 msgid "Remove Page"
 msgstr "Elimină pagina"
 
-#: plugins/gtk+/gtk+.xml:2513 plugins/gtk+/gtk+.xml:2626
+#: plugins/gtk+/gtk+.xml:2350 plugins/gtk+/gtk+.xml:2459
 msgid "Set the currently active page to edit, this property will not be saved"
 msgstr ""
 "Stabilește pagina activă pentru editare, această proprietate nu va fi salvată"
 
-#: plugins/gtk+/gtk+.xml:2521 plugins/gtk+/gtk+.xml:2614
+#: plugins/gtk+/gtk+.xml:2357 plugins/gtk+/gtk+.xml:2447
 msgid "Number of pages"
 msgstr "Număr de pagini"
 
-#: plugins/gtk+/gtk+.xml:2526
+#: plugins/gtk+/gtk+.xml:2362
 msgid "The number of pages in the notebook"
 msgstr "Numărul de pagini din acest carnețel"
 
-#: plugins/gtk+/gtk+.xml:2529
+#: plugins/gtk+/gtk+.xml:2364
 msgid "Start Action"
 msgstr "Acțiune pornire"
 
-#: plugins/gtk+/gtk+.xml:2534
+#: plugins/gtk+/gtk+.xml:2369
 msgid "End Action"
 msgstr "Acțiune oprire"
 
-#: plugins/gtk+/gtk+.xml:2547
+#: plugins/gtk+/gtk+.xml:2380
 msgid "HeaderBar"
 msgstr "Bară de antet"
 
-#: plugins/gtk+/gtk+.xml:2565
+#: plugins/gtk+/gtk+.xml:2398
 msgid "Reserve space for subtitle"
 msgstr "Rezervă spațiu pentru subtitlu"
 
-#: plugins/gtk+/gtk+.xml:2566
+#: plugins/gtk+/gtk+.xml:2399
 msgid "Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr ""
 "Păstrează înălțimea barei de antet la fel pe măsură ce subtitlul se modifică "
 "dinamic."
 
-#: plugins/gtk+/gtk+.xml:2573
+#: plugins/gtk+/gtk+.xml:2406
 msgid "Custom Title"
 msgstr "Titlu personalizat"
 
-#: plugins/gtk+/gtk+.xml:2583
+#: plugins/gtk+/gtk+.xml:2416
 msgid "The number of items in the header bar"
 msgstr "Numărul elementelor din bara de antet"
 
-#: plugins/gtk+/gtk+.xml:2593
+#: plugins/gtk+/gtk+.xml:2426
 msgid "Add Slot"
 msgstr "Adaugă slot"
 
-#: plugins/gtk+/gtk+.xml:2619
+#: plugins/gtk+/gtk+.xml:2452
 msgid "The number of pages in the stack"
 msgstr "Numărul de pagini din stivă"
 
-#: plugins/gtk+/gtk+.xml:2621
+#: plugins/gtk+/gtk+.xml:2454
 msgid "Edit page"
 msgstr "Editare pagină"
 
-#: plugins/gtk+/gtk+.xml:2629
+#: plugins/gtk+/gtk+.xml:2462
 msgid "Visible child"
 msgstr "Copil vizibil"
 
-#: plugins/gtk+/gtk+.xml:2636 plugins/gtk+/gtk+.xml:2691
+#: plugins/gtk+/gtk+.xml:2469 plugins/gtk+/gtk+.xml:2522
 msgid "Crossfade"
 msgstr "Intercalare"
 
-#: plugins/gtk+/gtk+.xml:2637 plugins/gtk+/gtk+.xml:2693
+#: plugins/gtk+/gtk+.xml:2470 plugins/gtk+/gtk+.xml:2524
 msgid "Slide Right"
 msgstr "Glisează la dreapta"
 
-#: plugins/gtk+/gtk+.xml:2638 plugins/gtk+/gtk+.xml:2695
+#: plugins/gtk+/gtk+.xml:2471 plugins/gtk+/gtk+.xml:2526
 msgid "Slide Left"
 msgstr "Glisează la stânga"
 
-#: plugins/gtk+/gtk+.xml:2639 plugins/gtk+/gtk+.xml:2697
+#: plugins/gtk+/gtk+.xml:2472 plugins/gtk+/gtk+.xml:2528
 msgid "Slide Up"
 msgstr "Glisează în sus"
 
-#: plugins/gtk+/gtk+.xml:2640 plugins/gtk+/gtk+.xml:2699
+#: plugins/gtk+/gtk+.xml:2473 plugins/gtk+/gtk+.xml:2530
 msgid "Slide Down"
 msgstr "Glisează în jos"
 
-#: plugins/gtk+/gtk+.xml:2641
+#: plugins/gtk+/gtk+.xml:2474
 msgid "Slide Left-Right"
 msgstr "Glisează stânga-dreapta"
 
-#: plugins/gtk+/gtk+.xml:2642
+#: plugins/gtk+/gtk+.xml:2475
 msgid "Slide Up-Down"
 msgstr "Glisează sus-jos"
 
-#: plugins/gtk+/gtk+.xml:2643
+#: plugins/gtk+/gtk+.xml:2476
 msgid "Move Over Up"
 msgstr "Mută deasupra sus"
 
-#: plugins/gtk+/gtk+.xml:2644
+#: plugins/gtk+/gtk+.xml:2477
 msgid "Move Over Down"
 msgstr "Mută deasupra jos"
 
-#: plugins/gtk+/gtk+.xml:2645
+#: plugins/gtk+/gtk+.xml:2478
 msgid "Move Over Left"
 msgstr "Mută deasupra la stânga"
 
-#: plugins/gtk+/gtk+.xml:2646
+#: plugins/gtk+/gtk+.xml:2479
 msgid "Move Over Right"
 msgstr "Mută deasupra la dreapta"
 
-#: plugins/gtk+/gtk+.xml:2647
+#: plugins/gtk+/gtk+.xml:2480
 msgid "Move Over Up-Down"
 msgstr "Mută deasupra sus-jos"
 
-#: plugins/gtk+/gtk+.xml:2648
+#: plugins/gtk+/gtk+.xml:2481
 msgid "Move Over Down-Up"
 msgstr "Mută deasupra jos-sus"
 
-#: plugins/gtk+/gtk+.xml:2649
+#: plugins/gtk+/gtk+.xml:2482
 msgid "Move Over Left-Right"
 msgstr "Mută deasupra stânga-dreapta"
 
-#: plugins/gtk+/gtk+.xml:2650
+#: plugins/gtk+/gtk+.xml:2483
 msgid "Move Over Right-Left"
 msgstr "Mută deasupra dreapta-stânga"
 
-#: plugins/gtk+/gtk+.xml:2651
+#: plugins/gtk+/gtk+.xml:2484
 msgid "Move Under Up"
 msgstr "Mută dedesubt sus"
 
-#: plugins/gtk+/gtk+.xml:2652
+#: plugins/gtk+/gtk+.xml:2485
 msgid "Move Under Down"
 msgstr "Mută dedesubt jos"
 
-#: plugins/gtk+/gtk+.xml:2653
+#: plugins/gtk+/gtk+.xml:2486
 msgid "Move Under Left"
 msgstr "Mută dedesubt la stânga"
 
-#: plugins/gtk+/gtk+.xml:2654
+#: plugins/gtk+/gtk+.xml:2487
 msgid "Move Under Right"
 msgstr "Mută dedesubt la dreapta"
 
-#: plugins/gtk+/gtk+.xml:2664
+#: plugins/gtk+/gtk+.xml:2497
 msgid "Stack Switcher"
 msgstr "Stivuiește comutatorul"
 
-#: plugins/gtk+/gtk+.xml:2680
+#: plugins/gtk+/gtk+.xml:2511
 msgid "Stack Sidebar"
 msgstr "Stivuiește bara laterală"
 
-#: plugins/gtk+/gtk+.xml:2682
+#: plugins/gtk+/gtk+.xml:2513
 msgid "Revealer"
 msgstr "Destăinuitor"
 
-#: plugins/gtk+/gtk+.xml:2742
+#: plugins/gtk+/gtk+.xml:2570
 msgid "Add Row"
 msgstr "Adaugă rând"
 
-#: plugins/gtk+/gtk+.xml:2757 plugins/gtk+/gtk+.xml:4727
+#: plugins/gtk+/gtk+.xml:2583 plugins/gtk+/gtk+.xml:4450
 msgid "Single"
 msgstr "Unic"
 
-#: plugins/gtk+/gtk+.xml:2759
+#: plugins/gtk+/gtk+.xml:2585
 msgid "Browse"
 msgstr "Navighează"
 
-#: plugins/gtk+/gtk+.xml:2761
+#: plugins/gtk+/gtk+.xml:2587
 msgid "Multiple"
 msgstr "Multiplu"
 
-#: plugins/gtk+/gtk+.xml:2764
+#: plugins/gtk+/gtk+.xml:2590
 msgid "Placeholder"
 msgstr "Marcaj de locație"
 
-#: plugins/gtk+/gtk+.xml:2768
+#: plugins/gtk+/gtk+.xml:2594
 msgid ""
 "Whether this listbox should have a placeholder widget that is shown in the "
 "list when it doesn't display any visible children"
@@ -6354,214 +6430,216 @@ msgstr ""
 "Dacă această cutie de listă ar trebui să aibă un widget de marcaj de locație "
 "care este arătat în listă atunci când nu afișează inferiori vizibili"
 
-#: plugins/gtk+/gtk+.xml:2778
+#: plugins/gtk+/gtk+.xml:2603
 msgid "The position of the row item in the listbox"
 msgstr "Poziția elementului rând în căsuța de tip listă"
 
-#: plugins/gtk+/gtk+.xml:2789
+#: plugins/gtk+/gtk+.xml:2613
 msgid "List Box Row"
 msgstr "Rând căsuță de tip listă"
 
-#: plugins/gtk+/gtk+.xml:2796
+#: plugins/gtk+/gtk+.xml:2620
 msgid "Flow Box"
 msgstr "Căsuță flux"
 
-#: plugins/gtk+/gtk+.xml:2810
+#: plugins/gtk+/gtk+.xml:2632
 msgid "Add Child"
 msgstr "Adaugă copil"
 
-#: plugins/gtk+/gtk+.xml:2828
+#: plugins/gtk+/gtk+.xml:2647
 msgid "The position of the child in the flowbox"
 msgstr "Poziția copilului în căsuța fux"
 
-#: plugins/gtk+/gtk+.xml:2834
+#: plugins/gtk+/gtk+.xml:2652
 msgid "Flow Box Child"
 msgstr "Copil căsuță flow"
 
-#: plugins/gtk+/gtk+.xml:2836
+#: plugins/gtk+/gtk+.xml:2654
 msgid "Range"
 msgstr "Interval"
 
-#: plugins/gtk+/gtk+.xml:2847
+#: plugins/gtk+/gtk+.xml:2665
 msgid "Discontinuous"
 msgstr "Discontinuu"
 
-#: plugins/gtk+/gtk+.xml:2849
+#: plugins/gtk+/gtk+.xml:2667
 msgid "Delayed"
 msgstr "Întârziat"
 
-#: plugins/gtk+/gtk+.xml:2862 plugins/gtk+/gtk+.xml:2974
+#: plugins/gtk+/gtk+.xml:2680 plugins/gtk+/gtk+.xml:2789
 msgid "The number of digits to round the value to when the value changes"
 msgstr ""
 "Numărul de cifre la care să se rotunjească valoarea când este modificată"
 
-#: plugins/gtk+/gtk+.xml:2867
+#: plugins/gtk+/gtk+.xml:2685
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr "Dacă să se evidențieze zona adânciturii de jos în sus până la tastă"
 
-#: plugins/gtk+/gtk+.xml:2880
+#: plugins/gtk+/gtk+.xml:2697
 msgid "Horizontal Scale"
 msgstr "Scalare orizontală"
 
-#: plugins/gtk+/gtk+.xml:2885
+#: plugins/gtk+/gtk+.xml:2703
 msgid "Vertical Scale"
 msgstr "Scalare verticală"
 
-#: plugins/gtk+/gtk+.xml:2917
+#: plugins/gtk+/gtk+.xml:2735
 msgid "Flip Horizontally"
 msgstr "Rotiți orizontal"
 
-#: plugins/gtk+/gtk+.xml:2919
+#: plugins/gtk+/gtk+.xml:2737
 msgid "Flip Vertically"
 msgstr "Rotiți vertical"
 
-#: plugins/gtk+/gtk+.xml:2921
+#: plugins/gtk+/gtk+.xml:2739
 msgid "Slide Horizontally"
 msgstr "Glisează orizontal"
 
-#: plugins/gtk+/gtk+.xml:2923
+#: plugins/gtk+/gtk+.xml:2741
 msgid "Slide Vertically"
 msgstr "Glisează vertical"
 
-#: plugins/gtk+/gtk+.xml:2925
+#: plugins/gtk+/gtk+.xml:2743
 msgid "Resize Horizontally"
 msgstr "Redimensionează orizontal"
 
-#: plugins/gtk+/gtk+.xml:2927
+#: plugins/gtk+/gtk+.xml:2745
 msgid "Resize Vertically"
 msgstr "Redimensionează vertical"
 
-#: plugins/gtk+/gtk+.xml:2929
+#: plugins/gtk+/gtk+.xml:2747
 msgid "Flip Both Sides"
 msgstr "Rotiți ambele părți"
 
-#: plugins/gtk+/gtk+.xml:2931
+#: plugins/gtk+/gtk+.xml:2749
 msgid "Slide Both Sides"
 msgstr "Glisați amândouă părțile"
 
-#: plugins/gtk+/gtk+.xml:2933
+#: plugins/gtk+/gtk+.xml:2751
 msgid "Resize Both Sides"
 msgstr "Redimensionați amândouă părțile"
 
-#: plugins/gtk+/gtk+.xml:2968
+#: plugins/gtk+/gtk+.xml:2783
 msgid "Scrollbar"
 msgstr "Bară de derulare"
 
-#: plugins/gtk+/gtk+.xml:2985
+#: plugins/gtk+/gtk+.xml:2800
 msgid "Horizontal Scrollbar"
 msgstr "Bară de defilare orizontală"
 
-#: plugins/gtk+/gtk+.xml:2990
+#: plugins/gtk+/gtk+.xml:2806
 msgid "Vertical Scrollbar"
 msgstr "Bară de defilare verticală"
 
-#: plugins/gtk+/gtk+.xml:2996
+#: plugins/gtk+/gtk+.xml:2812
 msgid "Button Box"
 msgstr "Căsuță de butoane"
 
-#: plugins/gtk+/gtk+.xml:3001
+#: plugins/gtk+/gtk+.xml:2817
 msgid "Default"
 msgstr "Implicit"
 
-#: plugins/gtk+/gtk+.xml:3003
+#: plugins/gtk+/gtk+.xml:2819
 msgid "Spread"
 msgstr "Întindere"
 
-#: plugins/gtk+/gtk+.xml:3005
+#: plugins/gtk+/gtk+.xml:2821
 msgid "Edge"
 msgstr "Margine"
 
-#: plugins/gtk+/gtk+.xml:3019
+#: plugins/gtk+/gtk+.xml:2835
 msgid "Horizontal Button Box"
 msgstr "Căsuță orizontală de butoane"
 
-#: plugins/gtk+/gtk+.xml:3024
+#: plugins/gtk+/gtk+.xml:2841
 msgid "Vertical Button Box"
 msgstr "Căsuță verticală de butoane"
 
-#: plugins/gtk+/gtk+.xml:3037
+#: plugins/gtk+/gtk+.xml:2855
 msgid "Horizontal Separator"
 msgstr "Separator orizontal"
 
-#: plugins/gtk+/gtk+.xml:3047
+#: plugins/gtk+/gtk+.xml:2866
 msgid "Vertical Separator"
 msgstr "Separator vertical"
 
-#: plugins/gtk+/gtk+.xml:3070
+#: plugins/gtk+/gtk+.xml:2889
 msgid "Accel Label"
 msgstr "Etichetă accelerator"
 
-#: plugins/gtk+/gtk+.xml:3078
+#: plugins/gtk+/gtk+.xml:2897
 msgid "Up"
 msgstr "Sus"
 
-#: plugins/gtk+/gtk+.xml:3080
+#: plugins/gtk+/gtk+.xml:2899
 msgid "Down"
 msgstr "În jos"
 
-#: plugins/gtk+/gtk+.xml:3099
+#: plugins/gtk+/gtk+.xml:2917
 msgid "Menu Button"
 msgstr "Buton de meniu"
 
-#: plugins/gtk+/gtk+.xml:3111
+#: plugins/gtk+/gtk+.xml:2929
 msgid "Lock Button"
 msgstr "Buton de blocare"
 
-#: plugins/gtk+/gtk+.xml:3146
+#: plugins/gtk+/gtk+.xml:2961
 msgid "Layout"
 msgstr "Aspect"
 
-#: plugins/gtk+/gtk+.xml:3166 plugins/gtk+/gtk+.xml:4095
+#: plugins/gtk+/gtk+.xml:2980 plugins/gtk+/gtk+.xml:3871
 msgid "Fixed"
 msgstr "Fixat"
 
-#: plugins/gtk+/gtk+.xml:3175
+#: plugins/gtk+/gtk+.xml:2989
 msgid "OpenGL Area"
 msgstr "Zonă OpenGL"
 
-#: plugins/gtk+/gtk+.xml:3188
+#: plugins/gtk+/gtk+.xml:3002
 msgid "Info"
 msgstr "Info"
 
-#: plugins/gtk+/gtk+.xml:3190
+#: plugins/gtk+/gtk+.xml:3004
 msgid "Warning"
 msgstr "Avertisment"
 
-#: plugins/gtk+/gtk+.xml:3192
+#: plugins/gtk+/gtk+.xml:3006
 msgid "Question"
 msgstr "Întrebare"
 
-#: plugins/gtk+/gtk+.xml:3194 plugins/gtk+/gtk+.xml:4733
+#: plugins/gtk+/gtk+.xml:3008 plugins/gtk+/gtk+.xml:4456
+#: plugins/gtk+/gtk+.xml:4458 plugins/gtk+/gtk+.xml:4460
+#: plugins/gtk+/gtk+.xml:4462
 msgid "Error"
 msgstr "Eroare"
 
-#: plugins/gtk+/gtk+.xml:3272 plugins/webkit2gtk/webkit2gtk.xml:50
+#: plugins/gtk+/gtk+.xml:3084 plugins/webkit2gtk/webkit2gtk.xml:51
 msgid "Never"
 msgstr "Niciodată"
 
-#: plugins/gtk+/gtk+.xml:3274
+#: plugins/gtk+/gtk+.xml:3086
 msgid "External"
 msgstr "Extern"
 
-#: plugins/gtk+/gtk+.xml:3281
+#: plugins/gtk+/gtk+.xml:3093
 msgid "Top Left"
 msgstr "Stânga sus"
 
-#: plugins/gtk+/gtk+.xml:3283
+#: plugins/gtk+/gtk+.xml:3095
 msgid "Bottom Left"
 msgstr "Stânga jos"
 
-#: plugins/gtk+/gtk+.xml:3285
+#: plugins/gtk+/gtk+.xml:3097
 msgid "Top Right"
 msgstr "Dreapta sus"
 
-#: plugins/gtk+/gtk+.xml:3287
+#: plugins/gtk+/gtk+.xml:3099
 msgid "Bottom Right"
 msgstr "Dreapta jos"
 
-#: plugins/gtk+/gtk+.xml:3291
+#: plugins/gtk+/gtk+.xml:3103
 msgid ""
 "If overlay scrolling is enabled, scrollbars are only added as traditional "
 "widgets when a mouse is present"
@@ -6569,71 +6647,71 @@ msgstr ""
 "Dacă derularea deasupra este activată, barele de derulare sunt adăugate "
 "numai ca widgeturi tradiționale când un maus este prezent"
 
-#: plugins/gtk+/gtk+.xml:3305
+#: plugins/gtk+/gtk+.xml:3117
 msgid "About Dialog"
 msgstr "Dialog Despre"
 
-#: plugins/gtk+/gtk+.xml:3331
+#: plugins/gtk+/gtk+.xml:3141
 msgid "GPL 2.0"
 msgstr "GPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3333
+#: plugins/gtk+/gtk+.xml:3143
 msgid "GPL 3.0"
 msgstr "GPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3335
+#: plugins/gtk+/gtk+.xml:3145
 msgid "LGPL 2.1"
 msgstr "LGPL 2.1"
 
-#: plugins/gtk+/gtk+.xml:3337
+#: plugins/gtk+/gtk+.xml:3147
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3341
+#: plugins/gtk+/gtk+.xml:3151
 msgid "MIT X11"
 msgstr "MIT X11"
 
-#: plugins/gtk+/gtk+.xml:3343
+#: plugins/gtk+/gtk+.xml:3153
 msgid "Artistic"
 msgstr "Artistic"
 
-#: plugins/gtk+/gtk+.xml:3345
+#: plugins/gtk+/gtk+.xml:3155
 msgid "GPL 2.0 Only"
 msgstr "Numai GPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3347
+#: plugins/gtk+/gtk+.xml:3157
 msgid "GPL 3.0 Only"
 msgstr "Numai GPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3349
+#: plugins/gtk+/gtk+.xml:3159
 msgid "LGPL 2.1 Only"
 msgstr "Numai LGPL 2.1"
 
-#: plugins/gtk+/gtk+.xml:3351
+#: plugins/gtk+/gtk+.xml:3161
 msgid "LGPL 3.0 Only"
 msgstr "Numai LGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3353
+#: plugins/gtk+/gtk+.xml:3163
 msgid "AGPL 3.0"
 msgstr "AGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3355
+#: plugins/gtk+/gtk+.xml:3165
 msgid "AGPL 3.0 Only"
 msgstr "Doar AGPL 3.0"
 
-#: plugins/gtk+/gtk+.xml:3357
+#: plugins/gtk+/gtk+.xml:3167
 msgid "BSD 3"
 msgstr "BSD 3"
 
-#: plugins/gtk+/gtk+.xml:3359
+#: plugins/gtk+/gtk+.xml:3169
 msgid "Apache 2.0"
 msgstr "Apache 2.0"
 
-#: plugins/gtk+/gtk+.xml:3361
+#: plugins/gtk+/gtk+.xml:3171
 msgid "MPL 2.0"
 msgstr "MPL 2.0"
 
-#: plugins/gtk+/gtk+.xml:3375
+#: plugins/gtk+/gtk+.xml:3182
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -6644,79 +6722,79 @@ msgstr ""
 "altfel listați toți traducătorii și nu marcați acest element ca fiind "
 "traductibil"
 
-#: plugins/gtk+/gtk+.xml:3384
+#: plugins/gtk+/gtk+.xml:3190
 msgid "Color Selection Dialog"
 msgstr "Dialog de selecție de culoare"
 
-#: plugins/gtk+/gtk+.xml:3397
+#: plugins/gtk+/gtk+.xml:3203
 msgid "File Chooser Dialog"
 msgstr "Dialog alegere fișiere"
 
-#: plugins/gtk+/gtk+.xml:3419
+#: plugins/gtk+/gtk+.xml:3223
 msgid "Font Selection Dialog"
 msgstr "Dialog de selecție de font"
 
-#: plugins/gtk+/gtk+.xml:3433
+#: plugins/gtk+/gtk+.xml:3236
 msgid "Application Chooser Dialog"
 msgstr "Dialog de ales aplicații"
 
-#: plugins/gtk+/gtk+.xml:3441
+#: plugins/gtk+/gtk+.xml:3244
 msgid "Message Dialog"
 msgstr "Dialog mesaj"
 
-#: plugins/gtk+/gtk+.xml:3462
+#: plugins/gtk+/gtk+.xml:3263
 msgid "Ok"
 msgstr "Ok"
 
-#: plugins/gtk+/gtk+.xml:3468
+#: plugins/gtk+/gtk+.xml:3269
 msgid "Yes, No"
 msgstr "Da, Nu"
 
-#: plugins/gtk+/gtk+.xml:3470
+#: plugins/gtk+/gtk+.xml:3271
 msgid "Ok, Cancel"
 msgstr "Ok, Anulează"
 
-#: plugins/gtk+/gtk+.xml:3476
+#: plugins/gtk+/gtk+.xml:3277
 msgid "Color Selection"
 msgstr "Selecție de culoare"
 
-#: plugins/gtk+/gtk+.xml:3485
+#: plugins/gtk+/gtk+.xml:3285
 msgid "Color Chooser Widget"
 msgstr "Widget de selectare a culorii"
 
-#: plugins/gtk+/gtk+.xml:3498
+#: plugins/gtk+/gtk+.xml:3296
 msgid "Color Chooser Dialog"
 msgstr "Dialog de selectare a culorii"
 
-#: plugins/gtk+/gtk+.xml:3500
+#: plugins/gtk+/gtk+.xml:3298
 msgid "Font Chooser Widget"
 msgstr "Widget de selectare a fontului"
 
-#: plugins/gtk+/gtk+.xml:3520
+#: plugins/gtk+/gtk+.xml:3315
 msgid "Font Chooser Dialog"
 msgstr "Dialog de selectare a fontului"
 
-#: plugins/gtk+/gtk+.xml:3529
+#: plugins/gtk+/gtk+.xml:3324
 msgid "Font Selection"
 msgstr "Selecție font"
 
-#: plugins/gtk+/gtk+.xml:3531
+#: plugins/gtk+/gtk+.xml:3326
 msgid "Assistant"
 msgstr "Asistent"
 
-#: plugins/gtk+/gtk+.xml:3548
+#: plugins/gtk+/gtk+.xml:3343
 msgid "Number of Pages"
 msgstr "Număr de pagini"
 
-#: plugins/gtk+/gtk+.xml:3553
+#: plugins/gtk+/gtk+.xml:3348
 msgid "Number of pages in this assistant"
 msgstr "Numărul de pagini din acest asistent"
 
-#: plugins/gtk+/gtk+.xml:3560
+#: plugins/gtk+/gtk+.xml:3355
 msgid "Initially Complete"
 msgstr "Completare intrare"
 
-#: plugins/gtk+/gtk+.xml:3561
+#: plugins/gtk+/gtk+.xml:3356
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
@@ -6724,788 +6802,788 @@ msgstr ""
 "Specifică dacă această pagină va fi marcată inițial ca fiind completă "
 "indiferent de ce declară utilizatorul."
 
-#: plugins/gtk+/gtk+.xml:3566
+#: plugins/gtk+/gtk+.xml:3361
 msgid "Content"
 msgstr "Conținut"
 
-#: plugins/gtk+/gtk+.xml:3568
+#: plugins/gtk+/gtk+.xml:3363
 msgid "Intro"
 msgstr "Introducere"
 
-#: plugins/gtk+/gtk+.xml:3570
+#: plugins/gtk+/gtk+.xml:3365
 msgid "Confirm"
 msgstr "Confirm"
 
-#: plugins/gtk+/gtk+.xml:3572
+#: plugins/gtk+/gtk+.xml:3367
 msgid "Summary"
 msgstr "Rezumat"
 
-#: plugins/gtk+/gtk+.xml:3583
+#: plugins/gtk+/gtk+.xml:3378
 msgid "The page position in the Assistant"
 msgstr "Poziția paginii în acest asistent"
 
-#: plugins/gtk+/gtk+.xml:3588
+#: plugins/gtk+/gtk+.xml:3383
 msgid "Popover"
 msgstr "Popover"
 
-#: plugins/gtk+/gtk+.xml:3610
+#: plugins/gtk+/gtk+.xml:3405
 msgid "Popover Menu"
 msgstr "Meniu popover"
 
-#: plugins/gtk+/gtk+.xml:3626
+#: plugins/gtk+/gtk+.xml:3420
 msgid "Number of submenus"
 msgstr "Număr de submeniuri"
 
-#: plugins/gtk+/gtk+.xml:3631
+#: plugins/gtk+/gtk+.xml:3425
 msgid "The number of submenus in the popover menu"
 msgstr "Numărul submeniurilor din meniul popover"
 
-#: plugins/gtk+/gtk+.xml:3633
+#: plugins/gtk+/gtk+.xml:3427
 msgid "Edit menu"
 msgstr "Editare meniu"
 
-#: plugins/gtk+/gtk+.xml:3638
+#: plugins/gtk+/gtk+.xml:3432
 msgid ""
 "Set the currently active submenu to edit, this property will not be saved"
 msgstr ""
 "Stabilește submeniul activ curent pentru editare, această proprietate nu va "
 "fi salvată"
 
-#: plugins/gtk+/gtk+.xml:3643
+#: plugins/gtk+/gtk+.xml:3437
 msgid "Model Button"
 msgstr "Buton model"
 
-#: plugins/gtk+/gtk+.xml:3677
+#: plugins/gtk+/gtk+.xml:3471
 msgid "Link Button"
 msgstr "Buton legătură"
 
-#: plugins/gtk+/gtk+.xml:3686
+#: plugins/gtk+/gtk+.xml:3480
 msgid "Recent Chooser"
 msgstr "Alegător recent"
 
-#: plugins/gtk+/gtk+.xml:3718
+#: plugins/gtk+/gtk+.xml:3509
 msgid "Most Recently Used first"
 msgstr "Cel mai recent utilizat primul"
 
-#: plugins/gtk+/gtk+.xml:3720
+#: plugins/gtk+/gtk+.xml:3511
 msgid "Least Recently Used first"
 msgstr "Cel mai puțin recent utilizat primul"
 
-#: plugins/gtk+/gtk+.xml:3728
+#: plugins/gtk+/gtk+.xml:3519
 msgid "Recent Chooser Dialog"
 msgstr "Dialog alegere recent"
 
-#: plugins/gtk+/gtk+.xml:3744
+#: plugins/gtk+/gtk+.xml:3535
 msgid "Size Group"
 msgstr "Grup de dimensiuni"
 
-#: plugins/gtk+/gtk+.xml:3749
+#: plugins/gtk+/gtk+.xml:3540
 msgid "Widgets"
 msgstr "Widget-uri"
 
-#: plugins/gtk+/gtk+.xml:3754
+#: plugins/gtk+/gtk+.xml:3545
 msgid "List of widgets in this group"
 msgstr "Lista widget-urilor din acest grup"
 
-#: plugins/gtk+/gtk+.xml:3765
+#: plugins/gtk+/gtk+.xml:3556
 msgid "Both"
 msgstr "Ambele"
 
-#: plugins/gtk+/gtk+.xml:3772
+#: plugins/gtk+/gtk+.xml:3563
 msgid "Window Group"
 msgstr "Grup de ferestre"
 
-#: plugins/gtk+/gtk+.xml:3776
+#: plugins/gtk+/gtk+.xml:3567
 msgid "Adjustment"
 msgstr "Ajustare"
 
-#: plugins/gtk+/gtk+.xml:3833
+#: plugins/gtk+/gtk+.xml:3621
 msgid "An accelerator key for this action"
 msgstr "O tastă accelerator pentru această acțiune"
 
-#: plugins/gtk+/gtk+.xml:3838
+#: plugins/gtk+/gtk+.xml:3626
 msgid "Toggle Action"
 msgstr "Acțiune comutare"
 
-#: plugins/gtk+/gtk+.xml:3844
+#: plugins/gtk+/gtk+.xml:3633
 msgid "Radio Action"
 msgstr "Acțiune radio"
 
-#: plugins/gtk+/gtk+.xml:3852
+#: plugins/gtk+/gtk+.xml:3641
 msgid "Recent Action"
 msgstr "Acțiune recentă"
 
-#: plugins/gtk+/gtk+.xml:3870
+#: plugins/gtk+/gtk+.xml:3658
 msgid "Action Group"
 msgstr "Grup de acțiuni"
 
-#: plugins/gtk+/gtk+.xml:3884
+#: plugins/gtk+/gtk+.xml:3672
 msgid "Entry Completion"
 msgstr "Completare intrare"
 
-#: plugins/gtk+/gtk+.xml:3904
+#: plugins/gtk+/gtk+.xml:3690
 msgid "Icon Factory"
 msgstr "Fabrică de iconițe"
 
-#: plugins/gtk+/gtk+.xml:3914
+#: plugins/gtk+/gtk+.xml:3700
 msgid "Icon Sources"
 msgstr "Surse iconițe"
 
-#: plugins/gtk+/gtk+.xml:3919
+#: plugins/gtk+/gtk+.xml:3705
 msgid "A list of sources for this icon factory"
 msgstr "O listă de surse pentru această fabrică de iconițe"
 
-#: plugins/gtk+/gtk+.xml:3925
+#: plugins/gtk+/gtk+.xml:3710
 msgid "List Store"
 msgstr "Lista de stocare"
 
-#: plugins/gtk+/gtk+.xml:3939 plugins/gtk+/gtk+.xml:3965
+#: plugins/gtk+/gtk+.xml:3724 plugins/gtk+/gtk+.xml:3749
 msgid "Enter a list of column types for this data store"
 msgstr "Introduce"
 
-#: plugins/gtk+/gtk+.xml:3941 plugins/gtk+/gtk+.xml:3967
+#: plugins/gtk+/gtk+.xml:3726 plugins/gtk+/gtk+.xml:3751
 msgid "Data"
 msgstr "Date"
 
-#: plugins/gtk+/gtk+.xml:3946 plugins/gtk+/gtk+.xml:3972
+#: plugins/gtk+/gtk+.xml:3731 plugins/gtk+/gtk+.xml:3756
 msgid "Enter a list of values to be applied on each row"
 msgstr "Introduceți o listă de valori de aplicat pe fiecare rând"
 
-#: plugins/gtk+/gtk+.xml:3952
+#: plugins/gtk+/gtk+.xml:3736
 msgid "Tree Store"
 msgstr "Depozitare arborescentă"
 
-#: plugins/gtk+/gtk+.xml:3978
+#: plugins/gtk+/gtk+.xml:3761
 msgid "Tree Model Filter"
 msgstr "Filtru arborescent"
 
-#: plugins/gtk+/gtk+.xml:3980
+#: plugins/gtk+/gtk+.xml:3763
 msgid "Tree Model Sort"
 msgstr "Sortare arborescentă"
 
-#: plugins/gtk+/gtk+.xml:3981
+#: plugins/gtk+/gtk+.xml:3765
 msgid "Tree Selection"
 msgstr "Selecție arborescentă"
 
-#: plugins/gtk+/gtk+.xml:3987
+#: plugins/gtk+/gtk+.xml:3771
 msgid "Tree View"
 msgstr "Vizualizare arborescentă"
 
-#: plugins/gtk+/gtk+.xml:4027
+#: plugins/gtk+/gtk+.xml:3808
 msgid "Horizontal and Vertical"
 msgstr "Orizontal și vertical"
 
-#: plugins/gtk+/gtk+.xml:4082
+#: plugins/gtk+/gtk+.xml:3858
 msgid "Ascending"
 msgstr "Crescător"
 
-#: plugins/gtk+/gtk+.xml:4084
+#: plugins/gtk+/gtk+.xml:3860
 msgid "Descending"
 msgstr "Descrescător"
 
-#: plugins/gtk+/gtk+.xml:4091
+#: plugins/gtk+/gtk+.xml:3867
 msgid "Grow Only"
 msgstr "Doar creștere"
 
-#: plugins/gtk+/gtk+.xml:4109
+#: plugins/gtk+/gtk+.xml:3884
 msgid "Icon View"
 msgstr "Vizualizare iconițe"
 
-#: plugins/gtk+/gtk+.xml:4193
+#: plugins/gtk+/gtk+.xml:3957
 msgid "Cell Background Color name column"
 msgstr "Coloană nume culoare de fundal celulă"
 
-#: plugins/gtk+/gtk+.xml:4198 plugins/gtk+/gtk+.xml:4213
-#: plugins/gtk+/gtk+.xml:4228 plugins/gtk+/gtk+.xml:4242
-#: plugins/gtk+/gtk+.xml:4256 plugins/gtk+/gtk+.xml:4270
-#: plugins/gtk+/gtk+.xml:4284 plugins/gtk+/gtk+.xml:4298
-#: plugins/gtk+/gtk+.xml:4312 plugins/gtk+/gtk+.xml:4326
-#: plugins/gtk+/gtk+.xml:4340 plugins/gtk+/gtk+.xml:4384
-#: plugins/gtk+/gtk+.xml:4398 plugins/gtk+/gtk+.xml:4412
-#: plugins/gtk+/gtk+.xml:4427 plugins/gtk+/gtk+.xml:4441
-#: plugins/gtk+/gtk+.xml:4455 plugins/gtk+/gtk+.xml:4469
-#: plugins/gtk+/gtk+.xml:4483 plugins/gtk+/gtk+.xml:4498
-#: plugins/gtk+/gtk+.xml:4513 plugins/gtk+/gtk+.xml:4528
-#: plugins/gtk+/gtk+.xml:4542 plugins/gtk+/gtk+.xml:4556
-#: plugins/gtk+/gtk+.xml:4570 plugins/gtk+/gtk+.xml:4584
-#: plugins/gtk+/gtk+.xml:4599 plugins/gtk+/gtk+.xml:4613
-#: plugins/gtk+/gtk+.xml:4627 plugins/gtk+/gtk+.xml:4663
-#: plugins/gtk+/gtk+.xml:4677 plugins/gtk+/gtk+.xml:4700
-#: plugins/gtk+/gtk+.xml:4714 plugins/gtk+/gtk+.xml:4741
-#: plugins/gtk+/gtk+.xml:4762 plugins/gtk+/gtk+.xml:4776
-#: plugins/gtk+/gtk+.xml:4790 plugins/gtk+/gtk+.xml:4804
-#: plugins/gtk+/gtk+.xml:4818 plugins/gtk+/gtk+.xml:4833
-#: plugins/gtk+/gtk+.xml:4848 plugins/gtk+/gtk+.xml:4863
-#: plugins/gtk+/gtk+.xml:4878 plugins/gtk+/gtk+.xml:4897
-#: plugins/gtk+/gtk+.xml:4918 plugins/gtk+/gtk+.xml:4985
-#: plugins/gtk+/gtk+.xml:4999 plugins/gtk+/gtk+.xml:5022
-#: plugins/gtk+/gtk+.xml:5036 plugins/gtk+/gtk+.xml:5050
-#: plugins/gtk+/gtk+.xml:5069 plugins/gtk+/gtk+.xml:5083
-#: plugins/gtk+/gtk+.xml:5097 plugins/gtk+/gtk+.xml:5116
-#: plugins/gtk+/gtk+.xml:5130 plugins/gtk+/gtk+.xml:5144
-#: plugins/gtk+/gtk+.xml:5158 plugins/gtk+/gtk+.xml:5173
-#: plugins/gtk+/gtk+.xml:5188 plugins/gtk+/gtk+.xml:5202
-#: plugins/gtk+/gtk+.xml:5216 plugins/gtk+/gtk+.xml:5236
-#: plugins/gtk+/gtk+.xml:5254 plugins/gtk+/gtk+.xml:5268
-#: plugins/gtk+/gtk+.xml:5282 plugins/gtk+/gtk+.xml:5297
-#: plugins/gtk+/gtk+.xml:5312 plugins/gtk+/gtk+.xml:5326
-#: plugins/gtk+/gtk+.xml:5340 plugins/gtk+/gtk+.xml:5359
-#: plugins/gtk+/gtk+.xml:5373 plugins/gtk+/gtk+.xml:5387
-#: plugins/gtk+/gtk+.xml:5406 plugins/gtk+/gtk+.xml:5420
-#: plugins/gtk+/gtk+.xml:5434 plugins/gtk+/gtk+.xml:5448
-#: plugins/gtk+/gtk+.xml:5462
+#: plugins/gtk+/gtk+.xml:3962 plugins/gtk+/gtk+.xml:3975
+#: plugins/gtk+/gtk+.xml:3988 plugins/gtk+/gtk+.xml:4001
+#: plugins/gtk+/gtk+.xml:4014 plugins/gtk+/gtk+.xml:4027
+#: plugins/gtk+/gtk+.xml:4040 plugins/gtk+/gtk+.xml:4053
+#: plugins/gtk+/gtk+.xml:4066 plugins/gtk+/gtk+.xml:4079
+#: plugins/gtk+/gtk+.xml:4092 plugins/gtk+/gtk+.xml:4135
+#: plugins/gtk+/gtk+.xml:4148 plugins/gtk+/gtk+.xml:4161
+#: plugins/gtk+/gtk+.xml:4174 plugins/gtk+/gtk+.xml:4187
+#: plugins/gtk+/gtk+.xml:4200 plugins/gtk+/gtk+.xml:4213
+#: plugins/gtk+/gtk+.xml:4226 plugins/gtk+/gtk+.xml:4239
+#: plugins/gtk+/gtk+.xml:4252 plugins/gtk+/gtk+.xml:4265
+#: plugins/gtk+/gtk+.xml:4278 plugins/gtk+/gtk+.xml:4291
+#: plugins/gtk+/gtk+.xml:4304 plugins/gtk+/gtk+.xml:4317
+#: plugins/gtk+/gtk+.xml:4330 plugins/gtk+/gtk+.xml:4343
+#: plugins/gtk+/gtk+.xml:4356 plugins/gtk+/gtk+.xml:4390
+#: plugins/gtk+/gtk+.xml:4403 plugins/gtk+/gtk+.xml:4425
+#: plugins/gtk+/gtk+.xml:4438 plugins/gtk+/gtk+.xml:4470
+#: plugins/gtk+/gtk+.xml:4490 plugins/gtk+/gtk+.xml:4503
+#: plugins/gtk+/gtk+.xml:4516 plugins/gtk+/gtk+.xml:4529
+#: plugins/gtk+/gtk+.xml:4542 plugins/gtk+/gtk+.xml:4555
+#: plugins/gtk+/gtk+.xml:4568 plugins/gtk+/gtk+.xml:4581
+#: plugins/gtk+/gtk+.xml:4594 plugins/gtk+/gtk+.xml:4612
+#: plugins/gtk+/gtk+.xml:4632 plugins/gtk+/gtk+.xml:4698
+#: plugins/gtk+/gtk+.xml:4711 plugins/gtk+/gtk+.xml:4732
+#: plugins/gtk+/gtk+.xml:4745 plugins/gtk+/gtk+.xml:4758
+#: plugins/gtk+/gtk+.xml:4776 plugins/gtk+/gtk+.xml:4789
+#: plugins/gtk+/gtk+.xml:4802 plugins/gtk+/gtk+.xml:4820
+#: plugins/gtk+/gtk+.xml:4833 plugins/gtk+/gtk+.xml:4846
+#: plugins/gtk+/gtk+.xml:4859 plugins/gtk+/gtk+.xml:4872
+#: plugins/gtk+/gtk+.xml:4885 plugins/gtk+/gtk+.xml:4898
+#: plugins/gtk+/gtk+.xml:4911 plugins/gtk+/gtk+.xml:4930
+#: plugins/gtk+/gtk+.xml:4949 plugins/gtk+/gtk+.xml:4962
+#: plugins/gtk+/gtk+.xml:4975 plugins/gtk+/gtk+.xml:4988
+#: plugins/gtk+/gtk+.xml:5001 plugins/gtk+/gtk+.xml:5014
+#: plugins/gtk+/gtk+.xml:5027 plugins/gtk+/gtk+.xml:5045
+#: plugins/gtk+/gtk+.xml:5058 plugins/gtk+/gtk+.xml:5071
+#: plugins/gtk+/gtk+.xml:5089 plugins/gtk+/gtk+.xml:5102
+#: plugins/gtk+/gtk+.xml:5115 plugins/gtk+/gtk+.xml:5128
+#: plugins/gtk+/gtk+.xml:5141
 msgid "The column in the model to load the value from"
 msgstr "Coloana din model din care se încarcă valoarea"
 
-#: plugins/gtk+/gtk+.xml:4208
+#: plugins/gtk+/gtk+.xml:3970
 msgid "Cell Background Color column"
 msgstr "Coloană culoare de fundal celulă"
 
-#: plugins/gtk+/gtk+.xml:4223
+#: plugins/gtk+/gtk+.xml:3983
 msgid "Cell Background RGBA column"
 msgstr "Coloană RGBA pentru fundalul celulei"
 
-#: plugins/gtk+/gtk+.xml:4237
+#: plugins/gtk+/gtk+.xml:3996
 msgid "Width column"
 msgstr "Coloană lățime"
 
-#: plugins/gtk+/gtk+.xml:4251
+#: plugins/gtk+/gtk+.xml:4009
 msgid "Height column"
 msgstr "Coloană înălțime"
 
-#: plugins/gtk+/gtk+.xml:4264
+#: plugins/gtk+/gtk+.xml:4021
 msgid "Horizontal Padding"
 msgstr "Umplere orizontală"
 
-#: plugins/gtk+/gtk+.xml:4265
+#: plugins/gtk+/gtk+.xml:4022
 msgid "Horizontal Padding column"
 msgstr "Coloană umplere orizontală"
 
-#: plugins/gtk+/gtk+.xml:4278
+#: plugins/gtk+/gtk+.xml:4034
 msgid "Vertical Padding"
 msgstr "Umplere verticală"
 
-#: plugins/gtk+/gtk+.xml:4279
+#: plugins/gtk+/gtk+.xml:4035
 msgid "Vertical Padding column"
 msgstr "Coloană umplere verticală"
 
-#: plugins/gtk+/gtk+.xml:4292
+#: plugins/gtk+/gtk+.xml:4047
 msgid "Horizontal Alignment"
 msgstr "Aliniere orizontală"
 
-#: plugins/gtk+/gtk+.xml:4293
+#: plugins/gtk+/gtk+.xml:4048
 msgid "Horizontal Alignment column"
 msgstr "Coloană aliniere orizontală"
 
-#: plugins/gtk+/gtk+.xml:4306
+#: plugins/gtk+/gtk+.xml:4060
 msgid "Vertical Alignment"
 msgstr "Aliniere verticală"
 
-#: plugins/gtk+/gtk+.xml:4307
+#: plugins/gtk+/gtk+.xml:4061
 msgid "Vertical Alignment column"
 msgstr "Coloană aliniere verticală"
 
-#: plugins/gtk+/gtk+.xml:4321
+#: plugins/gtk+/gtk+.xml:4074
 msgid "Sensitive column"
 msgstr "Coloană senzitivă"
 
-#: plugins/gtk+/gtk+.xml:4335
+#: plugins/gtk+/gtk+.xml:4087
 msgid "Visible column"
 msgstr "Coloană vizibilitate"
 
-#: plugins/gtk+/gtk+.xml:4350
+#: plugins/gtk+/gtk+.xml:4102
 msgid "Text Renderer"
 msgstr "Randor de text"
 
-#: plugins/gtk+/gtk+.xml:4379
+#: plugins/gtk+/gtk+.xml:4130
 msgid "Alignment column"
 msgstr "Coloană aliniere"
 
-#: plugins/gtk+/gtk+.xml:4393
+#: plugins/gtk+/gtk+.xml:4143
 msgid "Attributes column"
 msgstr "Coloană atribute"
 
-#: plugins/gtk+/gtk+.xml:4407
+#: plugins/gtk+/gtk+.xml:4156
 msgid "Background Color Name column"
 msgstr "Coloană nume culoare de fundal"
 
-#: plugins/gtk+/gtk+.xml:4422
+#: plugins/gtk+/gtk+.xml:4169
 msgid "Background Color column"
 msgstr "Coloană culoare de fundal"
 
-#: plugins/gtk+/gtk+.xml:4436
+#: plugins/gtk+/gtk+.xml:4182
 msgid "Editable column"
 msgstr "Coloană editabilă"
 
-#: plugins/gtk+/gtk+.xml:4450
+#: plugins/gtk+/gtk+.xml:4195
 msgid "Ellipsize column"
 msgstr "Prescurtează coloana"
 
-#: plugins/gtk+/gtk+.xml:4464
+#: plugins/gtk+/gtk+.xml:4208
 msgid "Family column"
 msgstr "Coloană familie"
 
-#: plugins/gtk+/gtk+.xml:4478
+#: plugins/gtk+/gtk+.xml:4221
 msgid "Font column"
 msgstr "Coloană font"
 
-#: plugins/gtk+/gtk+.xml:4493
+#: plugins/gtk+/gtk+.xml:4234
 msgid "Font Description column"
 msgstr "Coloană descriere font"
 
-#: plugins/gtk+/gtk+.xml:4508
+#: plugins/gtk+/gtk+.xml:4247
 msgid "Foreground Color Name column"
 msgstr "Coloană nume culoare de prim-plan"
 
-#: plugins/gtk+/gtk+.xml:4523
+#: plugins/gtk+/gtk+.xml:4260
 msgid "Foreground Color column"
 msgstr "Coloană culoare de prim-plan"
 
-#: plugins/gtk+/gtk+.xml:4537
+#: plugins/gtk+/gtk+.xml:4273
 msgid "Language column"
 msgstr "Coloană limbă"
 
-#: plugins/gtk+/gtk+.xml:4551
+#: plugins/gtk+/gtk+.xml:4286
 msgid "Markup column"
 msgstr "Coloană marcaj"
 
-#: plugins/gtk+/gtk+.xml:4565
+#: plugins/gtk+/gtk+.xml:4299
 msgid "Rise column"
 msgstr "Ridică coloana"
 
-#: plugins/gtk+/gtk+.xml:4579
+#: plugins/gtk+/gtk+.xml:4312
 msgid "Scale column"
 msgstr "Coloană scalare"
 
-#: plugins/gtk+/gtk+.xml:4594
+#: plugins/gtk+/gtk+.xml:4325
 msgid "Single Paragraph Mode column"
 msgstr "Coloana mod paragraf unic"
 
-#: plugins/gtk+/gtk+.xml:4608
+#: plugins/gtk+/gtk+.xml:4338
 msgid "Size column"
 msgstr "Coloană dimensiune"
 
-#: plugins/gtk+/gtk+.xml:4622 plugins/gtk+/gtk+.xml:4892
+#: plugins/gtk+/gtk+.xml:4351 plugins/gtk+/gtk+.xml:4607
 msgid "Data column"
 msgstr "Coloană date"
 
-#: plugins/gtk+/gtk+.xml:4638
+#: plugins/gtk+/gtk+.xml:4366
 msgid "Ultra Condensed"
 msgstr "Ultra condensat"
 
-#: plugins/gtk+/gtk+.xml:4640
+#: plugins/gtk+/gtk+.xml:4368
 msgid "Extra Condensed"
 msgstr "Extra condensat"
 
-#: plugins/gtk+/gtk+.xml:4642
+#: plugins/gtk+/gtk+.xml:4370
 msgid "Condensed"
 msgstr "Condensat"
 
-#: plugins/gtk+/gtk+.xml:4644
+#: plugins/gtk+/gtk+.xml:4372
 msgid "Semi Condensed"
 msgstr "Semicondensat"
 
-#: plugins/gtk+/gtk+.xml:4648
+#: plugins/gtk+/gtk+.xml:4376
 msgid "Semi Expanded"
 msgstr "Semidesfășurat"
 
-#: plugins/gtk+/gtk+.xml:4650
+#: plugins/gtk+/gtk+.xml:4378
 msgid "Expanded"
 msgstr "Extins"
 
-#: plugins/gtk+/gtk+.xml:4652
+#: plugins/gtk+/gtk+.xml:4380
 msgid "Extra Expanded"
 msgstr "Extra extins"
 
-#: plugins/gtk+/gtk+.xml:4654
+#: plugins/gtk+/gtk+.xml:4382
 msgid "Ultra Expanded"
 msgstr "Ultra extins"
 
-#: plugins/gtk+/gtk+.xml:4658
+#: plugins/gtk+/gtk+.xml:4385
 msgid "Stretch column"
 msgstr "Coloană întindere"
 
-#: plugins/gtk+/gtk+.xml:4672
+#: plugins/gtk+/gtk+.xml:4398
 msgid "Strikethrough column"
 msgstr "Culoare tăiere"
 
-#: plugins/gtk+/gtk+.xml:4690
+#: plugins/gtk+/gtk+.xml:4415
 msgid "Oblique"
 msgstr "Oblic"
 
-#: plugins/gtk+/gtk+.xml:4692
+#: plugins/gtk+/gtk+.xml:4417
 msgid "Italic"
 msgstr "Italic"
 
-#: plugins/gtk+/gtk+.xml:4695
+#: plugins/gtk+/gtk+.xml:4420
 msgid "Style column"
 msgstr "Coloană stil"
 
-#: plugins/gtk+/gtk+.xml:4709 plugins/gtk+/gtk+.xml:5277
+#: plugins/gtk+/gtk+.xml:4433 plugins/gtk+/gtk+.xml:4970
 msgid "Text column"
 msgstr "Coloană text"
 
-#: plugins/gtk+/gtk+.xml:4729
+#: plugins/gtk+/gtk+.xml:4452
 msgid "Double"
 msgstr "Dublu"
 
-#: plugins/gtk+/gtk+.xml:4731
+#: plugins/gtk+/gtk+.xml:4454
 msgid "Low"
 msgstr "Redus"
 
-#: plugins/gtk+/gtk+.xml:4736
+#: plugins/gtk+/gtk+.xml:4465
 msgid "Underline column"
 msgstr "Coloană subliniere"
 
-#: plugins/gtk+/gtk+.xml:4754
+#: plugins/gtk+/gtk+.xml:4482
 msgid "Small Capitals"
 msgstr "Majuscule mici"
 
-#: plugins/gtk+/gtk+.xml:4757
+#: plugins/gtk+/gtk+.xml:4485
 msgid "Variant column"
 msgstr "Coloană variantă"
 
-#: plugins/gtk+/gtk+.xml:4771
+#: plugins/gtk+/gtk+.xml:4498
 msgid "Weight column"
 msgstr "Coloană greutate"
 
-#: plugins/gtk+/gtk+.xml:4785
+#: plugins/gtk+/gtk+.xml:4511
 msgid "Width in Characters column"
 msgstr "Coloană lățime în caractere"
 
-#: plugins/gtk+/gtk+.xml:4799
+#: plugins/gtk+/gtk+.xml:4524
 msgid "Wrap Mode column"
 msgstr "Coloană Mod despărțire rânduri"
 
-#: plugins/gtk+/gtk+.xml:4813
+#: plugins/gtk+/gtk+.xml:4537
 msgid "Wrap Width column"
 msgstr "Coloană Lățime despărțire rânduri"
 
-#: plugins/gtk+/gtk+.xml:4828
+#: plugins/gtk+/gtk+.xml:4550
 msgid "Background RGBA column"
 msgstr "Coloană RGBA de fundal"
 
-#: plugins/gtk+/gtk+.xml:4843
+#: plugins/gtk+/gtk+.xml:4563
 msgid "Foreground RGBA column"
 msgstr "Coloană RGBA de prim-plan"
 
-#: plugins/gtk+/gtk+.xml:4858
+#: plugins/gtk+/gtk+.xml:4576
 msgid "Maximum width in characters"
 msgstr "Lățimea maximă în caractere"
 
-#: plugins/gtk+/gtk+.xml:4873
+#: plugins/gtk+/gtk+.xml:4589
 msgid "Placeholder text"
 msgstr "Text substituent"
 
-#: plugins/gtk+/gtk+.xml:4889
+#: plugins/gtk+/gtk+.xml:4604
 msgid "Accelerator Renderer"
 msgstr "Randor accelerator"
 
-#: plugins/gtk+/gtk+.xml:4908
+#: plugins/gtk+/gtk+.xml:4622
 msgid "Gtk"
 msgstr "Gtk"
 
-#: plugins/gtk+/gtk+.xml:4913
+#: plugins/gtk+/gtk+.xml:4627
 msgid "Accelerator Mode column"
 msgstr "Coloană Mod accelerator"
 
-#: plugins/gtk+/gtk+.xml:4929
+#: plugins/gtk+/gtk+.xml:4642
 msgid "Shift Key"
 msgstr "Tasta Shift"
 
-#: plugins/gtk+/gtk+.xml:4931
+#: plugins/gtk+/gtk+.xml:4644
 msgid "Lock Key"
 msgstr "Blochează cheia"
 
-#: plugins/gtk+/gtk+.xml:4933
+#: plugins/gtk+/gtk+.xml:4646
 msgid "Control Key"
 msgstr "Tasta Control"
 
-#: plugins/gtk+/gtk+.xml:4935
+#: plugins/gtk+/gtk+.xml:4648
 msgid "Alt Key"
 msgstr "Tasta Alt"
 
-#: plugins/gtk+/gtk+.xml:4937
+#: plugins/gtk+/gtk+.xml:4650
 msgid "Fifth Key"
 msgstr "A cincea tastă"
 
-#: plugins/gtk+/gtk+.xml:4939
+#: plugins/gtk+/gtk+.xml:4652
 msgid "Sixth Key"
 msgstr "A șasea tastă"
 
-#: plugins/gtk+/gtk+.xml:4941
+#: plugins/gtk+/gtk+.xml:4654
 msgid "Seventh Key"
 msgstr "A șaptea tastă"
 
-#: plugins/gtk+/gtk+.xml:4943
+#: plugins/gtk+/gtk+.xml:4656
 msgid "Eighth Key"
 msgstr "A opta tastă"
 
-#: plugins/gtk+/gtk+.xml:4945
+#: plugins/gtk+/gtk+.xml:4658
 msgid "First Mouse Button"
 msgstr "Primul buton al mausului"
 
-#: plugins/gtk+/gtk+.xml:4947
+#: plugins/gtk+/gtk+.xml:4660
 msgid "Second Mouse Button"
 msgstr "Al doilea buton al mausului"
 
-#: plugins/gtk+/gtk+.xml:4949
+#: plugins/gtk+/gtk+.xml:4662
 msgid "Third Mouse Button"
 msgstr "Al treilea buton al mausului"
 
-#: plugins/gtk+/gtk+.xml:4951
+#: plugins/gtk+/gtk+.xml:4664
 msgid "Fourth Mouse Button"
 msgstr "Al patrulea buton al mausului"
 
-#: plugins/gtk+/gtk+.xml:4953
+#: plugins/gtk+/gtk+.xml:4666
 msgid "Fifth Mouse Button"
 msgstr "Al cincilea buton al mausului"
 
-#: plugins/gtk+/gtk+.xml:4955
+#: plugins/gtk+/gtk+.xml:4668
 msgid "Super Modifier"
 msgstr "Modificator Super"
 
-#: plugins/gtk+/gtk+.xml:4957
+#: plugins/gtk+/gtk+.xml:4670
 msgid "Hyper Modifier"
 msgstr "Modificator Hyper"
 
-#: plugins/gtk+/gtk+.xml:4959
+#: plugins/gtk+/gtk+.xml:4672
 msgid "Meta Modifier"
 msgstr "Modificator Meta"
 
-#: plugins/gtk+/gtk+.xml:4961
+#: plugins/gtk+/gtk+.xml:4674
 msgid "Release Modifier"
 msgstr "Modificator eliberare"
 
-#: plugins/gtk+/gtk+.xml:4963
+#: plugins/gtk+/gtk+.xml:4676
 msgid "All Modifiers"
 msgstr "Toți modificatorii"
 
-#: plugins/gtk+/gtk+.xml:4980
+#: plugins/gtk+/gtk+.xml:4693
 msgid "Accelerator Modifiers column"
 msgstr "Coloană Modificatori accelerator"
 
-#: plugins/gtk+/gtk+.xml:4994
+#: plugins/gtk+/gtk+.xml:4706
 msgid "Keycode column"
 msgstr "Coloană codului tastei"
 
-#: plugins/gtk+/gtk+.xml:5009
+#: plugins/gtk+/gtk+.xml:4721
 msgid "Combo Renderer"
 msgstr "Randor de combinare"
 
-#: plugins/gtk+/gtk+.xml:5017
+#: plugins/gtk+/gtk+.xml:4727
 msgid "Has Entry column"
 msgstr "Are coloană Intrare"
 
-#: plugins/gtk+/gtk+.xml:5031
+#: plugins/gtk+/gtk+.xml:4740
 msgid "Model column"
 msgstr "Coloană model"
 
-#: plugins/gtk+/gtk+.xml:5045
+#: plugins/gtk+/gtk+.xml:4753
 msgid "Text Column column"
 msgstr "Coloana „Coloană text”"
 
-#: plugins/gtk+/gtk+.xml:5061
+#: plugins/gtk+/gtk+.xml:4768
 msgid "Spin Renderer"
 msgstr "Randor incrementabil"
 
-#: plugins/gtk+/gtk+.xml:5064
+#: plugins/gtk+/gtk+.xml:4771
 msgid "Adjustment column"
 msgstr "Coloană ajustare"
 
-#: plugins/gtk+/gtk+.xml:5078
+#: plugins/gtk+/gtk+.xml:4784
 msgid "Climb Rate column"
 msgstr "Coloană rată de urcare"
 
-#: plugins/gtk+/gtk+.xml:5092
+#: plugins/gtk+/gtk+.xml:4797
 msgid "Digits column"
 msgstr "Coloană cifre"
 
-#: plugins/gtk+/gtk+.xml:5107
+#: plugins/gtk+/gtk+.xml:4812
 msgid "Pixbuf Renderer"
 msgstr "Randor pixbuf"
 
-#: plugins/gtk+/gtk+.xml:5111
+#: plugins/gtk+/gtk+.xml:4815
 msgid "Follow State column"
 msgstr "Coloană ce urmărește starea"
 
-#: plugins/gtk+/gtk+.xml:5125
+#: plugins/gtk+/gtk+.xml:4828
 msgid "Icon Name column"
 msgstr "Coloană nume iconiță"
 
-#: plugins/gtk+/gtk+.xml:5139
+#: plugins/gtk+/gtk+.xml:4841
 msgid "Pixbuf column"
 msgstr "Coloană pixbuf"
 
-#: plugins/gtk+/gtk+.xml:5153
+#: plugins/gtk+/gtk+.xml:4854
 msgid "GIcon column"
 msgstr "Coloană GIcon"
 
-#: plugins/gtk+/gtk+.xml:5168
+#: plugins/gtk+/gtk+.xml:4867
 msgid "Pixbuf Expander Closed column"
 msgstr "Coloană Desfășurător pixbuf închis"
 
-#: plugins/gtk+/gtk+.xml:5183
+#: plugins/gtk+/gtk+.xml:4880
 msgid "Pixbuf Expander Open column"
 msgstr "Coloană Desfășurător pixbuf deschis"
 
-#: plugins/gtk+/gtk+.xml:5197
+#: plugins/gtk+/gtk+.xml:4893
 msgid "Stock Detail column"
 msgstr "Coloana detaliilor despre stoc"
 
-#: plugins/gtk+/gtk+.xml:5211
+#: plugins/gtk+/gtk+.xml:4906
 msgid "Stock column"
 msgstr "Coloana stoc"
 
-#: plugins/gtk+/gtk+.xml:5231
+#: plugins/gtk+/gtk+.xml:4925
 msgid "Stock Size column"
 msgstr "Coloană dimensiune stoc"
 
-#: plugins/gtk+/gtk+.xml:5246
+#: plugins/gtk+/gtk+.xml:4941
 msgid "Progress Renderer"
 msgstr "Randor progres"
 
-#: plugins/gtk+/gtk+.xml:5249
+#: plugins/gtk+/gtk+.xml:4944
 msgid "Orientation column"
 msgstr "Coloană orientare"
 
-#: plugins/gtk+/gtk+.xml:5263 plugins/gtk+/gtk+.xml:5368
+#: plugins/gtk+/gtk+.xml:4957 plugins/gtk+/gtk+.xml:5053
 msgid "Pulse column"
 msgstr "Coloană puls"
 
-#: plugins/gtk+/gtk+.xml:5292
+#: plugins/gtk+/gtk+.xml:4983
 msgid "Text Horizontal Alignment column"
 msgstr "Coloană aliniere orizontală text"
 
-#: plugins/gtk+/gtk+.xml:5307
+#: plugins/gtk+/gtk+.xml:4996
 msgid "Text Vertical Alignment column"
 msgstr "Coloană aliniere verticală text"
 
-#: plugins/gtk+/gtk+.xml:5321
+#: plugins/gtk+/gtk+.xml:5009
 msgid "Value column"
 msgstr "Coloană valoare"
 
-#: plugins/gtk+/gtk+.xml:5335
+#: plugins/gtk+/gtk+.xml:5022
 msgid "Inverted column"
 msgstr "Coloană inversată"
 
-#: plugins/gtk+/gtk+.xml:5351
+#: plugins/gtk+/gtk+.xml:5037
 msgid "Spinner Renderer"
 msgstr "Randor pentru indicarea progresului"
 
-#: plugins/gtk+/gtk+.xml:5354 plugins/gtk+/gtk+.xml:5415
+#: plugins/gtk+/gtk+.xml:5040 plugins/gtk+/gtk+.xml:5097
 msgid "Active column"
 msgstr "Activează coloana"
 
-#: plugins/gtk+/gtk+.xml:5398
+#: plugins/gtk+/gtk+.xml:5081
 msgid "Toggle Renderer"
 msgstr "Comută randor"
 
-#: plugins/gtk+/gtk+.xml:5401
+#: plugins/gtk+/gtk+.xml:5084
 msgid "Activatable column"
 msgstr "Coloană activabilă"
 
-#: plugins/gtk+/gtk+.xml:5429
+#: plugins/gtk+/gtk+.xml:5110
 msgid "Inconsistent column"
 msgstr "Coloană inconsecventă"
 
-#: plugins/gtk+/gtk+.xml:5443
+#: plugins/gtk+/gtk+.xml:5123
 msgid "Indicator Size column"
 msgstr "Coloană dimensiune indicator"
 
-#: plugins/gtk+/gtk+.xml:5457
+#: plugins/gtk+/gtk+.xml:5136
 msgid "Radio column"
 msgstr "Coloană radio"
 
-#: plugins/gtk+/gtk+.xml:5472
+#: plugins/gtk+/gtk+.xml:5151
 msgid "Status Icon"
 msgstr "Iconiță stare"
 
-#: plugins/gtk+/gtk+.xml:5483
+#: plugins/gtk+/gtk+.xml:5163
 msgid "Text Buffer"
 msgstr "Buffer de text"
 
-#: plugins/gtk+/gtk+.xml:5496
+#: plugins/gtk+/gtk+.xml:5174
 msgid "Entry Buffer"
 msgstr "Buffer intrare"
 
-#: plugins/gtk+/gtk+.xml:5504
+#: plugins/gtk+/gtk+.xml:5182
 msgid "Text Tag"
 msgstr "Etichetă text"
 
-#: plugins/gtk+/gtk+.xml:5557
+#: plugins/gtk+/gtk+.xml:5238
 msgid "Text Tag Table"
 msgstr "Tabel cu etichete text"
 
-#: plugins/gtk+/gtk+.xml:5571
+#: plugins/gtk+/gtk+.xml:5250
 msgid "File Filter"
 msgstr "Filtru fișiere"
 
-#: plugins/gtk+/gtk+.xml:5577 plugins/gtk+/gtk+.xml:5601
+#: plugins/gtk+/gtk+.xml:5256 plugins/gtk+/gtk+.xml:5279
 msgid "Mime Types"
 msgstr "Tipuri MIME"
 
-#: plugins/gtk+/gtk+.xml:5582 plugins/gtk+/gtk+.xml:5606
+#: plugins/gtk+/gtk+.xml:5261 plugins/gtk+/gtk+.xml:5284
 msgid "The list of mime types to add to the filter"
 msgstr "Lista de tipuri MIME de adăugat la filtru"
 
-#: plugins/gtk+/gtk+.xml:5584 plugins/gtk+/gtk+.xml:5608
+#: plugins/gtk+/gtk+.xml:5263 plugins/gtk+/gtk+.xml:5286
 msgid "Patterns"
 msgstr "Eșantioane"
 
-#: plugins/gtk+/gtk+.xml:5589 plugins/gtk+/gtk+.xml:5613
+#: plugins/gtk+/gtk+.xml:5268 plugins/gtk+/gtk+.xml:5291
 msgid "The list of file name patterns to add to the filter"
 msgstr "Lista numelor de fișier ale eșantioanelor de adăugat la filtru"
 
-#: plugins/gtk+/gtk+.xml:5595
+#: plugins/gtk+/gtk+.xml:5273
 msgid "Recent Filter"
 msgstr "Filtru pentru recent"
 
-#: plugins/gtk+/gtk+.xml:5620
+#: plugins/gtk+/gtk+.xml:5298
 msgid "The list of application names to add to the filter"
 msgstr "Lista numelor de aplicații de adăugat la filtru"
 
-#: plugins/gtk+/gtk+.xml:5626
+#: plugins/gtk+/gtk+.xml:5303
 msgid "Recent Manager"
 msgstr "Administrator pentru recente"
 
-#: plugins/gtk+/gtk+.xml:5628
+#: plugins/gtk+/gtk+.xml:5305
 msgid "Themed Icon"
 msgstr "Iconiță cu temă"
 
-#: plugins/gtk+/gtk+.xml:5629
+#: plugins/gtk+/gtk+.xml:5307
 msgid "File Icon"
 msgstr "Iconiță de fișier"
 
-#: plugins/gtk+/gtk+.xml:5631
+#: plugins/gtk+/gtk+.xml:5309
 msgid "Native File Chooser Dialog"
 msgstr "Dialog de alegere fișiere nativ"
 
-#: plugins/gtk+/gtk+.xml:5635
+#: plugins/gtk+/gtk+.xml:5312
 msgid "Toplevels"
 msgstr "Niveluri de top"
 
-#: plugins/gtk+/gtk+.xml:5650
+#: plugins/gtk+/gtk+.xml:5327
 msgid "Containers"
 msgstr "Containere"
 
-#: plugins/gtk+/gtk+.xml:5682
+#: plugins/gtk+/gtk+.xml:5359
 msgid "Control"
 msgstr "Control"
 
-#: plugins/gtk+/gtk+.xml:5716
+#: plugins/gtk+/gtk+.xml:5386
 msgid "Display"
 msgstr "Afișaj"
 
-#: plugins/gtk+/gtk+.xml:5738
+#: plugins/gtk+/gtk+.xml:5405
 msgid "Composite Widgets"
 msgstr "Widget-uri compuse"
 
-#: plugins/gtk+/gtk+.xml:5749
+#: plugins/gtk+/gtk+.xml:5415
 msgid "Miscellaneous"
 msgstr "Diverse"
 
-#: plugins/gtk+/gtk+.xml:5779
+#: plugins/gtk+/gtk+.xml:5440
 msgid "Deprecated"
 msgstr "Învechit"
 
@@ -8184,19 +8262,19 @@ msgstr "Vizualizare Web Webkit"
 msgid "The URL to load in Glade (this property will not be saved)"
 msgstr "URL-ul de încărcat în Glade (această proprietate nu va fi salvată)"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:31
+#: plugins/webkit2gtk/webkit2gtk.xml:32
 msgid "Tab"
 msgstr "Filă"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:41
+#: plugins/webkit2gtk/webkit2gtk.xml:42
 msgid "WebKit Settings"
 msgstr "Configurări WebKit"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:46
+#: plugins/webkit2gtk/webkit2gtk.xml:47
 msgid "On Demand"
 msgstr "La cerere"
 
-#: plugins/webkit2gtk/webkit2gtk.xml:57
+#: plugins/webkit2gtk/webkit2gtk.xml:58
 msgid "WebKit2GTK+ Widgets"
 msgstr "Widgeturi WebKit2GTK+"
 
