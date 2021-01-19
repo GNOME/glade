@@ -193,6 +193,19 @@ glade_gtk_lock_button_is_own_property (GladeProperty *property)
   return (spec->owner_type == GTK_TYPE_LOCK_BUTTON);
 }
 
+static void
+glade_gtk_sync_draw_indicator (GladeWidget *gwidget)
+{
+  gboolean draw_indicator = FALSE;
+  GladeProperty *prop = glade_widget_get_property (gwidget, "draw-indicator");
+  glade_property_get (prop, &draw_indicator);
+  if (draw_indicator)
+    {
+      glade_property_set (prop, FALSE);
+      glade_property_set (prop, TRUE);
+    }
+}
+
 void
 glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
@@ -238,6 +251,15 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
                                                         id, value);
       glade_gtk_sync_use_appearance (widget);
     }
+  else if (strcmp (id, "xalign") == 0)
+  {
+      GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
+                                                        id, value);
+      /* if draw-indicator is set, force it to be set again so GtkCheckButton/GtkToggleButton has
+       * an opportunity to reset xalign to 0
+       */
+      glade_gtk_sync_draw_indicator(widget);
+  }
   else if (GLADE_PROPERTY_DEF_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 
