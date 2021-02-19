@@ -1,14 +1,14 @@
 # Hungarian translation for glade-help.
-# Copyright (C) 2014, 2016, 2017, 2018, 2019 Free Software Foundation, Inc.
+# Copyright (C) 2014, 2016, 2017, 2018, 2019, 2021 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glade package.
 #
-# Balázs Úr <ur.balazs at fsf dot hu>, 2014, 2017, 2018, 2019.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2014, 2017, 2018, 2019, 2021.
 # Gábor Kelemen <kelemeng at gnome dot hu>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
-"POT-Creation-Date: 2019-04-07 15:23+0000\n"
-"PO-Revision-Date: 2019-04-07 22:04+0100\n"
+"POT-Creation-Date: 2020-09-04 05:03+0000\n"
+"PO-Revision-Date: 2021-02-20 00:49+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -16,14 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 19.12.3\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
 msgid "translator-credits"
 msgstr ""
 "Meskó Balázs <mesko.balazs at fsf dot hu>, 2011.\n"
-"Úr Balázs <ur.balazs at fsf dot hu>, 2014, 2017, 2018, 2019."
+"Úr Balázs <ur.balazs at fsf dot hu>, 2014, 2017, 2018, 2019, 2021."
 
 #. (itstool) path: articleinfo/title
 #: C/index.docbook:17
@@ -168,14 +168,19 @@ msgstr "Visszajelzés"
 
 #. (itstool) path: legalnotice/para
 #: C/index.docbook:136
+#| msgid ""
+#| "To report a bug or make a suggestion regarding this application or this "
+#| "manual, you can submit them using <ulink url=\"https://gitlab.gnome.org/"
+#| "GNOME/glade/issues/\" type=\"http\">our issue tracking system</ulink>."
 msgid ""
 "To report a bug or make a suggestion regarding the Glade application or this "
-"manual, follow the directions in the <ulink url=\"help:gnome-feedback\" type="
-"\"help\">GNOME Feedback Page</ulink>."
+"manual, visit the <ulink url=\"https://gitlab.gnome.org/GNOME/glade/issues/"
+"\">GNOME Issue Tracker</ulink>."
 msgstr ""
-"Egy hiba bejelentéséhez vagy a Glade alkalmazással, illetve ezzel a "
-"kézikönyvvel kapcsolatos javaslat tételéhez kövesse a <ulink url=\"help:"
-"gnome-feedback\" type=\"help\">GNOME visszajelzés oldal</ulink> útmutatásait."
+"Ha hibát szeretne bejelenti, vagy javaslata van a Glade alkalmazással vagy a"
+" kézikönyvvel kapcsolatban, akkor azt a <ulink"
+" url=\"https://gitlab.gnome.org/GNOME/glade/issues/\">GNOME hibakövető</ulink"
+"> segítségével teheti meg."
 
 #. (itstool) path: article/indexterm
 #: C/index.docbook:144
@@ -257,12 +262,15 @@ msgstr "<guimenu>Alkalmazások</guimenu> menü"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:181
+#| msgid ""
+#| "Choose <menuchoice> <guisubmenu>Programming</guisubmenu> "
+#| "<guimenuitem>Glade Interface Designer</guimenuitem> </menuchoice>."
 msgid ""
-"Choose <menuchoice> <guisubmenu>Programming</guisubmenu> <guimenuitem>Glade "
-"Interface Designer</guimenuitem> </menuchoice>."
+"Choose <menuchoice> <guisubmenu>Programming</guisubmenu> <guimenuitem>Glade</"
+"guimenuitem> </menuchoice>."
 msgstr ""
-"Válassza a <menuchoice> <guisubmenu>Programozás</guisubmenu> "
-"<guimenuitem>Glade felülettervezőt</guimenuitem> </menuchoice>."
+"Válassza a <menuchoice> <guisubmenu>Programozás</guisubmenu> <guimenuitem"
+">Glade</guimenuitem> </menuchoice> menüpontot."
 
 #. (itstool) path: varlistentry/term
 #: C/index.docbook:189
@@ -304,10 +312,6 @@ msgstr "A <application>Glade</application> ablaka"
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/index.docbook:206
-#| msgctxt "_"
-#| msgid ""
-#| "external ref='figures/main-window.png' "
-#| "md5='bf5cf7830cf0b9a3c901ad6c13eddbff'"
 msgctxt "_"
 msgid ""
 "external ref='figures/main-window.png' md5='5425da019396c13dbe8deb80303673ba'"
@@ -316,9 +320,13 @@ msgstr ""
 
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:205
+#| msgid ""
+#| "<imageobject><imagedata fileref=\"figures/main-window.png\" format=\"PNG"
+#| "\"/></imageobject> <textobject><phrase>Shows the<application>Glade</"
+#| "application> window.</phrase></textobject>"
 msgid ""
 "<imageobject><imagedata fileref=\"figures/main-window.png\" format=\"PNG\"/"
-"></imageobject> <textobject><phrase>Shows the<application>Glade</"
+"></imageobject> <textobject><phrase>Shows the <application>Glade</"
 "application> window.</phrase></textobject>"
 msgstr ""
 "<imageobject><imagedata fileref=\"figures/main-window.png\" format=\"PNG\"/"
@@ -565,31 +573,44 @@ msgstr "Felületi elem elhelyezési mód"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:320
+#| msgid ""
+#| "To use widget placement mode, select a widget in the <guilabel>Palette</"
+#| "guilabel> window. When you select most widgets, the pointer changes to a "
+#| "pointer-plus-cross. You can then place the widget inside containers, top-"
+#| "level widgets, and so on. After you place a widget, the mode returns to "
+#| "selection mode."
 msgid ""
 "To use widget placement mode, select a widget in the <guilabel>Palette</"
 "guilabel> window. When you select most widgets, the pointer changes to a "
-"pointer-plus-cross. You can then place the widget inside containers, top-"
-"level widgets, and so on. After you place a widget, the mode returns to "
+"pointer-plus-cross. You can then place the widget inside containers, "
+"toplevel widgets, and so on. After you place a widget, the mode returns to "
 "selection mode."
 msgstr ""
 "A felületi elem elhelyezési mód használatához válasszon egy felületi elemet "
-"a <guilabel>Palette</guilabel> ablakból. Ekkor az egérmutató is megváltozik. "
+"a <guilabel>Paletta</guilabel> ablakból. Ekkor az egérmutató is megváltozik. "
 "A felületi elemet konténerbe helyezheti, vagy felsőszintű ablakra teheti és "
 "így tovább. Miután elhelyezte a felületi elemet, a program újra kiválasztási "
 "módba kerül."
 
 #. (itstool) path: varlistentry/term
 #: C/index.docbook:335
-msgid "Top-level placement mode"
+#| msgid "Top-level placement mode"
+msgid "Toplevel placement mode"
 msgstr "Felsőszintű elhelyezési mód"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:337
+#| msgid ""
+#| "To use top level placement mode, select a defined top-level widget in the "
+#| "<guilabel>Palette</guilabel> window. When you select a top-level widget "
+#| "in the <guilabel>Palette</guilabel> window, the widget appears "
+#| "immediately on your desktop. You can then edit the widget. After you "
+#| "select a top-level widget, the mode returns to selection mode."
 msgid ""
-"To use top level placement mode, select a defined top-level widget in the "
-"<guilabel>Palette</guilabel> window. When you select a top-level widget in "
+"To use toplevel placement mode, select a defined toplevel widget in the "
+"<guilabel>Palette</guilabel> window. When you select a toplevel widget in "
 "the <guilabel>Palette</guilabel> window, the widget appears immediately on "
-"your desktop. You can then edit the widget. After you select a top-level "
+"your desktop. You can then edit the widget. After you select a toplevel "
 "widget, the mode returns to selection mode."
 msgstr ""
 "A felsőszintű elhelyezési mód használatához válasszon egy felsőszintűnek "
