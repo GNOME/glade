@@ -9,14 +9,14 @@
 # Muhammet Kara <muhammetk@gnome.org>, 2011, 2014, 2015, 2016, 2017, 2018.
 # Furkan Tokaç <developmentft@gmail.com>, 2018.
 # Sabri Ünal <libreajans@gmail.com, 2020.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2018, 2020.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2018, 2020, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-09-12 22:59+0000\n"
-"PO-Revision-Date: 2020-09-13 14:20+0300\n"
+"POT-Creation-Date: 2021-02-20 12:14+0000\n"
+"PO-Revision-Date: 2021-02-22 11:15+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -24,11 +24,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-POOTLE-MTIME: 1420929039.000000\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:43 src/glade.glade:261
+#: src/main.c:44 src/glade.glade:261
 msgid "Glade"
 msgstr "Glade"
 
@@ -78,247 +78,247 @@ msgstr ""
 "GtkBuilder ile Glade XML dosyaları C, C++, C#, Vala, Java, Perl, Python, vs. "
 "gibi bir çok programlama dilinde kullanılabilir."
 
-#: src/glade-window.c:50
+#: src/glade-window.c:51
 msgid "[Read Only]"
 msgstr "[Salt Okunur]"
 
-#: src/glade-window.c:181
+#: src/glade-window.c:182
 msgid "User Interface Designer"
 msgstr "Kullanıcı Arayüzü Tasarımcısı"
 
-#: src/glade-window.c:428 src/glade-window.c:435
+#: src/glade-window.c:429 src/glade-window.c:436
 msgid "the last action"
 msgstr "en son eylem"
 
-#: src/glade-window.c:429
+#: src/glade-window.c:430
 #, c-format
 msgid "Undo: %s"
 msgstr "Geri al: %s"
 
-#: src/glade-window.c:436
+#: src/glade-window.c:437
 #, c-format
 msgid "Redo: %s"
 msgstr "Yeniden yap: %s"
 
-#: src/glade-window.c:461
+#: src/glade-window.c:462
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "'%s' kendiliğinden kaydediliyor"
 
-#: src/glade-window.c:466
+#: src/glade-window.c:467
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "'%s' kendiliğinden kaydedilirken hata"
 
-#: src/glade-window.c:688
+#: src/glade-window.c:689
 msgid "Open…"
 msgstr "Aç…"
 
-#: src/glade-window.c:722
+#: src/glade-window.c:723
 #, c-format
 msgid "Project %s is still loading."
 msgstr "%s projesi hala yükleniyor."
 
-#: src/glade-window.c:741
+#: src/glade-window.c:742
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
 "Var olan dosyanın yedeklenmesi başarısız oldu, kaydetmeye devam edilsin mi?"
 
-#: src/glade-window.c:756
+#: src/glade-window.c:757
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "%s kaydedilemedi: %s"
 
-#: src/glade-window.c:795
+#: src/glade-window.c:796
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Dosya %s okunmasından sonra değiştirildi"
 
-#: src/glade-window.c:799
+#: src/glade-window.c:800
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Eğer kaydederseniz, harici olarak yapılmış tüm değişiklikler kaybolacak. "
 "Yine de kaydedilsin mi?"
 
-#: src/glade-window.c:804
+#: src/glade-window.c:805
 msgid "_Save Anyway"
 msgstr "_Bu Şekilde Kaydet"
 
-#: src/glade-window.c:812
+#: src/glade-window.c:813
 msgid "_Don't Save"
 msgstr "_Kaydetme"
 
-#: src/glade-window.c:845
+#: src/glade-window.c:846
 #, c-format
 msgid "Project '%s' saved"
 msgstr "'%s' projesi kaydedildi"
 
-#: src/glade-window.c:876
+#: src/glade-window.c:877
 msgid "Save As…"
 msgstr "Farklı Kaydet…"
 
-#: src/glade-window.c:940
+#: src/glade-window.c:941
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Dosya %s kaydedilemedi"
 
-#: src/glade-window.c:944
+#: src/glade-window.c:945
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Dosyayı kaydetmek için yeterli izne sahip değilsiniz."
 
-#: src/glade-window.c:966
+#: src/glade-window.c:967
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "Dosya %s kaydedilemedi. Bu yol ile başka bir proje açık."
 
-#: src/glade-window.c:994
+#: src/glade-window.c:995
 msgid "No open projects to save"
 msgstr "Kaydedilecek açık bir proje yok"
 
-#: src/glade-window.c:1027
+#: src/glade-window.c:1028
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Kapatmadan önce \"%s\" projesindeki değişiklikler kaydedilsin mi?"
 
-#: src/glade-window.c:1035
+#: src/glade-window.c:1036
 msgid "Your changes will be lost if you don't save them."
 msgstr "Eğer kaydetmezseniz yaptığınız değişikliler kaybolacak."
 
-#: src/glade-window.c:1039
+#: src/glade-window.c:1040
 msgid "Close _without Saving"
 msgstr "_Kaydetmeden Kapat"
 
-#: src/glade-window.c:1040 src/glade-window.c:1725 src/glade-preferences.c:237
-#: gladeui/glade-editor.c:794 gladeui/glade-editor.c:1153
-#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
-#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3217
-#: gladeui/glade-editor-property.c:3325 gladeui/glade-editor-property.c:3336
-#: gladeui/glade-editor-property.c:3647 gladeui/glade-utils.c:483
-#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1062
+#: src/glade-window.c:1041 src/glade-window.c:1724 src/glade-preferences.c:237
+#: gladeui/glade-editor.c:793 gladeui/glade-editor.c:1152
+#: gladeui/glade-editor-property.c:1774 gladeui/glade-editor-property.c:2082
+#: gladeui/glade-editor-property.c:2279 gladeui/glade-editor-property.c:3215
+#: gladeui/glade-editor-property.c:3323 gladeui/glade-editor-property.c:3334
+#: gladeui/glade-editor-property.c:3645 gladeui/glade-utils.c:494
+#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1063
 msgid "_Cancel"
 msgstr "_Vazgeç"
 
-#: src/glade-window.c:1041 src/glade.glade:685 gladeui/glade-utils.c:486
+#: src/glade-window.c:1042 src/glade.glade:685 gladeui/glade-utils.c:497
 msgid "_Save"
 msgstr "_Kaydet"
 
-#: src/glade-window.c:1072
+#: src/glade-window.c:1073
 msgid "Save…"
 msgstr "Kaydet…"
 
-#: src/glade-window.c:1632
+#: src/glade-window.c:1631
 msgid "Could not create a new project."
 msgstr "Yeni bir proje oluşturulamadı."
 
-#: src/glade-window.c:1693
+#: src/glade-window.c:1692
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Proje %s kaydedilmemiş değişiklikler içeriyor"
 
-#: src/glade-window.c:1698
+#: src/glade-window.c:1697
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Eğer yeniden yüklerseniz kaydetmediğiniz tüm değişiklikler kaybolacak. Yine "
 "de yeniden yüklensin mi?"
 
-#: src/glade-window.c:1708
+#: src/glade-window.c:1707
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Proje dosyası %s harici olarak değiştirilmiş"
 
-#: src/glade-window.c:1713
+#: src/glade-window.c:1712
 msgid "Do you want to reload the project?"
 msgstr "Projeyi yeniden yüklemek ister misiniz?"
 
-#: src/glade-window.c:1719
+#: src/glade-window.c:1718
 msgid "_Reload"
 msgstr "_Yeniden Yükle"
 
-#: src/glade-window.c:2265
+#: src/glade-window.c:2269
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Merhaba, Glade’deki yenilikleri göstereceğim"
 
-#: src/glade-window.c:2266
+#: src/glade-window.c:2270
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Menü çubuğu ve araç çubuğu başlık çubuğunda birleştirildi"
 
-#: src/glade-window.c:2268
+#: src/glade-window.c:2272
 msgid "You can open a project"
 msgstr "Proje açabilir"
 
-#: src/glade-window.c:2269
+#: src/glade-window.c:2273
 msgid "find recently used"
 msgstr "son kullanılanları bulabilir"
 
-#: src/glade-window.c:2270
+#: src/glade-window.c:2274
 msgid "or create a new one"
 msgstr "veya yeni bir tane oluşturabilirsiniz"
 
-#: src/glade-window.c:2274
+#: src/glade-window.c:2278
 msgid "Undo"
 msgstr "Geri Al"
 
-#: src/glade-window.c:2275
+#: src/glade-window.c:2279
 msgid "Redo"
 msgstr "Yinele"
 
-#: src/glade-window.c:2276
+#: src/glade-window.c:2280
 msgid "Project switcher"
 msgstr "Proje değiştirici"
 
-#: src/glade-window.c:2278
+#: src/glade-window.c:2282
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "ve Kaydet düğmeleri, doğrudan başlık çubuğundan ulaşılabilir"
 
-#: src/glade-window.c:2279
+#: src/glade-window.c:2283
 msgid "just like Save As"
 msgstr "tıpkı Farklı Kaydet"
 
-#: src/glade-window.c:2280
+#: src/glade-window.c:2284
 msgid "project properties"
 msgstr "proje özellikleri"
 
-#: src/glade-window.c:2281
+#: src/glade-window.c:2285
 msgid "and less commonly used actions"
 msgstr "ve diğer az kullanılan eylemler gibi"
 
-#: src/glade-window.c:2283
+#: src/glade-window.c:2287
 msgid "The object inspector took the palette's place"
 msgstr "Nesne inceleyici, özellik düzenleyicisine yer açmak için"
 
-#: src/glade-window.c:2284
+#: src/glade-window.c:2288
 msgid "To free up space for the property editor"
 msgstr "paletin yerini aldı"
 
-#: src/glade-window.c:2286
+#: src/glade-window.c:2290
 msgid "The palette was replaced with a new object chooser"
 msgstr "Palet;"
 
-#: src/glade-window.c:2287
+#: src/glade-window.c:2291
 msgid "Where you can search all supported classes"
 msgstr "Tüm desteklenen sınıfları arayabileceğiniz"
 
-#: src/glade-window.c:2288
+#: src/glade-window.c:2292
 msgid "investigate GTK+ object groups"
 msgstr "GTK+ nesne gruplarını inceleyebileceğiniz"
 
-#: src/glade-window.c:2289
+#: src/glade-window.c:2293
 msgid "and find classes introduced by other libraries"
 msgstr ""
 "ve diğer kütüphaneler tarafından sunulan sınıfları bulabileceğiniz yeni "
 "nesne seçiciyle değiştirildi"
 
-#: src/glade-window.c:2291
+#: src/glade-window.c:2295
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr ""
 "Tamam, şimdi genel görünüm bittiğine göre, hadi yeni iş akışıyla başlayalım"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2297
 msgid "First of all, create a new project"
 msgstr "Öncelikle, yeni bir proje oluşturun"
 
-#: src/glade-window.c:2294
+#: src/glade-window.c:2298
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
@@ -326,35 +326,35 @@ msgstr ""
 "Tamam, şimdi yeni parçacık seçiciyi kullanarak veya çalışma alanına çift "
 "tıklayarak bir GtkWindow ekleyin"
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2299
 msgid "Excellent!"
 msgstr "Harika!"
 
-#: src/glade-window.c:2296
+#: src/glade-window.c:2300
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr ""
 "Bu arada, parçacıklar oluşturmak için herhangi bir alan tutucuya çift "
 "tıklayabileceğinizi biliyor muydunuz?"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2301
 msgid "Try adding a grid"
 msgstr "Bir ızgara ve düğme"
 
-#: src/glade-window.c:2298
+#: src/glade-window.c:2302
 msgid "and a button"
 msgstr "eklemeyi deneyin"
 
-#: src/glade-window.c:2300
+#: src/glade-window.c:2304
 msgid "Quite easy! Isn't it?"
 msgstr "Epey kolay! Değil mi?"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2305
 msgid "Enjoy!"
 msgstr "Keyfini çıkarın!"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2515
+#: src/glade-window.c:2526
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -363,45 +363,45 @@ msgstr ""
 " şimdi katılmak ister misiniz?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2519
+#: src/glade-window.c:2530
 msgid "If not, you can always find it in the Help menu."
 msgstr "İstemiyorsanız bu anketi her zaman Yardım menüsünde bulabilirsiniz."
 
-#: src/glade-window.c:2521
+#: src/glade-window.c:2532
 msgid "_Do not show this dialog again"
 msgstr "Bu iletişim penceresini bir _daha gösterme"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2542
+#: src/glade-window.c:2553
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
 "Yardım -> Kayıt ve Kullanıcı Anketi menüsüne gidip anketimizi tamamlayın!"
 
-#: src/main.c:52
+#: src/main.c:53
 msgid "Output version information and exit"
 msgstr "Sürüm bilgilerini yaz ve çık"
 
-#: src/main.c:55
+#: src/main.c:56
 msgid "Disable Devhelp integration"
 msgstr "Devhelp tümleşimini kapat"
 
-#: src/main.c:57
+#: src/main.c:58
 msgid "be verbose"
 msgstr "ayrıntılı ol"
 
-#: src/main.c:142
+#: src/main.c:147
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "'%s' dosyası açılamadı, dosya yok.\n"
 
-#: src/main.c:170
+#: src/main.c:175
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "gmodule desteği bulunamadı. gmodule desteği gladeʼin çalışması için "
 "gereklidir"
 
-#: src/main.c:188
+#: src/main.c:193
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
 "GTK+ ya da GNOME uygulamaları için kullanıcı arayüzü tasarımları oluştur ya "
@@ -475,7 +475,7 @@ msgstr "_Geliştirici Referansı"
 msgid "Interactive Intro"
 msgstr "Etkileşimli Giriş"
 
-#: src/glade.glade:173
+#: src/glade.glade:184
 msgid "Preferences"
 msgstr "Tercihler"
 
@@ -495,7 +495,7 @@ msgstr ""
 "Huzurla yat Guido Macchi</small>"
 
 #: src/glade.glade:592 src/glade-preferences.c:239
-#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
+#: gladeui/glade-editor-property.c:2280 gladeui/glade-utils.c:497
 msgid "_Open"
 msgstr "_Aç"
 
@@ -517,11 +517,11 @@ msgstr "Geçerli projeyi kaydet"
 
 #: src/glade.glade:706
 msgid "Save the current project with a different name"
-msgstr "Geçerli projeyi farklı bir ad ile kaydet"
+msgstr "Geçerli projeyi başka adla kaydet"
 
 #: src/glade.glade:735
 msgid "Start/resume interactive UI introduction"
-msgstr "Etkileşimli kullanıcı arayüzü tanıtımını başlatın/devam ettirin"
+msgstr "Etkileşimli kullanıcı arayüzü tanıtımını başlat/sürdür"
 
 #: src/glade.glade:834
 msgid ""
@@ -552,7 +552,7 @@ msgstr ""
 
 #: src/glade-preferences.c:234
 msgid "Select a catalog search path"
-msgstr "Katalog arama yolu seçin"
+msgstr "Katalog arama yolu seç"
 
 #: src/glade-preferences.glade:45
 msgid "Glade Preferences"
@@ -695,7 +695,7 @@ msgstr "Tamamlandı ve gönderildi!"
 msgid "Glade Registration & User Survey"
 msgstr "Glade Kayıt ve Kullanıcı Anketi"
 
-#: src/glade-registration.glade:63 gladeui/glade-editor-property.c:1380
+#: src/glade-registration.glade:63 gladeui/glade-editor-property.c:1378
 msgid "_Close"
 msgstr "_Kapat"
 
@@ -778,7 +778,7 @@ msgstr "Ülkenizi seçin"
 
 #: src/glade-registration.glade:653
 msgid "We care about privacy!"
-msgstr "Mahremiyete önem veriyoruz!"
+msgstr "Gizliliğe önem veriyoruz!"
 
 #: src/glade-registration.glade:671
 msgid ""
@@ -814,7 +814,7 @@ msgstr "Programlayıcı değilim"
 
 #: src/glade-registration.glade:817
 msgid "Which programming languages do you prefer?"
-msgstr "Hangi programlama dillerini tercih edersiniz?"
+msgstr "Hangi programlama dillerini yeğlersiniz?"
 
 #: src/glade-registration.glade:833
 msgid "C"
@@ -876,7 +876,7 @@ msgstr "Normalde hangi sürümü kullanıyorsunuz?"
 
 #: src/glade-registration.glade:1101
 msgid "What is available in my OS"
-msgstr "İşletim sistemimin temin ettiğini"
+msgstr "İşletim sistemimin sağladığını"
 
 #: src/glade-registration.glade:1118
 msgid "Latest stable from sources"
@@ -1244,7 +1244,7 @@ msgstr "Sağlık"
 
 #: src/glade-registration.glade:1923
 msgid "Industrial applications"
-msgstr "Endüstriel uygulamalar"
+msgstr "Endüstriyel uygulamalar"
 
 #: src/glade-registration.glade:1937
 msgid "Scientific"
@@ -1252,7 +1252,7 @@ msgstr "Bilimsel"
 
 #: src/glade-registration.glade:2010
 msgid "What aspect of the software needs the most improvement?"
-msgstr "Yazılımın hangi yönü en çok geliştirmeye ihtiyaç duyuyor?"
+msgstr "Yazılımın hangi yönü en çok geliştirmeye gereksiniyor?"
 
 #: src/glade-registration.glade:2055
 msgid "In your opinion what is the biggest problem with Glade?"
@@ -1277,11 +1277,11 @@ msgstr "Reklam/tanıtım eksikliği"
 #: src/glade-registration.glade:2141
 msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
 msgstr ""
-"Diğer işletim sistemleri için (Windows, Mac OS X) resmi ikilik çıkmaması"
+"Diğer işletim sistemleri için (Windows, Mac OS X) resmi dağıtım çıkmaması"
 
 #: src/glade-registration.glade:2217
 msgid "Have you ever encountered a bug?"
-msgstr "Hiç bir hatayla karşılaştınız mı?"
+msgstr "Herhangi bir hatayla karşılaştınız mı?"
 
 #: src/glade-registration.glade:2233 src/glade-registration.glade:2305
 #: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
@@ -1327,7 +1327,7 @@ msgstr ""
 "E-posta adresiniz sizi tekil bir Glade kullanıcısı olarak belirlemek ve eğer "
 "bir şeyleri değiştirmek ya da fazladan yorum eklemek isterseniz size bir "
 "düzenleme jetonu gönderiminde kullanılacaktır.\n"
-" Yalnızca tüm veri takımından derlenen istatistik verisi kamu ile "
+"Yalnızca tüm veri takımından derlenen istatistik verisi kamu ile "
 "paylaşılacaktır.\n"
 "Kişisel veri özel bir veri tabanında saklanacak ve kamu ya da üçüncü "
 "şahıslarla paylaşılmayacaktır."
@@ -1377,70 +1377,70 @@ msgstr ""
 "Özel veri yazmak için %s açarken hata (%s).\n"
 "Bu oturumda hiçbir özel veri kaydedilmeyecek"
 
-#: gladeui/glade-base-editor.c:592
+#: gladeui/glade-base-editor.c:591
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "%s üzerindeki nesne türü %s olarak atanıyor"
 
-#: gladeui/glade-base-editor.c:755
+#: gladeui/glade-base-editor.c:754
 #, c-format
 msgid "Add a %s to %s"
 msgstr "%2$s üzerine bir %1$s ekle"
 
-#: gladeui/glade-base-editor.c:848 gladeui/glade-command.c:1225
+#: gladeui/glade-base-editor.c:847 gladeui/glade-command.c:1226
 #, c-format
 msgid "Add %s"
 msgstr "%s Ekle"
 
-#: gladeui/glade-base-editor.c:880
+#: gladeui/glade-base-editor.c:879
 #, c-format
 msgid "Add child %s"
 msgstr "%s alt ögesini ekle"
 
-#: gladeui/glade-base-editor.c:972
+#: gladeui/glade-base-editor.c:971
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "%2$s üzerinden %1$s altını sil"
 
-#: gladeui/glade-base-editor.c:1101
+#: gladeui/glade-base-editor.c:1100
 #, c-format
 msgid "Reorder %s's children"
 msgstr "%s altlarını yeniden sırala"
 
-#: gladeui/glade-base-editor.c:1588 plugins/gtk+/gtk+.xml:260
+#: gladeui/glade-base-editor.c:1587 plugins/gtk+/gtk+.xml:260
 #: plugins/gtk+/gtk+.xml:957 plugins/gtk+/gtk+.xml:1323
 #: plugins/gtk+/glade-about-dialog-editor.ui:316
 #: plugins/gtk+/glade-tool-button-editor.ui:86
 msgid "Label"
 msgstr "Etiket"
 
-#: gladeui/glade-base-editor.c:1603 gladeui/glade-widget-adaptor.c:1468
+#: gladeui/glade-base-editor.c:1602 gladeui/glade-widget-adaptor.c:1468
 #: plugins/gtk+/glade-eprop-enum-int.c:70
 #: plugins/gtk+/glade-eprop-enum-int.c:71
 msgid "Type"
 msgstr "Tür"
 
-#: gladeui/glade-base-editor.c:1631 plugins/gtk+/gtk+.xml:584
+#: gladeui/glade-base-editor.c:1630 plugins/gtk+/gtk+.xml:584
 msgid "Container"
 msgstr "Taşıyıcı"
 
-#: gladeui/glade-base-editor.c:1632
+#: gladeui/glade-base-editor.c:1631
 msgid "The container object this editor is currently editing"
 msgstr "Bu düzenleyicinin şu anda düzenlediği taşıyıcı nesne"
 
 #. Name
 #. translators: The unique identifier of an object in the project
-#: gladeui/glade-base-editor.c:1919 gladeui/glade-editor-table.c:315
+#: gladeui/glade-base-editor.c:1918 gladeui/glade-editor-table.c:315
 #: gladeui/glade-editor-table.c:599
 msgid "ID:"
 msgstr "ID:"
 
 #. Type
-#: gladeui/glade-base-editor.c:1939 plugins/gtk+/glade-window-editor.ui:553
+#: gladeui/glade-base-editor.c:1938 plugins/gtk+/glade-window-editor.ui:553
 msgid "Type:"
 msgstr "Tür:"
 
-#: gladeui/glade-base-editor.c:2157
+#: gladeui/glade-base-editor.c:2156
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -1541,150 +1541,150 @@ msgstr "Bir giriş"
 msgid "User templates"
 msgstr "Kullanıcı şablonları"
 
-#: gladeui/glade-command.c:427 gladeui/glade-command.c:485
+#: gladeui/glade-command.c:428 gladeui/glade-command.c:486
 #, c-format
 msgid "Enabling property %s on widget %s"
 msgstr "%s özelliği %s parçacığı üstünde etkinleştiriliyor"
 
-#: gladeui/glade-command.c:432 gladeui/glade-command.c:490
+#: gladeui/glade-command.c:433 gladeui/glade-command.c:491
 #, c-format
 msgid "Disabling property %s on widget %s"
 msgstr "%s özelliği %s parçacığı üstünde kapatılıyor"
 
-#: gladeui/glade-command.c:785
+#: gladeui/glade-command.c:786
 #, c-format
 msgid "Setting multiple properties"
 msgstr "Çoklü özellikler atanıyor"
 
-#: gladeui/glade-command.c:797 gladeui/glade-editor-property.c:3713
+#: gladeui/glade-command.c:798 gladeui/glade-editor-property.c:3711
 #, c-format
 msgid "Setting %s of %s"
 msgstr "Atamalar %s / %s"
 
-#: gladeui/glade-command.c:803 gladeui/glade-editor-property.c:3421
+#: gladeui/glade-command.c:804 gladeui/glade-editor-property.c:3419
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Atamalar %s / %s atanılan %s"
 
-#: gladeui/glade-command.c:1060 gladeui/glade-command.c:1089
+#: gladeui/glade-command.c:1061 gladeui/glade-command.c:1090
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "%s, %s olarak yeniden adlandırılıyor"
 
-#: gladeui/glade-command.c:1226 gladeui/glade-command.c:1836
-#: gladeui/glade-command.c:1862 gladeui/glade-command.c:1965
-#: gladeui/glade-command.c:2007
+#: gladeui/glade-command.c:1227 gladeui/glade-command.c:1872
+#: gladeui/glade-command.c:1898 gladeui/glade-command.c:2001
+#: gladeui/glade-command.c:2043
 msgid "multiple"
 msgstr "çoklu"
 
-#: gladeui/glade-command.c:1373
+#: gladeui/glade-command.c:1374
 msgid "You cannot remove a widget internal to a composite widget."
 msgstr "Karma parçacığa dahil olan parçacığı kaldıramazsınız."
 
-#: gladeui/glade-command.c:1380
+#: gladeui/glade-command.c:1381
 #, c-format
 msgid "%s is locked by %s, edit %s first."
 msgstr "%s, %s tarafından kilitlenmiş, öncelikle %s düzenleyin."
 
-#: gladeui/glade-command.c:1398
+#: gladeui/glade-command.c:1399
 #, c-format
 msgid "Remove %s"
 msgstr "%s Sil"
 
-#: gladeui/glade-command.c:1401
+#: gladeui/glade-command.c:1402
 msgid "Remove multiple"
 msgstr "Çoklu sil"
 
-#: gladeui/glade-command.c:1808
+#: gladeui/glade-command.c:1845
 #, c-format
 msgid "Create %s"
 msgstr "%s Oluştur"
 
-#: gladeui/glade-command.c:1834
+#: gladeui/glade-command.c:1870
 #, c-format
 msgid "Delete %s"
 msgstr "%s Sil"
 
-#: gladeui/glade-command.c:1860
+#: gladeui/glade-command.c:1896
 #, c-format
 msgid "Cut %s"
 msgstr "%s Kes"
 
-#: gladeui/glade-command.c:1963
+#: gladeui/glade-command.c:2001
 #, c-format
 msgid "Paste %s"
 msgstr "%s Yapıştır"
 
-#: gladeui/glade-command.c:2005
+#: gladeui/glade-command.c:2041
 #, c-format
 msgid "Drag %s and Drop to %s"
 msgstr "%sʼi Sürükle ve %sʼe Bırak"
 
-#: gladeui/glade-command.c:2008
+#: gladeui/glade-command.c:2044
 msgid "root"
 msgstr "kök"
 
-#: gladeui/glade-command.c:2126
+#: gladeui/glade-command.c:2162
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Sinyal işleyici %s ekle"
 
-#: gladeui/glade-command.c:2127
+#: gladeui/glade-command.c:2163
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Sinyal işleyici %s sil"
 
-#: gladeui/glade-command.c:2128
+#: gladeui/glade-command.c:2164
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Sinyal işleyici %s değiştir"
 
-#: gladeui/glade-command.c:2343
+#: gladeui/glade-command.c:2379
 #, c-format
 msgid "Setting i18n metadata"
 msgstr "i18n öz bilgisi atanıyor"
 
-#: gladeui/glade-command.c:2460
+#: gladeui/glade-command.c:2496
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr "%s ögesi %s parçacığı tarafından kilitleniyor"
 
-#: gladeui/glade-command.c:2505
+#: gladeui/glade-command.c:2541
 #, c-format
 msgid "Unlocking %s"
 msgstr "%s kilidi kaldırılıyor"
 
-#: gladeui/glade-command.c:2627 gladeui/glade-command.c:2674
+#: gladeui/glade-command.c:2663 gladeui/glade-command.c:2710
 #, c-format
 msgid "Setting target version of '%s' to %d.%d"
 msgstr "'%s'in hedef sürümü %d olarak ayarlanıyor. %d"
 
-#: gladeui/glade-command.c:2830
+#: gladeui/glade-command.c:2866
 #, c-format
 msgid "Setting project's %s property"
 msgstr "Projenin '%s' özelliği ayarlanıyor"
 
-#: gladeui/glade-command.c:2937
+#: gladeui/glade-command.c:2973
 #, c-format
 msgid "Setting resource path to '%s'"
 msgstr "Kaynak yolu '%s' olarak ayarlanıyor"
 
-#: gladeui/glade-command.c:2968
+#: gladeui/glade-command.c:3004
 #, c-format
 msgid "Setting translation domain to '%s'"
 msgstr "Çeviri alanı '%s' olarak ayarlanıyor"
 
-#: gladeui/glade-command.c:3003
+#: gladeui/glade-command.c:3039
 #, c-format
 msgid "Unsetting widget '%s' as template"
 msgstr "Parçacık '%s' şablon olmaktan çıkarılıyor"
 
-#: gladeui/glade-command.c:3006
+#: gladeui/glade-command.c:3042
 #, c-format
 msgid "Setting widget '%s' as template"
 msgstr "Parçacık '%s' şablon olarak ayarlanıyor"
 
-#: gladeui/glade-command.c:3009
+#: gladeui/glade-command.c:3045
 msgid "Unsetting template"
 msgstr "Şablonluktan çıkarılıyor"
 
@@ -1711,58 +1711,58 @@ msgstr "Tasarım Görünümü"
 msgid "The GladeDesignView that contains this layout"
 msgstr "Bu yerleşimi içeren GladeDesignView"
 
-#: gladeui/glade-editor.c:239
+#: gladeui/glade-editor.c:238
 msgid "Show info"
 msgstr "Bilgi göster"
 
-#: gladeui/glade-editor.c:240
+#: gladeui/glade-editor.c:239
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "Yüklenen parçacık için bilgi düğmesinin gösterilmesi"
 
-#: gladeui/glade-editor.c:247 plugins/gtk+/gtk+.xml:11
+#: gladeui/glade-editor.c:246 plugins/gtk+/gtk+.xml:11
 msgid "Widget"
 msgstr "Parçacık"
 
-#: gladeui/glade-editor.c:248
+#: gladeui/glade-editor.c:247
 msgid "The currently loaded widget in this editor"
 msgstr "Bu düzenleyicide şu anda yüklü olan parçacık"
 
-#: gladeui/glade-editor.c:254
+#: gladeui/glade-editor.c:253
 msgid "Show Class Field"
 msgstr "Sınıf Alanını GÖster"
 
-#: gladeui/glade-editor.c:255
+#: gladeui/glade-editor.c:254
 msgid "Whether to show the class field at the top"
 msgstr "Sınıf alanı yukarda gösterilsin mi"
 
-#: gladeui/glade-editor.c:261
+#: gladeui/glade-editor.c:260
 msgid "Class Field"
 msgstr "Sınıf Alanı"
 
-#: gladeui/glade-editor.c:262
+#: gladeui/glade-editor.c:261
 msgid "The class field string"
 msgstr "Sınıf alan metni"
 
-#: gladeui/glade-editor.c:268
+#: gladeui/glade-editor.c:267
 msgid "Show Border"
 msgstr "Sınırı Göster"
 
-#: gladeui/glade-editor.c:269
+#: gladeui/glade-editor.c:268
 msgid "Whether the border should be shown"
 msgstr "Sınır gösterilmeli mi"
 
-#: gladeui/glade-editor.c:275
+#: gladeui/glade-editor.c:274
 msgid "Signal Editor"
 msgstr "Sinyal Düzenleyici"
 
-#: gladeui/glade-editor.c:276
+#: gladeui/glade-editor.c:275
 msgid "The signal editor used to edit signals"
 msgstr "Sinyalleri düzenlemede kullanılacak düzenleyici"
 
 #. translators: %s(Class Title) Properties - %s (ClassName) [%s(WidgetName)]
 #. * example: Window Properties - GtkWindow [window1]
 #.
-#: gladeui/glade-editor.c:336
+#: gladeui/glade-editor.c:335
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "%s Özellikleri - %s [%s]"
@@ -1770,12 +1770,12 @@ msgstr "%s Özellikleri - %s [%s]"
 #. translators: %s(Class Title) Properties - %s (ClassName)
 #. * example: Window Properties - GtkWindow
 #.
-#: gladeui/glade-editor.c:346
+#: gladeui/glade-editor.c:345
 #, c-format
 msgid "%s Properties - %s"
 msgstr "%s Özellikleri - %s"
 
-#: gladeui/glade-editor.c:360 gladeui/glade-widget.c:1384
+#: gladeui/glade-editor.c:359 gladeui/glade-widget.c:1384
 #: gladeui/glade-project-properties.ui:497
 #: plugins/gtk+/glade-gtk-action-group.c:188
 #: plugins/gtk+/glade-gtk-cell-layout.c:365
@@ -1787,147 +1787,147 @@ msgstr "%s Özellikleri - %s"
 msgid "Properties"
 msgstr "Özellikler"
 
-#: gladeui/glade-editor.c:790
+#: gladeui/glade-editor.c:789
 #, c-format
 msgid "Create a %s"
 msgstr "Bir %s oluştur"
 
-#: gladeui/glade-editor.c:798
+#: gladeui/glade-editor.c:797
 msgid "Crea_te"
 msgstr "Oluş_tur"
 
-#: gladeui/glade-editor.c:906
+#: gladeui/glade-editor.c:905
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: gladeui/glade-editor.c:917 gladeui/glade-property-label.c:119
+#: gladeui/glade-editor.c:916 gladeui/glade-property-label.c:119
 msgid "Property"
 msgstr "Özellik"
 
-#: gladeui/glade-editor.c:948
+#: gladeui/glade-editor.c:947
 msgid "General"
 msgstr "Genel"
 
-#: gladeui/glade-editor.c:956
+#: gladeui/glade-editor.c:955
 msgid "Common"
 msgstr "Ortak"
 
-#: gladeui/glade-editor.c:964 gladeui/glade-editor.ui:296
+#: gladeui/glade-editor.c:963 gladeui/glade-editor.ui:296
 msgid "Accessibility"
 msgstr "Erişilebilirlik"
 
-#: gladeui/glade-editor.c:997
+#: gladeui/glade-editor.c:996
 msgid "(default)"
 msgstr "(öntanımlı)"
 
-#: gladeui/glade-editor.c:1012
+#: gladeui/glade-editor.c:1011
 msgid "Select the properties that you want to reset to their default values"
 msgstr "Öntanımlı değerlere sıfırlamak istediğiniz özellikleri seçin"
 
-#: gladeui/glade-editor.c:1149
+#: gladeui/glade-editor.c:1148
 msgid "Reset Widget Properties"
 msgstr "Parçacık Özelliklerini Sıfırla"
 
-#: gladeui/glade-editor.c:1154 gladeui/glade-editor-property.c:1777
-#: gladeui/glade-editor-property.c:2085 gladeui/glade-editor-property.c:3219
-#: gladeui/glade-editor-property.c:3328 gladeui/glade-editor-property.c:3338
-#: gladeui/glade-editor-property.c:3648 plugins/gtk+/glade-accels.c:524
-#: plugins/gtk+/glade-attributes.c:1063
+#: gladeui/glade-editor.c:1153 gladeui/glade-editor-property.c:1775
+#: gladeui/glade-editor-property.c:2083 gladeui/glade-editor-property.c:3217
+#: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3336
+#: gladeui/glade-editor-property.c:3646 plugins/gtk+/glade-accels.c:524
+#: plugins/gtk+/glade-attributes.c:1064
 msgid "_OK"
 msgstr "_Tamam"
 
 #. Checklist
-#: gladeui/glade-editor.c:1166
+#: gladeui/glade-editor.c:1165
 msgid "_Properties:"
 msgstr "Ö_zellikler:"
 
-#: gladeui/glade-editor.c:1195
+#: gladeui/glade-editor.c:1194
 msgid "_Select All"
 msgstr "Tümünü _Seç"
 
-#: gladeui/glade-editor.c:1203
+#: gladeui/glade-editor.c:1202
 msgid "_Unselect All"
 msgstr "Tümünün Seçimini _Kaldır"
 
 #. Description
-#: gladeui/glade-editor.c:1213
+#: gladeui/glade-editor.c:1212
 msgid "Property _Description:"
 msgstr "Özellik _Açıklaması:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: gladeui/glade-editor.c:1311
+#: gladeui/glade-editor.c:1310
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - %s Özellikleri"
 
-#: gladeui/glade-editor-property.c:768
+#: gladeui/glade-editor-property.c:766
 msgid "Property Definition"
 msgstr "Özellik Tanımlaması"
 
-#: gladeui/glade-editor-property.c:769
+#: gladeui/glade-editor-property.c:767
 msgid "The GladePropertyDef this GladeEditorProperty was created for"
 msgstr "Bu GladeEditorPropertyʼnin oluşturulduğu GladePropertyDefʼı"
 
-#: gladeui/glade-editor-property.c:775 gladeui/glade-property-shell.c:125
+#: gladeui/glade-editor-property.c:773 gladeui/glade-property-shell.c:125
 msgid "Use Command"
 msgstr "Komu Kullan"
 
-#: gladeui/glade-editor-property.c:776
+#: gladeui/glade-editor-property.c:774
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Geri al/yeniden yap yığını için komut APIʼsi kullanılması"
 
-#: gladeui/glade-editor-property.c:782 gladeui/glade-property-shell.c:143
+#: gladeui/glade-editor-property.c:780 gladeui/glade-property-shell.c:143
 msgid "Disable Check"
 msgstr "Denetimi Kapat"
 
-#: gladeui/glade-editor-property.c:783 gladeui/glade-property-shell.c:144
+#: gladeui/glade-editor-property.c:781 gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
 msgstr "Seçim düğmesi doğrudan kapatılsın mı"
 
-#: gladeui/glade-editor-property.c:789 gladeui/glade-property-label.c:152
+#: gladeui/glade-editor-property.c:787 gladeui/glade-property-label.c:152
 #: gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "Özel Metin"
 
-#: gladeui/glade-editor-property.c:790 gladeui/glade-property-shell.c:138
+#: gladeui/glade-editor-property.c:788 gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
 msgstr "Özellik etiketinde gösterilecek Özel Metin"
 
-#: gladeui/glade-editor-property.c:1377
+#: gladeui/glade-editor-property.c:1375
 msgid "Select Fields"
 msgstr "Alanları Seç"
 
-#: gladeui/glade-editor-property.c:1393
+#: gladeui/glade-editor-property.c:1391
 msgid "_Select individual fields:"
 msgstr "_Bağımsız alanları seç:"
 
-#: gladeui/glade-editor-property.c:1772
+#: gladeui/glade-editor-property.c:1770
 msgid "Select Named Icon"
 msgstr "Adlandırılmış Simgeyi Seç"
 
-#: gladeui/glade-editor-property.c:2079
+#: gladeui/glade-editor-property.c:2077
 msgid "Edit Text"
 msgstr "Metin Düzenle"
 
 #. Text
-#: gladeui/glade-editor-property.c:2098
+#: gladeui/glade-editor-property.c:2096
 msgid "_Text:"
 msgstr "_Metin:"
 
 #. Translatable
-#: gladeui/glade-editor-property.c:2134
+#: gladeui/glade-editor-property.c:2132
 msgid "T_ranslatable"
 msgstr "_Tercüme edilebilir"
 
-#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:703
+#: gladeui/glade-editor-property.c:2138 gladeui/glade-property.c:714
 msgid "Whether this property is translatable"
 msgstr "Bu özelliğin çevirisi yapılabilir olup olmadığı"
 
-#: gladeui/glade-editor-property.c:2148
+#: gladeui/glade-editor-property.c:2146
 msgid "Conte_xt for translation:"
 msgstr "Çeviri için _bağlam:"
 
-#: gladeui/glade-editor-property.c:2154
+#: gladeui/glade-editor-property.c:2152
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -1936,66 +1936,66 @@ msgstr ""
 "Kısa ve belirsiz metinler için: buraya bu metnin başka yerlerde geçen başka "
 "anlamlarıyla ayrımını yapabilmek için sözcük girin"
 
-#: gladeui/glade-editor-property.c:2186
+#: gladeui/glade-editor-property.c:2184
 msgid "Co_mments for translators:"
 msgstr "Çevirmenler için _yorumlar:"
 
-#: gladeui/glade-editor-property.c:2277
+#: gladeui/glade-editor-property.c:2275
 msgid "Select a file from the project resource directory"
 msgstr "Proje kaynak dizininden dosya seç"
 
-#: gladeui/glade-editor-property.c:3136 gladeui/glade-widget-adaptor.c:1461
+#: gladeui/glade-editor-property.c:3134 gladeui/glade-widget-adaptor.c:1461
 #: gladeui/glade-widget.c:1348 plugins/gtk+/gtk+.xml:1432
 msgid "Name"
 msgstr "Ad"
 
-#: gladeui/glade-editor-property.c:3145 gladeui/glade-property.c:670
+#: gladeui/glade-editor-property.c:3143 gladeui/glade-property.c:681
 msgid "Class"
 msgstr "Sınıf"
 
-#: gladeui/glade-editor-property.c:3166
+#: gladeui/glade-editor-property.c:3164
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Bu projede üstü olmayan %s tipi nesneleri seç"
 
-#: gladeui/glade-editor-property.c:3168
+#: gladeui/glade-editor-property.c:3166
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Bu projede %s türünden nesneleri seç"
 
-#: gladeui/glade-editor-property.c:3188
+#: gladeui/glade-editor-property.c:3186
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Bu projede üstü olmayan %s seç"
 
-#: gladeui/glade-editor-property.c:3190
+#: gladeui/glade-editor-property.c:3188
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Bu projede %s seç"
 
-#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
-#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3646
-#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1061
+#: gladeui/glade-editor-property.c:3216 gladeui/glade-editor-property.c:3324
+#: gladeui/glade-editor-property.c:3335 gladeui/glade-editor-property.c:3644
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1062
 msgid "C_lear"
 msgstr "Temiz_le"
 
 #. Checklist
-#: gladeui/glade-editor-property.c:3235 gladeui/glade-editor-property.c:3355
+#: gladeui/glade-editor-property.c:3233 gladeui/glade-editor-property.c:3353
 msgid "O_bjects:"
 msgstr "_Nesneler:"
 
-#: gladeui/glade-editor-property.c:3327
+#: gladeui/glade-editor-property.c:3325
 msgid "_New"
 msgstr "_Yeni"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: gladeui/glade-editor-property.c:3463
+#: gladeui/glade-editor-property.c:3461
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "%s için %s / %s oluşturuluyor"
 
 #. Checklist
-#: gladeui/glade-editor-property.c:3664
+#: gladeui/glade-editor-property.c:3662
 msgid "Objects:"
 msgstr "Nesneler:"
 
@@ -2077,44 +2077,44 @@ msgstr "Sil"
 msgid "Delete All"
 msgstr "Tümünü Sil"
 
-#: gladeui/glade-palette.c:639
+#: gladeui/glade-palette.c:640
 msgid "Widget selector"
 msgstr "Parçacık seçici"
 
-#: gladeui/glade-popup.c:382
+#: gladeui/glade-popup.c:383
 msgid "_Add widget here"
 msgstr "_Parçacığı buraya ekle"
 
-#: gladeui/glade-popup.c:387 gladeui/glade-popup.c:546
+#: gladeui/glade-popup.c:388 gladeui/glade-popup.c:547
 msgid "Add widget as _toplevel"
 msgstr "Parçacığı ü_st düzey olarak ekle"
 
-#: gladeui/glade-popup.c:397
+#: gladeui/glade-popup.c:398
 msgid "_Select"
 msgstr "_Seç"
 
-#: gladeui/glade-popup.c:399
+#: gladeui/glade-popup.c:400
 msgid "Cu_t"
 msgstr "K_es"
 
-#: gladeui/glade-popup.c:401
+#: gladeui/glade-popup.c:402
 msgid "_Copy"
 msgstr "_Kopyala"
 
-#: gladeui/glade-popup.c:408 gladeui/glade-popup.c:411
-#: gladeui/glade-popup.c:414
+#: gladeui/glade-popup.c:409 gladeui/glade-popup.c:412
+#: gladeui/glade-popup.c:415
 msgid "_Paste"
 msgstr "_Yapıştır"
 
-#: gladeui/glade-popup.c:418
+#: gladeui/glade-popup.c:419
 msgid "_Delete"
 msgstr "_Sil"
 
-#: gladeui/glade-popup.c:550 gladeui/glade-popup.c:625
+#: gladeui/glade-popup.c:551 gladeui/glade-popup.c:626
 msgid "Read _documentation"
 msgstr "_Belgelendirme oku"
 
-#: gladeui/glade-popup.c:618
+#: gladeui/glade-popup.c:619
 msgid "Set default value"
 msgstr "Öntanımlı değer ata"
 
@@ -2128,53 +2128,53 @@ msgstr "Önizleyici başlatılırken hata oluştu: %s\n"
 msgid "Failed to launch preview: %s.\n"
 msgstr "Önizleme başlatılamadı: %s.\n"
 
-#: gladeui/glade-previewer.c:202
+#: gladeui/glade-previewer.c:203
 msgid "Glade Previewer log"
 msgstr "Glade Önizleyici günlüğü"
 
-#: gladeui/glade-previewer.c:739 gladeui/glade-previewer.c:749
+#: gladeui/glade-previewer.c:740 gladeui/glade-previewer.c:750
 msgid "user_data"
 msgstr "kullanıcı_verisi"
 
 #. translators: GConnectFlags values
-#: gladeui/glade-previewer.c:753
+#: gladeui/glade-previewer.c:754
 msgid "Swapped | After"
 msgstr "Takaslı | Sonrası"
 
 #. translators: GConnectFlags value
-#: gladeui/glade-previewer.c:756 gladeui/glade-signal.c:203
+#: gladeui/glade-previewer.c:757 gladeui/glade-signal.c:203
 msgid "Swapped"
 msgstr "Takaslı"
 
 #. translators: GConnectFlags value
-#: gladeui/glade-previewer.c:759 gladeui/glade-signal.c:197
-#: gladeui/glade-signal-editor.c:1406 plugins/gtk+/gtk+.xml:2204
+#: gladeui/glade-previewer.c:760 gladeui/glade-signal.c:197
+#: gladeui/glade-signal-editor.c:1407 plugins/gtk+/gtk+.xml:2204
 #: plugins/gtk+/gtk+.xml:2208 plugins/gtk+/gtk+.xml:2253
 #: plugins/gtk+/gtk+.xml:2257
 msgid "After"
 msgstr "Sonra"
 
 #. translators: this will be shown in glade previewer when a signal %s::%s is emitted one time
-#: gladeui/glade-previewer.c:782
+#: gladeui/glade-previewer.c:783
 #, c-format
 msgid "%s::%s emitted one time"
 msgstr "%s::%s bir kez yayıldı"
 
 #. translators: this will be shown in glade previewer when a signal %s::%s is emitted %d times
-#: gladeui/glade-previewer.c:786
+#: gladeui/glade-previewer.c:787
 #, c-format
 msgid "%s::%s emitted %d times"
 msgstr "%s::%s %d kez yayıldı"
 
-#: gladeui/glade-previewer.c:791
+#: gladeui/glade-previewer.c:792
 msgid "Run First"
 msgstr "İlk Çalıştır"
 
-#: gladeui/glade-previewer.c:796
+#: gladeui/glade-previewer.c:797
 msgid "Run Last"
 msgstr "Son Çalıştır"
 
-#: gladeui/glade-previewer.c:801
+#: gladeui/glade-previewer.c:802
 msgid "Run Cleanup"
 msgstr "Temizliği Çalıştır"
 
@@ -2558,7 +2558,7 @@ msgid "Unsaved %i"
 msgstr "Kaydedilmemiş %i"
 
 #: gladeui/glade-project.c:5258 gladeui/glade-project.c:5309
-#: gladeui/glade-project.c:5466
+#: gladeui/glade-project.c:5422
 msgid "No widget selected."
 msgstr "Hiçbir parçacık seçilmemiş."
 
@@ -2570,25 +2570,17 @@ msgstr "Tanınmayan parçacık türü kopyalanamıyor."
 msgid "Unable to cut unrecognized widget type"
 msgstr "Tanınmayan parçacık türü kesilemiyor"
 
-#: gladeui/glade-project.c:5358
+#: gladeui/glade-project.c:5359
 msgid "Unable to paste to the selected parent"
 msgstr "Seçilen üste yapıştırılamadı"
 
-#: gladeui/glade-project.c:5369
+#: gladeui/glade-project.c:5370
 msgid "Unable to paste to multiple widgets"
 msgstr "Çoklu parçacığa yapıştırılamadı"
 
-#: gladeui/glade-project.c:5379
+#: gladeui/glade-project.c:5380
 msgid "No widget on the clipboard"
 msgstr "Panoda parçacık yok"
-
-#: gladeui/glade-project.c:5424
-msgid "Only one widget can be pasted at a time to this container"
-msgstr "Bu taşıyıcıya yalnızca tek parçacık aynı anda yapıştırılabilir"
-
-#: gladeui/glade-project.c:5436
-msgid "Insufficient amount of placeholders in target container"
-msgstr "Hedef taşıyıcıda yetersiz miktarda alan tutucu"
 
 #: gladeui/glade-project-properties.c:194
 msgid "The project this properties dialog was created for"
@@ -2600,59 +2592,59 @@ msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr ""
 "Proje %s hiçbir kullanılmayan parçacık ya da sürüm uyumsuzluğu içermiyor."
 
-#: gladeui/glade-property.c:671
+#: gladeui/glade-property.c:682
 msgid "The GladePropertyDef for this property"
 msgstr "Bu özellik için GladePropertyDef"
 
-#: gladeui/glade-property.c:676
+#: gladeui/glade-property.c:687
 msgid "Enabled"
 msgstr "Etkin"
 
-#: gladeui/glade-property.c:677
+#: gladeui/glade-property.c:688
 msgid "If the property is optional, this is its enabled state"
 msgstr "Eğer özellik seçimlikse, bu onun etkin durumudur"
 
-#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:188
+#: gladeui/glade-property.c:693 gladeui/glade-widget-action.c:188
 msgid "Sensitive"
 msgstr "Duyarlı"
 
-#: gladeui/glade-property.c:683
+#: gladeui/glade-property.c:694
 msgid "This gives backends control to set property sensitivity"
 msgstr "Bu arka uçlara duyarlılık özelliği denetimini verir"
 
-#: gladeui/glade-property.c:688
+#: gladeui/glade-property.c:699
 msgid "Context"
 msgstr "Bağlam"
 
-#: gladeui/glade-property.c:689
+#: gladeui/glade-property.c:700
 msgid "Context for translation"
 msgstr "Çeviriciler için bağlam"
 
-#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:394
+#: gladeui/glade-property.c:706 plugins/gtk+/gtk+.xml:394
 msgid "Comment"
 msgstr "Açıklama"
 
-#: gladeui/glade-property.c:696
+#: gladeui/glade-property.c:707
 msgid "Comment for translators"
 msgstr "Çeviriciler için açıklama"
 
-#: gladeui/glade-property.c:702
+#: gladeui/glade-property.c:713
 msgid "Translatable"
 msgstr "Tercüme edilebilir"
 
-#: gladeui/glade-property.c:709
+#: gladeui/glade-property.c:720
 msgid "Visual State"
 msgstr "Sanal Durum"
 
-#: gladeui/glade-property.c:710
+#: gladeui/glade-property.c:721
 msgid "Priority information for the property editor to act on"
 msgstr "Eylemde bulunulacak özellik düzenleyicisi için öncelik bilgisi"
 
-#: gladeui/glade-property.c:718
+#: gladeui/glade-property.c:729
 msgid "Precision"
 msgstr "Kesinlik"
 
-#: gladeui/glade-property.c:719
+#: gladeui/glade-property.c:730
 msgid "Where applicable, precision to use on editors"
 msgstr "Uygulanabildiği yerde, editörler üzerinde kullanmak için kesinlik"
 
@@ -2729,7 +2721,7 @@ msgstr "SignalClass"
 msgid "The signal class of this signal"
 msgstr "Bu sinyalin sinyal sınıfı"
 
-#: gladeui/glade-signal.c:173 gladeui/glade-signal-editor.c:1321
+#: gladeui/glade-signal.c:173 gladeui/glade-signal-editor.c:1322
 msgid "Detail"
 msgstr "Ayrıntı"
 
@@ -2737,7 +2729,7 @@ msgstr "Ayrıntı"
 msgid "The detail for this signal"
 msgstr "Bu sinyalin ayrıntısı"
 
-#: gladeui/glade-signal.c:179 gladeui/glade-signal-editor.c:1336
+#: gladeui/glade-signal.c:179 gladeui/glade-signal-editor.c:1337
 msgid "Handler"
 msgstr "İşleyici"
 
@@ -2770,35 +2762,35 @@ msgid "Whether the user data is swapped with the instance for the handler"
 msgstr ""
 "Kullanıcı verisinin işleyici için örnekle yer değiştirip değiştirmediği"
 
-#: gladeui/glade-signal-editor.c:517
+#: gladeui/glade-signal-editor.c:518
 msgid "Select an object to pass to the handler"
 msgstr "İşleyiciye geçirilecek nesne seç"
 
-#: gladeui/glade-signal-editor.c:1314 plugins/gtk+/glade-accels.c:449
+#: gladeui/glade-signal-editor.c:1315 plugins/gtk+/glade-accels.c:449
 msgid "Signal"
 msgstr "Sinyal"
 
-#: gladeui/glade-signal-editor.c:1374
+#: gladeui/glade-signal-editor.c:1375
 msgid "User data"
 msgstr "Kullanıcı verisi"
 
-#: gladeui/glade-signal-editor.c:1389
+#: gladeui/glade-signal-editor.c:1390
 msgid "Swap"
 msgstr "Takas"
 
-#: gladeui/glade-signal-editor.c:1549
+#: gladeui/glade-signal-editor.c:1550
 msgid "Glade Widget"
 msgstr "Glade Parçacığı"
 
-#: gladeui/glade-signal-editor.c:1550
+#: gladeui/glade-signal-editor.c:1551
 msgid "The glade widget to edit signals"
 msgstr "Sinyalleri düzenlenecek glade parçacığı"
 
-#: gladeui/glade-signal-model.c:29 gladeui/glade-signal-model.c:30
+#: gladeui/glade-signal-model.c:31 gladeui/glade-signal-model.c:32
 msgid "<Type here>"
 msgstr "<Buraya yazın>"
 
-#: gladeui/glade-signal-model.c:31
+#: gladeui/glade-signal-model.c:33
 msgid "<Click here>"
 msgstr "<Buraya tıklayın>"
 
@@ -2812,7 +2804,7 @@ msgstr "Sembol \"%s\" bulunamadı"
 msgid "Could not get the type from \"%s\""
 msgstr "\"%s\" tarafından tür alınamadı"
 
-#: gladeui/glade-utils.c:310
+#: gladeui/glade-utils.c:321
 #, c-format
 msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
@@ -2821,28 +2813,28 @@ msgstr ""
 "Kaydırılamayan %s parçacığı doğrudan %sʼe eklenemez.\n"
 "Önce %s ekleyin."
 
-#: gladeui/glade-utils.c:491
+#: gladeui/glade-utils.c:502
 msgid "All Files"
 msgstr "Tüm Dosyalar"
 
-#: gladeui/glade-utils.c:496
+#: gladeui/glade-utils.c:507
 msgid "Libglade Files"
 msgstr "Libglade Dosyaları"
 
-#: gladeui/glade-utils.c:501
+#: gladeui/glade-utils.c:512
 msgid "GtkBuilder Files"
 msgstr "GtkBuilder Dosyaları"
 
-#: gladeui/glade-utils.c:507
+#: gladeui/glade-utils.c:518
 msgid "All Glade Files"
 msgstr "Tüm Glade Dosyaları"
 
-#: gladeui/glade-utils.c:1241
+#: gladeui/glade-utils.c:1252
 msgid "Could not show link:"
 msgstr "Bağlantı gösterilemedi:"
 
 #. Reset the column
-#: gladeui/glade-utils.c:1717 plugins/gtk+/glade-attributes.c:829
+#: gladeui/glade-utils.c:1730 plugins/gtk+/glade-attributes.c:830
 #: plugins/gtk+/gtk+.xml:830 plugins/gtk+/gtk+.xml:1188
 #: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1307
 #: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:1574
@@ -3400,11 +3392,11 @@ msgstr "Ölçek"
 #: plugins/gtk+/glade-attributes.c:303
 msgctxt "textattr"
 msgid "Font Description"
-msgstr "Yazıtipi Tanımı"
+msgstr "Yazı Tipi Tanımı"
 
 #: plugins/gtk+/glade-attributes.c:329 plugins/gtk+/glade-attributes.c:366
 #: plugins/gtk+/glade-attributes.c:374 plugins/gtk+/glade-attributes.c:380
-#: plugins/gtk+/glade-attributes.c:832
+#: plugins/gtk+/glade-attributes.c:833
 msgid "<Enter Value>"
 msgstr "<Değer Gir>"
 
@@ -3412,27 +3404,27 @@ msgstr "<Değer Gir>"
 msgid "Unset"
 msgstr "Atanmamış"
 
-#: plugins/gtk+/glade-attributes.c:726
+#: plugins/gtk+/glade-attributes.c:727
 msgid "Select a color"
 msgstr "Renk seç"
 
-#: plugins/gtk+/glade-attributes.c:761
+#: plugins/gtk+/glade-attributes.c:762
 msgid "Select a font"
-msgstr "Yazıtipi seç"
+msgstr "Yazı tipi seç"
 
-#: plugins/gtk+/glade-attributes.c:896
+#: plugins/gtk+/glade-attributes.c:897
 msgid "Attribute"
 msgstr "Öznitelik"
 
-#: plugins/gtk+/glade-attributes.c:904
+#: plugins/gtk+/glade-attributes.c:905
 msgid "Value"
 msgstr "Değer"
 
-#: plugins/gtk+/glade-attributes.c:1057
+#: plugins/gtk+/glade-attributes.c:1058
 msgid "Setup Text Attributes"
 msgstr "Metin Özniteliklerini Ayarla"
 
-#: plugins/gtk+/glade-attributes.c:1149
+#: plugins/gtk+/glade-attributes.c:1150
 msgid "Edit Attributes"
 msgstr "Düzenleme Öznitelikleri"
 
@@ -3565,7 +3557,7 @@ msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr ""
 "%sʼin ikincil simgesi araç ipucu işareti kullanmayacek şekilde ayarlanıyor"
 
-#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1026
+#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1052
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "%s, %s içine yerleştiriliyor"
@@ -3641,19 +3633,19 @@ msgstr "Son Kullanılan"
 msgid "Action Group Editor"
 msgstr "Eylem Grubu Düzenleyicisi"
 
-#: plugins/gtk+/glade-gtk-assistant.c:213
+#: plugins/gtk+/glade-gtk-assistant.c:214
 msgid "Introduction page"
 msgstr "Giriş sayfası"
 
-#: plugins/gtk+/glade-gtk-assistant.c:217
+#: plugins/gtk+/glade-gtk-assistant.c:218
 msgid "Content page"
 msgstr "İçerik sayfası"
 
-#: plugins/gtk+/glade-gtk-assistant.c:221
+#: plugins/gtk+/glade-gtk-assistant.c:222
 msgid "Confirmation page"
 msgstr "Onay sayfası"
 
-#: plugins/gtk+/glade-gtk-box.c:836
+#: plugins/gtk+/glade-gtk-box.c:837
 #, c-format
 msgid "Ordering children of %s"
 msgstr "%s altları sıralanıyor"
@@ -3741,26 +3733,29 @@ msgstr "Bu çoklu kutu, girilecek biçimde yapılandırılmamış"
 msgid "Tearoff menus are disabled"
 msgstr "Ayrılan menüler kapalı"
 
-#: plugins/gtk+/glade-gtk-container.c:59
+#: plugins/gtk+/glade-gtk-container.c:61
 msgid "Cannot add a toplevel window to a container."
 msgstr "Bir taşıyıcıya en üst düzey pencere eklenemez."
 
-#: plugins/gtk+/glade-gtk-container.c:68
+#: plugins/gtk+/glade-gtk-container.c:70
 msgid "Cannot add a popover to a container."
 msgstr "Bir taşıyıcıya açılan kutucuk eklenemez."
 
-#: plugins/gtk+/glade-gtk-container.c:79
+#: plugins/gtk+/glade-gtk-container.c:81
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
 msgstr "%s türünde parçacıkların yalnızca parçacık çocukları olabilir."
 
-#: plugins/gtk+/glade-gtk-container.c:90
+#: plugins/gtk+/glade-gtk-container.c:99
 #, c-format
-msgid "Widgets of type %s need placeholders to add children."
+msgid ""
+"Widgets of type %s need placeholders to add children.\n"
+"Increase its size or add a container if it only supports one child."
 msgstr ""
-"%s türünde parçacıkların alt parçacık eklemek için yer tutucuya gereksinir."
+"%s türünde parçacıklar, alt parçacık eklemek için yer tutucuya gereksinir.\n"
+"Eğer yalnızca bir çocuk destekliyorsa boyutunu büyütün veya taşıyıcı ekleyin."
 
-#: plugins/gtk+/glade-gtk-entry.c:197
+#: plugins/gtk+/glade-gtk-entry.c:198
 msgid ""
 "This property is only available\n"
 "if the entry has a frame"
@@ -3768,7 +3763,7 @@ msgstr ""
 "Bu özellik yalnızca girdinin çerçevesi\n"
 "varsa kullanılabilir"
 
-#: plugins/gtk+/glade-gtk-entry.c:206
+#: plugins/gtk+/glade-gtk-entry.c:207
 msgid ""
 "This property is only available\n"
 "if the entry characters are invisible"
@@ -3776,28 +3771,28 @@ msgstr ""
 "Bu özellik yalnızca girdi karakterleri\n"
 "görünmezken kullanılabilir"
 
-#: plugins/gtk+/glade-gtk-flow-box.c:204
+#: plugins/gtk+/glade-gtk-flow-box.c:205
 #, c-format
 msgid "Insert Child on %s"
 msgstr "%s Üzerine Alt Öge Ekle"
 
-#: plugins/gtk+/glade-gtk-grid.c:516 plugins/gtk+/glade-gtk-list-box.c:333
+#: plugins/gtk+/glade-gtk-grid.c:542 plugins/gtk+/glade-gtk-list-box.c:336
 #: plugins/gtk+/glade-gtk-table.c:549
 #, c-format
 msgid "Insert Row on %s"
 msgstr "%s Üzerine Satır Ekle"
 
-#: plugins/gtk+/glade-gtk-grid.c:519 plugins/gtk+/glade-gtk-table.c:552
+#: plugins/gtk+/glade-gtk-grid.c:545 plugins/gtk+/glade-gtk-table.c:552
 #, c-format
 msgid "Insert Column on %s"
 msgstr "%s Üzerine Sütun Ekle"
 
-#: plugins/gtk+/glade-gtk-grid.c:522 plugins/gtk+/glade-gtk-table.c:555
+#: plugins/gtk+/glade-gtk-grid.c:548 plugins/gtk+/glade-gtk-table.c:555
 #, c-format
 msgid "Remove Column on %s"
 msgstr "%s üzerindeki sütunu sil"
 
-#: plugins/gtk+/glade-gtk-grid.c:525 plugins/gtk+/glade-gtk-table.c:558
+#: plugins/gtk+/glade-gtk-grid.c:551 plugins/gtk+/glade-gtk-table.c:558
 #, c-format
 msgid "Remove Row on %s"
 msgstr "%s Üzerinden Satır Sil"
@@ -3832,19 +3827,19 @@ msgstr "Hızlandırıcı, yalnızca bir Eylem Grubu içinde olduğunda ayarlanab
 msgid "This property does not apply when a custom title is set"
 msgstr "Bu özellik özel bir başlık ayarlandığında uygulanmaz"
 
-#: plugins/gtk+/glade-gtk-header-bar.c:113
-#: plugins/gtk+/glade-gtk-notebook.c:1003 plugins/gtk+/glade-gtk-stack.c:160
+#: plugins/gtk+/glade-gtk-header-bar.c:112
+#: plugins/gtk+/glade-gtk-notebook.c:1005 plugins/gtk+/glade-gtk-stack.c:161
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr "%s için yer tutucu ekle"
 
-#: plugins/gtk+/glade-gtk-header-bar.c:137
-#: plugins/gtk+/glade-gtk-notebook.c:1001 plugins/gtk+/glade-gtk-stack.c:197
+#: plugins/gtk+/glade-gtk-header-bar.c:136
+#: plugins/gtk+/glade-gtk-notebook.c:1003 plugins/gtk+/glade-gtk-stack.c:198
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr "%s üzerinde buluna yer tutucuyu sil"
 
-#: plugins/gtk+/glade-gtk-header-bar.c:304
+#: plugins/gtk+/glade-gtk-header-bar.c:303
 msgid ""
 "The decoration layout does not apply to header bars which do no show window "
 "controls"
@@ -3969,12 +3964,12 @@ msgstr "Son Kullanılan Seçici Menüsü"
 msgid "Menu Item"
 msgstr "Menü Ögesi"
 
-#: plugins/gtk+/glade-gtk-notebook.c:994
+#: plugins/gtk+/glade-gtk-notebook.c:996
 #, c-format
 msgid "Remove page from %s"
 msgstr "%s üzerinden sayfa sil"
 
-#: plugins/gtk+/glade-gtk-notebook.c:996
+#: plugins/gtk+/glade-gtk-notebook.c:998
 #, c-format
 msgid "Insert page on %s"
 msgstr "%s Üzerine Sayfa Ekle"
@@ -4102,32 +4097,32 @@ msgstr "Başlıklar görünmez"
 msgid "Expanders are not shown"
 msgstr "Genişleticiler görüntülenmiyor"
 
-#: plugins/gtk+/glade-gtk-widget.c:856
+#: plugins/gtk+/glade-gtk-widget.c:868
 #, c-format
 msgid "Removing parent of %s"
 msgstr "%s üstü siliniyor"
 
-#: plugins/gtk+/glade-gtk-widget.c:915
+#: plugins/gtk+/glade-gtk-widget.c:927
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "%s üst olarak %s için ekleniyor"
 
-#: plugins/gtk+/glade-gtk-widget.c:1037 plugins/gtk+/glade-gtk-widget.c:1101
+#: plugins/gtk+/glade-gtk-widget.c:1068 plugins/gtk+/glade-gtk-widget.c:1132
 msgid "(unnamed)"
 msgstr "(adsız)"
 
-#: plugins/gtk+/glade-gtk-widget.c:1049
+#: plugins/gtk+/glade-gtk-widget.c:1080
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "%s Boyut Grubu %s için ekleniyor"
 
-#: plugins/gtk+/glade-gtk-widget.c:1053
+#: plugins/gtk+/glade-gtk-widget.c:1084
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "%s yeni Boyut Grubuna ekleniyor"
 
 #. Add trailing new... item
-#: plugins/gtk+/glade-gtk-widget.c:1121
+#: plugins/gtk+/glade-gtk-widget.c:1152
 msgid "New Size Group"
 msgstr "Yeni Boyut Grubu"
 
@@ -4292,11 +4287,11 @@ msgstr "%s tek satır kullanması için atanması"
 msgid "Setting %s to use specific Pango word wrapping"
 msgstr "%s özel Pango sözcük kaydırma kullanacak şekilde ayarlanıyor"
 
-#: plugins/gtk+/glade-model-data.c:937
+#: plugins/gtk+/glade-model-data.c:936
 msgid "<printable chars only>"
 msgstr "<yalnızca yazdırılabilir karakterler>"
 
-#: plugins/gtk+/glade-model-data.c:1228
+#: plugins/gtk+/glade-model-data.c:1227
 msgid "Add and remove rows:"
 msgstr "Satırları ekle ve kaldır:"
 
@@ -4364,7 +4359,7 @@ msgstr "%s özel etiket parçacığı kullanması için atanması"
 msgid "Group Header"
 msgstr "Grup Başlığı"
 
-#: plugins/gtk+/glade-treeview-editor.c:207
+#: plugins/gtk+/glade-treeview-editor.c:208
 msgid ""
 "Choose a Data Model and define some\n"
 "columns in the data store first"
@@ -4518,7 +4513,7 @@ msgstr "Kutu"
 
 #: plugins/gtk+/gtk+.xml:50 plugins/gtk+/gtk+.xml:2288
 msgid "Paned"
-msgstr "Panelli"
+msgstr "Bölmeli"
 
 #: plugins/gtk+/gtk+.xml:51 plugins/gtk+/gtk+.xml:2430
 msgid "Stack"
@@ -4777,7 +4772,7 @@ msgstr "Pencere"
 
 #: plugins/gtk+/gtk+.xml:238
 msgid "Directory Pane"
-msgstr "Dizin Paneli"
+msgstr "Dizin Bölmesi"
 
 #: plugins/gtk+/gtk+.xml:240 plugins/gtk+/gtk+.xml:2987
 msgid "Drawing Area"
@@ -4793,15 +4788,15 @@ msgstr "Doldurucu"
 
 #: plugins/gtk+/gtk+.xml:246
 msgid "Font Chooser"
-msgstr "Yazıtipi Seçici"
+msgstr "Yazı Tipi Seçici"
 
 #: plugins/gtk+/gtk+.xml:250
 msgid "Glass Pane"
-msgstr "Cam Panel"
+msgstr "Cam Bölme"
 
 #: plugins/gtk+/gtk+.xml:252
 msgid "HTML Container"
-msgstr "HTML Kabı"
+msgstr "HTML Taşıyıcı"
 
 #: plugins/gtk+/gtk+.xml:254 plugins/gtk+/glade-about-dialog-editor.ui:213
 msgid "Icon"
@@ -4813,7 +4808,7 @@ msgstr "İç Çerçeve"
 
 #: plugins/gtk+/gtk+.xml:262
 msgid "Layered Pane"
-msgstr "Katmanlı Panel"
+msgstr "Katmanlı Bölme"
 
 #: plugins/gtk+/gtk+.xml:264
 msgid "List"
@@ -4829,7 +4824,7 @@ msgstr "Menü Çubuğu"
 
 #: plugins/gtk+/gtk+.xml:274
 msgid "Option Pane"
-msgstr "Seçenek Paneli"
+msgstr "Seçenek Bölmesi"
 
 #: plugins/gtk+/gtk+.xml:276
 msgid "Page Tab"
@@ -4841,7 +4836,7 @@ msgstr "Sayfa Sekmesi Listesi"
 
 #: plugins/gtk+/gtk+.xml:280
 msgid "Panel"
-msgstr "Panel"
+msgstr "Bölme"
 
 #: plugins/gtk+/gtk+.xml:282
 msgid "Password Text"
@@ -4870,7 +4865,7 @@ msgstr "Radyo Menü Ögesi"
 
 #: plugins/gtk+/gtk+.xml:294
 msgid "Root Pane"
-msgstr "Kök Paneli"
+msgstr "Kök Bölmesi"
 
 #: plugins/gtk+/gtk+.xml:296 plugins/gtk+/gtk+.xml:318
 msgid "Row Header"
@@ -4882,7 +4877,7 @@ msgstr "Kaydırma Çubuğu"
 
 #: plugins/gtk+/gtk+.xml:300
 msgid "Scroll pane"
-msgstr "Kaydırma Paneli"
+msgstr "Kaydırma bölmesi"
 
 #: plugins/gtk+/gtk+.xml:304
 msgid "Slider"
@@ -4890,7 +4885,7 @@ msgstr "Kaydırıcı"
 
 #: plugins/gtk+/gtk+.xml:306
 msgid "Split Pane"
-msgstr "Ayrık Panel"
+msgstr "Ayrık Bölme"
 
 #: plugins/gtk+/gtk+.xml:308 plugins/gtk+/gtk+.xml:1727
 msgid "Spin Button"
@@ -6090,7 +6085,7 @@ msgstr "Renk Düğmesi"
 
 #: plugins/gtk+/gtk+.xml:1949
 msgid "Font Button"
-msgstr "Yazıtipi Düğmesi"
+msgstr "Yazı Tipi Düğmesi"
 
 #: plugins/gtk+/gtk+.xml:2018 plugins/gtk+/gtk+.xml:3082
 #: plugins/gtk+/gtk+.xml:3869
@@ -6194,11 +6189,11 @@ msgstr "Bu ızgaradaki sütun sayısı"
 
 #: plugins/gtk+/gtk+.xml:2310
 msgid "Horizontal Panes"
-msgstr "Yatay Paneller"
+msgstr "Yatay Bölmeler"
 
 #: plugins/gtk+/gtk+.xml:2316
 msgid "Vertical Panes"
-msgstr "Dikey Paneller"
+msgstr "Dikey Bölmeler"
 
 #: plugins/gtk+/gtk+.xml:2322
 msgid "Notebook"
@@ -6691,7 +6686,7 @@ msgstr "Dosya Seçici Penceresi"
 
 #: plugins/gtk+/gtk+.xml:3223
 msgid "Font Selection Dialog"
-msgstr "Yazıtipi Seçim Penceresi"
+msgstr "Yazı Tipi Seçim Penceresi"
 
 #: plugins/gtk+/gtk+.xml:3236
 msgid "Application Chooser Dialog"
@@ -6735,7 +6730,7 @@ msgstr "Yazı Tipi Seçme Penceresi"
 
 #: plugins/gtk+/gtk+.xml:3324
 msgid "Font Selection"
-msgstr "Yazıtipi Seçimi"
+msgstr "Yazı Tipi Seçimi"
 
 #: plugins/gtk+/gtk+.xml:3326
 msgid "Assistant"
@@ -7084,11 +7079,11 @@ msgstr "Aile sütunu"
 
 #: plugins/gtk+/gtk+.xml:4221
 msgid "Font column"
-msgstr "Yazıtipi sütunu"
+msgstr "Yazı tipi sütunu"
 
 #: plugins/gtk+/gtk+.xml:4234
 msgid "Font Description column"
-msgstr "Yazıtipi Tanımı sütunu"
+msgstr "Yazı Tipi Tanımı sütunu"
 
 #: plugins/gtk+/gtk+.xml:4247
 msgid "Foreground Color Name column"
@@ -8233,6 +8228,12 @@ msgstr "İstenildiğinde"
 #: plugins/webkit2gtk/webkit2gtk.xml:58
 msgid "WebKit2GTK+ Widgets"
 msgstr "WebKit2GTK+ Parçacıkları"
+
+#~ msgid "Only one widget can be pasted at a time to this container"
+#~ msgstr "Bu taşıyıcıya yalnızca tek parçacık aynı anda yapıştırılabilir"
+
+#~ msgid "Insufficient amount of placeholders in target container"
+#~ msgstr "Hedef taşıyıcıda yetersiz miktarda alan tutucu"
 
 #~ msgid ""
 #~ "Copyright © 2001-2006 Ximian, Inc.\n"
