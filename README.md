@@ -53,11 +53,12 @@ Optional dependencies:
 * libwebkit2gtk-4.0 - For Webkit plugin
 * python-gi - For Python plugin
 * libgjs - For JavaScript plugin
+* gettext, itstool - For translation support
 
 Download sources from git and build using meson/ninja
 
 	# Install dependencies, for example in debian
-	sudo apt install gcc meson libgtk-3-dev libxml2-dev libgirepository1.0-dev xsltproc 
+	sudo apt install gcc meson libgtk-3-dev libxml2-dev libgirepository1.0-dev xsltproc gettext itstool
 	
 	# Optional dependencies
 	sudo apt install libgjs-dev libwebkit2gtk-4.0-dev python-gi-dev glib-networking
