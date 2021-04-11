@@ -4,7 +4,6 @@ assert(xsltproc.found(), 'xsltproc is required for man pages generation')
 xsltproc_cmd = [
   xsltproc,
   '--output', '@OUTPUT@',
-  '--nonet',
   '--stringparam', 'man.output.quietly', '1',
   '--stringparam', 'funcsynopsis.style', 'ansi',
   '--stringparam', 'man.th.extra1.suppress', '1',
