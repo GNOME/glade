@@ -2183,7 +2183,7 @@ _glade_util_file_get_relative_path (GFile *target, GFile *source)
           relative_path = g_file_get_relative_path (target, source);
 
           g_string_append (relpath, "..");
-          g_string_append_c (relpath, G_DIR_SEPARATOR);
+          g_string_append_c (relpath, '/');
 
           g_object_unref (old_target);
         }
