@@ -106,6 +106,8 @@ main (int   argc,
       if (G_TYPE_IS_INSTANTIATABLE (adaptor_type) && !G_TYPE_IS_ABSTRACT (adaptor_type) &&
           /* FIXME: can not create a themed icon without a name */
           !g_type_is_a (adaptor_type, G_TYPE_THEMED_ICON) &&
+          /* FIXME: can not create a file icon without a file name */
+          !g_type_is_a (adaptor_type, G_TYPE_FILE_ICON) &&
           /* FIXME: GtkPopoverMenu gives a few warnings */
           !g_type_is_a (adaptor_type, GTK_TYPE_POPOVER_MENU) &&
           /* FIXME: GtkFileChooserNative is hard to test here */
