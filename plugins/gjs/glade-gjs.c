@@ -93,7 +93,7 @@ glade_gjs_init (const gchar *name)
 
   /* Importing the module will create all the GTypes so that glade can use them at runtime */
   retval = gjs_context_eval (gjs_context_get_current (),
-                             import_sentence, -1, NULL,
+                             import_sentence, -1, "<glade-gjs>",
                              &exit_status,
                              &error);
   if (!retval && error)
