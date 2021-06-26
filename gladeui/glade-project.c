@@ -3661,10 +3661,12 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
   for (list = project->priv->objects; list; list = list->next)
     {
       GladeWidget *widget;
+      gchar *widget_name;
 
       widget = glade_widget_get_from_gobject (list->data);
+      widget_name = glade_widget_get_name (widget);
 
-      if (strcmp (glade_widget_get_name (widget), name) == 0)
+      if (g_strcmp0 (widget_name, name) == 0)
         return widget;
     }
 
