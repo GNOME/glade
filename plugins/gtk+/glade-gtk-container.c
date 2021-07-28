@@ -51,7 +51,6 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
                                 gboolean            user_feedback)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
-  GtkWidget *bin_child;
 
   if (GTK_IS_WINDOW (child))
     {
