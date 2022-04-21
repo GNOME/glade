@@ -30,7 +30,6 @@
 #include "glade-window.h"
 #include "glade-resources.h"
 #include "glade-preferences.h"
-#include "glade-registration.h"
 #include "glade-settings.h"
 #include "glade-intro.h"
 
@@ -109,8 +108,6 @@ struct _GladeWindowPrivate
   GtkWidget *left_paned;
   GtkWidget *open_button_box;   /* gtk_button_box_set_layout() set homogeneous to TRUE, and we do not want that in this case  */
   GtkWidget *save_button_box;
-
-  GtkWidget *registration;      /* Registration and user survey dialog */
 
   GladeIntro *intro;
   GType new_type;
@@ -1584,15 +1581,6 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
   refresh_title (window);
 }
 
-static void
-on_registration_action_activate (GSimpleAction *action,
-                                 GVariant      *parameter,
-                                 gpointer       data)
-{
-  GladeWindow *window = data;
-  gtk_window_present (GTK_WINDOW (window->priv->registration));
-}
-
 static gboolean
 on_undo_button_button_press_event (GtkWidget   *widget,
                                    GdkEvent    *event,
@@ -1791,7 +1779,6 @@ glade_window_dispose (GObject *object)
   GladeWindow *window = GLADE_WINDOW (object);
 
   g_clear_object (&window->priv->app);
-  g_clear_object (&window->priv->registration);
 
   G_OBJECT_CLASS (glade_window_parent_class)->dispose (object);
 }
@@ -2108,8 +2095,6 @@ glade_window_init (GladeWindow *window)
   gtk_box_set_homogeneous (GTK_BOX (priv->open_button_box), FALSE);
   gtk_box_set_homogeneous (GTK_BOX (priv->save_button_box), FALSE);
 
-  priv->registration = glade_registration_new ();
-
   /* Add Gdk backend as a class */
   ctx = gtk_widget_get_style_context (GTK_WIDGET (window));
   gtk_style_context_add_class (ctx, glade_window_get_gdk_backend ());
@@ -2327,7 +2312,6 @@ on_application_notify (GObject *gobject, GParamSpec *pspec)
   static GActionEntry actions[] = {
     { "open",         on_open_action_activate, NULL, NULL, NULL },
     { "new",          on_new_action_activate, NULL, NULL, NULL },
-    { "registration", on_registration_action_activate, NULL, NULL, NULL },
     { "intro",        on_intro_action_activate, NULL, NULL, NULL },
     { "reference",    on_reference_action_activate, NULL, NULL, NULL },
     { "help",         on_user_manuel_action_activate, NULL, NULL, NULL },
@@ -2500,67 +2484,6 @@ glade_window_check_devhelp (GladeWindow *window)
 
   if (glade_util_have_devhelp ())
     g_signal_connect (glade_app_get (), "doc-search", G_CALLBACK (doc_search_cb), window);
-}
-
-void
-glade_window_registration_notify_user (GladeWindow *window)
-{
-  gboolean skip_reminder, completed;
-  GladeWindowPrivate *priv;
-
-  g_return_if_fail (GLADE_IS_WINDOW (window));
-  priv = window->priv;
-
-  if (!g_tls_backend_supports_tls (g_tls_backend_get_default ()))
-    {
-      g_message ("No TLS support in GIO, Registration & User Survey disabled. (missing glib-networking package)");
-      actions_set_enabled (window, "registration", FALSE);
-      return;
-    }
-
-  g_object_get (priv->registration,
-                "completed", &completed,
-                "skip-reminder", &skip_reminder,
-                NULL);
-
-  if (!completed && !skip_reminder)
-    {
-      GtkWidget *dialog, *check;
-
-      dialog = gtk_message_dialog_new (GTK_WINDOW (glade_app_get_window ()),
-                                       GTK_DIALOG_DESTROY_WITH_PARENT,
-                                       GTK_MESSAGE_QUESTION,
-                                       GTK_BUTTONS_YES_NO,
-                                       "%s",
-                                       /* translators: Primary message of a dialog used to notify the user about the survey */
-                                       _("We are conducting a user survey\n would you like to take it now?"));
-
-      gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s",
-                                                /* translators: Secondary text of a dialog used to notify the user about the survey */
-                                                _("If not, you can always find it in the Help menu."));
-
-      check = gtk_check_button_new_with_mnemonic (_("_Do not show this dialog again"));
-      gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                        check, FALSE, FALSE, 0);
-      gtk_widget_set_halign (check, GTK_ALIGN_START);
-      gtk_widget_set_margin_start (check, 6);
-      gtk_widget_show (check);
-
-      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_YES)
-          gtk_window_present (GTK_WINDOW (priv->registration));
-
-      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (check)))
-        {
-          g_object_set (priv->registration, "skip-reminder", TRUE, NULL);
-          glade_app_config_save ();
-        }
-
-      gtk_widget_destroy (dialog);
-    }
-  else if (!completed)
-    glade_util_flash_message (priv->statusbar, priv->statusbar_context_id, "%s",
-                              /* translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again */
-                              _("Go to Help -> Registration & User Survey and complete our survey!"));
 }
 
 #ifdef GDK_WINDOWING_X11

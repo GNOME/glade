@@ -58,8 +58,6 @@ gboolean     glade_window_open_project  (GladeWindow *window,
 
 void         glade_window_check_devhelp (GladeWindow *window);
 
-void         glade_window_registration_notify_user (GladeWindow *window);
-
 const gchar *glade_window_get_gdk_backend (void);
 
 G_END_DECLS

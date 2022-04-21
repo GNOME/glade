@@ -13,10 +13,8 @@ else
 endif
 
 sources = files(
-  'glade-http.c',
   'glade-intro.c',
   'glade-preferences.c',
-  'glade-registration.c',
   'glade-settings.c',
   'glade-window.c',
   'main.c',
@@ -25,8 +23,6 @@ sources = files(
 resource_data = files(
   'glade.glade',
   'glade-preferences.glade',
-  'glade-registration.css',
-  'glade-registration.glade',
   'glade-window.css'
 )
 

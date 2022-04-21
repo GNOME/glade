@@ -110,8 +110,6 @@ activate (GApplication *application)
     glade_window_check_devhelp (window);
 
   gtk_widget_show (GTK_WIDGET (window));
-
-  glade_window_registration_notify_user (window);
 }
 
 static void

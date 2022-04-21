@@ -68,20 +68,6 @@ Author: Juan Pablo Ugarte
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <property name="action-name">app.registration</property>
-            <property name="text" translatable="yes">Registration &amp; User Survey</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkModelButton">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
             <property name="action-name">app.reference</property>
             <property name="text" translatable="yes">_Developer Reference</property>
           </object>
@@ -226,10 +212,11 @@ Author: Juan Pablo Ugarte
                 <property name="name">version-label</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="valign">start</property>
                 <property name="width-chars">32</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
