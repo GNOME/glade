@@ -258,7 +258,8 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
       /* if draw-indicator is set, force it to be set again so GtkCheckButton/GtkToggleButton has
        * an opportunity to reset xalign to 0
        */
-      glade_gtk_sync_draw_indicator(widget);
+      if (GTK_IS_TOGGLE_BUTTON(object))
+        glade_gtk_sync_draw_indicator(widget);
   }
   else if (GLADE_PROPERTY_DEF_VERSION_CHECK (glade_property_get_def (property), gtk_major_version, gtk_minor_version + 1))
     GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
