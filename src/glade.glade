@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.39.0 
+<!-- Generated with glade 3.38.2 
 
 Glade - A user interface designer for GTK+ and GNOME.
 Copyright (C) 2012-2018 Juan Pablo Ugarte
@@ -29,65 +29,6 @@ Author: Juan Pablo Ugarte
   <!-- interface-description A user interface designer for GTK+ and GNOME. -->
   <!-- interface-copyright 2012-2018 Juan Pablo Ugarte -->
   <!-- interface-authors Juan Pablo Ugarte -->
-  <object class="GtkPopover" id="guido_popover">
-    <property name="can-focus">False</property>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="margin-start">8</property>
-        <property name="margin-end">8</property>
-        <property name="margin-top">4</property>
-        <child>
-          <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="valign">end</property>
-            <property name="resource">/org/gnome/glade/guido.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="valign">center</property>
-            <property name="label" translatable="yes" context="This is to honor a professor that passed away last year and appears in a popover when you click on the button that says &quot;RIP Guido&quot;" comments="The last sentence in quotes is in spanish and does not need to be translated.">Guido was one of my professors at Rosario
-National University of Argentina.
-
-He introduced me to C, Linux, free software...
-
-He always had extra time to explain one more thing
-and help you figure out things by yourself.
-
-Always made a joke in the right moment keeping
-things interesting and fun.
-
-Master of intentionally misconstrued sayings.
-
-Always carried a stack of books under his arm.
-
-Loved Guinness beer.
-
-All he ever wanted was make you think!
-
-"Alégrate! Mañana sera peor."
-
-	Juan Pablo</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
   <object class="GtkPopoverMenu" id="main_menu">
     <property name="can-focus">False</property>
     <child>
@@ -192,9 +133,9 @@ All he ever wanted was make you think!
         <child>
           <object class="GtkModelButton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.help</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="action-name">app.help</property>
             <property name="text" translatable="yes">User Manual</property>
           </object>
           <packing>
@@ -291,35 +232,6 @@ All he ever wanted was make you think!
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkMenuButton">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="focus-on-click">False</property>
-                <property name="receives-default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">end</property>
-                <property name="margin-bottom">4</property>
-                <property name="relief">none</property>
-                <property name="popover">guido_popover</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="Button label in the bottom of main window that triggers a popover">&lt;small&gt;In memory of an extraordinary
-person and professor
-R.I.P Guido Macchi&lt;/small&gt;</property>
-                    <property name="use-markup">True</property>
-                    <property name="justify">center</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
               </packing>
             </child>
           </object>
@@ -845,7 +757,7 @@ R.I.P Guido Macchi&lt;/small&gt;</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
     <property name="transient-for">GladeWindow</property>
-    <property name="copyright" translatable="yes">© 2018-2020 Juan Pablo Ugarte, et al.
+    <property name="copyright" translatable="yes">© 2018-2022 Juan Pablo Ugarte, et al.
 © 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.
 © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
 © 2001-2006 Ximian, Inc.</property>

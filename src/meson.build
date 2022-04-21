@@ -27,8 +27,7 @@ resource_data = files(
   'glade-preferences.glade',
   'glade-registration.css',
   'glade-registration.glade',
-  'glade-window.css',
-  'guido.png'
+  'glade-window.css'
 )
 
 resource = 'glade-resources'
