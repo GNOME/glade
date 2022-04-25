@@ -8,24 +8,25 @@
 # 甘露(Gan Lu) <rhythm.gan@gmail.com>, 2013.
 # Wylmer Wang <wantinghard@gmail.com>, 2014.
 # Tong Hui <tonghuix@gmail.com>, 2014.
+# lumingzh <lumingzh@qq.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 3.20\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2021-07-09 20:50+0000\n"
-"PO-Revision-Date: 2022-01-30 22:33-0500\n"
-"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
-"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"POT-Creation-Date: 2022-04-21 13:41+0000\n"
+"PO-Revision-Date: 2022-04-22 19:10+0800\n"
+"Last-Translator: lumingzh <lumingzh@qq.com>\n"
+"Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.3\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:44 src/glade.glade:261
+#: src/main.c:44 src/glade.glade:275
 msgid "Glade"
 msgstr "Glade"
 
@@ -78,110 +79,110 @@ msgstr ""
 msgid "[Read Only]"
 msgstr "[只读]"
 
-#: src/glade-window.c:182
+#: src/glade-window.c:183
 msgid "User Interface Designer"
 msgstr "用户界面设计器"
 
-#: src/glade-window.c:429 src/glade-window.c:436
+#: src/glade-window.c:430 src/glade-window.c:437
 msgid "the last action"
 msgstr "上一个动作"
 
-#: src/glade-window.c:430
+#: src/glade-window.c:431
 #, c-format
 msgid "Undo: %s"
 msgstr "撤消(_U)：%s"
 
-#: src/glade-window.c:437
+#: src/glade-window.c:438
 #, c-format
 msgid "Redo: %s"
 msgstr "重做：%s"
 
-#: src/glade-window.c:462
+#: src/glade-window.c:463
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "正在自动保存“%s”"
 
-#: src/glade-window.c:467
+#: src/glade-window.c:468
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "自动保存“%s”出错"
 
-#: src/glade-window.c:689
+#: src/glade-window.c:690
 msgid "Open…"
 msgstr "打开…"
 
-#: src/glade-window.c:723
+#: src/glade-window.c:724
 #, c-format
 msgid "Project %s is still loading."
 msgstr "项目“%s”仍在加载。"
 
-#: src/glade-window.c:742
+#: src/glade-window.c:743
 msgid "Failed to backup existing file, continue saving?"
 msgstr "备份现存文件失败，继续保存吗？"
 
-#: src/glade-window.c:757
+#: src/glade-window.c:758
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "保存 %s 失败：%s"
 
-#: src/glade-window.c:796
+#: src/glade-window.c:797
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "文件 %s 相比读取时已修改"
 
-#: src/glade-window.c:800
+#: src/glade-window.c:801
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "如果您保存它，所有的外部修改将丢失。仍然保存吗？"
 
-#: src/glade-window.c:805
+#: src/glade-window.c:806
 msgid "_Save Anyway"
 msgstr "仍然保存(_S)"
 
-#: src/glade-window.c:813
+#: src/glade-window.c:814
 msgid "_Don't Save"
 msgstr "不保存(_D)"
 
-#: src/glade-window.c:846
+#: src/glade-window.c:847
 #, c-format
 msgid "Project '%s' saved"
 msgstr "项目“%s”已保存"
 
-#: src/glade-window.c:877
+#: src/glade-window.c:878
 msgid "Save As…"
 msgstr "另存为…"
 
-#: src/glade-window.c:941
+#: src/glade-window.c:942
 #, c-format
 msgid "Could not save the file %s"
 msgstr "无法保存文件 %s"
 
-#: src/glade-window.c:945
+#: src/glade-window.c:946
 msgid "You do not have the permissions necessary to save the file."
 msgstr "您没有保存文件需要的权限。"
 
-#: src/glade-window.c:967
+#: src/glade-window.c:968
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "无法保存 %s 文件 。另一个打开的项目正在使用该路径。"
 
-#: src/glade-window.c:995
+#: src/glade-window.c:996
 msgid "No open projects to save"
 msgstr "没有已打开的项目可以保存"
 
-#: src/glade-window.c:1028
+#: src/glade-window.c:1029
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "在关闭前保存对“%s”项目的修改？"
 
-#: src/glade-window.c:1036
+#: src/glade-window.c:1037
 msgid "Your changes will be lost if you don't save them."
 msgstr "如果不保存，您的修改将会丢失。"
 
-#: src/glade-window.c:1040
+#: src/glade-window.c:1041
 msgid "Close _without Saving"
 msgstr "关闭而不保存(_W)"
 
-#: src/glade-window.c:1041 src/glade-window.c:1724 src/glade-preferences.c:237
+#: src/glade-window.c:1042 src/glade-window.c:1733 src/glade-preferences.c:237
 #: gladeui/glade-editor.c:793 gladeui/glade-editor.c:1152
 #: gladeui/glade-editor-property.c:1774 gladeui/glade-editor-property.c:2082
 #: gladeui/glade-editor-property.c:2279 gladeui/glade-editor-property.c:3215
@@ -191,154 +192,154 @@ msgstr "关闭而不保存(_W)"
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: src/glade-window.c:1042 src/glade.glade:685 gladeui/glade-utils.c:497
+#: src/glade-window.c:1043 src/glade.glade:699 gladeui/glade-utils.c:497
 msgid "_Save"
 msgstr "保存(S)"
 
-#: src/glade-window.c:1073
+#: src/glade-window.c:1074
 msgid "Save…"
 msgstr "保存…"
 
-#: src/glade-window.c:1631
+#: src/glade-window.c:1640
 msgid "Could not create a new project."
 msgstr "无法创建新项目。"
 
-#: src/glade-window.c:1692
+#: src/glade-window.c:1701
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "%s 项目有未保存的更改"
 
-#: src/glade-window.c:1697
+#: src/glade-window.c:1706
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr "如果重新加载，所有未保存的更改将丢失，确定要重新加载吗？"
 
-#: src/glade-window.c:1707
+#: src/glade-window.c:1716
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "项目文件 %s 已经在外部被修改"
 
-#: src/glade-window.c:1712
+#: src/glade-window.c:1721
 msgid "Do you want to reload the project?"
 msgstr "您想重新加载该项目吗？"
 
-#: src/glade-window.c:1718
+#: src/glade-window.c:1727
 msgid "_Reload"
 msgstr "重新加载(_R)"
 
-#: src/glade-window.c:2269
+#: src/glade-window.c:2278
 msgid "Hello, I will show you what's new in Glade"
 msgstr "您好，我来给您展示 Glade 的新特性"
 
-#: src/glade-window.c:2270
+#: src/glade-window.c:2279
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "菜单栏和工具栏合并在标题栏中"
 
-#: src/glade-window.c:2272
+#: src/glade-window.c:2281
 msgid "You can open a project"
 msgstr "您可以打开一个项目"
 
-#: src/glade-window.c:2273
+#: src/glade-window.c:2282
 msgid "find recently used"
 msgstr "查找最近使用的"
 
-#: src/glade-window.c:2274
+#: src/glade-window.c:2283
 msgid "or create a new one"
 msgstr "或者创建一个新项目"
 
-#: src/glade-window.c:2278
+#: src/glade-window.c:2287
 msgid "Undo"
 msgstr "撤消"
 
-#: src/glade-window.c:2279
+#: src/glade-window.c:2288
 msgid "Redo"
 msgstr "重做"
 
-#: src/glade-window.c:2280
+#: src/glade-window.c:2289
 msgid "Project switcher"
 msgstr "项目切换器"
 
-#: src/glade-window.c:2282
+#: src/glade-window.c:2291
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "并且“保存”按钮可在页眉管理器中直接访问"
 
-#: src/glade-window.c:2283
+#: src/glade-window.c:2292
 msgid "just like Save As"
 msgstr "就像“另存为”一样"
 
-#: src/glade-window.c:2284
+#: src/glade-window.c:2293
 msgid "project properties"
 msgstr "项目属性"
 
-#: src/glade-window.c:2285
+#: src/glade-window.c:2294
 msgid "and less commonly used actions"
 msgstr "以及不常用的操作"
 
-#: src/glade-window.c:2287
+#: src/glade-window.c:2296
 msgid "The object inspector took the palette's place"
 msgstr "对象检查器代替了调色板"
 
-#: src/glade-window.c:2288
+#: src/glade-window.c:2297
 msgid "To free up space for the property editor"
 msgstr "为属性编辑器释放空间"
 
-#: src/glade-window.c:2290
+#: src/glade-window.c:2299
 msgid "The palette was replaced with a new object chooser"
 msgstr "调色板被替换为新的对象选择器"
 
-#: src/glade-window.c:2291
+#: src/glade-window.c:2300
 msgid "Where you can search all supported classes"
 msgstr "在这里可以搜索所有的支持类"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2301
 msgid "investigate GTK+ object groups"
 msgstr "调查 GTK+ 对象群组"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2302
 msgid "and find classes introduced by other libraries"
 msgstr "并找到其他库引入的类"
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2304
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr "好的，现在我们已经完成了概览，让我们从新的工作流开始"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2306
 msgid "First of all, create a new project"
 msgstr "首先，创建一个新项目"
 
-#: src/glade-window.c:2298
+#: src/glade-window.c:2307
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
 msgstr "好的，现在使用新的控件选择器或双击工作区来添加 GtkWindow"
 
-#: src/glade-window.c:2299
+#: src/glade-window.c:2308
 msgid "Excellent!"
 msgstr "好极了！"
 
-#: src/glade-window.c:2300
+#: src/glade-window.c:2309
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr "顺便问一下，您知道您可以双击任何占位符来创建控件吗？"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2310
 msgid "Try adding a grid"
 msgstr "尝试添加网格"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2311
 msgid "and a button"
 msgstr "和一个按钮"
 
-#: src/glade-window.c:2304
+#: src/glade-window.c:2313
 msgid "Quite easy! Isn't it?"
 msgstr "很简单！不是吗？"
 
-#: src/glade-window.c:2305
+#: src/glade-window.c:2314
 msgid "Enjoy!"
 msgstr "玩的开心！"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2526
+#: src/glade-window.c:2536
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -347,16 +348,16 @@ msgstr ""
 " 您现在愿意参加吗？"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2530
+#: src/glade-window.c:2540
 msgid "If not, you can always find it in the Help menu."
 msgstr "如果现在不愿意，您总是可以在帮助菜单中找到它。"
 
-#: src/glade-window.c:2532
+#: src/glade-window.c:2542
 msgid "_Do not show this dialog again"
 msgstr "不再显示此对话(_D)"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2553
+#: src/glade-window.c:2563
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr "请到“帮助 -> 注册和用户调查”完成我们的调查！"
 
@@ -458,10 +459,14 @@ msgid "Preferences"
 msgstr "首选项"
 
 #: src/glade.glade:198
+msgid "User Manual"
+msgstr "用户手册"
+
+#: src/glade.glade:212
 msgid "About Glade"
 msgstr "关于 Glade"
 
-#: src/glade.glade:297
+#: src/glade.glade:311
 msgctxt "Button label in the bottom of main window that triggers a popover"
 msgid ""
 "<small>In memory of an extraordinary\n"
@@ -471,36 +476,36 @@ msgstr ""
 "<small>纪念一位出众的教授\n"
 "R.I.P Guido Macchi</small>"
 
-#: src/glade.glade:592 src/glade-preferences.c:239
+#: src/glade.glade:606 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2280 gladeui/glade-utils.c:497
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/glade.glade:597
+#: src/glade.glade:611
 msgid "Open a project"
 msgstr "打开一个项目"
 
-#: src/glade.glade:642
+#: src/glade.glade:656
 msgid "Create a new project"
 msgstr "创建一个新项目"
 
-#: src/glade.glade:662
+#: src/glade.glade:676
 msgid "Edit project properties"
 msgstr "修改项目属性"
 
-#: src/glade.glade:690
+#: src/glade.glade:704
 msgid "Save the current project"
 msgstr "保存当前项目"
 
-#: src/glade.glade:706
+#: src/glade.glade:720
 msgid "Save the current project with a different name"
 msgstr "以不同名称保存当前项目"
 
-#: src/glade.glade:735
+#: src/glade.glade:749
 msgid "Start/resume interactive UI introduction"
 msgstr "开始/继续交互式 UI 简介"
 
-#: src/glade.glade:834
+#: src/glade.glade:848
 msgid ""
 "© 2018-2020 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
@@ -512,15 +517,15 @@ msgstr ""
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:838
+#: src/glade.glade:852
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+ 和 GNOME 的用户界面设计器。"
 
-#: src/glade.glade:840
+#: src/glade.glade:854
 msgid "Visit Glade web site"
 msgstr "访问 Glade 网站"
 
-#: src/glade.glade:852
+#: src/glade.glade:866
 msgid "translator-credits"
 msgstr ""
 "Funda Wang <fundawang@linux.net.cn>, 2005\n"
@@ -2507,33 +2512,33 @@ msgstr "对象 %s 是一个类模板，但 gtk+ %d.%d 并不支持\n"
 msgid "Object %s has unrecognized type %s\n"
 msgstr "对象 %s 为无法识别的类型 %s\n"
 
-#: gladeui/glade-project.c:4951
+#: gladeui/glade-project.c:4953
 #, c-format
 msgid "Unsaved %i"
 msgstr "未保存的 %i"
 
-#: gladeui/glade-project.c:5258 gladeui/glade-project.c:5309
-#: gladeui/glade-project.c:5422
+#: gladeui/glade-project.c:5260 gladeui/glade-project.c:5311
+#: gladeui/glade-project.c:5424
 msgid "No widget selected."
 msgstr "未选择组件。"
 
-#: gladeui/glade-project.c:5274
+#: gladeui/glade-project.c:5276
 msgid "Unable to copy unrecognized widget type."
 msgstr "无法复制不识别的组件类。"
 
-#: gladeui/glade-project.c:5306
+#: gladeui/glade-project.c:5308
 msgid "Unable to cut unrecognized widget type"
 msgstr "无法剪切不识别的组件类"
 
-#: gladeui/glade-project.c:5359
+#: gladeui/glade-project.c:5361
 msgid "Unable to paste to the selected parent"
 msgstr "无法粘贴到上一级"
 
-#: gladeui/glade-project.c:5370
+#: gladeui/glade-project.c:5372
 msgid "Unable to paste to multiple widgets"
 msgstr "无法粘贴到多个组件"
 
-#: gladeui/glade-project.c:5380
+#: gladeui/glade-project.c:5382
 msgid "No widget on the clipboard"
 msgstr "剪贴板上没有组件"
 
@@ -3678,20 +3683,20 @@ msgstr "该组合框未配置有输入条"
 msgid "Tearoff menus are disabled"
 msgstr "已禁用可分离菜单"
 
-#: plugins/gtk+/glade-gtk-container.c:61
+#: plugins/gtk+/glade-gtk-container.c:60
 msgid "Cannot add a toplevel window to a container."
 msgstr "无法添加一个顶层窗口到容器。"
 
-#: plugins/gtk+/glade-gtk-container.c:70
+#: plugins/gtk+/glade-gtk-container.c:69
 msgid "Cannot add a popover to a container."
 msgstr "无法添加一个弹出框到容器。"
 
-#: plugins/gtk+/glade-gtk-container.c:81
+#: plugins/gtk+/glade-gtk-container.c:80
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
 msgstr "%s 类型的组件只能以组件作为子项。"
 
-#: plugins/gtk+/glade-gtk-container.c:99
+#: plugins/gtk+/glade-gtk-container.c:94
 #, c-format
 msgid ""
 "Widgets of type %s need placeholders to add children.\n"
