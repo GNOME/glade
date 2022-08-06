@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2021-02-21 20:02+0000\n"
-"PO-Revision-Date: 2021-03-06 20:19+0200\n"
-"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"POT-Creation-Date: 2022-07-10 09:38+0000\n"
+"PO-Revision-Date: 2022-08-06 16:29+0200\n"
+"Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,10 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:44 src/glade.glade:261
+#: src/main.c:44 src/glade.glade:275
 msgid "Glade"
 msgstr "Глејд"
 
@@ -79,241 +80,241 @@ msgstr ""
 msgid "[Read Only]"
 msgstr "[Само за читање]"
 
-#: src/glade-window.c:182
+#: src/glade-window.c:183
 msgid "User Interface Designer"
 msgstr "Израда корисничког сучеља"
 
-#: src/glade-window.c:429 src/glade-window.c:436
+#: src/glade-window.c:430 src/glade-window.c:437
 msgid "the last action"
 msgstr "последњу радњу"
 
-#: src/glade-window.c:430
+#: src/glade-window.c:431
 #, c-format
 msgid "Undo: %s"
 msgstr "Опозови: %s"
 
-#: src/glade-window.c:437
+#: src/glade-window.c:438
 #, c-format
 msgid "Redo: %s"
 msgstr "Понови: %s"
 
-#: src/glade-window.c:462
+#: src/glade-window.c:463
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Сам чувам „%s“"
 
-#: src/glade-window.c:467
+#: src/glade-window.c:468
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Грешка самочувања „%s“"
 
-#: src/glade-window.c:689
+#: src/glade-window.c:690
 msgid "Open…"
 msgstr "Отвори…"
 
-#: src/glade-window.c:723
+#: src/glade-window.c:724
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Пројекат „%s“ се још увек учитава."
 
-#: src/glade-window.c:742
+#: src/glade-window.c:743
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
 "Нисам успео да направим резерву постојеће датотеке, да наставим са чувањем?"
 
-#: src/glade-window.c:757
+#: src/glade-window.c:758
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Не могу да сачувам „%s“: %s"
 
-#: src/glade-window.c:796
+#: src/glade-window.c:797
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Датотека „%s“ је промењена од последњег читања"
 
-#: src/glade-window.c:800
+#: src/glade-window.c:801
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Ако је сачувате, све спољне измене могу бити изгубљене. Да је ипак сачувам?"
 
-#: src/glade-window.c:805
+#: src/glade-window.c:806
 msgid "_Save Anyway"
 msgstr "Ипак _сачувај"
 
-#: src/glade-window.c:813
+#: src/glade-window.c:814
 msgid "_Don't Save"
 msgstr "_Не чувај"
 
-#: src/glade-window.c:846
+#: src/glade-window.c:847
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Пројекат „%s“ је сачуван"
 
-#: src/glade-window.c:877
+#: src/glade-window.c:878
 msgid "Save As…"
 msgstr "Сачувај као…"
 
-#: src/glade-window.c:941
+#: src/glade-window.c:942
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Не могу да сачувам датотеку „%s“"
 
-#: src/glade-window.c:945
+#: src/glade-window.c:946
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Немате потребна овлашћења да сачувате датотеку."
 
-#: src/glade-window.c:967
+#: src/glade-window.c:968
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "Не могу да сачувам датотеку „%s“. Други пројекат са том путањом је отворен."
 
-#: src/glade-window.c:995
+#: src/glade-window.c:996
 msgid "No open projects to save"
 msgstr "Нема отворених пројеката за чување"
 
-#: src/glade-window.c:1028
+#: src/glade-window.c:1029
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Да сачувам измене у пројекту „%s“ пре затварања?"
 
-#: src/glade-window.c:1036
+#: src/glade-window.c:1037
 msgid "Your changes will be lost if you don't save them."
 msgstr "Ваше измене ће бити изгубљене ако их не сачувате."
 
-#: src/glade-window.c:1040
+#: src/glade-window.c:1041
 msgid "Close _without Saving"
 msgstr "Затвори _без чувања"
 
-#: src/glade-window.c:1041 src/glade-window.c:1724 src/glade-preferences.c:237
+#: src/glade-window.c:1042 src/glade-window.c:1733 src/glade-preferences.c:237
 #: gladeui/glade-editor.c:793 gladeui/glade-editor.c:1152
 #: gladeui/glade-editor-property.c:1774 gladeui/glade-editor-property.c:2082
 #: gladeui/glade-editor-property.c:2279 gladeui/glade-editor-property.c:3215
 #: gladeui/glade-editor-property.c:3323 gladeui/glade-editor-property.c:3334
 #: gladeui/glade-editor-property.c:3645 gladeui/glade-utils.c:494
-#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1063
+#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1207
 msgid "_Cancel"
 msgstr "_Откажи"
 
-#: src/glade-window.c:1042 src/glade.glade:685 gladeui/glade-utils.c:497
+#: src/glade-window.c:1043 src/glade.glade:699 gladeui/glade-utils.c:497
 msgid "_Save"
 msgstr "_Сачувај"
 
-#: src/glade-window.c:1073
+#: src/glade-window.c:1074
 msgid "Save…"
 msgstr "Сачувај…"
 
-#: src/glade-window.c:1631
+#: src/glade-window.c:1640
 msgid "Could not create a new project."
 msgstr "Не могу да направим нови пројекат."
 
-#: src/glade-window.c:1692
+#: src/glade-window.c:1701
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Пројекат %s има несачуваних измена"
 
-#: src/glade-window.c:1697
+#: src/glade-window.c:1706
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Ако га поново учитате, све несачуване измене ће бити изгубљене. Да га ипак "
 "поново учитам?"
 
-#: src/glade-window.c:1707
+#: src/glade-window.c:1716
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Датотека пројекта „%s“ је измењена споља"
 
-#: src/glade-window.c:1712
+#: src/glade-window.c:1721
 msgid "Do you want to reload the project?"
 msgstr "Да ли желите да поново учитате пројекат?"
 
-#: src/glade-window.c:1718
+#: src/glade-window.c:1727
 msgid "_Reload"
 msgstr "_Поново учитај"
 
-#: src/glade-window.c:2269
+#: src/glade-window.c:2278
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Здраво, ја ћу вам показати шта је ново у Глејду"
 
-#: src/glade-window.c:2270
+#: src/glade-window.c:2279
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Трака изборника и алатна трака су спојене у траку заглавља"
 
-#: src/glade-window.c:2272
+#: src/glade-window.c:2281
 msgid "You can open a project"
 msgstr "Можете отворити пројекат"
 
-#: src/glade-window.c:2273
+#: src/glade-window.c:2282
 msgid "find recently used"
 msgstr "нађите скоро коришћено"
 
-#: src/glade-window.c:2274
+#: src/glade-window.c:2283
 msgid "or create a new one"
 msgstr "или направити нови"
 
-#: src/glade-window.c:2278
+#: src/glade-window.c:2287
 msgid "Undo"
 msgstr "Опозови"
 
-#: src/glade-window.c:2279
+#: src/glade-window.c:2288
 msgid "Redo"
 msgstr "Поврати"
 
-#: src/glade-window.c:2280
+#: src/glade-window.c:2289
 msgid "Project switcher"
 msgstr "Измењивач пројеката"
 
-#: src/glade-window.c:2282
+#: src/glade-window.c:2291
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "и дугме „Сачувај“ је непосредно доступно у траци заглавља"
 
-#: src/glade-window.c:2283
+#: src/glade-window.c:2292
 msgid "just like Save As"
 msgstr "као и дугме „Сачувај као“"
 
-#: src/glade-window.c:2284
+#: src/glade-window.c:2293
 msgid "project properties"
 msgstr "својства пројекта"
 
-#: src/glade-window.c:2285
+#: src/glade-window.c:2294
 msgid "and less commonly used actions"
 msgstr "и друге мање коришћене радње"
 
-#: src/glade-window.c:2287
+#: src/glade-window.c:2296
 msgid "The object inspector took the palette's place"
 msgstr "На место палете је дошао испитивач објеката"
 
-#: src/glade-window.c:2288
+#: src/glade-window.c:2297
 msgid "To free up space for the property editor"
 msgstr "Да би се створио простор за уређивача својстава"
 
-#: src/glade-window.c:2290
+#: src/glade-window.c:2299
 msgid "The palette was replaced with a new object chooser"
 msgstr "Палету је заменио нови бирач објеката"
 
-#: src/glade-window.c:2291
+#: src/glade-window.c:2300
 msgid "Where you can search all supported classes"
 msgstr "Где можете претражити све подржане класе"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2301
 msgid "investigate GTK+ object groups"
 msgstr "истражити групе ГТК+ објеката"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2302
 msgid "and find classes introduced by other libraries"
 msgstr "и наћи уведене класе из других библиотека"
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2304
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr ""
 "Добро, пошто смо завршили са уводом, хајмо кренути са новим начином рада"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2306
 msgid "First of all, create a new project"
 msgstr "Прво и прво, направите нови пројекат"
 
-#: src/glade-window.c:2298
+#: src/glade-window.c:2307
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
@@ -321,35 +322,35 @@ msgstr ""
 "У реду, додајте нови GtkWindow уз помоћ бирача виџета или тако што ћете "
 "начинити дупли клик на радни простор"
 
-#: src/glade-window.c:2299
+#: src/glade-window.c:2308
 msgid "Excellent!"
 msgstr "Одлично!"
 
-#: src/glade-window.c:2300
+#: src/glade-window.c:2309
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr ""
 "Узгред, да ли сте знали да можете кликнути двапут на било који држач "
 "простора да бисте направили виџете?"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2310
 msgid "Try adding a grid"
 msgstr "Пробајте додати мрежу"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2311
 msgid "and a button"
 msgstr "и додајте дугме"
 
-#: src/glade-window.c:2304
+#: src/glade-window.c:2313
 msgid "Quite easy! Isn't it?"
 msgstr "Веома лако, зар не?"
 
-#: src/glade-window.c:2305
+#: src/glade-window.c:2314
 msgid "Enjoy!"
 msgstr "Уживајте!"
 
 #. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2526
+#: src/glade-window.c:2536
 msgid ""
 "We are conducting a user survey\n"
 " would you like to take it now?"
@@ -358,16 +359,16 @@ msgstr ""
 " да ли желите сада да га обавите?"
 
 #. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2530
+#: src/glade-window.c:2540
 msgid "If not, you can always find it in the Help menu."
 msgstr "Ако не, увек га можете наћи у изборнику помоћи."
 
-#: src/glade-window.c:2532
+#: src/glade-window.c:2542
 msgid "_Do not show this dialog again"
 msgstr "_Не приказуј више ово прозорче"
 
 #. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2553
+#: src/glade-window.c:2563
 msgid "Go to Help -> Registration & User Survey and complete our survey!"
 msgstr ""
 "Идите на Помоћ —> Регистрација и испитивање корисника и попуните наш упитник!"
@@ -471,10 +472,14 @@ msgid "Preferences"
 msgstr "Поставке"
 
 #: src/glade.glade:198
+msgid "User Manual"
+msgstr "Корисничко упутство"
+
+#: src/glade.glade:212
 msgid "About Glade"
 msgstr "О Глејду"
 
-#: src/glade.glade:297
+#: src/glade.glade:311
 msgctxt "Button label in the bottom of main window that triggers a popover"
 msgid ""
 "<small>In memory of an extraordinary\n"
@@ -485,36 +490,36 @@ msgstr ""
 "особу и професора\n"
 "П.У.М Гвидо Маки</small>"
 
-#: src/glade.glade:592 src/glade-preferences.c:239
+#: src/glade.glade:606 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2280 gladeui/glade-utils.c:497
 msgid "_Open"
 msgstr "_Отвори"
 
-#: src/glade.glade:597
+#: src/glade.glade:611
 msgid "Open a project"
 msgstr "Отворите пројекат"
 
-#: src/glade.glade:642
+#: src/glade.glade:656
 msgid "Create a new project"
 msgstr "Направите нови пројекат"
 
-#: src/glade.glade:662
+#: src/glade.glade:676
 msgid "Edit project properties"
 msgstr "Уредите својства пројекта"
 
-#: src/glade.glade:690
+#: src/glade.glade:704
 msgid "Save the current project"
 msgstr "Сачувајте текући пројекат"
 
-#: src/glade.glade:706
+#: src/glade.glade:720
 msgid "Save the current project with a different name"
 msgstr "Сачувајте текући пројекат под другим називом"
 
-#: src/glade.glade:735
+#: src/glade.glade:749
 msgid "Start/resume interactive UI introduction"
 msgstr "Покрените или наставите интерактивни увод у корисничко сучеље"
 
-#: src/glade.glade:834
+#: src/glade.glade:848
 msgid ""
 "© 2018-2020 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
@@ -526,15 +531,15 @@ msgstr ""
 "© 2001-2006 Хоакин Кенка Абела, Паоло Борели, и др.\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:838
+#: src/glade.glade:852
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Израда корисниког сучеља за Гтк+ и Гном."
 
-#: src/glade.glade:840
+#: src/glade.glade:854
 msgid "Visit Glade web site"
 msgstr "Посетите веб страницу Глејда"
 
-#: src/glade.glade:852
+#: src/glade.glade:866
 msgid "translator-credits"
 msgstr ""
 "Бранко Кокановић <branko.kokanovic@gmail.com>\n"
@@ -639,17 +644,14 @@ msgid "column"
 msgstr "стубац"
 
 #: src/glade-preferences.glade:331
-#| msgid "Add a new catalog search path"
 msgid "Add a new search path"
 msgstr "Додаје нову путању претраге"
 
 #: src/glade-preferences.glade:356
-#| msgid "Remove the selected catalog search path"
 msgid "Remove the selected search path"
 msgstr "Уклања изабрану путању претраге"
 
 #: src/glade-preferences.glade:387
-#| msgid "Extra catalog paths"
 msgid "Extra Catalog & Templates paths"
 msgstr "Посебне путање каталога и шаблона"
 
@@ -698,12 +700,10 @@ msgid "_Close"
 msgstr "_Затвори"
 
 #: src/glade-registration.glade:77
-#| msgid "Submit"
 msgid "_Submit"
 msgstr "_Пошаљи"
 
 #: src/glade-registration.glade:82
-#| msgid "Information will be sent to https://people.gnome.org/~jpu"
 msgid "Information will be sent to https://survey.gnome.org"
 msgstr "Подаци ће бити послати на „https://survey.gnome.org“"
 
@@ -907,12 +907,10 @@ msgid "Arch Linux"
 msgstr "Арч Линукс"
 
 #: src/glade-registration.glade:1252
-#| msgid "Arch Linux"
 msgid "Ataraxia Linux"
 msgstr "Атараксија Линукс"
 
 #: src/glade-registration.glade:1253
-#| msgid "Center"
 msgid "CentOS"
 msgstr "ЦентОС"
 
@@ -921,7 +919,6 @@ msgid "Chrome OS"
 msgstr "Хром ОС"
 
 #: src/glade-registration.glade:1255
-#| msgid "Arch Linux"
 msgid "Clear Linux"
 msgstr "Клир Линукс"
 
@@ -946,7 +943,6 @@ msgid "Gentoo"
 msgstr "Џенту"
 
 #: src/glade-registration.glade:1261
-#| msgid "Ubuntu"
 msgid "Kubuntu"
 msgstr "Кубунту"
 
@@ -1007,7 +1003,6 @@ msgid "Ubuntu"
 msgstr "Убунту"
 
 #: src/glade-registration.glade:1276
-#| msgid "Arch Linux"
 msgid "Void Linux"
 msgstr "Воид Линукс"
 
@@ -1048,7 +1043,6 @@ msgid "version"
 msgstr "издање"
 
 #: src/glade-registration.glade:1335
-#| msgid "0"
 msgid "10"
 msgstr "10"
 
@@ -1085,7 +1079,6 @@ msgid "2000"
 msgstr "2000"
 
 #: src/glade-registration.glade:1358
-#| msgid "Catalog"
 msgid "Catalina"
 msgstr "Каталина"
 
@@ -1102,7 +1095,6 @@ msgid "Sierra"
 msgstr "Сјера"
 
 #: src/glade-registration.glade:1362
-#| msgid "Small Capitals"
 msgid "El Capitan"
 msgstr "Ел Капитан"
 
@@ -1548,7 +1540,6 @@ msgid "An entry"
 msgstr "Унос"
 
 #: gladeui/glade-catalog.c:730
-#| msgid "Unsetting template"
 msgid "User templates"
 msgstr "Кориснички шаблони"
 
@@ -1844,7 +1835,7 @@ msgstr "Ресетуј својства елемента"
 #: gladeui/glade-editor-property.c:2083 gladeui/glade-editor-property.c:3217
 #: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3336
 #: gladeui/glade-editor-property.c:3646 plugins/gtk+/glade-accels.c:524
-#: plugins/gtk+/glade-attributes.c:1064
+#: plugins/gtk+/glade-attributes.c:1208
 msgid "_OK"
 msgstr "У _реду"
 
@@ -1989,7 +1980,7 @@ msgstr "Одаберите %s у овом пројекту"
 
 #: gladeui/glade-editor-property.c:3216 gladeui/glade-editor-property.c:3324
 #: gladeui/glade-editor-property.c:3335 gladeui/glade-editor-property.c:3644
-#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1062
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1206
 msgid "C_lear"
 msgstr "_Очисти"
 
@@ -2457,7 +2448,6 @@ msgstr "Овај елемент је уведен у %s %d.%d док је ова
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3056
 #, c-format
-#| msgid "[%s] Object class '<b>%s</b>' was introduced in %s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' was introduced in %s %d.%d\n"
@@ -2472,7 +2462,6 @@ msgstr "Овај елемент је застарео"
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3061
 #, c-format
-#| msgid "[%s] Object class '<b>%s</b>' from %s %d.%d is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tObject class '<b>%s</b>' from %s %d.%d is deprecated\n"
@@ -2490,24 +2479,18 @@ msgstr "Ово својство је уведено у %s %d.%d док је ов
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3070
 #, c-format
-#| msgid ""
-#| "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
-#| "%s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d."
 "%d\n"
 msgstr ""
 "[%s]\n"
-"\tСвојство „<b>%s</b>“ класе објекта „<b>%s</b>“ је уведено у издању %s %d.%"
-"d\n"
+"\tСвојство „<b>%s</b>“ класе објекта „<b>%s</b>“ је уведено у издању %s %d."
+"%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3074
 #, c-format
-#| msgid ""
-#| "[%s] Packing property '<b>%s</b>' of object class '<b>%s</b>' was "
-#| "introduced in %s %d.%d\n"
 msgid ""
 "[%s]\n"
 "\tPacking property '<b>%s</b>' of object class '<b>%s</b>' was introduced in "
@@ -2524,8 +2507,6 @@ msgstr "Ово својство је застарело"
 #. translators: refers to a property '%s' of widget '[%s]'
 #: gladeui/glade-project.c:3080
 #, c-format
-#| msgid ""
-#| "[%s] Property '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tProperty '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
@@ -2543,9 +2524,6 @@ msgstr "Овај сигнал је уведен у %s %d.%d док је овај
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3088
 #, c-format
-#| msgid ""
-#| "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s "
-#| "%d.%d\n"
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' was introduced in %s %d.%d\n"
@@ -2560,7 +2538,6 @@ msgstr "Овај сигнал је застарео"
 #. translators: refers to a signal '%s' of widget '[%s]'
 #: gladeui/glade-project.c:3094
 #, c-format
-#| msgid "[%s] Signal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
 msgid ""
 "[%s]\n"
 "\tSignal '<b>%s</b>' of object class '<b>%s</b>' is deprecated\n"
@@ -2579,8 +2556,6 @@ msgstr "У пројекту „%s“ постоје грешке. Да сачу�
 
 #: gladeui/glade-project.c:3435
 #, c-format
-#| msgid ""
-#| "Object %s is a class template but this is not supported in gtk+ %d.%d"
 msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr "Објекат „%s“ је шаблон разреда али то није подржано у „gtk+ %d.%d“\n"
 
@@ -2589,33 +2564,33 @@ msgstr "Објекат „%s“ је шаблон разреда али то н�
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Објекат „%s“ има непознату врсту „%s“\n"
 
-#: gladeui/glade-project.c:4951
+#: gladeui/glade-project.c:4953
 #, c-format
 msgid "Unsaved %i"
 msgstr "Несачуван „%i“"
 
-#: gladeui/glade-project.c:5258 gladeui/glade-project.c:5309
-#: gladeui/glade-project.c:5422
+#: gladeui/glade-project.c:5260 gladeui/glade-project.c:5311
+#: gladeui/glade-project.c:5424
 msgid "No widget selected."
 msgstr "Није одабран ниједан елемент."
 
-#: gladeui/glade-project.c:5274
+#: gladeui/glade-project.c:5276
 msgid "Unable to copy unrecognized widget type."
 msgstr "Не могу да умножим непознату врсту елемента."
 
-#: gladeui/glade-project.c:5306
+#: gladeui/glade-project.c:5308
 msgid "Unable to cut unrecognized widget type"
 msgstr "Не могу да исечем непознату врсту елемента"
 
-#: gladeui/glade-project.c:5359
+#: gladeui/glade-project.c:5361
 msgid "Unable to paste to the selected parent"
 msgstr "Не могу да убацим у изабраног родитеља"
 
-#: gladeui/glade-project.c:5370
+#: gladeui/glade-project.c:5372
 msgid "Unable to paste to multiple widgets"
 msgstr "Не могу да убацим у више елемената"
 
-#: gladeui/glade-project.c:5380
+#: gladeui/glade-project.c:5382
 msgid "No widget on the clipboard"
 msgstr "Нема елемента у остави"
 
@@ -2868,7 +2843,7 @@ msgid "Could not show link:"
 msgstr "Не могу да прикажем везу:"
 
 #. Reset the column
-#: gladeui/glade-utils.c:1730 plugins/gtk+/glade-attributes.c:830
+#: gladeui/glade-utils.c:1730 plugins/gtk+/glade-attributes.c:868
 #: plugins/gtk+/gtk+.xml:830 plugins/gtk+/gtk+.xml:1188
 #: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1307
 #: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:1574
@@ -3240,12 +3215,10 @@ msgid "Toolkit version required:"
 msgstr "Захтевано издање скупа алата:"
 
 #: gladeui/glade-project-properties.ui:444
-#| msgid "Verify versions and deprecations:"
 msgid "Verify objects, properties and signals deprecations"
 msgstr "Проверите објекте, својства и застарелости сигнала"
 
 #: gladeui/glade-project-properties.ui:481
-#| msgid "Warning"
 msgid "Warnings:"
 msgstr "Упозорења:"
 
@@ -3349,117 +3322,117 @@ msgstr "Постављам „%s“ да користи средишњег са�
 msgid "Setting %s to not use a center child"
 msgstr "Постављам „%s“ да не користи средишњег садржаног"
 
-#: plugins/gtk+/glade-attributes.c:222
+#: plugins/gtk+/glade-attributes.c:235
 msgctxt "textattr"
 msgid "Style"
 msgstr "Стил"
 
-#: plugins/gtk+/glade-attributes.c:226
+#: plugins/gtk+/glade-attributes.c:239
 msgctxt "textattr"
 msgid "Weight"
 msgstr "Ширина"
 
-#: plugins/gtk+/glade-attributes.c:230
+#: plugins/gtk+/glade-attributes.c:243
 msgctxt "textattr"
 msgid "Variant"
 msgstr "Варијанта"
 
-#: plugins/gtk+/glade-attributes.c:234
+#: plugins/gtk+/glade-attributes.c:247
 msgctxt "textattr"
 msgid "Stretch"
 msgstr "Развуци"
 
-#: plugins/gtk+/glade-attributes.c:238
+#: plugins/gtk+/glade-attributes.c:251
 msgctxt "textattr"
 msgid "Underline"
 msgstr "Подвучено"
 
-#: plugins/gtk+/glade-attributes.c:242
+#: plugins/gtk+/glade-attributes.c:255
 msgctxt "textattr"
 msgid "Strikethrough"
 msgstr "Прецртано"
 
-#: plugins/gtk+/glade-attributes.c:246
+#: plugins/gtk+/glade-attributes.c:259
 msgctxt "textattr"
 msgid "Gravity"
 msgstr "Гравитација"
 
-#: plugins/gtk+/glade-attributes.c:250
+#: plugins/gtk+/glade-attributes.c:263
 msgctxt "textattr"
 msgid "Gravity Hint"
 msgstr "Савет за гравитацију"
 
-#: plugins/gtk+/glade-attributes.c:262
+#: plugins/gtk+/glade-attributes.c:275
 msgctxt "textattr"
 msgid "Size"
 msgstr "Величина"
 
-#: plugins/gtk+/glade-attributes.c:267
+#: plugins/gtk+/glade-attributes.c:280
 msgctxt "textattr"
 msgid "Absolute Size"
 msgstr "Апсолутна величина"
 
-#: plugins/gtk+/glade-attributes.c:274
+#: plugins/gtk+/glade-attributes.c:287
 msgctxt "textattr"
 msgid "Foreground Color"
 msgstr "Боја првог плана"
 
-#: plugins/gtk+/glade-attributes.c:278
+#: plugins/gtk+/glade-attributes.c:291
 msgctxt "textattr"
 msgid "Background Color"
 msgstr "Боја позадине"
 
-#: plugins/gtk+/glade-attributes.c:282
+#: plugins/gtk+/glade-attributes.c:295
 msgctxt "textattr"
 msgid "Underline Color"
 msgstr "Боја за подвучено"
 
-#: plugins/gtk+/glade-attributes.c:286
+#: plugins/gtk+/glade-attributes.c:299
 msgctxt "textattr"
 msgid "Strikethrough Color"
 msgstr "Боја за прецртано"
 
-#: plugins/gtk+/glade-attributes.c:297
+#: plugins/gtk+/glade-attributes.c:310
 msgctxt "textattr"
 msgid "Scale"
 msgstr "Размера"
 
-#: plugins/gtk+/glade-attributes.c:303
+#: plugins/gtk+/glade-attributes.c:316
 msgctxt "textattr"
 msgid "Font Description"
 msgstr "Опис фонта"
 
-#: plugins/gtk+/glade-attributes.c:329 plugins/gtk+/glade-attributes.c:366
-#: plugins/gtk+/glade-attributes.c:374 plugins/gtk+/glade-attributes.c:380
-#: plugins/gtk+/glade-attributes.c:833
+#: plugins/gtk+/glade-attributes.c:349 plugins/gtk+/glade-attributes.c:404
+#: plugins/gtk+/glade-attributes.c:412 plugins/gtk+/glade-attributes.c:418
+#: plugins/gtk+/glade-attributes.c:871
 msgid "<Enter Value>"
 msgstr "<Унесите вредност>"
 
-#: plugins/gtk+/glade-attributes.c:365
+#: plugins/gtk+/glade-attributes.c:403
 msgid "Unset"
 msgstr "Уклони"
 
-#: plugins/gtk+/glade-attributes.c:727
+#: plugins/gtk+/glade-attributes.c:765
 msgid "Select a color"
 msgstr "Одаберите боју"
 
-#: plugins/gtk+/glade-attributes.c:762
+#: plugins/gtk+/glade-attributes.c:800
 msgid "Select a font"
 msgstr "Изаберите словни лик"
 
-#: plugins/gtk+/glade-attributes.c:897
+#: plugins/gtk+/glade-attributes.c:937
 msgid "Attribute"
 msgstr "Особина"
 
-#: plugins/gtk+/glade-attributes.c:905
+#: plugins/gtk+/glade-attributes.c:945
 msgid "Value"
 msgstr "Вредност"
 
-#: plugins/gtk+/glade-attributes.c:1058
+#: plugins/gtk+/glade-attributes.c:1202
 msgid "Setup Text Attributes"
 msgstr "Подеси особине текста"
 
-#: plugins/gtk+/glade-attributes.c:1150
+#: plugins/gtk+/glade-attributes.c:1280
 msgid "Edit Attributes"
 msgstr "Уредите особине"
 
@@ -3765,22 +3738,21 @@ msgstr "Ово прозорче за избор није подешено да �
 msgid "Tearoff menus are disabled"
 msgstr "Откачињући изборници су искључени"
 
-#: plugins/gtk+/glade-gtk-container.c:61
+#: plugins/gtk+/glade-gtk-container.c:60
 msgid "Cannot add a toplevel window to a container."
 msgstr "Не могу да додам прозор највишег нивоа у контејнер."
 
-#: plugins/gtk+/glade-gtk-container.c:70
+#: plugins/gtk+/glade-gtk-container.c:69
 msgid "Cannot add a popover to a container."
 msgstr "Не могу да додам искок у контејнер."
 
-#: plugins/gtk+/glade-gtk-container.c:81
+#: plugins/gtk+/glade-gtk-container.c:80
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
 msgstr "Елементи врсте „%s“ могу да имају елементе само као садржане."
 
-#: plugins/gtk+/glade-gtk-container.c:99
+#: plugins/gtk+/glade-gtk-container.c:94
 #, c-format
-#| msgid "Widgets of type %s need placeholders to add children."
 msgid ""
 "Widgets of type %s need placeholders to add children.\n"
 "Increase its size or add a container if it only supports one child."
@@ -5185,12 +5157,10 @@ msgid "Footnote text"
 msgstr "Текст фусноте"
 
 #: plugins/gtk+/gtk+.xml:450
-#| msgid "Font Selection"
 msgid "Content deletion"
 msgstr "Брисање садржаја"
 
 #: plugins/gtk+/gtk+.xml:452
-#| msgid "Context for translation"
 msgid "Content insertion"
 msgstr "Уметање садржаја"
 
@@ -5499,7 +5469,6 @@ msgid "Tooltip"
 msgstr "Облачић"
 
 #: plugins/gtk+/gtk+.xml:813
-#| msgid "Toplevels"
 msgid "Toplevel"
 msgstr "Највиши ниво"
 
@@ -6689,12 +6658,10 @@ msgid "BSD 3"
 msgstr "БСД 3"
 
 #: plugins/gtk+/gtk+.xml:3169
-#| msgid "Apache 2"
 msgid "Apache 2.0"
 msgstr "Апач 2.0"
 
 #: plugins/gtk+/gtk+.xml:3171
-#| msgid "GPL 2.0"
 msgid "MPL 2.0"
 msgstr "МПЛ 2.0"
 
@@ -8076,7 +8043,6 @@ msgstr "Подешавање:"
 #: plugins/gtk+/glade-scrolled-window-editor.ui:332
 #: plugins/gtk+/glade-scrolled-window-editor.ui:370
 #: plugins/gtk+/glade-scrolled-window-editor.ui:409
-#| msgid "Right:"
 msgid "Height: "
 msgstr "Висина: "
 
@@ -8247,7 +8213,6 @@ msgid "The URL to load in Glade (this property will not be saved)"
 msgstr "Адреса за учитавање у Глејд (ово својство неће бити сачувано)"
 
 #: plugins/webkit2gtk/webkit2gtk.xml:32
-#| msgid "Table"
 msgid "Tab"
 msgstr "Језичак"
 
