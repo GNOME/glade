@@ -1,13 +1,10 @@
 Glade official git repository is hosted by the GNOME foundation at
 gitlab.gnome.org
 
-Mailing List
+Maintainer
 ============
-Glade discussion takes place on glade-devel-list@gnome.org
-
-To subscribe or to consult archives visit
-	https://mail.gnome.org/mailman/listinfo/glade-devel-list
-
+Glade is looking for a new maintainer, if you are interested please contact us
+on gitlab.
 
 GitLab
 ========

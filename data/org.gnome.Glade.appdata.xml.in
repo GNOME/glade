@@ -49,6 +49,42 @@
   <project_group>GNOME</project_group>
   <translation type="gettext">glade</translation>
   <releases>
+    <release version="3.40.0" date="2022-08-10">
+      <description>
+        <p>Last Release!
+Glade is not being actively developed or maintained anymore.
+If you are interested in becoming a maintainer please contact us on gitlab.
+        </p>
+        <ul>
+          <li>Remove survey</li>
+	  <li>Add user manual menu item (Sabri Ünal)</li>
+	  <li>'Clear' action in "Setup Text Attributes" dialog now clears only selected attributes (crvi)</li>
+	  <li>Fix windows build on msys</li>
+	  <li>Fix build against Python 3.9</li>
+	  <li>Fix issue pasing widget with ctrl+v in GtkGrid</li>
+	  <li>Several bug fixes</li>
+        </ul>
+      </description>
+      <issues>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/502">Fix issue #502 sync draw-indicator on setting xalign (Caolán McNamara)</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/499">Fix issue #499 and #509 "Drop overzealous check using only the first child"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/385">Fix Segfault in gnome-builder when widget doesn't have a name (Peter Maatman)</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/373">Fix issue #373 "Move separator in hamburger menu one up, to be consistent with other GNOME applications"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/484">Fix issue #484 "Crash with GtkRecentChooserDialog"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/194">Fix issue #194 "Using List Store can result in program crash."</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/53">Fix issue #53 "Can't choose a FileChooserDialog for a FileChooserButton"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/98">Fix issue #98 #491</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/355">Fix issue #355 "Make notification text selectable"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/360">Fix issue #360 "No examples in documentation on using custom catalogues with gtkBuilder"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/406">Fix issue #406 "AtkObject::accessible-role should not be translatable"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/479">Fix issue #479 "Glade 3.36.0 segfaults when opening a file"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/471">Fix issue #471 "XML not updated after adding element"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/474">Fix issue #474 "GtkLabel: setup text attribute issues"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/480">Fix issue #480 "version field not always updated in XML"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/470">Fix issue #470 "Widgets of type need placeholders to add children"</issue>
+	<issue url="https://gitlab.gnome.org/GNOME/glade/-/issues/472">Fix issue #472 "gnome-nightly: About dialog should display git commit rev"</issue>
+      </issues>
+    </release>
     <release version="3.38.0" date="2020-09-12">
       <description>
         <p>Glade 3.38.0 release!</p>
