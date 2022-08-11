@@ -8,20 +8,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2022-05-19 08:24+0000\n"
-"PO-Revision-Date: 2022-06-03 09:25+0300\n"
+"POT-Creation-Date: 2022-08-10 21:32+0000\n"
+"PO-Revision-Date: 2022-08-11 08:54+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.12.0\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:44 src/glade.glade:275
+#: src/main.c:44 src/glade.glade:202
 msgid "Glade"
 msgstr "Glade"
 
@@ -72,119 +72,120 @@ msgstr ""
 "За допомогою GtkBuilder файли XML Glade можна використовувати у коді "
 "багатьма мовами програмування, зокрема C, C++, C#, Vala, Java, Perl, Python."
 
-#: src/glade-window.c:51
+#: src/glade-window.c:50
 msgid "[Read Only]"
 msgstr "[Лише для читання]"
 
-#: src/glade-window.c:183
+#: src/glade-window.c:180
 msgid "User Interface Designer"
 msgstr "Редактор інтерфейсів користувача"
 
-#: src/glade-window.c:430 src/glade-window.c:437
+#: src/glade-window.c:427 src/glade-window.c:434
 msgid "the last action"
 msgstr "остання дія"
 
-#: src/glade-window.c:431
+#: src/glade-window.c:428
 #, c-format
 msgid "Undo: %s"
 msgstr "Вернути: %s"
 
-#: src/glade-window.c:438
+#: src/glade-window.c:435
 #, c-format
 msgid "Redo: %s"
 msgstr "Повторити: %s"
 
-#: src/glade-window.c:463
+#: src/glade-window.c:460
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Автоматичне збереження «%s»"
 
-#: src/glade-window.c:468
+#: src/glade-window.c:465
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Помилка під час спроби автоматично зберегти «%s»"
 
-#: src/glade-window.c:690
+#: src/glade-window.c:687
 msgid "Open…"
 msgstr "Відкрити…"
 
-#: src/glade-window.c:724
+#: src/glade-window.c:721
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Завантаження проєкту %s ще не завершено."
 
-#: src/glade-window.c:743
+#: src/glade-window.c:740
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
 "Не вдалося створити резервну копію наявного файла. Продовжити процес "
 "зберігання?"
 
-#: src/glade-window.c:758
+#: src/glade-window.c:755
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Не вдається зберегти %s: %s"
 
-#: src/glade-window.c:797
+#: src/glade-window.c:794
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Файл %s був змінений на диску з моменту останнього читання"
 
-#: src/glade-window.c:801
-msgid "If you save it, all the external changes could be lost. Save it anyway?"
+#: src/glade-window.c:798
+msgid ""
+"If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Якщо ви збережете його, всі зміни, що зроблені зовні, будуть втрачені. "
 "Зберегти попри все?"
 
-#: src/glade-window.c:806
+#: src/glade-window.c:803
 msgid "_Save Anyway"
 msgstr "З_берегти"
 
-#: src/glade-window.c:814
+#: src/glade-window.c:811
 msgid "_Don't Save"
 msgstr "_Не зберігати"
 
-#: src/glade-window.c:847
+#: src/glade-window.c:844
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Проєкт «%s» збережений"
 
-#: src/glade-window.c:878
+#: src/glade-window.c:875
 msgid "Save As…"
 msgstr "Зберегти як…"
 
-#: src/glade-window.c:942
+#: src/glade-window.c:939
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Не вдається зберегти файл %s"
 
-#: src/glade-window.c:946
+#: src/glade-window.c:943
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Недостатньо прав для збереження файлу."
 
-#: src/glade-window.c:968
+#: src/glade-window.c:965
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "Не вдалося зберегти файл %s. Інший проєкт у цьому каталозі вже відкритий."
 
-#: src/glade-window.c:996
+#: src/glade-window.c:993
 msgid "No open projects to save"
 msgstr "Немає відкритих проєктів для збереження"
 
-#: src/glade-window.c:1029
+#: src/glade-window.c:1026
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Зберегти зміни у проєкті «%s» перед закриттям?"
 
-#: src/glade-window.c:1037
+#: src/glade-window.c:1034
 msgid "Your changes will be lost if you don't save them."
 msgstr "Якщо не зберегти, зміни будуть втрачені."
 
-#: src/glade-window.c:1041
+#: src/glade-window.c:1038
 msgid "Close _without Saving"
 msgstr "_Закрити без збереження"
 
-#: src/glade-window.c:1042 src/glade-window.c:1733 src/glade-preferences.c:237
+#: src/glade-window.c:1039 src/glade-window.c:1721 src/glade-preferences.c:237
 #: gladeui/glade-editor.c:793 gladeui/glade-editor.c:1152
 #: gladeui/glade-editor-property.c:1774 gladeui/glade-editor-property.c:2082
 #: gladeui/glade-editor-property.c:2279 gladeui/glade-editor-property.c:3215
@@ -194,124 +195,125 @@ msgstr "_Закрити без збереження"
 msgid "_Cancel"
 msgstr "_Скасувати"
 
-#: src/glade-window.c:1043 src/glade.glade:699 gladeui/glade-utils.c:497
+#: src/glade-window.c:1040 src/glade.glade:598 gladeui/glade-utils.c:497
 msgid "_Save"
 msgstr "З_берегти"
 
-#: src/glade-window.c:1074
+#: src/glade-window.c:1071
 msgid "Save…"
 msgstr "Зберегти…"
 
-#: src/glade-window.c:1640
+#: src/glade-window.c:1628
 msgid "Could not create a new project."
 msgstr "Не вдається створити новий проєкт."
 
-#: src/glade-window.c:1701
+#: src/glade-window.c:1689
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Проєкт %s містить незбережені зміни"
 
-#: src/glade-window.c:1706
+#: src/glade-window.c:1694
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Якщо ви перечитаєте його, всі зміни, що зроблені зовні, будуть втрачені. "
 "Перечитати попри все?"
 
-#: src/glade-window.c:1716
+#: src/glade-window.c:1704
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Файл %s був змінений зовні"
 
-#: src/glade-window.c:1721
+#: src/glade-window.c:1709
 msgid "Do you want to reload the project?"
 msgstr "Перечитати проєкт?"
 
-#: src/glade-window.c:1727
+#: src/glade-window.c:1715
 msgid "_Reload"
 msgstr "Пере_читати"
 
-#: src/glade-window.c:2278
+#: src/glade-window.c:2263
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Привіт, я покажу вам нові можливості Glade"
 
-#: src/glade-window.c:2279
+#: src/glade-window.c:2264
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Панелі меню та інструментів було об'єднано у панель заголовка"
 
-#: src/glade-window.c:2281
+#: src/glade-window.c:2266
 msgid "You can open a project"
 msgstr "Ви можете відкрити проєкт"
 
-#: src/glade-window.c:2282
+#: src/glade-window.c:2267
 msgid "find recently used"
 msgstr "відкрити нещодавно використані файли"
 
-#: src/glade-window.c:2283
+#: src/glade-window.c:2268
 msgid "or create a new one"
 msgstr "або створити новий"
 
-#: src/glade-window.c:2287
+#: src/glade-window.c:2272
 msgid "Undo"
 msgstr "Скасувати"
 
-#: src/glade-window.c:2288
+#: src/glade-window.c:2273
 msgid "Redo"
 msgstr "Повторити"
 
-#: src/glade-window.c:2289
+#: src/glade-window.c:2274
 msgid "Project switcher"
 msgstr "Перемикач проєктів"
 
-#: src/glade-window.c:2291
+#: src/glade-window.c:2276
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "і кнопка «Зберегти» є безпосередньо доступним на панелі заголовка"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2277
 msgid "just like Save As"
 msgstr "так само, як і кнопка «Зберегти як»"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2278
 msgid "project properties"
 msgstr "властивості проєкту"
 
-#: src/glade-window.c:2294
+#: src/glade-window.c:2279
 msgid "and less commonly used actions"
 msgstr "та кнопки, які використовуються не так часто,"
 
-#: src/glade-window.c:2296
+#: src/glade-window.c:2281
 msgid "The object inspector took the palette's place"
 msgstr "Місце палітри зайняла панель інспектора об'єктів"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2282
 msgid "To free up space for the property editor"
 msgstr "Щоб звільнити місце для панелі редактора властивостей"
 
-#: src/glade-window.c:2299
+#: src/glade-window.c:2284
 msgid "The palette was replaced with a new object chooser"
 msgstr "Палітру було замінено на нову панель вибору об'єктів"
 
-#: src/glade-window.c:2300
+#: src/glade-window.c:2285
 msgid "Where you can search all supported classes"
 msgstr "Ви можете виконувати пошук у всіх підтримуваних класах"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2286
 msgid "investigate GTK+ object groups"
 msgstr "вивчати групи об'єктів GTK+"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2287
 msgid "and find classes introduced by other libraries"
 msgstr "і знаходити класи, які впроваджуються іншими бібліотеками"
 
-#: src/glade-window.c:2304
+#: src/glade-window.c:2289
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
-msgstr "Гаразд, з оглядом усе. Давайте ознайомимося із новими робочим процесом"
+msgstr ""
+"Гаразд, з оглядом усе. Давайте ознайомимося із новими робочим процесом"
 
-#: src/glade-window.c:2306
+#: src/glade-window.c:2291
 msgid "First of all, create a new project"
 msgstr "Спочатку, слід створити проєкт"
 
-#: src/glade-window.c:2307
+#: src/glade-window.c:2292
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
@@ -319,58 +321,31 @@ msgstr ""
 "Гаразд, тепер додайте GtkWindow за допомогою нової панелі вибору віджетів "
 "або подвійного клацання лівою кнопкою миші на панелі робочого простору"
 
-#: src/glade-window.c:2308
+#: src/glade-window.c:2293
 msgid "Excellent!"
 msgstr "Відмінно!"
 
-#: src/glade-window.c:2309
+#: src/glade-window.c:2294
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr ""
 "До речі, чи відомо вам, що подвійним клацанням можна створювати віджети?"
 
-#: src/glade-window.c:2310
+#: src/glade-window.c:2295
 msgid "Try adding a grid"
 msgstr "Спробуйте додати таблицю"
 
-#: src/glade-window.c:2311
+#: src/glade-window.c:2296
 msgid "and a button"
 msgstr "і кнопку"
 
-#: src/glade-window.c:2313
+#: src/glade-window.c:2298
 msgid "Quite easy! Isn't it?"
 msgstr "Доволі просто! Чи не так?"
 
-#: src/glade-window.c:2314
+#: src/glade-window.c:2299
 msgid "Enjoy!"
 msgstr "Насолоджуйтеся!"
-
-#. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2536
-msgid ""
-"We are conducting a user survey\n"
-" would you like to take it now?"
-msgstr ""
-"Ви опитуємо користувачів.\n"
-" Хочете взяти участь у нашому опитуванні зараз?"
-
-#. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2540
-msgid "If not, you can always find it in the Help menu."
-msgstr ""
-"Якщо ні, ви завжди можете повернутися до нашого опитування за допомогою "
-"пункту меню «Довідка»."
-
-#: src/glade-window.c:2542
-msgid "_Do not show this dialog again"
-msgstr "_Не показувати це вікно знову"
-
-#. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2563
-msgid "Go to Help -> Registration & User Survey and complete our survey!"
-msgstr ""
-"Скористайтеся пунктом меню «Довідка → Реєстрація та опитування користувачів» "
-"і пройдіть наше опитування!"
 
 #: src/main.c:53
 msgid "Output version information and exit"
@@ -384,163 +359,101 @@ msgstr "Вимкнути взаємодію з програмою Devhelp"
 msgid "be verbose"
 msgstr "докладний вивід"
 
-#: src/main.c:147
+#: src/main.c:145
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Не вдається відкрити «%s», файл не існує.\n"
 
-#: src/main.c:175
+#: src/main.c:173
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr "Немає підтримки gmodule, вона потрібна для роботи Glade"
 
-#: src/main.c:193
+#: src/main.c:191
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
 "Створення та редагування моделей інтерфейсів користувача для бібліотеки GTK+ "
 "та програм GNOME."
 
-#. The last sentence in quotes is in spanish and does not need to be translated.
-#: src/glade.glade:59
-msgctxt ""
-"This is to honor a professor that passed away last year and appears in a "
-"popover when you click on the button that says \"RIP Guido\""
-msgid ""
-"Guido was one of my professors at Rosario\n"
-"National University of Argentina.\n"
-"\n"
-"He introduced me to C, Linux, free software...\n"
-"\n"
-"He always had extra time to explain one more thing\n"
-"and help you figure out things by yourself.\n"
-"\n"
-"Always made a joke in the right moment keeping\n"
-"things interesting and fun.\n"
-"\n"
-"Master of intentionally misconstrued sayings.\n"
-"\n"
-"Always carried a stack of books under his arm.\n"
-"\n"
-"Loved Guinness beer.\n"
-"\n"
-"All he ever wanted was make you think!\n"
-"\n"
-"\"Alégrate! Mañana sera peor.\"\n"
-"\n"
-"\tJuan Pablo"
-msgstr ""
-"Гвідо був одним з моїх викладачів у Національному\n"
-"університеті Розаріо в Аргентині.\n"
-"\n"
-"Він відкрив мені світ C, Linux, вільного ПЗ…\n"
-"\n"
-"У нього завжди знаходився час пояснити ще щось і\n"
-"допомогти зрозуміти речі мені самому.\n"
-"\n"
-"У нього завжди був жарт, щоб у належний момент\n"
-"зробити навчання цікавим і веселим.\n"
-"\n"
-"Майстер навмисне перекручених висловів.\n"
-"\n"
-"Він завжди носив із собою стос книг.\n"
-"\n"
-"Полюбляв пиво Guinness.\n"
-"\n"
-"Усе, що йому було потрібно» — змусити тебе думати!\n"
-"\n"
-"«Alégrate! Mañana sera peor.»\n"
-"\n"
-"\tХуан Пабло"
-
-#: src/glade.glade:106
+#: src/glade.glade:47
 msgid "Close Project"
 msgstr "Закрити проєкт"
 
-#: src/glade.glade:131
-msgid "Registration & User Survey"
-msgstr "Реєстрація і опитування користувачів"
-
-#: src/glade.glade:145
+#: src/glade.glade:72
 msgid "_Developer Reference"
 msgstr "Посібник _розробника"
 
-#: src/glade.glade:159
+#: src/glade.glade:86
 msgid "Interactive Intro"
 msgstr "Інтерактивний вступ"
 
-#: src/glade.glade:184
+#: src/glade.glade:111
 msgid "Preferences"
 msgstr "Налаштування"
 
-#: src/glade.glade:198
+#: src/glade.glade:125
 msgid "User Manual"
 msgstr "Підручник користувача"
 
-#: src/glade.glade:212
+#: src/glade.glade:139
 msgid "About Glade"
 msgstr "Про Glade"
 
-#: src/glade.glade:311
-msgctxt "Button label in the bottom of main window that triggers a popover"
-msgid ""
-"<small>In memory of an extraordinary\n"
-"person and professor\n"
-"R.I.P Guido Macchi</small>"
-msgstr ""
-"<small>На згадку про видатну особу\n"
-"і наставника.\n"
-"Спи спокійно, Гвідо Маччі</small>"
-
-#: src/glade.glade:606 src/glade-preferences.c:239
+#: src/glade.glade:505 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2280 gladeui/glade-utils.c:497
 msgid "_Open"
 msgstr "_Відкрити"
 
-#: src/glade.glade:611
+#: src/glade.glade:510
 msgid "Open a project"
 msgstr "Відкрити проєкт"
 
-#: src/glade.glade:656
+#: src/glade.glade:555
 msgid "Create a new project"
 msgstr "Створити новий проєкт"
 
-#: src/glade.glade:676
+#: src/glade.glade:575
 msgid "Edit project properties"
 msgstr "Змінити властивості проєкту"
 
-#: src/glade.glade:704
+#: src/glade.glade:603
 msgid "Save the current project"
 msgstr "Зберегти поточний проєкт"
 
-#: src/glade.glade:720
+#: src/glade.glade:619
 msgid "Save the current project with a different name"
 msgstr "Зберегти поточний проєкт з іншою назвою"
 
-#: src/glade.glade:749
+#: src/glade.glade:648
 msgid "Start/resume interactive UI introduction"
 msgstr "Почати або поновити перегляд інтерактивного вступу щодо інтерфейсу"
 
-#: src/glade.glade:848
+#: src/glade.glade:747
+#| msgid ""
+#| "© 2018-2020 Juan Pablo Ugarte, et al.\n"
+#| "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
+#| "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+#| "© 2001-2006 Ximian, Inc."
 msgid ""
-"© 2018-2020 Juan Pablo Ugarte, et al.\n"
+"© 2018-2022 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 msgstr ""
-"© Juan Pablo Ugarte та інші, 2018-2020\n"
+"© Juan Pablo Ugarte та інші, 2018-2022\n"
 "© Tristan Van Berkom, Juan Pablo Ugarte та інші, 2004-2018\n"
 "© Joaquin Cuenca Abela, Paolo Borelli та інші, 2001-2006\n"
 "© Ximian, Inc., 2001-2006"
 
-#: src/glade.glade:852
+#: src/glade.glade:751
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Редактор інтерфейсу користувача для GTK+ та GNOME."
 
-#: src/glade.glade:854
+#: src/glade.glade:753
 msgid "Visit Glade web site"
 msgstr "Відвідати сайт Glade"
 
-#: src/glade.glade:866
+#: src/glade.glade:765
 msgid "translator-credits"
 msgstr ""
 "Юрій Сирота <rasta@cvs.gnome.org>\n"
@@ -655,691 +568,6 @@ msgstr "Вилучити позначений шлях пошуку"
 #: src/glade-preferences.glade:387
 msgid "Extra Catalog & Templates paths"
 msgstr "Додаткові шляхи каталогів та шаблонів"
-
-#: src/glade-registration.c:282
-#, c-format
-msgid "Connecting to %s"
-msgstr "З'єднання з %s"
-
-#: src/glade-registration.c:285
-#, c-format
-msgid "Sending data to %s"
-msgstr "Надсилаємо дані до %s"
-
-#: src/glade-registration.c:288
-#, c-format
-msgid "Waiting for %s"
-msgstr "Очікування на %s"
-
-#: src/glade-registration.c:291
-#, c-format
-msgid "Receiving data from %s"
-msgstr "Отримання даних від %s"
-
-#: src/glade-registration.c:350
-msgid ""
-"Your subscription to the users list has been received!\n"
-"Check your email!"
-msgstr ""
-"Ваш запит щодо підписки на список листування користувачів отримано!\n"
-"Перевірте вашу поштову скриньку!"
-
-#: src/glade-registration.c:510
-msgid "Thank you for taking the time to complete the survey, we appreciate it!"
-msgstr ""
-"Дякуємо вам за час, який ви витратили на заповнення опитування — ваша "
-"допомога важлива для нас!"
-
-#: src/glade-registration.c:771
-msgid "Completed and submitted!"
-msgstr "Завершено і подано!"
-
-#: src/glade-registration.glade:44
-msgid "Glade Registration & User Survey"
-msgstr "Реєстрація і опитування користувачів Glade"
-
-#: src/glade-registration.glade:63 gladeui/glade-editor-property.c:1378
-msgid "_Close"
-msgstr "З_акрити"
-
-#: src/glade-registration.glade:77
-msgid "_Submit"
-msgstr "_Надіслати"
-
-#: src/glade-registration.glade:82
-msgid "Information will be sent to https://survey.gnome.org"
-msgstr "Ці відомості буде надіслано на https://survey.gnome.org"
-
-#: src/glade-registration.glade:183
-msgid "User Information"
-msgstr "Відомості щодо користувача"
-
-#: src/glade-registration.glade:217
-msgid "<Your name or nickname is required>"
-msgstr "<Слід вказати ваше ім'я або псевдонім>"
-
-#: src/glade-registration.glade:230 gladeui/glade-project-properties.ui:521
-#: plugins/gtk+/glade-about-dialog-editor.ui:69
-msgid "Name:"
-msgstr "Назва:"
-
-#: src/glade-registration.glade:242
-msgid "Email:"
-msgstr "Ел. пошта:"
-
-#: src/glade-registration.glade:254
-msgid ""
-"Tokens are processed manually in batches.\n"
-"Please be patient."
-msgstr ""
-"Ключі обробляються серіями вручну.\n"
-"Будь ласка, майте терпіння."
-
-#: src/glade-registration.glade:256
-msgid "<Required to send back registration token>"
-msgstr "<Потрібна для надсилання ключа реєстрації>"
-
-#: src/glade-registration.glade:269
-msgid "Country:"
-msgstr "Країна:"
-
-#: src/glade-registration.glade:281
-msgid "City:"
-msgstr "Місто:"
-
-#: src/glade-registration.glade:295
-msgid "Company"
-msgstr "Компанія"
-
-#: src/glade-registration.glade:296
-msgid "Organization"
-msgstr "Організація"
-
-#: src/glade-registration.glade:297
-msgid "Personal"
-msgstr "Особисте"
-
-#: src/glade-registration.glade:309
-msgid "Website"
-msgstr "Сайт"
-
-#: src/glade-registration.glade:353
-msgid "Subscribe me to the mailing list"
-msgstr "Підписати мене на список листування"
-
-#: src/glade-registration.glade:357
-msgid ""
-"Subscribe to Glade Users mailing list.\n"
-"You will be sent email requesting confirmation!"
-msgstr ""
-"Підписатися на список листування користувачів Glade.\n"
-"Вам буде надіслано повідомлення електронної пошти із запитом щодо "
-"підтвердження!"
-
-#: src/glade-registration.glade:373
-msgid "Choose your country"
-msgstr "Виберіть вашу країну"
-
-#: src/glade-registration.glade:653
-msgid "We care about privacy!"
-msgstr "Ми дбаємо про вашу конфіденційність!"
-
-#: src/glade-registration.glade:671
-msgid ""
-"All the data will be stored in a private location and will not be shared "
-"with the public or any third party."
-msgstr ""
-"Усі дані буде збережено у закритому сховищі. Ми не ділитимемося ними із "
-"громадськістю або будь-ким стороннім."
-
-#: src/glade-registration.glade:705
-msgid "Glade User Survey"
-msgstr "Опитування користувачів Glade"
-
-#: src/glade-registration.glade:735
-msgid "How long have you been programming?"
-msgstr "Як довго ви займаєтеся програмуванням?"
-
-#: src/glade-registration.glade:753 src/glade-registration.glade:1022
-msgid "0"
-msgstr "0"
-
-#: src/glade-registration.glade:769 src/glade-registration.glade:1038
-msgid "years"
-msgstr "років"
-
-#: src/glade-registration.glade:770 src/glade-registration.glade:1039
-msgid "months"
-msgstr "місяців"
-
-#: src/glade-registration.glade:781
-msgid "I am not a programmer"
-msgstr "Я не є програмістом"
-
-#: src/glade-registration.glade:817
-msgid "Which programming languages do you prefer?"
-msgstr "Якій мові програмування ви надаєте перевагу?"
-
-#: src/glade-registration.glade:833
-msgid "C"
-msgstr "C"
-
-#: src/glade-registration.glade:848
-msgid "C++"
-msgstr "C++"
-
-#: src/glade-registration.glade:863
-msgid "C#"
-msgstr "C#"
-
-#: src/glade-registration.glade:878
-msgid "Java"
-msgstr "Java"
-
-#: src/glade-registration.glade:893
-msgid "Python"
-msgstr "Python"
-
-#: src/glade-registration.glade:908
-msgid "JavaScript"
-msgstr "JavaScript"
-
-#: src/glade-registration.glade:923
-msgid "Vala"
-msgstr "Vala"
-
-#: src/glade-registration.glade:938
-msgid "Perl"
-msgstr "Perl"
-
-#: src/glade-registration.glade:953
-msgid "Rust"
-msgstr "Rust"
-
-#: src/glade-registration.glade:968 src/glade-registration.glade:1173
-#: src/glade-registration.glade:1278 src/glade-registration.glade:1295
-#: src/glade-registration.glade:1312 src/glade-registration.glade:1344
-#: src/glade-registration.glade:1370 src/glade-registration.glade:1465
-#: src/glade-registration.glade:1956 src/glade-registration.glade:2158
-#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
-#: plugins/gtk+/gtk+.xml:4624
-msgid "Other"
-msgstr "Інше"
-
-#: src/glade-registration.glade:1004
-msgid "When did you start using Glade?"
-msgstr "Коли ви почали користуватися Glade?"
-
-#: src/glade-registration.glade:1052
-msgid "ago"
-msgstr "тому"
-
-#: src/glade-registration.glade:1084
-msgid "Which version do you normally use?"
-msgstr "Якою версією ви зазвичай користуєтеся?"
-
-#: src/glade-registration.glade:1101
-msgid "What is available in my OS"
-msgstr "Тією, яка доступна для моєї ОС"
-
-#: src/glade-registration.glade:1118
-msgid "Latest stable from sources"
-msgstr "Найсвіжішою стабільною з початкового коду"
-
-#: src/glade-registration.glade:1135
-msgid "3.8 for GTK+ 2"
-msgstr "3.8 для GTK+ 2"
-
-#: src/glade-registration.glade:1152
-msgid "Master"
-msgstr "Для розробників"
-
-#: src/glade-registration.glade:1229
-msgid "On what operating systems?"
-msgstr "На яких операційних системах?"
-
-#: src/glade-registration.glade:1249
-msgid "distribution"
-msgstr "дистрибутив"
-
-#: src/glade-registration.glade:1250
-msgid "Alpine"
-msgstr "Alpine"
-
-#: src/glade-registration.glade:1251
-msgid "Arch Linux"
-msgstr "Arch Linux"
-
-#: src/glade-registration.glade:1252
-msgid "Ataraxia Linux"
-msgstr "Ataraxia Linux"
-
-#: src/glade-registration.glade:1253
-msgid "CentOS"
-msgstr "CentOS"
-
-#: src/glade-registration.glade:1254
-msgid "Chrome OS"
-msgstr "Chrome OS"
-
-#: src/glade-registration.glade:1255
-msgid "Clear Linux"
-msgstr "Clear Linux"
-
-#: src/glade-registration.glade:1256
-msgid "Debian"
-msgstr "Debian"
-
-#: src/glade-registration.glade:1257
-msgid "elementary OS"
-msgstr "elementary OS"
-
-#: src/glade-registration.glade:1258
-msgid "Endless OS"
-msgstr "Endless OS"
-
-#: src/glade-registration.glade:1259
-msgid "Fedora"
-msgstr "Fedora"
-
-#: src/glade-registration.glade:1260
-msgid "Gentoo"
-msgstr "Gentoo"
-
-#: src/glade-registration.glade:1261
-msgid "Kubuntu"
-msgstr "Kubuntu"
-
-#: src/glade-registration.glade:1262
-msgid "Linux Mint"
-msgstr "Linux Mint"
-
-#: src/glade-registration.glade:1263
-msgid "Mageia"
-msgstr "Mageia"
-
-#: src/glade-registration.glade:1264
-msgid "Mandriva"
-msgstr "Mandriva"
-
-#: src/glade-registration.glade:1265
-msgid "Nix OS"
-msgstr "Nix OS"
-
-#: src/glade-registration.glade:1266
-msgid "openSUSE"
-msgstr "openSUSE"
-
-#: src/glade-registration.glade:1267
-msgid "Oracle"
-msgstr "Oracle"
-
-#: src/glade-registration.glade:1268
-msgid "Pop!_OS"
-msgstr "Pop!_OS"
-
-#: src/glade-registration.glade:1269
-msgid "PureOS"
-msgstr "PureOS"
-
-#: src/glade-registration.glade:1270
-msgid "Raspbian"
-msgstr "Raspbian"
-
-#: src/glade-registration.glade:1271
-msgid "Red Hat"
-msgstr "Red Hat"
-
-#: src/glade-registration.glade:1272
-msgid "Solus"
-msgstr "Solus"
-
-#: src/glade-registration.glade:1273
-msgid "SulinOS"
-msgstr "SulinOS"
-
-#: src/glade-registration.glade:1274
-msgid "Turbolinux"
-msgstr "Turbolinux"
-
-#: src/glade-registration.glade:1275
-msgid "Ubuntu"
-msgstr "Ubuntu"
-
-#: src/glade-registration.glade:1276
-msgid "Void Linux"
-msgstr "Void Linux"
-
-#: src/glade-registration.glade:1277
-msgid "Xandros"
-msgstr "Xandros"
-
-#: src/glade-registration.glade:1291 src/glade-registration.glade:1308
-msgid "variant"
-msgstr "варіант"
-
-#: src/glade-registration.glade:1292
-msgid "FreeBSD"
-msgstr "FreeBSD"
-
-#: src/glade-registration.glade:1293
-msgid "OpenBSD"
-msgstr "OpenBSD"
-
-#: src/glade-registration.glade:1294
-msgid "NetBSD"
-msgstr "NetBSD"
-
-#: src/glade-registration.glade:1309
-msgid "Oracle Solaris"
-msgstr "Oracle Solaris"
-
-#: src/glade-registration.glade:1310
-msgid "OpenSolaris"
-msgstr "OpenSolaris"
-
-#: src/glade-registration.glade:1311
-msgid "illumos"
-msgstr "illumos"
-
-#: src/glade-registration.glade:1334 src/glade-registration.glade:1357
-msgid "version"
-msgstr "версія"
-
-#: src/glade-registration.glade:1335
-msgid "10"
-msgstr "10"
-
-#: src/glade-registration.glade:1336
-msgid "8"
-msgstr "8"
-
-#: src/glade-registration.glade:1337
-msgid "7"
-msgstr "7"
-
-#: src/glade-registration.glade:1338
-msgid "Vista"
-msgstr "Vista"
-
-#: src/glade-registration.glade:1339
-msgid "2012"
-msgstr "2012"
-
-#: src/glade-registration.glade:1340
-msgid "2008"
-msgstr "2008"
-
-#: src/glade-registration.glade:1341
-msgid "2003"
-msgstr "2003"
-
-#: src/glade-registration.glade:1342
-msgid "XP"
-msgstr "XP"
-
-#: src/glade-registration.glade:1343
-msgid "2000"
-msgstr "2000"
-
-#: src/glade-registration.glade:1358
-msgid "Catalina"
-msgstr "Catalina"
-
-#: src/glade-registration.glade:1359
-msgid "Mojave"
-msgstr "Mojave"
-
-#: src/glade-registration.glade:1360
-msgid "High Sierra"
-msgstr "High Sierra"
-
-#: src/glade-registration.glade:1361
-msgid "Sierra"
-msgstr "Sierra"
-
-#: src/glade-registration.glade:1362
-msgid "El Capitan"
-msgstr "El Capitan"
-
-#: src/glade-registration.glade:1363
-msgid "Yosemite"
-msgstr "Yosemite"
-
-#: src/glade-registration.glade:1364
-msgid "Mavericks"
-msgstr "Mavericks"
-
-#: src/glade-registration.glade:1365
-msgid "Mountain Lion"
-msgstr "Mountain Lion"
-
-#: src/glade-registration.glade:1366
-msgid "Lion"
-msgstr "Lion"
-
-#: src/glade-registration.glade:1367
-msgid "Snow Leopard"
-msgstr "Snow Leopard"
-
-#: src/glade-registration.glade:1368
-msgid "Leopard"
-msgstr "Leopard"
-
-#: src/glade-registration.glade:1369
-msgid "Tiger"
-msgstr "Tiger"
-
-#: src/glade-registration.glade:1380
-msgid "GNU/Linux"
-msgstr "GNU/Linux"
-
-#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3149
-msgid "BSD"
-msgstr "BSD"
-
-#: src/glade-registration.glade:1414
-msgid "Windows"
-msgstr "Windows"
-
-#: src/glade-registration.glade:1431
-msgid "Mac OS X"
-msgstr "Mac OS X"
-
-#: src/glade-registration.glade:1448
-msgid "Solaris"
-msgstr "Solaris"
-
-#: src/glade-registration.glade:1503
-msgid "How often do you use it?"
-msgstr "Як часто ви користуєтеся програмою?"
-
-#: src/glade-registration.glade:1520
-msgid "Every day"
-msgstr "Щодня"
-
-#: src/glade-registration.glade:1537
-msgid "Few days a week"
-msgstr "Декілька днів на тиждень"
-
-#: src/glade-registration.glade:1554
-msgid "Every week"
-msgstr "Щотижня"
-
-#: src/glade-registration.glade:1571
-msgid "A few times a month"
-msgstr "Декілька разів на місяць"
-
-#: src/glade-registration.glade:1588
-msgid "Once a month"
-msgstr "Раз на місяць"
-
-#: src/glade-registration.glade:1605
-msgid "A few times a year"
-msgstr "Декілька разів на рік"
-
-#: src/glade-registration.glade:1643
-msgid "What level of Glade user would you say you are?"
-msgstr "Як ви вважаєте, якого рівня знання ви маєте як користувач Glade?"
-
-#: src/glade-registration.glade:1659
-msgid "Beginner"
-msgstr "Початківець"
-
-#: src/glade-registration.glade:1676
-msgid "Intermediate"
-msgstr "Середній рівень"
-
-#: src/glade-registration.glade:1693
-msgid "Advanced"
-msgstr "Знавець"
-
-#: src/glade-registration.glade:1731
-msgid ""
-"Under what kind of license(s) do you release the software you used Glade to "
-"create?"
-msgstr ""
-"Які умови ліцензування ви використовуєте для випуску програмного "
-"забезпечення, для створення якого ви використовуєте Glade?"
-
-#: src/glade-registration.glade:1747
-msgid "Free software"
-msgstr "Вільне програмне забезпечення"
-
-#: src/glade-registration.glade:1761
-msgid "Open source software"
-msgstr "Програмне забезпечення із відкритим кодом"
-
-#: src/glade-registration.glade:1775
-msgid "Commercial/Closed software"
-msgstr "Комерційне або закрите програмне забезпечення"
-
-#: src/glade-registration.glade:1789
-msgid "None - distributed internally"
-msgstr "Ніякі — не поширюється"
-
-#: src/glade-registration.glade:1824
-msgid ""
-"In what field(s) is the software you used Glade to create generally used?"
-msgstr ""
-"У яких галузях використовується програмне забезпечення, яке ви створюєте за "
-"допомогою Glade?"
-
-#: src/glade-registration.glade:1839
-msgid "Academic"
-msgstr "Вища школа"
-
-#: src/glade-registration.glade:1853
-msgid "Embedded applications"
-msgstr "Програми для вбудованих пристроїв"
-
-#: src/glade-registration.glade:1867
-msgid "Accounting"
-msgstr "Бухгалтерський облік"
-
-#: src/glade-registration.glade:1881
-msgid "Desktop applications"
-msgstr "Програми для робочих станцій"
-
-#: src/glade-registration.glade:1895
-msgid "Educational"
-msgstr "Освіта"
-
-#: src/glade-registration.glade:1909
-msgid "Medical"
-msgstr "Медицина"
-
-#: src/glade-registration.glade:1923
-msgid "Industrial applications"
-msgstr "Промисловість"
-
-#: src/glade-registration.glade:1937
-msgid "Scientific"
-msgstr "Наука"
-
-#: src/glade-registration.glade:2010
-msgid "What aspect of the software needs the most improvement?"
-msgstr "Який аспект програмного забезпечення найбільше потребує удосконалення?"
-
-#: src/glade-registration.glade:2055
-msgid "In your opinion what is the biggest problem with Glade?"
-msgstr "Якою на вашу думку є найбільша проблема у Glade?"
-
-#: src/glade-registration.glade:2072
-msgid "Lack of documentation"
-msgstr "Брак документації"
-
-#: src/glade-registration.glade:2090
-msgid "Lack of professional support"
-msgstr "Брак професійної підтримки"
-
-#: src/glade-registration.glade:2107
-msgid "Lack of professional training"
-msgstr "Брак професійного навчання"
-
-#: src/glade-registration.glade:2124
-msgid "Lack of publicity/exposure"
-msgstr "Брак публічності або відкритості"
-
-#: src/glade-registration.glade:2141
-msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
-msgstr ""
-"Брак офіційних бінарних випусків для інших операційних систем (Windows, Mac "
-"OS X)"
-
-#: src/glade-registration.glade:2217
-msgid "Have you ever encountered a bug?"
-msgstr "Чи траплялися вам вади?"
-
-#: src/glade-registration.glade:2233 src/glade-registration.glade:2305
-#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
-msgid "Yes"
-msgstr "Так"
-
-#: src/glade-registration.glade:2250 src/glade-registration.glade:2322
-#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1640
-msgid "No"
-msgstr "Ні"
-
-#: src/glade-registration.glade:2289
-msgid "If so, did you file a bug report?"
-msgstr "Якщо так, чи створювали ви звіт щодо вади?"
-
-#: src/glade-registration.glade:2365
-msgid "Have you ever thought about contributing?"
-msgstr "Чи виникала у вас думка про участь у проєкті?"
-
-#: src/glade-registration.glade:2440
-msgid "Why not?"
-msgstr "Чому ні?"
-
-#: src/glade-registration.glade:2490
-msgid "Comments:"
-msgstr "Коментарі:"
-
-#: src/glade-registration.glade:2541
-msgid "Privacy Note:"
-msgstr "Нотатка щодо конфіденційності:"
-
-#: src/glade-registration.glade:2561
-msgid ""
-"The sole purpose of this survey is to better know our user base.\n"
-"Your email address will be used to uniquely identify you as a Glade user and "
-"send you back a modification token in case you want to modify something or "
-"add extra comments.\n"
-"Only statistics compiled from the whole dataset will be shared publicly.\n"
-"Individual data will be stored in a private database and it will not be "
-"shared with the public or any other third party."
-msgstr ""
-"Єдиною метою створення цього опитування є краще розуміння потреб наших "
-"користувачів.\n"
-"Вашу адресу електронної пошти буде використано лише для ідентифікації вас як "
-"користувача Glade і надсилання ключа для внесення змін, яким ви можете "
-"скористатися для внесення змін до відповідей або додаткових коментарів.\n"
-"Оприлюднено буде лише загальні статистичні дані за отриманим набором "
-"відповідей.\n"
-"Дані окремих користувачів зберігатимуться у закритій базі даних. Ми не "
-"оприлюднюватимемо їх і не надаватимемо їх стороннім особам чи компаніями."
 
 #: gladeui/glade-app.c:552
 #, c-format
@@ -1908,6 +1136,10 @@ msgstr "Нетиповий текст, який слід показувати у
 msgid "Select Fields"
 msgstr "Виділити поля"
 
+#: gladeui/glade-editor-property.c:1378
+msgid "_Close"
+msgstr "З_акрити"
+
 #: gladeui/glade-editor-property.c:1391
 msgid "_Select individual fields:"
 msgstr "_Виділити деякі поля:"
@@ -2346,7 +1578,8 @@ msgid "License"
 msgstr "Ліцензія"
 
 #: gladeui/glade-project.c:1079
-msgid "License for this project, it will be added as a document level comment."
+msgid ""
+"License for this project, it will be added as a document level comment."
 msgstr ""
 "Ліцензування цього проєкту. Дані щодо нього буде додано до верхнього "
 "коментаря документа."
@@ -2479,7 +1712,8 @@ msgstr ""
 #. * and a project targeting toolkit version '%s %d.%d'
 #: gladeui/glade-project.c:3066
 #, c-format
-msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
+msgid ""
+"This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "Цю властивість було введено у %s %d.%d, проєкт використовує %s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
@@ -2562,7 +1796,8 @@ msgstr "Проєкт «%s» містить помилки, зберегти по
 
 #: gladeui/glade-project.c:3435
 #, c-format
-msgid "Object %s is a class template but this is not supported in gtk+ %d.%d\n"
+msgid ""
+"Object %s is a class template but this is not supported in gtk+ %d.%d\n"
 msgstr ""
 "Об'єкт %s є шаблоном класу, але підтримки таких шаблонів у gtk+ %d.%d не "
 "передбачено\n"
@@ -3237,6 +2472,11 @@ msgstr "Перевірити застарівання об'єктів, влас�
 msgid "Warnings:"
 msgstr "Попередження:"
 
+#: gladeui/glade-project-properties.ui:521
+#: plugins/gtk+/glade-about-dialog-editor.ui:69
+msgid "Name:"
+msgstr "Назва:"
+
 #: gladeui/glade-project-properties.ui:533
 msgid "Copyright:"
 msgstr "Авторські права:"
@@ -3261,6 +2501,11 @@ msgstr "Опис:"
 #: gladeui/glade-project-properties.ui:634
 msgid "program or library short description"
 msgstr "короткий опис програми або бібліотеки"
+
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
+#: plugins/gtk+/gtk+.xml:4624
+msgid "Other"
+msgstr "Інше"
 
 #: gladeui/glade-project-properties.ui:649
 msgid "GNU GPL version 2"
@@ -3858,7 +3103,8 @@ msgstr "Прискорювач можна встановлювати лише в
 
 #: plugins/gtk+/glade-gtk-header-bar.c:8
 msgid "This property does not apply when a custom title is set"
-msgstr "Ця властивість не застосовується, якщо встановлено нетиповий заголовок"
+msgstr ""
+"Ця властивість не застосовується, якщо встановлено нетиповий заголовок"
 
 #: plugins/gtk+/glade-gtk-header-bar.c:112
 #: plugins/gtk+/glade-gtk-notebook.c:1005 plugins/gtk+/glade-gtk-stack.c:161
@@ -5989,6 +5235,14 @@ msgstr "Скасувати"
 msgid "Close"
 msgstr "Закрити"
 
+#: plugins/gtk+/gtk+.xml:1638
+msgid "Yes"
+msgstr "Так"
+
+#: plugins/gtk+/gtk+.xml:1640
+msgid "No"
+msgstr "Ні"
+
 #: plugins/gtk+/gtk+.xml:1642
 msgid "Apply"
 msgstr "Застосувати"
@@ -6270,7 +5524,8 @@ msgid "Reserve space for subtitle"
 msgstr "Зворотний пробіл для підзаголовка"
 
 #: plugins/gtk+/gtk+.xml:2399
-msgid "Keep the headerbar height the same as the subtitle changes dynamically."
+msgid ""
+"Keep the headerbar height the same as the subtitle changes dynamically."
 msgstr "Зберігати висоту смужки заголовка при динамічних змінах підзаголовка."
 
 #: plugins/gtk+/gtk+.xml:2406
@@ -6650,6 +5905,10 @@ msgstr "LGPL 2.1"
 #: plugins/gtk+/gtk+.xml:3147
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
+
+#: plugins/gtk+/gtk+.xml:3149
+msgid "BSD"
+msgstr "BSD"
 
 #: plugins/gtk+/gtk+.xml:3151
 msgid "MIT X11"
@@ -8264,6 +7523,592 @@ msgstr "На вимогу"
 #: plugins/webkit2gtk/webkit2gtk.xml:58
 msgid "WebKit2GTK+ Widgets"
 msgstr "Віджети WebKit2GTK+"
+
+#~ msgid ""
+#~ "We are conducting a user survey\n"
+#~ " would you like to take it now?"
+#~ msgstr ""
+#~ "Ви опитуємо користувачів.\n"
+#~ " Хочете взяти участь у нашому опитуванні зараз?"
+
+#~ msgid "If not, you can always find it in the Help menu."
+#~ msgstr ""
+#~ "Якщо ні, ви завжди можете повернутися до нашого опитування за допомогою "
+#~ "пункту меню «Довідка»."
+
+#~ msgid "_Do not show this dialog again"
+#~ msgstr "_Не показувати це вікно знову"
+
+#~ msgid "Go to Help -> Registration & User Survey and complete our survey!"
+#~ msgstr ""
+#~ "Скористайтеся пунктом меню «Довідка → Реєстрація та опитування "
+#~ "користувачів» і пройдіть наше опитування!"
+
+#~ msgctxt ""
+#~ "This is to honor a professor that passed away last year and appears in a "
+#~ "popover when you click on the button that says \"RIP Guido\""
+#~ msgid ""
+#~ "Guido was one of my professors at Rosario\n"
+#~ "National University of Argentina.\n"
+#~ "\n"
+#~ "He introduced me to C, Linux, free software...\n"
+#~ "\n"
+#~ "He always had extra time to explain one more thing\n"
+#~ "and help you figure out things by yourself.\n"
+#~ "\n"
+#~ "Always made a joke in the right moment keeping\n"
+#~ "things interesting and fun.\n"
+#~ "\n"
+#~ "Master of intentionally misconstrued sayings.\n"
+#~ "\n"
+#~ "Always carried a stack of books under his arm.\n"
+#~ "\n"
+#~ "Loved Guinness beer.\n"
+#~ "\n"
+#~ "All he ever wanted was make you think!\n"
+#~ "\n"
+#~ "\"Alégrate! Mañana sera peor.\"\n"
+#~ "\n"
+#~ "\tJuan Pablo"
+#~ msgstr ""
+#~ "Гвідо був одним з моїх викладачів у Національному\n"
+#~ "університеті Розаріо в Аргентині.\n"
+#~ "\n"
+#~ "Він відкрив мені світ C, Linux, вільного ПЗ…\n"
+#~ "\n"
+#~ "У нього завжди знаходився час пояснити ще щось і\n"
+#~ "допомогти зрозуміти речі мені самому.\n"
+#~ "\n"
+#~ "У нього завжди був жарт, щоб у належний момент\n"
+#~ "зробити навчання цікавим і веселим.\n"
+#~ "\n"
+#~ "Майстер навмисне перекручених висловів.\n"
+#~ "\n"
+#~ "Він завжди носив із собою стос книг.\n"
+#~ "\n"
+#~ "Полюбляв пиво Guinness.\n"
+#~ "\n"
+#~ "Усе, що йому було потрібно» — змусити тебе думати!\n"
+#~ "\n"
+#~ "«Alégrate! Mañana sera peor.»\n"
+#~ "\n"
+#~ "\tХуан Пабло"
+
+#~ msgid "Registration & User Survey"
+#~ msgstr "Реєстрація і опитування користувачів"
+
+#~ msgctxt "Button label in the bottom of main window that triggers a popover"
+#~ msgid ""
+#~ "<small>In memory of an extraordinary\n"
+#~ "person and professor\n"
+#~ "R.I.P Guido Macchi</small>"
+#~ msgstr ""
+#~ "<small>На згадку про видатну особу\n"
+#~ "і наставника.\n"
+#~ "Спи спокійно, Гвідо Маччі</small>"
+
+#, c-format
+#~ msgid "Connecting to %s"
+#~ msgstr "З'єднання з %s"
+
+#, c-format
+#~ msgid "Sending data to %s"
+#~ msgstr "Надсилаємо дані до %s"
+
+#, c-format
+#~ msgid "Waiting for %s"
+#~ msgstr "Очікування на %s"
+
+#, c-format
+#~ msgid "Receiving data from %s"
+#~ msgstr "Отримання даних від %s"
+
+#~ msgid ""
+#~ "Your subscription to the users list has been received!\n"
+#~ "Check your email!"
+#~ msgstr ""
+#~ "Ваш запит щодо підписки на список листування користувачів отримано!\n"
+#~ "Перевірте вашу поштову скриньку!"
+
+#~ msgid ""
+#~ "Thank you for taking the time to complete the survey, we appreciate it!"
+#~ msgstr ""
+#~ "Дякуємо вам за час, який ви витратили на заповнення опитування — ваша "
+#~ "допомога важлива для нас!"
+
+#~ msgid "Completed and submitted!"
+#~ msgstr "Завершено і подано!"
+
+#~ msgid "Glade Registration & User Survey"
+#~ msgstr "Реєстрація і опитування користувачів Glade"
+
+#~ msgid "_Submit"
+#~ msgstr "_Надіслати"
+
+#~ msgid "Information will be sent to https://survey.gnome.org"
+#~ msgstr "Ці відомості буде надіслано на https://survey.gnome.org"
+
+#~ msgid "User Information"
+#~ msgstr "Відомості щодо користувача"
+
+#~ msgid "<Your name or nickname is required>"
+#~ msgstr "<Слід вказати ваше ім'я або псевдонім>"
+
+#~ msgid "Email:"
+#~ msgstr "Ел. пошта:"
+
+#~ msgid ""
+#~ "Tokens are processed manually in batches.\n"
+#~ "Please be patient."
+#~ msgstr ""
+#~ "Ключі обробляються серіями вручну.\n"
+#~ "Будь ласка, майте терпіння."
+
+#~ msgid "<Required to send back registration token>"
+#~ msgstr "<Потрібна для надсилання ключа реєстрації>"
+
+#~ msgid "Country:"
+#~ msgstr "Країна:"
+
+#~ msgid "City:"
+#~ msgstr "Місто:"
+
+#~ msgid "Company"
+#~ msgstr "Компанія"
+
+#~ msgid "Organization"
+#~ msgstr "Організація"
+
+#~ msgid "Personal"
+#~ msgstr "Особисте"
+
+#~ msgid "Website"
+#~ msgstr "Сайт"
+
+#~ msgid "Subscribe me to the mailing list"
+#~ msgstr "Підписати мене на список листування"
+
+#~ msgid ""
+#~ "Subscribe to Glade Users mailing list.\n"
+#~ "You will be sent email requesting confirmation!"
+#~ msgstr ""
+#~ "Підписатися на список листування користувачів Glade.\n"
+#~ "Вам буде надіслано повідомлення електронної пошти із запитом щодо "
+#~ "підтвердження!"
+
+#~ msgid "Choose your country"
+#~ msgstr "Виберіть вашу країну"
+
+#~ msgid "We care about privacy!"
+#~ msgstr "Ми дбаємо про вашу конфіденційність!"
+
+#~ msgid ""
+#~ "All the data will be stored in a private location and will not be shared "
+#~ "with the public or any third party."
+#~ msgstr ""
+#~ "Усі дані буде збережено у закритому сховищі. Ми не ділитимемося ними із "
+#~ "громадськістю або будь-ким стороннім."
+
+#~ msgid "Glade User Survey"
+#~ msgstr "Опитування користувачів Glade"
+
+#~ msgid "How long have you been programming?"
+#~ msgstr "Як довго ви займаєтеся програмуванням?"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "years"
+#~ msgstr "років"
+
+#~ msgid "months"
+#~ msgstr "місяців"
+
+#~ msgid "I am not a programmer"
+#~ msgstr "Я не є програмістом"
+
+#~ msgid "Which programming languages do you prefer?"
+#~ msgstr "Якій мові програмування ви надаєте перевагу?"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "C++"
+#~ msgstr "C++"
+
+#~ msgid "C#"
+#~ msgstr "C#"
+
+#~ msgid "Java"
+#~ msgstr "Java"
+
+#~ msgid "Python"
+#~ msgstr "Python"
+
+#~ msgid "JavaScript"
+#~ msgstr "JavaScript"
+
+#~ msgid "Vala"
+#~ msgstr "Vala"
+
+#~ msgid "Perl"
+#~ msgstr "Perl"
+
+#~ msgid "Rust"
+#~ msgstr "Rust"
+
+#~ msgid "When did you start using Glade?"
+#~ msgstr "Коли ви почали користуватися Glade?"
+
+#~ msgid "ago"
+#~ msgstr "тому"
+
+#~ msgid "Which version do you normally use?"
+#~ msgstr "Якою версією ви зазвичай користуєтеся?"
+
+#~ msgid "What is available in my OS"
+#~ msgstr "Тією, яка доступна для моєї ОС"
+
+#~ msgid "Latest stable from sources"
+#~ msgstr "Найсвіжішою стабільною з початкового коду"
+
+#~ msgid "3.8 for GTK+ 2"
+#~ msgstr "3.8 для GTK+ 2"
+
+#~ msgid "Master"
+#~ msgstr "Для розробників"
+
+#~ msgid "On what operating systems?"
+#~ msgstr "На яких операційних системах?"
+
+#~ msgid "distribution"
+#~ msgstr "дистрибутив"
+
+#~ msgid "Alpine"
+#~ msgstr "Alpine"
+
+#~ msgid "Arch Linux"
+#~ msgstr "Arch Linux"
+
+#~ msgid "Ataraxia Linux"
+#~ msgstr "Ataraxia Linux"
+
+#~ msgid "CentOS"
+#~ msgstr "CentOS"
+
+#~ msgid "Chrome OS"
+#~ msgstr "Chrome OS"
+
+#~ msgid "Clear Linux"
+#~ msgstr "Clear Linux"
+
+#~ msgid "Debian"
+#~ msgstr "Debian"
+
+#~ msgid "elementary OS"
+#~ msgstr "elementary OS"
+
+#~ msgid "Endless OS"
+#~ msgstr "Endless OS"
+
+#~ msgid "Fedora"
+#~ msgstr "Fedora"
+
+#~ msgid "Gentoo"
+#~ msgstr "Gentoo"
+
+#~ msgid "Kubuntu"
+#~ msgstr "Kubuntu"
+
+#~ msgid "Linux Mint"
+#~ msgstr "Linux Mint"
+
+#~ msgid "Mageia"
+#~ msgstr "Mageia"
+
+#~ msgid "Mandriva"
+#~ msgstr "Mandriva"
+
+#~ msgid "Nix OS"
+#~ msgstr "Nix OS"
+
+#~ msgid "openSUSE"
+#~ msgstr "openSUSE"
+
+#~ msgid "Oracle"
+#~ msgstr "Oracle"
+
+#~ msgid "Pop!_OS"
+#~ msgstr "Pop!_OS"
+
+#~ msgid "PureOS"
+#~ msgstr "PureOS"
+
+#~ msgid "Raspbian"
+#~ msgstr "Raspbian"
+
+#~ msgid "Red Hat"
+#~ msgstr "Red Hat"
+
+#~ msgid "Solus"
+#~ msgstr "Solus"
+
+#~ msgid "SulinOS"
+#~ msgstr "SulinOS"
+
+#~ msgid "Turbolinux"
+#~ msgstr "Turbolinux"
+
+#~ msgid "Ubuntu"
+#~ msgstr "Ubuntu"
+
+#~ msgid "Void Linux"
+#~ msgstr "Void Linux"
+
+#~ msgid "Xandros"
+#~ msgstr "Xandros"
+
+#~ msgid "variant"
+#~ msgstr "варіант"
+
+#~ msgid "FreeBSD"
+#~ msgstr "FreeBSD"
+
+#~ msgid "OpenBSD"
+#~ msgstr "OpenBSD"
+
+#~ msgid "NetBSD"
+#~ msgstr "NetBSD"
+
+#~ msgid "Oracle Solaris"
+#~ msgstr "Oracle Solaris"
+
+#~ msgid "OpenSolaris"
+#~ msgstr "OpenSolaris"
+
+#~ msgid "illumos"
+#~ msgstr "illumos"
+
+#~ msgid "version"
+#~ msgstr "версія"
+
+#~ msgid "10"
+#~ msgstr "10"
+
+#~ msgid "8"
+#~ msgstr "8"
+
+#~ msgid "7"
+#~ msgstr "7"
+
+#~ msgid "Vista"
+#~ msgstr "Vista"
+
+#~ msgid "2012"
+#~ msgstr "2012"
+
+#~ msgid "2008"
+#~ msgstr "2008"
+
+#~ msgid "2003"
+#~ msgstr "2003"
+
+#~ msgid "XP"
+#~ msgstr "XP"
+
+#~ msgid "2000"
+#~ msgstr "2000"
+
+#~ msgid "Catalina"
+#~ msgstr "Catalina"
+
+#~ msgid "Mojave"
+#~ msgstr "Mojave"
+
+#~ msgid "High Sierra"
+#~ msgstr "High Sierra"
+
+#~ msgid "Sierra"
+#~ msgstr "Sierra"
+
+#~ msgid "El Capitan"
+#~ msgstr "El Capitan"
+
+#~ msgid "Yosemite"
+#~ msgstr "Yosemite"
+
+#~ msgid "Mavericks"
+#~ msgstr "Mavericks"
+
+#~ msgid "Mountain Lion"
+#~ msgstr "Mountain Lion"
+
+#~ msgid "Lion"
+#~ msgstr "Lion"
+
+#~ msgid "Snow Leopard"
+#~ msgstr "Snow Leopard"
+
+#~ msgid "Leopard"
+#~ msgstr "Leopard"
+
+#~ msgid "Tiger"
+#~ msgstr "Tiger"
+
+#~ msgid "GNU/Linux"
+#~ msgstr "GNU/Linux"
+
+#~ msgid "Windows"
+#~ msgstr "Windows"
+
+#~ msgid "Mac OS X"
+#~ msgstr "Mac OS X"
+
+#~ msgid "Solaris"
+#~ msgstr "Solaris"
+
+#~ msgid "How often do you use it?"
+#~ msgstr "Як часто ви користуєтеся програмою?"
+
+#~ msgid "Every day"
+#~ msgstr "Щодня"
+
+#~ msgid "Few days a week"
+#~ msgstr "Декілька днів на тиждень"
+
+#~ msgid "Every week"
+#~ msgstr "Щотижня"
+
+#~ msgid "A few times a month"
+#~ msgstr "Декілька разів на місяць"
+
+#~ msgid "Once a month"
+#~ msgstr "Раз на місяць"
+
+#~ msgid "A few times a year"
+#~ msgstr "Декілька разів на рік"
+
+#~ msgid "What level of Glade user would you say you are?"
+#~ msgstr "Як ви вважаєте, якого рівня знання ви маєте як користувач Glade?"
+
+#~ msgid "Beginner"
+#~ msgstr "Початківець"
+
+#~ msgid "Intermediate"
+#~ msgstr "Середній рівень"
+
+#~ msgid "Advanced"
+#~ msgstr "Знавець"
+
+#~ msgid ""
+#~ "Under what kind of license(s) do you release the software you used Glade "
+#~ "to create?"
+#~ msgstr ""
+#~ "Які умови ліцензування ви використовуєте для випуску програмного "
+#~ "забезпечення, для створення якого ви використовуєте Glade?"
+
+#~ msgid "Free software"
+#~ msgstr "Вільне програмне забезпечення"
+
+#~ msgid "Open source software"
+#~ msgstr "Програмне забезпечення із відкритим кодом"
+
+#~ msgid "Commercial/Closed software"
+#~ msgstr "Комерційне або закрите програмне забезпечення"
+
+#~ msgid "None - distributed internally"
+#~ msgstr "Ніякі — не поширюється"
+
+#~ msgid ""
+#~ "In what field(s) is the software you used Glade to create generally used?"
+#~ msgstr ""
+#~ "У яких галузях використовується програмне забезпечення, яке ви створюєте "
+#~ "за допомогою Glade?"
+
+#~ msgid "Academic"
+#~ msgstr "Вища школа"
+
+#~ msgid "Embedded applications"
+#~ msgstr "Програми для вбудованих пристроїв"
+
+#~ msgid "Accounting"
+#~ msgstr "Бухгалтерський облік"
+
+#~ msgid "Desktop applications"
+#~ msgstr "Програми для робочих станцій"
+
+#~ msgid "Educational"
+#~ msgstr "Освіта"
+
+#~ msgid "Medical"
+#~ msgstr "Медицина"
+
+#~ msgid "Industrial applications"
+#~ msgstr "Промисловість"
+
+#~ msgid "Scientific"
+#~ msgstr "Наука"
+
+#~ msgid "What aspect of the software needs the most improvement?"
+#~ msgstr ""
+#~ "Який аспект програмного забезпечення найбільше потребує удосконалення?"
+
+#~ msgid "In your opinion what is the biggest problem with Glade?"
+#~ msgstr "Якою на вашу думку є найбільша проблема у Glade?"
+
+#~ msgid "Lack of documentation"
+#~ msgstr "Брак документації"
+
+#~ msgid "Lack of professional support"
+#~ msgstr "Брак професійної підтримки"
+
+#~ msgid "Lack of professional training"
+#~ msgstr "Брак професійного навчання"
+
+#~ msgid "Lack of publicity/exposure"
+#~ msgstr "Брак публічності або відкритості"
+
+#~ msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
+#~ msgstr ""
+#~ "Брак офіційних бінарних випусків для інших операційних систем (Windows, "
+#~ "Mac OS X)"
+
+#~ msgid "Have you ever encountered a bug?"
+#~ msgstr "Чи траплялися вам вади?"
+
+#~ msgid "If so, did you file a bug report?"
+#~ msgstr "Якщо так, чи створювали ви звіт щодо вади?"
+
+#~ msgid "Have you ever thought about contributing?"
+#~ msgstr "Чи виникала у вас думка про участь у проєкті?"
+
+#~ msgid "Why not?"
+#~ msgstr "Чому ні?"
+
+#~ msgid "Comments:"
+#~ msgstr "Коментарі:"
+
+#~ msgid "Privacy Note:"
+#~ msgstr "Нотатка щодо конфіденційності:"
+
+#~ msgid ""
+#~ "The sole purpose of this survey is to better know our user base.\n"
+#~ "Your email address will be used to uniquely identify you as a Glade user "
+#~ "and send you back a modification token in case you want to modify "
+#~ "something or add extra comments.\n"
+#~ "Only statistics compiled from the whole dataset will be shared publicly.\n"
+#~ "Individual data will be stored in a private database and it will not be "
+#~ "shared with the public or any other third party."
+#~ msgstr ""
+#~ "Єдиною метою створення цього опитування є краще розуміння потреб наших "
+#~ "користувачів.\n"
+#~ "Вашу адресу електронної пошти буде використано лише для ідентифікації вас "
+#~ "як користувача Glade і надсилання ключа для внесення змін, яким ви можете "
+#~ "скористатися для внесення змін до відповідей або додаткових коментарів.\n"
+#~ "Оприлюднено буде лише загальні статистичні дані за отриманим набором "
+#~ "відповідей.\n"
+#~ "Дані окремих користувачів зберігатимуться у закритій базі даних. Ми не "
+#~ "оприлюднюватимемо їх і не надаватимемо їх стороннім особам чи компаніями."
 
 #~ msgid "Only one widget can be pasted at a time to this container"
 #~ msgstr "У цей контейнер за раз може бути вставлений лише один віджет"
