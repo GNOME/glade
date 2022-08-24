@@ -11,7 +11,7 @@ project(
   version: '3.40.0',
   license: 'GPL2',
   default_options: 'buildtype=debugoptimized',
-  meson_version: '>= 0.53.0',
+  meson_version: '>= 0.57.0',
 )
 
 glade_name = meson.project_name()
@@ -210,9 +210,8 @@ configure_file(
   configuration: config_h,
 )
 
-meson.add_install_script(
-  'meson_post_install.py',
-  glade_datadir,
+gnome.post_install(
+  gtk_update_icon_cache: true,
 )
 
 tls_backend_support_src = '''
