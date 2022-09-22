@@ -4,27 +4,27 @@
 #
 # Peter Kragelj <peter.kragelj@gmail.com>, 2010.
 # Martin Srebotnjak <miles@filmsi.net>, 2013.
-# Matej Urbančič <mateju@svn.gnome.org>, 2007–2021.
+# Matej Urbančič <mateju@src.gnome.org>, 2007–2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2021-01-23 13:14+0000\n"
-"PO-Revision-Date: 2021-01-27 21:26+0100\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"POT-Creation-Date: 2022-09-10 12:43+0000\n"
+"PO-Revision-Date: 2022-09-22 22:51+0200\n"
+"Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:44 src/glade.glade:261
+#: src/main.c:44 src/glade.glade:202
 msgid "Glade"
 msgstr "Glade"
 
@@ -73,247 +73,247 @@ msgstr ""
 "različnih programskih jezikih, vključno s C, C++, C#, Vala, Java, Perl, "
 "Python in drugih."
 
-#: src/glade-window.c:51
+#: src/glade-window.c:50
 msgid "[Read Only]"
 msgstr "[samo za branje]"
 
-#: src/glade-window.c:182
+#: src/glade-window.c:180
 msgid "User Interface Designer"
 msgstr "Snovalnik uporabniškega vmesnika"
 
-#: src/glade-window.c:429 src/glade-window.c:436
+#: src/glade-window.c:427 src/glade-window.c:434
 msgid "the last action"
 msgstr "zadnje dejanje"
 
-#: src/glade-window.c:430
+#: src/glade-window.c:428
 #, c-format
 msgid "Undo: %s"
 msgstr "Razveljavi: %s"
 
-#: src/glade-window.c:437
+#: src/glade-window.c:435
 #, c-format
 msgid "Redo: %s"
 msgstr "Ponovi: %s"
 
-#: src/glade-window.c:462
+#: src/glade-window.c:460
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Samodejno shranjevanje »%s«"
 
-#: src/glade-window.c:467
+#: src/glade-window.c:465
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Napaka med samodejnim shranjevanjem: »%s«"
 
-#: src/glade-window.c:689
+#: src/glade-window.c:687
 msgid "Open…"
 msgstr "Odpri …"
 
-#: src/glade-window.c:723
+#: src/glade-window.c:721
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Projekt %s se še vedno nalaga."
 
-#: src/glade-window.c:742
+#: src/glade-window.c:740
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
 "Ustvarjanje varnostne kopije obstoječe datoteke je spodletelo. Ali naj se "
 "shranjevanje vseeno nadaljuje?"
 
-#: src/glade-window.c:757
+#: src/glade-window.c:755
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Napaka med shranjevanjem %s: %s"
 
-#: src/glade-window.c:796
+#: src/glade-window.c:794
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Datoteka %s je bila spremenjena po zadnjem branju."
 
-#: src/glade-window.c:800
+#: src/glade-window.c:798
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "V primeru, da datoteko shranite, bodo vse zunanje spremembe izgubljene. Ali "
 "jo želite vseeno shraniti?"
 
-#: src/glade-window.c:805
+#: src/glade-window.c:803
 msgid "_Save Anyway"
 msgstr "_Vseeno shrani"
 
-#: src/glade-window.c:813
+#: src/glade-window.c:811
 msgid "_Don't Save"
 msgstr "_Ne shrani"
 
-#: src/glade-window.c:846
+#: src/glade-window.c:844
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Projekt »%s« je shranjen"
 
-#: src/glade-window.c:877
+#: src/glade-window.c:875
 msgid "Save As…"
 msgstr "Shrani kot …"
 
-#: src/glade-window.c:941
+#: src/glade-window.c:939
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Ni mogoče shraniti datoteke %s"
 
-#: src/glade-window.c:945
+#: src/glade-window.c:943
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Ni ustreznih dovoljenj za shranjevanje datoteke."
 
-#: src/glade-window.c:967
+#: src/glade-window.c:965
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "Ni mogoče shraniti datoteke %s. Projekt na tej poti je že odprt."
 
-#: src/glade-window.c:995
+#: src/glade-window.c:993
 msgid "No open projects to save"
 msgstr "Ni odprtega projekta za shranjevanje"
 
-#: src/glade-window.c:1028
+#: src/glade-window.c:1026
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Ali želite shraniti spremembe projekta \"%s\" pred zapiranjem?"
 
-#: src/glade-window.c:1036
+#: src/glade-window.c:1034
 msgid "Your changes will be lost if you don't save them."
 msgstr "V primeru, da sprememb na shranite, bodo te trajno izgubljene."
 
-#: src/glade-window.c:1040
+#: src/glade-window.c:1038
 msgid "Close _without Saving"
 msgstr "Zapri _brez shranjevanja"
 
-#: src/glade-window.c:1041 src/glade-window.c:1724 src/glade-preferences.c:237
+#: src/glade-window.c:1039 src/glade-window.c:1721 src/glade-preferences.c:237
 #: gladeui/glade-editor.c:793 gladeui/glade-editor.c:1152
 #: gladeui/glade-editor-property.c:1774 gladeui/glade-editor-property.c:2082
 #: gladeui/glade-editor-property.c:2279 gladeui/glade-editor-property.c:3215
 #: gladeui/glade-editor-property.c:3323 gladeui/glade-editor-property.c:3334
 #: gladeui/glade-editor-property.c:3645 gladeui/glade-utils.c:494
-#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1063
+#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1207
 msgid "_Cancel"
 msgstr "_Prekliči"
 
-#: src/glade-window.c:1042 src/glade.glade:685 gladeui/glade-utils.c:497
+#: src/glade-window.c:1040 src/glade.glade:598 gladeui/glade-utils.c:497
 msgid "_Save"
 msgstr "_Shrani"
 
-#: src/glade-window.c:1073
+#: src/glade-window.c:1071
 msgid "Save…"
 msgstr "Shrani …"
 
-#: src/glade-window.c:1631
+#: src/glade-window.c:1628
 msgid "Could not create a new project."
 msgstr "Ni mogoče ustvariti novega projekta."
 
-#: src/glade-window.c:1692
+#: src/glade-window.c:1689
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "V projektu %s so spremembe, ki še niso shranjene"
 
-#: src/glade-window.c:1697
+#: src/glade-window.c:1694
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Če ponovno naložite, bodo izgubljene vse neshranjene spremembe. Ali naj se "
 "ponovno naloži?"
 
-#: src/glade-window.c:1707
+#: src/glade-window.c:1704
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Projektna datoteka %s je bila spremenjena od zunaj"
 
-#: src/glade-window.c:1712
+#: src/glade-window.c:1709
 msgid "Do you want to reload the project?"
 msgstr "Ali želite ponovno naložiti projekt?"
 
-#: src/glade-window.c:1718
+#: src/glade-window.c:1715
 msgid "_Reload"
 msgstr "_Ponovno naloži"
 
-#: src/glade-window.c:2269
+#: src/glade-window.c:2263
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Dobrodošli v predstavitvi novosti programa Glade."
 
-#: src/glade-window.c:2270
+#: src/glade-window.c:2264
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Menijska vrstica in orodna vrstica sta združeni v naslovno vrstico."
 
-#: src/glade-window.c:2272
+#: src/glade-window.c:2266
 msgid "You can open a project"
 msgstr "Odpreti je mogoče projekt,"
 
-#: src/glade-window.c:2273
+#: src/glade-window.c:2267
 msgid "find recently used"
 msgstr "poiskati nedavno uporabljenega,"
 
-#: src/glade-window.c:2274
+#: src/glade-window.c:2268
 msgid "or create a new one"
 msgstr "ali pa ustvariti nov projekt."
 
-#: src/glade-window.c:2278
+#: src/glade-window.c:2272
 msgid "Undo"
 msgstr "Gumb Razveljavi,"
 
-#: src/glade-window.c:2279
+#: src/glade-window.c:2273
 msgid "Redo"
 msgstr "Ponovno uveljavi"
 
-#: src/glade-window.c:2280
+#: src/glade-window.c:2274
 msgid "Project switcher"
 msgstr "Preklopnik projekta"
 
-#: src/glade-window.c:2282
+#: src/glade-window.c:2276
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "in gumb za shranjevanje so zbrani v naslovni vrstici."
 
-#: src/glade-window.c:2283
+#: src/glade-window.c:2277
 msgid "just like Save As"
 msgstr "Podobno kot gumb Shrani kot,"
 
-#: src/glade-window.c:2284
+#: src/glade-window.c:2278
 msgid "project properties"
 msgstr "lastnosti projekta in"
 
-#: src/glade-window.c:2285
+#: src/glade-window.c:2279
 msgid "and less commonly used actions"
 msgstr "redkeje uporabljena dejanja."
 
-#: src/glade-window.c:2287
+#: src/glade-window.c:2281
 msgid "The object inspector took the palette's place"
 msgstr "Lastnosti predmeta so sedaj na mestu palete."
 
-#: src/glade-window.c:2288
+#: src/glade-window.c:2282
 msgid "To free up space for the property editor"
 msgstr "S tem se sprosti prostor za urejevalnik lastnosti."
 
-#: src/glade-window.c:2290
+#: src/glade-window.c:2284
 msgid "The palette was replaced with a new object chooser"
 msgstr "Paleta je zamenjana z novim izbirnikom predmetov."
 
-#: src/glade-window.c:2291
+#: src/glade-window.c:2285
 msgid "Where you can search all supported classes"
 msgstr "Tu je mogoče iskati med podprtimi predmeti,"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2286
 msgid "investigate GTK+ object groups"
 msgstr "preučiti skupine predmetov GTK+ in"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2287
 msgid "and find classes introduced by other libraries"
 msgstr "poiskati predmete, vključene prek zunanjih knjižnic."
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2289
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr ""
 "Splošni pregled je končan, sedaj lahko začnemo s predstavitvijo posodobitve "
 "načina dela."
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2291
 msgid "First of all, create a new project"
 msgstr "Najprej je treba ustvariti nov projekt."
 
-#: src/glade-window.c:2298
+#: src/glade-window.c:2292
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
@@ -321,56 +321,30 @@ msgstr ""
 "Sledi dodajanje predmeta GtkWindow z uporabo izbirnika, ali z dvojnim klikom "
 "na delovno površino."
 
-#: src/glade-window.c:2299
+#: src/glade-window.c:2293
 msgid "Excellent!"
 msgstr "Odlično!"
 
-#: src/glade-window.c:2300
+#: src/glade-window.c:2294
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr "Z dvojnim klikom na katerikoli ročnik se ustvarijo gradniki."
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2295
 msgid "Try adding a grid"
 msgstr "Začnite z dodajanjem mreže"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2296
 msgid "and a button"
 msgstr "in gumba."
 
-#: src/glade-window.c:2304
+#: src/glade-window.c:2298
 msgid "Quite easy! Isn't it?"
 msgstr "Enostavno, kajne!"
 
-#: src/glade-window.c:2305
+#: src/glade-window.c:2299
 msgid "Enjoy!"
 msgstr "Upamo, da boste uživali pri delu!"
-
-#. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2526
-msgid ""
-"We are conducting a user survey\n"
-" would you like to take it now?"
-msgstr ""
-"Izvajamo anketo med uporabniki programa.\n"
-"Ali bi želeli sodelovati?"
-
-#. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2530
-msgid "If not, you can always find it in the Help menu."
-msgstr ""
-"Če bi želeli anketo izpolniti kasneje, bo dostopna prek povezave v meniju "
-"pomoči."
-
-#: src/glade-window.c:2532
-msgid "_Do not show this dialog again"
-msgstr "Tega okna _ne pokaži več"
-
-#. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2553
-msgid "Go to Help -> Registration & User Survey and complete our survey!"
-msgstr ""
-"Pojdite v meni Pomoč -> Vpis in anketni vprašalnik in izpolnite anketo!"
 
 #: src/main.c:53
 msgid "Output version information and exit"
@@ -384,162 +358,99 @@ msgstr "Onemogoči podporo DevHelp"
 msgid "be verbose"
 msgstr "podroben izpis"
 
-#: src/main.c:147
+#: src/main.c:145
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Ni mogoče odpreti »%s«. Datoteka ne obstaja.\n"
 
-#: src/main.c:175
+#: src/main.c:173
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "podpora za gmodule ni na voljo. Podpora je obvezna za pravilno delovanje "
 "okolja glade."
 
-#: src/main.c:193
+#: src/main.c:191
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
 "Ustvarjanje in urejanje uporabniškega vmesnika za GTK+ in GNOME programe."
 
-#. The last sentence in quotes is in spanish and does not need to be translated.
-#: src/glade.glade:59
-msgctxt ""
-"This is to honor a professor that passed away last year and appears in a "
-"popover when you click on the button that says \"RIP Guido\""
-msgid ""
-"Guido was one of my professors at Rosario\n"
-"National University of Argentina.\n"
-"\n"
-"He introduced me to C, Linux, free software...\n"
-"\n"
-"He always had extra time to explain one more thing\n"
-"and help you figure out things by yourself.\n"
-"\n"
-"Always made a joke in the right moment keeping\n"
-"things interesting and fun.\n"
-"\n"
-"Master of intentionally misconstrued sayings.\n"
-"\n"
-"Always carried a stack of books under his arm.\n"
-"\n"
-"Loved Guinness beer.\n"
-"\n"
-"All he ever wanted was make you think!\n"
-"\n"
-"\"Alégrate! Mañana sera peor.\"\n"
-"\n"
-"\tJuan Pablo"
-msgstr ""
-"Professor Macchi je bil eden izmed profesorjev\n"
-"na Državni univerzi Rosario v Argentini.\n"
-"\n"
-"Uvajal nas je v C, Linux, odprtokodno programsko opremo...\n"
-"\n"
-"Vedno si je vzel čas za dodatno razlago česarkoli\n"
-"in nam pomagal odkrivati programerski svet.\n"
-"\n"
-"Rad se je šalil, in to je znal narediti ravno v pravih trenutkih,\n"
-"da je učenje ostalo zanimivo in zabavno.\n"
-"\n"
-"Bil je mojster namenoma prirejenih pregovorov in rekov.\n"
-"\n"
-"Vedno s paketom knjig pod pazduho.\n"
-"\n"
-"Oboževal je pivo Guinness.\n"
-"\n"
-"Želel je le, da razmišljamo!\n"
-"\n"
-"»Alégrate! Mañana sera peor.«\n"
-"\n"
-"\tJuan Pablo"
-
-#: src/glade.glade:106
+#: src/glade.glade:47
 msgid "Close Project"
 msgstr "Zapri projekt"
 
-#: src/glade.glade:131
-msgid "Registration & User Survey"
-msgstr "Prijava in anketa"
-
-#: src/glade.glade:145
+#: src/glade.glade:72
 msgid "_Developer Reference"
 msgstr "Napotki _razvijalcem"
 
-#: src/glade.glade:159
+#: src/glade.glade:86
 msgid "Interactive Intro"
 msgstr "Uvodna predstavitev"
 
-#: src/glade.glade:184
+#: src/glade.glade:111
 msgid "Preferences"
 msgstr "Možnosti"
 
-#: src/glade.glade:198
+#: src/glade.glade:125
+msgid "User Manual"
+msgstr "Uporabniški priročnik"
+
+#: src/glade.glade:139
 msgid "About Glade"
 msgstr "O programu"
 
-#: src/glade.glade:297
-msgctxt "Button label in the bottom of main window that triggers a popover"
-msgid ""
-"<small>In memory of an extraordinary\n"
-"person and professor\n"
-"R.I.P Guido Macchi</small>"
-msgstr ""
-"<small>V spomin izjemnemu\n"
-"profesorju\n"
-"Guidu Macchi</small>"
-
-#: src/glade.glade:592 src/glade-preferences.c:239
+#: src/glade.glade:505 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2280 gladeui/glade-utils.c:497
 msgid "_Open"
 msgstr "_Odpri↓"
 
-#: src/glade.glade:597
+#: src/glade.glade:510
 msgid "Open a project"
 msgstr "Odpri projekt"
 
-#: src/glade.glade:642
+#: src/glade.glade:555
 msgid "Create a new project"
 msgstr "Ustvari nov projekt"
 
-#: src/glade.glade:662
+#: src/glade.glade:575
 msgid "Edit project properties"
 msgstr "Urejanje lastnosti projekta"
 
-#: src/glade.glade:690
+#: src/glade.glade:603
 msgid "Save the current project"
 msgstr "Shrani trenutni projekt"
 
-#: src/glade.glade:706
+#: src/glade.glade:619
 msgid "Save the current project with a different name"
 msgstr "Shrani trenutni projekt z drugim imenom"
 
-#: src/glade.glade:735
+#: src/glade.glade:648
 msgid "Start/resume interactive UI introduction"
 msgstr "Začni/Nadaljuj z uvodno predstavitvijo novosti vmesnika"
 
-#: src/glade.glade:834
+#: src/glade.glade:747
 msgid ""
-"© 2018-2020 Juan Pablo Ugarte, et al.\n"
+"© 2018-2022 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 msgstr ""
-"© 2018–2020 Juan Pablo Ugarte in drugi\n"
+"© 2018–2022 Juan Pablo Ugarte in drugi\n"
 "© 2004–2018 Tristan Van Berkom, Juan Pablo Ugarte in drugi\n"
 "© 2001–2006 Joaquin Cuenca Abela, Paolo Borelli in drugi\n"
 "© 2001–2006 Ximian, Inc."
 
-#: src/glade.glade:838
+#: src/glade.glade:751
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Programsko oblikovanje vmesnikov za GTK+ in GNOME."
 
-#: src/glade.glade:840
+#: src/glade.glade:753
 msgid "Visit Glade web site"
 msgstr "Obišči spletišče Glade"
 
-#: src/glade.glade:852
+#: src/glade.glade:765
 msgid "translator-credits"
-msgstr "Matej Urbančič <mateju@svn.gnome.org>"
+msgstr "Matej Urbančič <mateju@src.gnome.org>"
 
 #: src/glade-preferences.c:234
 msgid "Select a catalog search path"
@@ -646,688 +557,6 @@ msgstr "Odstrani izbrane poti iskanja"
 #: src/glade-preferences.glade:387
 msgid "Extra Catalog & Templates paths"
 msgstr "Dodatne poti do katalogov in predlog"
-
-#: src/glade-registration.c:282
-#, c-format
-msgid "Connecting to %s"
-msgstr "Povezovanje z virom %s"
-
-#: src/glade-registration.c:285
-#, c-format
-msgid "Sending data to %s"
-msgstr "Pošiljanje podatkov na %s"
-
-#: src/glade-registration.c:288
-#, c-format
-msgid "Waiting for %s"
-msgstr "Čakanje na %s"
-
-#: src/glade-registration.c:291
-#, c-format
-msgid "Receiving data from %s"
-msgstr "Prejemanje podatkov s strežnika %s"
-
-#: src/glade-registration.c:350
-msgid ""
-"Your subscription to the users list has been received!\n"
-"Check your email!"
-msgstr ""
-"Naročnina na uporabniški seznam je prejeta!\n"
-"Preverite elektronsko pošto."
-
-#: src/glade-registration.c:510
-msgid "Thank you for taking the time to complete the survey, we appreciate it!"
-msgstr ""
-"Zahvaljujemo se vam za izpolnjevanje ankete. Z vašim doprinosom bo program "
-"nedvomno boljši."
-
-#: src/glade-registration.c:771
-msgid "Completed and submitted!"
-msgstr "Končano in uveljavljeno!"
-
-#: src/glade-registration.glade:44
-msgid "Glade Registration & User Survey"
-msgstr "Vpis uporabnikov Glade in anketa"
-
-#: src/glade-registration.glade:63 gladeui/glade-editor-property.c:1378
-msgid "_Close"
-msgstr "_Zapri↓"
-
-#: src/glade-registration.glade:77
-msgid "_Submit"
-msgstr "_Uveljavi"
-
-#: src/glade-registration.glade:82
-msgid "Information will be sent to https://survey.gnome.org"
-msgstr "Podrobnosti bodo poslane na https://survey.gnome.org"
-
-#: src/glade-registration.glade:183
-msgid "User Information"
-msgstr "Podrobnosti o uporabniku"
-
-#: src/glade-registration.glade:217
-msgid "<Your name or nickname is required>"
-msgstr "<Ime ali vzdevek je obvezno polje>"
-
-#: src/glade-registration.glade:230 gladeui/glade-project-properties.ui:521
-#: plugins/gtk+/glade-about-dialog-editor.ui:69
-msgid "Name:"
-msgstr "Ime:"
-
-#: src/glade-registration.glade:242
-msgid "Email:"
-msgstr "Elektronska pošta:"
-
-#: src/glade-registration.glade:254
-msgid ""
-"Tokens are processed manually in batches.\n"
-"Please be patient."
-msgstr ""
-"Žetoni so obdelano ročno v setih.\n"
-"Postopek je lahko dolgotrajen."
-
-#: src/glade-registration.glade:256
-msgid "<Required to send back registration token>"
-msgstr "<Vrednost je zahtevana za vrnitev žetona registracije.>"
-
-#: src/glade-registration.glade:269
-msgid "Country:"
-msgstr "Država:"
-
-#: src/glade-registration.glade:281
-msgid "City:"
-msgstr "Mesto:"
-
-#: src/glade-registration.glade:295
-msgid "Company"
-msgstr "Podjetje"
-
-#: src/glade-registration.glade:296
-msgid "Organization"
-msgstr "Ustanova"
-
-#: src/glade-registration.glade:297
-msgid "Personal"
-msgstr "Osebno"
-
-#: src/glade-registration.glade:309
-msgid "Website"
-msgstr "Spletišče"
-
-#: src/glade-registration.glade:353
-msgid "Subscribe me to the mailing list"
-msgstr "Naroči se na dopisni seznam"
-
-#: src/glade-registration.glade:357
-msgid ""
-"Subscribe to Glade Users mailing list.\n"
-"You will be sent email requesting confirmation!"
-msgstr ""
-"Naročite se na dopisni seznam uporabnikov Glade.\n"
-"Na elektronski naslov bo poslan zahteva po potrditvi računa."
-
-#: src/glade-registration.glade:373
-msgid "Choose your country"
-msgstr "Izbor države"
-
-#: src/glade-registration.glade:653
-msgid "We care about privacy!"
-msgstr "Zasebnost je zelo pomembna!"
-
-#: src/glade-registration.glade:671
-msgid ""
-"All the data will be stored in a private location and will not be shared "
-"with the public or any third party."
-msgstr ""
-"Vsi podatki bodo varno shranjeni in ne bodo na voljo zunanjim deležnikom."
-
-#: src/glade-registration.glade:705
-msgid "Glade User Survey"
-msgstr "Anketa med uporabniki Glade"
-
-#: src/glade-registration.glade:735
-msgid "How long have you been programming?"
-msgstr "Koliko časa že programirate?"
-
-#: src/glade-registration.glade:753 src/glade-registration.glade:1022
-msgid "0"
-msgstr "0"
-
-#: src/glade-registration.glade:769 src/glade-registration.glade:1038
-msgid "years"
-msgstr "let"
-
-#: src/glade-registration.glade:770 src/glade-registration.glade:1039
-msgid "months"
-msgstr "mesecev"
-
-#: src/glade-registration.glade:781
-msgid "I am not a programmer"
-msgstr "Nisem programer"
-
-#: src/glade-registration.glade:817
-msgid "Which programming languages do you prefer?"
-msgstr "V katerem programskem jeziku najraje programirate?"
-
-#: src/glade-registration.glade:833
-msgid "C"
-msgstr "C"
-
-#: src/glade-registration.glade:848
-msgid "C++"
-msgstr "C++"
-
-#: src/glade-registration.glade:863
-msgid "C#"
-msgstr "C#"
-
-#: src/glade-registration.glade:878
-msgid "Java"
-msgstr "Java"
-
-#: src/glade-registration.glade:893
-msgid "Python"
-msgstr "Python"
-
-#: src/glade-registration.glade:908
-msgid "JavaScript"
-msgstr "JavaScript"
-
-#: src/glade-registration.glade:923
-msgid "Vala"
-msgstr "Vala"
-
-#: src/glade-registration.glade:938
-msgid "Perl"
-msgstr "Perl"
-
-#: src/glade-registration.glade:953
-msgid "Rust"
-msgstr "Rust"
-
-#: src/glade-registration.glade:968 src/glade-registration.glade:1173
-#: src/glade-registration.glade:1278 src/glade-registration.glade:1295
-#: src/glade-registration.glade:1312 src/glade-registration.glade:1344
-#: src/glade-registration.glade:1370 src/glade-registration.glade:1465
-#: src/glade-registration.glade:1956 src/glade-registration.glade:2158
-#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
-#: plugins/gtk+/gtk+.xml:4624
-msgid "Other"
-msgstr "Ostalo"
-
-#: src/glade-registration.glade:1004
-msgid "When did you start using Glade?"
-msgstr "Kdaj ste začeli uporabljati Glade?"
-
-#: src/glade-registration.glade:1052
-msgid "ago"
-msgstr "nazaj"
-
-#: src/glade-registration.glade:1084
-msgid "Which version do you normally use?"
-msgstr "Katero različico običajno uporabljate?"
-
-#: src/glade-registration.glade:1101
-msgid "What is available in my OS"
-msgstr "Kaj je na voljo za moj OS?"
-
-#: src/glade-registration.glade:1118
-msgid "Latest stable from sources"
-msgstr "Zadnja stabilna različica iz virov"
-
-#: src/glade-registration.glade:1135
-msgid "3.8 for GTK+ 2"
-msgstr "3.8 za GTK+ 2"
-
-#: src/glade-registration.glade:1152
-msgid "Master"
-msgstr "Razvojna veja"
-
-#: src/glade-registration.glade:1229
-msgid "On what operating systems?"
-msgstr "Na katerem operacijskem sistemu?"
-
-#: src/glade-registration.glade:1249
-msgid "distribution"
-msgstr "Distribucija"
-
-#: src/glade-registration.glade:1250
-msgid "Alpine"
-msgstr "Alpine"
-
-#: src/glade-registration.glade:1251
-msgid "Arch Linux"
-msgstr "Arch Linux"
-
-#: src/glade-registration.glade:1252
-msgid "Ataraxia Linux"
-msgstr "Ataraxia Linux"
-
-#: src/glade-registration.glade:1253
-msgid "CentOS"
-msgstr "CentOS"
-
-#: src/glade-registration.glade:1254
-msgid "Chrome OS"
-msgstr "Chrome OS"
-
-#: src/glade-registration.glade:1255
-msgid "Clear Linux"
-msgstr "Clear Linux"
-
-#: src/glade-registration.glade:1256
-msgid "Debian"
-msgstr "Debian"
-
-#: src/glade-registration.glade:1257
-msgid "elementary OS"
-msgstr "Elementary OS"
-
-#: src/glade-registration.glade:1258
-msgid "Endless OS"
-msgstr "Endless OS"
-
-#: src/glade-registration.glade:1259
-msgid "Fedora"
-msgstr "Fedora"
-
-#: src/glade-registration.glade:1260
-msgid "Gentoo"
-msgstr "Gentoo"
-
-#: src/glade-registration.glade:1261
-msgid "Kubuntu"
-msgstr "Kubuntu"
-
-#: src/glade-registration.glade:1262
-msgid "Linux Mint"
-msgstr "Linux Mint"
-
-#: src/glade-registration.glade:1263
-msgid "Mageia"
-msgstr "Mageia"
-
-#: src/glade-registration.glade:1264
-msgid "Mandriva"
-msgstr "Mandriva"
-
-#: src/glade-registration.glade:1265
-msgid "Nix OS"
-msgstr "Nix OS"
-
-#: src/glade-registration.glade:1266
-msgid "openSUSE"
-msgstr "openSUSE"
-
-#: src/glade-registration.glade:1267
-msgid "Oracle"
-msgstr "Oracle"
-
-#: src/glade-registration.glade:1268
-msgid "Pop!_OS"
-msgstr "Pop!_OS"
-
-#: src/glade-registration.glade:1269
-msgid "PureOS"
-msgstr "PureOS"
-
-#: src/glade-registration.glade:1270
-msgid "Raspbian"
-msgstr "Raspbian"
-
-#: src/glade-registration.glade:1271
-msgid "Red Hat"
-msgstr "Red Hat"
-
-#: src/glade-registration.glade:1272
-msgid "Solus"
-msgstr "Solus"
-
-#: src/glade-registration.glade:1273
-msgid "SulinOS"
-msgstr "SulinOS"
-
-#: src/glade-registration.glade:1274
-msgid "Turbolinux"
-msgstr "Turbolinux"
-
-#: src/glade-registration.glade:1275
-msgid "Ubuntu"
-msgstr "Ubuntu"
-
-#: src/glade-registration.glade:1276
-msgid "Void Linux"
-msgstr "Void Linux"
-
-#: src/glade-registration.glade:1277
-msgid "Xandros"
-msgstr "Xandros"
-
-#: src/glade-registration.glade:1291 src/glade-registration.glade:1308
-msgid "variant"
-msgstr "različica"
-
-#: src/glade-registration.glade:1292
-msgid "FreeBSD"
-msgstr "FreeBSD"
-
-#: src/glade-registration.glade:1293
-msgid "OpenBSD"
-msgstr "OpenBSD"
-
-#: src/glade-registration.glade:1294
-msgid "NetBSD"
-msgstr "NetBSD"
-
-#: src/glade-registration.glade:1309
-msgid "Oracle Solaris"
-msgstr "Oracle Solaris"
-
-#: src/glade-registration.glade:1310
-msgid "OpenSolaris"
-msgstr "OpenSolaris"
-
-#: src/glade-registration.glade:1311
-msgid "illumos"
-msgstr "illumos"
-
-#: src/glade-registration.glade:1334 src/glade-registration.glade:1357
-msgid "version"
-msgstr "različica"
-
-#: src/glade-registration.glade:1335
-msgid "10"
-msgstr "10"
-
-#: src/glade-registration.glade:1336
-msgid "8"
-msgstr "8"
-
-#: src/glade-registration.glade:1337
-msgid "7"
-msgstr "7"
-
-#: src/glade-registration.glade:1338
-msgid "Vista"
-msgstr "Vista"
-
-#: src/glade-registration.glade:1339
-msgid "2012"
-msgstr "2012"
-
-#: src/glade-registration.glade:1340
-msgid "2008"
-msgstr "2008"
-
-#: src/glade-registration.glade:1341
-msgid "2003"
-msgstr "2003"
-
-#: src/glade-registration.glade:1342
-msgid "XP"
-msgstr "XP"
-
-#: src/glade-registration.glade:1343
-msgid "2000"
-msgstr "2000"
-
-#: src/glade-registration.glade:1358
-msgid "Catalina"
-msgstr "Catalina"
-
-#: src/glade-registration.glade:1359
-msgid "Mojave"
-msgstr "Mojave"
-
-#: src/glade-registration.glade:1360
-msgid "High Sierra"
-msgstr "High Sierra"
-
-#: src/glade-registration.glade:1361
-msgid "Sierra"
-msgstr "Sierra"
-
-#: src/glade-registration.glade:1362
-msgid "El Capitan"
-msgstr "El Capitan"
-
-#: src/glade-registration.glade:1363
-msgid "Yosemite"
-msgstr "Yosemite"
-
-#: src/glade-registration.glade:1364
-msgid "Mavericks"
-msgstr "Mavericks"
-
-#: src/glade-registration.glade:1365
-msgid "Mountain Lion"
-msgstr "Gorski lev"
-
-#: src/glade-registration.glade:1366
-msgid "Lion"
-msgstr "Lion"
-
-#: src/glade-registration.glade:1367
-msgid "Snow Leopard"
-msgstr "Snežni leopard"
-
-#: src/glade-registration.glade:1368
-msgid "Leopard"
-msgstr "Leopard"
-
-#: src/glade-registration.glade:1369
-msgid "Tiger"
-msgstr "Tiger"
-
-#: src/glade-registration.glade:1380
-msgid "GNU/Linux"
-msgstr "GNU/Linux"
-
-#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3149
-msgid "BSD"
-msgstr "BSD"
-
-#: src/glade-registration.glade:1414
-msgid "Windows"
-msgstr "Windows"
-
-#: src/glade-registration.glade:1431
-msgid "Mac OS X"
-msgstr "Mac OS X"
-
-#: src/glade-registration.glade:1448
-msgid "Solaris"
-msgstr "Solaris"
-
-#: src/glade-registration.glade:1503
-msgid "How often do you use it?"
-msgstr "Kako pogosto uporabljate to programsko opremo?"
-
-#: src/glade-registration.glade:1520
-msgid "Every day"
-msgstr "Vsak dan"
-
-#: src/glade-registration.glade:1537
-msgid "Few days a week"
-msgstr "Nekajkrat tedensko"
-
-#: src/glade-registration.glade:1554
-msgid "Every week"
-msgstr "Vsak teden"
-
-#: src/glade-registration.glade:1571
-msgid "A few times a month"
-msgstr "Nekajkrat mesečno"
-
-#: src/glade-registration.glade:1588
-msgid "Once a month"
-msgstr "Enkrat na mesec"
-
-#: src/glade-registration.glade:1605
-msgid "A few times a year"
-msgstr "Nekajkrat letno"
-
-#: src/glade-registration.glade:1643
-msgid "What level of Glade user would you say you are?"
-msgstr "Kako bi opredelili svojo uporabniško raven v sistemu Glade?"
-
-#: src/glade-registration.glade:1659
-msgid "Beginner"
-msgstr "Začetnik"
-
-#: src/glade-registration.glade:1676
-msgid "Intermediate"
-msgstr "Naprednejši uporabnik"
-
-#: src/glade-registration.glade:1693
-msgid "Advanced"
-msgstr "Napredno"
-
-#: src/glade-registration.glade:1731
-msgid ""
-"Under what kind of license(s) do you release the software you used Glade to "
-"create?"
-msgstr ""
-"S kakšnimi dovoljenji objavljate programsko opremo, ustvarjeno z okoljem "
-"Glade?"
-
-#: src/glade-registration.glade:1747
-msgid "Free software"
-msgstr "Prosta programska oprema"
-
-#: src/glade-registration.glade:1761
-msgid "Open source software"
-msgstr "Odprtokodna programska oprema"
-
-#: src/glade-registration.glade:1775
-msgid "Commercial/Closed software"
-msgstr "Prodajna/Zaprtokodna programska oprema"
-
-#: src/glade-registration.glade:1789
-msgid "None - distributed internally"
-msgstr "Brez - interno razširjanje"
-
-#: src/glade-registration.glade:1824
-msgid ""
-"In what field(s) is the software you used Glade to create generally used?"
-msgstr ""
-"Kako in kje je uporabljena programska oprema, ki ste jo razvijali z orodjem "
-"Glade?"
-
-#: src/glade-registration.glade:1839
-msgid "Academic"
-msgstr "Akademska"
-
-#: src/glade-registration.glade:1853
-msgid "Embedded applications"
-msgstr "Vstavljeni programi"
-
-#: src/glade-registration.glade:1867
-msgid "Accounting"
-msgstr "Računovodstvo"
-
-#: src/glade-registration.glade:1881
-msgid "Desktop applications"
-msgstr "Namizni programi"
-
-#: src/glade-registration.glade:1895
-msgid "Educational"
-msgstr "Izobraževanje"
-
-#: src/glade-registration.glade:1909
-msgid "Medical"
-msgstr "Zdravstvo"
-
-#: src/glade-registration.glade:1923
-msgid "Industrial applications"
-msgstr "Industrijski programi"
-
-#: src/glade-registration.glade:1937
-msgid "Scientific"
-msgstr "Znanstveni"
-
-#: src/glade-registration.glade:2010
-msgid "What aspect of the software needs the most improvement?"
-msgstr "Kateri vidik programa zahteva največ pozornosti in razvoja?"
-
-#: src/glade-registration.glade:2055
-msgid "In your opinion what is the biggest problem with Glade?"
-msgstr "Kateri je po vašem mnenju največji problem okolja Glade?"
-
-#: src/glade-registration.glade:2072
-msgid "Lack of documentation"
-msgstr "Manjka dokumentacija"
-
-#: src/glade-registration.glade:2090
-msgid "Lack of professional support"
-msgstr "Manjka profesionalna podpora"
-
-#: src/glade-registration.glade:2107
-msgid "Lack of professional training"
-msgstr "Manjka profesionalno pomoč"
-
-#: src/glade-registration.glade:2124
-msgid "Lack of publicity/exposure"
-msgstr "Manjka javno prepoznanje"
-
-#: src/glade-registration.glade:2141
-msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
-msgstr ""
-"Pomanjkanje programskih objav za druge operacijske sisteme (Windows, Mac OS "
-"X)"
-
-#: src/glade-registration.glade:2217
-msgid "Have you ever encountered a bug?"
-msgstr "Ali ste kadarkoli naleteli na hrošča?"
-
-#: src/glade-registration.glade:2233 src/glade-registration.glade:2305
-#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
-msgid "Yes"
-msgstr "Da"
-
-#: src/glade-registration.glade:2250 src/glade-registration.glade:2322
-#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1640
-msgid "No"
-msgstr "Ne"
-
-#: src/glade-registration.glade:2289
-msgid "If so, did you file a bug report?"
-msgstr "Če da, ali ste poslali poročilo o hrošču?"
-
-#: src/glade-registration.glade:2365
-msgid "Have you ever thought about contributing?"
-msgstr "Ali ste kdaj razmišljali o sodelovanju pri podpori projekta?"
-
-#: src/glade-registration.glade:2440
-msgid "Why not?"
-msgstr "Zakaj ne?"
-
-#: src/glade-registration.glade:2490
-msgid "Comments:"
-msgstr "Opombe:"
-
-#: src/glade-registration.glade:2541
-msgid "Privacy Note:"
-msgstr "Opombe o zasebnosti:"
-
-#: src/glade-registration.glade:2561
-msgid ""
-"The sole purpose of this survey is to better know our user base.\n"
-"Your email address will be used to uniquely identify you as a Glade user and "
-"send you back a modification token in case you want to modify something or "
-"add extra comments.\n"
-"Only statistics compiled from the whole dataset will be shared publicly.\n"
-"Individual data will be stored in a private database and it will not be "
-"shared with the public or any other third party."
-msgstr ""
-"Namen ankete je spoznati uporabnike programskega okolja.\n"
-"Elektronski naslov bo uporabljen kot enoznačno določilo istovetnosti "
-"uporabnika in za pošiljanje žetona za spreminjanje poslanih podatkov ali "
-"objavljanje dodatnih opomb.\n"
-"Objavljena bo le statistika, ki bo zbrana na osnovi celotnega podatkovnega "
-"nabora in bo dostopna javno.\n"
-"Podatki posameznega uporabnika bodo shranjeni v zasebni podatkovni zbirki in "
-"ne bodo javni, niti ne bodo deljeni s tretjimi osebami."
 
 #: gladeui/glade-app.c:552
 #, c-format
@@ -1829,7 +1058,7 @@ msgstr "Počisti lastnosti gradnika"
 #: gladeui/glade-editor-property.c:2083 gladeui/glade-editor-property.c:3217
 #: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3336
 #: gladeui/glade-editor-property.c:3646 plugins/gtk+/glade-accels.c:524
-#: plugins/gtk+/glade-attributes.c:1064
+#: plugins/gtk+/glade-attributes.c:1208
 msgid "_OK"
 msgstr "_V redu↓"
 
@@ -1894,6 +1123,10 @@ msgstr "Besedilo po meri, ki naj se izpiše v oznaki lastnosti"
 #: gladeui/glade-editor-property.c:1375
 msgid "Select Fields"
 msgstr "Izbor polj"
+
+#: gladeui/glade-editor-property.c:1378
+msgid "_Close"
+msgstr "_Zapri↓"
 
 #: gladeui/glade-editor-property.c:1391
 msgid "_Select individual fields:"
@@ -1973,7 +1206,7 @@ msgstr "Izberite %s v tem projektu"
 
 #: gladeui/glade-editor-property.c:3216 gladeui/glade-editor-property.c:3324
 #: gladeui/glade-editor-property.c:3335 gladeui/glade-editor-property.c:3644
-#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1062
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1206
 msgid "C_lear"
 msgstr "Po_čisti↓"
 
@@ -2559,33 +1792,33 @@ msgstr ""
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Predmet %s je neprepoznane vrste %s\n"
 
-#: gladeui/glade-project.c:4951
+#: gladeui/glade-project.c:4953
 #, c-format
 msgid "Unsaved %i"
 msgstr "Neshranjeno %i"
 
-#: gladeui/glade-project.c:5258 gladeui/glade-project.c:5309
-#: gladeui/glade-project.c:5422
+#: gladeui/glade-project.c:5260 gladeui/glade-project.c:5311
+#: gladeui/glade-project.c:5424
 msgid "No widget selected."
 msgstr "Ni izbranega gradnika."
 
-#: gladeui/glade-project.c:5274
+#: gladeui/glade-project.c:5276
 msgid "Unable to copy unrecognized widget type."
 msgstr "Ni mogoče kopirati neprepoznane vrste gradnika."
 
-#: gladeui/glade-project.c:5306
+#: gladeui/glade-project.c:5308
 msgid "Unable to cut unrecognized widget type"
 msgstr "Ni mogoče izrezati neprepoznane vrste gradnika."
 
-#: gladeui/glade-project.c:5359
+#: gladeui/glade-project.c:5361
 msgid "Unable to paste to the selected parent"
 msgstr "ni mogoče prilepiti v izbrani nadrejeni proces"
 
-#: gladeui/glade-project.c:5370
+#: gladeui/glade-project.c:5372
 msgid "Unable to paste to multiple widgets"
 msgstr "Ni mogoče prilepiti gradnikov"
 
-#: gladeui/glade-project.c:5380
+#: gladeui/glade-project.c:5382
 msgid "No widget on the clipboard"
 msgstr "Ni gradnikov na odložišču"
 
@@ -2840,7 +2073,7 @@ msgid "Could not show link:"
 msgstr "Ni mogoče pokazati povezave:"
 
 #. Reset the column
-#: gladeui/glade-utils.c:1730 plugins/gtk+/glade-attributes.c:830
+#: gladeui/glade-utils.c:1730 plugins/gtk+/glade-attributes.c:868
 #: plugins/gtk+/gtk+.xml:830 plugins/gtk+/gtk+.xml:1188
 #: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1307
 #: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:1574
@@ -3220,6 +2453,11 @@ msgstr "Overi predmete, lastnosti in signale opuščanja"
 msgid "Warnings:"
 msgstr "Opozorila:"
 
+#: gladeui/glade-project-properties.ui:521
+#: plugins/gtk+/glade-about-dialog-editor.ui:69
+msgid "Name:"
+msgstr "Ime:"
+
 #: gladeui/glade-project-properties.ui:533
 msgid "Copyright:"
 msgstr "Avtorske pravice:"
@@ -3244,6 +2482,11 @@ msgstr "Opis:"
 #: gladeui/glade-project-properties.ui:634
 msgid "program or library short description"
 msgstr "kratek opis programa ali knjižnice"
+
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
+#: plugins/gtk+/gtk+.xml:4624
+msgid "Other"
+msgstr "Ostalo"
 
 #: gladeui/glade-project-properties.ui:649
 msgid "GNU GPL version 2"
@@ -3320,117 +2563,117 @@ msgstr "Nastavitev %s za uporabo podrejenega okna"
 msgid "Setting %s to not use a center child"
 msgstr "Nastavitev %s za onemogočanje uporabe podrejenega okna"
 
-#: plugins/gtk+/glade-attributes.c:222
+#: plugins/gtk+/glade-attributes.c:235
 msgctxt "textattr"
 msgid "Style"
 msgstr "Slog"
 
-#: plugins/gtk+/glade-attributes.c:226
+#: plugins/gtk+/glade-attributes.c:239
 msgctxt "textattr"
 msgid "Weight"
 msgstr "Teža"
 
-#: plugins/gtk+/glade-attributes.c:230
+#: plugins/gtk+/glade-attributes.c:243
 msgctxt "textattr"
 msgid "Variant"
 msgstr "velikost pisave"
 
-#: plugins/gtk+/glade-attributes.c:234
+#: plugins/gtk+/glade-attributes.c:247
 msgctxt "textattr"
 msgid "Stretch"
 msgstr "Raztegni"
 
-#: plugins/gtk+/glade-attributes.c:238
+#: plugins/gtk+/glade-attributes.c:251
 msgctxt "textattr"
 msgid "Underline"
 msgstr "Podčrtano"
 
-#: plugins/gtk+/glade-attributes.c:242
+#: plugins/gtk+/glade-attributes.c:255
 msgctxt "textattr"
 msgid "Strikethrough"
 msgstr "Prečrtano"
 
-#: plugins/gtk+/glade-attributes.c:246
+#: plugins/gtk+/glade-attributes.c:259
 msgctxt "textattr"
 msgid "Gravity"
 msgstr "Težnost"
 
-#: plugins/gtk+/glade-attributes.c:250
+#: plugins/gtk+/glade-attributes.c:263
 msgctxt "textattr"
 msgid "Gravity Hint"
 msgstr "Namig težnosti"
 
-#: plugins/gtk+/glade-attributes.c:262
+#: plugins/gtk+/glade-attributes.c:275
 msgctxt "textattr"
 msgid "Size"
 msgstr "Velikost"
 
-#: plugins/gtk+/glade-attributes.c:267
+#: plugins/gtk+/glade-attributes.c:280
 msgctxt "textattr"
 msgid "Absolute Size"
 msgstr "Absolutna velikost"
 
-#: plugins/gtk+/glade-attributes.c:274
+#: plugins/gtk+/glade-attributes.c:287
 msgctxt "textattr"
 msgid "Foreground Color"
 msgstr "Barva pisave"
 
-#: plugins/gtk+/glade-attributes.c:278
+#: plugins/gtk+/glade-attributes.c:291
 msgctxt "textattr"
 msgid "Background Color"
 msgstr "Barva ozadja"
 
-#: plugins/gtk+/glade-attributes.c:282
+#: plugins/gtk+/glade-attributes.c:295
 msgctxt "textattr"
 msgid "Underline Color"
 msgstr "Barva podčrtanega"
 
-#: plugins/gtk+/glade-attributes.c:286
+#: plugins/gtk+/glade-attributes.c:299
 msgctxt "textattr"
 msgid "Strikethrough Color"
 msgstr "Barva prečrtanega"
 
-#: plugins/gtk+/glade-attributes.c:297
+#: plugins/gtk+/glade-attributes.c:310
 msgctxt "textattr"
 msgid "Scale"
 msgstr "Spremeni velikost"
 
-#: plugins/gtk+/glade-attributes.c:303
+#: plugins/gtk+/glade-attributes.c:316
 msgctxt "textattr"
 msgid "Font Description"
 msgstr "Opis pisave"
 
-#: plugins/gtk+/glade-attributes.c:329 plugins/gtk+/glade-attributes.c:366
-#: plugins/gtk+/glade-attributes.c:374 plugins/gtk+/glade-attributes.c:380
-#: plugins/gtk+/glade-attributes.c:833
+#: plugins/gtk+/glade-attributes.c:349 plugins/gtk+/glade-attributes.c:404
+#: plugins/gtk+/glade-attributes.c:412 plugins/gtk+/glade-attributes.c:418
+#: plugins/gtk+/glade-attributes.c:871
 msgid "<Enter Value>"
 msgstr "<Vnesite vrednost>"
 
-#: plugins/gtk+/glade-attributes.c:365
+#: plugins/gtk+/glade-attributes.c:403
 msgid "Unset"
 msgstr "Nedoločeno"
 
-#: plugins/gtk+/glade-attributes.c:727
+#: plugins/gtk+/glade-attributes.c:765
 msgid "Select a color"
 msgstr "Izbor barve"
 
-#: plugins/gtk+/glade-attributes.c:762
+#: plugins/gtk+/glade-attributes.c:800
 msgid "Select a font"
 msgstr "Izbor pisave"
 
-#: plugins/gtk+/glade-attributes.c:897
+#: plugins/gtk+/glade-attributes.c:937
 msgid "Attribute"
 msgstr "Atribut"
 
-#: plugins/gtk+/glade-attributes.c:905
+#: plugins/gtk+/glade-attributes.c:945
 msgid "Value"
 msgstr "Vrednost"
 
-#: plugins/gtk+/glade-attributes.c:1058
+#: plugins/gtk+/glade-attributes.c:1202
 msgid "Setup Text Attributes"
 msgstr "Nastavi atribute besedila"
 
-#: plugins/gtk+/glade-attributes.c:1150
+#: plugins/gtk+/glade-attributes.c:1280
 msgid "Edit Attributes"
 msgstr "Urejanje atributov"
 
@@ -3737,20 +2980,20 @@ msgstr "To spustno polje ne podpira možnosti vnosov"
 msgid "Tearoff menus are disabled"
 msgstr "Odpenjalni meniji so onemogočeni."
 
-#: plugins/gtk+/glade-gtk-container.c:61
+#: plugins/gtk+/glade-gtk-container.c:60
 msgid "Cannot add a toplevel window to a container."
 msgstr "Vsebniku ni mogoče dodati okna vrhnje ravni."
 
-#: plugins/gtk+/glade-gtk-container.c:70
+#: plugins/gtk+/glade-gtk-container.c:69
 msgid "Cannot add a popover to a container."
 msgstr "Vsebniku ni mogoče dodati pojavnega menija."
 
-#: plugins/gtk+/glade-gtk-container.c:81
+#: plugins/gtk+/glade-gtk-container.c:80
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
 msgstr "Gradniki vrste %s imajo lahko kot podrejene predmete le gradnike."
 
-#: plugins/gtk+/glade-gtk-container.c:99
+#: plugins/gtk+/glade-gtk-container.c:94
 #, c-format
 msgid ""
 "Widgets of type %s need placeholders to add children.\n"
@@ -5960,6 +5203,14 @@ msgstr "Prekliči"
 msgid "Close"
 msgstr "Zapri"
 
+#: plugins/gtk+/gtk+.xml:1638
+msgid "Yes"
+msgstr "Da"
+
+#: plugins/gtk+/gtk+.xml:1640
+msgid "No"
+msgstr "Ne"
+
 #: plugins/gtk+/gtk+.xml:1642
 msgid "Apply"
 msgstr "Uveljavi"
@@ -6618,6 +5869,10 @@ msgstr "LGPL 2.1"
 #: plugins/gtk+/gtk+.xml:3147
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
+
+#: plugins/gtk+/gtk+.xml:3149
+msgid "BSD"
+msgstr "BSD"
 
 #: plugins/gtk+/gtk+.xml:3151
 msgid "MIT X11"
@@ -8226,6 +7481,587 @@ msgstr "Na zahtevo"
 msgid "WebKit2GTK+ Widgets"
 msgstr "Gradniki WebKit2GTK+"
 
+#~ msgid ""
+#~ "We are conducting a user survey\n"
+#~ " would you like to take it now?"
+#~ msgstr ""
+#~ "Izvajamo anketo med uporabniki programa.\n"
+#~ "Ali bi želeli sodelovati?"
+
+#~ msgid "If not, you can always find it in the Help menu."
+#~ msgstr ""
+#~ "Če bi želeli anketo izpolniti kasneje, bo dostopna prek povezave v meniju "
+#~ "pomoči."
+
+#~ msgid "_Do not show this dialog again"
+#~ msgstr "Tega okna _ne pokaži več"
+
+#~ msgid "Go to Help -> Registration & User Survey and complete our survey!"
+#~ msgstr ""
+#~ "Pojdite v meni Pomoč -> Vpis in anketni vprašalnik in izpolnite anketo!"
+
+#~ msgctxt ""
+#~ "This is to honor a professor that passed away last year and appears in a "
+#~ "popover when you click on the button that says \"RIP Guido\""
+#~ msgid ""
+#~ "Guido was one of my professors at Rosario\n"
+#~ "National University of Argentina.\n"
+#~ "\n"
+#~ "He introduced me to C, Linux, free software...\n"
+#~ "\n"
+#~ "He always had extra time to explain one more thing\n"
+#~ "and help you figure out things by yourself.\n"
+#~ "\n"
+#~ "Always made a joke in the right moment keeping\n"
+#~ "things interesting and fun.\n"
+#~ "\n"
+#~ "Master of intentionally misconstrued sayings.\n"
+#~ "\n"
+#~ "Always carried a stack of books under his arm.\n"
+#~ "\n"
+#~ "Loved Guinness beer.\n"
+#~ "\n"
+#~ "All he ever wanted was make you think!\n"
+#~ "\n"
+#~ "\"Alégrate! Mañana sera peor.\"\n"
+#~ "\n"
+#~ "\tJuan Pablo"
+#~ msgstr ""
+#~ "Professor Macchi je bil eden izmed profesorjev\n"
+#~ "na Državni univerzi Rosario v Argentini.\n"
+#~ "\n"
+#~ "Uvajal nas je v C, Linux, odprtokodno programsko opremo...\n"
+#~ "\n"
+#~ "Vedno si je vzel čas za dodatno razlago česarkoli\n"
+#~ "in nam pomagal odkrivati programerski svet.\n"
+#~ "\n"
+#~ "Rad se je šalil, in to je znal narediti ravno v pravih trenutkih,\n"
+#~ "da je učenje ostalo zanimivo in zabavno.\n"
+#~ "\n"
+#~ "Bil je mojster namenoma prirejenih pregovorov in rekov.\n"
+#~ "\n"
+#~ "Vedno s paketom knjig pod pazduho.\n"
+#~ "\n"
+#~ "Oboževal je pivo Guinness.\n"
+#~ "\n"
+#~ "Želel je le, da razmišljamo!\n"
+#~ "\n"
+#~ "»Alégrate! Mañana sera peor.«\n"
+#~ "\n"
+#~ "\tJuan Pablo"
+
+#~ msgid "Registration & User Survey"
+#~ msgstr "Prijava in anketa"
+
+#~ msgctxt "Button label in the bottom of main window that triggers a popover"
+#~ msgid ""
+#~ "<small>In memory of an extraordinary\n"
+#~ "person and professor\n"
+#~ "R.I.P Guido Macchi</small>"
+#~ msgstr ""
+#~ "<small>V spomin izjemnemu\n"
+#~ "profesorju\n"
+#~ "Guidu Macchi</small>"
+
+#, c-format
+#~ msgid "Connecting to %s"
+#~ msgstr "Povezovanje z virom %s"
+
+#, c-format
+#~ msgid "Sending data to %s"
+#~ msgstr "Pošiljanje podatkov na %s"
+
+#, c-format
+#~ msgid "Waiting for %s"
+#~ msgstr "Čakanje na %s"
+
+#, c-format
+#~ msgid "Receiving data from %s"
+#~ msgstr "Prejemanje podatkov s strežnika %s"
+
+#~ msgid ""
+#~ "Your subscription to the users list has been received!\n"
+#~ "Check your email!"
+#~ msgstr ""
+#~ "Naročnina na uporabniški seznam je prejeta!\n"
+#~ "Preverite elektronsko pošto."
+
+#~ msgid ""
+#~ "Thank you for taking the time to complete the survey, we appreciate it!"
+#~ msgstr ""
+#~ "Zahvaljujemo se vam za izpolnjevanje ankete. Z vašim doprinosom bo "
+#~ "program nedvomno boljši."
+
+#~ msgid "Completed and submitted!"
+#~ msgstr "Končano in uveljavljeno!"
+
+#~ msgid "Glade Registration & User Survey"
+#~ msgstr "Vpis uporabnikov Glade in anketa"
+
+#~ msgid "_Submit"
+#~ msgstr "_Uveljavi"
+
+#~ msgid "Information will be sent to https://survey.gnome.org"
+#~ msgstr "Podrobnosti bodo poslane na https://survey.gnome.org"
+
+#~ msgid "User Information"
+#~ msgstr "Podrobnosti o uporabniku"
+
+#~ msgid "<Your name or nickname is required>"
+#~ msgstr "<Ime ali vzdevek je obvezno polje>"
+
+#~ msgid "Email:"
+#~ msgstr "Elektronska pošta:"
+
+#~ msgid ""
+#~ "Tokens are processed manually in batches.\n"
+#~ "Please be patient."
+#~ msgstr ""
+#~ "Žetoni so obdelano ročno v setih.\n"
+#~ "Postopek je lahko dolgotrajen."
+
+#~ msgid "<Required to send back registration token>"
+#~ msgstr "<Vrednost je zahtevana za vrnitev žetona registracije.>"
+
+#~ msgid "Country:"
+#~ msgstr "Država:"
+
+#~ msgid "City:"
+#~ msgstr "Mesto:"
+
+#~ msgid "Company"
+#~ msgstr "Podjetje"
+
+#~ msgid "Organization"
+#~ msgstr "Ustanova"
+
+#~ msgid "Personal"
+#~ msgstr "Osebno"
+
+#~ msgid "Website"
+#~ msgstr "Spletišče"
+
+#~ msgid "Subscribe me to the mailing list"
+#~ msgstr "Naroči se na dopisni seznam"
+
+#~ msgid ""
+#~ "Subscribe to Glade Users mailing list.\n"
+#~ "You will be sent email requesting confirmation!"
+#~ msgstr ""
+#~ "Naročite se na dopisni seznam uporabnikov Glade.\n"
+#~ "Na elektronski naslov bo poslan zahteva po potrditvi računa."
+
+#~ msgid "Choose your country"
+#~ msgstr "Izbor države"
+
+#~ msgid "We care about privacy!"
+#~ msgstr "Zasebnost je zelo pomembna!"
+
+#~ msgid ""
+#~ "All the data will be stored in a private location and will not be shared "
+#~ "with the public or any third party."
+#~ msgstr ""
+#~ "Vsi podatki bodo varno shranjeni in ne bodo na voljo zunanjim deležnikom."
+
+#~ msgid "Glade User Survey"
+#~ msgstr "Anketa med uporabniki Glade"
+
+#~ msgid "How long have you been programming?"
+#~ msgstr "Koliko časa že programirate?"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "years"
+#~ msgstr "let"
+
+#~ msgid "months"
+#~ msgstr "mesecev"
+
+#~ msgid "I am not a programmer"
+#~ msgstr "Nisem programer"
+
+#~ msgid "Which programming languages do you prefer?"
+#~ msgstr "V katerem programskem jeziku najraje programirate?"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "C++"
+#~ msgstr "C++"
+
+#~ msgid "C#"
+#~ msgstr "C#"
+
+#~ msgid "Java"
+#~ msgstr "Java"
+
+#~ msgid "Python"
+#~ msgstr "Python"
+
+#~ msgid "JavaScript"
+#~ msgstr "JavaScript"
+
+#~ msgid "Vala"
+#~ msgstr "Vala"
+
+#~ msgid "Perl"
+#~ msgstr "Perl"
+
+#~ msgid "Rust"
+#~ msgstr "Rust"
+
+#~ msgid "When did you start using Glade?"
+#~ msgstr "Kdaj ste začeli uporabljati Glade?"
+
+#~ msgid "ago"
+#~ msgstr "nazaj"
+
+#~ msgid "Which version do you normally use?"
+#~ msgstr "Katero različico običajno uporabljate?"
+
+#~ msgid "What is available in my OS"
+#~ msgstr "Kaj je na voljo za moj OS?"
+
+#~ msgid "Latest stable from sources"
+#~ msgstr "Zadnja stabilna različica iz virov"
+
+#~ msgid "3.8 for GTK+ 2"
+#~ msgstr "3.8 za GTK+ 2"
+
+#~ msgid "Master"
+#~ msgstr "Razvojna veja"
+
+#~ msgid "On what operating systems?"
+#~ msgstr "Na katerem operacijskem sistemu?"
+
+#~ msgid "distribution"
+#~ msgstr "Distribucija"
+
+#~ msgid "Alpine"
+#~ msgstr "Alpine"
+
+#~ msgid "Arch Linux"
+#~ msgstr "Arch Linux"
+
+#~ msgid "Ataraxia Linux"
+#~ msgstr "Ataraxia Linux"
+
+#~ msgid "CentOS"
+#~ msgstr "CentOS"
+
+#~ msgid "Chrome OS"
+#~ msgstr "Chrome OS"
+
+#~ msgid "Clear Linux"
+#~ msgstr "Clear Linux"
+
+#~ msgid "Debian"
+#~ msgstr "Debian"
+
+#~ msgid "elementary OS"
+#~ msgstr "Elementary OS"
+
+#~ msgid "Endless OS"
+#~ msgstr "Endless OS"
+
+#~ msgid "Fedora"
+#~ msgstr "Fedora"
+
+#~ msgid "Gentoo"
+#~ msgstr "Gentoo"
+
+#~ msgid "Kubuntu"
+#~ msgstr "Kubuntu"
+
+#~ msgid "Linux Mint"
+#~ msgstr "Linux Mint"
+
+#~ msgid "Mageia"
+#~ msgstr "Mageia"
+
+#~ msgid "Mandriva"
+#~ msgstr "Mandriva"
+
+#~ msgid "Nix OS"
+#~ msgstr "Nix OS"
+
+#~ msgid "openSUSE"
+#~ msgstr "openSUSE"
+
+#~ msgid "Oracle"
+#~ msgstr "Oracle"
+
+#~ msgid "Pop!_OS"
+#~ msgstr "Pop!_OS"
+
+#~ msgid "PureOS"
+#~ msgstr "PureOS"
+
+#~ msgid "Raspbian"
+#~ msgstr "Raspbian"
+
+#~ msgid "Red Hat"
+#~ msgstr "Red Hat"
+
+#~ msgid "Solus"
+#~ msgstr "Solus"
+
+#~ msgid "SulinOS"
+#~ msgstr "SulinOS"
+
+#~ msgid "Turbolinux"
+#~ msgstr "Turbolinux"
+
+#~ msgid "Ubuntu"
+#~ msgstr "Ubuntu"
+
+#~ msgid "Void Linux"
+#~ msgstr "Void Linux"
+
+#~ msgid "Xandros"
+#~ msgstr "Xandros"
+
+#~ msgid "variant"
+#~ msgstr "različica"
+
+#~ msgid "FreeBSD"
+#~ msgstr "FreeBSD"
+
+#~ msgid "OpenBSD"
+#~ msgstr "OpenBSD"
+
+#~ msgid "NetBSD"
+#~ msgstr "NetBSD"
+
+#~ msgid "Oracle Solaris"
+#~ msgstr "Oracle Solaris"
+
+#~ msgid "OpenSolaris"
+#~ msgstr "OpenSolaris"
+
+#~ msgid "illumos"
+#~ msgstr "illumos"
+
+#~ msgid "version"
+#~ msgstr "različica"
+
+#~ msgid "10"
+#~ msgstr "10"
+
+#~ msgid "8"
+#~ msgstr "8"
+
+#~ msgid "7"
+#~ msgstr "7"
+
+#~ msgid "Vista"
+#~ msgstr "Vista"
+
+#~ msgid "2012"
+#~ msgstr "2012"
+
+#~ msgid "2008"
+#~ msgstr "2008"
+
+#~ msgid "2003"
+#~ msgstr "2003"
+
+#~ msgid "XP"
+#~ msgstr "XP"
+
+#~ msgid "2000"
+#~ msgstr "2000"
+
+#~ msgid "Catalina"
+#~ msgstr "Catalina"
+
+#~ msgid "Mojave"
+#~ msgstr "Mojave"
+
+#~ msgid "High Sierra"
+#~ msgstr "High Sierra"
+
+#~ msgid "Sierra"
+#~ msgstr "Sierra"
+
+#~ msgid "El Capitan"
+#~ msgstr "El Capitan"
+
+#~ msgid "Yosemite"
+#~ msgstr "Yosemite"
+
+#~ msgid "Mavericks"
+#~ msgstr "Mavericks"
+
+#~ msgid "Mountain Lion"
+#~ msgstr "Gorski lev"
+
+#~ msgid "Lion"
+#~ msgstr "Lion"
+
+#~ msgid "Snow Leopard"
+#~ msgstr "Snežni leopard"
+
+#~ msgid "Leopard"
+#~ msgstr "Leopard"
+
+#~ msgid "Tiger"
+#~ msgstr "Tiger"
+
+#~ msgid "GNU/Linux"
+#~ msgstr "GNU/Linux"
+
+#~ msgid "Windows"
+#~ msgstr "Windows"
+
+#~ msgid "Mac OS X"
+#~ msgstr "Mac OS X"
+
+#~ msgid "Solaris"
+#~ msgstr "Solaris"
+
+#~ msgid "How often do you use it?"
+#~ msgstr "Kako pogosto uporabljate to programsko opremo?"
+
+#~ msgid "Every day"
+#~ msgstr "Vsak dan"
+
+#~ msgid "Few days a week"
+#~ msgstr "Nekajkrat tedensko"
+
+#~ msgid "Every week"
+#~ msgstr "Vsak teden"
+
+#~ msgid "A few times a month"
+#~ msgstr "Nekajkrat mesečno"
+
+#~ msgid "Once a month"
+#~ msgstr "Enkrat na mesec"
+
+#~ msgid "A few times a year"
+#~ msgstr "Nekajkrat letno"
+
+#~ msgid "What level of Glade user would you say you are?"
+#~ msgstr "Kako bi opredelili svojo uporabniško raven v sistemu Glade?"
+
+#~ msgid "Beginner"
+#~ msgstr "Začetnik"
+
+#~ msgid "Intermediate"
+#~ msgstr "Naprednejši uporabnik"
+
+#~ msgid "Advanced"
+#~ msgstr "Napredno"
+
+#~ msgid ""
+#~ "Under what kind of license(s) do you release the software you used Glade "
+#~ "to create?"
+#~ msgstr ""
+#~ "S kakšnimi dovoljenji objavljate programsko opremo, ustvarjeno z okoljem "
+#~ "Glade?"
+
+#~ msgid "Free software"
+#~ msgstr "Prosta programska oprema"
+
+#~ msgid "Open source software"
+#~ msgstr "Odprtokodna programska oprema"
+
+#~ msgid "Commercial/Closed software"
+#~ msgstr "Prodajna/Zaprtokodna programska oprema"
+
+#~ msgid "None - distributed internally"
+#~ msgstr "Brez - interno razširjanje"
+
+#~ msgid ""
+#~ "In what field(s) is the software you used Glade to create generally used?"
+#~ msgstr ""
+#~ "Kako in kje je uporabljena programska oprema, ki ste jo razvijali z "
+#~ "orodjem Glade?"
+
+#~ msgid "Academic"
+#~ msgstr "Akademska"
+
+#~ msgid "Embedded applications"
+#~ msgstr "Vstavljeni programi"
+
+#~ msgid "Accounting"
+#~ msgstr "Računovodstvo"
+
+#~ msgid "Desktop applications"
+#~ msgstr "Namizni programi"
+
+#~ msgid "Educational"
+#~ msgstr "Izobraževanje"
+
+#~ msgid "Medical"
+#~ msgstr "Zdravstvo"
+
+#~ msgid "Industrial applications"
+#~ msgstr "Industrijski programi"
+
+#~ msgid "Scientific"
+#~ msgstr "Znanstveni"
+
+#~ msgid "What aspect of the software needs the most improvement?"
+#~ msgstr "Kateri vidik programa zahteva največ pozornosti in razvoja?"
+
+#~ msgid "In your opinion what is the biggest problem with Glade?"
+#~ msgstr "Kateri je po vašem mnenju največji problem okolja Glade?"
+
+#~ msgid "Lack of documentation"
+#~ msgstr "Manjka dokumentacija"
+
+#~ msgid "Lack of professional support"
+#~ msgstr "Manjka profesionalna podpora"
+
+#~ msgid "Lack of professional training"
+#~ msgstr "Manjka profesionalno pomoč"
+
+#~ msgid "Lack of publicity/exposure"
+#~ msgstr "Manjka javno prepoznanje"
+
+#~ msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
+#~ msgstr ""
+#~ "Pomanjkanje programskih objav za druge operacijske sisteme (Windows, Mac "
+#~ "OS X)"
+
+#~ msgid "Have you ever encountered a bug?"
+#~ msgstr "Ali ste kadarkoli naleteli na hrošča?"
+
+#~ msgid "If so, did you file a bug report?"
+#~ msgstr "Če da, ali ste poslali poročilo o hrošču?"
+
+#~ msgid "Have you ever thought about contributing?"
+#~ msgstr "Ali ste kdaj razmišljali o sodelovanju pri podpori projekta?"
+
+#~ msgid "Why not?"
+#~ msgstr "Zakaj ne?"
+
+#~ msgid "Comments:"
+#~ msgstr "Opombe:"
+
+#~ msgid "Privacy Note:"
+#~ msgstr "Opombe o zasebnosti:"
+
+#~ msgid ""
+#~ "The sole purpose of this survey is to better know our user base.\n"
+#~ "Your email address will be used to uniquely identify you as a Glade user "
+#~ "and send you back a modification token in case you want to modify "
+#~ "something or add extra comments.\n"
+#~ "Only statistics compiled from the whole dataset will be shared publicly.\n"
+#~ "Individual data will be stored in a private database and it will not be "
+#~ "shared with the public or any other third party."
+#~ msgstr ""
+#~ "Namen ankete je spoznati uporabnike programskega okolja.\n"
+#~ "Elektronski naslov bo uporabljen kot enoznačno določilo istovetnosti "
+#~ "uporabnika in za pošiljanje žetona za spreminjanje poslanih podatkov ali "
+#~ "objavljanje dodatnih opomb.\n"
+#~ "Objavljena bo le statistika, ki bo zbrana na osnovi celotnega "
+#~ "podatkovnega nabora in bo dostopna javno.\n"
+#~ "Podatki posameznega uporabnika bodo shranjeni v zasebni podatkovni zbirki "
+#~ "in ne bodo javni, niti ne bodo deljeni s tretjimi osebami."
+
 #~ msgid "Only one widget can be pasted at a time to this container"
 #~ msgstr "V ta zabojnik se lahko prilepi sočasno le en gradnik"
 
@@ -8279,8 +8115,8 @@ msgstr "Gradniki WebKit2GTK+"
 #~ "\n"
 #~ "To validate this email address open the following link\n"
 #~ "\n"
-#~ "https://people.gnome.org/~jpu/glade/registration.php?email="
-#~ "$email&validation_token=$new_validation_token\n"
+#~ "https://people.gnome.org/~jpu/glade/registration.php?"
+#~ "email=$email&validation_token=$new_validation_token\n"
 #~ "\n"
 #~ "In case you want to change or update the survey, your current update "
 #~ "token is:\n"
@@ -8294,8 +8130,8 @@ msgstr "Gradniki WebKit2GTK+"
 #~ "\n"
 #~ "Za overitev elektronskega naslova, kliknite na povezavo:\n"
 #~ "\n"
-#~ "https://people.gnome.org/~jpu/glade/registration.php?email="
-#~ "$email&validation_token=$new_validation_token\n"
+#~ "https://people.gnome.org/~jpu/glade/registration.php?"
+#~ "email=$email&validation_token=$new_validation_token\n"
 #~ "\n"
 #~ "V kolikor bi želeli katerega izmed odgovorov spremeniti, se lahko "
 #~ "prijavite z žetonom:\n"
