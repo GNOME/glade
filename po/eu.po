@@ -4,13 +4,13 @@
 #
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2008, 2009, 2010, 2011.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2013, 2017.
-# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2019, 2020, 2021, 2022.
+# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2019, 2020, 2021, 2022, 2023.
 #
 msgid ""
 msgstr "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2022-07-10 09:38+0000\n"
-"PO-Revision-Date: 2022-07-31 10:00+0100\n"
+"POT-Creation-Date: 2023-01-25 17:53+0000\n"
+"PO-Revision-Date: 2023-04-06 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -20,7 +20,7 @@ msgstr "Project-Id-Version: glade master\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:44 src/glade.glade:275
+#: src/main.c:44 src/glade.glade:202
 msgid "Glade"
 msgstr "Glade"
 
@@ -60,114 +60,114 @@ msgid ""
 "languages including C, C++, C#, Vala, Java, Perl, Python, and others."
 msgstr "GtkBuilder erabilita, Glade-n XML fitxategiak programazio-lengoiaia askotan erabil daitezke: C, C++, C#, Vala, Java, Perl, Python eta beste hainbat."
 
-#: src/glade-window.c:51
+#: src/glade-window.c:50
 msgid "[Read Only]"
 msgstr "[Irakurtzeko soilik]"
 
-#: src/glade-window.c:183
+#: src/glade-window.c:180
 msgid "User Interface Designer"
 msgstr "Erabiltzaile-interfazeen diseinatzailea"
 
-#: src/glade-window.c:430 src/glade-window.c:437
+#: src/glade-window.c:427 src/glade-window.c:434
 msgid "the last action"
 msgstr "azken ekintza"
 
-#: src/glade-window.c:431
+#: src/glade-window.c:428
 #, c-format
 msgid "Undo: %s"
 msgstr "Desegin: %s"
 
-#: src/glade-window.c:438
+#: src/glade-window.c:435
 #, c-format
 msgid "Redo: %s"
 msgstr "Berregin: %s"
 
-#: src/glade-window.c:463
+#: src/glade-window.c:460
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "'%s' automatikoki gordetzen"
 
-#: src/glade-window.c:468
+#: src/glade-window.c:465
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Errorea '%s' automatikoki gordetzean"
 
-#: src/glade-window.c:690
+#: src/glade-window.c:687
 msgid "Open…"
 msgstr "Ireki…"
 
-#: src/glade-window.c:724
+#: src/glade-window.c:721
 #, c-format
 msgid "Project %s is still loading."
 msgstr "'%s' proiektua oraindik kargatzen ari da."
 
-#: src/glade-window.c:743
+#: src/glade-window.c:740
 msgid "Failed to backup existing file, continue saving?"
 msgstr "Huts egin du fitxategiaren babeskopiak, jarraitu gordetzen?"
 
-#: src/glade-window.c:758
+#: src/glade-window.c:755
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Huts egin du %s gordetzean: %s"
 
-#: src/glade-window.c:797
+#: src/glade-window.c:794
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "%s fitxategia aldatu egin da irakurri zenetik"
 
-#: src/glade-window.c:801
+#: src/glade-window.c:798
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "Gordetzen baduzu kanpoko aldaketak galdu egingo dira. Gorde dena den?"
 
-#: src/glade-window.c:806
+#: src/glade-window.c:803
 msgid "_Save Anyway"
 msgstr "_Gorde hala ere"
 
-#: src/glade-window.c:814
+#: src/glade-window.c:811
 msgid "_Don't Save"
 msgstr "_Ez gorde"
 
-#: src/glade-window.c:847
+#: src/glade-window.c:844
 #, c-format
 msgid "Project '%s' saved"
 msgstr "'%s' proiektua gorde da"
 
-#: src/glade-window.c:878
+#: src/glade-window.c:875
 msgid "Save As…"
 msgstr "Gorde honela…"
 
-#: src/glade-window.c:942
+#: src/glade-window.c:939
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Ezin izan da gorde %s fitxategia"
 
-#: src/glade-window.c:946
+#: src/glade-window.c:943
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Ez duzu behar adina baimenik fitxategia gordetzeko."
 
-#: src/glade-window.c:968
+#: src/glade-window.c:965
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "Ezin da %s fitxategia gorde. Bide-izen hori duen beste proiektu ireki bat dago."
 
-#: src/glade-window.c:996
+#: src/glade-window.c:993
 msgid "No open projects to save"
 msgstr "Ez dago gordetzeko proiektu irekirik"
 
-#: src/glade-window.c:1029
+#: src/glade-window.c:1026
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Gorde aldaketak “%s” proiektuan itxi aurretik?"
 
-#: src/glade-window.c:1037
+#: src/glade-window.c:1034
 msgid "Your changes will be lost if you don't save them."
 msgstr "Zure aldaketak galdu egingo dira ez badituzu gordetzen."
 
-#: src/glade-window.c:1041
+#: src/glade-window.c:1038
 msgid "Close _without Saving"
 msgstr "Itxi gorde _gabe"
 
-#: src/glade-window.c:1042 src/glade-window.c:1733 src/glade-preferences.c:237
+#: src/glade-window.c:1039 src/glade-window.c:1721 src/glade-preferences.c:237
 #: gladeui/glade-editor.c:793 gladeui/glade-editor.c:1152
 #: gladeui/glade-editor-property.c:1774 gladeui/glade-editor-property.c:2082
 #: gladeui/glade-editor-property.c:2279 gladeui/glade-editor-property.c:3215
@@ -177,173 +177,151 @@ msgstr "Itxi gorde _gabe"
 msgid "_Cancel"
 msgstr "_Utzi"
 
-#: src/glade-window.c:1043 src/glade.glade:699 gladeui/glade-utils.c:497
+#: src/glade-window.c:1040 src/glade.glade:598 gladeui/glade-utils.c:497
 msgid "_Save"
 msgstr "_Gorde"
 
-#: src/glade-window.c:1074
+#: src/glade-window.c:1071
 msgid "Save…"
 msgstr "Gorde…"
 
-#: src/glade-window.c:1640
+#: src/glade-window.c:1628
 msgid "Could not create a new project."
 msgstr "Ezin izan da proiektu berria sortu."
 
-#: src/glade-window.c:1701
+#: src/glade-window.c:1689
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Gorde gabeko aldaketak ditu %s proiektuak"
 
-#: src/glade-window.c:1706
+#: src/glade-window.c:1694
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr "Berritzen baduzu, gorde gabeko aldaketa guztiak gal daitezke. Berritu hala ere?"
 
-#: src/glade-window.c:1716
+#: src/glade-window.c:1704
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Proiektuko %s fitxategia kanpotik aldatu dute"
 
-#: src/glade-window.c:1721
+#: src/glade-window.c:1709
 msgid "Do you want to reload the project?"
 msgstr "Proiektua berriro kargatu nahi duzu?"
 
-#: src/glade-window.c:1727
+#: src/glade-window.c:1715
 msgid "_Reload"
 msgstr "Bir_kargatu"
 
-#: src/glade-window.c:2278
+#: src/glade-window.c:2263
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Kaixo, Glade aplikazioak dituen berritasunak erakutsiko dizkizut"
 
-#: src/glade-window.c:2279
+#: src/glade-window.c:2264
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Menu-barra eta tresna-barra goiburu-barran batu dira"
 
-#: src/glade-window.c:2281
+#: src/glade-window.c:2266
 msgid "You can open a project"
 msgstr "Proiektu bat ireki dezakezu"
 
-#: src/glade-window.c:2282
+#: src/glade-window.c:2267
 msgid "find recently used"
 msgstr "erabili berriak aurkitu"
 
-#: src/glade-window.c:2283
+#: src/glade-window.c:2268
 msgid "or create a new one"
 msgstr "edo berria sortu"
 
-#: src/glade-window.c:2287
+#: src/glade-window.c:2272
 msgid "Undo"
 msgstr "Desegin"
 
-#: src/glade-window.c:2288
+#: src/glade-window.c:2273
 msgid "Redo"
 msgstr "Berregin"
 
-#: src/glade-window.c:2289
+#: src/glade-window.c:2274
 msgid "Project switcher"
 msgstr "Proiektuen aldatzailea"
 
-#: src/glade-window.c:2291
+#: src/glade-window.c:2276
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "eta gordetzeko batoia zuzenean goiburu-barran daude"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2277
 msgid "just like Save As"
 msgstr "'Gorde honela' bezala"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2278
 msgid "project properties"
 msgstr "proiektuaren propietateak"
 
-#: src/glade-window.c:2294
+#: src/glade-window.c:2279
 msgid "and less commonly used actions"
 msgstr "eta gutxiago erabilitako ekintzak"
 
-#: src/glade-window.c:2296
+#: src/glade-window.c:2281
 msgid "The object inspector took the palette's place"
 msgstr "Objektuen ikuskatzaileak paletaren tokia hartu zuen"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2282
 msgid "To free up space for the property editor"
 msgstr "Propietateen editorerako espazioa askatzea"
 
-#: src/glade-window.c:2299
+#: src/glade-window.c:2284
 msgid "The palette was replaced with a new object chooser"
 msgstr "Paleta beste objektu-aukeratzaile batekin ordeztu zen"
 
-#: src/glade-window.c:2300
+#: src/glade-window.c:2285
 msgid "Where you can search all supported classes"
 msgstr "Onartutako klase guztiak bilatu ditzakezun tokia"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2286
 msgid "investigate GTK+ object groups"
 msgstr "ikertu GTK+ objektu multzoak"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2287
 msgid "and find classes introduced by other libraries"
 msgstr "eta bilatu beste liburutegi batzuk sartu dituzten klaseak"
 
-#: src/glade-window.c:2304
+#: src/glade-window.c:2289
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr "Ikuspegi orokorra ikusi dugunez gero, has gaitezen lan-fluxu berriarekin"
 
-#: src/glade-window.c:2306
+#: src/glade-window.c:2291
 msgid "First of all, create a new project"
 msgstr "Lehenengo, sortu proiektu berria"
 
-#: src/glade-window.c:2307
+#: src/glade-window.c:2292
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
 msgstr "Orain, gehitu GtkWindow bat trepeta-aukeratzaile berria erabilita edo laneko arean klik bikoitza eginda"
 
-#: src/glade-window.c:2308
+#: src/glade-window.c:2293
 msgid "Excellent!"
 msgstr "Bikain!"
 
-#: src/glade-window.c:2309
+#: src/glade-window.c:2294
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr "Bide batez, ba zenekien edozein leku-markatan klik bikoitza egin dezakezula trepetak sortzeko?"
 
-#: src/glade-window.c:2310
+#: src/glade-window.c:2295
 msgid "Try adding a grid"
 msgstr "Sakatu sareta bat"
 
-#: src/glade-window.c:2311
+#: src/glade-window.c:2296
 msgid "and a button"
 msgstr "eta botoi bat gehitzen"
 
-#: src/glade-window.c:2313
+#: src/glade-window.c:2298
 msgid "Quite easy! Isn't it?"
 msgstr "Erraza, ezta?"
 
-#: src/glade-window.c:2314
+#: src/glade-window.c:2299
 msgid "Enjoy!"
 msgstr "Ongi pasa!"
-
-#. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2536
-msgid ""
-"We are conducting a user survey\n"
-" would you like to take it now?"
-msgstr "Inkesta bat ari gara egiten erabiltzaileen artean\n"
-"bete nahi al duzu?"
-
-#. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2540
-msgid "If not, you can always find it in the Help menu."
-msgstr "Ez baduzu nahi orain, 'Laguntza' menuan izango duzu."
-
-#: src/glade-window.c:2542
-msgid "_Do not show this dialog again"
-msgstr "_Ez erakutsi elkarrizketa-koadro hau berriro"
-
-#. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2563
-msgid "Go to Help -> Registration & User Survey and complete our survey!"
-msgstr "Joan 'Laguntza -> Erregistroa eta erabiltzaileen inkesta' atalera eta bete gure inkesta!"
 
 #: src/main.c:53
 msgid "Output version information and exit"
@@ -357,159 +335,93 @@ msgstr "Desgaitu Devhelp-ren integrazioa"
 msgid "be verbose"
 msgstr "eman xehetasunak"
 
-#: src/main.c:147
+#: src/main.c:145
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Ezin da '%s' ireki. Fitxategia ez da existitzen.\n"
 
-#: src/main.c:175
+#: src/main.c:173
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr "Ez da aurkitu gmodule euskarririk. Gmodule euskarria behar da Glade-k funtzionatzeko"
 
-#: src/main.c:193
+#: src/main.c:191
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr "Sortu edo editatu erabiltzaile-interfazeen diseinuak GTK+ edo GNOME aplikazioentzat."
 
-#. The last sentence in quotes is in spanish and does not need to be translated.
-#: src/glade.glade:59
-msgctxt ""
-"This is to honor a professor that passed away last year and appears in a "
-"popover when you click on the button that says \"RIP Guido\""
-msgid ""
-"Guido was one of my professors at Rosario\n"
-"National University of Argentina.\n"
-"\n"
-"He introduced me to C, Linux, free software...\n"
-"\n"
-"He always had extra time to explain one more thing\n"
-"and help you figure out things by yourself.\n"
-"\n"
-"Always made a joke in the right moment keeping\n"
-"things interesting and fun.\n"
-"\n"
-"Master of intentionally misconstrued sayings.\n"
-"\n"
-"Always carried a stack of books under his arm.\n"
-"\n"
-"Loved Guinness beer.\n"
-"\n"
-"All he ever wanted was make you think!\n"
-"\n"
-"\"Alégrate! Mañana sera peor.\"\n"
-"\n"
-"\tJuan Pablo"
-msgstr "Guido nire irakasleetako bat izan zen Argentinako\n"
-"Unibertsitate Nazionalean Rosarion.\n"
-"\n"
-"C, Linux, software librea... erakusti zizkidan,\n"
-"\n"
-"Beti zuen denbora zerbait gehiago azaltzeko\n"
-"eta norberak gauzak konpontzen irakasteko.\n"
-"\n"
-"Txantxak egiten zituen beti une egokian,\n"
-"Ikasgaia interesgarri eta dibertigarri mantentzeko.\n"
-"\n"
-"Nahita gaizki eraikitako esamoldeen maisu.\n"
-"\n"
-"Beti zeraman liburu sorta bat besapean.\n"
-"\n"
-"Guinness garagardoa maite zuen.\n"
-"\n"
-"Nahi zuen gauza bakarra zen norberak bere kabuz\n"
-"pentsa zezan!\n"
-"\n"
-"\"Alégrate! Mañana sera peor.\"\n"
-"\n"
-"Juan Pablo"
-
-#: src/glade.glade:106
+#: src/glade.glade:47
 msgid "Close Project"
 msgstr "Itxi proiektua"
 
-#: src/glade.glade:131
-msgid "Registration & User Survey"
-msgstr "Erregistroa eta erabiltzaileen inkesta"
-
-#: src/glade.glade:145
+#: src/glade.glade:72
 msgid "_Developer Reference"
 msgstr "_Garatzaileentzako erreferentzia"
 
-#: src/glade.glade:159
+#: src/glade.glade:86
 msgid "Interactive Intro"
 msgstr "Sarrera dinamikoa"
 
-#: src/glade.glade:184
+#: src/glade.glade:111
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: src/glade.glade:198
+#: src/glade.glade:125
 msgid "User Manual"
 msgstr "Erabiltzailearen eskuliburua"
 
-#: src/glade.glade:212
+#: src/glade.glade:139
 msgid "About Glade"
 msgstr "Glade aplikazioari buruz"
 
-#: src/glade.glade:311
-msgctxt "Button label in the bottom of main window that triggers a popover"
-msgid ""
-"<small>In memory of an extraordinary\n"
-"person and professor\n"
-"R.I.P Guido Macchi</small>"
-msgstr "<small>Pertsona eta irakasle\n"
-"bikain baten oroimenez:\n"
-"R.I.P Guido Macchi</small>"
-
-#: src/glade.glade:606 src/glade-preferences.c:239
+#: src/glade.glade:505 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2280 gladeui/glade-utils.c:497
 msgid "_Open"
 msgstr "_Ireki"
 
-#: src/glade.glade:611
+#: src/glade.glade:510
 msgid "Open a project"
 msgstr "Proiektu bat irekitzen du"
 
-#: src/glade.glade:656
+#: src/glade.glade:555
 msgid "Create a new project"
 msgstr "Proiektu berria sortzen du"
 
-#: src/glade.glade:676
+#: src/glade.glade:575
 msgid "Edit project properties"
 msgstr "Editatu proiektuaren propietateak"
 
-#: src/glade.glade:704
+#: src/glade.glade:603
 msgid "Save the current project"
 msgstr "Uneko proiektua gordetzen du"
 
-#: src/glade.glade:720
+#: src/glade.glade:619
 msgid "Save the current project with a different name"
 msgstr "Uneko proiektua beste izen batekin gordetzen du"
 
-#: src/glade.glade:749
+#: src/glade.glade:648
 msgid "Start/resume interactive UI introduction"
 msgstr "Hasi/berrabiarazi erabiltzaile-interfazearen sarrera interaktiboa"
 
-#: src/glade.glade:848
+#: src/glade.glade:747
 msgid ""
-"© 2018-2020 Juan Pablo Ugarte, et al.\n"
+"© 2018-2022 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
-msgstr "© 2018-2020 Juan Pablo Ugarte, et al.\n"
+msgstr "© 2018-2022 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:852
+#: src/glade.glade:751
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+ eta GNOMErako erabiltzaile-interfazeen diseinatzailea."
 
-#: src/glade.glade:854
+#: src/glade.glade:753
 msgid "Visit Glade web site"
 msgstr "Bisitatu Glade-ren webgunea"
 
-#: src/glade.glade:866
+#: src/glade.glade:765
 msgid "translator-credits"
 msgstr "translator-credits"
 
@@ -611,671 +523,6 @@ msgstr "Kendu bilaketarako hautatutako bide-izena"
 #: src/glade-preferences.glade:387
 msgid "Extra Catalog & Templates paths"
 msgstr "Katalogoaren eta txantiloien bide-izen gehigarriak"
-
-#: src/glade-registration.c:282
-#, c-format
-msgid "Connecting to %s"
-msgstr "%s(e)ra konektatzen"
-
-#: src/glade-registration.c:285
-#, c-format
-msgid "Sending data to %s"
-msgstr "Datuak %s(e)ra bidaltzen"
-
-#: src/glade-registration.c:288
-#, c-format
-msgid "Waiting for %s"
-msgstr "%s(r)en zain"
-
-#: src/glade-registration.c:291
-#, c-format
-msgid "Receiving data from %s"
-msgstr "Datuak %s(e)ndik jasotzen"
-
-#: src/glade-registration.c:350
-msgid ""
-"Your subscription to the users list has been received!\n"
-"Check your email!"
-msgstr "Erabiltzaile-zerrendan egin duzun erregistroa jaso dugu!\n"
-"Begiratu zure posta elektronikoa!"
-
-#: src/glade-registration.c:510
-msgid "Thank you for taking the time to complete the survey, we appreciate it!"
-msgstr "Eskerrik asko inkesta betetzeagatik, benetan!"
-
-#: src/glade-registration.c:771
-msgid "Completed and submitted!"
-msgstr "Osatu da eta bidali da!"
-
-#: src/glade-registration.glade:44
-msgid "Glade Registration & User Survey"
-msgstr "Gladen erregistroa eta erabiltzaileen inkesta"
-
-#: src/glade-registration.glade:63 gladeui/glade-editor-property.c:1378
-msgid "_Close"
-msgstr "It_xi"
-
-#: src/glade-registration.glade:77
-msgid "_Submit"
-msgstr "_Bidali"
-
-#: src/glade-registration.glade:82
-msgid "Information will be sent to https://survey.gnome.org"
-msgstr "Informazioa hona bidaliko da: https://survey.gnome.org"
-
-#: src/glade-registration.glade:183
-msgid "User Information"
-msgstr "Erabiltzaile-informazioa"
-
-#: src/glade-registration.glade:217
-msgid "<Your name or nickname is required>"
-msgstr "<Zure izena edo ezizena derrigorrezkoak dira>"
-
-#: src/glade-registration.glade:230 gladeui/glade-project-properties.ui:521
-#: plugins/gtk+/glade-about-dialog-editor.ui:69
-msgid "Name:"
-msgstr "Izena:"
-
-#: src/glade-registration.glade:242
-msgid "Email:"
-msgstr "Helb. el.:"
-
-#: src/glade-registration.glade:254
-msgid ""
-"Tokens are processed manually in batches.\n"
-"Please be patient."
-msgstr "Tokenak eskuz prozesatzen dira, multzoka.\n"
-"Lasai hartu."
-
-#: src/glade-registration.glade:256
-msgid "<Required to send back registration token>"
-msgstr "<Derrigorrezkoa erregistro-tokena bidaltzeko>"
-
-#: src/glade-registration.glade:269
-msgid "Country:"
-msgstr "Herrialdea:"
-
-#: src/glade-registration.glade:281
-msgid "City:"
-msgstr "Hiria:"
-
-#: src/glade-registration.glade:295
-msgid "Company"
-msgstr "Enpresa"
-
-#: src/glade-registration.glade:296
-msgid "Organization"
-msgstr "Erakundea"
-
-#: src/glade-registration.glade:297
-msgid "Personal"
-msgstr "Pertsonala"
-
-#: src/glade-registration.glade:309
-msgid "Website"
-msgstr "Webgunea"
-
-#: src/glade-registration.glade:353
-msgid "Subscribe me to the mailing list"
-msgstr "Harpidetu posta-zerrendara"
-
-#: src/glade-registration.glade:357
-msgid ""
-"Subscribe to Glade Users mailing list.\n"
-"You will be sent email requesting confirmation!"
-msgstr "Harpidetu Gladen erabiltzaileen posta-zerrendan.\n"
-"Posta bat bidaliko dizugu harpidetza baieztatzeko!"
-
-#: src/glade-registration.glade:373
-msgid "Choose your country"
-msgstr "Aukeratu zure herrialdea edo estatua"
-
-#: src/glade-registration.glade:653
-msgid "We care about privacy!"
-msgstr "Pribatutasunak axola digu"
-
-#: src/glade-registration.glade:671
-msgid ""
-"All the data will be stored in a private location and will not be shared "
-"with the public or any third party."
-msgstr "Datu guztiak kokaleku pribatu batean biltegiratuko dira eta ez dira publikoki edo hirugarrenekin partekatuko."
-
-#: src/glade-registration.glade:705
-msgid "Glade User Survey"
-msgstr "Glade erabiltzaileen inkesta"
-
-#: src/glade-registration.glade:735
-msgid "How long have you been programming?"
-msgstr "Zenbat denbora aritu zara programazioan?"
-
-#: src/glade-registration.glade:753 src/glade-registration.glade:1022
-msgid "0"
-msgstr "0"
-
-#: src/glade-registration.glade:769 src/glade-registration.glade:1038
-msgid "years"
-msgstr "urte"
-
-#: src/glade-registration.glade:770 src/glade-registration.glade:1039
-msgid "months"
-msgstr "hilabete"
-
-#: src/glade-registration.glade:781
-msgid "I am not a programmer"
-msgstr "Ez naiz programatzailea"
-
-#: src/glade-registration.glade:817
-msgid "Which programming languages do you prefer?"
-msgstr "Zein programazio-lengoaia nahiago duzu?"
-
-#: src/glade-registration.glade:833
-msgid "C"
-msgstr "C"
-
-#: src/glade-registration.glade:848
-msgid "C++"
-msgstr "C++"
-
-#: src/glade-registration.glade:863
-msgid "C#"
-msgstr "C#"
-
-#: src/glade-registration.glade:878
-msgid "Java"
-msgstr "Java"
-
-#: src/glade-registration.glade:893
-msgid "Python"
-msgstr "Python"
-
-#: src/glade-registration.glade:908
-msgid "JavaScript"
-msgstr "JavaScript"
-
-#: src/glade-registration.glade:923
-msgid "Vala"
-msgstr "Vala"
-
-#: src/glade-registration.glade:938
-msgid "Perl"
-msgstr "Perl"
-
-#: src/glade-registration.glade:953
-msgid "Rust"
-msgstr "Rust"
-
-#: src/glade-registration.glade:968 src/glade-registration.glade:1173
-#: src/glade-registration.glade:1278 src/glade-registration.glade:1295
-#: src/glade-registration.glade:1312 src/glade-registration.glade:1344
-#: src/glade-registration.glade:1370 src/glade-registration.glade:1465
-#: src/glade-registration.glade:1956 src/glade-registration.glade:2158
-#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
-#: plugins/gtk+/gtk+.xml:4624
-msgid "Other"
-msgstr "Bestelakoa"
-
-#: src/glade-registration.glade:1004
-msgid "When did you start using Glade?"
-msgstr "Noiz hasi zinen Glade erabiltzen?"
-
-#: src/glade-registration.glade:1052
-msgid "ago"
-msgstr "duela"
-
-#: src/glade-registration.glade:1084
-msgid "Which version do you normally use?"
-msgstr "Zein bertsio erabili ohi duzu?"
-
-#: src/glade-registration.glade:1101
-msgid "What is available in my OS"
-msgstr "Nire sisteman erabilgarri dagoena"
-
-#: src/glade-registration.glade:1118
-msgid "Latest stable from sources"
-msgstr "Iturburuetatik hartutako azken bertsio egonkorra"
-
-#: src/glade-registration.glade:1135
-msgid "3.8 for GTK+ 2"
-msgstr "3.8 GTK+ 2 bertsioa"
-
-#: src/glade-registration.glade:1152
-msgid "Master"
-msgstr "Maisua"
-
-#: src/glade-registration.glade:1229
-msgid "On what operating systems?"
-msgstr "Zein sistema eragiletan?"
-
-#: src/glade-registration.glade:1249
-msgid "distribution"
-msgstr "banaketa"
-
-#: src/glade-registration.glade:1250
-msgid "Alpine"
-msgstr "Alpine"
-
-#: src/glade-registration.glade:1251
-msgid "Arch Linux"
-msgstr "Arch Linux"
-
-#: src/glade-registration.glade:1252
-msgid "Ataraxia Linux"
-msgstr "Ataraxia Linux"
-
-#: src/glade-registration.glade:1253
-msgid "CentOS"
-msgstr "CentOS"
-
-#: src/glade-registration.glade:1254
-msgid "Chrome OS"
-msgstr "Chrome OS"
-
-#: src/glade-registration.glade:1255
-msgid "Clear Linux"
-msgstr "Clear Linux"
-
-#: src/glade-registration.glade:1256
-msgid "Debian"
-msgstr "Debian"
-
-#: src/glade-registration.glade:1257
-msgid "elementary OS"
-msgstr "elementary OS"
-
-#: src/glade-registration.glade:1258
-msgid "Endless OS"
-msgstr "Endless OS"
-
-#: src/glade-registration.glade:1259
-msgid "Fedora"
-msgstr "Fedora"
-
-#: src/glade-registration.glade:1260
-msgid "Gentoo"
-msgstr "Gentoo"
-
-#: src/glade-registration.glade:1261
-msgid "Kubuntu"
-msgstr "Kubuntu"
-
-#: src/glade-registration.glade:1262
-msgid "Linux Mint"
-msgstr "Linux Mint"
-
-#: src/glade-registration.glade:1263
-msgid "Mageia"
-msgstr "Mageia"
-
-#: src/glade-registration.glade:1264
-msgid "Mandriva"
-msgstr "Mandriva"
-
-#: src/glade-registration.glade:1265
-msgid "Nix OS"
-msgstr "Nix OS"
-
-#: src/glade-registration.glade:1266
-msgid "openSUSE"
-msgstr "openSUSE"
-
-#: src/glade-registration.glade:1267
-msgid "Oracle"
-msgstr "Oracle"
-
-#: src/glade-registration.glade:1268
-msgid "Pop!_OS"
-msgstr "Pop!_OS"
-
-#: src/glade-registration.glade:1269
-msgid "PureOS"
-msgstr "PureOS"
-
-#: src/glade-registration.glade:1270
-msgid "Raspbian"
-msgstr "Raspbian"
-
-#: src/glade-registration.glade:1271
-msgid "Red Hat"
-msgstr "Red Hat"
-
-#: src/glade-registration.glade:1272
-msgid "Solus"
-msgstr "Solus"
-
-#: src/glade-registration.glade:1273
-msgid "SulinOS"
-msgstr "SulinOS"
-
-#: src/glade-registration.glade:1274
-msgid "Turbolinux"
-msgstr "Turbolinux"
-
-#: src/glade-registration.glade:1275
-msgid "Ubuntu"
-msgstr "Ubuntu"
-
-#: src/glade-registration.glade:1276
-msgid "Void Linux"
-msgstr "Void Linux"
-
-#: src/glade-registration.glade:1277
-msgid "Xandros"
-msgstr "Xandros"
-
-#: src/glade-registration.glade:1291 src/glade-registration.glade:1308
-msgid "variant"
-msgstr "aldagaia"
-
-#: src/glade-registration.glade:1292
-msgid "FreeBSD"
-msgstr "FreeBSD"
-
-#: src/glade-registration.glade:1293
-msgid "OpenBSD"
-msgstr "OpenBSD"
-
-#: src/glade-registration.glade:1294
-msgid "NetBSD"
-msgstr "NetBSD"
-
-#: src/glade-registration.glade:1309
-msgid "Oracle Solaris"
-msgstr "Oracle Solaris"
-
-#: src/glade-registration.glade:1310
-msgid "OpenSolaris"
-msgstr "OpenSolaris"
-
-#: src/glade-registration.glade:1311
-msgid "illumos"
-msgstr "illumos"
-
-#: src/glade-registration.glade:1334 src/glade-registration.glade:1357
-msgid "version"
-msgstr "bertsioa"
-
-#: src/glade-registration.glade:1335
-msgid "10"
-msgstr "10"
-
-#: src/glade-registration.glade:1336
-msgid "8"
-msgstr "8"
-
-#: src/glade-registration.glade:1337
-msgid "7"
-msgstr "7"
-
-#: src/glade-registration.glade:1338
-msgid "Vista"
-msgstr "Vista"
-
-#: src/glade-registration.glade:1339
-msgid "2012"
-msgstr "2012"
-
-#: src/glade-registration.glade:1340
-msgid "2008"
-msgstr "2008"
-
-#: src/glade-registration.glade:1341
-msgid "2003"
-msgstr "2003"
-
-#: src/glade-registration.glade:1342
-msgid "XP"
-msgstr "XP"
-
-#: src/glade-registration.glade:1343
-msgid "2000"
-msgstr "2000"
-
-#: src/glade-registration.glade:1358
-msgid "Catalina"
-msgstr "Catalina"
-
-#: src/glade-registration.glade:1359
-msgid "Mojave"
-msgstr "Mojave"
-
-#: src/glade-registration.glade:1360
-msgid "High Sierra"
-msgstr "High Sierra"
-
-#: src/glade-registration.glade:1361
-msgid "Sierra"
-msgstr "Sierra"
-
-#: src/glade-registration.glade:1362
-msgid "El Capitan"
-msgstr "El Capitan"
-
-#: src/glade-registration.glade:1363
-msgid "Yosemite"
-msgstr "Yosemite"
-
-#: src/glade-registration.glade:1364
-msgid "Mavericks"
-msgstr "Mavericks"
-
-#: src/glade-registration.glade:1365
-msgid "Mountain Lion"
-msgstr "Mountain Lion"
-
-#: src/glade-registration.glade:1366
-msgid "Lion"
-msgstr "Lion"
-
-#: src/glade-registration.glade:1367
-msgid "Snow Leopard"
-msgstr "Snow Leopard"
-
-#: src/glade-registration.glade:1368
-msgid "Leopard"
-msgstr "Leopard"
-
-#: src/glade-registration.glade:1369
-msgid "Tiger"
-msgstr "Tiger"
-
-#: src/glade-registration.glade:1380
-msgid "GNU/Linux"
-msgstr "GNU/Linux"
-
-#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3149
-msgid "BSD"
-msgstr "BSD"
-
-#: src/glade-registration.glade:1414
-msgid "Windows"
-msgstr "Leihoak"
-
-#: src/glade-registration.glade:1431
-msgid "Mac OS X"
-msgstr "Mac OS X"
-
-#: src/glade-registration.glade:1448
-msgid "Solaris"
-msgstr "Solaris"
-
-#: src/glade-registration.glade:1503
-msgid "How often do you use it?"
-msgstr "Zenbatero erabiltzen duzu?"
-
-#: src/glade-registration.glade:1520
-msgid "Every day"
-msgstr "Egunero"
-
-#: src/glade-registration.glade:1537
-msgid "Few days a week"
-msgstr "Astean zenbait egunetan"
-
-#: src/glade-registration.glade:1554
-msgid "Every week"
-msgstr "Astero"
-
-#: src/glade-registration.glade:1571
-msgid "A few times a month"
-msgstr "Hilean zenbait egunetan"
-
-#: src/glade-registration.glade:1588
-msgid "Once a month"
-msgstr "Hilean behin"
-
-#: src/glade-registration.glade:1605
-msgid "A few times a year"
-msgstr "Urtean zenbait alditan"
-
-#: src/glade-registration.glade:1643
-msgid "What level of Glade user would you say you are?"
-msgstr "Zein mailatako Glade erabiltzailea zarela esango zenuke?"
-
-#: src/glade-registration.glade:1659
-msgid "Beginner"
-msgstr "Hasiberria"
-
-#: src/glade-registration.glade:1676
-msgid "Intermediate"
-msgstr "Tartekoa"
-
-#: src/glade-registration.glade:1693
-msgid "Advanced"
-msgstr "Aurreratua"
-
-#: src/glade-registration.glade:1731
-msgid ""
-"Under what kind of license(s) do you release the software you used Glade to "
-"create?"
-msgstr "Zein lizentzia erabiltzen duzu Gladekin erabiltzen duzun softwarea argitaratzeko?"
-
-#: src/glade-registration.glade:1747
-msgid "Free software"
-msgstr "Software librea"
-
-#: src/glade-registration.glade:1761
-msgid "Open source software"
-msgstr "Kode irekiko softwarea"
-
-#: src/glade-registration.glade:1775
-msgid "Commercial/Closed software"
-msgstr "Software itxia/komertziala"
-
-#: src/glade-registration.glade:1789
-msgid "None - distributed internally"
-msgstr "Bat ere ez - nire enpresarako edo niretzako soilik"
-
-#: src/glade-registration.glade:1824
-msgid ""
-"In what field(s) is the software you used Glade to create generally used?"
-msgstr "Zein lan-esparrutan erabiltzen da orokorrean Gladekin sortu duzun softwarea?"
-
-#: src/glade-registration.glade:1839
-msgid "Academic"
-msgstr "Akademikoa"
-
-#: src/glade-registration.glade:1853
-msgid "Embedded applications"
-msgstr "Aplikazio kapsulatuak"
-
-#: src/glade-registration.glade:1867
-msgid "Accounting"
-msgstr "Kontabilitatea"
-
-#: src/glade-registration.glade:1881
-msgid "Desktop applications"
-msgstr "Mahaigaineko aplikazioak"
-
-#: src/glade-registration.glade:1895
-msgid "Educational"
-msgstr "Hezkuntza"
-
-#: src/glade-registration.glade:1909
-msgid "Medical"
-msgstr "Medikuntza"
-
-#: src/glade-registration.glade:1923
-msgid "Industrial applications"
-msgstr "Industriako aplikazioak"
-
-#: src/glade-registration.glade:1937
-msgid "Scientific"
-msgstr "Zientzia"
-
-#: src/glade-registration.glade:2010
-msgid "What aspect of the software needs the most improvement?"
-msgstr "Softwarearen zein alderdik hobetu behar du gehien?"
-
-#: src/glade-registration.glade:2055
-msgid "In your opinion what is the biggest problem with Glade?"
-msgstr "Zure ustez, zein da Glade aplikazioaren arazorik handiena?"
-
-#: src/glade-registration.glade:2072
-msgid "Lack of documentation"
-msgstr "Dokumentazioa falta da"
-
-#: src/glade-registration.glade:2090
-msgid "Lack of professional support"
-msgstr "Euskarri profesionalaren falta"
-
-#: src/glade-registration.glade:2107
-msgid "Lack of professional training"
-msgstr "Prestakuntza profesionalaren falta"
-
-#: src/glade-registration.glade:2124
-msgid "Lack of publicity/exposure"
-msgstr "Publizitatearen/ikusgaitasunaren falta"
-
-#: src/glade-registration.glade:2141
-msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
-msgstr "Beste SE batzuetarako (Windows, Mac OS X) bertsio bitar ofizialen falta"
-
-#: src/glade-registration.glade:2217
-msgid "Have you ever encountered a bug?"
-msgstr "Aurkitu duzu akatsen bat inoiz?"
-
-#: src/glade-registration.glade:2233 src/glade-registration.glade:2305
-#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
-msgid "Yes"
-msgstr "Bai"
-
-#: src/glade-registration.glade:2250 src/glade-registration.glade:2322
-#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1640
-msgid "No"
-msgstr "Ez"
-
-#: src/glade-registration.glade:2289
-msgid "If so, did you file a bug report?"
-msgstr "Hala bada, jakinarazi duzu?"
-
-#: src/glade-registration.glade:2365
-msgid "Have you ever thought about contributing?"
-msgstr "Pentsatu al duzu inoiz lagundu ahal diguzula?"
-
-#: src/glade-registration.glade:2440
-msgid "Why not?"
-msgstr "Zergatik ez?"
-
-#: src/glade-registration.glade:2490
-msgid "Comments:"
-msgstr "Iruzkinak:"
-
-#: src/glade-registration.glade:2541
-msgid "Privacy Note:"
-msgstr "Pribatutasun-oharra:"
-
-#: src/glade-registration.glade:2561
-msgid ""
-"The sole purpose of this survey is to better know our user base.\n"
-"Your email address will be used to uniquely identify you as a Glade user and "
-"send you back a modification token in case you want to modify something or "
-"add extra comments.\n"
-"Only statistics compiled from the whole dataset will be shared publicly.\n"
-"Individual data will be stored in a private database and it will not be "
-"shared with the public or any other third party."
-msgstr "Inkesta honen xede bakarra gure erabiltzaileak hobeto ezagutzea da.\n"
-"Zure posta-helbidea zu Glade erabiltzaile gisa identifikatzeko erabiliko da, bai eta aldaketak egiteko token bat bidaltzeko ere, zerbait aldatu nahi baduzu edo iruzkin gehiago egin nahi badituzu erabil dezazun.\n"
-"Datu multzo osotik hartutako estatistikak soilik partekatuko dira publikoki.\n"
-"Banakoen datuak datu-base pribatu batean biltegiratuko dira eta ez dira partekatuko publikoarekin edo hirugarrenekin."
 
 #: gladeui/glade-app.c:552
 #, c-format
@@ -1835,6 +1082,10 @@ msgstr "Propietatearen etiketan bistaratuko den testu pertsonalizatua"
 #: gladeui/glade-editor-property.c:1375
 msgid "Select Fields"
 msgstr "Hautatu eremuak"
+
+#: gladeui/glade-editor-property.c:1378
+msgid "_Close"
+msgstr "It_xi"
 
 #: gladeui/glade-editor-property.c:1391
 msgid "_Select individual fields:"
@@ -3125,6 +2376,11 @@ msgstr "Egiaztatu objektuak, propietateak eta seinaleen zaharkitzeak"
 msgid "Warnings:"
 msgstr "Abisuak:"
 
+#: gladeui/glade-project-properties.ui:521
+#: plugins/gtk+/glade-about-dialog-editor.ui:69
+msgid "Name:"
+msgstr "Izena:"
+
 #: gladeui/glade-project-properties.ui:533
 msgid "Copyright:"
 msgstr "Copyright-a:"
@@ -3149,6 +2405,11 @@ msgstr "Azalpena:"
 #: gladeui/glade-project-properties.ui:634
 msgid "program or library short description"
 msgstr "programaren edo liburutegiaren deskribapen laburra"
+
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
+#: plugins/gtk+/gtk+.xml:4624
+msgid "Other"
+msgstr "Bestelakoa"
 
 #: gladeui/glade-project-properties.ui:649
 msgid "GNU GPL version 2"
@@ -5827,6 +5088,14 @@ msgstr "Utzi"
 msgid "Close"
 msgstr "Itxi"
 
+#: plugins/gtk+/gtk+.xml:1638
+msgid "Yes"
+msgstr "Bai"
+
+#: plugins/gtk+/gtk+.xml:1640
+msgid "No"
+msgstr "Ez"
+
 #: plugins/gtk+/gtk+.xml:1642
 msgid "Apply"
 msgstr "Aplikatu"
@@ -6476,6 +5745,10 @@ msgstr "LGPL 2.1"
 #: plugins/gtk+/gtk+.xml:3147
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
+
+#: plugins/gtk+/gtk+.xml:3149
+msgid "BSD"
+msgstr "BSD"
 
 #: plugins/gtk+/gtk+.xml:3151
 msgid "MIT X11"
@@ -8074,6 +7347,585 @@ msgstr "Dinamikoki"
 #: plugins/webkit2gtk/webkit2gtk.xml:58
 msgid "WebKit2GTK+ Widgets"
 msgstr "WebKit2GTK+ trepetak"
+
+#~ msgid ""
+#~ "We are conducting a user survey\n"
+#~ " would you like to take it now?"
+#~ msgstr ""
+#~ "Inkesta bat ari gara egiten erabiltzaileen artean\n"
+#~ "bete nahi al duzu?"
+
+#~ msgid "If not, you can always find it in the Help menu."
+#~ msgstr "Ez baduzu nahi orain, 'Laguntza' menuan izango duzu."
+
+#~ msgid "_Do not show this dialog again"
+#~ msgstr "_Ez erakutsi elkarrizketa-koadro hau berriro"
+
+#~ msgid "Go to Help -> Registration & User Survey and complete our survey!"
+#~ msgstr ""
+#~ "Joan 'Laguntza -> Erregistroa eta erabiltzaileen inkesta' atalera eta "
+#~ "bete gure inkesta!"
+
+#~ msgctxt ""
+#~ "This is to honor a professor that passed away last year and appears in a "
+#~ "popover when you click on the button that says \"RIP Guido\""
+#~ msgid ""
+#~ "Guido was one of my professors at Rosario\n"
+#~ "National University of Argentina.\n"
+#~ "\n"
+#~ "He introduced me to C, Linux, free software...\n"
+#~ "\n"
+#~ "He always had extra time to explain one more thing\n"
+#~ "and help you figure out things by yourself.\n"
+#~ "\n"
+#~ "Always made a joke in the right moment keeping\n"
+#~ "things interesting and fun.\n"
+#~ "\n"
+#~ "Master of intentionally misconstrued sayings.\n"
+#~ "\n"
+#~ "Always carried a stack of books under his arm.\n"
+#~ "\n"
+#~ "Loved Guinness beer.\n"
+#~ "\n"
+#~ "All he ever wanted was make you think!\n"
+#~ "\n"
+#~ "\"Alégrate! Mañana sera peor.\"\n"
+#~ "\n"
+#~ "\tJuan Pablo"
+#~ msgstr ""
+#~ "Guido nire irakasleetako bat izan zen Argentinako\n"
+#~ "Unibertsitate Nazionalean Rosarion.\n"
+#~ "\n"
+#~ "C, Linux, software librea... erakusti zizkidan,\n"
+#~ "\n"
+#~ "Beti zuen denbora zerbait gehiago azaltzeko\n"
+#~ "eta norberak gauzak konpontzen irakasteko.\n"
+#~ "\n"
+#~ "Txantxak egiten zituen beti une egokian,\n"
+#~ "Ikasgaia interesgarri eta dibertigarri mantentzeko.\n"
+#~ "\n"
+#~ "Nahita gaizki eraikitako esamoldeen maisu.\n"
+#~ "\n"
+#~ "Beti zeraman liburu sorta bat besapean.\n"
+#~ "\n"
+#~ "Guinness garagardoa maite zuen.\n"
+#~ "\n"
+#~ "Nahi zuen gauza bakarra zen norberak bere kabuz\n"
+#~ "pentsa zezan!\n"
+#~ "\n"
+#~ "\"Alégrate! Mañana sera peor.\"\n"
+#~ "\n"
+#~ "Juan Pablo"
+
+#~ msgid "Registration & User Survey"
+#~ msgstr "Erregistroa eta erabiltzaileen inkesta"
+
+#~ msgctxt "Button label in the bottom of main window that triggers a popover"
+#~ msgid ""
+#~ "<small>In memory of an extraordinary\n"
+#~ "person and professor\n"
+#~ "R.I.P Guido Macchi</small>"
+#~ msgstr ""
+#~ "<small>Pertsona eta irakasle\n"
+#~ "bikain baten oroimenez:\n"
+#~ "R.I.P Guido Macchi</small>"
+
+#, c-format
+#~ msgid "Connecting to %s"
+#~ msgstr "%s(e)ra konektatzen"
+
+#, c-format
+#~ msgid "Sending data to %s"
+#~ msgstr "Datuak %s(e)ra bidaltzen"
+
+#, c-format
+#~ msgid "Waiting for %s"
+#~ msgstr "%s(r)en zain"
+
+#, c-format
+#~ msgid "Receiving data from %s"
+#~ msgstr "Datuak %s(e)ndik jasotzen"
+
+#~ msgid ""
+#~ "Your subscription to the users list has been received!\n"
+#~ "Check your email!"
+#~ msgstr ""
+#~ "Erabiltzaile-zerrendan egin duzun erregistroa jaso dugu!\n"
+#~ "Begiratu zure posta elektronikoa!"
+
+#~ msgid ""
+#~ "Thank you for taking the time to complete the survey, we appreciate it!"
+#~ msgstr "Eskerrik asko inkesta betetzeagatik, benetan!"
+
+#~ msgid "Completed and submitted!"
+#~ msgstr "Osatu da eta bidali da!"
+
+#~ msgid "Glade Registration & User Survey"
+#~ msgstr "Gladen erregistroa eta erabiltzaileen inkesta"
+
+#~ msgid "_Submit"
+#~ msgstr "_Bidali"
+
+#~ msgid "Information will be sent to https://survey.gnome.org"
+#~ msgstr "Informazioa hona bidaliko da: https://survey.gnome.org"
+
+#~ msgid "User Information"
+#~ msgstr "Erabiltzaile-informazioa"
+
+#~ msgid "<Your name or nickname is required>"
+#~ msgstr "<Zure izena edo ezizena derrigorrezkoak dira>"
+
+#~ msgid "Email:"
+#~ msgstr "Helb. el.:"
+
+#~ msgid ""
+#~ "Tokens are processed manually in batches.\n"
+#~ "Please be patient."
+#~ msgstr ""
+#~ "Tokenak eskuz prozesatzen dira, multzoka.\n"
+#~ "Lasai hartu."
+
+#~ msgid "<Required to send back registration token>"
+#~ msgstr "<Derrigorrezkoa erregistro-tokena bidaltzeko>"
+
+#~ msgid "Country:"
+#~ msgstr "Herrialdea:"
+
+#~ msgid "City:"
+#~ msgstr "Hiria:"
+
+#~ msgid "Company"
+#~ msgstr "Enpresa"
+
+#~ msgid "Organization"
+#~ msgstr "Erakundea"
+
+#~ msgid "Personal"
+#~ msgstr "Pertsonala"
+
+#~ msgid "Website"
+#~ msgstr "Webgunea"
+
+#~ msgid "Subscribe me to the mailing list"
+#~ msgstr "Harpidetu posta-zerrendara"
+
+#~ msgid ""
+#~ "Subscribe to Glade Users mailing list.\n"
+#~ "You will be sent email requesting confirmation!"
+#~ msgstr ""
+#~ "Harpidetu Gladen erabiltzaileen posta-zerrendan.\n"
+#~ "Posta bat bidaliko dizugu harpidetza baieztatzeko!"
+
+#~ msgid "Choose your country"
+#~ msgstr "Aukeratu zure herrialdea edo estatua"
+
+#~ msgid "We care about privacy!"
+#~ msgstr "Pribatutasunak axola digu"
+
+#~ msgid ""
+#~ "All the data will be stored in a private location and will not be shared "
+#~ "with the public or any third party."
+#~ msgstr ""
+#~ "Datu guztiak kokaleku pribatu batean biltegiratuko dira eta ez dira "
+#~ "publikoki edo hirugarrenekin partekatuko."
+
+#~ msgid "Glade User Survey"
+#~ msgstr "Glade erabiltzaileen inkesta"
+
+#~ msgid "How long have you been programming?"
+#~ msgstr "Zenbat denbora aritu zara programazioan?"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "years"
+#~ msgstr "urte"
+
+#~ msgid "months"
+#~ msgstr "hilabete"
+
+#~ msgid "I am not a programmer"
+#~ msgstr "Ez naiz programatzailea"
+
+#~ msgid "Which programming languages do you prefer?"
+#~ msgstr "Zein programazio-lengoaia nahiago duzu?"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "C++"
+#~ msgstr "C++"
+
+#~ msgid "C#"
+#~ msgstr "C#"
+
+#~ msgid "Java"
+#~ msgstr "Java"
+
+#~ msgid "Python"
+#~ msgstr "Python"
+
+#~ msgid "JavaScript"
+#~ msgstr "JavaScript"
+
+#~ msgid "Vala"
+#~ msgstr "Vala"
+
+#~ msgid "Perl"
+#~ msgstr "Perl"
+
+#~ msgid "Rust"
+#~ msgstr "Rust"
+
+#~ msgid "When did you start using Glade?"
+#~ msgstr "Noiz hasi zinen Glade erabiltzen?"
+
+#~ msgid "ago"
+#~ msgstr "duela"
+
+#~ msgid "Which version do you normally use?"
+#~ msgstr "Zein bertsio erabili ohi duzu?"
+
+#~ msgid "What is available in my OS"
+#~ msgstr "Nire sisteman erabilgarri dagoena"
+
+#~ msgid "Latest stable from sources"
+#~ msgstr "Iturburuetatik hartutako azken bertsio egonkorra"
+
+#~ msgid "3.8 for GTK+ 2"
+#~ msgstr "3.8 GTK+ 2 bertsioa"
+
+#~ msgid "Master"
+#~ msgstr "Maisua"
+
+#~ msgid "On what operating systems?"
+#~ msgstr "Zein sistema eragiletan?"
+
+#~ msgid "distribution"
+#~ msgstr "banaketa"
+
+#~ msgid "Alpine"
+#~ msgstr "Alpine"
+
+#~ msgid "Arch Linux"
+#~ msgstr "Arch Linux"
+
+#~ msgid "Ataraxia Linux"
+#~ msgstr "Ataraxia Linux"
+
+#~ msgid "CentOS"
+#~ msgstr "CentOS"
+
+#~ msgid "Chrome OS"
+#~ msgstr "Chrome OS"
+
+#~ msgid "Clear Linux"
+#~ msgstr "Clear Linux"
+
+#~ msgid "Debian"
+#~ msgstr "Debian"
+
+#~ msgid "elementary OS"
+#~ msgstr "elementary OS"
+
+#~ msgid "Endless OS"
+#~ msgstr "Endless OS"
+
+#~ msgid "Fedora"
+#~ msgstr "Fedora"
+
+#~ msgid "Gentoo"
+#~ msgstr "Gentoo"
+
+#~ msgid "Kubuntu"
+#~ msgstr "Kubuntu"
+
+#~ msgid "Linux Mint"
+#~ msgstr "Linux Mint"
+
+#~ msgid "Mageia"
+#~ msgstr "Mageia"
+
+#~ msgid "Mandriva"
+#~ msgstr "Mandriva"
+
+#~ msgid "Nix OS"
+#~ msgstr "Nix OS"
+
+#~ msgid "openSUSE"
+#~ msgstr "openSUSE"
+
+#~ msgid "Oracle"
+#~ msgstr "Oracle"
+
+#~ msgid "Pop!_OS"
+#~ msgstr "Pop!_OS"
+
+#~ msgid "PureOS"
+#~ msgstr "PureOS"
+
+#~ msgid "Raspbian"
+#~ msgstr "Raspbian"
+
+#~ msgid "Red Hat"
+#~ msgstr "Red Hat"
+
+#~ msgid "Solus"
+#~ msgstr "Solus"
+
+#~ msgid "SulinOS"
+#~ msgstr "SulinOS"
+
+#~ msgid "Turbolinux"
+#~ msgstr "Turbolinux"
+
+#~ msgid "Ubuntu"
+#~ msgstr "Ubuntu"
+
+#~ msgid "Void Linux"
+#~ msgstr "Void Linux"
+
+#~ msgid "Xandros"
+#~ msgstr "Xandros"
+
+#~ msgid "variant"
+#~ msgstr "aldagaia"
+
+#~ msgid "FreeBSD"
+#~ msgstr "FreeBSD"
+
+#~ msgid "OpenBSD"
+#~ msgstr "OpenBSD"
+
+#~ msgid "NetBSD"
+#~ msgstr "NetBSD"
+
+#~ msgid "Oracle Solaris"
+#~ msgstr "Oracle Solaris"
+
+#~ msgid "OpenSolaris"
+#~ msgstr "OpenSolaris"
+
+#~ msgid "illumos"
+#~ msgstr "illumos"
+
+#~ msgid "version"
+#~ msgstr "bertsioa"
+
+#~ msgid "10"
+#~ msgstr "10"
+
+#~ msgid "8"
+#~ msgstr "8"
+
+#~ msgid "7"
+#~ msgstr "7"
+
+#~ msgid "Vista"
+#~ msgstr "Vista"
+
+#~ msgid "2012"
+#~ msgstr "2012"
+
+#~ msgid "2008"
+#~ msgstr "2008"
+
+#~ msgid "2003"
+#~ msgstr "2003"
+
+#~ msgid "XP"
+#~ msgstr "XP"
+
+#~ msgid "2000"
+#~ msgstr "2000"
+
+#~ msgid "Catalina"
+#~ msgstr "Catalina"
+
+#~ msgid "Mojave"
+#~ msgstr "Mojave"
+
+#~ msgid "High Sierra"
+#~ msgstr "High Sierra"
+
+#~ msgid "Sierra"
+#~ msgstr "Sierra"
+
+#~ msgid "El Capitan"
+#~ msgstr "El Capitan"
+
+#~ msgid "Yosemite"
+#~ msgstr "Yosemite"
+
+#~ msgid "Mavericks"
+#~ msgstr "Mavericks"
+
+#~ msgid "Mountain Lion"
+#~ msgstr "Mountain Lion"
+
+#~ msgid "Lion"
+#~ msgstr "Lion"
+
+#~ msgid "Snow Leopard"
+#~ msgstr "Snow Leopard"
+
+#~ msgid "Leopard"
+#~ msgstr "Leopard"
+
+#~ msgid "Tiger"
+#~ msgstr "Tiger"
+
+#~ msgid "GNU/Linux"
+#~ msgstr "GNU/Linux"
+
+#~ msgid "Windows"
+#~ msgstr "Leihoak"
+
+#~ msgid "Mac OS X"
+#~ msgstr "Mac OS X"
+
+#~ msgid "Solaris"
+#~ msgstr "Solaris"
+
+#~ msgid "How often do you use it?"
+#~ msgstr "Zenbatero erabiltzen duzu?"
+
+#~ msgid "Every day"
+#~ msgstr "Egunero"
+
+#~ msgid "Few days a week"
+#~ msgstr "Astean zenbait egunetan"
+
+#~ msgid "Every week"
+#~ msgstr "Astero"
+
+#~ msgid "A few times a month"
+#~ msgstr "Hilean zenbait egunetan"
+
+#~ msgid "Once a month"
+#~ msgstr "Hilean behin"
+
+#~ msgid "A few times a year"
+#~ msgstr "Urtean zenbait alditan"
+
+#~ msgid "What level of Glade user would you say you are?"
+#~ msgstr "Zein mailatako Glade erabiltzailea zarela esango zenuke?"
+
+#~ msgid "Beginner"
+#~ msgstr "Hasiberria"
+
+#~ msgid "Intermediate"
+#~ msgstr "Tartekoa"
+
+#~ msgid "Advanced"
+#~ msgstr "Aurreratua"
+
+#~ msgid ""
+#~ "Under what kind of license(s) do you release the software you used Glade "
+#~ "to create?"
+#~ msgstr ""
+#~ "Zein lizentzia erabiltzen duzu Gladekin erabiltzen duzun softwarea "
+#~ "argitaratzeko?"
+
+#~ msgid "Free software"
+#~ msgstr "Software librea"
+
+#~ msgid "Open source software"
+#~ msgstr "Kode irekiko softwarea"
+
+#~ msgid "Commercial/Closed software"
+#~ msgstr "Software itxia/komertziala"
+
+#~ msgid "None - distributed internally"
+#~ msgstr "Bat ere ez - nire enpresarako edo niretzako soilik"
+
+#~ msgid ""
+#~ "In what field(s) is the software you used Glade to create generally used?"
+#~ msgstr ""
+#~ "Zein lan-esparrutan erabiltzen da orokorrean Gladekin sortu duzun "
+#~ "softwarea?"
+
+#~ msgid "Academic"
+#~ msgstr "Akademikoa"
+
+#~ msgid "Embedded applications"
+#~ msgstr "Aplikazio kapsulatuak"
+
+#~ msgid "Accounting"
+#~ msgstr "Kontabilitatea"
+
+#~ msgid "Desktop applications"
+#~ msgstr "Mahaigaineko aplikazioak"
+
+#~ msgid "Educational"
+#~ msgstr "Hezkuntza"
+
+#~ msgid "Medical"
+#~ msgstr "Medikuntza"
+
+#~ msgid "Industrial applications"
+#~ msgstr "Industriako aplikazioak"
+
+#~ msgid "Scientific"
+#~ msgstr "Zientzia"
+
+#~ msgid "What aspect of the software needs the most improvement?"
+#~ msgstr "Softwarearen zein alderdik hobetu behar du gehien?"
+
+#~ msgid "In your opinion what is the biggest problem with Glade?"
+#~ msgstr "Zure ustez, zein da Glade aplikazioaren arazorik handiena?"
+
+#~ msgid "Lack of documentation"
+#~ msgstr "Dokumentazioa falta da"
+
+#~ msgid "Lack of professional support"
+#~ msgstr "Euskarri profesionalaren falta"
+
+#~ msgid "Lack of professional training"
+#~ msgstr "Prestakuntza profesionalaren falta"
+
+#~ msgid "Lack of publicity/exposure"
+#~ msgstr "Publizitatearen/ikusgaitasunaren falta"
+
+#~ msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
+#~ msgstr ""
+#~ "Beste SE batzuetarako (Windows, Mac OS X) bertsio bitar ofizialen falta"
+
+#~ msgid "Have you ever encountered a bug?"
+#~ msgstr "Aurkitu duzu akatsen bat inoiz?"
+
+#~ msgid "If so, did you file a bug report?"
+#~ msgstr "Hala bada, jakinarazi duzu?"
+
+#~ msgid "Have you ever thought about contributing?"
+#~ msgstr "Pentsatu al duzu inoiz lagundu ahal diguzula?"
+
+#~ msgid "Why not?"
+#~ msgstr "Zergatik ez?"
+
+#~ msgid "Comments:"
+#~ msgstr "Iruzkinak:"
+
+#~ msgid "Privacy Note:"
+#~ msgstr "Pribatutasun-oharra:"
+
+#~ msgid ""
+#~ "The sole purpose of this survey is to better know our user base.\n"
+#~ "Your email address will be used to uniquely identify you as a Glade user "
+#~ "and send you back a modification token in case you want to modify "
+#~ "something or add extra comments.\n"
+#~ "Only statistics compiled from the whole dataset will be shared publicly.\n"
+#~ "Individual data will be stored in a private database and it will not be "
+#~ "shared with the public or any other third party."
+#~ msgstr ""
+#~ "Inkesta honen xede bakarra gure erabiltzaileak hobeto ezagutzea da.\n"
+#~ "Zure posta-helbidea zu Glade erabiltzaile gisa identifikatzeko erabiliko "
+#~ "da, bai eta aldaketak egiteko token bat bidaltzeko ere, zerbait aldatu "
+#~ "nahi baduzu edo iruzkin gehiago egin nahi badituzu erabil dezazun.\n"
+#~ "Datu multzo osotik hartutako estatistikak soilik partekatuko dira "
+#~ "publikoki.\n"
+#~ "Banakoen datuak datu-base pribatu batean biltegiratuko dira eta ez dira "
+#~ "partekatuko publikoarekin edo hirugarrenekin."
 
 #~ msgid "Only one widget can be pasted at a time to this container"
 #~ msgstr "Aldiko trepeta bat soilik itsats daiteke edukiontzi honetan"
