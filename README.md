@@ -46,7 +46,7 @@ version 2 (LGPL) as described in the COPYING file.
 Requirements
 
 * C compiler like [gcc](https://gcc.gnu.org/)
-* [Meson](http://mesonbuild.org) build system
+* [Meson](http://mesonbuild.com) build system
 * [GTK](http://www.gtk.org) 3.24.0 or above
 * [libxml](http://xmlsoft.org/) 2.4.1 - used to parse XML files
 * libgirepository1.0 - Build-time dependency
