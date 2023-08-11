@@ -8,14 +8,14 @@
 # 甘露(Gan Lu) <rhythm.gan@gmail.com>, 2013.
 # Wylmer Wang <wantinghard@gmail.com>, 2014.
 # Tong Hui <tonghuix@gmail.com>, 2014.
-# lumingzh <lumingzh@qq.com>, 2022.
+# lumingzh <lumingzh@qq.com>, 2022-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 3.20\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2022-04-21 13:41+0000\n"
-"PO-Revision-Date: 2022-04-22 19:10+0800\n"
+"POT-Creation-Date: 2023-04-09 05:51+0000\n"
+"PO-Revision-Date: 2023-08-10 16:58+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:44 src/glade.glade:275
+#: src/main.c:44 src/glade.glade:202
 msgid "Glade"
 msgstr "Glade"
 
@@ -75,291 +75,268 @@ msgstr ""
 "通过使用 GtkBuilder，Glade XML 文件可以在多种程序设计语言中使用，包括 C, C+"
 "+, C#, Vala, Java, Perl, Python 等。"
 
-#: src/glade-window.c:51
+#: src/glade-window.c:50
 msgid "[Read Only]"
 msgstr "[只读]"
 
-#: src/glade-window.c:183
+#: src/glade-window.c:180
 msgid "User Interface Designer"
 msgstr "用户界面设计器"
 
-#: src/glade-window.c:430 src/glade-window.c:437
+#: src/glade-window.c:427 src/glade-window.c:434
 msgid "the last action"
 msgstr "上一个动作"
 
-#: src/glade-window.c:431
+#: src/glade-window.c:428
 #, c-format
 msgid "Undo: %s"
 msgstr "撤消(_U)：%s"
 
-#: src/glade-window.c:438
+#: src/glade-window.c:435
 #, c-format
 msgid "Redo: %s"
 msgstr "重做：%s"
 
-#: src/glade-window.c:463
+#: src/glade-window.c:460
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "正在自动保存“%s”"
 
-#: src/glade-window.c:468
+#: src/glade-window.c:465
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "自动保存“%s”出错"
 
-#: src/glade-window.c:690
+#: src/glade-window.c:687
 msgid "Open…"
 msgstr "打开…"
 
-#: src/glade-window.c:724
+#: src/glade-window.c:721
 #, c-format
 msgid "Project %s is still loading."
 msgstr "项目“%s”仍在加载。"
 
-#: src/glade-window.c:743
+#: src/glade-window.c:740
 msgid "Failed to backup existing file, continue saving?"
 msgstr "备份现存文件失败，继续保存吗？"
 
-#: src/glade-window.c:758
+#: src/glade-window.c:755
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "保存 %s 失败：%s"
 
-#: src/glade-window.c:797
+#: src/glade-window.c:794
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "文件 %s 相比读取时已修改"
 
-#: src/glade-window.c:801
+#: src/glade-window.c:798
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "如果您保存它，所有的外部修改将丢失。仍然保存吗？"
 
-#: src/glade-window.c:806
+#: src/glade-window.c:803
 msgid "_Save Anyway"
 msgstr "仍然保存(_S)"
 
-#: src/glade-window.c:814
+#: src/glade-window.c:811
 msgid "_Don't Save"
 msgstr "不保存(_D)"
 
-#: src/glade-window.c:847
+#: src/glade-window.c:844
 #, c-format
 msgid "Project '%s' saved"
 msgstr "项目“%s”已保存"
 
-#: src/glade-window.c:878
+#: src/glade-window.c:875
 msgid "Save As…"
 msgstr "另存为…"
 
-#: src/glade-window.c:942
+#: src/glade-window.c:939
 #, c-format
 msgid "Could not save the file %s"
 msgstr "无法保存文件 %s"
 
-#: src/glade-window.c:946
+#: src/glade-window.c:943
 msgid "You do not have the permissions necessary to save the file."
 msgstr "您没有保存文件需要的权限。"
 
-#: src/glade-window.c:968
+#: src/glade-window.c:965
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "无法保存 %s 文件 。另一个打开的项目正在使用该路径。"
 
-#: src/glade-window.c:996
+#: src/glade-window.c:993
 msgid "No open projects to save"
 msgstr "没有已打开的项目可以保存"
 
-#: src/glade-window.c:1029
+#: src/glade-window.c:1026
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "在关闭前保存对“%s”项目的修改？"
 
-#: src/glade-window.c:1037
+#: src/glade-window.c:1034
 msgid "Your changes will be lost if you don't save them."
 msgstr "如果不保存，您的修改将会丢失。"
 
-#: src/glade-window.c:1041
+#: src/glade-window.c:1038
 msgid "Close _without Saving"
 msgstr "关闭而不保存(_W)"
 
-#: src/glade-window.c:1042 src/glade-window.c:1733 src/glade-preferences.c:237
+#: src/glade-window.c:1039 src/glade-window.c:1721 src/glade-preferences.c:237
 #: gladeui/glade-editor.c:793 gladeui/glade-editor.c:1152
 #: gladeui/glade-editor-property.c:1774 gladeui/glade-editor-property.c:2082
 #: gladeui/glade-editor-property.c:2279 gladeui/glade-editor-property.c:3215
 #: gladeui/glade-editor-property.c:3323 gladeui/glade-editor-property.c:3334
 #: gladeui/glade-editor-property.c:3645 gladeui/glade-utils.c:494
-#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1063
+#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1207
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: src/glade-window.c:1043 src/glade.glade:699 gladeui/glade-utils.c:497
+#: src/glade-window.c:1040 src/glade.glade:598 gladeui/glade-utils.c:497
 msgid "_Save"
 msgstr "保存(S)"
 
-#: src/glade-window.c:1074
+#: src/glade-window.c:1071
 msgid "Save…"
 msgstr "保存…"
 
-#: src/glade-window.c:1640
+#: src/glade-window.c:1628
 msgid "Could not create a new project."
 msgstr "无法创建新项目。"
 
-#: src/glade-window.c:1701
+#: src/glade-window.c:1689
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "%s 项目有未保存的更改"
 
-#: src/glade-window.c:1706
+#: src/glade-window.c:1694
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr "如果重新加载，所有未保存的更改将丢失，确定要重新加载吗？"
 
-#: src/glade-window.c:1716
+#: src/glade-window.c:1704
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "项目文件 %s 已经在外部被修改"
 
-#: src/glade-window.c:1721
+#: src/glade-window.c:1709
 msgid "Do you want to reload the project?"
 msgstr "您想重新加载该项目吗？"
 
-#: src/glade-window.c:1727
+#: src/glade-window.c:1715
 msgid "_Reload"
 msgstr "重新加载(_R)"
 
-#: src/glade-window.c:2278
+#: src/glade-window.c:2263
 msgid "Hello, I will show you what's new in Glade"
 msgstr "您好，我来给您展示 Glade 的新特性"
 
-#: src/glade-window.c:2279
+#: src/glade-window.c:2264
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "菜单栏和工具栏合并在标题栏中"
 
-#: src/glade-window.c:2281
+#: src/glade-window.c:2266
 msgid "You can open a project"
 msgstr "您可以打开一个项目"
 
-#: src/glade-window.c:2282
+#: src/glade-window.c:2267
 msgid "find recently used"
 msgstr "查找最近使用的"
 
-#: src/glade-window.c:2283
+#: src/glade-window.c:2268
 msgid "or create a new one"
 msgstr "或者创建一个新项目"
 
-#: src/glade-window.c:2287
+#: src/glade-window.c:2272
 msgid "Undo"
 msgstr "撤消"
 
-#: src/glade-window.c:2288
+#: src/glade-window.c:2273
 msgid "Redo"
 msgstr "重做"
 
-#: src/glade-window.c:2289
+#: src/glade-window.c:2274
 msgid "Project switcher"
 msgstr "项目切换器"
 
-#: src/glade-window.c:2291
+#: src/glade-window.c:2276
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "并且“保存”按钮可在页眉管理器中直接访问"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2277
 msgid "just like Save As"
 msgstr "就像“另存为”一样"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2278
 msgid "project properties"
 msgstr "项目属性"
 
-#: src/glade-window.c:2294
+#: src/glade-window.c:2279
 msgid "and less commonly used actions"
 msgstr "以及不常用的操作"
 
-#: src/glade-window.c:2296
+#: src/glade-window.c:2281
 msgid "The object inspector took the palette's place"
 msgstr "对象检查器代替了调色板"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2282
 msgid "To free up space for the property editor"
 msgstr "为属性编辑器释放空间"
 
-#: src/glade-window.c:2299
+#: src/glade-window.c:2284
 msgid "The palette was replaced with a new object chooser"
 msgstr "调色板被替换为新的对象选择器"
 
-#: src/glade-window.c:2300
+#: src/glade-window.c:2285
 msgid "Where you can search all supported classes"
 msgstr "在这里可以搜索所有的支持类"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2286
 msgid "investigate GTK+ object groups"
 msgstr "调查 GTK+ 对象群组"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2287
 msgid "and find classes introduced by other libraries"
 msgstr "并找到其他库引入的类"
 
-#: src/glade-window.c:2304
+#: src/glade-window.c:2289
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr "好的，现在我们已经完成了概览，让我们从新的工作流开始"
 
-#: src/glade-window.c:2306
+#: src/glade-window.c:2291
 msgid "First of all, create a new project"
 msgstr "首先，创建一个新项目"
 
-#: src/glade-window.c:2307
+#: src/glade-window.c:2292
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
 msgstr "好的，现在使用新的控件选择器或双击工作区来添加 GtkWindow"
 
-#: src/glade-window.c:2308
+#: src/glade-window.c:2293
 msgid "Excellent!"
 msgstr "好极了！"
 
-#: src/glade-window.c:2309
+#: src/glade-window.c:2294
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr "顺便问一下，您知道您可以双击任何占位符来创建控件吗？"
 
-#: src/glade-window.c:2310
+#: src/glade-window.c:2295
 msgid "Try adding a grid"
 msgstr "尝试添加网格"
 
-#: src/glade-window.c:2311
+#: src/glade-window.c:2296
 msgid "and a button"
 msgstr "和一个按钮"
 
-#: src/glade-window.c:2313
+#: src/glade-window.c:2298
 msgid "Quite easy! Isn't it?"
 msgstr "很简单！不是吗？"
 
-#: src/glade-window.c:2314
+#: src/glade-window.c:2299
 msgid "Enjoy!"
 msgstr "玩的开心！"
-
-#. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2536
-msgid ""
-"We are conducting a user survey\n"
-" would you like to take it now?"
-msgstr ""
-"我们在做用户调查\n"
-" 您现在愿意参加吗？"
-
-#. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2540
-msgid "If not, you can always find it in the Help menu."
-msgstr "如果现在不愿意，您总是可以在帮助菜单中找到它。"
-
-#: src/glade-window.c:2542
-msgid "_Do not show this dialog again"
-msgstr "不再显示此对话(_D)"
-
-#. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2563
-msgid "Go to Help -> Registration & User Survey and complete our survey!"
-msgstr "请到“帮助 -> 注册和用户调查”完成我们的调查！"
 
 #: src/main.c:53
 msgid "Output version information and exit"
@@ -373,159 +350,94 @@ msgstr "禁用 Devhelp 集成"
 msgid "be verbose"
 msgstr "反向"
 
-#: src/main.c:147
+#: src/main.c:145
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "无法打开“%s”，该文件不存在。\n"
 
-#: src/main.c:175
+#: src/main.c:173
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr "未找到 gmodule 支持。Glade 正常工作需要 dmodule 支持"
 
-#: src/main.c:193
+#: src/main.c:191
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr "为 GTK+ 或 GNOME 应用程序创建或编辑用户界面设计。"
 
-#. The last sentence in quotes is in spanish and does not need to be translated.
-#: src/glade.glade:59
-msgctxt ""
-"This is to honor a professor that passed away last year and appears in a "
-"popover when you click on the button that says \"RIP Guido\""
-msgid ""
-"Guido was one of my professors at Rosario\n"
-"National University of Argentina.\n"
-"\n"
-"He introduced me to C, Linux, free software...\n"
-"\n"
-"He always had extra time to explain one more thing\n"
-"and help you figure out things by yourself.\n"
-"\n"
-"Always made a joke in the right moment keeping\n"
-"things interesting and fun.\n"
-"\n"
-"Master of intentionally misconstrued sayings.\n"
-"\n"
-"Always carried a stack of books under his arm.\n"
-"\n"
-"Loved Guinness beer.\n"
-"\n"
-"All he ever wanted was make you think!\n"
-"\n"
-"\"Alégrate! Mañana sera peor.\"\n"
-"\n"
-"\tJuan Pablo"
-msgstr ""
-"Guido 是我在阿根廷国立罗萨里奥大学时\n"
-"的一名教授。\n"
-"\n"
-"他带我认识了 C、Linux、自由软件……\n"
-"\n"
-"他总是有额外的时间来解释问题，然后帮助你\n"
-"独立自主解决问题。\n"
-"\n"
-"总是能在合适的时候开玩笑来活跃气氛。\n"
-"\n"
-"擅长故意说怪话。\n"
-"\n"
-"总是胳膊下面夹着一摞书。\n"
-"\n"
-"喜欢健力士啤酒。\n"
-"\n"
-"他一直以来的目标就是让你思考！\n"
-"\n"
-"\"Alégrate! Mañana sera peor.\"\n"
-"\n"
-"\tJuan Pablo"
-
-#: src/glade.glade:106
+#: src/glade.glade:47
 msgid "Close Project"
 msgstr "关闭项目"
 
-#: src/glade.glade:131
-msgid "Registration & User Survey"
-msgstr "注册和用户调查"
-
-#: src/glade.glade:145
+#: src/glade.glade:72
 msgid "_Developer Reference"
 msgstr "开发者参考(_D)"
 
-#: src/glade.glade:159
+#: src/glade.glade:86
 msgid "Interactive Intro"
 msgstr "交互式简介"
 
-#: src/glade.glade:184
+#: src/glade.glade:111
 msgid "Preferences"
 msgstr "首选项"
 
-#: src/glade.glade:198
+#: src/glade.glade:125
 msgid "User Manual"
 msgstr "用户手册"
 
-#: src/glade.glade:212
+#: src/glade.glade:139
 msgid "About Glade"
 msgstr "关于 Glade"
 
-#: src/glade.glade:311
-msgctxt "Button label in the bottom of main window that triggers a popover"
-msgid ""
-"<small>In memory of an extraordinary\n"
-"person and professor\n"
-"R.I.P Guido Macchi</small>"
-msgstr ""
-"<small>纪念一位出众的教授\n"
-"R.I.P Guido Macchi</small>"
-
-#: src/glade.glade:606 src/glade-preferences.c:239
+#: src/glade.glade:505 src/glade-preferences.c:239
 #: gladeui/glade-editor-property.c:2280 gladeui/glade-utils.c:497
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/glade.glade:611
+#: src/glade.glade:510
 msgid "Open a project"
 msgstr "打开一个项目"
 
-#: src/glade.glade:656
+#: src/glade.glade:555
 msgid "Create a new project"
 msgstr "创建一个新项目"
 
-#: src/glade.glade:676
+#: src/glade.glade:575
 msgid "Edit project properties"
 msgstr "修改项目属性"
 
-#: src/glade.glade:704
+#: src/glade.glade:603
 msgid "Save the current project"
 msgstr "保存当前项目"
 
-#: src/glade.glade:720
+#: src/glade.glade:619
 msgid "Save the current project with a different name"
 msgstr "以不同名称保存当前项目"
 
-#: src/glade.glade:749
+#: src/glade.glade:648
 msgid "Start/resume interactive UI introduction"
 msgstr "开始/继续交互式 UI 简介"
 
-#: src/glade.glade:848
+#: src/glade.glade:747
 msgid ""
-"© 2018-2020 Juan Pablo Ugarte, et al.\n"
+"© 2018-2022 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 msgstr ""
-"© 2018-2020 Juan Pablo Ugarte, et al.\n"
+"© 2018-2022 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:852
+#: src/glade.glade:751
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+ 和 GNOME 的用户界面设计器。"
 
-#: src/glade.glade:854
+#: src/glade.glade:753
 msgid "Visit Glade web site"
 msgstr "访问 Glade 网站"
 
-#: src/glade.glade:866
+#: src/glade.glade:765
 msgid "translator-credits"
 msgstr ""
 "Funda Wang <fundawang@linux.net.cn>, 2005\n"
@@ -534,7 +446,8 @@ msgstr ""
 "Aron Xu <aronxu@gnome.org>, 2010.\n"
 "Tong Hui <tonghuix@gmail.com>, 2014\n"
 "Mandy Wang <wangmychn@gmail.com>, 2016\n"
-"Weiyi Xu <xuweiyi0923@gmail.com>, 2020"
+"Weiyi Xu <xuweiyi0923@gmail.com>, 2020\n"
+"lumingzh <lumingzh@qq.com>, 2023"
 
 #: src/glade-preferences.c:234
 msgid "Select a catalog search path"
@@ -632,674 +545,6 @@ msgstr "移除选定的搜索路径"
 #: src/glade-preferences.glade:387
 msgid "Extra Catalog & Templates paths"
 msgstr "额外的分类和模板路径"
-
-#: src/glade-registration.c:282
-#, c-format
-msgid "Connecting to %s"
-msgstr "正在连接 %s"
-
-#: src/glade-registration.c:285
-#, c-format
-msgid "Sending data to %s"
-msgstr "正在向 %s 发送数据"
-
-#: src/glade-registration.c:288
-#, c-format
-msgid "Waiting for %s"
-msgstr "正在等待 %s"
-
-#: src/glade-registration.c:291
-#, c-format
-msgid "Receiving data from %s"
-msgstr "正在从 %s 接收数据"
-
-#: src/glade-registration.c:350
-msgid ""
-"Your subscription to the users list has been received!\n"
-"Check your email!"
-msgstr ""
-"您对用户列表的订阅已收到！\n"
-"检查您的电子邮件！"
-
-#: src/glade-registration.c:510
-msgid "Thank you for taking the time to complete the survey, we appreciate it!"
-msgstr "感谢参与此调查。我们非常感激！"
-
-#: src/glade-registration.c:771
-msgid "Completed and submitted!"
-msgstr "已经完成并提交！"
-
-#: src/glade-registration.glade:44
-msgid "Glade Registration & User Survey"
-msgstr "Glade 注册和用户调查"
-
-#: src/glade-registration.glade:63 gladeui/glade-editor-property.c:1378
-msgid "_Close"
-msgstr "关闭(_C)"
-
-#: src/glade-registration.glade:77
-msgid "_Submit"
-msgstr "提交(_S)"
-
-#: src/glade-registration.glade:82
-msgid "Information will be sent to https://survey.gnome.org"
-msgstr "信息将发给 https://survey.gnome.org"
-
-#: src/glade-registration.glade:183
-msgid "User Information"
-msgstr "用户信息"
-
-#: src/glade-registration.glade:217
-msgid "<Your name or nickname is required>"
-msgstr "<需要填写您的姓名或昵称>"
-
-#: src/glade-registration.glade:230 gladeui/glade-project-properties.ui:521
-#: plugins/gtk+/glade-about-dialog-editor.ui:69
-msgid "Name:"
-msgstr "名称："
-
-#: src/glade-registration.glade:242
-msgid "Email:"
-msgstr "邮件："
-
-#: src/glade-registration.glade:254
-msgid ""
-"Tokens are processed manually in batches.\n"
-"Please be patient."
-msgstr "令牌是手工成批处理的，请耐心等待。"
-
-#: src/glade-registration.glade:256
-msgid "<Required to send back registration token>"
-msgstr "<需要填写，以发回注册令牌>"
-
-#: src/glade-registration.glade:269
-msgid "Country:"
-msgstr "国家："
-
-#: src/glade-registration.glade:281
-msgid "City:"
-msgstr "城市："
-
-#: src/glade-registration.glade:295
-msgid "Company"
-msgstr "公司"
-
-#: src/glade-registration.glade:296
-msgid "Organization"
-msgstr "组织"
-
-#: src/glade-registration.glade:297
-msgid "Personal"
-msgstr "个人"
-
-#: src/glade-registration.glade:309
-msgid "Website"
-msgstr "网站"
-
-#: src/glade-registration.glade:353
-msgid "Subscribe me to the mailing list"
-msgstr "订阅邮件列表"
-
-#: src/glade-registration.glade:357
-msgid ""
-"Subscribe to Glade Users mailing list.\n"
-"You will be sent email requesting confirmation!"
-msgstr ""
-"订阅 Glade 用户邮件列表。\n"
-"将向您发送确认请求的邮件！"
-
-#: src/glade-registration.glade:373
-msgid "Choose your country"
-msgstr "选择您所在的国家"
-
-#: src/glade-registration.glade:653
-msgid "We care about privacy!"
-msgstr "我们尊重隐私！"
-
-#: src/glade-registration.glade:671
-msgid ""
-"All the data will be stored in a private location and will not be shared "
-"with the public or any third party."
-msgstr "所有数据将私密保存，不会公开或透露给第三方组织。"
-
-#: src/glade-registration.glade:705
-msgid "Glade User Survey"
-msgstr "Glade 用户调查"
-
-#: src/glade-registration.glade:735
-msgid "How long have you been programming?"
-msgstr "您编程有多长时间了？"
-
-#: src/glade-registration.glade:753 src/glade-registration.glade:1022
-msgid "0"
-msgstr "0"
-
-#: src/glade-registration.glade:769 src/glade-registration.glade:1038
-msgid "years"
-msgstr "年"
-
-#: src/glade-registration.glade:770 src/glade-registration.glade:1039
-msgid "months"
-msgstr "个月"
-
-#: src/glade-registration.glade:781
-msgid "I am not a programmer"
-msgstr "我不是程序员"
-
-#: src/glade-registration.glade:817
-msgid "Which programming languages do you prefer?"
-msgstr "您喜欢用哪种编程语言？"
-
-#: src/glade-registration.glade:833
-msgid "C"
-msgstr "C"
-
-#: src/glade-registration.glade:848
-msgid "C++"
-msgstr "C++"
-
-#: src/glade-registration.glade:863
-msgid "C#"
-msgstr "C#"
-
-#: src/glade-registration.glade:878
-msgid "Java"
-msgstr "Java"
-
-#: src/glade-registration.glade:893
-msgid "Python"
-msgstr "Python"
-
-#: src/glade-registration.glade:908
-msgid "JavaScript"
-msgstr "JavaScript"
-
-#: src/glade-registration.glade:923
-msgid "Vala"
-msgstr "Vala"
-
-#: src/glade-registration.glade:938
-msgid "Perl"
-msgstr "Perl"
-
-#: src/glade-registration.glade:953
-msgid "Rust"
-msgstr "Rust"
-
-#: src/glade-registration.glade:968 src/glade-registration.glade:1173
-#: src/glade-registration.glade:1278 src/glade-registration.glade:1295
-#: src/glade-registration.glade:1312 src/glade-registration.glade:1344
-#: src/glade-registration.glade:1370 src/glade-registration.glade:1465
-#: src/glade-registration.glade:1956 src/glade-registration.glade:2158
-#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
-#: plugins/gtk+/gtk+.xml:4624
-msgid "Other"
-msgstr "其他"
-
-#: src/glade-registration.glade:1004
-msgid "When did you start using Glade?"
-msgstr "您从什么时候开始用 Glade 的？"
-
-#: src/glade-registration.glade:1052
-msgid "ago"
-msgstr "前"
-
-#: src/glade-registration.glade:1084
-msgid "Which version do you normally use?"
-msgstr "您一般用哪个版本？"
-
-#: src/glade-registration.glade:1101
-msgid "What is available in my OS"
-msgstr "我操作系统中提供的"
-
-#: src/glade-registration.glade:1118
-msgid "Latest stable from sources"
-msgstr "源里的最新稳定版本"
-
-#: src/glade-registration.glade:1135
-msgid "3.8 for GTK+ 2"
-msgstr "3.8 for GTK+ 2"
-
-#: src/glade-registration.glade:1152
-msgid "Master"
-msgstr "主分支"
-
-#: src/glade-registration.glade:1229
-msgid "On what operating systems?"
-msgstr "在哪种操作系统上？"
-
-#: src/glade-registration.glade:1249
-msgid "distribution"
-msgstr "发行版"
-
-#: src/glade-registration.glade:1250
-msgid "Alpine"
-msgstr "Alpine"
-
-#: src/glade-registration.glade:1251
-msgid "Arch Linux"
-msgstr "Arch Linux"
-
-#: src/glade-registration.glade:1252
-msgid "Ataraxia Linux"
-msgstr "Ataraxia Linux"
-
-#: src/glade-registration.glade:1253
-msgid "CentOS"
-msgstr "CentOS"
-
-#: src/glade-registration.glade:1254
-msgid "Chrome OS"
-msgstr "Chrome OS"
-
-#: src/glade-registration.glade:1255
-msgid "Clear Linux"
-msgstr "Clear Linux"
-
-#: src/glade-registration.glade:1256
-msgid "Debian"
-msgstr "Debian"
-
-#: src/glade-registration.glade:1257
-msgid "elementary OS"
-msgstr "elementary OS"
-
-#: src/glade-registration.glade:1258
-msgid "Endless OS"
-msgstr "Endless OS"
-
-#: src/glade-registration.glade:1259
-msgid "Fedora"
-msgstr "Fedora"
-
-#: src/glade-registration.glade:1260
-msgid "Gentoo"
-msgstr "Gentoo"
-
-#: src/glade-registration.glade:1261
-msgid "Kubuntu"
-msgstr "Kubuntu"
-
-#: src/glade-registration.glade:1262
-msgid "Linux Mint"
-msgstr "Linux Mint"
-
-#: src/glade-registration.glade:1263
-msgid "Mageia"
-msgstr "Mageia"
-
-#: src/glade-registration.glade:1264
-msgid "Mandriva"
-msgstr "Mandriva"
-
-#: src/glade-registration.glade:1265
-msgid "Nix OS"
-msgstr "Nix OS"
-
-#: src/glade-registration.glade:1266
-msgid "openSUSE"
-msgstr "openSUSE"
-
-#: src/glade-registration.glade:1267
-msgid "Oracle"
-msgstr "Oracle"
-
-#: src/glade-registration.glade:1268
-msgid "Pop!_OS"
-msgstr "Pop!_OS"
-
-#: src/glade-registration.glade:1269
-msgid "PureOS"
-msgstr "PureOS"
-
-#: src/glade-registration.glade:1270
-msgid "Raspbian"
-msgstr "Raspbian"
-
-#: src/glade-registration.glade:1271
-msgid "Red Hat"
-msgstr "Red Hat"
-
-#: src/glade-registration.glade:1272
-msgid "Solus"
-msgstr "Solus"
-
-#: src/glade-registration.glade:1273
-msgid "SulinOS"
-msgstr "SulinOS"
-
-#: src/glade-registration.glade:1274
-msgid "Turbolinux"
-msgstr "Turbolinux"
-
-#: src/glade-registration.glade:1275
-msgid "Ubuntu"
-msgstr "Ubuntu"
-
-#: src/glade-registration.glade:1276
-msgid "Void Linux"
-msgstr "Void Linux"
-
-#: src/glade-registration.glade:1277
-msgid "Xandros"
-msgstr "Xandros"
-
-#: src/glade-registration.glade:1291 src/glade-registration.glade:1308
-msgid "variant"
-msgstr "变体"
-
-#: src/glade-registration.glade:1292
-msgid "FreeBSD"
-msgstr "FreeBSD"
-
-#: src/glade-registration.glade:1293
-msgid "OpenBSD"
-msgstr "OpenBSD"
-
-#: src/glade-registration.glade:1294
-msgid "NetBSD"
-msgstr "NetBSD"
-
-#: src/glade-registration.glade:1309
-msgid "Oracle Solaris"
-msgstr "Oracle Solaris"
-
-#: src/glade-registration.glade:1310
-msgid "OpenSolaris"
-msgstr "OpenSolaris"
-
-#: src/glade-registration.glade:1311
-msgid "illumos"
-msgstr "illumos"
-
-#: src/glade-registration.glade:1334 src/glade-registration.glade:1357
-msgid "version"
-msgstr "版本"
-
-#: src/glade-registration.glade:1335
-msgid "10"
-msgstr "10"
-
-#: src/glade-registration.glade:1336
-msgid "8"
-msgstr "8"
-
-#: src/glade-registration.glade:1337
-msgid "7"
-msgstr "7"
-
-#: src/glade-registration.glade:1338
-msgid "Vista"
-msgstr "Vista"
-
-#: src/glade-registration.glade:1339
-msgid "2012"
-msgstr "2012"
-
-#: src/glade-registration.glade:1340
-msgid "2008"
-msgstr "2008"
-
-#: src/glade-registration.glade:1341
-msgid "2003"
-msgstr "2003"
-
-#: src/glade-registration.glade:1342
-msgid "XP"
-msgstr "XP"
-
-#: src/glade-registration.glade:1343
-msgid "2000"
-msgstr "2000"
-
-#: src/glade-registration.glade:1358
-msgid "Catalina"
-msgstr "Catalina"
-
-#: src/glade-registration.glade:1359
-msgid "Mojave"
-msgstr "Mojave"
-
-#: src/glade-registration.glade:1360
-msgid "High Sierra"
-msgstr "High Sierra"
-
-#: src/glade-registration.glade:1361
-msgid "Sierra"
-msgstr "Sierra"
-
-#: src/glade-registration.glade:1362
-msgid "El Capitan"
-msgstr "El Capitan"
-
-#: src/glade-registration.glade:1363
-msgid "Yosemite"
-msgstr "Yosemite"
-
-#: src/glade-registration.glade:1364
-msgid "Mavericks"
-msgstr "Mavericks"
-
-#: src/glade-registration.glade:1365
-msgid "Mountain Lion"
-msgstr "Mountain Lion"
-
-#: src/glade-registration.glade:1366
-msgid "Lion"
-msgstr "Lion"
-
-#: src/glade-registration.glade:1367
-msgid "Snow Leopard"
-msgstr "Snow Leopard"
-
-#: src/glade-registration.glade:1368
-msgid "Leopard"
-msgstr "Leopard"
-
-#: src/glade-registration.glade:1369
-msgid "Tiger"
-msgstr "Tiger"
-
-#: src/glade-registration.glade:1380
-msgid "GNU/Linux"
-msgstr "GNU/Linux"
-
-#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3149
-msgid "BSD"
-msgstr "BSD"
-
-#: src/glade-registration.glade:1414
-msgid "Windows"
-msgstr "Windows"
-
-#: src/glade-registration.glade:1431
-msgid "Mac OS X"
-msgstr "Mac OS X"
-
-#: src/glade-registration.glade:1448
-msgid "Solaris"
-msgstr "Solaris"
-
-#: src/glade-registration.glade:1503
-msgid "How often do you use it?"
-msgstr "您使用它的频率是？"
-
-#: src/glade-registration.glade:1520
-msgid "Every day"
-msgstr "每天"
-
-#: src/glade-registration.glade:1537
-msgid "Few days a week"
-msgstr "一周用几天"
-
-#: src/glade-registration.glade:1554
-msgid "Every week"
-msgstr "每周"
-
-#: src/glade-registration.glade:1571
-msgid "A few times a month"
-msgstr "一个月几次"
-
-#: src/glade-registration.glade:1588
-msgid "Once a month"
-msgstr "一个月一次"
-
-#: src/glade-registration.glade:1605
-msgid "A few times a year"
-msgstr "一年几次"
-
-#: src/glade-registration.glade:1643
-msgid "What level of Glade user would you say you are?"
-msgstr "您觉得自己的 Glade 水平是？"
-
-#: src/glade-registration.glade:1659
-msgid "Beginner"
-msgstr "初学者"
-
-#: src/glade-registration.glade:1676
-msgid "Intermediate"
-msgstr "中等水平"
-
-#: src/glade-registration.glade:1693
-msgid "Advanced"
-msgstr "高级水平"
-
-#: src/glade-registration.glade:1731
-msgid ""
-"Under what kind of license(s) do you release the software you used Glade to "
-"create?"
-msgstr "您用 Glade 创建的软件以哪种(哪些)许可证发布？"
-
-#: src/glade-registration.glade:1747
-msgid "Free software"
-msgstr "自由软件"
-
-#: src/glade-registration.glade:1761
-msgid "Open source software"
-msgstr "开源软件"
-
-#: src/glade-registration.glade:1775
-msgid "Commercial/Closed software"
-msgstr "商业/闭源软件"
-
-#: src/glade-registration.glade:1789
-msgid "None - distributed internally"
-msgstr "无 - 内部使用"
-
-#: src/glade-registration.glade:1824
-msgid ""
-"In what field(s) is the software you used Glade to create generally used?"
-msgstr "您用 Glade 创建的软件用在什么领域？"
-
-#: src/glade-registration.glade:1839
-msgid "Academic"
-msgstr "学术"
-
-#: src/glade-registration.glade:1853
-msgid "Embedded applications"
-msgstr "嵌入式应用程序"
-
-#: src/glade-registration.glade:1867
-msgid "Accounting"
-msgstr "金融"
-
-#: src/glade-registration.glade:1881
-msgid "Desktop applications"
-msgstr "桌面应用程序"
-
-#: src/glade-registration.glade:1895
-msgid "Educational"
-msgstr "教育"
-
-#: src/glade-registration.glade:1909
-msgid "Medical"
-msgstr "媒体"
-
-#: src/glade-registration.glade:1923
-msgid "Industrial applications"
-msgstr "行业软件"
-
-#: src/glade-registration.glade:1937
-msgid "Scientific"
-msgstr "科学"
-
-#: src/glade-registration.glade:2010
-msgid "What aspect of the software needs the most improvement?"
-msgstr "软件的哪些方面最需要改进？"
-
-#: src/glade-registration.glade:2055
-msgid "In your opinion what is the biggest problem with Glade?"
-msgstr "您认为，Glade 最大的问题是什么？"
-
-#: src/glade-registration.glade:2072
-msgid "Lack of documentation"
-msgstr "缺少文档"
-
-#: src/glade-registration.glade:2090
-msgid "Lack of professional support"
-msgstr "缺少专业支持"
-
-#: src/glade-registration.glade:2107
-msgid "Lack of professional training"
-msgstr "缺少专业训练"
-
-#: src/glade-registration.glade:2124
-msgid "Lack of publicity/exposure"
-msgstr "缺少宣传，知者甚少"
-
-#: src/glade-registration.glade:2141
-msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
-msgstr "其他操作系统缺少官方发布的二进制版本(Windows、OSX)"
-
-#: src/glade-registration.glade:2217
-msgid "Have you ever encountered a bug?"
-msgstr "您有没有遇到过软件故障？"
-
-#: src/glade-registration.glade:2233 src/glade-registration.glade:2305
-#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
-msgid "Yes"
-msgstr "有"
-
-#: src/glade-registration.glade:2250 src/glade-registration.glade:2322
-#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1640
-msgid "No"
-msgstr "没有"
-
-#: src/glade-registration.glade:2289
-msgid "If so, did you file a bug report?"
-msgstr "如果有，您提交 BUG 报告了吗？"
-
-#: src/glade-registration.glade:2365
-msgid "Have you ever thought about contributing?"
-msgstr "您有没有想过帮助改进 Glade？"
-
-#: src/glade-registration.glade:2440
-msgid "Why not?"
-msgstr "为什么不呢？"
-
-#: src/glade-registration.glade:2490
-msgid "Comments:"
-msgstr "评论："
-
-#: src/glade-registration.glade:2541
-msgid "Privacy Note:"
-msgstr "隐私说明："
-
-#: src/glade-registration.glade:2561
-msgid ""
-"The sole purpose of this survey is to better know our user base.\n"
-"Your email address will be used to uniquely identify you as a Glade user and "
-"send you back a modification token in case you want to modify something or "
-"add extra comments.\n"
-"Only statistics compiled from the whole dataset will be shared publicly.\n"
-"Individual data will be stored in a private database and it will not be "
-"shared with the public or any other third party."
-msgstr ""
-"这项调查纯粹是为了更好地了解我们的用户群。\n"
-"您的邮件地址将用于惟一地标识您的 Glade 用户身份，并借以向您发送一个修改信息，"
-"方便您进行修改或添加评论。\n"
-"只有从整个数据库中得到的统计结果会公开；\n"
-"个人数据将保存在加密的数据库中，不会公开或透露给第三方组织。"
 
 #: gladeui/glade-app.c:552
 #, c-format
@@ -1801,7 +1046,7 @@ msgstr "重置组件属性"
 #: gladeui/glade-editor-property.c:2083 gladeui/glade-editor-property.c:3217
 #: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3336
 #: gladeui/glade-editor-property.c:3646 plugins/gtk+/glade-accels.c:524
-#: plugins/gtk+/glade-attributes.c:1064
+#: plugins/gtk+/glade-attributes.c:1208
 msgid "_OK"
 msgstr "确定(_O)"
 
@@ -1865,6 +1110,10 @@ msgstr "显示在属性标签中的自定义文本"
 #: gladeui/glade-editor-property.c:1375
 msgid "Select Fields"
 msgstr "选择区域"
+
+#: gladeui/glade-editor-property.c:1378
+msgid "_Close"
+msgstr "关闭(_C)"
 
 #: gladeui/glade-editor-property.c:1391
 msgid "_Select individual fields:"
@@ -1944,7 +1193,7 @@ msgstr "在项目中选择 %s"
 
 #: gladeui/glade-editor-property.c:3216 gladeui/glade-editor-property.c:3324
 #: gladeui/glade-editor-property.c:3335 gladeui/glade-editor-property.c:3644
-#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1062
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1206
 msgid "C_lear"
 msgstr "清除(_L)"
 
@@ -2790,7 +2039,7 @@ msgid "Could not show link:"
 msgstr "无法显示链接："
 
 #. Reset the column
-#: gladeui/glade-utils.c:1730 plugins/gtk+/glade-attributes.c:830
+#: gladeui/glade-utils.c:1730 plugins/gtk+/glade-attributes.c:868
 #: plugins/gtk+/gtk+.xml:830 plugins/gtk+/gtk+.xml:1188
 #: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1307
 #: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:1574
@@ -3167,6 +2416,11 @@ msgstr "验证对象、属性和废弃信号"
 msgid "Warnings:"
 msgstr "警告:"
 
+#: gladeui/glade-project-properties.ui:521
+#: plugins/gtk+/glade-about-dialog-editor.ui:69
+msgid "Name:"
+msgstr "名称："
+
 #: gladeui/glade-project-properties.ui:533
 msgid "Copyright:"
 msgstr "版权所有："
@@ -3191,6 +2445,11 @@ msgstr "描述："
 #: gladeui/glade-project-properties.ui:634
 msgid "program or library short description"
 msgstr "程序或库的简短描述"
+
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
+#: plugins/gtk+/gtk+.xml:4624
+msgid "Other"
+msgstr "其他"
 
 #: gladeui/glade-project-properties.ui:649
 msgid "GNU GPL version 2"
@@ -3267,117 +2526,117 @@ msgstr "设置 %s 以使用中心子控件"
 msgid "Setting %s to not use a center child"
 msgstr "设置 %s 以禁用中心子控件"
 
-#: plugins/gtk+/glade-attributes.c:222
+#: plugins/gtk+/glade-attributes.c:235
 msgctxt "textattr"
 msgid "Style"
 msgstr "样式"
 
-#: plugins/gtk+/glade-attributes.c:226
+#: plugins/gtk+/glade-attributes.c:239
 msgctxt "textattr"
 msgid "Weight"
 msgstr "重量"
 
-#: plugins/gtk+/glade-attributes.c:230
+#: plugins/gtk+/glade-attributes.c:243
 msgctxt "textattr"
 msgid "Variant"
 msgstr "变量"
 
-#: plugins/gtk+/glade-attributes.c:234
+#: plugins/gtk+/glade-attributes.c:247
 msgctxt "textattr"
 msgid "Stretch"
 msgstr "拉伸"
 
-#: plugins/gtk+/glade-attributes.c:238
+#: plugins/gtk+/glade-attributes.c:251
 msgctxt "textattr"
 msgid "Underline"
 msgstr "下划线"
 
-#: plugins/gtk+/glade-attributes.c:242
+#: plugins/gtk+/glade-attributes.c:255
 msgctxt "textattr"
 msgid "Strikethrough"
 msgstr "删除线"
 
-#: plugins/gtk+/glade-attributes.c:246
+#: plugins/gtk+/glade-attributes.c:259
 msgctxt "textattr"
 msgid "Gravity"
 msgstr "重力"
 
-#: plugins/gtk+/glade-attributes.c:250
+#: plugins/gtk+/glade-attributes.c:263
 msgctxt "textattr"
 msgid "Gravity Hint"
 msgstr "重力提示"
 
-#: plugins/gtk+/glade-attributes.c:262
+#: plugins/gtk+/glade-attributes.c:275
 msgctxt "textattr"
 msgid "Size"
 msgstr "大小"
 
-#: plugins/gtk+/glade-attributes.c:267
+#: plugins/gtk+/glade-attributes.c:280
 msgctxt "textattr"
 msgid "Absolute Size"
 msgstr "绝对大小"
 
-#: plugins/gtk+/glade-attributes.c:274
+#: plugins/gtk+/glade-attributes.c:287
 msgctxt "textattr"
 msgid "Foreground Color"
 msgstr "前景色"
 
-#: plugins/gtk+/glade-attributes.c:278
+#: plugins/gtk+/glade-attributes.c:291
 msgctxt "textattr"
 msgid "Background Color"
 msgstr "背景色"
 
-#: plugins/gtk+/glade-attributes.c:282
+#: plugins/gtk+/glade-attributes.c:295
 msgctxt "textattr"
 msgid "Underline Color"
 msgstr "下划线颜色"
 
-#: plugins/gtk+/glade-attributes.c:286
+#: plugins/gtk+/glade-attributes.c:299
 msgctxt "textattr"
 msgid "Strikethrough Color"
 msgstr "删除线颜色"
 
-#: plugins/gtk+/glade-attributes.c:297
+#: plugins/gtk+/glade-attributes.c:310
 msgctxt "textattr"
 msgid "Scale"
 msgstr "比例"
 
-#: plugins/gtk+/glade-attributes.c:303
+#: plugins/gtk+/glade-attributes.c:316
 msgctxt "textattr"
 msgid "Font Description"
 msgstr "字体描述"
 
-#: plugins/gtk+/glade-attributes.c:329 plugins/gtk+/glade-attributes.c:366
-#: plugins/gtk+/glade-attributes.c:374 plugins/gtk+/glade-attributes.c:380
-#: plugins/gtk+/glade-attributes.c:833
+#: plugins/gtk+/glade-attributes.c:349 plugins/gtk+/glade-attributes.c:404
+#: plugins/gtk+/glade-attributes.c:412 plugins/gtk+/glade-attributes.c:418
+#: plugins/gtk+/glade-attributes.c:871
 msgid "<Enter Value>"
 msgstr "<输入值>"
 
-#: plugins/gtk+/glade-attributes.c:365
+#: plugins/gtk+/glade-attributes.c:403
 msgid "Unset"
 msgstr "清空"
 
-#: plugins/gtk+/glade-attributes.c:727
+#: plugins/gtk+/glade-attributes.c:765
 msgid "Select a color"
 msgstr "选择颜色"
 
-#: plugins/gtk+/glade-attributes.c:762
+#: plugins/gtk+/glade-attributes.c:800
 msgid "Select a font"
 msgstr "选择字体"
 
-#: plugins/gtk+/glade-attributes.c:897
+#: plugins/gtk+/glade-attributes.c:937
 msgid "Attribute"
 msgstr "特性"
 
-#: plugins/gtk+/glade-attributes.c:905
+#: plugins/gtk+/glade-attributes.c:945
 msgid "Value"
 msgstr "值"
 
-#: plugins/gtk+/glade-attributes.c:1058
+#: plugins/gtk+/glade-attributes.c:1202
 msgid "Setup Text Attributes"
 msgstr "设置文本特性"
 
-#: plugins/gtk+/glade-attributes.c:1150
+#: plugins/gtk+/glade-attributes.c:1280
 msgid "Edit Attributes"
 msgstr "编辑特性"
 
@@ -5877,6 +5136,14 @@ msgstr "取消"
 msgid "Close"
 msgstr "关闭"
 
+#: plugins/gtk+/gtk+.xml:1638
+msgid "Yes"
+msgstr "有"
+
+#: plugins/gtk+/gtk+.xml:1640
+msgid "No"
+msgstr "没有"
+
 #: plugins/gtk+/gtk+.xml:1642
 msgid "Apply"
 msgstr "应用"
@@ -6529,6 +5796,10 @@ msgstr "LGPL 2.1"
 #: plugins/gtk+/gtk+.xml:3147
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
+
+#: plugins/gtk+/gtk+.xml:3149
+msgid "BSD"
+msgstr "BSD"
 
 #: plugins/gtk+/gtk+.xml:3151
 msgid "MIT X11"
@@ -8131,6 +7402,568 @@ msgstr "根据需要"
 #: plugins/webkit2gtk/webkit2gtk.xml:58
 msgid "WebKit2GTK+ Widgets"
 msgstr "WebKit2GTK+ 控件"
+
+#~ msgid ""
+#~ "We are conducting a user survey\n"
+#~ " would you like to take it now?"
+#~ msgstr ""
+#~ "我们在做用户调查\n"
+#~ " 您现在愿意参加吗？"
+
+#~ msgid "If not, you can always find it in the Help menu."
+#~ msgstr "如果现在不愿意，您总是可以在帮助菜单中找到它。"
+
+#~ msgid "_Do not show this dialog again"
+#~ msgstr "不再显示此对话(_D)"
+
+#~ msgid "Go to Help -> Registration & User Survey and complete our survey!"
+#~ msgstr "请到“帮助 -> 注册和用户调查”完成我们的调查！"
+
+#~ msgctxt ""
+#~ "This is to honor a professor that passed away last year and appears in a "
+#~ "popover when you click on the button that says \"RIP Guido\""
+#~ msgid ""
+#~ "Guido was one of my professors at Rosario\n"
+#~ "National University of Argentina.\n"
+#~ "\n"
+#~ "He introduced me to C, Linux, free software...\n"
+#~ "\n"
+#~ "He always had extra time to explain one more thing\n"
+#~ "and help you figure out things by yourself.\n"
+#~ "\n"
+#~ "Always made a joke in the right moment keeping\n"
+#~ "things interesting and fun.\n"
+#~ "\n"
+#~ "Master of intentionally misconstrued sayings.\n"
+#~ "\n"
+#~ "Always carried a stack of books under his arm.\n"
+#~ "\n"
+#~ "Loved Guinness beer.\n"
+#~ "\n"
+#~ "All he ever wanted was make you think!\n"
+#~ "\n"
+#~ "\"Alégrate! Mañana sera peor.\"\n"
+#~ "\n"
+#~ "\tJuan Pablo"
+#~ msgstr ""
+#~ "Guido 是我在阿根廷国立罗萨里奥大学时\n"
+#~ "的一名教授。\n"
+#~ "\n"
+#~ "他带我认识了 C、Linux、自由软件……\n"
+#~ "\n"
+#~ "他总是有额外的时间来解释问题，然后帮助你\n"
+#~ "独立自主解决问题。\n"
+#~ "\n"
+#~ "总是能在合适的时候开玩笑来活跃气氛。\n"
+#~ "\n"
+#~ "擅长故意说怪话。\n"
+#~ "\n"
+#~ "总是胳膊下面夹着一摞书。\n"
+#~ "\n"
+#~ "喜欢健力士啤酒。\n"
+#~ "\n"
+#~ "他一直以来的目标就是让你思考！\n"
+#~ "\n"
+#~ "\"Alégrate! Mañana sera peor.\"\n"
+#~ "\n"
+#~ "\tJuan Pablo"
+
+#~ msgid "Registration & User Survey"
+#~ msgstr "注册和用户调查"
+
+#~ msgctxt "Button label in the bottom of main window that triggers a popover"
+#~ msgid ""
+#~ "<small>In memory of an extraordinary\n"
+#~ "person and professor\n"
+#~ "R.I.P Guido Macchi</small>"
+#~ msgstr ""
+#~ "<small>纪念一位出众的教授\n"
+#~ "R.I.P Guido Macchi</small>"
+
+#, c-format
+#~ msgid "Connecting to %s"
+#~ msgstr "正在连接 %s"
+
+#, c-format
+#~ msgid "Sending data to %s"
+#~ msgstr "正在向 %s 发送数据"
+
+#, c-format
+#~ msgid "Waiting for %s"
+#~ msgstr "正在等待 %s"
+
+#, c-format
+#~ msgid "Receiving data from %s"
+#~ msgstr "正在从 %s 接收数据"
+
+#~ msgid ""
+#~ "Your subscription to the users list has been received!\n"
+#~ "Check your email!"
+#~ msgstr ""
+#~ "您对用户列表的订阅已收到！\n"
+#~ "检查您的电子邮件！"
+
+#~ msgid ""
+#~ "Thank you for taking the time to complete the survey, we appreciate it!"
+#~ msgstr "感谢参与此调查。我们非常感激！"
+
+#~ msgid "Completed and submitted!"
+#~ msgstr "已经完成并提交！"
+
+#~ msgid "Glade Registration & User Survey"
+#~ msgstr "Glade 注册和用户调查"
+
+#~ msgid "_Submit"
+#~ msgstr "提交(_S)"
+
+#~ msgid "Information will be sent to https://survey.gnome.org"
+#~ msgstr "信息将发给 https://survey.gnome.org"
+
+#~ msgid "User Information"
+#~ msgstr "用户信息"
+
+#~ msgid "<Your name or nickname is required>"
+#~ msgstr "<需要填写您的姓名或昵称>"
+
+#~ msgid "Email:"
+#~ msgstr "邮件："
+
+#~ msgid ""
+#~ "Tokens are processed manually in batches.\n"
+#~ "Please be patient."
+#~ msgstr "令牌是手工成批处理的，请耐心等待。"
+
+#~ msgid "<Required to send back registration token>"
+#~ msgstr "<需要填写，以发回注册令牌>"
+
+#~ msgid "Country:"
+#~ msgstr "国家："
+
+#~ msgid "City:"
+#~ msgstr "城市："
+
+#~ msgid "Company"
+#~ msgstr "公司"
+
+#~ msgid "Organization"
+#~ msgstr "组织"
+
+#~ msgid "Personal"
+#~ msgstr "个人"
+
+#~ msgid "Website"
+#~ msgstr "网站"
+
+#~ msgid "Subscribe me to the mailing list"
+#~ msgstr "订阅邮件列表"
+
+#~ msgid ""
+#~ "Subscribe to Glade Users mailing list.\n"
+#~ "You will be sent email requesting confirmation!"
+#~ msgstr ""
+#~ "订阅 Glade 用户邮件列表。\n"
+#~ "将向您发送确认请求的邮件！"
+
+#~ msgid "Choose your country"
+#~ msgstr "选择您所在的国家"
+
+#~ msgid "We care about privacy!"
+#~ msgstr "我们尊重隐私！"
+
+#~ msgid ""
+#~ "All the data will be stored in a private location and will not be shared "
+#~ "with the public or any third party."
+#~ msgstr "所有数据将私密保存，不会公开或透露给第三方组织。"
+
+#~ msgid "Glade User Survey"
+#~ msgstr "Glade 用户调查"
+
+#~ msgid "How long have you been programming?"
+#~ msgstr "您编程有多长时间了？"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "years"
+#~ msgstr "年"
+
+#~ msgid "months"
+#~ msgstr "个月"
+
+#~ msgid "I am not a programmer"
+#~ msgstr "我不是程序员"
+
+#~ msgid "Which programming languages do you prefer?"
+#~ msgstr "您喜欢用哪种编程语言？"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "C++"
+#~ msgstr "C++"
+
+#~ msgid "C#"
+#~ msgstr "C#"
+
+#~ msgid "Java"
+#~ msgstr "Java"
+
+#~ msgid "Python"
+#~ msgstr "Python"
+
+#~ msgid "JavaScript"
+#~ msgstr "JavaScript"
+
+#~ msgid "Vala"
+#~ msgstr "Vala"
+
+#~ msgid "Perl"
+#~ msgstr "Perl"
+
+#~ msgid "Rust"
+#~ msgstr "Rust"
+
+#~ msgid "When did you start using Glade?"
+#~ msgstr "您从什么时候开始用 Glade 的？"
+
+#~ msgid "ago"
+#~ msgstr "前"
+
+#~ msgid "Which version do you normally use?"
+#~ msgstr "您一般用哪个版本？"
+
+#~ msgid "What is available in my OS"
+#~ msgstr "我操作系统中提供的"
+
+#~ msgid "Latest stable from sources"
+#~ msgstr "源里的最新稳定版本"
+
+#~ msgid "3.8 for GTK+ 2"
+#~ msgstr "3.8 for GTK+ 2"
+
+#~ msgid "Master"
+#~ msgstr "主分支"
+
+#~ msgid "On what operating systems?"
+#~ msgstr "在哪种操作系统上？"
+
+#~ msgid "distribution"
+#~ msgstr "发行版"
+
+#~ msgid "Alpine"
+#~ msgstr "Alpine"
+
+#~ msgid "Arch Linux"
+#~ msgstr "Arch Linux"
+
+#~ msgid "Ataraxia Linux"
+#~ msgstr "Ataraxia Linux"
+
+#~ msgid "CentOS"
+#~ msgstr "CentOS"
+
+#~ msgid "Chrome OS"
+#~ msgstr "Chrome OS"
+
+#~ msgid "Clear Linux"
+#~ msgstr "Clear Linux"
+
+#~ msgid "Debian"
+#~ msgstr "Debian"
+
+#~ msgid "elementary OS"
+#~ msgstr "elementary OS"
+
+#~ msgid "Endless OS"
+#~ msgstr "Endless OS"
+
+#~ msgid "Fedora"
+#~ msgstr "Fedora"
+
+#~ msgid "Gentoo"
+#~ msgstr "Gentoo"
+
+#~ msgid "Kubuntu"
+#~ msgstr "Kubuntu"
+
+#~ msgid "Linux Mint"
+#~ msgstr "Linux Mint"
+
+#~ msgid "Mageia"
+#~ msgstr "Mageia"
+
+#~ msgid "Mandriva"
+#~ msgstr "Mandriva"
+
+#~ msgid "Nix OS"
+#~ msgstr "Nix OS"
+
+#~ msgid "openSUSE"
+#~ msgstr "openSUSE"
+
+#~ msgid "Oracle"
+#~ msgstr "Oracle"
+
+#~ msgid "Pop!_OS"
+#~ msgstr "Pop!_OS"
+
+#~ msgid "PureOS"
+#~ msgstr "PureOS"
+
+#~ msgid "Raspbian"
+#~ msgstr "Raspbian"
+
+#~ msgid "Red Hat"
+#~ msgstr "Red Hat"
+
+#~ msgid "Solus"
+#~ msgstr "Solus"
+
+#~ msgid "SulinOS"
+#~ msgstr "SulinOS"
+
+#~ msgid "Turbolinux"
+#~ msgstr "Turbolinux"
+
+#~ msgid "Ubuntu"
+#~ msgstr "Ubuntu"
+
+#~ msgid "Void Linux"
+#~ msgstr "Void Linux"
+
+#~ msgid "Xandros"
+#~ msgstr "Xandros"
+
+#~ msgid "variant"
+#~ msgstr "变体"
+
+#~ msgid "FreeBSD"
+#~ msgstr "FreeBSD"
+
+#~ msgid "OpenBSD"
+#~ msgstr "OpenBSD"
+
+#~ msgid "NetBSD"
+#~ msgstr "NetBSD"
+
+#~ msgid "Oracle Solaris"
+#~ msgstr "Oracle Solaris"
+
+#~ msgid "OpenSolaris"
+#~ msgstr "OpenSolaris"
+
+#~ msgid "illumos"
+#~ msgstr "illumos"
+
+#~ msgid "version"
+#~ msgstr "版本"
+
+#~ msgid "10"
+#~ msgstr "10"
+
+#~ msgid "8"
+#~ msgstr "8"
+
+#~ msgid "7"
+#~ msgstr "7"
+
+#~ msgid "Vista"
+#~ msgstr "Vista"
+
+#~ msgid "2012"
+#~ msgstr "2012"
+
+#~ msgid "2008"
+#~ msgstr "2008"
+
+#~ msgid "2003"
+#~ msgstr "2003"
+
+#~ msgid "XP"
+#~ msgstr "XP"
+
+#~ msgid "2000"
+#~ msgstr "2000"
+
+#~ msgid "Catalina"
+#~ msgstr "Catalina"
+
+#~ msgid "Mojave"
+#~ msgstr "Mojave"
+
+#~ msgid "High Sierra"
+#~ msgstr "High Sierra"
+
+#~ msgid "Sierra"
+#~ msgstr "Sierra"
+
+#~ msgid "El Capitan"
+#~ msgstr "El Capitan"
+
+#~ msgid "Yosemite"
+#~ msgstr "Yosemite"
+
+#~ msgid "Mavericks"
+#~ msgstr "Mavericks"
+
+#~ msgid "Mountain Lion"
+#~ msgstr "Mountain Lion"
+
+#~ msgid "Lion"
+#~ msgstr "Lion"
+
+#~ msgid "Snow Leopard"
+#~ msgstr "Snow Leopard"
+
+#~ msgid "Leopard"
+#~ msgstr "Leopard"
+
+#~ msgid "Tiger"
+#~ msgstr "Tiger"
+
+#~ msgid "GNU/Linux"
+#~ msgstr "GNU/Linux"
+
+#~ msgid "Windows"
+#~ msgstr "Windows"
+
+#~ msgid "Mac OS X"
+#~ msgstr "Mac OS X"
+
+#~ msgid "Solaris"
+#~ msgstr "Solaris"
+
+#~ msgid "How often do you use it?"
+#~ msgstr "您使用它的频率是？"
+
+#~ msgid "Every day"
+#~ msgstr "每天"
+
+#~ msgid "Few days a week"
+#~ msgstr "一周用几天"
+
+#~ msgid "Every week"
+#~ msgstr "每周"
+
+#~ msgid "A few times a month"
+#~ msgstr "一个月几次"
+
+#~ msgid "Once a month"
+#~ msgstr "一个月一次"
+
+#~ msgid "A few times a year"
+#~ msgstr "一年几次"
+
+#~ msgid "What level of Glade user would you say you are?"
+#~ msgstr "您觉得自己的 Glade 水平是？"
+
+#~ msgid "Beginner"
+#~ msgstr "初学者"
+
+#~ msgid "Intermediate"
+#~ msgstr "中等水平"
+
+#~ msgid "Advanced"
+#~ msgstr "高级水平"
+
+#~ msgid ""
+#~ "Under what kind of license(s) do you release the software you used Glade "
+#~ "to create?"
+#~ msgstr "您用 Glade 创建的软件以哪种(哪些)许可证发布？"
+
+#~ msgid "Free software"
+#~ msgstr "自由软件"
+
+#~ msgid "Open source software"
+#~ msgstr "开源软件"
+
+#~ msgid "Commercial/Closed software"
+#~ msgstr "商业/闭源软件"
+
+#~ msgid "None - distributed internally"
+#~ msgstr "无 - 内部使用"
+
+#~ msgid ""
+#~ "In what field(s) is the software you used Glade to create generally used?"
+#~ msgstr "您用 Glade 创建的软件用在什么领域？"
+
+#~ msgid "Academic"
+#~ msgstr "学术"
+
+#~ msgid "Embedded applications"
+#~ msgstr "嵌入式应用程序"
+
+#~ msgid "Accounting"
+#~ msgstr "金融"
+
+#~ msgid "Desktop applications"
+#~ msgstr "桌面应用程序"
+
+#~ msgid "Educational"
+#~ msgstr "教育"
+
+#~ msgid "Medical"
+#~ msgstr "媒体"
+
+#~ msgid "Industrial applications"
+#~ msgstr "行业软件"
+
+#~ msgid "Scientific"
+#~ msgstr "科学"
+
+#~ msgid "What aspect of the software needs the most improvement?"
+#~ msgstr "软件的哪些方面最需要改进？"
+
+#~ msgid "In your opinion what is the biggest problem with Glade?"
+#~ msgstr "您认为，Glade 最大的问题是什么？"
+
+#~ msgid "Lack of documentation"
+#~ msgstr "缺少文档"
+
+#~ msgid "Lack of professional support"
+#~ msgstr "缺少专业支持"
+
+#~ msgid "Lack of professional training"
+#~ msgstr "缺少专业训练"
+
+#~ msgid "Lack of publicity/exposure"
+#~ msgstr "缺少宣传，知者甚少"
+
+#~ msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
+#~ msgstr "其他操作系统缺少官方发布的二进制版本(Windows、OSX)"
+
+#~ msgid "Have you ever encountered a bug?"
+#~ msgstr "您有没有遇到过软件故障？"
+
+#~ msgid "If so, did you file a bug report?"
+#~ msgstr "如果有，您提交 BUG 报告了吗？"
+
+#~ msgid "Have you ever thought about contributing?"
+#~ msgstr "您有没有想过帮助改进 Glade？"
+
+#~ msgid "Why not?"
+#~ msgstr "为什么不呢？"
+
+#~ msgid "Comments:"
+#~ msgstr "评论："
+
+#~ msgid "Privacy Note:"
+#~ msgstr "隐私说明："
+
+#~ msgid ""
+#~ "The sole purpose of this survey is to better know our user base.\n"
+#~ "Your email address will be used to uniquely identify you as a Glade user "
+#~ "and send you back a modification token in case you want to modify "
+#~ "something or add extra comments.\n"
+#~ "Only statistics compiled from the whole dataset will be shared publicly.\n"
+#~ "Individual data will be stored in a private database and it will not be "
+#~ "shared with the public or any other third party."
+#~ msgstr ""
+#~ "这项调查纯粹是为了更好地了解我们的用户群。\n"
+#~ "您的邮件地址将用于惟一地标识您的 Glade 用户身份，并借以向您发送一个修改信"
+#~ "息，方便您进行修改或添加评论。\n"
+#~ "只有从整个数据库中得到的统计结果会公开；\n"
+#~ "个人数据将保存在加密的数据库中，不会公开或透露给第三方组织。"
 
 #~ msgid "Only one widget can be pasted at a time to this container"
 #~ msgstr "在该容器中每次只能粘贴一个组件"
