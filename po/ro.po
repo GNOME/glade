@@ -10,22 +10,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glade/issues\n"
-"POT-Creation-Date: 2020-09-25 19:35+0000\n"
-"PO-Revision-Date: 2020-12-12 20:18+0200\n"
-"Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
+"POT-Creation-Date: 2023-04-09 05:51+0000\n"
+"PO-Revision-Date: 2023-10-21 16:28+0300\n"
+"Last-Translator: Florentina Mușat <florentina [dot] musat [dot] 28 [at] "
+"gmail [dot] com>\n"
 "Language-Team: Gnome Romanian Translation Team\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && n"
-"%100<=19) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
+"n%100<=19) ? 1 : 2);\n"
+"X-Generator: Poedit 3.4\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: data/org.gnome.Glade.desktop.in.in:3 data/org.gnome.Glade.appdata.xml.in:6
-#: src/main.c:44 src/glade.glade:261
+#: src/main.c:44 src/glade.glade:202
 msgid "Glade"
 msgstr "Glade"
 
@@ -79,245 +80,245 @@ msgstr ""
 "limbaje de programare, inclusiv C, C ++, C #, Vala, Java, Perl, Python și "
 "altele."
 
-#: src/glade-window.c:51
+#: src/glade-window.c:50
 msgid "[Read Only]"
 msgstr "[Doar citire]"
 
-#: src/glade-window.c:182
+#: src/glade-window.c:180
 msgid "User Interface Designer"
 msgstr "Designer de interfețe pentru utilizator"
 
-#: src/glade-window.c:429 src/glade-window.c:436
+#: src/glade-window.c:427 src/glade-window.c:434
 msgid "the last action"
 msgstr "ultima acțiune"
 
-#: src/glade-window.c:430
+#: src/glade-window.c:428
 #, c-format
 msgid "Undo: %s"
 msgstr "Anulează: %s"
 
-#: src/glade-window.c:437
+#: src/glade-window.c:435
 #, c-format
 msgid "Redo: %s"
 msgstr "Refă: %s"
 
-#: src/glade-window.c:462
+#: src/glade-window.c:460
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Se autosalvează „%s”"
 
-#: src/glade-window.c:467
+#: src/glade-window.c:465
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Eroare la autosalvarea „%s”"
 
-#: src/glade-window.c:689
+#: src/glade-window.c:687
 msgid "Open…"
 msgstr "Deschide…"
 
-#: src/glade-window.c:723
+#: src/glade-window.c:721
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Proiectul %s încă se încarcă."
 
-#: src/glade-window.c:742
+#: src/glade-window.c:740
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
 "Copierea de siguranță a fișierului existent a eșuat, continuați să salvați?"
 
-#: src/glade-window.c:757
+#: src/glade-window.c:755
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Eșec la salvarea %s: %s"
 
-#: src/glade-window.c:796
+#: src/glade-window.c:794
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Fișierul „%s” a fost modificat de la ultima citire"
 
-#: src/glade-window.c:800
+#: src/glade-window.c:798
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Dacă îl salvați, toate modificările externe pot fi pierdute. Salvați oricum?"
 
-#: src/glade-window.c:805
+#: src/glade-window.c:803
 msgid "_Save Anyway"
 msgstr "_Salvează oricum"
 
-#: src/glade-window.c:813
+#: src/glade-window.c:811
 msgid "_Don't Save"
 msgstr "_Nu salva"
 
-#: src/glade-window.c:846
+#: src/glade-window.c:844
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Proiectul „%s” salvat"
 
-#: src/glade-window.c:877
+#: src/glade-window.c:875
 msgid "Save As…"
 msgstr "Salvează ca…"
 
-#: src/glade-window.c:941
+#: src/glade-window.c:939
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Nu s-a putut salva fișierul %s"
 
-#: src/glade-window.c:945
+#: src/glade-window.c:943
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Nu aveți permisiunile necesare pentru a salva fișierul."
 
-#: src/glade-window.c:967
+#: src/glade-window.c:965
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "Nu s-a putut salva fișierul %s. Alt proiect cu acea cale este deschis."
 
-#: src/glade-window.c:995
+#: src/glade-window.c:993
 msgid "No open projects to save"
 msgstr "Nu există proiecte deschise de salvat"
 
-#: src/glade-window.c:1028
+#: src/glade-window.c:1026
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Salvați modificările proiectului „%s” înainte de închidere?"
 
-#: src/glade-window.c:1036
+#: src/glade-window.c:1034
 msgid "Your changes will be lost if you don't save them."
 msgstr "Modificările vor fi pierdute dacă nu le salvați."
 
-#: src/glade-window.c:1040
+#: src/glade-window.c:1038
 msgid "Close _without Saving"
 msgstr "Închide _fără a salva"
 
-#: src/glade-window.c:1041 src/glade-window.c:1724 src/glade-preferences.c:237
+#: src/glade-window.c:1039 src/glade-window.c:1721 src/glade-preferences.c:237
 #: gladeui/glade-editor.c:793 gladeui/glade-editor.c:1152
-#: gladeui/glade-editor-property.c:1776 gladeui/glade-editor-property.c:2084
-#: gladeui/glade-editor-property.c:2281 gladeui/glade-editor-property.c:3217
-#: gladeui/glade-editor-property.c:3325 gladeui/glade-editor-property.c:3336
-#: gladeui/glade-editor-property.c:3647 gladeui/glade-utils.c:483
-#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1062
+#: gladeui/glade-editor-property.c:1774 gladeui/glade-editor-property.c:2082
+#: gladeui/glade-editor-property.c:2279 gladeui/glade-editor-property.c:3215
+#: gladeui/glade-editor-property.c:3323 gladeui/glade-editor-property.c:3334
+#: gladeui/glade-editor-property.c:3645 gladeui/glade-utils.c:494
+#: plugins/gtk+/glade-accels.c:523 plugins/gtk+/glade-attributes.c:1207
 msgid "_Cancel"
 msgstr "_Anulează"
 
-#: src/glade-window.c:1042 src/glade.glade:685 gladeui/glade-utils.c:486
+#: src/glade-window.c:1040 src/glade.glade:598 gladeui/glade-utils.c:497
 msgid "_Save"
 msgstr "_Salvează"
 
-#: src/glade-window.c:1073
+#: src/glade-window.c:1071
 msgid "Save…"
 msgstr "Salvează…"
 
-#: src/glade-window.c:1631
+#: src/glade-window.c:1628
 msgid "Could not create a new project."
 msgstr "Nu s-a putut crea un proiect nou."
 
-#: src/glade-window.c:1692
+#: src/glade-window.c:1689
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Proiectul are %s modificări nesalvate"
 
-#: src/glade-window.c:1697
+#: src/glade-window.c:1694
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Dacă îl reîncărcați, toate modificările nesalvate vor fi pierdute. "
 "Reîncărcați oricum?"
 
-#: src/glade-window.c:1707
+#: src/glade-window.c:1704
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Fișierul proiectului %s a fost modificat extern"
 
-#: src/glade-window.c:1712
+#: src/glade-window.c:1709
 msgid "Do you want to reload the project?"
 msgstr "Doriți să reîncărcați proiectul?"
 
-#: src/glade-window.c:1718
+#: src/glade-window.c:1715
 msgid "_Reload"
 msgstr "_Reîncarcă"
 
-#: src/glade-window.c:2269
+#: src/glade-window.c:2263
 msgid "Hello, I will show you what's new in Glade"
 msgstr "Salut, îți voi arăta ce este nou în Glade"
 
-#: src/glade-window.c:2270
+#: src/glade-window.c:2264
 msgid "The menubar and toolbar were merged in the headerbar"
 msgstr "Bara de meniu și bara de unelte au fost fuzionate în bara de sus"
 
-#: src/glade-window.c:2272
+#: src/glade-window.c:2266
 msgid "You can open a project"
 msgstr "Puteți deschide un proiect"
 
-#: src/glade-window.c:2273
+#: src/glade-window.c:2267
 msgid "find recently used"
 msgstr "găsește utilizările recente"
 
-#: src/glade-window.c:2274
+#: src/glade-window.c:2268
 msgid "or create a new one"
 msgstr "sau crea unul nou"
 
-#: src/glade-window.c:2278
+#: src/glade-window.c:2272
 msgid "Undo"
 msgstr "Anulează"
 
-#: src/glade-window.c:2279
+#: src/glade-window.c:2273
 msgid "Redo"
 msgstr "Refă"
 
-#: src/glade-window.c:2280
+#: src/glade-window.c:2274
 msgid "Project switcher"
 msgstr "Comutator de proiecte"
 
-#: src/glade-window.c:2282
+#: src/glade-window.c:2276
 msgid "and Save button are directly accessible in the headerbar"
 msgstr "și butonul „Salvează” sunt accesibile direct din bara de sus"
 
-#: src/glade-window.c:2283
+#: src/glade-window.c:2277
 msgid "just like Save As"
 msgstr "la fel ca „Salvează ca”"
 
-#: src/glade-window.c:2284
+#: src/glade-window.c:2278
 msgid "project properties"
 msgstr "proprietățile proiectului"
 
-#: src/glade-window.c:2285
+#: src/glade-window.c:2279
 msgid "and less commonly used actions"
 msgstr "și acțiuni utilizate mai puțin frecvent"
 
-#: src/glade-window.c:2287
+#: src/glade-window.c:2281
 msgid "The object inspector took the palette's place"
 msgstr "Inspectorul de obiecte a înlocuit paleta"
 
-#: src/glade-window.c:2288
+#: src/glade-window.c:2282
 msgid "To free up space for the property editor"
 msgstr "Pentru a elibera spațiu pentru editorul de proprietăți"
 
-#: src/glade-window.c:2290
+#: src/glade-window.c:2284
 msgid "The palette was replaced with a new object chooser"
 msgstr "Paleta a fost înlocuită cu noul selector de obiecte"
 
-#: src/glade-window.c:2291
+#: src/glade-window.c:2285
 msgid "Where you can search all supported classes"
 msgstr "Unde puteți căuta toate clasele suportate"
 
-#: src/glade-window.c:2292
+#: src/glade-window.c:2286
 msgid "investigate GTK+ object groups"
 msgstr "investighează grupuri de obiecte GTK+"
 
-#: src/glade-window.c:2293
+#: src/glade-window.c:2287
 msgid "and find classes introduced by other libraries"
 msgstr "și găsi clase introduse de alte librării"
 
-#: src/glade-window.c:2295
+#: src/glade-window.c:2289
 msgid ""
 "OK, now that we are done with the overview, let's start with the new workflow"
 msgstr ""
 "OK, acum că am terminat cu vederea de ansamblu, hai să începem cu noul flux "
 "de lucru"
 
-#: src/glade-window.c:2297
+#: src/glade-window.c:2291
 msgid "First of all, create a new project"
 msgstr "Pentru început, creeați un nou proiect"
 
-#: src/glade-window.c:2298
+#: src/glade-window.c:2292
 msgid ""
 "OK, now add a GtkWindow using the new widget chooser or by double clicking "
 "on the workspace"
@@ -325,57 +326,32 @@ msgstr ""
 "OK, acum adăugați a GtkWindow folosind noul selector de widgeturi sau "
 "apăsând dublu clic în spațiul de lucru"
 
-#: src/glade-window.c:2299
+#: src/glade-window.c:2293
 msgid "Excellent!"
 msgstr "Excelent!"
 
-#: src/glade-window.c:2300
+#: src/glade-window.c:2294
 msgid ""
 "BTW, did you know you can double click on any placeholder to create widgets?"
 msgstr ""
 "Apropo, știați că puteți apăsa dublu clic pe orice substituent pentru a crea "
 "widgeturi?"
 
-#: src/glade-window.c:2301
+#: src/glade-window.c:2295
 msgid "Try adding a grid"
 msgstr "Încercați să adăugați o grilă"
 
-#: src/glade-window.c:2302
+#: src/glade-window.c:2296
 msgid "and a button"
 msgstr "și un buton"
 
-#: src/glade-window.c:2304
+#: src/glade-window.c:2298
 msgid "Quite easy! Isn't it?"
 msgstr "Foarte ușor! Nu-i așa?"
 
-#: src/glade-window.c:2305
+#: src/glade-window.c:2299
 msgid "Enjoy!"
 msgstr "Distrați-vă!"
-
-#. translators: Primary message of a dialog used to notify the user about the survey
-#: src/glade-window.c:2519
-msgid ""
-"We are conducting a user survey\n"
-" would you like to take it now?"
-msgstr ""
-"Facem un sondaj de utilizator\n"
-" v-ar plăcea să participați acum?"
-
-#. translators: Secondary text of a dialog used to notify the user about the survey
-#: src/glade-window.c:2523
-msgid "If not, you can always find it in the Help menu."
-msgstr "Dacă nu, îl puteți găsi întotdeauna în meniul Ajutor."
-
-#: src/glade-window.c:2525
-msgid "_Do not show this dialog again"
-msgstr "Nu mai arăta acest _dialog din nou"
-
-#. translators: Text to show in the statusbar if the user did not completed the survey and choose not to show the notification dialog again
-#: src/glade-window.c:2546
-msgid "Go to Help -> Registration & User Survey and complete our survey!"
-msgstr ""
-"Navigați la Ajutor → Înregistrare și sondaj utilizatori și completați "
-"sondajul nostru!"
 
 #: src/main.c:53
 msgid "Output version information and exit"
@@ -389,167 +365,104 @@ msgstr "Dezactivează integrarea cu Devhelp"
 msgid "be verbose"
 msgstr "fii detaliat"
 
-#: src/main.c:147
+#: src/main.c:145
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Nu s-a putut deschide „%s”, fișierul nu există.\n"
 
-#: src/main.c:175
+#: src/main.c:173
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "suportul pentru gmodule nu a fost găsit. suportul pentru gmodule este "
 "necesar pentru ca glade să funcționeze"
 
-#: src/main.c:193
+#: src/main.c:191
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
 "Creeați sau editați design-uri de interfețe pentru utilizatori pentru "
 "aplicații GTK sau GNOME."
 
-#. The last sentence in quotes is in spanish and does not need to be translated.
-#: src/glade.glade:59
-msgctxt ""
-"This is to honor a professor that passed away last year and appears in a "
-"popover when you click on the button that says \"RIP Guido\""
-msgid ""
-"Guido was one of my professors at Rosario\n"
-"National University of Argentina.\n"
-"\n"
-"He introduced me to C, Linux, free software...\n"
-"\n"
-"He always had extra time to explain one more thing\n"
-"and help you figure out things by yourself.\n"
-"\n"
-"Always made a joke in the right moment keeping\n"
-"things interesting and fun.\n"
-"\n"
-"Master of intentionally misconstrued sayings.\n"
-"\n"
-"Always carried a stack of books under his arm.\n"
-"\n"
-"Loved Guinness beer.\n"
-"\n"
-"All he ever wanted was make you think!\n"
-"\n"
-"\"Alégrate! Mañana sera peor.\"\n"
-"\n"
-"\tJuan Pablo"
-msgstr ""
-"Guido a fost unul dintre profesorii mei la Universitatea\n"
-"Națională Rosario din Argentina.\n"
-"\n"
-"Acesta mi-a făcut cunoștință cu C, Linux, programe libere...\n"
-"\n"
-"A avut întotdeauna timp suplimentar pentru a explica încă un lucru\n"
-"și pentru a te ajuta să îți dai seama de lucruri singur.\n"
-"\n"
-"Întotdeauna a făcut o glumă la momentul potrivit păstrând\n"
-"lucrurile interesante și distractive.\n"
-"\n"
-"Stăpân al spuselor intenționat greșit.\n"
-"\n"
-"A purtat întotdeauna un teanc de cărți sub braț.\n"
-"\n"
-"A iubit berea Guinness.\n"
-"\n"
-"Tot ce a dorit vreodată a fost să te facă să gândești!\n"
-"\n"
-"\"Alégrate! Mañana sera peor.\"\n"
-"\n"
-"\tJuan Pablo"
-
-#: src/glade.glade:106
+#: src/glade.glade:47
 msgid "Close Project"
 msgstr "Închide proiectul"
 
-#: src/glade.glade:131
-msgid "Registration & User Survey"
-msgstr "Înregistrare și sondaj utilizatori"
-
-#: src/glade.glade:145
+#: src/glade.glade:72
 msgid "_Developer Reference"
 msgstr "Referințe pentru _dezvoltatori"
 
-#: src/glade.glade:159
+#: src/glade.glade:86
 msgid "Interactive Intro"
 msgstr "Introducere interactivă"
 
-#: src/glade.glade:173
+#: src/glade.glade:111
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: src/glade.glade:198
+#: src/glade.glade:125
+msgid "User Manual"
+msgstr "Manualul utilizatorului"
+
+#: src/glade.glade:139
 msgid "About Glade"
 msgstr "Despre Glade"
 
-#: src/glade.glade:297
-msgctxt "Button label in the bottom of main window that triggers a popover"
-msgid ""
-"<small>In memory of an extraordinary\n"
-"person and professor\n"
-"R.I.P Guido Macchi</small>"
-msgstr ""
-"<small>În memoria unei persoane\n"
-"și profesor extraordinar\n"
-"R.I.P Guido Macchi</small>"
-
-#: src/glade.glade:592 src/glade-preferences.c:239
-#: gladeui/glade-editor-property.c:2282 gladeui/glade-utils.c:486
+#: src/glade.glade:505 src/glade-preferences.c:239
+#: gladeui/glade-editor-property.c:2280 gladeui/glade-utils.c:497
 msgid "_Open"
 msgstr "_Deschide"
 
-#: src/glade.glade:597
+#: src/glade.glade:510
 msgid "Open a project"
 msgstr "Deschide un proiect"
 
-#: src/glade.glade:642
+#: src/glade.glade:555
 msgid "Create a new project"
 msgstr "Creează un proiect nou"
 
-#: src/glade.glade:662
+#: src/glade.glade:575
 msgid "Edit project properties"
 msgstr "Editează proprietățile proiectului"
 
-#: src/glade.glade:690
+#: src/glade.glade:603
 msgid "Save the current project"
 msgstr "Salvează proiectul curent"
 
-#: src/glade.glade:706
+#: src/glade.glade:619
 msgid "Save the current project with a different name"
 msgstr "Salvează proiectul curent cu un alt nume"
 
-#: src/glade.glade:735
+#: src/glade.glade:648
 msgid "Start/resume interactive UI introduction"
 msgstr "Pornește/Reia introducerea UI interactivă"
 
-#: src/glade.glade:834
+#: src/glade.glade:747
 msgid ""
-"© 2018-2020 Juan Pablo Ugarte, et al.\n"
+"© 2018-2022 Juan Pablo Ugarte, et al.\n"
 "© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
 "© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "© 2001-2006 Ximian, Inc."
 msgstr ""
-"© 2018-2020 Juan Pablo Ugarte, et al.\n"
-"© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte, et al.\n"
-"© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+"© 2018-2022 Juan Pablo Ugarte și alții\n"
+"© 2004-2018 Tristan Van Berkom, Juan Pablo Ugarte și alții\n"
+"© 2001-2006 Joaquin Cuenca Abela, Paolo Borelli și alții\n"
 "© 2001-2006 Ximian, Inc."
 
-#: src/glade.glade:838
+#: src/glade.glade:751
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Un designer de interfețe pentru utilizatori pentru GTK+ și GNOME."
 
-#: src/glade.glade:840
+#: src/glade.glade:753
 msgid "Visit Glade web site"
 msgstr "Vizitați situl web Glade"
 
-#: src/glade.glade:852
+#: src/glade.glade:765
 msgid "translator-credits"
 msgstr ""
 "Lucian Adrian Grijincu <lucian.grijincu@gmail.com>,\n"
 "Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2018-2019\n"
 "Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>, "
-"2019-2020"
+"2019-2020, 2023"
 
 #: src/glade-preferences.c:234
 msgid "Select a catalog search path"
@@ -659,685 +572,6 @@ msgstr "Elimină calea de căutare selectată"
 #: src/glade-preferences.glade:387
 msgid "Extra Catalog & Templates paths"
 msgstr "Căi extra de catalog și șabloane"
-
-#: src/glade-registration.c:282
-#, c-format
-msgid "Connecting to %s"
-msgstr "Se conectează la %s"
-
-#: src/glade-registration.c:285
-#, c-format
-msgid "Sending data to %s"
-msgstr "Se trimit date la %s"
-
-#: src/glade-registration.c:288
-#, c-format
-msgid "Waiting for %s"
-msgstr "Se așteaptă după %s"
-
-#: src/glade-registration.c:291
-#, c-format
-msgid "Receiving data from %s"
-msgstr "Se primesc date de la %s"
-
-#: src/glade-registration.c:350
-msgid ""
-"Your subscription to the users list has been received!\n"
-"Check your email!"
-msgstr ""
-"Abonamentul la lista de utilizatori a fost primit!\n"
-"Verificați-vă emailul!"
-
-#: src/glade-registration.c:510
-msgid "Thank you for taking the time to complete the survey, we appreciate it!"
-msgstr "Vă mulțumim că va-ți făcut timp pentru a finaliza sondajul, apreciem!"
-
-#: src/glade-registration.c:771
-msgid "Completed and submitted!"
-msgstr "Completat și trimis!"
-
-#: src/glade-registration.glade:44
-msgid "Glade Registration & User Survey"
-msgstr "Înregistrare și sondaj utilizatori Glade"
-
-#: src/glade-registration.glade:63 gladeui/glade-editor-property.c:1380
-msgid "_Close"
-msgstr "În_chide"
-
-#: src/glade-registration.glade:77
-msgid "_Submit"
-msgstr "_Trimite"
-
-#: src/glade-registration.glade:82
-msgid "Information will be sent to https://survey.gnome.org"
-msgstr "Informațiile vor fi trimise la https://survey.gnome.org"
-
-#: src/glade-registration.glade:183
-msgid "User Information"
-msgstr "Informații utilizator"
-
-#: src/glade-registration.glade:217
-msgid "<Your name or nickname is required>"
-msgstr "<Numele sau pseudonimul sunt obligatorii>"
-
-#: src/glade-registration.glade:230 gladeui/glade-project-properties.ui:521
-#: plugins/gtk+/glade-about-dialog-editor.ui:69
-msgid "Name:"
-msgstr "Nume:"
-
-#: src/glade-registration.glade:242
-msgid "Email:"
-msgstr "Email:"
-
-#: src/glade-registration.glade:254
-msgid ""
-"Tokens are processed manually in batches.\n"
-"Please be patient."
-msgstr ""
-"Jetoanele sunt procesate manual în loturi.\n"
-"Aveți răbdare."
-
-#: src/glade-registration.glade:256
-msgid "<Required to send back registration token>"
-msgstr "<Necesită trimiterea jetonului de înregistrare>"
-
-#: src/glade-registration.glade:269
-msgid "Country:"
-msgstr "Țară:"
-
-#: src/glade-registration.glade:281
-msgid "City:"
-msgstr "Oraș:"
-
-#: src/glade-registration.glade:295
-msgid "Company"
-msgstr "Companie"
-
-#: src/glade-registration.glade:296
-msgid "Organization"
-msgstr "Organizație"
-
-#: src/glade-registration.glade:297
-msgid "Personal"
-msgstr "Personal"
-
-#: src/glade-registration.glade:309
-msgid "Website"
-msgstr "Sit web"
-
-#: src/glade-registration.glade:353
-msgid "Subscribe me to the mailing list"
-msgstr "Abonează-mă la lista de discuții"
-
-#: src/glade-registration.glade:357
-msgid ""
-"Subscribe to Glade Users mailing list.\n"
-"You will be sent email requesting confirmation!"
-msgstr ""
-"Abonați-vă la lista de discuții pentru utilizatorii Glade.\n"
-"Veți primi un email care solicită confirmarea!"
-
-#: src/glade-registration.glade:373
-msgid "Choose your country"
-msgstr "Alegeți țara"
-
-#: src/glade-registration.glade:653
-msgid "We care about privacy!"
-msgstr "Ne pasă de intimitate!"
-
-#: src/glade-registration.glade:671
-msgid ""
-"All the data will be stored in a private location and will not be shared "
-"with the public or any third party."
-msgstr ""
-"Toate datele vor fi stocate într-o locație privată și nu vor fi partajate cu "
-"publicul sau cu niciun terț."
-
-#: src/glade-registration.glade:705
-msgid "Glade User Survey"
-msgstr "Sondaj de utilizatori Glade"
-
-#: src/glade-registration.glade:735
-msgid "How long have you been programming?"
-msgstr "De cât timp programați?"
-
-#: src/glade-registration.glade:753 src/glade-registration.glade:1022
-msgid "0"
-msgstr "0"
-
-#: src/glade-registration.glade:769 src/glade-registration.glade:1038
-msgid "years"
-msgstr "ani"
-
-#: src/glade-registration.glade:770 src/glade-registration.glade:1039
-msgid "months"
-msgstr "luni"
-
-#: src/glade-registration.glade:781
-msgid "I am not a programmer"
-msgstr "Nu sunt programator"
-
-#: src/glade-registration.glade:817
-msgid "Which programming languages do you prefer?"
-msgstr "Ce limbaje de programare preferați?"
-
-#: src/glade-registration.glade:833
-msgid "C"
-msgstr "C"
-
-#: src/glade-registration.glade:848
-msgid "C++"
-msgstr "C++"
-
-#: src/glade-registration.glade:863
-msgid "C#"
-msgstr "C#"
-
-#: src/glade-registration.glade:878
-msgid "Java"
-msgstr "Java"
-
-#: src/glade-registration.glade:893
-msgid "Python"
-msgstr "Python"
-
-#: src/glade-registration.glade:908
-msgid "JavaScript"
-msgstr "JavaScript"
-
-#: src/glade-registration.glade:923
-msgid "Vala"
-msgstr "Vala"
-
-#: src/glade-registration.glade:938
-msgid "Perl"
-msgstr "Perl"
-
-#: src/glade-registration.glade:953
-msgid "Rust"
-msgstr "Rust"
-
-#: src/glade-registration.glade:968 src/glade-registration.glade:1173
-#: src/glade-registration.glade:1278 src/glade-registration.glade:1295
-#: src/glade-registration.glade:1312 src/glade-registration.glade:1344
-#: src/glade-registration.glade:1370 src/glade-registration.glade:1465
-#: src/glade-registration.glade:1956 src/glade-registration.glade:2158
-#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
-#: plugins/gtk+/gtk+.xml:4624
-msgid "Other"
-msgstr "Altul"
-
-#: src/glade-registration.glade:1004
-msgid "When did you start using Glade?"
-msgstr "Când ați început să folosiți Glade?"
-
-#: src/glade-registration.glade:1052
-msgid "ago"
-msgstr "în urmă"
-
-#: src/glade-registration.glade:1084
-msgid "Which version do you normally use?"
-msgstr "Ce versiune folosiți în mod normal?"
-
-#: src/glade-registration.glade:1101
-msgid "What is available in my OS"
-msgstr "Ce este disponibil în sistemul meu de operare"
-
-#: src/glade-registration.glade:1118
-msgid "Latest stable from sources"
-msgstr "Ultima versiune stabilă din surse"
-
-#: src/glade-registration.glade:1135
-msgid "3.8 for GTK+ 2"
-msgstr "3.8 pentru GTK+ 2"
-
-#: src/glade-registration.glade:1152
-msgid "Master"
-msgstr "Master"
-
-#: src/glade-registration.glade:1229
-msgid "On what operating systems?"
-msgstr "Pe ce sisteme de operare?"
-
-#: src/glade-registration.glade:1249
-msgid "distribution"
-msgstr "distribuție"
-
-#: src/glade-registration.glade:1250
-msgid "Alpine"
-msgstr "Alpine"
-
-#: src/glade-registration.glade:1251
-msgid "Arch Linux"
-msgstr "Arch Linux"
-
-#: src/glade-registration.glade:1252
-msgid "Ataraxia Linux"
-msgstr "Ataraxia Linux"
-
-#: src/glade-registration.glade:1253
-msgid "CentOS"
-msgstr "CentOS"
-
-#: src/glade-registration.glade:1254
-msgid "Chrome OS"
-msgstr "Chrome OS"
-
-#: src/glade-registration.glade:1255
-msgid "Clear Linux"
-msgstr "Clear Linux"
-
-#: src/glade-registration.glade:1256
-msgid "Debian"
-msgstr "Debian"
-
-#: src/glade-registration.glade:1257
-msgid "elementary OS"
-msgstr "elementary OS"
-
-#: src/glade-registration.glade:1258
-msgid "Endless OS"
-msgstr "Endless OS"
-
-#: src/glade-registration.glade:1259
-msgid "Fedora"
-msgstr "Fedora"
-
-#: src/glade-registration.glade:1260
-msgid "Gentoo"
-msgstr "Gentoo"
-
-#: src/glade-registration.glade:1261
-msgid "Kubuntu"
-msgstr "Kubuntu"
-
-#: src/glade-registration.glade:1262
-msgid "Linux Mint"
-msgstr "Linux Mint"
-
-#: src/glade-registration.glade:1263
-msgid "Mageia"
-msgstr "Mageia"
-
-#: src/glade-registration.glade:1264
-msgid "Mandriva"
-msgstr "Mandriva"
-
-#: src/glade-registration.glade:1265
-msgid "Nix OS"
-msgstr "Nix OS"
-
-#: src/glade-registration.glade:1266
-msgid "openSUSE"
-msgstr "openSUSE"
-
-#: src/glade-registration.glade:1267
-msgid "Oracle"
-msgstr "Oracle"
-
-#: src/glade-registration.glade:1268
-msgid "Pop!_OS"
-msgstr "Pop!_OS"
-
-#: src/glade-registration.glade:1269
-msgid "PureOS"
-msgstr "PureOS"
-
-#: src/glade-registration.glade:1270
-msgid "Raspbian"
-msgstr "Raspbian"
-
-#: src/glade-registration.glade:1271
-msgid "Red Hat"
-msgstr "Red Hat"
-
-#: src/glade-registration.glade:1272
-msgid "Solus"
-msgstr "Solus"
-
-#: src/glade-registration.glade:1273
-msgid "SulinOS"
-msgstr "SulinOS"
-
-#: src/glade-registration.glade:1274
-msgid "Turbolinux"
-msgstr "Turbolinux"
-
-#: src/glade-registration.glade:1275
-msgid "Ubuntu"
-msgstr "Ubuntu"
-
-#: src/glade-registration.glade:1276
-msgid "Void Linux"
-msgstr "Void Linux"
-
-#: src/glade-registration.glade:1277
-msgid "Xandros"
-msgstr "Xandros"
-
-#: src/glade-registration.glade:1291 src/glade-registration.glade:1308
-msgid "variant"
-msgstr "variantă"
-
-#: src/glade-registration.glade:1292
-msgid "FreeBSD"
-msgstr "FreeBSD"
-
-#: src/glade-registration.glade:1293
-msgid "OpenBSD"
-msgstr "OpenBSD"
-
-#: src/glade-registration.glade:1294
-msgid "NetBSD"
-msgstr "NetBSD"
-
-#: src/glade-registration.glade:1309
-msgid "Oracle Solaris"
-msgstr "Oracle Solaris"
-
-#: src/glade-registration.glade:1310
-msgid "OpenSolaris"
-msgstr "OpenSolaris"
-
-#: src/glade-registration.glade:1311
-msgid "illumos"
-msgstr "illumos"
-
-#: src/glade-registration.glade:1334 src/glade-registration.glade:1357
-msgid "version"
-msgstr "versiune"
-
-#: src/glade-registration.glade:1335
-msgid "10"
-msgstr "10"
-
-#: src/glade-registration.glade:1336
-msgid "8"
-msgstr "8"
-
-#: src/glade-registration.glade:1337
-msgid "7"
-msgstr "7"
-
-#: src/glade-registration.glade:1338
-msgid "Vista"
-msgstr "Vista"
-
-#: src/glade-registration.glade:1339
-msgid "2012"
-msgstr "2012"
-
-#: src/glade-registration.glade:1340
-msgid "2008"
-msgstr "2008"
-
-#: src/glade-registration.glade:1341
-msgid "2003"
-msgstr "2003"
-
-#: src/glade-registration.glade:1342
-msgid "XP"
-msgstr "XP"
-
-#: src/glade-registration.glade:1343
-msgid "2000"
-msgstr "2000"
-
-#: src/glade-registration.glade:1358
-msgid "Catalina"
-msgstr "Catalina"
-
-#: src/glade-registration.glade:1359
-msgid "Mojave"
-msgstr "Mojave"
-
-#: src/glade-registration.glade:1360
-msgid "High Sierra"
-msgstr "High Sierra"
-
-#: src/glade-registration.glade:1361
-msgid "Sierra"
-msgstr "Sierra"
-
-#: src/glade-registration.glade:1362
-msgid "El Capitan"
-msgstr "El Capitan"
-
-#: src/glade-registration.glade:1363
-msgid "Yosemite"
-msgstr "Yosemite"
-
-#: src/glade-registration.glade:1364
-msgid "Mavericks"
-msgstr "Mavericks"
-
-#: src/glade-registration.glade:1365
-msgid "Mountain Lion"
-msgstr "Mountain Lion"
-
-#: src/glade-registration.glade:1366
-msgid "Lion"
-msgstr "Lion"
-
-#: src/glade-registration.glade:1367
-msgid "Snow Leopard"
-msgstr "Snow Leopard"
-
-#: src/glade-registration.glade:1368
-msgid "Leopard"
-msgstr "Leopard"
-
-#: src/glade-registration.glade:1369
-msgid "Tiger"
-msgstr "Tiger"
-
-#: src/glade-registration.glade:1380
-msgid "GNU/Linux"
-msgstr "GNU/Linux"
-
-#: src/glade-registration.glade:1397 plugins/gtk+/gtk+.xml:3149
-msgid "BSD"
-msgstr "BSD"
-
-#: src/glade-registration.glade:1414
-msgid "Windows"
-msgstr "Windows"
-
-#: src/glade-registration.glade:1431
-msgid "Mac OS X"
-msgstr "Mac OS X"
-
-#: src/glade-registration.glade:1448
-msgid "Solaris"
-msgstr "Solaris"
-
-#: src/glade-registration.glade:1503
-msgid "How often do you use it?"
-msgstr "Cât de des îl folosiți?"
-
-#: src/glade-registration.glade:1520
-msgid "Every day"
-msgstr "Zilnic"
-
-#: src/glade-registration.glade:1537
-msgid "Few days a week"
-msgstr "Câteva zile pe săptămână"
-
-#: src/glade-registration.glade:1554
-msgid "Every week"
-msgstr "În fiecare săptămână"
-
-#: src/glade-registration.glade:1571
-msgid "A few times a month"
-msgstr "De câteva ori pe lună"
-
-#: src/glade-registration.glade:1588
-msgid "Once a month"
-msgstr "O dată pe lună"
-
-#: src/glade-registration.glade:1605
-msgid "A few times a year"
-msgstr "De câteva ori pe an"
-
-#: src/glade-registration.glade:1643
-msgid "What level of Glade user would you say you are?"
-msgstr "La ce nivel de utilizator Glade ați spune că sunteți?"
-
-#: src/glade-registration.glade:1659
-msgid "Beginner"
-msgstr "Începător"
-
-#: src/glade-registration.glade:1676
-msgid "Intermediate"
-msgstr "Intermediar"
-
-#: src/glade-registration.glade:1693
-msgid "Advanced"
-msgstr "Avansat"
-
-#: src/glade-registration.glade:1731
-msgid ""
-"Under what kind of license(s) do you release the software you used Glade to "
-"create?"
-msgstr "Ce fel de licență eliberați pentru programul creat cu Glade?"
-
-#: src/glade-registration.glade:1747
-msgid "Free software"
-msgstr "Program liber"
-
-#: src/glade-registration.glade:1761
-msgid "Open source software"
-msgstr "Program cu sură deschisă"
-
-#: src/glade-registration.glade:1775
-msgid "Commercial/Closed software"
-msgstr "Program comercial/închis"
-
-#: src/glade-registration.glade:1789
-msgid "None - distributed internally"
-msgstr "Niciuna - distribuită intern"
-
-#: src/glade-registration.glade:1824
-msgid ""
-"In what field(s) is the software you used Glade to create generally used?"
-msgstr "În ce domeniu este folosit programul creat de Glade în general?"
-
-#: src/glade-registration.glade:1839
-msgid "Academic"
-msgstr "Academic"
-
-#: src/glade-registration.glade:1853
-msgid "Embedded applications"
-msgstr "Aplicații încorporate"
-
-#: src/glade-registration.glade:1867
-msgid "Accounting"
-msgstr "Contabilitate"
-
-#: src/glade-registration.glade:1881
-msgid "Desktop applications"
-msgstr "Aplicații desktop"
-
-#: src/glade-registration.glade:1895
-msgid "Educational"
-msgstr "Educațional"
-
-#: src/glade-registration.glade:1909
-msgid "Medical"
-msgstr "Medical"
-
-#: src/glade-registration.glade:1923
-msgid "Industrial applications"
-msgstr "Aplicații industriale"
-
-#: src/glade-registration.glade:1937
-msgid "Scientific"
-msgstr "Ștințific"
-
-#: src/glade-registration.glade:2010
-msgid "What aspect of the software needs the most improvement?"
-msgstr "Ce aspect al programului are cea mai mare nevoie de îmbunătățire?"
-
-#: src/glade-registration.glade:2055
-msgid "In your opinion what is the biggest problem with Glade?"
-msgstr "În opinia dumneavoastră, care este cea mai mare problemă cu Glade?"
-
-#: src/glade-registration.glade:2072
-msgid "Lack of documentation"
-msgstr "Lipsa documentației"
-
-#: src/glade-registration.glade:2090
-msgid "Lack of professional support"
-msgstr "Lipsa suportului profesional"
-
-#: src/glade-registration.glade:2107
-msgid "Lack of professional training"
-msgstr "Lipsa formării profesionale"
-
-#: src/glade-registration.glade:2124
-msgid "Lack of publicity/exposure"
-msgstr "Lipsa de publicitate/expunere"
-
-#: src/glade-registration.glade:2141
-msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
-msgstr ""
-"Lipsa de versiuni binare oficiale pentru alte sisteme de operare (Windows, "
-"Mac OS X)"
-
-#: src/glade-registration.glade:2217
-msgid "Have you ever encountered a bug?"
-msgstr "Ați întâlnit vreodată un defect?"
-
-#: src/glade-registration.glade:2233 src/glade-registration.glade:2305
-#: src/glade-registration.glade:2384 plugins/gtk+/gtk+.xml:1638
-msgid "Yes"
-msgstr "Da"
-
-#: src/glade-registration.glade:2250 src/glade-registration.glade:2322
-#: src/glade-registration.glade:2401 plugins/gtk+/gtk+.xml:1640
-msgid "No"
-msgstr "Nu"
-
-#: src/glade-registration.glade:2289
-msgid "If so, did you file a bug report?"
-msgstr "Dacă da, ați sesizat un raport de defect?"
-
-#: src/glade-registration.glade:2365
-msgid "Have you ever thought about contributing?"
-msgstr "V-ați gândit vreodată să contribuiți?"
-
-#: src/glade-registration.glade:2440
-msgid "Why not?"
-msgstr "De ce nu?"
-
-#: src/glade-registration.glade:2490
-msgid "Comments:"
-msgstr "Comentarii:"
-
-#: src/glade-registration.glade:2541
-msgid "Privacy Note:"
-msgstr "Notă confidențială:"
-
-#: src/glade-registration.glade:2561
-msgid ""
-"The sole purpose of this survey is to better know our user base.\n"
-"Your email address will be used to uniquely identify you as a Glade user and "
-"send you back a modification token in case you want to modify something or "
-"add extra comments.\n"
-"Only statistics compiled from the whole dataset will be shared publicly.\n"
-"Individual data will be stored in a private database and it will not be "
-"shared with the public or any other third party."
-msgstr ""
-"Singurul scop al acestui studiu este de a cunoaște mai bine gama noastră de "
-"utilizatori.\n"
-"Adresa dumneavoastră de email va fi utilizată pentru a vă identifica în mod "
-"unic ca utilizator Glade și pentru a vă trimite un jeton de modificare în "
-"cazul în care doriți să modificați ceva sau să adăugați comentarii "
-"suplimentare.\n"
-"Numai statisticile compilate din întregul set de date vor fi distribuite "
-"public.\n"
-"Datele individuale vor fi stocate într-o bază de date privată și nu vor fi "
-"partajate cu publicul sau cu orice altă parte terță."
 
 #: gladeui/glade-app.c:552
 #, c-format
@@ -1566,12 +800,12 @@ msgstr "Dezactivează proprietatea %s pe widget-ul %s"
 msgid "Setting multiple properties"
 msgstr "Se stabilesc proprietăți multiple"
 
-#: gladeui/glade-command.c:798 gladeui/glade-editor-property.c:3713
+#: gladeui/glade-command.c:798 gladeui/glade-editor-property.c:3711
 #, c-format
 msgid "Setting %s of %s"
 msgstr "Se stabilește %s din %s"
 
-#: gladeui/glade-command.c:804 gladeui/glade-editor-property.c:3421
+#: gladeui/glade-command.c:804 gladeui/glade-editor-property.c:3419
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Se stabilește %s din %s la %s"
@@ -1841,11 +1075,11 @@ msgstr ""
 msgid "Reset Widget Properties"
 msgstr "Restabilește proprietățile widget-ului"
 
-#: gladeui/glade-editor.c:1153 gladeui/glade-editor-property.c:1777
-#: gladeui/glade-editor-property.c:2085 gladeui/glade-editor-property.c:3219
-#: gladeui/glade-editor-property.c:3328 gladeui/glade-editor-property.c:3338
-#: gladeui/glade-editor-property.c:3648 plugins/gtk+/glade-accels.c:524
-#: plugins/gtk+/glade-attributes.c:1063
+#: gladeui/glade-editor.c:1153 gladeui/glade-editor-property.c:1775
+#: gladeui/glade-editor-property.c:2083 gladeui/glade-editor-property.c:3217
+#: gladeui/glade-editor-property.c:3326 gladeui/glade-editor-property.c:3336
+#: gladeui/glade-editor-property.c:3646 plugins/gtk+/glade-accels.c:524
+#: plugins/gtk+/glade-attributes.c:1208
 msgid "_OK"
 msgstr "_OK"
 
@@ -1873,75 +1107,79 @@ msgstr "_Descriere proprietate:"
 msgid "%s - %s Properties"
 msgstr "%s - Proprietăți %s"
 
-#: gladeui/glade-editor-property.c:768
+#: gladeui/glade-editor-property.c:766
 msgid "Property Definition"
 msgstr "Definiție proprietate"
 
-#: gladeui/glade-editor-property.c:769
+#: gladeui/glade-editor-property.c:767
 msgid "The GladePropertyDef this GladeEditorProperty was created for"
 msgstr "GladePropertyDef pentru care a fost creat acest GladeEditorProperty"
 
-#: gladeui/glade-editor-property.c:775 gladeui/glade-property-shell.c:125
+#: gladeui/glade-editor-property.c:773 gladeui/glade-property-shell.c:125
 msgid "Use Command"
 msgstr "Utilizează comanda"
 
-#: gladeui/glade-editor-property.c:776
+#: gladeui/glade-editor-property.c:774
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr ""
 "Specifică dacă se utilizează API-ul comandă pentru stiva de anulare/refacere"
 
-#: gladeui/glade-editor-property.c:782 gladeui/glade-property-shell.c:143
+#: gladeui/glade-editor-property.c:780 gladeui/glade-property-shell.c:143
 msgid "Disable Check"
 msgstr "Dezactivează verificarea"
 
-#: gladeui/glade-editor-property.c:783 gladeui/glade-property-shell.c:144
+#: gladeui/glade-editor-property.c:781 gladeui/glade-property-shell.c:144
 msgid "Whether to explicitly disable the check button"
 msgstr "Dacă se dezactivează butonul de verificare"
 
-#: gladeui/glade-editor-property.c:789 gladeui/glade-property-label.c:152
+#: gladeui/glade-editor-property.c:787 gladeui/glade-property-label.c:152
 #: gladeui/glade-property-shell.c:137
 msgid "Custom Text"
 msgstr "Text personalizat"
 
-#: gladeui/glade-editor-property.c:790 gladeui/glade-property-shell.c:138
+#: gladeui/glade-editor-property.c:788 gladeui/glade-property-shell.c:138
 msgid "Custom Text to display in the property label"
 msgstr "Text personalizat de afișat în eticheta de proprietăți"
 
-#: gladeui/glade-editor-property.c:1377
+#: gladeui/glade-editor-property.c:1375
 msgid "Select Fields"
 msgstr "Alegere câmpuri"
 
-#: gladeui/glade-editor-property.c:1393
+#: gladeui/glade-editor-property.c:1378
+msgid "_Close"
+msgstr "În_chide"
+
+#: gladeui/glade-editor-property.c:1391
 msgid "_Select individual fields:"
 msgstr "_Alegeți câmpuri individuale:"
 
-#: gladeui/glade-editor-property.c:1772
+#: gladeui/glade-editor-property.c:1770
 msgid "Select Named Icon"
 msgstr "Alegeți iconița numită"
 
-#: gladeui/glade-editor-property.c:2079
+#: gladeui/glade-editor-property.c:2077
 msgid "Edit Text"
 msgstr "Editare text"
 
 #. Text
-#: gladeui/glade-editor-property.c:2098
+#: gladeui/glade-editor-property.c:2096
 msgid "_Text:"
 msgstr "_Text:"
 
 #. Translatable
-#: gladeui/glade-editor-property.c:2134
+#: gladeui/glade-editor-property.c:2132
 msgid "T_ranslatable"
 msgstr "T_raductibil"
 
-#: gladeui/glade-editor-property.c:2140 gladeui/glade-property.c:703
+#: gladeui/glade-editor-property.c:2138 gladeui/glade-property.c:714
 msgid "Whether this property is translatable"
 msgstr "Specifică dacă această proprietate este traductibilă"
 
-#: gladeui/glade-editor-property.c:2148
+#: gladeui/glade-editor-property.c:2146
 msgid "Conte_xt for translation:"
 msgstr "Conte_xt pentru traducere:"
 
-#: gladeui/glade-editor-property.c:2154
+#: gladeui/glade-editor-property.c:2152
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -1950,66 +1188,66 @@ msgstr ""
 "Pentru șiruri scurte și neclare: tastați un cuvânt aici pentru a diferenția "
 "înțelesul acestui șir de celelalte apariții are aceluiași șir"
 
-#: gladeui/glade-editor-property.c:2186
+#: gladeui/glade-editor-property.c:2184
 msgid "Co_mments for translators:"
 msgstr "Co_mentarii pentru traducători:"
 
-#: gladeui/glade-editor-property.c:2277
+#: gladeui/glade-editor-property.c:2275
 msgid "Select a file from the project resource directory"
 msgstr "Alegeți un fișier din dosarul de resurse al proiectului"
 
-#: gladeui/glade-editor-property.c:3136 gladeui/glade-widget-adaptor.c:1461
+#: gladeui/glade-editor-property.c:3134 gladeui/glade-widget-adaptor.c:1461
 #: gladeui/glade-widget.c:1348 plugins/gtk+/gtk+.xml:1432
 msgid "Name"
 msgstr "Nume"
 
-#: gladeui/glade-editor-property.c:3145 gladeui/glade-property.c:670
+#: gladeui/glade-editor-property.c:3143 gladeui/glade-property.c:681
 msgid "Class"
 msgstr "Clasă"
 
-#: gladeui/glade-editor-property.c:3166
+#: gladeui/glade-editor-property.c:3164
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Alegeți obiecte fără părinte de tip %s din acest proiect"
 
-#: gladeui/glade-editor-property.c:3168
+#: gladeui/glade-editor-property.c:3166
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Alegeți obiecte de tip %s din acest proiect"
 
-#: gladeui/glade-editor-property.c:3188
+#: gladeui/glade-editor-property.c:3186
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Alegeți un %s fără părinte din acest proiect"
 
-#: gladeui/glade-editor-property.c:3190
+#: gladeui/glade-editor-property.c:3188
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Alegeți un %s din acest proiect"
 
-#: gladeui/glade-editor-property.c:3218 gladeui/glade-editor-property.c:3326
-#: gladeui/glade-editor-property.c:3337 gladeui/glade-editor-property.c:3646
-#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1061
+#: gladeui/glade-editor-property.c:3216 gladeui/glade-editor-property.c:3324
+#: gladeui/glade-editor-property.c:3335 gladeui/glade-editor-property.c:3644
+#: plugins/gtk+/glade-accels.c:522 plugins/gtk+/glade-attributes.c:1206
 msgid "C_lear"
 msgstr "C_urăță"
 
 #. Checklist
-#: gladeui/glade-editor-property.c:3235 gladeui/glade-editor-property.c:3355
+#: gladeui/glade-editor-property.c:3233 gladeui/glade-editor-property.c:3353
 msgid "O_bjects:"
 msgstr "O_biecte:"
 
-#: gladeui/glade-editor-property.c:3327
+#: gladeui/glade-editor-property.c:3325
 msgid "_New"
 msgstr "_Nou"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: gladeui/glade-editor-property.c:3463
+#: gladeui/glade-editor-property.c:3461
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Se creează %s pentru %s a %s"
 
 #. Checklist
-#: gladeui/glade-editor-property.c:3664
+#: gladeui/glade-editor-property.c:3662
 msgid "Objects:"
 msgstr "Obiecte:"
 
@@ -2578,33 +1816,33 @@ msgstr ""
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Obiectul %s are un tip nerecunoscut %s\n"
 
-#: gladeui/glade-project.c:4951
+#: gladeui/glade-project.c:4953
 #, c-format
 msgid "Unsaved %i"
 msgstr "Nesalvat %i"
 
-#: gladeui/glade-project.c:5258 gladeui/glade-project.c:5309
-#: gladeui/glade-project.c:5422
+#: gladeui/glade-project.c:5260 gladeui/glade-project.c:5311
+#: gladeui/glade-project.c:5424
 msgid "No widget selected."
 msgstr "Niciun widget selectat."
 
-#: gladeui/glade-project.c:5274
+#: gladeui/glade-project.c:5276
 msgid "Unable to copy unrecognized widget type."
 msgstr "Nu s-a putut copia tipul de widget nerecunoscut."
 
-#: gladeui/glade-project.c:5306
+#: gladeui/glade-project.c:5308
 msgid "Unable to cut unrecognized widget type"
 msgstr "Nu se poate tăia tipul nerecunoscut de widget"
 
-#: gladeui/glade-project.c:5359
+#: gladeui/glade-project.c:5361
 msgid "Unable to paste to the selected parent"
 msgstr "Nu s-a putut lipi în părintele selectat"
 
-#: gladeui/glade-project.c:5370
+#: gladeui/glade-project.c:5372
 msgid "Unable to paste to multiple widgets"
 msgstr "Nu se poate lipi în widget-uri multiple"
 
-#: gladeui/glade-project.c:5380
+#: gladeui/glade-project.c:5382
 msgid "No widget on the clipboard"
 msgstr "Nu sunt widget-uri în clipboard"
 
@@ -2618,60 +1856,60 @@ msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr ""
 "Proiectul „%s” nu are widget-uri învechite sau cu versiuni nepotrivite."
 
-#: gladeui/glade-property.c:671
+#: gladeui/glade-property.c:682
 msgid "The GladePropertyDef for this property"
 msgstr "GladePropertyDef pentru această proprietate"
 
-#: gladeui/glade-property.c:676
+#: gladeui/glade-property.c:687
 msgid "Enabled"
 msgstr "Activat"
 
-#: gladeui/glade-property.c:677
+#: gladeui/glade-property.c:688
 msgid "If the property is optional, this is its enabled state"
 msgstr "Dacă proprietatea este opțională, aceasta este starea sa activă"
 
-#: gladeui/glade-property.c:682 gladeui/glade-widget-action.c:188
+#: gladeui/glade-property.c:693 gladeui/glade-widget-action.c:188
 msgid "Sensitive"
 msgstr "Senzitiv"
 
-#: gladeui/glade-property.c:683
+#: gladeui/glade-property.c:694
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 "Dă backend-urilor control pentru a stabili proprietatea de senzitivitate"
 
-#: gladeui/glade-property.c:688
+#: gladeui/glade-property.c:699
 msgid "Context"
 msgstr "Context"
 
-#: gladeui/glade-property.c:689
+#: gladeui/glade-property.c:700
 msgid "Context for translation"
 msgstr "Context pentru traducere"
 
-#: gladeui/glade-property.c:695 plugins/gtk+/gtk+.xml:394
+#: gladeui/glade-property.c:706 plugins/gtk+/gtk+.xml:394
 msgid "Comment"
 msgstr "Comentariu"
 
-#: gladeui/glade-property.c:696
+#: gladeui/glade-property.c:707
 msgid "Comment for translators"
 msgstr "Comentariu pentru traducători"
 
-#: gladeui/glade-property.c:702
+#: gladeui/glade-property.c:713
 msgid "Translatable"
 msgstr "Traductibil"
 
-#: gladeui/glade-property.c:709
+#: gladeui/glade-property.c:720
 msgid "Visual State"
 msgstr "Stare vizuală"
 
-#: gladeui/glade-property.c:710
+#: gladeui/glade-property.c:721
 msgid "Priority information for the property editor to act on"
 msgstr "Informații de prioritate utilizate de editorul de proprietăți"
 
-#: gladeui/glade-property.c:718
+#: gladeui/glade-property.c:729
 msgid "Precision"
 msgstr "Precizie"
 
-#: gladeui/glade-property.c:719
+#: gladeui/glade-property.c:730
 msgid "Where applicable, precision to use on editors"
 msgstr "Precizia de utilizat în editoare, unde este aplicabil"
 
@@ -2831,7 +2069,7 @@ msgstr "Nu s-a putut găsi simbolul „%s”"
 msgid "Could not get the type from \"%s\""
 msgstr "Nu s-a putut obține tipul din „%s”"
 
-#: gladeui/glade-utils.c:310
+#: gladeui/glade-utils.c:321
 #, c-format
 msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
@@ -2840,28 +2078,28 @@ msgstr ""
 "Nu se poate adăuga un widget nederulabil %s direct în %s.\n"
 "Adăugați mai întâi %s."
 
-#: gladeui/glade-utils.c:491
+#: gladeui/glade-utils.c:502
 msgid "All Files"
 msgstr "Toate fișierele"
 
-#: gladeui/glade-utils.c:496
+#: gladeui/glade-utils.c:507
 msgid "Libglade Files"
 msgstr "Fișiere libglade"
 
-#: gladeui/glade-utils.c:501
+#: gladeui/glade-utils.c:512
 msgid "GtkBuilder Files"
 msgstr "Fișiere GtkBuilder"
 
-#: gladeui/glade-utils.c:507
+#: gladeui/glade-utils.c:518
 msgid "All Glade Files"
 msgstr "Toate fișierele Glade"
 
-#: gladeui/glade-utils.c:1241
+#: gladeui/glade-utils.c:1252
 msgid "Could not show link:"
 msgstr "Legătura nu poate fi afișată:"
 
 #. Reset the column
-#: gladeui/glade-utils.c:1717 plugins/gtk+/glade-attributes.c:829
+#: gladeui/glade-utils.c:1730 plugins/gtk+/glade-attributes.c:868
 #: plugins/gtk+/gtk+.xml:830 plugins/gtk+/gtk+.xml:1188
 #: plugins/gtk+/gtk+.xml:1204 plugins/gtk+/gtk+.xml:1307
 #: plugins/gtk+/gtk+.xml:1444 plugins/gtk+/gtk+.xml:1574
@@ -3244,6 +2482,11 @@ msgstr "Verifică învechirile de obiecte, proprietăți și semnale"
 msgid "Warnings:"
 msgstr "Avertismente:"
 
+#: gladeui/glade-project-properties.ui:521
+#: plugins/gtk+/glade-about-dialog-editor.ui:69
+msgid "Name:"
+msgstr "Nume:"
+
 #: gladeui/glade-project-properties.ui:533
 msgid "Copyright:"
 msgstr "Drepturi de autor:"
@@ -3268,6 +2511,11 @@ msgstr "Descriere:"
 #: gladeui/glade-project-properties.ui:634
 msgid "program or library short description"
 msgstr "scurtă descriere pentru program sau bibilotecă"
+
+#: gladeui/glade-project-properties.ui:648 plugins/gtk+/gtk+.xml:3010
+#: plugins/gtk+/gtk+.xml:4624
+msgid "Other"
+msgstr "Altul"
 
 #: gladeui/glade-project-properties.ui:649
 msgid "GNU GPL version 2"
@@ -3344,117 +2592,117 @@ msgstr "Se configurează %s să utilizeze un copil centrat"
 msgid "Setting %s to not use a center child"
 msgstr "Se configurează %s să nu utilizeze un copil centrat"
 
-#: plugins/gtk+/glade-attributes.c:222
+#: plugins/gtk+/glade-attributes.c:235
 msgctxt "textattr"
 msgid "Style"
 msgstr "Stil"
 
-#: plugins/gtk+/glade-attributes.c:226
+#: plugins/gtk+/glade-attributes.c:239
 msgctxt "textattr"
 msgid "Weight"
 msgstr "Greutate"
 
-#: plugins/gtk+/glade-attributes.c:230
+#: plugins/gtk+/glade-attributes.c:243
 msgctxt "textattr"
 msgid "Variant"
 msgstr "Variantă"
 
-#: plugins/gtk+/glade-attributes.c:234
+#: plugins/gtk+/glade-attributes.c:247
 msgctxt "textattr"
 msgid "Stretch"
 msgstr "Întins"
 
-#: plugins/gtk+/glade-attributes.c:238
+#: plugins/gtk+/glade-attributes.c:251
 msgctxt "textattr"
 msgid "Underline"
 msgstr "Subliniat"
 
-#: plugins/gtk+/glade-attributes.c:242
+#: plugins/gtk+/glade-attributes.c:255
 msgctxt "textattr"
 msgid "Strikethrough"
 msgstr "Tăiat"
 
-#: plugins/gtk+/glade-attributes.c:246
+#: plugins/gtk+/glade-attributes.c:259
 msgctxt "textattr"
 msgid "Gravity"
 msgstr "Gravitate"
 
-#: plugins/gtk+/glade-attributes.c:250
+#: plugins/gtk+/glade-attributes.c:263
 msgctxt "textattr"
 msgid "Gravity Hint"
 msgstr "Indiciu gravitate"
 
-#: plugins/gtk+/glade-attributes.c:262
+#: plugins/gtk+/glade-attributes.c:275
 msgctxt "textattr"
 msgid "Size"
 msgstr "Mărime"
 
-#: plugins/gtk+/glade-attributes.c:267
+#: plugins/gtk+/glade-attributes.c:280
 msgctxt "textattr"
 msgid "Absolute Size"
 msgstr "Dimensiune absolută"
 
-#: plugins/gtk+/glade-attributes.c:274
+#: plugins/gtk+/glade-attributes.c:287
 msgctxt "textattr"
 msgid "Foreground Color"
 msgstr "Culoare prim-plan"
 
-#: plugins/gtk+/glade-attributes.c:278
+#: plugins/gtk+/glade-attributes.c:291
 msgctxt "textattr"
 msgid "Background Color"
 msgstr "Culoare fundal"
 
-#: plugins/gtk+/glade-attributes.c:282
+#: plugins/gtk+/glade-attributes.c:295
 msgctxt "textattr"
 msgid "Underline Color"
 msgstr "Culoare subliniere"
 
-#: plugins/gtk+/glade-attributes.c:286
+#: plugins/gtk+/glade-attributes.c:299
 msgctxt "textattr"
 msgid "Strikethrough Color"
 msgstr "Culoare tăiere"
 
-#: plugins/gtk+/glade-attributes.c:297
+#: plugins/gtk+/glade-attributes.c:310
 msgctxt "textattr"
 msgid "Scale"
 msgstr "Scară"
 
-#: plugins/gtk+/glade-attributes.c:303
+#: plugins/gtk+/glade-attributes.c:316
 msgctxt "textattr"
 msgid "Font Description"
 msgstr "Descrierea fontului"
 
-#: plugins/gtk+/glade-attributes.c:329 plugins/gtk+/glade-attributes.c:366
-#: plugins/gtk+/glade-attributes.c:374 plugins/gtk+/glade-attributes.c:380
-#: plugins/gtk+/glade-attributes.c:832
+#: plugins/gtk+/glade-attributes.c:349 plugins/gtk+/glade-attributes.c:404
+#: plugins/gtk+/glade-attributes.c:412 plugins/gtk+/glade-attributes.c:418
+#: plugins/gtk+/glade-attributes.c:871
 msgid "<Enter Value>"
 msgstr "<Introduceți valoare>"
 
-#: plugins/gtk+/glade-attributes.c:365
+#: plugins/gtk+/glade-attributes.c:403
 msgid "Unset"
 msgstr "Nestabilită"
 
-#: plugins/gtk+/glade-attributes.c:726
+#: plugins/gtk+/glade-attributes.c:765
 msgid "Select a color"
 msgstr "Alegeți o culoare"
 
-#: plugins/gtk+/glade-attributes.c:761
+#: plugins/gtk+/glade-attributes.c:800
 msgid "Select a font"
 msgstr "Alegeți un font"
 
-#: plugins/gtk+/glade-attributes.c:896
+#: plugins/gtk+/glade-attributes.c:937
 msgid "Attribute"
 msgstr "Atribut"
 
-#: plugins/gtk+/glade-attributes.c:904
+#: plugins/gtk+/glade-attributes.c:945
 msgid "Value"
 msgstr "Valoare"
 
-#: plugins/gtk+/glade-attributes.c:1057
+#: plugins/gtk+/glade-attributes.c:1202
 msgid "Setup Text Attributes"
 msgstr "Stabilire atribute text"
 
-#: plugins/gtk+/glade-attributes.c:1149
+#: plugins/gtk+/glade-attributes.c:1280
 msgid "Edit Attributes"
 msgstr "Editare atribute"
 
@@ -3588,7 +2836,7 @@ msgstr ""
 msgid "Setting secondary icon of %s to not use tooltip markup"
 msgstr "Se stabilește iconița secundară %s pentru a nu folosi marcarea indiciu"
 
-#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1050
+#: plugins/gtk+/glade-fixed.c:623 plugins/gtk+/glade-gtk-grid.c:1052
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Se plasează %s în %s"
@@ -3664,15 +2912,15 @@ msgstr "Recent"
 msgid "Action Group Editor"
 msgstr "Editor grup de acțiuni"
 
-#: plugins/gtk+/glade-gtk-assistant.c:213
+#: plugins/gtk+/glade-gtk-assistant.c:214
 msgid "Introduction page"
 msgstr "Pagină de introducere"
 
-#: plugins/gtk+/glade-gtk-assistant.c:217
+#: plugins/gtk+/glade-gtk-assistant.c:218
 msgid "Content page"
 msgstr "Pagina curentă"
 
-#: plugins/gtk+/glade-gtk-assistant.c:221
+#: plugins/gtk+/glade-gtk-assistant.c:222
 msgid "Confirmation page"
 msgstr "Pagină de confirmare"
 
@@ -3764,20 +3012,20 @@ msgstr "Această listă de selecție nu este configurată să aibă vreo intrare
 msgid "Tearoff menus are disabled"
 msgstr "Meniurile detașabile sunt dezactivate"
 
-#: plugins/gtk+/glade-gtk-container.c:61
+#: plugins/gtk+/glade-gtk-container.c:60
 msgid "Cannot add a toplevel window to a container."
 msgstr "Nu se poate adăuga o fereastră de top unui container."
 
-#: plugins/gtk+/glade-gtk-container.c:70
+#: plugins/gtk+/glade-gtk-container.c:69
 msgid "Cannot add a popover to a container."
 msgstr "Nu se poate adăuga un popover unui container."
 
-#: plugins/gtk+/glade-gtk-container.c:81
+#: plugins/gtk+/glade-gtk-container.c:80
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
 msgstr "Widget-urile de tipul %s pot avea doar widget-uri ca copii."
 
-#: plugins/gtk+/glade-gtk-container.c:99
+#: plugins/gtk+/glade-gtk-container.c:94
 #, c-format
 msgid ""
 "Widgets of type %s need placeholders to add children.\n"
@@ -3809,23 +3057,23 @@ msgstr ""
 msgid "Insert Child on %s"
 msgstr "Introdu copilul în %s"
 
-#: plugins/gtk+/glade-gtk-grid.c:540 plugins/gtk+/glade-gtk-list-box.c:334
+#: plugins/gtk+/glade-gtk-grid.c:542 plugins/gtk+/glade-gtk-list-box.c:336
 #: plugins/gtk+/glade-gtk-table.c:549
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Introdu rând în %s"
 
-#: plugins/gtk+/glade-gtk-grid.c:543 plugins/gtk+/glade-gtk-table.c:552
+#: plugins/gtk+/glade-gtk-grid.c:545 plugins/gtk+/glade-gtk-table.c:552
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Introdu coloană în %s"
 
-#: plugins/gtk+/glade-gtk-grid.c:546 plugins/gtk+/glade-gtk-table.c:555
+#: plugins/gtk+/glade-gtk-grid.c:548 plugins/gtk+/glade-gtk-table.c:555
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Elimină coloană din %s"
 
-#: plugins/gtk+/glade-gtk-grid.c:549 plugins/gtk+/glade-gtk-table.c:558
+#: plugins/gtk+/glade-gtk-grid.c:551 plugins/gtk+/glade-gtk-table.c:558
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Elimină rând din %s"
@@ -3865,19 +3113,19 @@ msgid "This property does not apply when a custom title is set"
 msgstr ""
 "Această proprietate nu se aplică când un titlu personalizat este stabilit"
 
-#: plugins/gtk+/glade-gtk-header-bar.c:113
-#: plugins/gtk+/glade-gtk-notebook.c:1004 plugins/gtk+/glade-gtk-stack.c:161
+#: plugins/gtk+/glade-gtk-header-bar.c:112
+#: plugins/gtk+/glade-gtk-notebook.c:1005 plugins/gtk+/glade-gtk-stack.c:161
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr "Introdu substituent pentru %s"
 
-#: plugins/gtk+/glade-gtk-header-bar.c:137
-#: plugins/gtk+/glade-gtk-notebook.c:1002 plugins/gtk+/glade-gtk-stack.c:198
+#: plugins/gtk+/glade-gtk-header-bar.c:136
+#: plugins/gtk+/glade-gtk-notebook.c:1003 plugins/gtk+/glade-gtk-stack.c:198
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr "Elimină substituentul din %s"
 
-#: plugins/gtk+/glade-gtk-header-bar.c:304
+#: plugins/gtk+/glade-gtk-header-bar.c:303
 msgid ""
 "The decoration layout does not apply to header bars which do no show window "
 "controls"
@@ -4004,12 +3252,12 @@ msgstr "Meniul Alese recent"
 msgid "Menu Item"
 msgstr "Element meniu"
 
-#: plugins/gtk+/glade-gtk-notebook.c:995
+#: plugins/gtk+/glade-gtk-notebook.c:996
 #, c-format
 msgid "Remove page from %s"
 msgstr "Elimină pagină din %s"
 
-#: plugins/gtk+/glade-gtk-notebook.c:997
+#: plugins/gtk+/glade-gtk-notebook.c:998
 #, c-format
 msgid "Insert page on %s"
 msgstr "Introdu pagină în %s"
@@ -4137,32 +3385,32 @@ msgstr "Antetele sunt invizibile"
 msgid "Expanders are not shown"
 msgstr "Extensorii nu sunt afișați"
 
-#: plugins/gtk+/glade-gtk-widget.c:857
+#: plugins/gtk+/glade-gtk-widget.c:868
 #, c-format
 msgid "Removing parent of %s"
 msgstr "Se elimină părintele lui %s"
 
-#: plugins/gtk+/glade-gtk-widget.c:916
+#: plugins/gtk+/glade-gtk-widget.c:927
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "Se adaugă părintele %s lui %s"
 
-#: plugins/gtk+/glade-gtk-widget.c:1057 plugins/gtk+/glade-gtk-widget.c:1121
+#: plugins/gtk+/glade-gtk-widget.c:1068 plugins/gtk+/glade-gtk-widget.c:1132
 msgid "(unnamed)"
 msgstr "(nedenumit)"
 
-#: plugins/gtk+/glade-gtk-widget.c:1069
+#: plugins/gtk+/glade-gtk-widget.c:1080
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Se adaugă %s la Grupul de dimensiuni %s"
 
-#: plugins/gtk+/glade-gtk-widget.c:1073
+#: plugins/gtk+/glade-gtk-widget.c:1084
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Se adaugă %s la un nou Grup de dimensiuni"
 
 #. Add trailing new... item
-#: plugins/gtk+/glade-gtk-widget.c:1141
+#: plugins/gtk+/glade-gtk-widget.c:1152
 msgid "New Size Group"
 msgstr "Nou Grup de dimensiuni"
 
@@ -4331,11 +3579,11 @@ msgstr "Se configurează %s să utilizeze o singură linie"
 msgid "Setting %s to use specific Pango word wrapping"
 msgstr "Se configurează %s să utilizeze despărțirea pe rânduri specifică Pango"
 
-#: plugins/gtk+/glade-model-data.c:937
+#: plugins/gtk+/glade-model-data.c:936
 msgid "<printable chars only>"
 msgstr "<printable chars only>"
 
-#: plugins/gtk+/glade-model-data.c:1228
+#: plugins/gtk+/glade-model-data.c:1227
 msgid "Add and remove rows:"
 msgstr "Adaugă și elimină rânduri:"
 
@@ -6001,6 +5249,14 @@ msgstr "Anulează"
 msgid "Close"
 msgstr "Închide"
 
+#: plugins/gtk+/gtk+.xml:1638
+msgid "Yes"
+msgstr "Da"
+
+#: plugins/gtk+/gtk+.xml:1640
+msgid "No"
+msgstr "Nu"
+
 #: plugins/gtk+/gtk+.xml:1642
 msgid "Apply"
 msgstr "Aplică"
@@ -6662,6 +5918,10 @@ msgstr "LGPL 2.1"
 #: plugins/gtk+/gtk+.xml:3147
 msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
+
+#: plugins/gtk+/gtk+.xml:3149
+msgid "BSD"
+msgstr "BSD"
 
 #: plugins/gtk+/gtk+.xml:3151
 msgid "MIT X11"
@@ -8274,6 +7534,584 @@ msgstr "La cerere"
 msgid "WebKit2GTK+ Widgets"
 msgstr "Widgeturi WebKit2GTK+"
 
+#~ msgid ""
+#~ "We are conducting a user survey\n"
+#~ " would you like to take it now?"
+#~ msgstr ""
+#~ "Facem un sondaj de utilizator\n"
+#~ " v-ar plăcea să participați acum?"
+
+#~ msgid "If not, you can always find it in the Help menu."
+#~ msgstr "Dacă nu, îl puteți găsi întotdeauna în meniul Ajutor."
+
+#~ msgid "_Do not show this dialog again"
+#~ msgstr "Nu mai arăta acest _dialog din nou"
+
+#~ msgid "Go to Help -> Registration & User Survey and complete our survey!"
+#~ msgstr ""
+#~ "Navigați la Ajutor → Înregistrare și sondaj utilizatori și completați "
+#~ "sondajul nostru!"
+
+#~ msgctxt ""
+#~ "This is to honor a professor that passed away last year and appears in a "
+#~ "popover when you click on the button that says \"RIP Guido\""
+#~ msgid ""
+#~ "Guido was one of my professors at Rosario\n"
+#~ "National University of Argentina.\n"
+#~ "\n"
+#~ "He introduced me to C, Linux, free software...\n"
+#~ "\n"
+#~ "He always had extra time to explain one more thing\n"
+#~ "and help you figure out things by yourself.\n"
+#~ "\n"
+#~ "Always made a joke in the right moment keeping\n"
+#~ "things interesting and fun.\n"
+#~ "\n"
+#~ "Master of intentionally misconstrued sayings.\n"
+#~ "\n"
+#~ "Always carried a stack of books under his arm.\n"
+#~ "\n"
+#~ "Loved Guinness beer.\n"
+#~ "\n"
+#~ "All he ever wanted was make you think!\n"
+#~ "\n"
+#~ "\"Alégrate! Mañana sera peor.\"\n"
+#~ "\n"
+#~ "\tJuan Pablo"
+#~ msgstr ""
+#~ "Guido a fost unul dintre profesorii mei la Universitatea\n"
+#~ "Națională Rosario din Argentina.\n"
+#~ "\n"
+#~ "Acesta mi-a făcut cunoștință cu C, Linux, programe libere...\n"
+#~ "\n"
+#~ "A avut întotdeauna timp suplimentar pentru a explica încă un lucru\n"
+#~ "și pentru a te ajuta să îți dai seama de lucruri singur.\n"
+#~ "\n"
+#~ "Întotdeauna a făcut o glumă la momentul potrivit păstrând\n"
+#~ "lucrurile interesante și distractive.\n"
+#~ "\n"
+#~ "Stăpân al spuselor intenționat greșit.\n"
+#~ "\n"
+#~ "A purtat întotdeauna un teanc de cărți sub braț.\n"
+#~ "\n"
+#~ "A iubit berea Guinness.\n"
+#~ "\n"
+#~ "Tot ce a dorit vreodată a fost să te facă să gândești!\n"
+#~ "\n"
+#~ "\"Alégrate! Mañana sera peor.\"\n"
+#~ "\n"
+#~ "\tJuan Pablo"
+
+#~ msgid "Registration & User Survey"
+#~ msgstr "Înregistrare și sondaj utilizatori"
+
+#~ msgctxt "Button label in the bottom of main window that triggers a popover"
+#~ msgid ""
+#~ "<small>In memory of an extraordinary\n"
+#~ "person and professor\n"
+#~ "R.I.P Guido Macchi</small>"
+#~ msgstr ""
+#~ "<small>În memoria unei persoane\n"
+#~ "și profesor extraordinar\n"
+#~ "R.I.P Guido Macchi</small>"
+
+#, c-format
+#~ msgid "Connecting to %s"
+#~ msgstr "Se conectează la %s"
+
+#, c-format
+#~ msgid "Sending data to %s"
+#~ msgstr "Se trimit date la %s"
+
+#, c-format
+#~ msgid "Waiting for %s"
+#~ msgstr "Se așteaptă după %s"
+
+#, c-format
+#~ msgid "Receiving data from %s"
+#~ msgstr "Se primesc date de la %s"
+
+#~ msgid ""
+#~ "Your subscription to the users list has been received!\n"
+#~ "Check your email!"
+#~ msgstr ""
+#~ "Abonamentul la lista de utilizatori a fost primit!\n"
+#~ "Verificați-vă emailul!"
+
+#~ msgid ""
+#~ "Thank you for taking the time to complete the survey, we appreciate it!"
+#~ msgstr ""
+#~ "Vă mulțumim că va-ți făcut timp pentru a finaliza sondajul, apreciem!"
+
+#~ msgid "Completed and submitted!"
+#~ msgstr "Completat și trimis!"
+
+#~ msgid "Glade Registration & User Survey"
+#~ msgstr "Înregistrare și sondaj utilizatori Glade"
+
+#~ msgid "_Submit"
+#~ msgstr "_Trimite"
+
+#~ msgid "Information will be sent to https://survey.gnome.org"
+#~ msgstr "Informațiile vor fi trimise la https://survey.gnome.org"
+
+#~ msgid "User Information"
+#~ msgstr "Informații utilizator"
+
+#~ msgid "<Your name or nickname is required>"
+#~ msgstr "<Numele sau pseudonimul sunt obligatorii>"
+
+#~ msgid "Email:"
+#~ msgstr "Email:"
+
+#~ msgid ""
+#~ "Tokens are processed manually in batches.\n"
+#~ "Please be patient."
+#~ msgstr ""
+#~ "Jetoanele sunt procesate manual în loturi.\n"
+#~ "Aveți răbdare."
+
+#~ msgid "<Required to send back registration token>"
+#~ msgstr "<Necesită trimiterea jetonului de înregistrare>"
+
+#~ msgid "Country:"
+#~ msgstr "Țară:"
+
+#~ msgid "City:"
+#~ msgstr "Oraș:"
+
+#~ msgid "Company"
+#~ msgstr "Companie"
+
+#~ msgid "Organization"
+#~ msgstr "Organizație"
+
+#~ msgid "Personal"
+#~ msgstr "Personal"
+
+#~ msgid "Website"
+#~ msgstr "Sit web"
+
+#~ msgid "Subscribe me to the mailing list"
+#~ msgstr "Abonează-mă la lista de discuții"
+
+#~ msgid ""
+#~ "Subscribe to Glade Users mailing list.\n"
+#~ "You will be sent email requesting confirmation!"
+#~ msgstr ""
+#~ "Abonați-vă la lista de discuții pentru utilizatorii Glade.\n"
+#~ "Veți primi un email care solicită confirmarea!"
+
+#~ msgid "Choose your country"
+#~ msgstr "Alegeți țara"
+
+#~ msgid "We care about privacy!"
+#~ msgstr "Ne pasă de intimitate!"
+
+#~ msgid ""
+#~ "All the data will be stored in a private location and will not be shared "
+#~ "with the public or any third party."
+#~ msgstr ""
+#~ "Toate datele vor fi stocate într-o locație privată și nu vor fi partajate "
+#~ "cu publicul sau cu niciun terț."
+
+#~ msgid "Glade User Survey"
+#~ msgstr "Sondaj de utilizatori Glade"
+
+#~ msgid "How long have you been programming?"
+#~ msgstr "De cât timp programați?"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "years"
+#~ msgstr "ani"
+
+#~ msgid "months"
+#~ msgstr "luni"
+
+#~ msgid "I am not a programmer"
+#~ msgstr "Nu sunt programator"
+
+#~ msgid "Which programming languages do you prefer?"
+#~ msgstr "Ce limbaje de programare preferați?"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "C++"
+#~ msgstr "C++"
+
+#~ msgid "C#"
+#~ msgstr "C#"
+
+#~ msgid "Java"
+#~ msgstr "Java"
+
+#~ msgid "Python"
+#~ msgstr "Python"
+
+#~ msgid "JavaScript"
+#~ msgstr "JavaScript"
+
+#~ msgid "Vala"
+#~ msgstr "Vala"
+
+#~ msgid "Perl"
+#~ msgstr "Perl"
+
+#~ msgid "Rust"
+#~ msgstr "Rust"
+
+#~ msgid "When did you start using Glade?"
+#~ msgstr "Când ați început să folosiți Glade?"
+
+#~ msgid "ago"
+#~ msgstr "în urmă"
+
+#~ msgid "Which version do you normally use?"
+#~ msgstr "Ce versiune folosiți în mod normal?"
+
+#~ msgid "What is available in my OS"
+#~ msgstr "Ce este disponibil în sistemul meu de operare"
+
+#~ msgid "Latest stable from sources"
+#~ msgstr "Ultima versiune stabilă din surse"
+
+#~ msgid "3.8 for GTK+ 2"
+#~ msgstr "3.8 pentru GTK+ 2"
+
+#~ msgid "Master"
+#~ msgstr "Master"
+
+#~ msgid "On what operating systems?"
+#~ msgstr "Pe ce sisteme de operare?"
+
+#~ msgid "distribution"
+#~ msgstr "distribuție"
+
+#~ msgid "Alpine"
+#~ msgstr "Alpine"
+
+#~ msgid "Arch Linux"
+#~ msgstr "Arch Linux"
+
+#~ msgid "Ataraxia Linux"
+#~ msgstr "Ataraxia Linux"
+
+#~ msgid "CentOS"
+#~ msgstr "CentOS"
+
+#~ msgid "Chrome OS"
+#~ msgstr "Chrome OS"
+
+#~ msgid "Clear Linux"
+#~ msgstr "Clear Linux"
+
+#~ msgid "Debian"
+#~ msgstr "Debian"
+
+#~ msgid "elementary OS"
+#~ msgstr "elementary OS"
+
+#~ msgid "Endless OS"
+#~ msgstr "Endless OS"
+
+#~ msgid "Fedora"
+#~ msgstr "Fedora"
+
+#~ msgid "Gentoo"
+#~ msgstr "Gentoo"
+
+#~ msgid "Kubuntu"
+#~ msgstr "Kubuntu"
+
+#~ msgid "Linux Mint"
+#~ msgstr "Linux Mint"
+
+#~ msgid "Mageia"
+#~ msgstr "Mageia"
+
+#~ msgid "Mandriva"
+#~ msgstr "Mandriva"
+
+#~ msgid "Nix OS"
+#~ msgstr "Nix OS"
+
+#~ msgid "openSUSE"
+#~ msgstr "openSUSE"
+
+#~ msgid "Oracle"
+#~ msgstr "Oracle"
+
+#~ msgid "Pop!_OS"
+#~ msgstr "Pop!_OS"
+
+#~ msgid "PureOS"
+#~ msgstr "PureOS"
+
+#~ msgid "Raspbian"
+#~ msgstr "Raspbian"
+
+#~ msgid "Red Hat"
+#~ msgstr "Red Hat"
+
+#~ msgid "Solus"
+#~ msgstr "Solus"
+
+#~ msgid "SulinOS"
+#~ msgstr "SulinOS"
+
+#~ msgid "Turbolinux"
+#~ msgstr "Turbolinux"
+
+#~ msgid "Ubuntu"
+#~ msgstr "Ubuntu"
+
+#~ msgid "Void Linux"
+#~ msgstr "Void Linux"
+
+#~ msgid "Xandros"
+#~ msgstr "Xandros"
+
+#~ msgid "variant"
+#~ msgstr "variantă"
+
+#~ msgid "FreeBSD"
+#~ msgstr "FreeBSD"
+
+#~ msgid "OpenBSD"
+#~ msgstr "OpenBSD"
+
+#~ msgid "NetBSD"
+#~ msgstr "NetBSD"
+
+#~ msgid "Oracle Solaris"
+#~ msgstr "Oracle Solaris"
+
+#~ msgid "OpenSolaris"
+#~ msgstr "OpenSolaris"
+
+#~ msgid "illumos"
+#~ msgstr "illumos"
+
+#~ msgid "version"
+#~ msgstr "versiune"
+
+#~ msgid "10"
+#~ msgstr "10"
+
+#~ msgid "8"
+#~ msgstr "8"
+
+#~ msgid "7"
+#~ msgstr "7"
+
+#~ msgid "Vista"
+#~ msgstr "Vista"
+
+#~ msgid "2012"
+#~ msgstr "2012"
+
+#~ msgid "2008"
+#~ msgstr "2008"
+
+#~ msgid "2003"
+#~ msgstr "2003"
+
+#~ msgid "XP"
+#~ msgstr "XP"
+
+#~ msgid "2000"
+#~ msgstr "2000"
+
+#~ msgid "Catalina"
+#~ msgstr "Catalina"
+
+#~ msgid "Mojave"
+#~ msgstr "Mojave"
+
+#~ msgid "High Sierra"
+#~ msgstr "High Sierra"
+
+#~ msgid "Sierra"
+#~ msgstr "Sierra"
+
+#~ msgid "El Capitan"
+#~ msgstr "El Capitan"
+
+#~ msgid "Yosemite"
+#~ msgstr "Yosemite"
+
+#~ msgid "Mavericks"
+#~ msgstr "Mavericks"
+
+#~ msgid "Mountain Lion"
+#~ msgstr "Mountain Lion"
+
+#~ msgid "Lion"
+#~ msgstr "Lion"
+
+#~ msgid "Snow Leopard"
+#~ msgstr "Snow Leopard"
+
+#~ msgid "Leopard"
+#~ msgstr "Leopard"
+
+#~ msgid "Tiger"
+#~ msgstr "Tiger"
+
+#~ msgid "GNU/Linux"
+#~ msgstr "GNU/Linux"
+
+#~ msgid "Windows"
+#~ msgstr "Windows"
+
+#~ msgid "Mac OS X"
+#~ msgstr "Mac OS X"
+
+#~ msgid "Solaris"
+#~ msgstr "Solaris"
+
+#~ msgid "How often do you use it?"
+#~ msgstr "Cât de des îl folosiți?"
+
+#~ msgid "Every day"
+#~ msgstr "Zilnic"
+
+#~ msgid "Few days a week"
+#~ msgstr "Câteva zile pe săptămână"
+
+#~ msgid "Every week"
+#~ msgstr "În fiecare săptămână"
+
+#~ msgid "A few times a month"
+#~ msgstr "De câteva ori pe lună"
+
+#~ msgid "Once a month"
+#~ msgstr "O dată pe lună"
+
+#~ msgid "A few times a year"
+#~ msgstr "De câteva ori pe an"
+
+#~ msgid "What level of Glade user would you say you are?"
+#~ msgstr "La ce nivel de utilizator Glade ați spune că sunteți?"
+
+#~ msgid "Beginner"
+#~ msgstr "Începător"
+
+#~ msgid "Intermediate"
+#~ msgstr "Intermediar"
+
+#~ msgid "Advanced"
+#~ msgstr "Avansat"
+
+#~ msgid ""
+#~ "Under what kind of license(s) do you release the software you used Glade "
+#~ "to create?"
+#~ msgstr "Ce fel de licență eliberați pentru programul creat cu Glade?"
+
+#~ msgid "Free software"
+#~ msgstr "Program liber"
+
+#~ msgid "Open source software"
+#~ msgstr "Program cu sură deschisă"
+
+#~ msgid "Commercial/Closed software"
+#~ msgstr "Program comercial/închis"
+
+#~ msgid "None - distributed internally"
+#~ msgstr "Niciuna - distribuită intern"
+
+#~ msgid ""
+#~ "In what field(s) is the software you used Glade to create generally used?"
+#~ msgstr "În ce domeniu este folosit programul creat de Glade în general?"
+
+#~ msgid "Academic"
+#~ msgstr "Academic"
+
+#~ msgid "Embedded applications"
+#~ msgstr "Aplicații încorporate"
+
+#~ msgid "Accounting"
+#~ msgstr "Contabilitate"
+
+#~ msgid "Desktop applications"
+#~ msgstr "Aplicații desktop"
+
+#~ msgid "Educational"
+#~ msgstr "Educațional"
+
+#~ msgid "Medical"
+#~ msgstr "Medical"
+
+#~ msgid "Industrial applications"
+#~ msgstr "Aplicații industriale"
+
+#~ msgid "Scientific"
+#~ msgstr "Ștințific"
+
+#~ msgid "What aspect of the software needs the most improvement?"
+#~ msgstr "Ce aspect al programului are cea mai mare nevoie de îmbunătățire?"
+
+#~ msgid "In your opinion what is the biggest problem with Glade?"
+#~ msgstr "În opinia dumneavoastră, care este cea mai mare problemă cu Glade?"
+
+#~ msgid "Lack of documentation"
+#~ msgstr "Lipsa documentației"
+
+#~ msgid "Lack of professional support"
+#~ msgstr "Lipsa suportului profesional"
+
+#~ msgid "Lack of professional training"
+#~ msgstr "Lipsa formării profesionale"
+
+#~ msgid "Lack of publicity/exposure"
+#~ msgstr "Lipsa de publicitate/expunere"
+
+#~ msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
+#~ msgstr ""
+#~ "Lipsa de versiuni binare oficiale pentru alte sisteme de operare "
+#~ "(Windows, Mac OS X)"
+
+#~ msgid "Have you ever encountered a bug?"
+#~ msgstr "Ați întâlnit vreodată un defect?"
+
+#~ msgid "If so, did you file a bug report?"
+#~ msgstr "Dacă da, ați sesizat un raport de defect?"
+
+#~ msgid "Have you ever thought about contributing?"
+#~ msgstr "V-ați gândit vreodată să contribuiți?"
+
+#~ msgid "Why not?"
+#~ msgstr "De ce nu?"
+
+#~ msgid "Comments:"
+#~ msgstr "Comentarii:"
+
+#~ msgid "Privacy Note:"
+#~ msgstr "Notă confidențială:"
+
+#~ msgid ""
+#~ "The sole purpose of this survey is to better know our user base.\n"
+#~ "Your email address will be used to uniquely identify you as a Glade user "
+#~ "and send you back a modification token in case you want to modify "
+#~ "something or add extra comments.\n"
+#~ "Only statistics compiled from the whole dataset will be shared publicly.\n"
+#~ "Individual data will be stored in a private database and it will not be "
+#~ "shared with the public or any other third party."
+#~ msgstr ""
+#~ "Singurul scop al acestui studiu este de a cunoaște mai bine gama noastră "
+#~ "de utilizatori.\n"
+#~ "Adresa dumneavoastră de email va fi utilizată pentru a vă identifica în "
+#~ "mod unic ca utilizator Glade și pentru a vă trimite un jeton de "
+#~ "modificare în cazul în care doriți să modificați ceva sau să adăugați "
+#~ "comentarii suplimentare.\n"
+#~ "Numai statisticile compilate din întregul set de date vor fi distribuite "
+#~ "public.\n"
+#~ "Datele individuale vor fi stocate într-o bază de date privată și nu vor "
+#~ "fi partajate cu publicul sau cu orice altă parte terță."
+
 #~ msgid "Only one widget can be pasted at a time to this container"
 #~ msgstr ""
 #~ "Doar un singur widget poate fi lipit la un moment dat în acest container"
@@ -8303,8 +8141,8 @@ msgstr "Widgeturi WebKit2GTK+"
 #~ "\n"
 #~ "To validate this email address open the following link\n"
 #~ "\n"
-#~ "https://people.gnome.org/~jpu/glade/registration.php?email="
-#~ "$email&validation_token=$new_validation_token\n"
+#~ "https://people.gnome.org/~jpu/glade/registration.php?"
+#~ "email=$email&validation_token=$new_validation_token\n"
 #~ "\n"
 #~ "In case you want to change or update the survey, your current update "
 #~ "token is:\n"
@@ -8319,8 +8157,8 @@ msgstr "Widgeturi WebKit2GTK+"
 #~ "\n"
 #~ "Pentru a valida această adresă de e-mail deschideți legătura următoare\n"
 #~ "\n"
-#~ "https://people.gnome.org/~jpu/glade/registration.php?email="
-#~ "$email&validation_token=$new_validation_token\n"
+#~ "https://people.gnome.org/~jpu/glade/registration.php?"
+#~ "email=$email&validation_token=$new_validation_token\n"
 #~ "\n"
 #~ "În cazul în care doriți să modificați sau să actualizați sondajul, "
 #~ "jetonul dumneavoastră curent de actualizare este:\n"
