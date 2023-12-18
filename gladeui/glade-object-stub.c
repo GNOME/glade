@@ -124,10 +124,13 @@ glade_object_stub_refresh_text (GladeObjectStub *self)
 
   type = g_type_from_name (self->type);
 
-  if ((type != G_TYPE_INVALID && (!G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_ABSTRACT (type))))
+  if ((type != G_TYPE_INVALID && (!G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_ABSTRACT (type)))) {
+    g_warning ("Unable to create uninstantiable object with type %s", self->type);
     markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create uninstantiable object with type %s", self->type);
-  else
+  } else {
+    g_warning ("Unable to create object with type %s", self->type);
     markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create object with type %s", self->type);
+  }
   
   gtk_label_set_markup (self->label, markup);
   gtk_info_bar_set_message_type (GTK_INFO_BAR (self), GTK_MESSAGE_WARNING);
